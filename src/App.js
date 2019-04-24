@@ -15,7 +15,6 @@ class App extends React.Component {
 		});
 			
 		//Send the AJAX call to the server
-		// TODO - need to detect if we're localhost or running live here - we can probably do that with window.location or something similar.
 		let searchUrl = new URL('http://localhost:8080/test/search');
 
 		// This hooks up to current deployment while also working with local dev environment
@@ -23,7 +22,7 @@ class App extends React.Component {
 		if(window.location.hostname==='localhost'){
 			// Continue with localhost
 		} else {
-			searchUrl = new URL('http://hvpb.azurewebsites.net/');
+			searchUrl = new URL('http://hvpb.azurewebsites.net/test/search');
 		}
 
         searchUrl.searchParams.append('title', encodeURIComponent(title.trim()));
