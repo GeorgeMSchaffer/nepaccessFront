@@ -31,7 +31,7 @@ class App extends React.Component {
 		if(window.location.hostname==='localhost'){
 			// Continue with localhost
 		} else {
-			searchUrl = new URL('http://hvpb.azurewebsites.net/test/search');
+			searchUrl = new URL('https://hvpb.azurewebsites.net/test/search');
 		}
 
 		// TODO: Transform into POST, account for this on backend
