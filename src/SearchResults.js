@@ -1,5 +1,6 @@
 import React from 'react';
-import 'react-tabulator/lib/styles.css';
+import 'react-tabulator/lib/styles.css'; // required styles
+import 'react-tabulator/lib/css/tabulator_midnight.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 
 class SearchResults extends React.Component {
@@ -11,28 +12,29 @@ class SearchResults extends React.Component {
         
         
         const columns = [
-            { title: "Title", field: "title", width: 150 },
+            { title: "Title", field: "title", width: 750 },
             { title: "Agency", field: "agency" },
             { title: "Comment date", field: "commentDate" },
             { title: "Register date", field: "registerDate" },
-            { title: "State", field: "state" },
+            { title: "State", field: "state", width: 80 },
             { title: "Version", field: "documentType" }
         ];
-
-        var data = [
-            { title: "1", agency: "2", commentDate: "3", registerDate: "4", state: "5", documentType: "6"}
-        ];
-
         const results = this.props.results;
 
-        // var data = results.map((result, idx) =>{
-        //     var newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
-        //     registerDate: result.registerDate, state: result.state, documentType: result.documentType};
-        //     return newObject;
-        // });
-
-        console.log(results);
-        console.log(data);
+        var data = results.map((result, idx) =>{
+            var newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
+            registerDate: result.registerDate, state: result.state, documentType: result.documentType};
+            return newObject;
+        });
+        var options = {
+        tooltips:true,
+        responsiveLayout:"collapse",  //collapse columns that dont fit on the table
+        pagination:"local",       //paginate the data
+        paginationSize:"25",       //allow 25 rows per page of data
+        movableColumns:true,      //allow column order to be changed
+        resizableRows:true,       //allow row order to be changed
+        layout:"fitColumns"
+        };
 
 		// const results = this.props.results;
 		return (
@@ -62,8 +64,7 @@ class SearchResults extends React.Component {
               <ReactTabulator
                 data={data}
                 columns={columns}
-                tooltips={true}
-                layout={"fitData"}
+                options={options}
                 />
 		)
 	}
