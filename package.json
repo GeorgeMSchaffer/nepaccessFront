@@ -5,8 +5,10 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "react": "^16.8.6",
+    "react-datepicker": "^2.5.0",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.0",
+    "react-select": "^2.4.3",
     "react-tabulator": "^0.9.1"
   },
   "scripts": {
