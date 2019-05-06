@@ -40,19 +40,27 @@ class Searcher extends React.Component {
 		});
     }
 	onAgencyChange = (evt) => {
+		var agencyLabels = [];
+		for(var i = 0; i < evt.length; i++){
+			agencyLabels.push(evt[i].label.replace(/ \([A-Z]*\)/gi,""));
+		}
         this.setState( 
 		{ 
-			agency: evt
+			agency: agencyLabels
 		}, () => { 
 			this.debouncedSearch(this.state);
 		});
     }
-	onStateChange = (evt) => {
+	onLocationChange = (evt) => {
+		var stateValues = [];
+		for(var i = 0; i < evt.length; i++){
+			stateValues.push(evt[i].value);
+		}
         this.setState( 
 		{ 
-			agency: evt
+			state: stateValues
 		}, () => { 
-			// this.debouncedSearch(this.state);
+			this.debouncedSearch(this.state);
 		});
     }
     
@@ -117,7 +125,7 @@ class Searcher extends React.Component {
 				</select> */}
                 <Select id="searchState" className="multi" isMulti name="state" isSearchable isClearable 
                     options={stateOptions} 
-                    onChange={this.onStateChange} 
+                    onChange={this.onLocationChange} 
                     placeholder="Search all" 
                 />
 				</div>
