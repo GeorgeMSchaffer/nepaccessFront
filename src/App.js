@@ -10,6 +10,8 @@ class App extends React.Component {
 			title: '',
 			startPublish: '',
 			endPublish: '',
+			agency: '',
+			state: '',
 			needsComments: false
 		},
 		searchResults: []
