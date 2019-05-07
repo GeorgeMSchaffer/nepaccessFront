@@ -31,7 +31,7 @@ class App extends React.Component {
 			console.log(window.location.hostname);
 			if(window.location.hostname=='localhost'){
 				// Continue with localhost
-			} else if(window.location.hostname == 'http://mis-jvinalappl1.microagelab.arizona.edu/') {
+			} else if(window.location.hostname == 'mis-jvinalappl1.microagelab.arizona.edu') {
 				searchUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu/test/search');
 			} else {
 				searchUrl = new URL('https://hvpb.azurewebsites.net/test/search');
