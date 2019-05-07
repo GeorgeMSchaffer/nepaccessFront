@@ -27,15 +27,16 @@ class App extends React.Component {
 			let searchUrl = new URL('http://localhost:8080/test/search');
 
 			// This hooks up to current deployment while also working with local dev environment
-			console.log(window.location);
+			// console.log(window.location);
 			console.log(window.location.hostname);
 			if(window.location.hostname==='localhost'){
 				// Continue with localhost
-			} else if(window.location === 'http://mis-jvinalappl1.microagelab.arizona.edu/') {
+			} else if(window.location.hostname === 'http://mis-jvinalappl1.microagelab.arizona.edu/') {
 				searchUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu/test/search');
 			} else {
 				searchUrl = new URL('https://hvpb.azurewebsites.net/test/search');
 			}
+			console.log(searchUrl);
 
 			// TODO: Pass through universal validator first that can handle multiple types and return sane values
 			// Object.keys(this.state.searcherInputs).forEach(key => {
