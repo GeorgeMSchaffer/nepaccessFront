@@ -32,7 +32,7 @@ class App extends React.Component {
 			if(window.location.hostname=='localhost'){
 				// Continue with localhost
 			} else if(window.location.hostname == 'mis-jvinalappl1.microagelab.arizona.edu') {
-				searchUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu/test/search');
+				searchUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/test/search');
 			} else {
 				searchUrl = new URL('https://hvpb.azurewebsites.net/test/search');
 			}
