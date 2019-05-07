@@ -28,14 +28,15 @@ class App extends React.Component {
 
 			// This hooks up to current deployment while also working with local dev environment
 			console.log(window.location);
+			console.log(window.location.hostname);
 			if(window.location.hostname==='localhost'){
 				// Continue with localhost
+			} else if(window.location === 'http://mis-jvinalappl1.microagelab.arizona.edu/') {
+				searchUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu/test/search');
 			} else {
 				searchUrl = new URL('https://hvpb.azurewebsites.net/test/search');
 			}
 
-			// TODO: Transform into POST, account for this on backend
-			// Iterate through searcherInputs, encode and append to searchParams for the GET
 			// TODO: Pass through universal validator first that can handle multiple types and return sane values
 			// Object.keys(this.state.searcherInputs).forEach(key => {
 			// 	searchUrl.searchParams.append(key, this.state.searcherInputs[key]);
@@ -70,10 +71,6 @@ class App extends React.Component {
 	}
 
 	render() {
-
-		// need to use a new React specific multiselect plugin
-		// document.multiselect('#searchAgency');
-		// document.multiselect('#searchState');
 
 		console.log("App rendering");
 		return (
