@@ -29,9 +29,9 @@ class App extends React.Component {
 			// This hooks up to current deployment while also working with local dev environment
 			// console.log(window.location);
 			console.log(window.location.hostname);
-			if(window.location.hostname==='localhost'){
+			if(window.location.hostname=='localhost'){
 				// Continue with localhost
-			} else if(window.location.hostname === 'http://mis-jvinalappl1.microagelab.arizona.edu/') {
+			} else if(window.location.hostname == 'http://mis-jvinalappl1.microagelab.arizona.edu/') {
 				searchUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu/test/search');
 			} else {
 				searchUrl = new URL('https://hvpb.azurewebsites.net/test/search');
