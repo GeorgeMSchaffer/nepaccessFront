@@ -1,8 +1,10 @@
 /* dark colors for my personal readability */
+/* Need to pick a min height to prevent upward shifts when advancing table page */
 
 html {
   background: black;
-  color: white;
+	color: white;
+	min-height: 1200px;
 }
 
 body .dark {
