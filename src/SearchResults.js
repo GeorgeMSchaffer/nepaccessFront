@@ -5,7 +5,6 @@ import { ReactTabulator } from 'react-tabulator';
 
 class SearchResults extends React.Component {
 
-
 	render() {
         console.log("SearchResults");
 
@@ -16,6 +15,7 @@ class SearchResults extends React.Component {
             registerDate: result.registerDate, state: result.state, documentType: result.documentType};
             return newObject;
         });
+
         
         const columns = [
             { title: "Title", field: "title", width: 750 },
@@ -65,11 +65,14 @@ class SearchResults extends React.Component {
 			// 		)}
 			// 	</tbody>
             // </table>
-              <ReactTabulator
-                data={data}
-                columns={columns}
-                options={options}
+            <div>
+			    <h2>{results.length} Results</h2>
+                <ReactTabulator
+                    data={data}
+                    columns={columns}
+                    options={options}
                 />
+            </div>
 		)
 	}
 }

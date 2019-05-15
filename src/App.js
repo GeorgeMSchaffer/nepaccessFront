@@ -19,6 +19,7 @@ class App extends React.Component {
 
 	search = (searcherState) => {
 		console.log("In search");
+		document.body.style.cursor = 'progress';
 
 		this.setState({
 			searcherInputs: searcherState
@@ -67,6 +68,7 @@ class App extends React.Component {
 				console.error('error message', error);
 			});
 
+			document.body.style.cursor = 'default';
 			console.log("Out search");
 		});
 	}
@@ -80,7 +82,6 @@ class App extends React.Component {
 				+ Search Criteria
 				</button>
 				<Searcher search={this.search} />
-				<h2>Results</h2>
 				<SearchResults results={this.state.searchResults} />
 			</div>
 		)

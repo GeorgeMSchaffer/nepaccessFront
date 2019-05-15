@@ -14,6 +14,8 @@ class Searcher extends React.Component {
             title: '',
             startPublish: '',
             endPublish: '',
+            startComment: '',
+            endComment: '',
             agency: [],
             state: [],
             needsComments: false
@@ -74,6 +76,12 @@ class Searcher extends React.Component {
     onEndDateChange = (date) => { 
         this.setState( { endPublish: date}, () => { this.debouncedSearch(this.state); }); 
     }
+    onStartCommentChange = (date) => { 
+        this.setState( { startComment: date}, () => { this.debouncedSearch(this.state); }); 
+    }
+    onEndCommentChange = (date) => { 
+        this.setState( { endComment: date}, () => { this.debouncedSearch(this.state); }); 
+    }
     
     // Can either just make the form a div or use this to prevent Submit default behavior
 	submitHandler(e) { e.preventDefault(); }
@@ -104,6 +112,18 @@ class Searcher extends React.Component {
                 /> to <DatePicker
                     selected={this.state.endPublish}
                     onChange={this.onEndDateChange}
+                    dateFormat="yyyy-MM-dd" 
+                    className="date" 
+                />
+                <label>Comment date</label>				
+                <DatePicker
+                    selected={this.state.startComment} 
+                    onChange={this.onStartCommentChange} 
+                    dateFormat="yyyy-MM-dd" 
+                    className="date" 
+                /> to <DatePicker
+                    selected={this.state.endComment}
+                    onChange={this.onEndCommentChange}
                     dateFormat="yyyy-MM-dd" 
                     className="date" 
                 />
@@ -146,6 +166,8 @@ class Searcher extends React.Component {
         if(document.querySelectorAll('.date')[0]){
             document.querySelectorAll('.date')[0].placeholder = 'YYYY-MM-DD';
             document.querySelectorAll('.date')[1].placeholder = 'YYYY-MM-DD';
+            document.querySelectorAll('.date')[2].placeholder = 'YYYY-MM-DD';
+            document.querySelectorAll('.date')[3].placeholder = 'YYYY-MM-DD';
         }
      }
 }
