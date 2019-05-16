@@ -12,18 +12,19 @@ class SearchResults extends React.Component {
         const results = this.props.results;
         var data = results.map((result, idx) =>{
             var newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
-            registerDate: result.registerDate, state: result.state, documentType: result.documentType};
+            registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
+            documents: result.documents};
             return newObject;
         });
-
         
         const columns = [
             { title: "Title", field: "title", width: 750 },
             { title: "Agency", field: "agency" },
-            { title: "Comment date", field: "commentDate" },
-            { title: "Register date", field: "registerDate" },
+            { title: "Comment date", field: "commentDate", width: 140 },
+            { title: "Register date", field: "registerDate", width: 140 },
             { title: "State", field: "state", width: 80 },
-            { title: "Version", field: "documentType" }
+            { title: "Version", field: "documentType", width: 90 },
+            { title: "Files", field: "documents"}
         ];
 
         var options = {

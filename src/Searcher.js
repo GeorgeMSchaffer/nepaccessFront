@@ -108,11 +108,13 @@ class Searcher extends React.Component {
                     selected={this.state.startPublish} 
                     onChange={this.onStartDateChange} 
                     dateFormat="yyyy-MM-dd" 
+                    placeholderText="YYYY-MM-DD"
                     className="date" 
                 /> to <DatePicker
                     selected={this.state.endPublish}
                     onChange={this.onEndDateChange}
                     dateFormat="yyyy-MM-dd" 
+                    placeholderText="YYYY-MM-DD"
                     className="date" 
                 />
                 <label>Comment date</label>				
@@ -120,11 +122,13 @@ class Searcher extends React.Component {
                     selected={this.state.startComment} 
                     onChange={this.onStartCommentChange} 
                     dateFormat="yyyy-MM-dd" 
+                    placeholderText="YYYY-MM-DD"
                     className="date" 
                 /> to <DatePicker
                     selected={this.state.endComment}
                     onChange={this.onEndCommentChange}
                     dateFormat="yyyy-MM-dd" 
+                    placeholderText="YYYY-MM-DD"
                     className="date" 
                 />
                 <div>
@@ -162,13 +166,7 @@ class Searcher extends React.Component {
 
 	// Onload
     componentDidMount(){
-        // Date placeholders (workaround for react-datepicker)
-        if(document.querySelectorAll('.date')[0]){
-            document.querySelectorAll('.date')[0].placeholder = 'YYYY-MM-DD';
-            document.querySelectorAll('.date')[1].placeholder = 'YYYY-MM-DD';
-            document.querySelectorAll('.date')[2].placeholder = 'YYYY-MM-DD';
-            document.querySelectorAll('.date')[3].placeholder = 'YYYY-MM-DD';
-        }
+        
      }
 }
 
