@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchResults from './SearchResults.js';
 import Searcher from './Searcher.js';
-import './App.css';
+// import './App.css';
 
 class App extends React.Component {
 
@@ -19,24 +19,20 @@ class App extends React.Component {
 
 	search = (searcherState) => {
 		console.log("In search");
-		document.body.style.cursor = 'progress';
+		document.body.style.cursor = 'wait';
 
 		this.setState({
 			searcherInputs: searcherState
 		}, () => {
 			//Send the AJAX call to the server
 			let searchUrl = new URL('http://localhost:8080/test/search');
-
 			// This hooks up to current deployment while also working with local dev environment
 			// console.log(window.location);
 			console.log(window.location.hostname);
-			if(window.location.hostname=='localhost'){
-				// Continue with localhost
-			} else if(window.location.hostname == 'mis-jvinalappl1.microagelab.arizona.edu') {
+			if(window.location.hostname == 'mis-jvinalappl1.microagelab.arizona.edu') {
 				searchUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/test/search');
-			} else {
-				searchUrl = new URL('https://hvpb.azurewebsites.net/test/search');
-			}
+			} // else continue with localhost
+
 			console.log(searchUrl);
 
 			// TODO: Pass through universal validator first that can handle multiple types and return sane values

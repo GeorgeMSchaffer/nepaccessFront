@@ -101,9 +101,8 @@ a {
 	user-select: none;
 }
 
-.tabulator {
-	min-height: 560px;
-}
+/* .tabulator {
+} */
 
 .multi *{
 	background-color: #333 !important;
