@@ -1,6 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+
 import SearchResults from './SearchResults.js';
 import Searcher from './Searcher.js';
+
 // import './App.css';
 
 class App extends React.Component {
@@ -44,22 +47,43 @@ class App extends React.Component {
 			// 	console.log(this.state.searcherInputs[value]);
 			// }
 
+
+			var token = localStorage.JWT;
+			if(token){
+				// TODO: Test auth token, prompt login if invalid (expired probably)
+				axios.defaults.headers.common['Authorization'] = token;
+			} else {
+				// TODO: Prompt login if no auth token
+				axios.defaults.headers.common['Authorization'] = null;
+			}
+
+
 			console.log("Inputs");
 			console.log(JSON.stringify(this.state.searcherInputs));
-			// searchUrl.searchParams.append('title', encodeURIComponent(this.state.searcherInputs.searchTitle.trim()));
-			fetch(searchUrl, {
+			axios({ // TODO: Provide JWT or else redirect user to login/registration
 				method: 'POST', // or 'PUT'
-				body: JSON.stringify(this.state.searcherInputs), // data can be `string` or {object}
+				url: searchUrl,
+				data: this.state.searcherInputs, // data can be `string` or {object}
 				headers:{
 					'Content-Type': 'application/json; charset=utf-8'
 				}
 			}).then(response => {
-				return response.json();
+				let responseOK = response && response.status === 200;
+				if (responseOK) {
+					console.log("OK");
+					return response.data;
+				} else {
+					return null;
+				}
 			}).then(parsedJson => {
 				// console.log('this should be json', parsedJson);
-				this.setState({
-					searchResults: parsedJson
-				});
+				if(parsedJson){
+					this.setState({
+						searchResults: parsedJson
+					});
+				} else {
+					// TODO: Something broke, maybe try logging in again
+				}
 			}).catch(error => {
 				console.error('error message', error);
 			});
@@ -75,7 +99,7 @@ class App extends React.Component {
 		return (
 			<div id="main">
 				<button className="collapsible">
-				+ Search Criteria
+					<span className="button-text">+ Search Criteria</span>
 				</button>
 				<Searcher search={this.search} />
 				<SearchResults results={this.state.searchResults} />
@@ -86,6 +110,7 @@ class App extends React.Component {
 	// Onload
 	componentDidMount() {
 		collapsibles();
+		refreshNav();
 	}
 	
 }
@@ -108,4 +133,25 @@ function collapsibles(){
 		});
 	}
 	
+}
+
+function refreshNav(){
+	var loggedOutStyle = "block";
+	var loggedInStyle = "block";
+	console.log(localStorage.getItem("JWT"));
+	if(localStorage.getItem("JWT")){
+		loggedOutStyle="none";
+	} else {
+		loggedInStyle="none";
+	}
+	let loggedOutItems = document.getElementsByClassName("logged-out");
+	let i;
+	for (i = 0; i < loggedOutItems.length; i++) {
+		loggedOutItems[i].style.display = loggedOutStyle;
+	}
+	let loggedInItems = document.getElementsByClassName("logged-in");
+	let j;
+	for (j = 0; j < loggedInItems.length; j++) {
+		loggedInItems[j].style.display = loggedInStyle;
+	}
 }

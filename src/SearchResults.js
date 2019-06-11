@@ -78,7 +78,13 @@ class SearchResults extends React.Component {
             )
         }
         catch (e) {
-            // TODO: Show the user something other than a blank page
+            // Show the user something other than a blank page
+            return (
+            <div>
+                <h2>Results</h2>
+                <ReactTabulator />
+            </div>
+            )
         }
 	}
 }
