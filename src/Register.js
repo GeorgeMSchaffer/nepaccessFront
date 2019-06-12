@@ -4,6 +4,40 @@ import './login.css';
 
 // TODO: Hook up registration
 class Register extends React.Component {
+
+    state = {
+        username: '',
+        password: '',
+        email: ''
+    }
+
+    constructor(props) {
+        super(props);
+		this.state = {
+            username: '',
+            password: '',
+            email: ''
+        };
+        this.onKeyUp = this.onKeyUp.bind(this);
+        this.register = this.register.bind(this);
+	}
+
+	onKeyUp = (evt) => {
+		// get the evt.target.name (defined by name= in input)
+		// and use it to target the key on our `state` object with the same name, using bracket syntax
+        this.setState( 
+		{ 
+			[evt.target.name]: evt.target.value
+        }, () =>{
+            // console.log(this.state.username);
+            // console.log(this.state.password);
+        });
+    }
+
+    register() {
+        
+    }
+
     render() {
         return (
             <div id="main" className="container register-form">

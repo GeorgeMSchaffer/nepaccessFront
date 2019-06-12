@@ -50,11 +50,13 @@ class App extends React.Component {
 
 			var token = localStorage.JWT;
 			if(token){
-				// TODO: Test auth token, prompt login if invalid (expired probably)
 				axios.defaults.headers.common['Authorization'] = token;
+				// if(false){ // TODO: Test auth token, prompt login if invalid (expired probably)
+				// 	this.props.history.push('/login') // Prompt login if expired token
+				// }
 			} else {
-				// TODO: Prompt login if no auth token
 				axios.defaults.headers.common['Authorization'] = null;
+				this.props.history.push('/login') // Prompt login if no auth token
 			}
 
 
@@ -83,6 +85,7 @@ class App extends React.Component {
 					});
 				} else {
 					// TODO: Something broke, maybe try logging in again
+                	this.props.history.push('/login')
 				}
 			}).catch(error => {
 				console.error('error message', error);
@@ -106,11 +109,35 @@ class App extends React.Component {
 			</div>
 		)
 	}
+
+	
+	check = async () => {
+				
+		let checkURL = new URL('http://localhost:8080/test/check');
+		console.log(window.location.hostname);
+		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
+			checkURL = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/test/check');
+		}
+	
+		let verified = false;
+		var token = localStorage.JWT;
+		if(token){
+			axios.defaults.headers.common['Authorization'] = token;
+			let response = await axios.post(checkURL);
+			verified = response && response.status === 200;
+		} else {
+			axios.defaults.headers.common['Authorization'] = null;
+		}
+		refreshNav(verified);
+		if(!verified){
+			this.props.history.push('/login');
+		}
+	}
 	
 	// Onload
 	componentDidMount() {
 		collapsibles();
-		refreshNav();
+		this.check();
 	}
 	
 }
@@ -132,23 +159,24 @@ function collapsibles(){
 		}
 		});
 	}
-	
 }
 
-function refreshNav(){
+function refreshNav(verified) {
 	var loggedOutStyle = "block";
 	var loggedInStyle = "block";
-	console.log(localStorage.getItem("JWT"));
-	if(localStorage.getItem("JWT")){
+
+	if(verified){
 		loggedOutStyle="none";
 	} else {
 		loggedInStyle="none";
 	}
+
 	let loggedOutItems = document.getElementsByClassName("logged-out");
 	let i;
 	for (i = 0; i < loggedOutItems.length; i++) {
 		loggedOutItems[i].style.display = loggedOutStyle;
 	}
+
 	let loggedInItems = document.getElementsByClassName("logged-in");
 	let j;
 	for (j = 0; j < loggedInItems.length; j++) {
