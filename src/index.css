@@ -108,3 +108,56 @@ a {
 	background-color: #333 !important;
 	color: #ddd !important;
 }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  float: left;
+}
+
+a {
+  min-width: 100px;
+  min-height: 20px;
+  color: lightgray;
+}
+
+li a:hover,
+span a:hover {
+  border-radius: 16px;
+  background-color: #111;
+}
+
+.nav-link {
+  display: block;
+  text-align: center;
+  padding: 10px 16px;
+  text-decoration: underline;
+}
+
+.right-nav-item {
+  float: right;
+}
+
+.button-text {
+  pointer-events: none; /* webkit fix */
+}
+
+#main {
+  padding-top: 40px;
+}
+
+#nav-background {
+  position: fixed;
+  height: 40px;
+  width: 100%;
+  background: #333;
+}
+
+#navbar {
+  height: 40px;
+  position: fixed;
+}

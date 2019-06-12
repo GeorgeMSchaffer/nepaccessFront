@@ -158,6 +158,7 @@ class Searcher extends React.Component {
                         Must have comments
                     </label>
                     <input type="checkbox" name="needsComments" onChange={this.onChecked} />
+                    {/* TODO: Needs EIS (for download) */}
                 </div>
 				<br />
 			</form>
