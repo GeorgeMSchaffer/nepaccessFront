@@ -1,6 +1,7 @@
 import React from 'react';
 import './login.css';
 
+// TODO: Capture enter key
 class Login extends React.Component {
     state = {
         username: '',
