@@ -1,7 +1,7 @@
 import React from 'react';
 import './login.css';
 
-// TODO: Capture enter key
+// TODO: Capture enter key, sanity
 class Login extends React.Component {
     state = {
         username: '',

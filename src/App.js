@@ -88,7 +88,7 @@ class App extends React.Component {
                 	this.props.history.push('/login')
 				}
 			}).catch(error => {
-				console.error('error message', error);
+				console.error('Server is probably down.', error);
 			});
 
 			document.body.style.cursor = 'default';
@@ -102,7 +102,7 @@ class App extends React.Component {
 		return (
 			<div id="main">
 				<button className="collapsible">
-					<span className="button-text">+ Search Criteria</span>
+					<span className="button-text">- Search Criteria</span>
 				</button>
 				<Searcher search={this.search} />
 				<SearchResults results={this.state.searchResults} />
@@ -111,7 +111,7 @@ class App extends React.Component {
 	}
 
 	
-	check = async () => {
+	check = async () => { // check if JWT is expired/invalid
 				
 		let checkURL = new URL('http://localhost:8080/test/check');
 		console.log(window.location.hostname);
@@ -150,13 +150,15 @@ function collapsibles(){
 	let i;
 	for (i = 0; i < coll.length; i++) {
 		coll[i].addEventListener("click", function() {
-		// this.classList.toggle("active");
-		let content = this.nextElementSibling;
-		if (content.style.display !== "none") {
-			content.style.display = "none";
-		} else {
-			content.style.display = "block";
-		}
+			// this.classList.toggle("active");
+			let content = this.nextElementSibling;
+			if (content.style.display !== "none") {
+				content.style.display = "none";
+				this.innerHTML = "+ Search Criteria";
+			} else {
+				content.style.display = "block";
+				this.innerHTML = "- Search Criteria";
+			}
 		});
 	}
 }
