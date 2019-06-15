@@ -72,9 +72,9 @@ class Register extends React.Component {
         if(this.invalidUsername()){
             return;
         }
-        let nameUrl = new URL('http://localhost:8080/users/exists');
+        let nameUrl = new URL('http://localhost:8080/user/exists');
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-            nameUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/users/exists');
+            nameUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/user/exists');
         }
         fetch(nameUrl, { 
             method: 'POST',
@@ -150,9 +150,9 @@ class Register extends React.Component {
         }
         document.body.style.cursor = 'wait';
         
-        let registerUrl = new URL('http://localhost:8080/users/register');
+        let registerUrl = new URL('http://localhost:8080/user/register');
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-            registerUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/users/register');
+            registerUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/user/register');
         }
 
         fetch(registerUrl, { 
@@ -194,6 +194,7 @@ class Register extends React.Component {
                 }).then(jsonResponse => {
                     if(jsonResponse){
                         localStorage.JWT = jsonResponse.Authorization;
+                        localStorage.username = this.state.username;
                         let fields = document.getElementsByClassName("form-control");
                         let i;
                         for (i = 0; i < fields.length; i++) {

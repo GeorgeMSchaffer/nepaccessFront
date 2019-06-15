@@ -131,6 +131,8 @@ class App extends React.Component {
 		refreshNav(verified);
 		if(!verified){
 			this.props.history.push('/login');
+		} else {	
+			// TODO: Add "Logged in as: [username]" with link to account details page
 		}
 	}
 	
@@ -183,5 +185,8 @@ function refreshNav(verified) {
 	let j;
 	for (j = 0; j < loggedInItems.length; j++) {
 		loggedInItems[j].style.display = loggedInStyle;
+	}
+	if(localStorage.username){
+		document.getElementById("details").innerHTML = localStorage.username;
 	}
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import './login.css';
 
-// TODO: Capture enter key, sanity
 class Login extends React.Component {
     state = {
         username: '',
@@ -19,6 +18,10 @@ class Login extends React.Component {
 	}
 
 	onKeyUp = (evt) => {
+        if(evt.keyCode ===13){
+            evt.preventDefault();
+            document.getElementById("submit").click();
+        }
 		// get the evt.target.name (defined by name= in input)
 		// and use it to target the key on our `state` object with the same name, using bracket syntax
         this.setState( 
@@ -26,11 +29,40 @@ class Login extends React.Component {
 			[evt.target.name]: evt.target.value
         }, () =>{
             // console.log(this.state.username);
-            // console.log(this.state.password);
         });
+    }
+    // Validation
+    invalidFields = () => {
+        // Run everything and all appropriate errors will show at once.
+        let test1 = this.invalidUsername();
+        let test2 = this.invalidPassword();
+        return (test1 || test2);
+    }
+    invalidUsername = () => {
+        let usernamePattern = /[ -~]/;
+        let invalid = !(usernamePattern.test(this.state.username));
+        let message = "";
+        if(invalid){
+            message = "Username invalid. Cannot be empty, must be printable characters.";
+        }
+        document.getElementById("username").nextSibling.innerHTML = message;
+        return invalid;
+    }
+    invalidPassword = () =>{
+        let passwordPattern = /[ -~]/;
+        let invalid = !(passwordPattern.test(this.state.password));
+        let message = "";
+        if(invalid){
+            message = "Password invalid. Cannot be empty, must be printable characters.";
+        }
+        document.getElementById("password").nextSibling.innerHTML = message;
+        return invalid;
     }
 
     login = () => {
+        if(this.invalidFields()){
+            return;
+        }
         document.body.style.cursor = 'wait';
         
         // TODO: certs and then HTTPS app-wide, probably
@@ -55,6 +87,7 @@ class Login extends React.Component {
             if(jsonResponse){
                 // if HTTP 200 (ok), save JWT and clear login
                 localStorage.JWT = jsonResponse.Authorization;
+                localStorage.username = this.state.username;
                 let fields = document.getElementsByClassName("form-control");
                 let i;
                 for (i = 0; i < fields.length; i++) {
@@ -76,6 +109,17 @@ class Login extends React.Component {
         document.body.style.cursor = 'default';
     }
 
+    showPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+            document.getElementById("showPassword").checked = true;
+        } else {
+            x.type = "password";
+            document.getElementById("showPassword").checked = false;
+        }
+    } 
+
     render() {
         return (
             <div id="main" className="container login-form">
@@ -88,16 +132,23 @@ class Login extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type="text" className="form-control" placeholder="Username" name="username" onChange={this.onKeyUp}/>
+                                    <input type="text" id="username" className="form-control" name="username" 
+                                    placeholder="Username" autoFocus onKeyUp={this.onKeyUp}/>
+                                    <label className="errorLabel"></label>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type="text" className="form-control" placeholder="Password" name="password" onChange={this.onKeyUp}/>
+                                    <input type="password" id="password" className="form-control" name="password" 
+                                    placeholder="Password" onKeyUp={this.onKeyUp}/>
+                                    <label className="errorLabel"></label>
+                                    <br />
+                                    <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                                    <label className="inline noSelect">Show password</label>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" className="btnSubmit" onClick={this.login} >Submit</button>
+                        <button type="button" id="submit" className="btnSubmit" onClick={this.login} >Submit</button>
                     </div>
                 </div>
             </div>
