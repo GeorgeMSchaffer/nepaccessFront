@@ -3,29 +3,7 @@ import './login.css';
 
 class Logout extends React.Component {
     state = {
-        username: '',
-        password: ''
-    }
-
-    constructor(props) {
-        super(props);
-		this.state = {
-            username: '',
-            password: ''
-        };
-        this.onKeyUp = this.onKeyUp.bind(this);
-	}
-
-	onKeyUp = (evt) => {
-		// get the evt.target.name (defined by name= in input)
-		// and use it to target the key on our `state` object with the same name, using bracket syntax
-        this.setState( 
-		{ 
-			[evt.target.name]: evt.target.value
-        }, () =>{
-            console.log(this.state.username);
-            console.log(this.state.password);
-        });
+        logoutText: "Logging out..."
     }
 
     render() {
@@ -36,19 +14,17 @@ class Logout extends React.Component {
                         <p>Logout</p>
                     </div>
 
-                    <span id="logoutSpan">Logging out...</span>
+                    <span id="logoutSpan">{this.state.logoutText}</span>
                 </div>
             </div>
         )
     }
 
-    
-	// Onload
     componentDidMount(){
         localStorage.removeItem("JWT");
         localStorage.removeItem("username");
         
-        document.getElementById("logoutSpan").innerHTML="Successfully logged out.";
+        this.setState({ logoutText: "Successfully logged out." });
         let itemsToShow = document.getElementsByClassName("logged-out");
         let i;
         for (i = 0; i < itemsToShow.length; i++) {

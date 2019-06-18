@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import './login.css';
 
 const _ = require('lodash');
@@ -11,7 +12,12 @@ class Register extends React.Component {
     state = {
         username: '',
         password: '',
-        email: ''
+        email: '',
+        disabled: false,
+        passwordType: "password",
+        usernameError: '',
+        emailError: '',
+        passwordError: ''
     }
 
     constructor(props) {
@@ -19,9 +25,15 @@ class Register extends React.Component {
 		this.state = {
             username: '',
             password: '',
-            email: ''
+            email: '',
+            disabled: false,
+            passwordType: "password",
+            usernameError: '',
+            emailError: '',
+            passwordError: ''
         };
         this.checkUsername = _.debounce(this.checkUsername, 300);
+        document.body.style.cursor = 'default';
     }
     
 
@@ -30,8 +42,9 @@ class Register extends React.Component {
     invalidFields = () => {
         // Run everything and all appropriate errors will show at once.
         let test1 = this.invalidEmail();
-        let test2 = this.invalidUsername();
+        let test2 = this.checkUsername();
         let test3 = this.invalidPassword();
+        this.setState({ disabled: test1 || test2 || test3 });
         return (test1 || test2 || test3);
     }
     invalidUsername = () => {
@@ -41,7 +54,8 @@ class Register extends React.Component {
         if(invalid){
             message = "Username invalid. Cannot be empty, must be printable characters.";
         }
-        document.getElementById("username").nextSibling.innerHTML = message;
+        this.setState({ usernameError: message });
+        this.setState({ disabled: invalid });
         return invalid;
     }
     invalidEmail(){
@@ -51,7 +65,8 @@ class Register extends React.Component {
         if(invalid){
             message = "Email address invalid.";
         }
-        document.getElementById("email").nextSibling.innerHTML = message;
+        this.setState({ emailError: message });
+        this.setState({ disabled: invalid });
         return invalid;
     }
     invalidPassword(){
@@ -61,16 +76,20 @@ class Register extends React.Component {
         if(invalid){
             message = "Password invalid. Cannot be empty, must be printable characters.";
         }
-        document.getElementById("password").nextSibling.innerHTML = message;
+        this.setState({ passwordError: message });
+        this.setState({ disabled: invalid });
         return invalid;
     }
 
 
 
-    // Check if username is taken to prevent duplicates
+    // Check if username is taken to prevent submission of duplicates
     checkUsername = () => {
         if(this.invalidUsername()){
+            this.setState({ disabled: true });
             return;
+        } else {
+            this.setState({ disabled: false });
         }
         let nameUrl = new URL('http://localhost:8080/user/exists');
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
@@ -90,9 +109,9 @@ class Register extends React.Component {
             }
         }).then(jsonResponse => {
             if(jsonResponse === true){
-                document.getElementById("username").nextSibling.innerHTML = "Username taken.";
+                this.setState({ usernameError: "Username taken." });
             } else {
-                document.getElementById("username").nextSibling.innerHTML = "";
+                this.setState({ usernameError: "" });
             }
         }).catch(error => {
             console.error('Server probably down.', error);
@@ -105,40 +124,25 @@ class Register extends React.Component {
 	onUsernameChange = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
-            document.getElementById("submit").click();
+            this.register();
         }
-        this.setState( 
-		{ 
-			[evt.target.name]: evt.target.value
-        }, () =>{
-            this.checkUsername();
-        });
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkUsername(); });
     }
 
 	onPasswordChange = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
-            document.getElementById("submit").click();
+            this.register();
         }
-        this.setState( 
-		{ 
-			[evt.target.name]: evt.target.value
-        }, () => {
-            this.invalidPassword();
-        });
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidPassword(); });
     }
     
 	onEmailChange = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
-            document.getElementById("submit").click();
+            this.register();
         }
-        this.setState( 
-		{ 
-			[evt.target.name]: evt.target.value
-        }, () => {
-            this.invalidEmail();
-        });
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidEmail(); });
     }
 
 
@@ -149,20 +153,26 @@ class Register extends React.Component {
             return;
         }
         document.body.style.cursor = 'wait';
+        this.setState({ disabled: true });
         
         let registerUrl = new URL('http://localhost:8080/user/register');
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
             registerUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/user/register');
         }
 
-        fetch(registerUrl, { 
+        let dataToPass = { username: this.state.username, password: this.state.password, email: this.state.email};
+
+        axios({ 
             method: 'POST',
-            body: JSON.stringify(this.state),
+            url: registerUrl,
+            data: dataToPass,
             headers:{
                 'Content-Type': 'application/json; charset=utf-8'
             }
         }).then(response => {
-            if(response.ok){ // 200
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                console.log("OK");
                 return true;
             } else { // 403
                 return false;
@@ -195,11 +205,11 @@ class Register extends React.Component {
                     if(jsonResponse){
                         localStorage.JWT = jsonResponse.Authorization;
                         localStorage.username = this.state.username;
-                        let fields = document.getElementsByClassName("form-control");
-                        let i;
-                        for (i = 0; i < fields.length; i++) {
-                            fields[i].value = '';
-                        }
+                        // let fields = document.getElementsByClassName("form-control");
+                        // let i;
+                        // for (i = 0; i < fields.length; i++) {
+                        //     fields[i].value = '';
+                        // }
                         this.props.history.push('/')
                         console.log("Logged in");
                     } else {
@@ -214,19 +224,18 @@ class Register extends React.Component {
             console.error('error message', error);
         });
 
+        this.setState({ disabled: false });
         document.body.style.cursor = 'default';
     }
-
     
     showPassword() {
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-            x.type = "text";
-            document.getElementById("showPassword").checked = true;
-        } else {
-            x.type = "password";
-            document.getElementById("showPassword").checked = false;
+        let value = "password";
+        if(this.state.passwordType === value){
+            value = "text";
         }
+        this.setState({
+            passwordType: value
+        });
     } 
     
     render() {
@@ -242,24 +251,24 @@ class Register extends React.Component {
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <input type="text" className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
-                                    <label className="errorLabel"></label>
+                                    <label className="errorLabel">{this.state.usernameError}</label>
                                 </div>
                                 <div className="form-group">
                                     <input type="text" className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
-                                    <label className="errorLabel"></label>
+                                    <label className="errorLabel">{this.state.emailError}</label>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type="password" id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
-                                    <label className="errorLabel"></label>
+                                    <input type={this.state.passwordType} id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
+                                    <label className="errorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
                                     <label className="inline noSelect">Show password</label>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" id="submit" className="btnSubmit" onClick={this.register}>Submit</button>
+                        <button type="button" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
                     </div>
                 </div>
             </div>

@@ -17,7 +17,8 @@ class App extends React.Component {
 			state: [],
 			needsComments: false
 		},
-		searchResults: []
+		searchResults: [],
+		baseURL: ''
 	}
 
 	search = (searcherState) => {
@@ -27,18 +28,8 @@ class App extends React.Component {
 		this.setState({
 			searcherInputs: searcherState
 		}, () => {
-			//Send the AJAX call to the server
-			let searchUrl = new URL('http://localhost:8080/test/search');
-			// This hooks up to current deployment while also working with local dev environment
-			// console.log(window.location);
-			console.log(window.location.hostname);
-			if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-				searchUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/test/search');
-			} // else continue with localhost
 
-			console.log(searchUrl);
-
-			// TODO: Pass through universal validator first that can handle multiple types and return sane values
+			// TODO: Sanity check searcherInputs
 			// Object.keys(this.state.searcherInputs).forEach(key => {
 			// 	searchUrl.searchParams.append(key, this.state.searcherInputs[key]);
 			// });
@@ -47,28 +38,25 @@ class App extends React.Component {
 			// 	console.log(this.state.searcherInputs[value]);
 			// }
 
+			let searchUrl = new URL('test/search', this.state.baseURL);
 
 			var token = localStorage.JWT;
 			if(token){
 				axios.defaults.headers.common['Authorization'] = token;
-				// if(false){ // TODO: Test auth token, prompt login if invalid (expired probably)
-				// 	this.props.history.push('/login') // Prompt login if expired token
-				// }
 			} else {
 				axios.defaults.headers.common['Authorization'] = null;
 				this.props.history.push('/login') // Prompt login if no auth token
 			}
+			axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
 
 
 			console.log("Inputs");
 			console.log(JSON.stringify(this.state.searcherInputs));
-			axios({ // TODO: Provide JWT or else redirect user to login/registration
+			//Send the AJAX call to the server
+			axios({
 				method: 'POST', // or 'PUT'
 				url: searchUrl,
-				data: this.state.searcherInputs, // data can be `string` or {object}
-				headers:{
-					'Content-Type': 'application/json; charset=utf-8'
-				}
+				data: this.state.searcherInputs // data can be `string` or {object}
 			}).then(response => {
 				let responseOK = response && response.status === 200;
 				if (responseOK) {
@@ -95,6 +83,25 @@ class App extends React.Component {
 			console.log("Out search");
 		});
 	}
+	
+	check = async () => { // check if JWT is expired/invalid
+				
+		let verified = false;
+
+		let checkURL = new URL('test/check', this.state.baseURL);
+		var token = localStorage.JWT;
+		if(token){
+			axios.defaults.headers.common['Authorization'] = token;
+			let response = await axios.post(checkURL);
+			verified = response && response.status === 200;
+		} 
+
+		refreshNav(verified);
+		if(!verified){
+			this.props.history.push('/login');
+		}
+	}
+	
 
 	render() {
 
@@ -111,35 +118,21 @@ class App extends React.Component {
 	}
 
 	
-	check = async () => { // check if JWT is expired/invalid
-				
-		let checkURL = new URL('http://localhost:8080/test/check');
+	// After render
+	componentDidMount() {
+		let currentHost = new URL('http://localhost:8080/');
 		console.log(window.location.hostname);
 		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-			checkURL = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/test/check');
+			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
 		}
-	
-		let verified = false;
-		var token = localStorage.JWT;
-		if(token){
-			axios.defaults.headers.common['Authorization'] = token;
-			let response = await axios.post(checkURL);
-			verified = response && response.status === 200;
-		} else {
-			axios.defaults.headers.common['Authorization'] = null;
-		}
-		refreshNav(verified);
-		if(!verified){
-			this.props.history.push('/login');
-		} else {	
-			// TODO: Add "Logged in as: [username]" with link to account details page
-		}
-	}
-	
-	// Onload
-	componentDidMount() {
+
+		this.setState( 
+		{ 
+			baseURL: currentHost
+		}, () =>{
+			this.check();
+		});
 		collapsibles();
-		this.check();
 	}
 	
 }

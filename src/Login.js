@@ -1,36 +1,67 @@
 import React from 'react';
+import axios from 'axios';
 import './login.css';
 
 class Login extends React.Component {
-    state = {
-        username: '',
-        password: ''
+    // state = { 
+    //     username: '',
+    //     password: '',
+    //     usernameError: '',
+    //     passwordError: '',
+    //     passwordType: "password"
+    // }
+
+    state = { 
+        user: {
+            username: '',
+            password: ''
+        },
+        usernameError: '',
+        passwordError: '',
+        passwordType: "password"
     }
 
     constructor(props) {
         super(props);
-		this.state = {
-            username: '',
-            password: ''
+		// this.state = {
+        //     username: '',
+        //     password: '',
+        //     usernameError: '',
+        //     passwordError: '',
+        //     passwordType: "password"
+        // };
+        this.state = { 
+            user: {
+                username: '',
+                password: ''
+            },
+            usernameError: '',
+            passwordError: '',
+            passwordType: "password"
         };
         this.onKeyUp = this.onKeyUp.bind(this);
         this.login = this.login.bind(this);
 	}
 
-	onKeyUp = (evt) => {
+    onKeyUp = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
-            document.getElementById("submit").click();
+            this.login();
         }
-		// get the evt.target.name (defined by name= in input)
-		// and use it to target the key on our `state` object with the same name, using bracket syntax
-        this.setState( 
-		{ 
-			[evt.target.name]: evt.target.value
-        }, () =>{
-            // console.log(this.state.username);
+
+        const name = evt.target.name;
+        const value = evt.target.value;
+
+        this.setState( prevState =>
+        { 
+            const updatedUser = prevState.user;
+            updatedUser[name] = value;
+            return {
+                user: updatedUser
+            }
         });
     }
+
     // Validation
     invalidFields = () => {
         // Run everything and all appropriate errors will show at once.
@@ -45,7 +76,9 @@ class Login extends React.Component {
         if(invalid){
             message = "Username invalid. Cannot be empty, must be printable characters.";
         }
-        document.getElementById("username").nextSibling.innerHTML = message;
+        this.setState({
+            usernameError: message
+        });
         return invalid;
     }
     invalidPassword = () =>{
@@ -55,9 +88,22 @@ class Login extends React.Component {
         if(invalid){
             message = "Password invalid. Cannot be empty, must be printable characters.";
         }
-        document.getElementById("password").nextSibling.innerHTML = message;
+        this.setState({
+            passwordError: message
+        });
         return invalid;
     }
+
+    showPassword = () => {
+        let value = "password";
+        if(this.state.passwordType === value){
+            value = "text";
+        }
+        this.setState({
+            passwordType: value
+        });
+    } 
+
 
     login = () => {
         if(this.invalidFields()){
@@ -71,29 +117,32 @@ class Login extends React.Component {
             loginUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/login');
         }
 
-        fetch(loginUrl, { 
+        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
+        axios({ 
             method: 'POST',
-            body: JSON.stringify(this.state),
-            headers:{
-                'Content-Type': 'application/json; charset=utf-8'
-            }
+            url: loginUrl,
+            data: this.state.user
         }).then(response => {
-            if(response.ok){ // 200
-                return response.json();
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                console.log("OK");
+                return response.data;
             } else { // 403
                 return null;
             }
         }).then(jsonResponse => {
             if(jsonResponse){
-                // if HTTP 200 (ok), save JWT and clear login
+                // if HTTP 200 (ok), save JWT, username and clear login
                 localStorage.JWT = jsonResponse.Authorization;
-                localStorage.username = this.state.username;
+                localStorage.username = this.state.user.username;
+
                 let fields = document.getElementsByClassName("form-control");
                 let i;
                 for (i = 0; i < fields.length; i++) {
                     fields[i].value = '';
                 }
                 console.log("Logged in");
+                // TODO: Other logic than .push() for navigation?
                 this.props.history.push('/')
                 // this.setState({
                 //     username: '',
@@ -109,17 +158,6 @@ class Login extends React.Component {
         document.body.style.cursor = 'default';
     }
 
-    showPassword() {
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-            x.type = "text";
-            document.getElementById("showPassword").checked = true;
-        } else {
-            x.type = "password";
-            document.getElementById("showPassword").checked = false;
-        }
-    } 
-
     render() {
         return (
             <div id="main" className="container login-form">
@@ -134,21 +172,21 @@ class Login extends React.Component {
                                 <div className="form-group">
                                     <input type="text" id="username" className="form-control" name="username" 
                                     placeholder="Username" autoFocus onKeyUp={this.onKeyUp}/>
-                                    <label className="errorLabel"></label>
+                                    <label className="errorLabel">{this.state.usernameError}</label>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type="password" id="password" className="form-control" name="password" 
+                                    <input type={this.state.passwordType} id="password" className="form-control" name="password" 
                                     placeholder="Password" onKeyUp={this.onKeyUp}/>
-                                    <label className="errorLabel"></label>
+                                    <label className="errorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
                                     <label className="inline noSelect">Show password</label>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" id="submit" className="btnSubmit" onClick={this.login} >Submit</button>
+                        <button type="button" id="submit" onClick={this.login} >Submit</button>
                     </div>
                 </div>
             </div>

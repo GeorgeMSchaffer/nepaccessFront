@@ -6,7 +6,8 @@ import './index.css';
 import App from './App';
 import Login from './Login.js';
 import Logout from './Logout.js';
-import Register from './Register.js';
+// import Register from './Register.js';
+import UserDetails from './UserDetails.js';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -33,20 +34,22 @@ ReactDOM.render(
                     <li className="nav-item logged-out">
                         <Link className="nav-link" to="/login">Login</Link>
                     </li>
-                    <li className="nav-item logged-out">
+                    {/* <li className="nav-item logged-out">
                         <Link className="nav-link" to="/register">Register</Link>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <Switch>
                 <Route path="/login" component={Login}/>
-                <Route path="/register" component={Register}/>
+                {/* <Route path="/register" component={Register}/> */}
+                <Route path="/details" component={UserDetails}/>
                 <Route path="/logout" component={Logout}/>
                 <Route path="/" component={App}/>
             </Switch>
         </div>
     </BrowserRouter>
-    , document.getElementById('root'));
+    , document.getElementById('root')
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
