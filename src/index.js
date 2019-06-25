@@ -7,6 +7,7 @@ import App from './App';
 import Login from './Login.js';
 import Logout from './Logout.js';
 // import Register from './Register.js';
+import Generate from './Generate.js';
 import UserDetails from './UserDetails.js';
 
 import * as serviceWorker from './serviceWorker';
@@ -41,6 +42,7 @@ ReactDOM.render(
             </div>
             <Switch>
                 <Route path="/login" component={Login}/>
+                <Route path="/generate" component={Generate}/>
                 {/* <Route path="/register" component={Register}/> */}
                 <Route path="/details" component={UserDetails}/>
                 <Route path="/logout" component={Logout}/>
