@@ -75,8 +75,9 @@ class App extends React.Component {
 					// TODO: Something broke, maybe try logging in again
                 	this.props.history.push('/login')
 				}
-			}).catch(error => {
-				console.error('Server is probably down.', error);
+			}).catch(error => { // If verification failed, it's considered an error and it's a 403
+				console.error('Server is down or verification failed.', error);
+				this.props.history.push('/login'); // TODO: Preserve Search state
 			});
 
 			document.body.style.cursor = 'default';
