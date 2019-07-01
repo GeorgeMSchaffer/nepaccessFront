@@ -107,7 +107,6 @@ class Login extends React.Component {
 
     login = () => {
         if(this.invalidFields()){
-            console.log("Return");
             return;
         }
         document.body.style.cursor = 'wait';

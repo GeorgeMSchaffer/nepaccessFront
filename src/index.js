@@ -20,6 +20,7 @@ import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 ReactDOM.render(
     <BrowserRouter>
+    <div>
         <div id="nav-background">
             <span className="right-nav-item logged-in">
                 <Link className="nav-link right-nav-item" to="/logout">Logout</Link>
@@ -40,15 +41,16 @@ ReactDOM.render(
                     </li> */}
                 </ul>
             </div>
-            <Switch>
-                <Route path="/login" component={Login}/>
-                <Route path="/generate" component={Generate}/>
-                {/* <Route path="/register" component={Register}/> */}
-                <Route path="/details" component={UserDetails}/>
-                <Route path="/logout" component={Logout}/>
-                <Route path="/" component={App}/>
-            </Switch>
         </div>
+        <Switch>
+            <Route path="/login" component={Login}/>
+            <Route path="/generate" component={Generate}/>
+            {/* <Route path="/register" component={Register}/> */}
+            <Route path="/details" component={UserDetails}/>
+            <Route path="/logout" component={Logout}/>
+            <Route path="/" component={App}/>
+        </Switch>
+    </div>
     </BrowserRouter>
     , document.getElementById('root')
 );
