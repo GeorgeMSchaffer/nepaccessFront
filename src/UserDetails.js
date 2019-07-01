@@ -135,17 +135,9 @@ class UserDetails extends React.Component {
 
 
 	onNewPasswordChange = (evt) => {
-        if(evt.keyCode ===13){
-            evt.preventDefault();
-            this.changePassword();
-        }
         this.setState({ newPassword: evt.target.value }, () => { this.invalidNewPassword(); });
     }
 	onOldPasswordChange = (evt) => {
-        if(evt.keyCode ===13){
-            evt.preventDefault();
-            this.changePassword();
-        }
         this.setState({ oldPassword: evt.target.value }, () => { this.invalidOldPassword(); });
     }
 
@@ -189,7 +181,7 @@ class UserDetails extends React.Component {
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="currentPassword">Enter your current password to change your password:</label>
-                            <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" onKeyUp={this.onOldPasswordChange}/>
+                            <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" onChange={this.onOldPasswordChange}/>
                             <label className="errorLabel">{this.state.oldPasswordError}</label>
                             <br />
                             <input type="checkbox" id="showCurrentPassword" onClick={this.showCurrentPassword}></input>
@@ -201,7 +193,7 @@ class UserDetails extends React.Component {
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="currentPassword">Enter a new password:</label>
-                            <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onKeyUp={this.onNewPasswordChange}/>
+                            <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
                             <label className="errorLabel">{this.state.newPasswordError}</label>
                             <br />
                             <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
@@ -258,3 +250,5 @@ function refreshNav(verified) {
 		document.getElementById("details").innerHTML = localStorage.username;
 	}
 }
+
+// TODO: Add confirm password field?

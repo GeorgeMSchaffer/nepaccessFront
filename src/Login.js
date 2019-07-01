@@ -39,16 +39,11 @@ class Login extends React.Component {
             passwordError: '',
             passwordType: "password"
         };
-        this.onKeyUp = this.onKeyUp.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.login = this.login.bind(this);
 	}
 
-    onKeyUp = (evt) => {
-        if(evt.keyCode ===13){
-            evt.preventDefault();
-            this.login();
-        }
-
+    onChange = (evt) => {
         const name = evt.target.name;
         const value = evt.target.value;
 
@@ -60,6 +55,13 @@ class Login extends React.Component {
                 user: updatedUser
             }
         });
+    }
+
+    onKeyUp = (evt) => {
+        if(evt.keyCode ===13){
+            evt.preventDefault();
+            this.login();
+        }
     }
 
     // Validation
@@ -174,14 +176,14 @@ class Login extends React.Component {
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <input type="text" id="username" className="form-control" name="username" 
-                                    placeholder="Username" autoFocus onKeyUp={this.onKeyUp}/>
+                                    placeholder="Username" autoFocus onChange={this.onChange} onKeyUp={this.onKeyUp}/>
                                     <label className="errorLabel">{this.state.usernameError}</label>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <input type={this.state.passwordType} id="password" className="form-control" name="password" 
-                                    placeholder="Password" onKeyUp={this.onKeyUp}/>
+                                    placeholder="Password" onChange={this.onChange} onKeyUp={this.onKeyUp}/>
                                     <label className="errorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
