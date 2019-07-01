@@ -71,7 +71,7 @@ class Login extends React.Component {
     }
     invalidUsername = () => {
         let usernamePattern = /[ -~]/;
-        let invalid = !(usernamePattern.test(this.state.username));
+        let invalid = !(usernamePattern.test(this.state.user.username));
         let message = "";
         if(invalid){
             message = "Username invalid. Cannot be empty, must be printable characters.";
@@ -83,7 +83,7 @@ class Login extends React.Component {
     }
     invalidPassword = () =>{
         let passwordPattern = /[ -~]/;
-        let invalid = !(passwordPattern.test(this.state.password));
+        let invalid = !(passwordPattern.test(this.state.user.password));
         let message = "";
         if(invalid){
             message = "Password invalid. Cannot be empty, must be printable characters.";
@@ -107,6 +107,7 @@ class Login extends React.Component {
 
     login = () => {
         if(this.invalidFields()){
+            console.log("Return");
             return;
         }
         document.body.style.cursor = 'wait';
@@ -127,7 +128,7 @@ class Login extends React.Component {
             if (responseOK) {
                 console.log("OK");
                 return response.data;
-            } else { // 403
+            } else { // ???
                 return null;
             }
         }).then(jsonResponse => {
@@ -152,7 +153,10 @@ class Login extends React.Component {
                 // TODO: Tell user to try logging in again
             }
         }).catch(error => {
-            console.error('error message', error);
+            this.setState({
+                passwordError: "Couldn't login with that username/password combination, please try again."
+            });
+            // console.error('error message', error);
         });
 
         document.body.style.cursor = 'default';
