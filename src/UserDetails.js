@@ -35,10 +35,7 @@ class UserDetails extends React.Component {
         }
         document.body.style.cursor = 'wait';
         
-        let changeUrl = new URL('http://localhost:8080/user/details/changePassword');
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-            changeUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/user/details/changePassword');
-        }
+        let changeUrl = new URL('user/details/changePassword', this.state.baseURL);
 
         let dataToPass = { oldPassword: this.state.oldPassword, newPassword: this.state.newPassword };
         axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';

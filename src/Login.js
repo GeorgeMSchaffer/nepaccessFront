@@ -105,7 +105,32 @@ class Login extends React.Component {
             passwordType: value
         });
     } 
+    
+    check = () => { // check if JWT is expired/invalid
+				
+		let verified = false;
 
+		let checkURL = new URL('test/check', this.state.baseURL);
+		var token = localStorage.JWT;
+		if(token && localStorage.username){
+			axios.defaults.headers.common['Authorization'] = token;
+            this.props.history.push('/'); // Logged in user hitting login should be redirected to search
+        } else {
+            refreshNav(false);
+        }
+        axios({
+            method: 'POST', // or 'PUT'
+            url: checkURL
+        }).then(response => {
+            verified = response && response.status === 200;
+            return verified;
+        }).then(result => {
+            refreshNav(result);
+        }).catch(error => {
+            console.error('Server is probably down.', error);
+        });
+    }
+    
 
     login = () => {
         if(this.invalidFields()){
@@ -114,10 +139,12 @@ class Login extends React.Component {
         document.body.style.cursor = 'wait';
         
         // TODO: certs and then HTTPS app-wide, probably
-        let loginUrl = new URL('http://localhost:8080/login');
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-            loginUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/login');
-        }
+        // let loginUrl = new URL('http://localhost:8080/login');
+        // if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
+        //     loginUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/login');
+        // }
+
+        let loginUrl = new URL('login', this.state.baseURL);
 
         axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
         axios({ 
@@ -197,6 +224,47 @@ class Login extends React.Component {
             </div>
         )
     }
+
+    componentDidMount() {
+		let currentHost = new URL('http://localhost:8080/');
+		console.log(window.location.hostname);
+		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
+			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
+		}
+
+		this.setState( 
+		{ 
+			baseURL: currentHost
+		}, () =>{
+			this.check();
+		});
+	}
 }
 
 export default Login;
+
+function refreshNav(verified) {
+	var loggedOutStyle = "block";
+	var loggedInStyle = "block";
+
+	if(verified){
+		loggedOutStyle="none";
+	} else {
+		loggedInStyle="none";
+	}
+
+	let loggedOutItems = document.getElementsByClassName("logged-out");
+	let i;
+	for (i = 0; i < loggedOutItems.length; i++) {
+		loggedOutItems[i].style.display = loggedOutStyle;
+	}
+
+	let loggedInItems = document.getElementsByClassName("logged-in");
+	let j;
+	for (j = 0; j < loggedInItems.length; j++) {
+		loggedInItems[j].style.display = loggedInStyle;
+	}
+	if(localStorage.username){
+		document.getElementById("details").innerHTML = localStorage.username;
+	}
+}
