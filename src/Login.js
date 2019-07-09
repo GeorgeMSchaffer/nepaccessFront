@@ -18,7 +18,8 @@ class Login extends React.Component {
         },
         usernameError: '',
         passwordError: '',
-        passwordType: "password"
+        passwordType: "password",
+        networkError: ''
     }
 
     constructor(props) {
@@ -111,24 +112,23 @@ class Login extends React.Component {
 		let verified = false;
 
 		let checkURL = new URL('test/check', this.state.baseURL);
-		var token = localStorage.JWT;
+        var token = localStorage.JWT;
 		if(token && localStorage.username){
 			axios.defaults.headers.common['Authorization'] = token;
-            this.props.history.push('/'); // Logged in user hitting login should be redirected to search
-        } else {
-            refreshNav(false);
+            axios({
+                method: 'POST', // or 'PUT'
+                url: checkURL
+            }).then(response => {
+                verified = response && response.status === 200;
+            }).catch(error => {
+                this.setState({
+                    networkError: "The server may be down, please try again later."
+                })
+                // console.error('Server is probably down.', error);
+            });
         }
-        axios({
-            method: 'POST', // or 'PUT'
-            url: checkURL
-        }).then(response => {
-            verified = response && response.status === 200;
-            return verified;
-        }).then(result => {
-            refreshNav(result);
-        }).catch(error => {
-            console.error('Server is probably down.', error);
-        });
+        refreshNav(verified);
+        
     }
     
 
@@ -146,7 +146,6 @@ class Login extends React.Component {
 
         let loginUrl = new URL('login', this.state.baseURL);
 
-        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
         axios({ 
             method: 'POST',
             url: loginUrl,
@@ -181,9 +180,16 @@ class Login extends React.Component {
                 // TODO: Tell user to try logging in again
             }
         }).catch(error => {
-            this.setState({
-                passwordError: "Couldn't login with that username/password combination, please try again."
-            });
+            if(error.toString() === 'Error: Network Error') {
+                this.setState({
+                    networkError: "Server may be down, please try again later."
+                });
+            }
+            else {
+                this.setState({
+                    passwordError: "Couldn't login with that username/password combination, please try again."
+                });
+            }
             // console.error('error message', error);
         });
 
@@ -193,6 +199,7 @@ class Login extends React.Component {
     render() {
         return (
             <div id="main" className="container login-form">
+                <label className="errorLabel">{this.state.networkError}</label>
                 <div className="form">
                     <div className="note">
                         <p>Login</p>
@@ -226,6 +233,7 @@ class Login extends React.Component {
     }
 
     componentDidMount() {
+        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
 		let currentHost = new URL('http://localhost:8080/');
 		console.log(window.location.hostname);
 		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
@@ -266,5 +274,10 @@ function refreshNav(verified) {
 	}
 	if(localStorage.username){
 		document.getElementById("details").innerHTML = localStorage.username;
-	}
+    }
+    
+    // Logged in user hitting login with valid JWT should be redirected to search
+    if(verified){
+        this.props.history.push('/');
+    } 
 }
