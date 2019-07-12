@@ -5,6 +5,7 @@ import SearchResults from './SearchResults.js';
 import Searcher from './Searcher.js';
 
 // import './App.css';
+import './login.css';
 
 class App extends React.Component {
 
@@ -18,7 +19,8 @@ class App extends React.Component {
 			needsComments: false
 		},
 		searchResults: [],
-		baseURL: ''
+		baseURL: '',
+		networkError: ''
 	}
 
 	search = (searcherState) => {
@@ -73,11 +75,11 @@ class App extends React.Component {
 					});
 				} else {
 					// TODO: Something broke, maybe try logging in again
-                	this.props.history.push('/login')
+                	// this.props.history.push('/login')
 				}
 			}).catch(error => { // If verification failed, it's considered an error and it's a 403
 				console.error('Server is down or verification failed.', error);
-				this.props.history.push('/login'); // TODO: Preserve Search state
+				// this.props.history.push('/login'); // TODO: Preserve Search state
 			});
 
 			document.body.style.cursor = 'default';
@@ -85,20 +87,29 @@ class App extends React.Component {
 		});
 	}
 	
-	check = async () => { // check if JWT is expired/invalid
+	check = async() => { // check if JWT is expired/invalid
 				
 		let verified = false;
+		let noError = true; // If there's a network error, trying to push login would just obfuscate the problem
 
 		let checkURL = new URL('test/check', this.state.baseURL);
-		var token = localStorage.JWT;
+		let token = localStorage.JWT;
 		if(token){
 			axios.defaults.headers.common['Authorization'] = token;
-			let response = await axios.post(checkURL);
-			verified = response && response.status === 200;
+			await axios.post(checkURL)
+			.then(response => {
+				verified = response && response.status === 200;
+			})
+			.catch((err) => {
+				this.setState({
+					networkError: "Server may be down, please try again later."
+				});
+				noError = false; // Network error
+			});
 		} 
 
 		refreshNav(verified);
-		if(!verified){
+		if(!verified && noError){ 
 			this.props.history.push('/login');
 		}
 	}
@@ -109,6 +120,7 @@ class App extends React.Component {
 		console.log("App rendering");
 		return (
 			<div id="main">
+				<label className="errorLabel">{this.state.networkError}</label>
 				<button className="collapsible">
 					<span className="button-text">- Search Criteria</span>
 				</button>
