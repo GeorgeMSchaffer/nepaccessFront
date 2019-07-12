@@ -109,5 +109,5 @@ function csvToJSON(csv){
     }
     
     return result; //JavaScript object
-    // return JSON.stringify(result); //JSON
+    // return JSON.stringify(result); //JSON (you don't want this with axios, you might with fetch)
   }
