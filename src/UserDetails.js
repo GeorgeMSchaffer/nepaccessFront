@@ -177,7 +177,7 @@ class UserDetails extends React.Component {
                     </div>
                     <div className="col-md-6">
                         <div className="form-group">
-                            <label htmlFor="currentPassword">Enter your current password to change your password:</label>
+                            <label htmlFor="currentPassword">Enter your current password:</label>
                             <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" onChange={this.onOldPasswordChange}/>
                             <label className="errorLabel">{this.state.oldPasswordError}</label>
                             <br />
