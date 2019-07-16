@@ -6,6 +6,7 @@ import './index.css';
 import App from './App';
 import Login from './Login.js';
 import Logout from './Logout.js';
+import Reset from './Reset.js';
 // import Register from './Register.js';
 import Generate from './Generate.js';
 import UserDetails from './UserDetails.js';
@@ -44,6 +45,7 @@ ReactDOM.render(
         </div>
         <Switch>
             <Route path="/login" component={Login}/>
+            <Route path="/reset" component={Reset}/>
             <Route path="/generate" component={Generate}/>
             {/* <Route path="/register" component={Register}/> */}
             <Route path="/details" component={UserDetails}/>

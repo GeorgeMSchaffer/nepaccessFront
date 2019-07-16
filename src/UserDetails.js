@@ -189,7 +189,7 @@ class UserDetails extends React.Component {
                     <br />
                     <div className="col-md-6">
                         <div className="form-group">
-                            <label htmlFor="currentPassword">Enter a new password:</label>
+                            <label htmlFor="newPassword">Enter a new password:</label>
                             <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
                             <label className="errorLabel">{this.state.newPasswordError}</label>
                             <br />
@@ -206,7 +206,6 @@ class UserDetails extends React.Component {
 
 	componentDidMount() {
 		let currentHost = new URL('http://localhost:8080/');
-		console.log(window.location.hostname);
 		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
 			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
 		}
@@ -222,7 +221,11 @@ class UserDetails extends React.Component {
 
 export default UserDetails;
 
-function refreshNav(verified) {
+function refreshNav(verified) { // TODO: For one thing this should only be in one central place
+    // TODO: For another thing, if they aren't logged in they should generally be redirected to login rather than render()ing
+    // and thus there is no reason to check if they're logged in for most pages
+    // (this restructuring would call for a new branch)
+    // At the very least, might this not be able to exist in its own global class?
 	var loggedOutStyle = "block";
 	var loggedInStyle = "block";
 

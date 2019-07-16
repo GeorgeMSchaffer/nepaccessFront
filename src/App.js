@@ -117,7 +117,7 @@ class App extends React.Component {
 
 	render() {
 
-		console.log("App rendering");
+		console.log("App");
 		return (
 			<div id="main">
 				<label className="errorLabel">{this.state.networkError}</label>
@@ -134,7 +134,6 @@ class App extends React.Component {
 	// After render
 	componentDidMount() {
 		let currentHost = new URL('http://localhost:8080/');
-		console.log(window.location.hostname);
 		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
 			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
 		}

@@ -197,6 +197,7 @@ class Login extends React.Component {
     }
 
     render() {
+        console.log("Login");
         return (
             <div id="main" className="container login-form">
                 <label className="errorLabel">{this.state.networkError}</label>
@@ -235,7 +236,6 @@ class Login extends React.Component {
     componentDidMount() {
         axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
 		let currentHost = new URL('http://localhost:8080/');
-		console.log(window.location.hostname);
 		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
 			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
 		}
