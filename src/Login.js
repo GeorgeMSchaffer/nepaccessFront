@@ -121,13 +121,18 @@ class Login extends React.Component {
             }).then(response => {
                 verified = response && response.status === 200;
             }).catch(error => {
-                this.setState({
-                    networkError: "The server may be down, please try again later."
+                this.setState({ // TODO: See if this fires with expired JWT (does fire with malformed/invalid JWT)
+                    // Just need to temporarily set the expiry very fast to test
+                    networkError: "The server may be down or you may need to log in again."
                 })
                 // console.error('Server is probably down.', error);
             });
         }
-        refreshNav(verified);
+
+        // Logged in user hitting login with valid JWT should be redirected to search, or user should logout.
+        if(verified){
+            this.props.history.push('/');
+        } 
         
     }
     
@@ -153,7 +158,7 @@ class Login extends React.Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (responseOK) {
-                console.log("OK");
+                refreshNav(responseOK);
                 return response.data;
             } else { // ???
                 return null;
@@ -169,7 +174,6 @@ class Login extends React.Component {
                 for (i = 0; i < fields.length; i++) {
                     fields[i].value = '';
                 }
-                console.log("Logged in");
                 // TODO: Other logic than .push() for navigation?
                 this.props.history.push('/')
                 // this.setState({
@@ -275,9 +279,4 @@ function refreshNav(verified) {
 	if(localStorage.username){
 		document.getElementById("details").innerHTML = localStorage.username;
     }
-    
-    // Logged in user hitting login with valid JWT should be redirected to search
-    if(verified){
-        this.props.history.push('/');
-    } 
 }

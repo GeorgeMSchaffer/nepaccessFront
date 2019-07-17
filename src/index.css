@@ -115,6 +115,10 @@ a {
   display: none;
 }
 
+.block {
+  display: block;
+}
+
 /* .tabulator {
 } */
 

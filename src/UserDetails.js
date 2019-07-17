@@ -148,7 +148,6 @@ class UserDetails extends React.Component {
 		if(token && localStorage.username){
 			axios.defaults.headers.common['Authorization'] = token;
         } else {
-            refreshNav(false);
             this.props.history.push('/login');
         }
         axios({
@@ -158,7 +157,6 @@ class UserDetails extends React.Component {
             verified = response && response.status === 200;
             return verified;
         }).then(result => {
-            refreshNav(result);
             if(!result){
                 this.props.history.push('/login');
             }
@@ -220,35 +218,3 @@ class UserDetails extends React.Component {
 }
 
 export default UserDetails;
-
-function refreshNav(verified) { // TODO: For one thing this should only be in one central place
-    // TODO: For another thing, if they aren't logged in they should generally be redirected to login rather than render()ing
-    // and thus there is no reason to check if they're logged in for most pages
-    // (this restructuring would call for a new branch)
-    // At the very least, might this not be able to exist in its own global class?
-	var loggedOutStyle = "block";
-	var loggedInStyle = "block";
-
-	if(verified){
-		loggedOutStyle="none";
-	} else {
-		loggedInStyle="none";
-	}
-
-	let loggedOutItems = document.getElementsByClassName("logged-out");
-	let i;
-	for (i = 0; i < loggedOutItems.length; i++) {
-		loggedOutItems[i].style.display = loggedOutStyle;
-	}
-
-	let loggedInItems = document.getElementsByClassName("logged-in");
-	let j;
-	for (j = 0; j < loggedInItems.length; j++) {
-		loggedInItems[j].style.display = loggedInStyle;
-	}
-	if(localStorage.username){
-		document.getElementById("details").innerHTML = localStorage.username;
-	}
-}
-
-// TODO: Add confirm password field?

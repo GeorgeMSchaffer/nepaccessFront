@@ -100,7 +100,8 @@ class App extends React.Component {
 			.then(response => {
 				verified = response && response.status === 200;
 			})
-			.catch((err) => {
+			.catch((err) => { // TODO: This will catch a 403 from the server from a malformed JWT
+				// 401 from expired JWT may be treated the same
 				this.setState({
 					networkError: "Server may be down, please try again later."
 				});
@@ -108,7 +109,6 @@ class App extends React.Component {
 			});
 		} 
 
-		refreshNav(verified);
 		if(!verified && noError){ 
 			this.props.history.push('/login');
 		}
@@ -141,7 +141,7 @@ class App extends React.Component {
 		this.setState( 
 		{ 
 			baseURL: currentHost
-		}, () =>{
+		}, () => {
 			this.check();
 		});
 		collapsibles();
@@ -152,6 +152,7 @@ class App extends React.Component {
 export default App;
 
 // TODO: Animation
+// TODO: Do this with state
 function collapsibles(){
 	let coll = document.getElementsByClassName("collapsible");
 	let i;
@@ -167,31 +168,5 @@ function collapsibles(){
 				this.innerHTML = "- Search Criteria";
 			}
 		});
-	}
-}
-
-function refreshNav(verified) {
-	var loggedOutStyle = "block";
-	var loggedInStyle = "block";
-
-	if(verified){
-		loggedOutStyle="none";
-	} else {
-		loggedInStyle="none";
-	}
-
-	let loggedOutItems = document.getElementsByClassName("logged-out");
-	let i;
-	for (i = 0; i < loggedOutItems.length; i++) {
-		loggedOutItems[i].style.display = loggedOutStyle;
-	}
-
-	let loggedInItems = document.getElementsByClassName("logged-in");
-	let j;
-	for (j = 0; j < loggedInItems.length; j++) {
-		loggedInItems[j].style.display = loggedInStyle;
-	}
-	if(localStorage.username){
-		document.getElementById("details").innerHTML = localStorage.username;
 	}
 }

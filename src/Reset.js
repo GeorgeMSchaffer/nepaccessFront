@@ -129,7 +129,6 @@ class Reset extends React.Component {
                 console.error('Server is probably down.', error);
             });
         } else {
-            // TODO: Let user know their reset token is invalid (likely expired) and just show that message rather than rendering below
             this.setState({
                 shouldRender: false
             });
