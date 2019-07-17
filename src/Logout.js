@@ -1,5 +1,6 @@
 import React from 'react';
 import './login.css';
+import Globals from './globals';
 
 class Logout extends React.Component {
     state = {
@@ -21,10 +22,12 @@ class Logout extends React.Component {
     }
 
     componentDidMount(){
-        localStorage.removeItem("JWT");
-        localStorage.removeItem("username");
+        Globals.signOut();
         
+        // TODO: Make sure signOut() is done first?
         this.setState({ logoutText: "Successfully logged out." });
+
+        // TODO: Do this with state
         let itemsToShow = document.getElementsByClassName("logged-out");
         let i;
         for (i = 0; i < itemsToShow.length; i++) {

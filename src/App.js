@@ -7,6 +7,9 @@ import Searcher from './Searcher.js';
 // import './App.css';
 import './login.css';
 
+import Globals from './globals.js';
+
+// App and Main could trade names since App is normally the top level class
 class App extends React.Component {
 
 	state = {
@@ -19,12 +22,11 @@ class App extends React.Component {
 			needsComments: false
 		},
 		searchResults: [],
-		baseURL: '',
 		networkError: ''
 	}
 
 	search = (searcherState) => {
-		console.log("In search");
+		// console.log("In search");
 		document.body.style.cursor = 'wait';
 
 		this.setState({
@@ -40,20 +42,14 @@ class App extends React.Component {
 			// 	console.log(this.state.searcherInputs[value]);
 			// }
 
-			let searchUrl = new URL('test/search', this.state.baseURL);
+			let searchUrl = new URL('test/search', Globals.currentHost);
 
-			var token = localStorage.JWT;
-			if(token){
-				axios.defaults.headers.common['Authorization'] = token;
-			} else {
-				axios.defaults.headers.common['Authorization'] = null;
+			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it saves a backend call
 				this.props.history.push('/login') // Prompt login if no auth token
 			}
-			axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
 
-
-			console.log("Inputs");
-			console.log(JSON.stringify(this.state.searcherInputs));
+			// console.log("Inputs");
+			// console.log(JSON.stringify(this.state.searcherInputs));
 			//Send the AJAX call to the server
 			axios({
 				method: 'POST', // or 'PUT'
@@ -62,7 +58,6 @@ class App extends React.Component {
 			}).then(response => {
 				let responseOK = response && response.status === 200;
 				if (responseOK) {
-					console.log("OK");
 					return response.data;
 				} else {
 					return null;
@@ -74,50 +69,37 @@ class App extends React.Component {
 						searchResults: parsedJson
 					});
 				} else {
-					// TODO: Something broke, maybe try logging in again
-                	// this.props.history.push('/login')
+					// Probably can't get here, if it isn't a 200 it should be some kind of caught error
 				}
-			}).catch(error => { // If verification failed, it's considered an error and it's a 403
-				console.error('Server is down or verification failed.', error);
-				// this.props.history.push('/login'); // TODO: Preserve Search state
+			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens)
+				// console.error('Server is down or verification failed.', error);
+				this.props.history.push('/login'); // TODO: Preserve Search state
 			});
 
 			document.body.style.cursor = 'default';
-			console.log("Out search");
+			// console.log("Out search");
 		});
 	}
 	
-	check = async() => { // check if JWT is expired/invalid
-				
-		let verified = false;
-		let noError = true; // If there's a network error, trying to push login would just obfuscate the problem
+	check = () => { // check if JWT is expired/invalid
+		
+		let checkURL = new URL('test/check', Globals.currentHost);
 
-		let checkURL = new URL('test/check', this.state.baseURL);
-		let token = localStorage.JWT;
-		if(token){
-			axios.defaults.headers.common['Authorization'] = token;
-			await axios.post(checkURL)
-			.then(response => {
-				verified = response && response.status === 200;
-			})
-			.catch((err) => { // TODO: This will catch a 403 from the server from a malformed JWT
-				// 401 from expired JWT may be treated the same
-				this.setState({
-					networkError: "Server may be down, please try again later."
-				});
-				noError = false; // Network error
-			});
-		} 
-
-		if(!verified && noError){ 
+		axios.post(checkURL)
+		.then(response => {
+			// verified = response && response.status === 200;
+		})
+		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT
+			// this.setState({
+			// 	networkError: "Server may be down, please try again later."
+			// });
 			this.props.history.push('/login');
-		}
+		});
 	}
 	
 
 	render() {
-
-		console.log("App");
+		// console.log("App");
 		return (
 			<div id="main">
 				<label className="errorLabel">{this.state.networkError}</label>
@@ -133,17 +115,7 @@ class App extends React.Component {
 	
 	// After render
 	componentDidMount() {
-		let currentHost = new URL('http://localhost:8080/');
-		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
-		}
-
-		this.setState( 
-		{ 
-			baseURL: currentHost
-		}, () => {
-			this.check();
-		});
+		this.check();
 		collapsibles();
 	}
 	

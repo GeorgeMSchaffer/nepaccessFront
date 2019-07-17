@@ -1,18 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import './login.css';
+import Globals from './globals.js';
 
 // TODO: new route for backend and get JWT from url (link)
 // JWT may need to be special to allow changing password with no current password provided
 // If we do that, can just use the regular change password route, but account for that "special" nature
 
 class Reset extends React.Component {
-    state = {
-        newPassword: '',
-        newChecked: "password",
-        successLabel: '',
-        newPasswordError: ''
-    }
 
     constructor(props) {
         super(props);
@@ -20,7 +15,8 @@ class Reset extends React.Component {
             newPassword: '',
             newChecked: "password",
             successLabel: '',
-            newPasswordError: ''
+            newPasswordError: '',
+            shouldRender: true
         };
     }
     
@@ -30,9 +26,8 @@ class Reset extends React.Component {
         }
         document.body.style.cursor = 'wait';
         
-        let changeUrl = new URL('user/details/newPassword', this.state.baseURL);
+        let changeUrl = new URL('user/details/newPassword', Globals.currentHost);
 
-        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
         axios({ 
             method: 'POST',
             url: changeUrl,
@@ -48,6 +43,7 @@ class Reset extends React.Component {
         }).then(success => {
             if(success){
                 // if HTTP 200 (ok), clear fields and display success
+                // TODO: State
                 let fields = document.getElementsByClassName("form-control");
                 let i;
                 for (i = 0; i < fields.length; i++) {
@@ -56,17 +52,17 @@ class Reset extends React.Component {
                 this.setState({
                     successLabel: "Password changed."
                 });
-                console.log("Changed");
+                // console.log("Changed");
             } else {
                 // Server down?  Even then not sure we ever get here because if not successful then I think it has to be an error
             }
-        }).catch(error => { // 401
+        }).catch(error => { // 401/403
             console.error('error message', error);
             this.setState({
                 successLabel: "Password was not changed."
             });
             this.setState({
-                newPasswordError: "Reset token may be expired or invalid."
+                newPasswordError: "Reset token may be expired or invalid, or server may be down."
             });
         });
 
@@ -112,28 +108,21 @@ class Reset extends React.Component {
     check = () => { // check if JWT is expired/invalid
 		let verified = false;
 
-        let checkURL = new URL('test/check', this.state.baseURL);
+        let checkURL = new URL('test/check', Globals.currentHost);
         
-        // TODO: Get JWT from reset token, should find it in the URL
-        var token;
-        
-		if(token){
-			axios.defaults.headers.common['Authorization'] = token;
-            axios({
-                method: 'POST', // or 'PUT'
-                url: checkURL
-            }).then(response => {
-                verified = response && response.status === 200;
-                return verified;
-            }).catch(error => {
-                console.error('Server is probably down.', error);
-            });
-        } else {
+        axios({
+            method: 'POST', // or 'PUT'
+            url: checkURL
+        }).then(response => {
+            verified = response && response.status === 200;
+            return verified;
+        }).catch(error => {
+            console.error('Server is down or token is invalid/expired.', error);
             this.setState({
                 shouldRender: false
             });
-        }
-	}
+        });
+    }
     
     
     render() {
@@ -180,28 +169,13 @@ class Reset extends React.Component {
     }
 
 	componentDidMount() {
-		let currentHost = new URL('http://localhost:8080/');
-        let resetToken = "Bearer " + window.location.href.split("?=")[1]; // expect JWT to be in reset link after ?=
-        localStorage.JWT = resetToken;
-		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
-		}
-
-		this.setState( 
-            { 
-                baseURL: currentHost
-            }, () =>{
-                this.check();
-            });
-
-		// this.setState( 
-		// { 
-		// 	baseURL: currentHost
-		// }, () =>{
-        //     this.check();
-        // }, () =>{
-        //     // TODO: Not sure if this is needed or even works to make sure we finish check() before rendering
-		// });
+        const query = new URLSearchParams(this.props.location.search);
+        if(query && query.get('token')){
+            const resetToken = ("Bearer " + query.get('token')); // .../reset?token={resetToken}
+            localStorage.JWT = resetToken;
+            axios.defaults.headers.common['Authorization'] = localStorage.JWT;
+        }
+        this.check();
 	}
 }
 

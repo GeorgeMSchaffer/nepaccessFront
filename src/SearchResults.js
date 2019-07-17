@@ -6,7 +6,7 @@ import { ReactTabulator } from 'react-tabulator';
 class SearchResults extends React.Component {
 
 	render() {
-        console.log("SearchResults");
+        // console.log("SearchResults");
 
 	    // TODO: At some point, the database should probably be giving us the headers to use.
         const results = this.props.results;
