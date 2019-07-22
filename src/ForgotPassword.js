@@ -65,7 +65,7 @@ class ForgotPassword extends React.Component {
         document.body.style.cursor = 'wait';
         this.setState({ emailError: '' });
         
-        let resetUrl = new URL('reset', Globals.currentHost);
+        let resetUrl = new URL('reset/send', Globals.currentHost);
 
         axios({ 
             method: 'POST',

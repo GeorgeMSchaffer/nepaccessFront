@@ -20,18 +20,66 @@ class Reset extends React.Component {
         };
     }
     
+
+    // Validation
+    invalidFields = () => {
+        // Run everything and all appropriate errors will show at once.
+        let test1 = this.invalidNewPassword();
+        this.setState({ disabled: test1 });
+        return (test1);
+    }
+    invalidNewPassword(){
+        let passwordPattern = /[ -~]/;
+        let invalid = !(passwordPattern.test(this.state.newPassword));
+        let message = "";
+        if(invalid){
+            message = "Password invalid. Cannot be empty, must be printable characters.";
+        }
+        this.setState({ newPasswordError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
+
+
+	onNewPasswordChange = (evt) => {
+        this.setState({ newPassword: evt.target.value }, () => { this.invalidNewPassword(); });
+    }
+
+
+    check = () => { // check if JWT is expired/invalid
+		let verified = false;
+
+        let checkURL = new URL('reset/check', Globals.currentHost);
+        
+        axios({
+            method: 'POST', // or 'PUT'
+            headers: {Authorization: localStorage.ResetToken},
+            url: checkURL
+        }).then(response => {
+            verified = response && response.status === 200;
+            return verified;
+        }).catch(error => {
+            console.error('Server is down or token is invalid/expired.', error);
+            this.setState({
+                shouldRender: false
+            });
+        });
+    }
+
+    
     changePassword = () => {
         if(this.invalidFields()){
             return;
         }
         document.body.style.cursor = 'wait';
         
-        let changeUrl = new URL('user/details/newPassword', Globals.currentHost);
+        let changeUrl = new URL('reset/change', Globals.currentHost);
 
         axios({ 
             method: 'POST',
             url: changeUrl,
-            data: this.state.newPassword
+            headers: {Authorization: localStorage.ResetToken},
+            data: {newPassword: this.state.newPassword}
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (responseOK) {
@@ -79,51 +127,6 @@ class Reset extends React.Component {
         });
     } 
     
-
-    // Validation
-    invalidFields = () => {
-        // Run everything and all appropriate errors will show at once.
-        let test1 = this.invalidNewPassword();
-        this.setState({ disabled: test1 });
-        return (test1);
-    }
-    invalidNewPassword(){
-        let passwordPattern = /[ -~]/;
-        let invalid = !(passwordPattern.test(this.state.newPassword));
-        let message = "";
-        if(invalid){
-            message = "Password invalid. Cannot be empty, must be printable characters.";
-        }
-        this.setState({ newPasswordError: message });
-        this.setState({ disabled: invalid });
-        return invalid;
-    }
-
-
-	onNewPasswordChange = (evt) => {
-        this.setState({ newPassword: evt.target.value }, () => { this.invalidNewPassword(); });
-    }
-
-
-    check = () => { // check if JWT is expired/invalid
-		let verified = false;
-
-        let checkURL = new URL('test/check', Globals.currentHost);
-        
-        axios({
-            method: 'POST', // or 'PUT'
-            url: checkURL
-        }).then(response => {
-            verified = response && response.status === 200;
-            return verified;
-        }).catch(error => {
-            console.error('Server is down or token is invalid/expired.', error);
-            this.setState({
-                shouldRender: false
-            });
-        });
-    }
-    
     
     render() {
         if(!this.state.shouldRender)
@@ -151,8 +154,8 @@ class Reset extends React.Component {
                         <div className="col-md-6">
                             <div className="form-group">
                                 <label htmlFor="newPassword">Enter a new password:</label>
-                                <input type={this.state.currentChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
-                                <label className="errorLabel">{this.state.oldPasswordError}</label>
+                                <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
+                                <label className="errorLabel">{this.state.newPasswordError}</label>
                                 <br />
                                 <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
                                 <label className="inline noSelect">Show password</label>
@@ -172,8 +175,7 @@ class Reset extends React.Component {
         const query = new URLSearchParams(this.props.location.search);
         if(query && query.get('token')){ // If there's a reset token provided, set JWT and check it
             const resetToken = ("Bearer " + query.get('token')); // .../reset?token={resetToken}
-            localStorage.JWT = resetToken;
-            axios.defaults.headers.common['Authorization'] = localStorage.JWT;
+            localStorage.ResetToken = resetToken;
             this.check();
         } else { // otherwise no point in showing the page as usual
             this.setState({
