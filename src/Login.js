@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './login.css';
 import Globals from './globals';
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
     
@@ -21,6 +22,7 @@ class Login extends React.Component {
             },
             usernameError: '',
             passwordError: '',
+            networkError: '',
             passwordType: "password"
         };
         this.onChange = this.onChange.bind(this);
@@ -108,9 +110,9 @@ class Login extends React.Component {
             }).catch(error => {
                 this.setState({ // TODO: See if this fires with expired JWT (does fire with malformed/invalid JWT)
                     // Just need to temporarily set the expiry very fast to test
-                    networkError: "The server may be down or you may need to log in again."
+                    // TODO: This also fires on null JWT (403), and we don't want to display networkError in that case
+                    // networkError: "The server may be down or you may need to log in again."
                 })
-                // console.error('Server is probably down.', error);
             });
         }
 
@@ -217,7 +219,11 @@ class Login extends React.Component {
                         <button type="button" id="submit" onClick={this.login} >Submit</button>
                     </div>
                 </div>
+                <div>
+                    <Link to="/forgotPassword">Forgot password?</Link>
+                </div>
             </div>
+            
         )
     }
 

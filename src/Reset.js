@@ -170,12 +170,16 @@ class Reset extends React.Component {
 
 	componentDidMount() {
         const query = new URLSearchParams(this.props.location.search);
-        if(query && query.get('token')){
+        if(query && query.get('token')){ // If there's a reset token provided, set JWT and check it
             const resetToken = ("Bearer " + query.get('token')); // .../reset?token={resetToken}
             localStorage.JWT = resetToken;
             axios.defaults.headers.common['Authorization'] = localStorage.JWT;
+            this.check();
+        } else { // otherwise no point in showing the page as usual
+            this.setState({
+                shouldRender: false
+            });
         }
-        this.check();
 	}
 }
 

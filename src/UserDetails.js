@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Globals from './globals';
 import './login.css';
 
 // TODO: Move this to its own "change password" component and link to it from userdetails
@@ -143,13 +144,7 @@ class UserDetails extends React.Component {
 				
 		let verified = false;
 
-		let checkURL = new URL('test/check', this.state.baseURL);
-		var token = localStorage.JWT;
-		if(token && localStorage.username){
-			axios.defaults.headers.common['Authorization'] = token;
-        } else {
-            this.props.history.push('/login');
-        }
+		let checkURL = new URL('test/check', Globals.currentHost);
         axios({
             method: 'POST', // or 'PUT'
             url: checkURL
