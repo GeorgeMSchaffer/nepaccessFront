@@ -52,6 +52,12 @@ class Main extends React.Component {
         } 
     }
 
+
+    testHandle(){
+        this.refreshNav(true);
+    }
+
+
     // TODO: Lift up state instead of running the other refreshNavs in the project
     refreshNav(verified) {
         if(verified){
@@ -98,7 +104,7 @@ class Main extends React.Component {
                 </div>
             </div>
             <Switch>
-                <Route path="/login" component={Login}/>
+                <Route path="/login" component={Login} testAction={this.testHandle}/>
                 <Route path="/reset" component={Reset}/>
                 <Route path="/generate" component={Generate}/>
                 {/* <Route path="/register" component={Register}/> */}
