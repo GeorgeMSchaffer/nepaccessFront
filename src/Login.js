@@ -1,27 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import './login.css';
+import Globals from './globals';
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
-    // state = { 
-    //     username: '',
-    //     password: '',
-    //     usernameError: '',
-    //     passwordError: '',
-    //     passwordType: "password"
-    // }
-
-    state = { 
-        user: {
-            username: '',
-            password: ''
-        },
-        usernameError: '',
-        passwordError: '',
-        passwordType: "password",
-        networkError: ''
-    }
-
+    
     constructor(props) {
         super(props);
 		// this.state = {
@@ -38,6 +22,7 @@ class Login extends React.Component {
             },
             usernameError: '',
             passwordError: '',
+            networkError: '',
             passwordType: "password"
         };
         this.onChange = this.onChange.bind(this);
@@ -111,28 +96,26 @@ class Login extends React.Component {
 				
 		let verified = false;
 
-		let checkURL = new URL('test/check', this.state.baseURL);
-        var token = localStorage.JWT;
-		if(token && localStorage.username){
-			axios.defaults.headers.common['Authorization'] = token;
+		let checkURL = new URL('test/check', Globals.currentHost);
+		if(localStorage.username){
             axios({
                 method: 'POST', // or 'PUT'
                 url: checkURL
             }).then(response => {
                 verified = response && response.status === 200;
+                // Logged in user hitting login with valid JWT should be redirected to search, or user should logout.
+                if(verified) {
+                    this.props.history.push('/');
+                } 
             }).catch(error => {
                 this.setState({ // TODO: See if this fires with expired JWT (does fire with malformed/invalid JWT)
                     // Just need to temporarily set the expiry very fast to test
-                    networkError: "The server may be down or you may need to log in again."
+                    // TODO: This also fires on null JWT (403), and we don't want to display networkError in that case
+                    // networkError: "The server may be down or you may need to log in again."
                 })
-                // console.error('Server is probably down.', error);
             });
         }
 
-        // Logged in user hitting login with valid JWT should be redirected to search, or user should logout.
-        if(verified){
-            this.props.history.push('/');
-        } 
         
     }
     
@@ -149,7 +132,7 @@ class Login extends React.Component {
         //     loginUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/login');
         // }
 
-        let loginUrl = new URL('login', this.state.baseURL);
+        let loginUrl = new URL('login', Globals.currentHost);
 
         axios({ 
             method: 'POST',
@@ -168,7 +151,9 @@ class Login extends React.Component {
                 // if HTTP 200 (ok), save JWT, username and clear login
                 localStorage.JWT = jsonResponse.Authorization;
                 localStorage.username = this.state.user.username;
+                Globals.signIn();
 
+                // TODO: Use state
                 let fields = document.getElementsByClassName("form-control");
                 let i;
                 for (i = 0; i < fields.length; i++) {
@@ -184,6 +169,7 @@ class Login extends React.Component {
                 // TODO: Tell user to try logging in again
             }
         }).catch(error => {
+            // TODO: Less brittle way to check error type
             if(error.toString() === 'Error: Network Error') {
                 this.setState({
                     networkError: "Server may be down, please try again later."
@@ -201,7 +187,7 @@ class Login extends React.Component {
     }
 
     render() {
-        console.log("Login");
+        // console.log("Login");
         return (
             <div id="main" className="container login-form">
                 <label className="errorLabel">{this.state.networkError}</label>
@@ -233,28 +219,22 @@ class Login extends React.Component {
                         <button type="button" id="submit" onClick={this.login} >Submit</button>
                     </div>
                 </div>
+                <div>
+                    <Link to="/forgotPassword">Forgot password?</Link>
+                </div>
             </div>
+            
         )
     }
 
     componentDidMount() {
-        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
-		let currentHost = new URL('http://localhost:8080/');
-		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
-		}
-
-		this.setState( 
-		{ 
-			baseURL: currentHost
-		}, () =>{
-			this.check();
-		});
+        this.check();
 	}
 }
 
 export default Login;
 
+// TODO: Use state
 function refreshNav(verified) {
 	var loggedOutStyle = "block";
 	var loggedInStyle = "block";

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './login.css';
+import Globals from './globals.js';
 
 class Generate extends React.Component {
     state = {
@@ -13,24 +14,14 @@ class Generate extends React.Component {
         this.csvChange = this.csvChange.bind(this);
 
         // If there's no reason for user to be here, redirect them
-        var token = localStorage.JWT;
-		if(token){
-			axios.defaults.headers.common['Authorization'] = token;
-		} 
-        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
+        let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
 
-        let checkUrl = new URL('http://localhost:8080/user/checkAdmin');
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-            checkUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/user/checkAdmin');
-        }
-
-        console.log("Test");
         axios({
             url: checkUrl,
             method: 'POST'
           }).then(response => {
             let responseOK = response && response.status === 200;
-            if (!responseOK) {
+            if (!responseOK) { // this probably isn't possible with current backend design
                 this.props.history.push('/');
             }
           }).catch(error => {
@@ -46,17 +37,7 @@ class Generate extends React.Component {
     }
 
     generate(){
-        var token = localStorage.JWT;
-		if(token){
-			axios.defaults.headers.common['Authorization'] = token;
-		} 
-        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
-
-        let generateUrl = new URL('http://localhost:8080/user/generate');
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-            generateUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/user/generate');
-        }
-
+        let generateUrl = new URL('user/generate', Globals.currentHost);
         console.log(this.state.csvArray);
 
         axios({
