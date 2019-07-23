@@ -27,7 +27,8 @@ class Login extends React.Component {
         };
         this.onChange = this.onChange.bind(this);
         this.login = this.login.bind(this);
-	}
+    }
+    
 
     onChange = (evt) => {
         const name = evt.target.name;
@@ -92,6 +93,7 @@ class Login extends React.Component {
         });
     } 
     
+
     check = () => { // check if JWT is expired/invalid
 				
 		let verified = false;
@@ -153,12 +155,7 @@ class Login extends React.Component {
                 localStorage.username = this.state.user.username;
                 Globals.signIn();
 
-                // TODO: Use state
-                let fields = document.getElementsByClassName("form-control");
-                let i;
-                for (i = 0; i < fields.length; i++) {
-                    fields[i].value = '';
-                }
+                this.setState({ user: {} }); // clear
                 // TODO: Other logic than .push() for navigation?
                 this.props.history.push('/')
                 // this.setState({
@@ -180,7 +177,7 @@ class Login extends React.Component {
                     passwordError: "Couldn't login with that username/password combination, please try again."
                 });
             }
-            // console.error('error message', error);
+            console.error('error message', error);
         });
 
         document.body.style.cursor = 'default';
@@ -201,14 +198,14 @@ class Login extends React.Component {
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <input type="text" id="username" className="form-control" name="username" 
-                                    placeholder="Username" autoFocus onChange={this.onChange} onKeyUp={this.onKeyUp}/>
+                                    placeholder="Username" value={this.state.username} autoFocus onChange={this.onChange} onKeyUp={this.onKeyUp}/>
                                     <label className="errorLabel">{this.state.usernameError}</label>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <input type={this.state.passwordType} id="password" className="form-control" name="password" 
-                                    placeholder="Password" onChange={this.onChange} onKeyUp={this.onKeyUp}/>
+                                    placeholder="Password"  value={this.state.password} onChange={this.onChange} onKeyUp={this.onKeyUp}/>
                                     <label className="errorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
