@@ -24,7 +24,7 @@ class App extends React.Component {
 		searchResults: [],
 		searcherClassName: '',
 		collapsibleText: '- Search Criteria',
-		loading: false,
+		loading: 'Results',
 		networkError: ''
 	}
 
@@ -54,7 +54,8 @@ class App extends React.Component {
 		// console.log("In search");
 
 		this.setState({
-			searcherInputs: searcherState
+			searcherInputs: searcherState,
+			loading: "Loading results..."
 		}, () => {
 
 			// TODO: Sanity check searcherInputs
@@ -90,17 +91,24 @@ class App extends React.Component {
 				// console.log('this should be json', parsedJson);
 				if(parsedJson){
 					this.setState({
-						searchResults: parsedJson
+						searchResults: parsedJson,
+						loading: parsedJson.length + " Results",
 					});
-				} else {
-					// Probably can't get here, if it isn't a 200 it should be some kind of caught error
+				} else { // Probably can't get here, if it isn't a 200 it should be some kind of caught error
+					this.setState({
+						loading: "Unknown error: Couldn't parse results"
+					});
 				}
 			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens)
-				// console.error('Server is down or verification failed.', error);
-				this.props.history.push('/login'); // TODO: Preserve Search state
+				console.error('Server is down or verification failed.', error);
+				this.setState({
+					networkError: 'Server is down or you may need to login again.'
+				});
+				// this.props.history.push('/login'); // TODO: Preserve Search state
 			});
 			
 			// console.log("Out search");
+		
 		});
 	}
 	

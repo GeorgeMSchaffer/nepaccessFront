@@ -104,8 +104,7 @@ class Login extends React.Component {
                 method: 'POST', // or 'PUT'
                 url: checkURL
             }).then(response => {
-                console.log("Whew");
-                console.log(response.data);
+                // console.log(response.data);
                 verified = response && response.status === 200;
                 // Logged in user hitting login with valid JWT should be redirected to search, or user should logout.
                 if(verified) {
@@ -155,7 +154,6 @@ class Login extends React.Component {
                 Globals.emitEvent('refresh', {
                     loggedIn: true
                 });
-                // Globals.emitEvent(true);
 
                 this.setState({ user: {} }); // clear
                 // TODO: Other logic than .push() for navigation?

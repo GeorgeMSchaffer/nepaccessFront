@@ -18,19 +18,6 @@ const Globals = {
             listener(eventObject)
         });
     },
-
-
-    // listeners: [],
-
-    // registerListener(listenerFunction) {
-    //     this.listeners.push(listenerFunction);
-    // },
-
-    // emitEvent(eventObject) {
-    //     this.listeners.forEach(listener => {
-    //         listener(eventObject);
-    //     });
-    // },
     
     // Set up globals like axios default headers and base URL
     setUp() {

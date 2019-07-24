@@ -138,7 +138,6 @@ class Main extends React.Component {
     
     componentDidMount() {
         Globals.registerListener('refresh', this.refresh);
-        // Globals.registerListener(this.refresh);
         this.check();
     }
 }

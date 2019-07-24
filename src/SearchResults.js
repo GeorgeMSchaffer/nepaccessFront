@@ -42,10 +42,10 @@ class SearchResults extends React.Component {
             // This could also be used to entirely replace the MySQL fulltext search.
             // However, Tabulator doesn't work super great with React.
 
-            // const results = this.props.results;
             return (
                 <div>
-                    <h2>{results.length} Results</h2>
+                    {/* <h2>{results.length} Results</h2> */}
+                    <h2>{this.props.loading}</h2>
                     <ReactTabulator
                         data={data}
                         columns={columns}
