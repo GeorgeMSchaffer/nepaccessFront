@@ -22,12 +22,36 @@ class App extends React.Component {
 			needsComments: false
 		},
 		searchResults: [],
+		searcherClassName: '',
+		collapsibleText: '- Search Criteria',
+		loading: false,
 		networkError: ''
 	}
 
+	constructor(props){
+		super(props);
+		this.collapsibles = this.collapsibles.bind(this);
+	}
+
+
+	// TODO: Animation?
+	collapsibles(){
+		if(this.state.searcherClassName===''){
+			this.setState({
+				searcherClassName: 'display-none',
+				collapsibleText: "+ Search Criteria"
+			});
+		} else {
+			this.setState({
+				searcherClassName: '',
+				collapsibleText: "- Search Criteria"
+			});
+		}
+	}
+
+
 	search = (searcherState) => {
 		// console.log("In search");
-		document.body.style.cursor = 'wait';
 
 		this.setState({
 			searcherInputs: searcherState
@@ -75,12 +99,12 @@ class App extends React.Component {
 				// console.error('Server is down or verification failed.', error);
 				this.props.history.push('/login'); // TODO: Preserve Search state
 			});
-
-			document.body.style.cursor = 'default';
+			
 			// console.log("Out search");
 		});
 	}
 	
+
 	check = () => { // check if JWT is expired/invalid
 		
 		let checkURL = new URL('test/check', Globals.currentHost);
@@ -101,13 +125,15 @@ class App extends React.Component {
 	render() {
 		// console.log("App");
 		return (
-			<div id="main">
+			<div>
 				<label className="errorLabel">{this.state.networkError}</label>
-				<button className="collapsible">
-					<span className="button-text">- Search Criteria</span>
+				<button className="collapsible" onClick={this.collapsibles}>
+					<span className="button-text">{this.state.collapsibleText}</span>
 				</button>
-				<Searcher search={this.search} />
-				<SearchResults results={this.state.searchResults} />
+				<div className={this.state.searcherClassName}>
+					<Searcher search={this.search} />
+				</div>
+				<SearchResults results={this.state.searchResults} loading={this.state.loading} />
 			</div>
 		)
 	}
@@ -116,29 +142,8 @@ class App extends React.Component {
 	// After render
 	componentDidMount() {
 		this.check();
-		collapsibles();
 	}
 	
 }
 
 export default App;
-
-// TODO: Animation
-// TODO: Do this with state
-function collapsibles(){
-	let coll = document.getElementsByClassName("collapsible");
-	let i;
-	for (i = 0; i < coll.length; i++) {
-		coll[i].addEventListener("click", function() {
-			// this.classList.toggle("active");
-			let content = this.nextElementSibling;
-			if (content.style.display !== "none") {
-				content.style.display = "none";
-				this.innerHTML = "+ Search Criteria";
-			} else {
-				content.style.display = "block";
-				this.innerHTML = "- Search Criteria";
-			}
-		});
-	}
-}

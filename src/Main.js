@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import './index.css';
+import './login.css';
 
 import App from './App';
 import Login from './Login.js';
@@ -24,16 +25,17 @@ class Main extends React.Component {
             displayUsername: '',
             loggedIn: false,
             loggedInDisplay: 'display-none',
-            loggedOutDisplay: ''
+            loggedOutDisplay: '',
+            loaderClass: 'loadDefault',
         };
         this.check = this.check.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.refreshNav = this.refreshNav.bind(this);
         Globals.setUp();
     }
 
 
     check = () => { // check if logged in (JWT is valid and not expired)
-
         let verified = false;
         let checkURL = new URL('test/check', Globals.currentHost);
         
@@ -42,8 +44,9 @@ class Main extends React.Component {
             verified = response && response.status === 200;
             this.setState({
                 loggedIn: verified
-            })
-            this.refreshNav();
+            }, () => {
+                this.refreshNav();
+            });
         })
         .catch((err) => { // Token expired or invalid, or server is down
             this.setState({
@@ -53,22 +56,36 @@ class Main extends React.Component {
         
     }
 
+    // TODO: This and the relevant CSS is probably useless, use something like https://loading.io/css/
+	waitCursor = (waiting) =>{ 
+		if(waiting){ this.setState({ loaderClass: 'loadWait' }); }
+		else { this.setState({ loaderClass: 'loadDefault' }); }
+	}
 
-    testHandle(){
-        this.refreshNav(true);
+
+    // refresh() has a global listener so as to change the loggedIn state and then update the navbar
+    // as needed, from child components
+    refresh(verified) { 
+        this.setState({
+            loggedIn: verified.loggedIn
+        }, () => {
+            this.refreshNav();
+        });
     }
 
-
-    // TODO: Lift up state instead of running the other refreshNavs in the project
     refreshNav() {
+        this.setState({
+            loggedOutDisplay: 'display-none',
+            loggedInDisplay: 'display-none'
+        });
         if(this.state.loggedIn){
+            // console.log("Logout etc. displaying");
             this.setState({
-                loggedOutDisplay: 'display-none',
                 loggedInDisplay: ''
             });
         } else {
+            // console.log("Login button displaying");
             this.setState({
-                loggedInDisplay: 'display-none',
                 loggedOutDisplay: ''
             });
         }
@@ -82,7 +99,7 @@ class Main extends React.Component {
 
     render(){
         return (
-        <div>
+        <div id="main" className={this.state.loaderClass}>
             <div id="nav-background">
                 <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                     <Link className="nav-link right-nav-item" to="/logout">Logout</Link>
@@ -105,7 +122,7 @@ class Main extends React.Component {
                 </div>
             </div>
             <Switch>
-                <Route path="/login" component={Login} testAction={this.testHandle}/>
+                <Route path="/login" component={Login}/>
                 <Route path="/reset" component={Reset}/>
                 <Route path="/generate" component={Generate}/>
                 {/* <Route path="/register" component={Register}/> */}
@@ -120,6 +137,8 @@ class Main extends React.Component {
 
     
     componentDidMount() {
+        Globals.registerListener('refresh', this.refresh);
+        // Globals.registerListener(this.refresh);
         this.check();
     }
 }

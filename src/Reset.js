@@ -3,10 +3,6 @@ import axios from 'axios';
 import './login.css';
 import Globals from './globals.js';
 
-// TODO: new route for backend and get JWT from url (link)
-// JWT may need to be special to allow changing password with no current password provided
-// If we do that, can just use the regular change password route, but account for that "special" nature
-
 class Reset extends React.Component {
 
     constructor(props) {
@@ -83,26 +79,12 @@ class Reset extends React.Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (responseOK) {
-                console.log("OK");
-                return true;
-            } else { // Server down?
-                return false;
-            }
-        }).then(success => {
-            if(success){
-                // if HTTP 200 (ok), clear fields and display success
-                // TODO: State
-                let fields = document.getElementsByClassName("form-control");
-                let i;
-                for (i = 0; i < fields.length; i++) {
-                    fields[i].value = '';
-                }
                 this.setState({
-                    successLabel: "Password changed."
+                    newPassword: '',
+                    successLabel: 'Password changed.'
                 });
-                // console.log("Changed");
             } else {
-                // Server down?  Even then not sure we ever get here because if not successful then I think it has to be an error
+                // Server down?
             }
         }).catch(error => { // 401/403
             console.error('error message', error);
@@ -146,7 +128,7 @@ class Reset extends React.Component {
         } else {
             console.log("Reset");
             return (
-                <div id="main" className="container login-form">
+                <div className="container login-form">
                     <div className="form">
                         <div className="note">
                             <p>Set New Password</p>
@@ -154,7 +136,8 @@ class Reset extends React.Component {
                         <div className="col-md-6">
                             <div className="form-group">
                                 <label htmlFor="newPassword">Enter a new password:</label>
-                                <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
+                                <input type={this.state.newChecked} id="newPassword" className="form-control password-field" 
+                                    name="newPassword" placeholder="New Password *" value={this.state.newPassword} onChange={this.onNewPasswordChange}/>
                                 <label className="errorLabel">{this.state.newPasswordError}</label>
                                 <br />
                                 <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>

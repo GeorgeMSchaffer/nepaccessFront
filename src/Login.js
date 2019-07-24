@@ -104,17 +104,20 @@ class Login extends React.Component {
                 method: 'POST', // or 'PUT'
                 url: checkURL
             }).then(response => {
+                console.log("Whew");
+                console.log(response.data);
                 verified = response && response.status === 200;
                 // Logged in user hitting login with valid JWT should be redirected to search, or user should logout.
                 if(verified) {
                     this.props.history.push('/');
-                } 
-            }).catch(error => {
-                this.setState({ // TODO: See if this fires with expired JWT (does fire with malformed/invalid JWT)
-                    // Just need to temporarily set the expiry very fast to test
-                    // TODO: This also fires on null JWT (403), and we don't want to display networkError in that case
-                    // networkError: "The server may be down or you may need to log in again."
-                })
+                }
+            }).catch(error => { // Should just mean user isn't logged in, which makes sense.
+                // TODO: See if this fires with expired JWT (does fire with malformed/invalid JWT)
+                if (!error.response) { // TODO: This doesn't seem to work
+                    this.setState({
+                        networkError: 'Error: Network Error'
+                    });
+                }
             });
         }
 
@@ -129,10 +132,6 @@ class Login extends React.Component {
         document.body.style.cursor = 'wait';
         
         // TODO: certs and then HTTPS app-wide, probably
-        // let loginUrl = new URL('http://localhost:8080/login');
-        // if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-        //     loginUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/login');
-        // }
 
         let loginUrl = new URL('login', Globals.currentHost);
 
@@ -143,7 +142,6 @@ class Login extends React.Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (responseOK) {
-                refreshNav(responseOK);
                 return response.data;
             } else { // ???
                 return null;
@@ -154,6 +152,10 @@ class Login extends React.Component {
                 localStorage.JWT = jsonResponse.Authorization;
                 localStorage.username = this.state.user.username;
                 Globals.signIn();
+                Globals.emitEvent('refresh', {
+                    loggedIn: true
+                });
+                // Globals.emitEvent(true);
 
                 this.setState({ user: {} }); // clear
                 // TODO: Other logic than .push() for navigation?
@@ -163,7 +165,7 @@ class Login extends React.Component {
                 //     password: ''
                 // });
             } else {
-                // TODO: Tell user to try logging in again
+                // Impossible?  Should either be error or 200
             }
         }).catch(error => {
             // TODO: Less brittle way to check error type
@@ -186,7 +188,7 @@ class Login extends React.Component {
     render() {
         // console.log("Login");
         return (
-            <div id="main" className="container login-form">
+            <div className="container login-form">
                 <label className="errorLabel">{this.state.networkError}</label>
                 <div className="form">
                     <div className="note">
@@ -226,34 +228,8 @@ class Login extends React.Component {
 
     componentDidMount() {
         this.check();
+        Globals.emitEvent(false);
 	}
 }
 
 export default Login;
-
-// TODO: Use state
-function refreshNav(verified) {
-	var loggedOutStyle = "block";
-	var loggedInStyle = "block";
-
-	if(verified){
-		loggedOutStyle="none";
-	} else {
-		loggedInStyle="none";
-	}
-
-	let loggedOutItems = document.getElementsByClassName("logged-out");
-	let i;
-	for (i = 0; i < loggedOutItems.length; i++) {
-		loggedOutItems[i].style.display = loggedOutStyle;
-	}
-
-	let loggedInItems = document.getElementsByClassName("logged-in");
-	let j;
-	for (j = 0; j < loggedInItems.length; j++) {
-		loggedInItems[j].style.display = loggedInStyle;
-	}
-	if(localStorage.username){
-		document.getElementById("details").innerHTML = localStorage.username;
-    }
-}

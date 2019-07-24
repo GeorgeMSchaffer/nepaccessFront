@@ -3,7 +3,7 @@ import axios from 'axios';
 import Globals from './globals';
 import './login.css';
 
-// TODO: Move this to its own "change password" component and link to it from userdetails
+// TODO: Move this to its own "change password" component and link to it from userdetails?
 
 class UserDetails extends React.Component {
     state = {
@@ -29,7 +29,6 @@ class UserDetails extends React.Component {
         };
     }
     
-    // TODO: Validate new password, if invalid show error
     changePassword = () => {
         if(this.invalidFields()){
             return;
@@ -163,7 +162,7 @@ class UserDetails extends React.Component {
 
     render() {
         return (
-            <div id="main" className="container login-form">
+            <div className="container login-form">
                 <div className="form">
                     <div className="note">
                         <p>User Details</p>

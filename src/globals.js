@@ -2,6 +2,35 @@ import axios from 'axios';
 
 const Globals = {
     currentHost: new URL('http://localhost:8080/'),
+
+    listeners: {},
+
+    registerListener(key, listenerFunction) {
+        const entries = this.listeners[key] || [];
+        this.listeners[key] = entries; // assign if first time
+    
+        entries.push(listenerFunction)
+    },
+    
+    emitEvent(key, eventObject) {
+        const entries = this.listeners[key] || [];
+        entries.forEach(listener => {
+            listener(eventObject)
+        });
+    },
+
+
+    // listeners: [],
+
+    // registerListener(listenerFunction) {
+    //     this.listeners.push(listenerFunction);
+    // },
+
+    // emitEvent(eventObject) {
+    //     this.listeners.forEach(listener => {
+    //         listener(eventObject);
+    //     });
+    // },
     
     // Set up globals like axios default headers and base URL
     setUp() {

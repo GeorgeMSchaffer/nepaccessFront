@@ -15,7 +15,6 @@ class Generate extends React.Component {
 
         // If there's no reason for user to be here, redirect them
         let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
-
         axios({
             url: checkUrl,
             method: 'POST'
@@ -24,7 +23,7 @@ class Generate extends React.Component {
             if (!responseOK) { // this probably isn't possible with current backend design
                 this.props.history.push('/');
             }
-          }).catch(error => {
+          }).catch(error => { // redirect
             this.props.history.push('/');
           })
 
@@ -53,7 +52,7 @@ class Generate extends React.Component {
 
     render(){
         return (
-        <div id="main">
+        <div>
             <textarea cols='60' rows='20' name="csvText" onChange={this.csvChange} />
             <button className="button" onClick={this.generate}>Generate accounts</button>
         </div>

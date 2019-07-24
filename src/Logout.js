@@ -9,7 +9,7 @@ class Logout extends React.Component {
 
     render() {
         return (
-            <div id="main" className="container login-form">
+            <div className="container login-form">
                 <div className="form">
                     <div className="note">
                         <p>Logout</p>
@@ -23,21 +23,12 @@ class Logout extends React.Component {
 
     componentDidMount(){
         Globals.signOut();
-        
+        Globals.emitEvent('refresh', {
+            loggedIn: false
+        });
+        // Globals.emitEvent(false);
         // TODO: Make sure signOut() is done first?
         this.setState({ logoutText: "Successfully logged out." });
-
-        // TODO: Do this with state
-        let itemsToShow = document.getElementsByClassName("logged-out");
-        let i;
-        for (i = 0; i < itemsToShow.length; i++) {
-            itemsToShow[i].style.display = "block";
-        }
-        let itemsToHide = document.getElementsByClassName("logged-in");
-        let j;
-        for (j = 0; j < itemsToHide.length; j++) {
-            itemsToHide[j].style.display = "none";
-        }
     }
 }
 

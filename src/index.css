@@ -164,8 +164,16 @@ span a:hover {
   pointer-events: none; /* webkit fix */
 }
 
+.loadDefault {
+  cursor: default;
+}
+
+.loadWait {
+  cursor: wait;
+}
+
 #main {
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 #nav-background {

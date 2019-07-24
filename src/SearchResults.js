@@ -55,6 +55,7 @@ class SearchResults extends React.Component {
             )
         }
         catch (e) {
+            console.log(e.toString());
             // Show the user something other than a blank page
             return (
             <div>
