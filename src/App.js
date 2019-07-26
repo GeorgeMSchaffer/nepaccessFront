@@ -22,33 +22,13 @@ class App extends React.Component {
 			needsComments: false
 		},
 		searchResults: [],
-		searcherClassName: '',
-		collapsibleText: '- Search Criteria',
 		resultsText: 'Results',
 		networkError: ''
 	}
 
-	constructor(props){
-		super(props);
-		this.collapsibles = this.collapsibles.bind(this);
-	}
-
-
-	// TODO: Animation?
-	collapsibles(){
-		if(this.state.searcherClassName===''){
-			this.setState({
-				searcherClassName: 'display-none',
-				collapsibleText: "+ Search Criteria"
-			});
-		} else {
-			this.setState({
-				searcherClassName: '',
-				collapsibleText: "- Search Criteria"
-			});
-		}
-	}
-
+	// constructor(props){
+	// 	super(props);
+	// }
 
 	search = (searcherState) => {
 		// console.log("In search");
@@ -73,13 +53,25 @@ class App extends React.Component {
 				this.props.history.push('/login') // Prompt login if no auth token
 			}
 
+			let dataToPass = { 
+				title: this.state.searcherInputs.title, 
+				startPublish: this.state.searcherInputs.startPublish,
+				endPublish: this.state.searcherInputs.endPublish,
+				startComment: this.state.searcherInputs.startComment,
+				endComment: this.state.searcherInputs.endComment,
+				agency: this.state.searcherInputs.agency,
+				state: this.state.searcherInputs.state,
+				needsComments: this.state.searcherInputs.needsComments
+			};
+
 			// console.log("Inputs");
 			// console.log(JSON.stringify(this.state.searcherInputs));
 			//Send the AJAX call to the server
 			axios({
 				method: 'POST', // or 'PUT'
 				url: searchUrl,
-				data: this.state.searcherInputs // data can be `string` or {object}
+				// data: this.state.searcherInputs // data can be `string` or {object}
+				data: dataToPass
 			}).then(response => {
 				let responseOK = response && response.status === 200;
 				if (responseOK) {
@@ -135,12 +127,7 @@ class App extends React.Component {
 		return (
 			<div>
 				<label className="errorLabel">{this.state.networkError}</label>
-				<button className="collapsible" onClick={this.collapsibles}>
-					<span className="button-text">{this.state.collapsibleText}</span>
-				</button>
-				<div className={this.state.searcherClassName}>
-					<Searcher search={this.search} />
-				</div>
+				<Searcher search={this.search} />
 				<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
 			</div>
 		)
