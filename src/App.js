@@ -24,7 +24,7 @@ class App extends React.Component {
 		searchResults: [],
 		searcherClassName: '',
 		collapsibleText: '- Search Criteria',
-		loading: 'Results',
+		resultsText: 'Results',
 		networkError: ''
 	}
 
@@ -55,7 +55,7 @@ class App extends React.Component {
 
 		this.setState({
 			searcherInputs: searcherState,
-			loading: "Loading results..."
+			resultsText: "Loading results..."
 		}, () => {
 
 			// TODO: Sanity check searcherInputs
@@ -92,11 +92,11 @@ class App extends React.Component {
 				if(parsedJson){
 					this.setState({
 						searchResults: parsedJson,
-						loading: parsedJson.length + " Results",
+						resultsText: parsedJson.length + " Results",
 					});
 				} else { // Probably can't get here, if it isn't a 200 it should be some kind of caught error
 					this.setState({
-						loading: "Unknown error: Couldn't parse results"
+						resultsText: "Unknown error: Couldn't parse results"
 					});
 				}
 			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens)
@@ -141,7 +141,7 @@ class App extends React.Component {
 				<div className={this.state.searcherClassName}>
 					<Searcher search={this.search} />
 				</div>
-				<SearchResults results={this.state.searchResults} loading={this.state.loading} />
+				<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
 			</div>
 		)
 	}

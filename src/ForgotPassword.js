@@ -63,7 +63,7 @@ class ForgotPassword extends React.Component {
         }
         
         document.body.style.cursor = 'wait';
-        this.setState({ emailError: '' });
+        this.setState({ emailError: '', networkError: '' });
         
         let resetUrl = new URL('reset/send', Globals.currentHost);
 
@@ -88,9 +88,15 @@ class ForgotPassword extends React.Component {
             }
         }).catch(error => {
             if(error.response) {
-                this.setState({ // 500
-                    networkError: "Email server may be unavailable, please try again later."
-                });
+                if (error.response.status === 418) {
+                    this.setState({ 
+                        networkError: "Too many reset emails sent, please wait 24 hours between requests."
+                    });
+                } else if (error.response.status === 500) {
+                    this.setState({ // 500
+                        networkError: "Unknown email server error, please try again later."
+                    });
+                } 
             } else {
                 this.setState({
                     networkError: "Server may be down, please try again later."

@@ -42,10 +42,11 @@ class SearchResults extends React.Component {
             // This could also be used to entirely replace the MySQL fulltext search.
             // However, Tabulator doesn't work super great with React.
 
+            // Could use just a bool prop to build the results text here instead of resultsText prop?
             return (
                 <div>
                     {/* <h2>{results.length} Results</h2> */}
-                    <h2>{this.props.loading}</h2>
+                    <h2>{this.props.resultsText}</h2>
                     <ReactTabulator
                         data={data}
                         columns={columns}
@@ -59,7 +60,7 @@ class SearchResults extends React.Component {
             // Show the user something other than a blank page
             return (
             <div>
-                <h2>Results</h2>
+                <h2>{this.props.resultsText}</h2>
                 <ReactTabulator />
             </div>
             )
