@@ -24,6 +24,7 @@ class Reset extends React.Component {
         this.setState({ disabled: test1 });
         return (test1);
     }
+    // TODO: Enforce password length
     invalidNewPassword(){
         let passwordPattern = /[ -~]/;
         let invalid = !(passwordPattern.test(this.state.newPassword));

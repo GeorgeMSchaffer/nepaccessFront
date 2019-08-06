@@ -18,15 +18,6 @@ class UserDetails extends React.Component {
 
     constructor(props) {
         super(props);
-		this.state = {
-            newPassword: '',
-            oldPassword: '',
-            currentChecked: "password",
-            newChecked: "password",
-            successLabel: '',
-            newPasswordError: '',
-            oldPasswordError: ''
-        };
     }
     
     changePassword = () => {
@@ -35,10 +26,9 @@ class UserDetails extends React.Component {
         }
         document.body.style.cursor = 'wait';
         
-        let changeUrl = new URL('user/details/changePassword', this.state.baseURL);
+        let changeUrl = new URL('user/details/changePassword', Globals.currentHost);
 
         let dataToPass = { oldPassword: this.state.oldPassword, newPassword: this.state.newPassword };
-        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
         axios({ 
             method: 'POST',
             url: changeUrl,
@@ -107,6 +97,7 @@ class UserDetails extends React.Component {
         this.setState({ disabled: test1 || test2 });
         return (test1 || test2 );
     }
+    // TODO: Enforce password length of ??? (maybe 50-100 characters)
     invalidNewPassword(){
         let passwordPattern = /[ -~]/;
         let invalid = !(passwordPattern.test(this.state.newPassword));
@@ -197,17 +188,7 @@ class UserDetails extends React.Component {
     }
 
 	componentDidMount() {
-		let currentHost = new URL('http://localhost:8080/');
-		if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-			currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
-		}
-
-		this.setState( 
-		{ 
-			baseURL: currentHost
-		}, () =>{
-			this.check();
-		});
+		this.check();
 	}
 }
 
