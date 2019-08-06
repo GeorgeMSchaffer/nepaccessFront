@@ -19,7 +19,8 @@ class App extends React.Component {
 			endPublish: '',
 			agency: [],
 			state: [],
-			needsComments: false
+			needsComments: false,
+			needsDocument: false
 		},
 		searchResults: [],
 		resultsText: 'Results',
@@ -61,7 +62,8 @@ class App extends React.Component {
 				endComment: this.state.searcherInputs.endComment,
 				agency: this.state.searcherInputs.agency,
 				state: this.state.searcherInputs.state,
-				needsComments: this.state.searcherInputs.needsComments
+				needsComments: this.state.searcherInputs.needsComments,
+				needsDocument: this.state.searcherInputs.needsDocument
 			};
 
 			// console.log("Inputs");

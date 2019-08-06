@@ -19,6 +19,7 @@ class Searcher extends React.Component {
             agency: [],
             state: [],
             needsComments: false,
+            needsDocument: false,
             searcherClassName: '',
             collapsibleText: '- Search Criteria',
 		};
@@ -63,19 +64,19 @@ class Searcher extends React.Component {
 		for(var i = 0; i < evt.length; i++){
 			agencyLabels.push(evt[i].label.replace(/ \([A-Z]*\)/gi,""));
         }
-        this.setState(prevState => {
-            let inputs = { ...prevState.inputs };  // creating copy of state variable inputs
-            inputs.agency = agencyLabels;                     // update the name property, assign a new value                 
-            return { inputs };                                 // return new object inputs object
-        }, () =>{
-            this.debouncedSearch(this.state.inputs);
-        });
-        // this.setState( 
-		// { 
-		// 	agency: agencyLabels
-		// }, () => { 
-		// 	this.debouncedSearch(this.state);
-		// });
+        // this.setState(prevState => {
+        //     let inputs = { ...prevState.inputs };  // creating copy of state variable inputs
+        //     inputs.agency = agencyLabels;                     // update the name property, assign a new value                 
+        //     return { inputs };                                 // return new object inputs object
+        // }, () =>{
+        //     this.debouncedSearch(this.state.inputs);
+        // });
+        this.setState( 
+		{ 
+			agency: agencyLabels
+		}, () => { 
+			this.debouncedSearch(this.state);
+		});
     }
 	onLocationChange = (evt) => {
 		var stateValues = [];
@@ -201,10 +202,13 @@ class Searcher extends React.Component {
                         </div>
                         <div>
                             <label>
+                                <input type="checkbox" name="needsComments" onChange={this.onChecked} />
                                 Must have comments
                             </label>
-                            <input type="checkbox" name="needsComments" onChange={this.onChecked} />
-                            {/* TODO: Needs EIS (for download) */}
+                            <label>
+                                <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
+                                Must have document
+                            </label>
                         </div>
                         <br />
                     </form>
