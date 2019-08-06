@@ -5,13 +5,15 @@ import Globals from './globals.js';
 
 class Generate extends React.Component {
     state = {
-        csvArray: []
+        users: [], // Naming should mirror Generate POJO on backend
+        shouldSend: false
     }
 
     constructor(props){
         super(props);
         this.generate = this.generate.bind(this);
         this.csvChange = this.csvChange.bind(this);
+        this.handleRadioChange = this.handleRadioChange.bind(this);
 
         // If there's no reason for user to be here, redirect them
         let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
@@ -32,17 +34,29 @@ class Generate extends React.Component {
     csvChange(event){
         let text = event.target.value;
         const jsonArray = csvToJSON(text);
-        this.setState({csvArray: jsonArray});
+        this.setState({users: jsonArray});
+    }
+
+    handleRadioChange(event){
+      let sendStatus = false;
+      if(event.target.value === "send" && event.target.checked){
+        sendStatus = true;
+      }
+      this.setState({
+        shouldSend: sendStatus
+      }, () =>{
+        console.log(this.state.shouldSend);
+      });
     }
 
     generate(){
         let generateUrl = new URL('user/generate', Globals.currentHost);
-        console.log(this.state.csvArray);
+        console.log(this.state);
 
         axios({
             url: generateUrl,
             method: 'POST',
-            data: this.state.csvArray
+            data: this.state
           }).then(response => {
             console.log(response)
           }).catch(error => {
@@ -52,8 +66,29 @@ class Generate extends React.Component {
 
     render(){
         return (
-        <div>
+        <div id="main">
             <textarea cols='60' rows='20' name="csvText" onChange={this.csvChange} />
+            <ul>
+              <li>
+                <label>
+                  <input type="radio"
+                  value="send"
+                  checked={this.state.shouldSend}
+                  onChange={this.handleRadioChange}></input>
+                  Send an email to each user with credentials
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="radio"
+                  value="noSend"
+                  checked={!this.state.shouldSend}
+                  onChange={this.handleRadioChange}></input>
+                  Do not send an email to each user with credentials
+                </label>
+              </li>
+            </ul>
+            <br /><br />
             <button className="button" onClick={this.generate}>Generate accounts</button>
         </div>
         )
