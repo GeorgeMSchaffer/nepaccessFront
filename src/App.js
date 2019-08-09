@@ -51,7 +51,7 @@ class App extends React.Component {
 
 			let searchUrl = new URL('test/search', Globals.currentHost);
 
-			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it saves a backend call
+			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
 				this.props.history.push('/login') // Prompt login if no auth token
 			}
 
@@ -94,8 +94,8 @@ class App extends React.Component {
 						resultsText: "Unknown error: Couldn't parse results"
 					});
 				}
-			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens)
-				console.error('Server is down or verification failed.', error);
+			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
+				// console.error('Server is down or verification failed.', error);
 				this.setState({
 					networkError: 'Server is down or you may need to login again.'
 				});
