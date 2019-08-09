@@ -94,12 +94,12 @@ class Login extends React.Component {
     } 
     
 
-    check = () => { // check if JWT is expired/invalid
+    check = () => {
 				
 		let verified = false;
 
 		let checkURL = new URL('test/check', Globals.currentHost);
-		if(localStorage.username){
+		if(localStorage.username){ // If they have a username saved, check if JWT is expired/invalid
             axios({
                 method: 'POST', // or 'PUT'
                 url: checkURL
@@ -110,12 +110,13 @@ class Login extends React.Component {
                 if(verified) {
                     this.props.history.push('/');
                 }
-            }).catch(error => { // Should just mean user isn't logged in, which makes sense.
-                // TODO: See if this fires with expired JWT (does fire with malformed/invalid JWT)
-                if (!error.response) { // TODO: This doesn't seem to work
+            }).catch(error => { // JWT is invalid or missing, or server problem
+                if (!error.response) { // If no response, should mean server is down
                     this.setState({
                         networkError: 'Error: Network Error'
                     });
+                } else { // should be a 403 for expired/invalid JWT, backend fires TokenExpiredException if expired
+                    // console.log(error.response);
                 }
             });
         }

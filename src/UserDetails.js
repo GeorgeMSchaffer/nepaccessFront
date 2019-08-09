@@ -16,10 +16,6 @@ class UserDetails extends React.Component {
         oldPasswordError: ''
     }
 
-    constructor(props) {
-        super(props);
-    }
-    
     changePassword = () => {
         if(this.invalidFields()){
             return;

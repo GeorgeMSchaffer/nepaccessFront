@@ -36,7 +36,8 @@ class App extends React.Component {
 
 		this.setState({
 			searcherInputs: searcherState,
-			resultsText: "Loading results..."
+			resultsText: "Loading results...",
+			networkError: "" // Clear network error
 		}, () => {
 
 			// TODO: Sanity check searcherInputs
@@ -115,11 +116,14 @@ class App extends React.Component {
 		.then(response => {
 			// verified = response && response.status === 200;
 		})
-		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT
-			// this.setState({
-			// 	networkError: "Server may be down, please try again later."
-			// });
-			this.props.history.push('/login');
+		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
+			if(!err.response){ // Probably no need to redirect to login if server isn't responding
+				this.setState({
+					networkError: "Server may be down, please try again later."
+				});
+			} else { // 403
+				this.props.history.push('/login');
+			}
 		});
 	}
 	
