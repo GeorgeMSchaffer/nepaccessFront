@@ -135,8 +135,25 @@ class App extends React.Component {
 				<label className="errorLabel">{this.state.networkError}</label>
 				<Searcher search={this.search} />
 				<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
+				<button onClick={this.test}>test</button>
 			</div>
 		)
+	}
+
+
+	test = () => { // TODO: All of this
+		axios.get('http://mis-jvinaldbl1.catnet.arizona.edu/downloadFile',{
+			params: {
+				fileName: 'test.txt'
+			}
+		})
+		.then(response => {
+			console.log(response);
+			// verified = response && response.status === 200;
+		})
+		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
+			console.log(err);
+		});
 	}
 
 	
