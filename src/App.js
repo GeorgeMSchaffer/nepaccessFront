@@ -144,7 +144,7 @@ class App extends React.Component {
 	test = () => { // TODO: All of this
 		axios.get('http://mis-jvinaldbl1.catnet.arizona.edu/downloadFile',{
 			params: {
-				fileName: 'test.txt'
+				filename: 'test'
 			}
 		})
 		.then(response => {
