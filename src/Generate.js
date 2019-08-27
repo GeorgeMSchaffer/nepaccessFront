@@ -90,8 +90,27 @@ class Generate extends React.Component {
             </ul>
             <br /><br />
             <button className="button" onClick={this.generate}>Generate accounts</button>
+            
+            <br /><br /><br />
+            <button className="button" onClick={this.test}>Test file download stream</button>
         </div>
         )
+    }
+
+    // TODO: Move to special testing/admin only page
+    test = () => { // TODO: All of this
+      axios.get('http://mis-jvinaldbl1.catnet.arizona.edu/downloadFile',{
+        params: {
+          filename: 'test'
+        }
+      })
+      .then(response => {
+        console.log(response);
+        // verified = response && response.status === 200;
+      })
+      .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
+        console.log(err);
+      });
     }
 }
 
