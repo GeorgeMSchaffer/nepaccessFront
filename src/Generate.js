@@ -99,9 +99,9 @@ class Generate extends React.Component {
 
     // TODO: Move to special testing/admin only page
     test = () => { // TODO: All of this
-      axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-      axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
-      axios.get('http://mis-jvinaldbl1.catnet.arizona.edu/downloadFile',{
+      // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+      // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
+      axios.get('http://mis-jvinalappl1.microage.arizona.edu/downloadFile',{
         params: {
           filename: 'test'
         }
