@@ -97,8 +97,9 @@ class Generate extends React.Component {
         )
     }
 
-    // TODO: Move to special testing/admin only page
+    
     test = () => { // TODO: All of this
+      const FileDownload = require('js-file-download');
       // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
       axios.get('http://mis-jvinalappl1.microagelab.arizona.edu/downloadFile',{
@@ -107,7 +108,7 @@ class Generate extends React.Component {
         }
       })
       .then(response => {
-        FileDownload(response.data, filename);
+        FileDownload(response.data, 'test');
         console.log(response);
         // verified = response && response.status === 200;
       })
