@@ -104,19 +104,64 @@ class Generate extends React.Component {
       // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
       axios.get(`http://mis-jvinalappl1.microagelab.arizona.edu/downloadFile`,{
         params: {
-          filename: 'test'
+          filename: 'test.txt'
         },
         responseType: 'blob'
       })
-      .then(response => {
-        FileDownload(response.data, 'test');
+      .then((response) => {
+        // FileDownload(response.data, 'test.txt');
+        saveFile(response.data, "test.txt");
         console.log(response);
         // verified = response && response.status === 200;
       })
       .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
         console.log(err);
       });
+      downloadUrl("http://mis-jvinalappl1.microagelab.arizona.edu/downloadFile","test2.txt");
     }
+
+    
+}
+
+// TODO: Test this first
+function saveFile(blob, filename) {
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveOrOpenBlob(blob, filename);
+  } else {
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 0)
+  }
+}
+
+// TODO: Test this after
+function downloadUrl(url, filename) {
+  let xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+  xhr.responseType = "blob";
+  xhr.onload = function(e) {
+    if (this.status == 200) {
+      const blob = this.response;
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      const blobUrl = window.URL.createObjectURL(blob);
+      a.href = blobUrl;
+      a.download = filename;
+      a.click();
+      setTimeout(() => {
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+      }, 0);
+    }
+  };
+  xhr.send();
 }
 
 export default Generate;
