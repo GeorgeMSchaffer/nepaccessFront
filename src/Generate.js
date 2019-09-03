@@ -103,9 +103,9 @@ class Generate extends React.Component {
       // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
       axios.get(`http://mis-jvinalappl1.microagelab.arizona.edu:8080/downloadFile`,{
-        params: {
-          filename: 'test.txt'
-        },
+        // params: {
+        //   filename: 'test.txt'
+        // },
         responseType: 'blob'
       })
       .then((response) => {
