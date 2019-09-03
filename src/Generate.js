@@ -102,22 +102,22 @@ class Generate extends React.Component {
       const FileDownload = require('js-file-download');
       // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
-      axios.get(`http://mis-jvinalappl1.microagelab.arizona.edu/downloadFile`,{
+      axios.get(`http://mis-jvinalappl1.microagelab.arizona.edu:8080/downloadFile`,{
         params: {
           filename: 'test.txt'
         },
         responseType: 'blob'
       })
       .then((response) => {
-        // FileDownload(response.data, 'test.txt');
-        saveFile(response.data, "test.txt");
+        FileDownload(response.data, 'test1.txt');
+        saveFile(response.data, "test2.txt");
         console.log(response);
         // verified = response && response.status === 200;
       })
       .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
         console.log(err);
       });
-      downloadUrl("http://mis-jvinalappl1.microagelab.arizona.edu/downloadFile","test2.txt");
+      downloadUrl("http://mis-jvinalappl1.microagelab.arizona.edu:8080/downloadFile","test3.txt");
     }
 
     
