@@ -110,7 +110,7 @@ class Generate extends React.Component {
       })
       .then((response) => {
         FileDownload(response.data, 'test1.txt');
-        saveFile(response.data, "test2.txt");
+        // saveFile(response.data, "test2.txt");
         console.log(response);
         // verified = response && response.status === 200;
       })
