@@ -102,14 +102,16 @@ class Generate extends React.Component {
       const FileDownload = require('js-file-download');
       // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
-      axios.get(`http://mis-jvinalappl1.microagelab.arizona.edu:8080/download`,{
+      
+      let fileUrl = new URL('file/downloadFile', Globals.currentHost);
+      axios.get(fileUrl,{
         // params: {
         //   filename: 'test.txt'
         // },
         responseType: 'blob'
       })
       .then((response) => {
-        FileDownload(response.data, 'test1.txt');
+        FileDownload(response.data, 'test.txt');
         // saveFile(response.data, "test2.txt");
         console.log(response);
         // verified = response && response.status === 200;
@@ -117,7 +119,7 @@ class Generate extends React.Component {
       .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
         console.log(err);
       });
-      downloadUrl("http://mis-jvinalappl1.microagelab.arizona.edu:8080/downloadFile?filename=test3.txt","test3.txt");
+      // downloadUrl("http://mis-jvinalappl1.microagelab.arizona.edu:8080/downloadFile?filename=test.txt","test.txt");
     }
 
     
@@ -145,7 +147,7 @@ function downloadUrl(url, filename) {
   xhr.open("GET", url, true);
   xhr.responseType = "blob";
   xhr.onload = function(e) {
-    if (this.status == 200) {
+    if (this.status === 200) {
       const blob = this.response;
       const a = document.createElement("a");
       document.body.appendChild(a);
