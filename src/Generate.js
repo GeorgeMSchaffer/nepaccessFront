@@ -102,7 +102,7 @@ class Generate extends React.Component {
       const FileDownload = require('js-file-download');
       // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
       // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
-      axios.get(`http://mis-jvinalappl1.microagelab.arizona.edu:8080/downloadFile`,{
+      axios.get(`http://mis-jvinalappl1.microagelab.arizona.edu:8080/download`,{
         // params: {
         //   filename: 'test.txt'
         // },
