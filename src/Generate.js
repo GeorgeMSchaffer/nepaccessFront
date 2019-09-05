@@ -100,9 +100,7 @@ class Generate extends React.Component {
     
     test = () => { // TODO: All of this
       const FileDownload = require('js-file-download');
-      // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-      // axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept';
-      
+
       let fileUrl = new URL('file/downloadFile', Globals.currentHost);
       axios.get(fileUrl,{
         // params: {
@@ -112,56 +110,14 @@ class Generate extends React.Component {
       })
       .then((response) => {
         FileDownload(response.data, 'test.txt');
-        // saveFile(response.data, "test2.txt");
-        console.log(response);
         // verified = response && response.status === 200;
       })
       .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
         console.log(err);
       });
-      // downloadUrl("http://mis-jvinalappl1.microagelab.arizona.edu:8080/downloadFile?filename=test.txt","test.txt");
+      
     }
 
-    
-}
-
-function saveFile(blob, filename) {
-  if (window.navigator.msSaveOrOpenBlob) {
-    window.navigator.msSaveOrOpenBlob(blob, filename);
-  } else {
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    const url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = filename;
-    a.click();
-    setTimeout(() => {
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    }, 0)
-  }
-}
-
-function downloadUrl(url, filename) {
-  let xhr = new XMLHttpRequest();
-  xhr.open("GET", url, true);
-  xhr.responseType = "blob";
-  xhr.onload = function(e) {
-    if (this.status === 200) {
-      const blob = this.response;
-      const a = document.createElement("a");
-      document.body.appendChild(a);
-      const blobUrl = window.URL.createObjectURL(blob);
-      a.href = blobUrl;
-      a.download = filename;
-      a.click();
-      setTimeout(() => {
-        window.URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(a);
-      }, 0);
-    }
-  };
-  xhr.send();
 }
 
 export default Generate;
