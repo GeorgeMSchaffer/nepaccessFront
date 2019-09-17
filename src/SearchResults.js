@@ -1,9 +1,31 @@
 import React from 'react';
+import axios from 'axios';
+import Globals from './globals.js';
 import 'react-tabulator/lib/styles.css'; // required styles
 import 'react-tabulator/lib/css/tabulator_midnight.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 
 class SearchResults extends React.Component {
+
+    test = (_filename) => { // TODO: All of this
+        const FileDownload = require('js-file-download');
+  
+        let fileUrl = new URL('file/downloadFile', Globals.currentHost);
+        axios.get(fileUrl,{
+          params: {
+            filename: _filename
+          },
+          responseType: 'blob'
+        })
+        .then((response) => {
+          FileDownload(response.data, _filename);
+          // verified = response && response.status === 200;
+        })
+        .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
+          console.log(err);
+        });
+        
+      }
 
 	render() {
         // console.log("SearchResults");
@@ -14,7 +36,7 @@ class SearchResults extends React.Component {
             var data = results.map((result, idx) =>{
                 var newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
                 registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
-                documents: result.documents};
+                filename: result.filename, commentsFilename: result.commentsFilename};
                 return newObject;
             });
             
@@ -25,7 +47,8 @@ class SearchResults extends React.Component {
                 { title: "Comment date", field: "commentDate", width: 140 },
                 { title: "State", field: "state", width: 80 },
                 { title: "Version", field: "documentType", width: 90 },
-                { title: "Files", field: "documents"}
+                { title: "Document", field: "filename"},
+                { title: "Comments", field: "commentsFilename"}
             ];
 
             var options = {
