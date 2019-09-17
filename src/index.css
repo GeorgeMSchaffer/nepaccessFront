@@ -171,6 +171,10 @@ span a:hover {
   cursor: wait;
 }
 
+.download {
+  color: skyblue;
+}
+
 #main {
   padding-top: 20px;
 }
