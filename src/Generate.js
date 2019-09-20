@@ -14,6 +14,7 @@ class Generate extends React.Component {
         this.generate = this.generate.bind(this);
         this.csvChange = this.csvChange.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
+        this.test = this.test.bind(this);
 
         // If there's no reason for user to be here, redirect them
         let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
@@ -92,24 +93,25 @@ class Generate extends React.Component {
             <button className="button" onClick={this.generate}>Generate accounts</button>
             
             <br /><br /><br />
-            <button className="button" onClick={this.test}>Test file download stream</button>
+            <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
         </div>
         )
     }
 
     
-    test = () => { // TODO: All of this
+    test(_filename) {
+      console.log("Activating test for " + Globals.currentHost);
       const FileDownload = require('js-file-download');
 
-      let fileUrl = new URL('file/downloadFile', Globals.currentHost);
-      axios.get(fileUrl,{
-        // params: {
-        //   filename: 'test.txt'
-        // },
+      axios.get((Globals.currentHost + 'file/downloadFile'),{
+        params: {
+          filename: _filename
+        },
         responseType: 'blob'
       })
       .then((response) => {
-        FileDownload(response.data, 'test.txt');
+        console.log("Activating FileDownload");
+        FileDownload(response.data, _filename);
         // verified = response && response.status === 200;
       })
       .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down

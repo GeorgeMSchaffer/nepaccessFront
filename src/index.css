@@ -173,6 +173,7 @@ span a:hover {
 
 .download {
   color: skyblue;
+  text-decoration-style: underline;
 }
 
 #main {
