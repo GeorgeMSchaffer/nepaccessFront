@@ -10,9 +10,11 @@ import { reactFormatter } from "react-tabulator";
 class SearchResults extends React.Component {
     
 
-    test = (_filename) => { // TODO: All of this
+    test = (_filename) => { // TODO: Create state for row based on filename, use to update download progress?
         const FileDownload = require('js-file-download');
   
+        // TODO: Progress bar or at least indication it is downloading
+        
         let fileUrl = new URL('file/downloadFile', Globals.currentHost);
         axios.get(fileUrl,{
           params: {
@@ -21,6 +23,8 @@ class SearchResults extends React.Component {
           responseType: 'blob'
         })
         .then((response) => {
+          
+          // TODO: Indicate download completed
           FileDownload(response.data, _filename);
           // verified = response && response.status === 200;
         })
@@ -45,14 +49,14 @@ class SearchResults extends React.Component {
             });
             
             const columns = [
-                { title: "Title", field: "title", width: 750 },
-                { title: "Agency", field: "agency" },
+                { title: "Title", field: "title" },
+                { title: "Agency", field: "agency", width: 150 },
                 { title: "Register date", field: "registerDate", width: 140 },
                 { title: "Comment date", field: "commentDate", width: 140 },
                 { title: "State", field: "state", width: 80 },
                 { title: "Version", field: "documentType", width: 90 },
-                { title: "Document", field: "filename", formatter: reactFormatter(<DownloadFile />)},
-                { title: "Comments", field: "commentsFilename", formatter: reactFormatter(<DownloadComments />)}
+                { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile />)},
+                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadComments />)}
             ];
 
             var options = {
