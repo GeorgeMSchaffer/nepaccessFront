@@ -8,31 +8,6 @@ import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 
 class SearchResults extends React.Component {
-    
-
-    test = (_filename) => { // TODO: Create state for row based on filename, use to update download progress?
-        const FileDownload = require('js-file-download');
-  
-        // TODO: Progress bar or at least indication it is downloading
-        
-        let fileUrl = new URL('file/downloadFile', Globals.currentHost);
-        axios.get(fileUrl,{
-          params: {
-            filename: _filename
-          },
-          responseType: 'blob'
-        })
-        .then((response) => {
-          
-          // TODO: Indicate download completed
-          FileDownload(response.data, _filename);
-          // verified = response && response.status === 200;
-        })
-        .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
-          console.log(err);
-        });
-        
-      }
 
 	render() {
         // console.log("SearchResults");
@@ -117,25 +92,26 @@ function DownloadComments(props) {
     }
 }
 
-function download(_filename) { // TODO: All of this
-    console.log("Whew");
+function download(_filename) { // TODO: Create state for row based on filename, use to update download progress?
     const FileDownload = require('js-file-download');
     
-    // let fileUrl = new URL('file/downloadFile', Globals.currentHost);
+    // TODO: Progress bar or at least indication it is downloading
 
     // axios.get('http://localhost:8080/file/downloadFile',{
-    axios.get('http://mis-jvinalappl1.microagelab.arizona.edu:8080/file/downloadFile',{
+    axios.get(Globals.currentHost + 'file/downloadFile',{
       params: {
         filename: _filename
       },
       responseType: 'blob'
     })
     .then((response) => {
+      
+      // TODO: Indicate download completed as file is saved/save as prompts depending on browser settings
       FileDownload(response.data, _filename);
       // verified = response && response.status === 200;
     })
-    .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
-      console.log(err);
+    .catch((err) => { // TODO: This will catch a 404 which should be logged somewhere as it could mean we're missing a file
+      // console.log(err);
     });
     
   }
