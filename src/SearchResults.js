@@ -110,7 +110,7 @@ function download(_filename) { // TODO: Create state for row based on filename, 
       FileDownload(response.data, _filename);
       // verified = response && response.status === 200;
     })
-    .catch((err) => { // TODO: This will catch a 404 which should be logged somewhere as it could mean we're missing a file
+    .catch((err) => { // TODO: This will catch a 404
       // console.log(err);
     });
     
