@@ -7,21 +7,32 @@ class DownloadFile extends React.Component {
 
 	constructor(props){
 		super(props);
+        this.state = { 
+            progressValue: null
+        };
 	}
 
     download = (_filename) =>{ // TODO: Create state for row based on filename, use to update download progress?
         const FileDownload = require('js-file-download');
         
         // TODO: Progress bar or at least indication it is downloading
-    
+        
         // axios.get('http://localhost:8080/file/downloadFile',{
         axios.get(Globals.currentHost + 'file/downloadFile',{
           params: {
             filename: _filename
           },
-          responseType: 'blob'
-        })
-        .then((response) => {
+          responseType: 'blob',
+          onDownloadProgress: (progressEvent) => {
+            const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+            console.log("onUploadProgress", totalLength);
+            if (totalLength !== null) {
+                this.setState({
+                    progressValue: Math.round( (progressEvent.loaded * 100) / totalLength )
+                });
+            }
+          }
+        }).then((response) => {
           
           // TODO: Indicate download completed as file is saved/save as prompts depending on browser settings
           FileDownload(response.data, _filename);
@@ -38,14 +49,14 @@ class DownloadFile extends React.Component {
             if(this.props.downloadType === "Comments"){
               const cellData = this.props.cell._cell.row.data;
               if(cellData.commentsFilename){
-                  return <a className="download" onClick={() => {this.download(cellData.commentsFilename)} }>Download</a>;
+                  return <a className="download" onClick={() => {this.download(cellData.commentsFilename)} }>Download {this.state.progressValue}</a>;
               } else { // Just return the blank unformatted string if that's what we have
                   return cellData.commentsFilename;
               }
             } else if(this.props.downloadType === "EIS"){
               const cellData = this.props.cell._cell.row.data;
               if(cellData.filename){
-                  return <a className="download" onClick={() => {this.download(cellData.filename)} }>Download</a>;
+                  return <a className="download" onClick={() => {this.download(cellData.filename)} }>Download {this.state.progressValue}</a>;
               } else { // Just return the blank unformatted string if that's what we have
                   return cellData.filename;
               }
