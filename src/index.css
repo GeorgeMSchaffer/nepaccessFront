@@ -5,6 +5,7 @@ html {
   background: black;
 	color: white;
   min-height: 1200px;
+  min-width: 1080px;
 }
 
 input .dark {

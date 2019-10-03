@@ -17,13 +17,12 @@ class DownloadFile extends React.Component {
     download = (_filename) =>{ // TODO: Create state for row based on filename, use to update download progress?
         const FileDownload = require('js-file-download');
         
-        // TODO: Progress bar or at least indication it is downloading
+        // Progress percentage and indication it is downloading
         this.setState({
           downloadText: 'Downloading...',
           downloadClass: 'disabled_download'
         });
         
-        // axios.get('http://localhost:8080/file/downloadFile',{
         axios.get(Globals.currentHost + 'file/downloadFile',{
           params: {
             filename: _filename
@@ -31,16 +30,16 @@ class DownloadFile extends React.Component {
           responseType: 'blob',
           onDownloadProgress: (progressEvent) => {
             const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-            console.log("onUploadProgress", totalLength);
+            // console.log("onDownloadProgress", totalLength);
             if (totalLength !== null) {
                 this.setState({
-                    progressValue: Math.round( (progressEvent.loaded * 100) / totalLength )
+                    progressValue: Math.round( (progressEvent.loaded * 100) / totalLength ) + '%'
                 });
             }
           }
         }).then((response) => {
           
-          // TODO: Indicate download completed as file is saved/save as prompts depending on browser settings
+          // Indicate download completed as file is saved/prompted save as (depending on browser settings)
           this.setState({
             downloadText: 'Downloaded'
           });
