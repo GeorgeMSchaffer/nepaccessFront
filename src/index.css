@@ -114,6 +114,11 @@ a {
   display: none;
 }
 
+.disabled_download {
+  pointer-events: none;
+  cursor: default !important;
+}
+
 .block {
   display: block;
 }
