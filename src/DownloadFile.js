@@ -2,22 +2,22 @@ import React from 'react';
 import axios from 'axios';
 import './login.css';
 import Globals from './globals.js';
-// TODO: Pass props to this from SearchResults
 class DownloadFile extends React.Component {
 
+  // Receives needed props from React-Tabular instance in SearchResults.js
 	constructor(props){
 		super(props);
-        this.state = { 
-            progressValue: null,
-            downloadText: 'Download',
-            downloadClass: 'download'
-        };
+      this.state = { // Each and every download link via <DownloadFile /> has its own state
+        progressValue: null,
+        downloadText: 'Download',
+        downloadClass: 'download'
+      };
 	}
 
-    download = (_filename) =>{ // TODO: Create state for row based on filename, use to update download progress?
+    download = (_filename) =>{
         const FileDownload = require('js-file-download');
         
-        // Progress percentage and indication it is downloading
+        // Indicate download
         this.setState({
           downloadText: 'Downloading...',
           downloadClass: 'disabled_download'
@@ -28,14 +28,14 @@ class DownloadFile extends React.Component {
             filename: _filename
           },
           responseType: 'blob',
-          onDownloadProgress: (progressEvent) => {
+          onDownloadProgress: (progressEvent) => { // Show progress if available
             const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
             // console.log("onDownloadProgress", totalLength);
             if (totalLength !== null) {
-                this.setState({
-                    progressValue: Math.round( (progressEvent.loaded * 100) / totalLength ) + '%'
-                });
-            }
+              this.setState({
+                  progressValue: Math.round( (progressEvent.loaded * 100) / totalLength ) + '%'
+              });
+            } // else progress remains blank
           }
         }).then((response) => {
           
@@ -46,32 +46,34 @@ class DownloadFile extends React.Component {
           FileDownload(response.data, _filename);
           // verified = response && response.status === 200;
         })
-        .catch((err) => { // TODO: This will catch a 404
+        .catch((err) => { // TODO: Test, This will catch a 404
+          this.setState({
+            downloadText: 'Download not found',
+            downloadClass: 'disabled_download'
+          });
           // console.log(err);
         });
         
       }
 
-    render(){
-        if(this.props){
-            if(this.props.downloadType === "Comments"){
-              const cellData = this.props.cell._cell.row.data;
-              if(cellData.commentsFilename){
-                  return <a className={this.state.downloadClass} onClick={() => {this.download(cellData.commentsFilename)} }>{this.state.downloadText} {this.state.progressValue}</a>;
-              } else { // Just return the blank unformatted string if that's what we have
-                  return cellData.commentsFilename;
-              }
-            } else if(this.props.downloadType === "EIS"){
-              const cellData = this.props.cell._cell.row.data;
-              if(cellData.filename){
-                  return <a className={this.state.downloadClass} onClick={() => {this.download(cellData.filename)} }>{this.state.downloadText} {this.state.progressValue}</a>;
-              } else { // Just return the blank unformatted string if that's what we have
-                  return cellData.filename;
-              }
-            }
-          } else {
-              return "";
-          }
+    render(){ // TODO: Test
+      if(this.props){
+        const cellData = this.props.cell._cell.row.data;
+        let propFilename = null;
+        // Should receive exactly one downloadType prop and one filename prop (this.props.cell._cell.row.data.____)
+        if(this.props.downloadType === "Comments"){
+          propFilename = cellData.commentsFilename;
+        } else if(this.props.downloadType === "EIS"){
+          propFilename = cellData.filename;
+        }
+        if(propFilename){
+          return <a className={this.state.downloadClass} onClick={() => {this.download(propFilename)} }>{this.state.downloadText} {this.state.progressValue}</a>;
+        } else {
+          return propFilename;
+        }
+      } else {
+        return "";
+      }
     }
 }
 
