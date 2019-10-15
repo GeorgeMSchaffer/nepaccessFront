@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.css';
 import 'react-tabulator/lib/styles.css'; // required styles
 import 'react-tabulator/lib/css/tabulator_midnight.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
