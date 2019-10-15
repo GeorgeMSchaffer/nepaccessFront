@@ -1,7 +1,9 @@
 import React from 'react';
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
- 
+
+import './searcher.css';
+
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
 import {Tooltip,} from 'react-tippy';
@@ -173,7 +175,7 @@ class Searcher extends React.Component {
                             placeholderText="YYYY-MM-DD"
                             className="date" 
                         /></Tooltip>
-                        <label>Comment date</label>				
+                        <label>Comment date</label>
                         <Tooltip title="Exclude documents with comment metadata before this date.  Leave blank to include all">
                         <DatePicker
                             selected={this.state.startComment} 
@@ -215,16 +217,16 @@ class Searcher extends React.Component {
                         /></Tooltip>
                         </div>
                         <div>
-                            <label>
-                                <Tooltip title="Exclude records without comment downloads">
-                                <input type="checkbox" name="needsComments" onChange={this.onChecked} /></Tooltip>
+                            <Tooltip title="Exclude records without comment downloads">
+                            <label className="checkbox">
+                                <input type="checkbox" name="needsComments" onChange={this.onChecked} />
                                 Must have comments
-                            </label>
-                            <label>
-                                <Tooltip title="Exclude records without document downloads">
-                                <input type="checkbox" name="needsDocument" onChange={this.onChecked} /></Tooltip>
+                            </label></Tooltip>
+                            <Tooltip title="Exclude records without document downloads">
+                            <label className="checkbox">
+                                <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
                                 Must have document
-                            </label>
+                            </label></Tooltip>
                         </div>
                         <br />
                     </form>
