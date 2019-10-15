@@ -127,9 +127,38 @@ a {
 /* .tabulator {
 } */
 
-.multi *{
-	background-color: #333 !important;
-	color: #ddd !important;
+.multi {
+	background-color: #333;
+	color: white;
+}
+
+.react-select__menu {
+  color: white;
+}
+
+.react-select__control {
+  color: white;
+}
+
+/* Text and/or added items are children of value-container*/
+.react-select__value-container *{
+  background-color: #333;
+  color: #ddd;
+}
+
+/* .react-select__value-container *:hover{
+  background-color: #555;
+  color: #ddd;
+} */
+
+.react-select__menu-list {
+  background-color: #555;
+  color: green;
+}
+
+.react-select__multi-value__label {
+  background-color:lightblue;
+  color: red;
 }
 
 ul {
