@@ -99,6 +99,9 @@ class App extends React.Component {
 				this.setState({
 					networkError: 'Server is down or you may need to login again.'
 				});
+				this.setState({
+					resultsText: "Error: Couldn't get results"
+				});
 				// this.props.history.push('/login'); // TODO: Preserve Search state
 			});
 			
