@@ -1,10 +1,10 @@
 import React from 'react';
 import './index.css';
-import DownloadFile from './DownloadFile.js';
 import 'react-tabulator/lib/styles.css'; // required styles
 import 'react-tabulator/lib/css/tabulator_midnight.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
+import DownloadFile from './DownloadFile.js';
 
 class SearchResults extends React.Component {
 
@@ -44,8 +44,7 @@ class SearchResults extends React.Component {
           };
 
           // TODO: Rig up a filter to help narrow down the results with another search.
-          // This could also be used to entirely replace the MySQL fulltext search.
-          // However, Tabulator doesn't work super great with React.
+          // This could also be used to entirely replace the MySQL fulltext search, which is weird.
 
           // Could use just a bool prop to build the results text here instead of resultsText prop?
           return (

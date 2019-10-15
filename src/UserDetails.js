@@ -40,13 +40,10 @@ class UserDetails extends React.Component {
         }).then(success => {
             if(success){
                 // if HTTP 200 (ok), clear fields and display success
-                let fields = document.getElementsByClassName("form-control");
-                let i;
-                for (i = 0; i < fields.length; i++) {
-                    fields[i].value = '';
-                }
                 this.setState({
-                    successLabel: "Password changed."
+                    successLabel: "Password changed.",
+                    oldPassword: '',
+                    newPassword: ''
                 });
                 console.log("Changed");
             } else {
