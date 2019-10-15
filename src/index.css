@@ -1,5 +1,6 @@
-/* dark colors for my personal readability */
+/* dark colors for readability */
 /* Need to pick a min height to prevent upward shifts when advancing table page */
+/* Need min width to maintain table column existence*/
 
 html {
   background: black;
@@ -124,9 +125,7 @@ a {
   display: block;
 }
 
-/* .tabulator {
-} */
-
+/* React-Select styling */
 .multi {
 	background-color: #333;
 	color: white;
@@ -140,7 +139,7 @@ a {
   color: white;
 }
 
-/* Text and/or added items are children of value-container*/
+/* Text and/or added items are children of value-container, no consistent class between children */
 .react-select__value-container *{
   background-color: #333;
   color: #ddd;
@@ -153,13 +152,15 @@ a {
 
 .react-select__menu-list {
   background-color: #555;
-  color: green;
 }
 
 .react-select__multi-value__label {
-  background-color:lightblue;
-  color: red;
+  background-color:#ddd;
 }
+
+/* Tabulator/table styling */
+/* .tabulator {
+} */
 
 ul {
   list-style-type: none;

@@ -150,7 +150,6 @@ class Searcher extends React.Component {
             control: (styles) => ({
                 ...styles,
                 backgroundColor: '#333',
-                // color: 'white',
             })
         }
 
@@ -223,6 +222,7 @@ class Searcher extends React.Component {
                             options={agencyOptions} 
                             onChange={this.onAgencyChange} 
                             placeholder="Search all" 
+                            // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
                             // menuIsOpen={true}
                         /></Tooltip>
                         </div>
