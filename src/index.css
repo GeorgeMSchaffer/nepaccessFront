@@ -201,3 +201,12 @@ span a:hover {
   position: fixed;
   top: 0px;
 } */
+
+label.checkbox {
+  display: block;
+  border:1px solid #888;
+}
+label.checkbox:hover {
+  background:#444;
+  cursor:pointer;
+}
