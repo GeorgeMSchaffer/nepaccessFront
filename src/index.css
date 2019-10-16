@@ -125,7 +125,7 @@ a {
   display: block;
 }
 
-/* React-Select styling */
+/* React-Select custom styling */
 .multi {
 	background-color: #333;
 	color: white;
@@ -156,6 +156,15 @@ a {
 
 .react-select__multi-value__label {
   background-color:#ddd;
+}
+
+.react-select__multi-value__remove {
+  background-color:#559;
+}
+
+.react-select__clear-indicator {
+  background-color:#559;
+  border-radius:5px;
 }
 
 /* Tabulator/table styling */
