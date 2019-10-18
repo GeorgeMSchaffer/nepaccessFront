@@ -4,6 +4,7 @@ import 'react-tabulator/lib/css/tabulator_midnight.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 import DownloadFile from './DownloadFile.js';
+import RecordDetails from './RecordDetails.js';
 
 class SearchResults extends React.Component {
 
@@ -17,19 +18,20 @@ class SearchResults extends React.Component {
               var newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
               registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
               filename: result.filename, 
-              commentsFilename: result.commentsFilename};
+              commentsFilename: result.commentsFilename,
+              id: result.id};
               return newObject;
           });
           
           const columns = [
-              { title: "Title", field: "title" },
+              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />) },
               { title: "Agency", field: "agency", width: 150 },
               { title: "Register date", field: "registerDate", width: 140 },
               { title: "Comment date", field: "commentDate", width: 140 },
               { title: "State", field: "state", width: 80 },
               { title: "Version", field: "documentType", width: 90 },
-              { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>)},
-              { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>)}
+              { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
+              { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
           ];
 
           var options = {

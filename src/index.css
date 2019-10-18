@@ -249,3 +249,9 @@ label.checkbox:hover {
   background:#444;
   cursor:pointer;
 }
+
+/* Modal styling */
+.ReactModal__Content {
+  background:black !important;
+  color: white;
+}
