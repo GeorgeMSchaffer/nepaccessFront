@@ -60,7 +60,7 @@ class DownloadFile extends React.Component {
         
       }
 
-    render(){ // TODO: Test
+    render(){ 
       if(this.props){
         const cellData = this.props.cell._cell.row.data;
         let propFilename = null;

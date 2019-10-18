@@ -185,7 +185,7 @@ class Searcher extends React.Component {
                                 dateFormat="yyyy-MM-dd" 
                                 placeholderText="YYYY-MM-DD"
                                 className="date" 
-                        /></Tooltip> to 
+                        /></Tooltip> to&nbsp;
                         <Tooltip title="Search by publishing metadata before this date.  Leave blank to include all">
                             <DatePicker
                                 selected={this.state.endPublish}
@@ -202,7 +202,7 @@ class Searcher extends React.Component {
                                 dateFormat="yyyy-MM-dd" 
                                 placeholderText="YYYY-MM-DD"
                                 className="date" 
-                        /></Tooltip> to 
+                        /></Tooltip> to&nbsp;
                         <Tooltip title="Exclude documents with comment metadata after this date.  Leave blank to include all">
                             <DatePicker
                                 selected={this.state.endComment}

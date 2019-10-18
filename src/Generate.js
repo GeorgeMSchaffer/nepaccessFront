@@ -66,36 +66,56 @@ class Generate extends React.Component {
     }
 
     render(){
-        return (
-        <div id="main">
-            <textarea cols='60' rows='20' name="csvText" onChange={this.csvChange} />
-            <ul>
-              <li>
-                <label>
-                  <input type="radio"
-                  value="send"
-                  checked={this.state.shouldSend}
-                  onChange={this.handleRadioChange}></input>
-                  Send an email to each user with credentials
-                </label>
-              </li>
-              <li>
-                <label>
-                  <input type="radio"
-                  value="noSend"
-                  checked={!this.state.shouldSend}
-                  onChange={this.handleRadioChange}></input>
-                  Do not send an email to each user with credentials
-                </label>
-              </li>
-            </ul>
-            <br /><br />
-            <button className="button" onClick={this.generate}>Generate accounts</button>
-            
-            <br /><br /><br />
-            <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
-        </div>
-        )
+      // If there's no reason for user to be here, redirect them
+      let flag = false;
+      let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
+      axios({
+          url: checkUrl,
+          method: 'POST'
+        }).then(response => {
+          let responseOK = response && response.status === 200;
+          if (responseOK) {
+            flag = true;
+          } else {
+            return "";
+          }
+        }).catch(error => {
+          return "";
+        })
+        if(!flag){
+          return "";
+        } else {
+          return (
+            <div id="main">
+                <textarea cols='60' rows='20' name="csvText" onChange={this.csvChange} />
+                <ul>
+                  <li>
+                    <label>
+                      <input type="radio"
+                      value="send"
+                      checked={this.state.shouldSend}
+                      onChange={this.handleRadioChange}></input>
+                      Send an email to each user with credentials
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input type="radio"
+                      value="noSend"
+                      checked={!this.state.shouldSend}
+                      onChange={this.handleRadioChange}></input>
+                      Do not send an email to each user with credentials
+                    </label>
+                  </li>
+                </ul>
+                <br /><br />
+                <button className="button" onClick={this.generate}>Generate accounts</button>
+                
+                <br /><br /><br />
+                <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
+            </div>
+          )
+        }
     }
 
     
