@@ -71,7 +71,7 @@ class DownloadFile extends React.Component {
           } else if(this.props.downloadType === "EIS"){
             propFilename = cellData.filename;
           }
-        } else { // filename only
+        } else if(this.props.filename) { // filename only
           propFilename = this.props.filename;
         }
         if(propFilename){
