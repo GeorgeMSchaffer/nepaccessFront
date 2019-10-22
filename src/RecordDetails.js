@@ -49,6 +49,8 @@ export default class RecordDetails extends React.Component {
                     return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p>;
                 } else if(key==='commentsFilename') {
                     return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p>;
+                } else {
+                    return "";
                 }
             }));
         }
