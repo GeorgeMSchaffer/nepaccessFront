@@ -64,23 +64,16 @@ class DownloadFile extends React.Component {
       if(this.props){
         let cellData = null;
         let propFilename = null;
-        if(this.props.cell){
+        if(this.props.cell){ // filename from React-Tabulator props
           cellData = this.props.cell._cell.row.data;
           if(this.props.downloadType === "Comments"){
             propFilename = cellData.commentsFilename;
           } else if(this.props.downloadType === "EIS"){
             propFilename = cellData.filename;
           }
-        } else {
+        } else { // filename only
           propFilename = this.props.filename;
         }
-        // const cellData = this.props.cell._cell.row.data;
-        // Should receive exactly one downloadType prop and one filename prop (this.props.cell._cell.row.data.____)
-        // if(this.props.downloadType === "Comments"){
-        //   propFilename = cellData.commentsFilename;
-        // } else if(this.props.downloadType === "EIS"){
-        //   propFilename = cellData.filename;
-        // }
         if(propFilename){
           return <button className={this.state.downloadClass} onClick={() => {this.download(propFilename)} }>{this.state.downloadText} {this.state.progressValue}</button>;
         } else {
