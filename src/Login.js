@@ -214,7 +214,7 @@ class Login extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <button type="button" id="submit" onClick={this.login} >Submit</button>
+                        <button type="button" className="button" id="submit" onClick={this.login} >Submit</button>
                     </div>
                 </div>
                 <div>

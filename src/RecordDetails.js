@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+
+import DownloadFile from './DownloadFile.js';
 // -1. User clicks Record
 // -2. Modal opens, shows Record metadata from props
 // 3. ID of record or foreign process ID is sent to backend with getRecordDetails(this.props.ID) and message becomes "Loading related documents..."
@@ -41,7 +43,13 @@ export default class RecordDetails extends React.Component {
         const cellData = this.props.cell._cell.row.data;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
-                return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> {cellData[key]}</p>;
+                if(key !== 'filename' && key !== 'commentsFilename') {
+                    return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> {cellData[key]}</p>;
+                } else if(key==='filename') {
+                    return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p>;
+                } else if(key==='commentsFilename') {
+                    return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p>;
+                }
             }));
         }
     }
@@ -77,7 +85,7 @@ export default class RecordDetails extends React.Component {
                     parentSelector={() => document.body}
                     // ariaHideApp={false}
                 >
-                    <button onClick={this.hideModal}>Close Modal</button>
+                    <button className='button' onClick={this.hideModal}>Close Details View</button>
                     <h2>Record details:</h2>
                     {this.showDetails()}
                     <h2>{this.state.message}</h2>

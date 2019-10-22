@@ -136,7 +136,7 @@ class ForgotPassword extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <button type="button" id="submit" onClick={this.sendResetLink} >Send reset link</button>
+                        <button type="button" className="button" id="submit" onClick={this.sendResetLink} >Send reset link</button>
                         <label className="infoLabel">{this.state.successLabel}</label>
                     </div>
                 </div>

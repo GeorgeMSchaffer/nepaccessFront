@@ -268,7 +268,7 @@ class Register extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <button type="button" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
+                        <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
                     </div>
                 </div>
             </div>
