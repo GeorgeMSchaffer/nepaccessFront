@@ -43,14 +43,12 @@ export default class RecordDetails extends React.Component {
         const cellData = this.props.cell._cell.row.data;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
-                if(key !== 'filename' && key !== 'commentsFilename') {
-                    return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> {cellData[key]}</p>;
-                } else if(key==='filename') {
+                if(key==='filename') {
                     return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p>;
                 } else if(key==='commentsFilename') {
                     return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p>;
                 } else {
-                    return "";
+                    return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> {cellData[key]}</p>;
                 }
             }));
         }
