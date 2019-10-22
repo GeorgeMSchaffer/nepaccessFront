@@ -41,7 +41,7 @@ export default class RecordDetails extends React.Component {
         const cellData = this.props.cell._cell.row.data;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
-                return <p key={i}>{key}: {cellData[key]}</p>;
+                return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> {cellData[key]}</p>;
             }));
         }
     }

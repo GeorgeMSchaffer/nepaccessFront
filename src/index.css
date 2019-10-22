@@ -255,3 +255,23 @@ label.checkbox:hover {
   background:black !important;
   color: white;
 }
+
+span.modal-title {
+  color: lightgreen;
+}
+
+p.modal-line {
+  display: block;
+  margin: 8px;
+}
+
+/* Custom tabulator styling */
+.tabulator-row:nth-child(even) {
+  background-color: #222 !important;
+}
+.tabulator-row {
+  background-color: #444 !important;
+}
+div.formatterCell:hover {
+  background-color: #333;
+}
