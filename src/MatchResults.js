@@ -39,8 +39,8 @@ class MatchResults extends React.Component {
                     console.log(match);
                     // If corresponding elements, concatenate them
                     if(document.id === match.document1 || document.id === match.document2) {
-                        // TODO: Fix by concatenating objects together
-                        data.push(document.concat(match));
+                        // TODO: Test, also get and use ID dynamically
+                        data.push(document.matchPercent = (match.match_percent));
                     }
                 });
             });
@@ -60,8 +60,8 @@ class MatchResults extends React.Component {
                 { title: "State", field: "state", width: 80 },
                 { title: "Version", field: "documentType", width: 90 },
                 { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
-                //   { title: "Match", field: "matchPercent", width: 80 }
+                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) },
+                { title: "Match", field: "matchPercent", width: 80 }
             ];
 
             var options = {
