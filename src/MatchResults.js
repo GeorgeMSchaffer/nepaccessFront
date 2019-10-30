@@ -35,12 +35,14 @@ class MatchResults extends React.Component {
             console.log('matches', matches);
             docs.forEach(function(document) {
                 matches.forEach(function(match) {
-                    console.log(document);
-                    console.log(match);
+                    // console.log(document);
+                    // console.log(match);
                     // If corresponding elements, concatenate them
                     if(document.id === match.document1 || document.id === match.document2) {
-                        // TODO: Test, also get and use ID dynamically
-                        data.push(document.matchPercent = (match.match_percent));
+                        // TODO: Test live, also get and use ID dynamically, get and use match% dynamically
+                        // console.log("Match: " + document.id);
+                        document.matchPercent = match.matchPercent;
+                        data.push(document);
                     }
                 });
             });
