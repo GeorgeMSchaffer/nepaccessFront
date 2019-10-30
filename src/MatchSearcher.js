@@ -38,7 +38,7 @@ class MatchSearcher extends React.Component {
     }
     
     onKeyUp = (evt) => {
-        console.log(this.sanePercent(Number.parseInt(evt.target.value)));
+        // console.log(this.sanePercent(Number.parseInt(evt.target.value)));
         if(this.sanePercent(Number.parseInt(evt.target.value))){
             this.setState( 
             { 

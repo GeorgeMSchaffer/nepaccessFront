@@ -13,8 +13,8 @@ class MatchResults extends React.Component {
         try {
           
             var data = [];
-            if(results.docs && results.matches){
-            console.log(' results here ', results);
+            if(results && results.docs && results.matches) {
+            // console.log(' results here ', results);
             var matches = results.matches.map((result, idx) => {
                 let newObject = {
                     matchId: result.match_id, document1: result.document1, document2: result.document2,
@@ -31,8 +31,8 @@ class MatchResults extends React.Component {
                 };
                 return newObject;
                 });
-            console.log('docs', docs);
-            console.log('matches', matches);
+            // console.log('docs', docs);
+            // console.log('matches', matches);
             docs.forEach(function(document) {
                 matches.forEach(function(match) {
                     // console.log(document);
@@ -46,11 +46,11 @@ class MatchResults extends React.Component {
                     }
                 });
             });
-            console.log(' data here ', data);
+            // console.log(' data here ', data);
             } else {
                 return (
                     <div>
-                    
+                        <h2>{this.props.resultsText}</h2>
                     </div>
                 )
             }
@@ -96,10 +96,10 @@ class MatchResults extends React.Component {
             console.log(e.toString());
             // Show the user something other than a blank page
             return (
-            <div>
-                <h2>{this.props.resultsText}</h2>
-                <ReactTabulator />
-            </div>
+                <div>
+                    <h2>{this.props.resultsText}</h2>
+                    <ReactTabulator />
+                </div>
             )
         }
 	}
