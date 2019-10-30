@@ -121,7 +121,10 @@ export default class RecordDetails extends React.Component {
                     return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p>;
                 } else if(key==='commentsFilename') {
                     return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p>;
-                } else {
+                } else if(key==='matchPercent') {
+                    return '';
+                }
+                else {
                     return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> {cellData[key]}</p>;
                 }
             }));
@@ -131,7 +134,6 @@ export default class RecordDetails extends React.Component {
     showDocuments = () => {
         return (
             <div>
-                <label className="errorLabel">{this.state.networkError}</label>
                 <MatchSearcher search={this.search} matchPercent={this.state.searcherInputs.matchPercent} id={this.props.cell._cell.row.data.id} />
                 <MatchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
             </div>
@@ -165,6 +167,7 @@ export default class RecordDetails extends React.Component {
                     // ariaHideApp={false}
                 >
                     <button className='button' onClick={this.hideModal}>Close Details View</button>
+                    <label className="errorLabel">{this.state.networkError}</label>
                     <h2>Record details:</h2>
                     {this.showDetails()}
                     <h2>{this.state.message}</h2>
