@@ -25,7 +25,7 @@ export default class RecordDetails extends React.Component {
         this.state = {
             searcherInputs: {
                 id: 0,
-                matchPercent: 0,
+                matchPercent: 90,
             },
             searchResults: [],
             networkError: '',
@@ -132,7 +132,7 @@ export default class RecordDetails extends React.Component {
         return (
             <div>
                 <label className="errorLabel">{this.state.networkError}</label>
-                <MatchSearcher search={this.search} />
+                <MatchSearcher search={this.search} matchPercent={this.state.searcherInputs.matchPercent} id={this.props.cell._cell.row.data.id} />
                 <MatchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
             </div>
         )

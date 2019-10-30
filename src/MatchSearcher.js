@@ -11,14 +11,23 @@ class MatchSearcher extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-            id: 4,
-            matchPercent: 99,
+            id: 0,
+            matchPercent: 80,
             searcherClassName: ''
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
 		// this.onKeyUp = this.onKeyUp.bind(this);
 	}
     
+    onKeyUp = (evt) => {
+		this.setState( 
+		{ 
+			[evt.target.name]: evt.target.value
+		}, () => {
+			this.debouncedSearch(this.state);
+		});
+    }
+
     // Can either just make the form a div or use this to prevent Submit default behavior
 	submitHandler(e) { e.preventDefault(); }
     
@@ -26,19 +35,23 @@ class MatchSearcher extends React.Component {
         return (
             <div className={this.state.searcherClassName}>
                 <form className="content dark" onSubmit={this.submitHandler}>
-                    {/* <Tooltip title="Set minimum matching percentage to query by">
-                    <label className="">
-                        <input type="" name="" onChange={} />
-                        Text
-                    </label>
-                    </Tooltip> */}
+                    <label htmlFor="matchSearchPercent">Search by match percentage</label>
+                    <Tooltip title="Search by title match certainty">
+                        <input id="matchSearchPercent" type="search" size="50" name="matchPercent" autoFocus 
+                        placeholder="1-100" onKeyUp={this.onKeyUp} />
+                    </Tooltip>
                 </form>
             </div>
         )
     }
 
     componentDidMount() {
-        this.debouncedSearch(this.state);
+        this.setState({
+            matchPercent: this.props.matchPercent,
+            id: this.props.id
+        }, () => {
+            this.debouncedSearch(this.state);
+        });
     }
 }
 
