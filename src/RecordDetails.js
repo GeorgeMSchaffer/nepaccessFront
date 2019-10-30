@@ -68,8 +68,8 @@ export default class RecordDetails extends React.Component {
 				} else {
 					return null;
 				}
-			}).then(parsedJson => {
-				console.log('this should be json', parsedJson);
+			}).then(parsedJson => { // can be empty (no results)
+				// console.log('this should be json', parsedJson); 
 				if(parsedJson){
                     let resultsText = " ";
                     if(parsedJson.matches.length === 1){
@@ -81,9 +81,9 @@ export default class RecordDetails extends React.Component {
                         searchResults: parsedJson,
                         resultsText: parsedJson.matches.length + resultsText,
                     });
-				} else {
+				} else { // empty
 					this.setState({
-						resultsText: "Unknown error: Couldn't parse results"
+						resultsText: "No results found"
 					});
 				}
 			}).catch(error => {

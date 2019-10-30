@@ -23,24 +23,23 @@ class MatchSearcher extends React.Component {
     // TODO: Probably need to change this to double on front and backend
     // and then maybe use Number.isNaN() for checks
     sanePercent = (percent) => { 
-        console.log(parseInt(percent));
-        if(Number.isInteger(parseInt(percent)) && percent < 101 && percent > 0){
+        let result = false;
+        if(Number.isInteger(percent) && percent < 101 && percent > 0){
+            result = true;
             this.setState({
                 matchPercentError: ''
-            }, () => {
-                return true;
             });
         } else {
             this.setState({
                 matchPercentError: 'Invalid percentage'
-            }, () => {
-                return false;
             });
         }
+        return result;
     }
     
     onKeyUp = (evt) => {
-        if(this.sanePercent(evt.target.value)){
+        console.log(this.sanePercent(Number.parseInt(evt.target.value)));
+        if(this.sanePercent(Number.parseInt(evt.target.value))){
             this.setState( 
             { 
                 [evt.target.name]: evt.target.value
