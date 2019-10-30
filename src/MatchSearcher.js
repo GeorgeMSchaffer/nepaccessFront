@@ -13,19 +13,41 @@ class MatchSearcher extends React.Component {
 		this.state = {
             id: 0,
             matchPercent: 80,
-            searcherClassName: ''
+            searcherClassName: '',
+            matchPercentError: ''
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
 		// this.onKeyUp = this.onKeyUp.bind(this);
-	}
+    }
+
+    // TODO: Probably need to change this to double on front and backend
+    // and then maybe use Number.isNaN() for checks
+    sanePercent = (percent) => { 
+        console.log(parseInt(percent));
+        if(Number.isInteger(parseInt(percent)) && percent < 101 && percent > 0){
+            this.setState({
+                matchPercentError: ''
+            }, () => {
+                return true;
+            });
+        } else {
+            this.setState({
+                matchPercentError: 'Invalid percentage'
+            }, () => {
+                return false;
+            });
+        }
+    }
     
     onKeyUp = (evt) => {
-		this.setState( 
-		{ 
-			[evt.target.name]: evt.target.value
-		}, () => {
-			this.debouncedSearch(this.state);
-		});
+        if(this.sanePercent(evt.target.value)){
+            this.setState( 
+            { 
+                [evt.target.name]: evt.target.value
+            }, () => {
+                this.debouncedSearch(this.state);
+            });
+        }
     }
 
     // Can either just make the form a div or use this to prevent Submit default behavior
@@ -37,7 +59,7 @@ class MatchSearcher extends React.Component {
                 <label htmlFor="matchSearchPercent">Search by match percentage</label>
                 <Tooltip title="Search by title match certainty">
                     <input id="matchSearchPercent" type="search" size="50" name="matchPercent" autoFocus 
-                    placeholder="1-100" onKeyUp={this.onKeyUp} />
+                    placeholder="1-100" onKeyUp={this.onKeyUp} /><label className="errorLabel">{this.state.matchPercentError}</label>
                 </Tooltip>
             </form>
         )
