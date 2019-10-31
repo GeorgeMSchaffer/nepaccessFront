@@ -26,7 +26,7 @@ class Searcher extends React.Component {
             collapsibleText: '- Search Criteria',
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
-		this.onKeyUp = this.onKeyUp.bind(this);
+		this.onInput = this.onInput.bind(this);
 		this.collapsibles = this.collapsibles.bind(this);
 	}
     
@@ -35,7 +35,7 @@ class Searcher extends React.Component {
      */
     // TODO: moment.js?
 
-	onKeyUp = (evt) => {
+	onInput = (evt) => {
         // const name = evt.target.name;
         // const value = evt.target.value;
 
@@ -174,7 +174,7 @@ class Searcher extends React.Component {
                         <label htmlFor="searchTitle">Search by title</label>
                         <Tooltip title="Search by words in title as they are typed.  Leave blank to include all">
                             <input id="searchTitle" type="search" size="50" name="title" autoFocus 
-                            placeholder="Leave blank to include all titles" onKeyUp={this.onKeyUp} />
+                            placeholder="Leave blank to include all titles" onInput={this.onInput} />
                         </Tooltip>
                         <label>Publication date</label>
                         {/* <input className="date" type="date" name="startPublish" onChange={this.onKeyUp}/> to <input className="endDate date" type="date" name="endPublish" onChange={this.onKeyUp}/> */}
