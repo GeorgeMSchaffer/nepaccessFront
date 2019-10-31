@@ -263,6 +263,9 @@ p.modal-line {
 .tabulator-table .tabulator-row {
   background-color: #444;
 }
+.tabulator-table div.tabulator-row:hover {
+  background-color: #000;
+}
 .tabulator-cell div.formatterCell:hover {
   background-color: #333;
 }
