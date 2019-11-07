@@ -67,24 +67,27 @@ class Generate extends React.Component {
 
     render(){
       // If there's no reason for user to be here, redirect them
-      let flag = false;
-      let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
-      axios({
-          url: checkUrl,
-          method: 'POST'
-        }).then(response => {
-          let responseOK = response && response.status === 200;
-          if (responseOK) {
-            flag = true;
-          } else {
-            return "";
-          }
-        }).catch(error => {
-          return "";
-        })
-        if(!flag){
-          return "";
-        } else {
+      // let flag = false;
+      // let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
+      // axios({
+      //     url: checkUrl,
+      //     method: 'POST'
+      //   }).then(response => {
+      //     console.log("Response", response);
+      //     console.log("Status", response.status);
+      //     let responseOK = response.data && response.status === 200;
+      //     if (responseOK) {
+      //       flag = true;
+      //     } else {
+      //       console.log("Else");
+      //       return "";
+      //     }
+      //   }).catch(error => {
+      //     return "";
+      //   })
+      //   if(!flag){
+      //     return "";
+      //   } else {
           return (
             <div id="main">
                 <textarea cols='60' rows='20' name="csvText" onChange={this.csvChange} />
@@ -115,7 +118,7 @@ class Generate extends React.Component {
                 <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
             </div>
           )
-        }
+        // }
     }
 
     
