@@ -63,6 +63,9 @@ class App extends React.Component {
 				endComment: this.state.searcherInputs.endComment,
 				agency: this.state.searcherInputs.agency,
 				state: this.state.searcherInputs.state,
+				typeAll: this.state.searcherInputs.typeAll,
+				typeFinal: this.state.searcherInputs.typeFinal,
+				typeDraft: this.state.searcherInputs.typeDraft,
 				needsComments: this.state.searcherInputs.needsComments,
 				needsDocument: this.state.searcherInputs.needsDocument
 			};

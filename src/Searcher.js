@@ -20,6 +20,9 @@ class Searcher extends React.Component {
             endComment: '',
             agency: [],
             state: [],
+            typeAll: true,
+            typeFinal: false,
+            typeDraft: false,
             needsComments: false,
             needsDocument: false,
             searcherClassName: '',
@@ -93,6 +96,21 @@ class Searcher extends React.Component {
 		});
     }
     
+    onTypeChecked = (evt) => {
+        if(evt.target.name==="typeAll" && evt.target.checked) { // All: Check all, uncheck others
+            this.setState({
+                typeAll: true,
+                typeFinal: false,
+                typeDraft: false
+            }, () => { this.debouncedSearch(this.state); });
+        } else { // Not all: Check target, uncheck all
+            this.setState({ 
+                [evt.target.name]: evt.target.checked,
+                typeAll: false
+            }, () => { this.debouncedSearch(this.state); });
+        }
+    }
+
 	onChecked = (evt) => {
 	    this.setState( { [evt.target.name]: evt.target.checked}, () => { this.debouncedSearch(this.state); });
     }
@@ -238,6 +256,13 @@ class Searcher extends React.Component {
                             onChange={this.onLocationChange} 
                             placeholder="Type here to search..." 
                         /></Tooltip>
+                        </div>
+                        <div>Type: <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
+                                All&nbsp;
+                                <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                Final&nbsp;
+                                <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
+                                Draft
                         </div>
                         <div>
                             <Tooltip title="Exclude records without comment downloads">
