@@ -23,6 +23,7 @@ class Searcher extends React.Component {
             typeAll: true,
             typeFinal: false,
             typeDraft: false,
+            typeOther: false,
             needsComments: false,
             needsDocument: false,
             searcherClassName: '',
@@ -101,7 +102,8 @@ class Searcher extends React.Component {
             this.setState({
                 typeAll: true,
                 typeFinal: false,
-                typeDraft: false
+                typeDraft: false,
+                typeOther: false
             }, () => { this.debouncedSearch(this.state); });
         } else { // Not all: Check target, uncheck all
             this.setState({ 
@@ -257,12 +259,14 @@ class Searcher extends React.Component {
                             placeholder="Type here to search..." 
                         /></Tooltip>
                         </div>
-                        <div>Type: <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
+                        <div><label>Version:</label><input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
                                 All&nbsp;
                                 <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
                                 Final&nbsp;
                                 <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                Draft
+                                Draft&nbsp;
+                                <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
+                                Other&nbsp;
                         </div>
                         <div>
                             <Tooltip title="Exclude records without comment downloads">
