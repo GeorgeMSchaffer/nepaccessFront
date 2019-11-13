@@ -39,6 +39,13 @@ class Searcher extends React.Component {
      */
     // TODO: moment.js?
 
+    onKeyUp = (evt) => {
+        if(evt.keyCode ===13){
+            evt.preventDefault();
+            this.debouncedSearch(this.state);
+        }
+    }
+
 	onInput = (evt) => {
         // const name = evt.target.name;
         // const value = evt.target.value;
@@ -183,7 +190,7 @@ class Searcher extends React.Component {
         ];
 
         return (
-            <div>
+            <div onKeyUp={this.onKeyUp}>
                 <Tooltip title="Click to hide/show search options">
                     <button className="collapsible" onClick={this.collapsibles}>
                         <span className="button-text">{this.state.collapsibleText}</span>
