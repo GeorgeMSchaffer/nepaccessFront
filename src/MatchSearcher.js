@@ -37,7 +37,7 @@ class MatchSearcher extends React.Component {
         return result;
     }
     
-    onKeyUp = (evt) => {
+    onChange = (evt) => {
         // console.log(this.sanePercent(Number.parseInt(evt.target.value)));
         if(this.sanePercent(Number.parseInt(evt.target.value))){
             this.setState( 
@@ -57,9 +57,10 @@ class MatchSearcher extends React.Component {
             <form onSubmit={this.submitHandler}>
                 <label htmlFor="matchSearchPercent">Search by match percentage</label>
                 <Tooltip title="Search by title match certainty">
-                    <input id="matchSearchPercent" type="search" size="50" name="matchPercent" autoFocus 
-                    placeholder="1-100" onKeyUp={this.onKeyUp} /><label className="errorLabel">{this.state.matchPercentError}</label>
+                    <input id="matchSearchPercent" type="range" min="1" max="100" value={this.state.matchPercent} 
+                        name="matchPercent" autoFocus onChange={this.onChange} />
                 </Tooltip>
+                {this.state.matchPercent}
             </form>
         )
     }

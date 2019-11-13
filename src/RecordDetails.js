@@ -25,7 +25,7 @@ export default class RecordDetails extends React.Component {
         this.state = {
             searcherInputs: {
                 id: 0,
-                matchPercent: 90,
+                matchPercent: 75,
             },
             searchResults: [],
             networkError: '',
