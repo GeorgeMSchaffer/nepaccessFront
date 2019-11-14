@@ -199,7 +199,7 @@ class Searcher extends React.Component {
                 <div className={this.state.searcherClassName}>
                     <form className="content dark" onSubmit={this.submitHandler}>
                         <label htmlFor="searchTitle">Search by title</label>
-                        <Tooltip title="Search by words in title as they are typed.  Leave blank to include all">
+                        <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases; default behavior is to match all records containing any word found.  Exact spelling only, case insensitive.  Pressing enter will refresh the search">
                             <input id="searchTitle" type="search" size="50" name="title" autoFocus 
                             placeholder="Leave blank to include all titles" onInput={this.onInput} />
                         </Tooltip>
