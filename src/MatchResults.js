@@ -46,6 +46,11 @@ class MatchResults extends React.Component {
                     }
                 });
             });
+
+            if(data.length > 0){
+                data.sort((a, b)  => (a.matchPercent < b.matchPercent) ? 1 : -1);
+            }
+
             // console.log(' data here ', data);
             } else {
                 return (

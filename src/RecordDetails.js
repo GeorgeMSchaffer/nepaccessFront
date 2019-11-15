@@ -50,7 +50,7 @@ export default class RecordDetails extends React.Component {
 
 			let dataToPass = { 
 				id: this.state.searcherInputs.id,
-				matchPercent: this.state.searcherInputs.matchPercent
+				matchPercent: (this.state.searcherInputs.matchPercent/100)
 			};
 
 			console.log("Inputs");

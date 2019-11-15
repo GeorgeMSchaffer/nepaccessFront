@@ -257,6 +257,10 @@ p.modal-line {
 }
 
 /* Custom tabulator styling */
+.tabulator {
+  min-height: 500px;
+}
+
 .tabulator-table .tabulator-row:nth-child(even) {
   background-color: #222;
 }

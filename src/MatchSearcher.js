@@ -20,11 +20,9 @@ class MatchSearcher extends React.Component {
 		// this.onKeyUp = this.onKeyUp.bind(this);
     }
 
-    // TODO: Probably need to change this to double on front and backend
-    // and then maybe use Number.isNaN() for checks
     sanePercent = (percent) => { 
         let result = false;
-        if(Number.isInteger(percent) && percent < 101 && percent > 0){
+        if(!Number.isNaN(parseFloat(percent)) && Number.isFinite(percent) && (percent/100) < 1.01 && (percent/100) > 0.00){
             result = true;
             this.setState({
                 matchPercentError: ''
@@ -57,7 +55,7 @@ class MatchSearcher extends React.Component {
             <form onSubmit={this.submitHandler}>
                 <label htmlFor="matchSearchPercent">Search by match percentage</label>
                 <Tooltip title="Search by title match certainty">
-                    <input id="matchSearchPercent" type="range" min="1" max="100" value={this.state.matchPercent} 
+                    <input id="matchSearchPercent" type="range" min="1" max="100" step="1" value={this.state.matchPercent} 
                         name="matchPercent" autoFocus onChange={this.onChange} />
                 </Tooltip>
                 {this.state.matchPercent}
