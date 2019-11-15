@@ -273,3 +273,9 @@ p.modal-line {
 .tabulator-cell div.formatterCell:hover {
   background-color: #333;
 }
+
+/* Custom modal stlying */
+
+div.ReactModalPortal>.ReactModal__Overlay--after-open {
+  background-color: rgba(128, 128, 255, 0.75) !important;
+}
