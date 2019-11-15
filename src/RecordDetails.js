@@ -39,6 +39,13 @@ export default class RecordDetails extends React.Component {
     showModal = (e) => { this.setState({ show: true }); }
     hideModal = (e) => { this.setState({ show: false }); }
 
+    
+    onKeyUp = (evt) => {
+        if(evt.key === "Escape"){
+            this.hideModal();
+        }
+    }
+
     search = (searcherState) => {
 
 		this.setState({
@@ -160,7 +167,7 @@ export default class RecordDetails extends React.Component {
 
         // TODO: Get related files from database, display here in interactive table with % slider
         return (
-            <div>
+            <div onKeyUp={this.onKeyUp}>
                 {this.Build()}
                 <ReactModal 
                     isOpen={this.state.show}
