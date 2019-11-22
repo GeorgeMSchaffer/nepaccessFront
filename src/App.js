@@ -20,7 +20,8 @@ class App extends React.Component {
 			agency: [],
 			state: [],
 			needsComments: false,
-			needsDocument: false
+			needsDocument: false,
+			limit: ''
 		},
 		searchResults: [],
 		resultsText: 'Results',
@@ -68,7 +69,8 @@ class App extends React.Component {
 				typeDraft: this.state.searcherInputs.typeDraft,
 				typeOther: this.state.searcherInputs.typeOther,
 				needsComments: this.state.searcherInputs.needsComments,
-				needsDocument: this.state.searcherInputs.needsDocument
+				needsDocument: this.state.searcherInputs.needsDocument,
+				limit: this.state.searcherInputs.limit
 			};
 
 			// console.log("Inputs");

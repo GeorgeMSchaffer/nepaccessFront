@@ -27,6 +27,7 @@ class Searcher extends React.Component {
             needsComments: false,
             needsDocument: false,
             searcherClassName: '',
+            limit: '',
             collapsibleText: '- Search Criteria',
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
@@ -288,6 +289,11 @@ class Searcher extends React.Component {
                                 Must have document file(s)
                             </label>
                             </Tooltip>
+                            <label>
+                                Limit&nbsp;
+                                <input id="searchLimit" type="number" step="100" min="0" max="100000" 
+                                placeholder="1000" name="limit" onInput={this.onInput} />
+                            </label>
                         </div>
                         <br />
                     </form>
