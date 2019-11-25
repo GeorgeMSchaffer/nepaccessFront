@@ -13,7 +13,13 @@ class Searcher extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-            title: '',
+            searchMode: "natural",
+            booleanTitle: '',
+            naturalTitle: '',
+            titleAll: '',
+            titleExact: '',
+            titleAny: '',
+            titleNone: '',
             startPublish: '',
             endPublish: '',
             startComment: '',
@@ -31,7 +37,6 @@ class Searcher extends React.Component {
             collapsibleText: '- Search Criteria',
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
-		this.onInput = this.onInput.bind(this);
 		this.collapsibles = this.collapsibles.bind(this);
 	}
     
@@ -45,6 +50,77 @@ class Searcher extends React.Component {
             evt.preventDefault();
             this.debouncedSearch(this.state);
         }
+        console.log(this.state.title);
+    }
+
+    onRadioChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value });
+    }
+
+    onInputTitleAll = (evt) => {
+        var mod = "";
+        if(evt.target.value && evt.target.value.length > 0){
+            var allArray = evt.target.value.trim().split(' ');
+            allArray = allArray.map(function(word) {
+                return "+" + word;
+            });
+            mod = allArray.join(' ');
+        } else {
+            mod = '';
+        }
+        this.setState( 
+        { 
+            titleAll: mod,
+            booleanTitle: mod + " " + this.state.titleExact + " " + this.state.titleAny + " " + this.state.titleNone,
+        }, () => { 
+            this.debouncedSearch(this.state);
+        });
+    }
+
+    onInputTitleNone = (evt) => {
+        var mod = "";
+        if(evt.target.value && evt.target.value.length > 0){
+            var allArray = evt.target.value.trim().split(' ');
+            allArray = allArray.map(function(word) {
+                return "-" + word;
+            });
+            mod = allArray.join(' ');
+        } else {
+            mod = '';
+        }
+        this.setState( 
+        { 
+            titleNone: mod,
+            booleanTitle: mod + " " + this.state.titleExact + " " + this.state.titleAny + " " + this.state.titleAll,
+        }, () => { 
+            this.debouncedSearch(this.state);
+        });
+    }
+
+    onInputTitleAny = (evt) => {
+        this.setState( 
+        { 
+            titleAny: evt.target.value,
+            booleanTitle: evt.target.value + " " + this.state.titleExact + " " + this.state.titleAll + " " + this.state.titleNone,
+        }, () => { 
+            this.debouncedSearch(this.state);
+        });
+    }
+    
+    onInputTitleExact = (evt) => {
+        var mod = "";
+        if(evt.target.value){
+            mod = "\"" + evt.target.value + "\"";
+        } else {
+            // do nothing
+        }
+        this.setState( 
+        { 
+            titleExact: mod,
+            booleanTitle: mod + " " + this.state.titleAny + " " + this.state.titleAll + " " + this.state.titleNone,
+        }, () => { 
+            this.debouncedSearch(this.state);
+        });
     }
 
 	onInput = (evt) => {
@@ -66,13 +142,14 @@ class Searcher extends React.Component {
 		//and use it to target the key on our `state` object with the same name, using bracket syntax
 		this.setState( 
 		{ 
-			[evt.target.name]: evt.target.value
+            [evt.target.name]: evt.target.value,
 		}, () => { // callback ensures state is set before state is used for search
-			this.debouncedSearch(this.state);
+            this.debouncedSearch(this.state);
 			// console.log("Searcher state");
 			// console.log(this.state);
-		});
+        });
     }
+
 	onAgencyChange = (evt) => {
 		var agencyLabels = [];
 		for(var i = 0; i < evt.length; i++){
@@ -199,44 +276,64 @@ class Searcher extends React.Component {
                 </Tooltip>
                 <div className={this.state.searcherClassName}>
                     <form className="content dark" onSubmit={this.submitHandler}>
-                        <label htmlFor="searchTitle">Search by title</label>
-                        <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases; default behavior is to match all records containing any word found.  Exact spelling only, case insensitive.  Pressing enter will refresh the search">
-                            <input id="searchTitle" type="search" size="50" name="title" autoFocus 
-                            placeholder="Leave blank to include all titles" onInput={this.onInput} />
-                        </Tooltip>
+
+                        
+                        <label>Search by title: 
+                            <input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
+                            defaultChecked />Default
+                            <input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
+                            />Advanced options
+                        </label>
+
+                        <div id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}>
+                            <br />
+                            <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance">
+                                <input id="searchTitle" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all" autoFocus onInput={this.onInput} />
+                            </Tooltip>
+                        </div>
+
+                        <div id="booleanModeOptions" hidden={this.state.searchMode==="natural"}>
+                            <label htmlFor="searchTitleAll">All these words</label>
+                            <input id="searchTitleAll" type="search" size="50" name="titleAll"  
+                            onInput={this.onInputTitleAll} />
+                            <label htmlFor="searchTitleExact">This exact word or phrase</label>
+                            <input id="searchTitleExact" type="search" size="50" name="titleExact" 
+                            onInput={this.onInputTitleExact} />
+                            <label htmlFor="searchTitleAny">Any of these words</label>
+                            <input id="searchTitleAny" type="search" size="50" name="titleAny" 
+                            onInput={this.onInputTitleAny} />
+                            <label htmlFor="searchTitleNone">None of these words</label>
+                            <Tooltip title="Excludes results containing any of these words.  NOTE: If all other title fields are empty, this will return no results.">
+                                <input id="searchTitleNone" type="search" size="50" name="titleNone" 
+                                onInput={this.onInputTitleNone} />
+                            </Tooltip>
+                        </div>
+
                         <label>Publication date</label>
                         {/* <input className="date" type="date" name="startPublish" onChange={this.onKeyUp}/> to <input className="endDate date" type="date" name="endPublish" onChange={this.onKeyUp}/> */}
                         <Tooltip title="Search by publishing metadata after this date.  Leave blank to include all">
                             <DatePicker
-                                selected={this.state.startPublish} 
-                                onChange={this.onStartDateChange} 
-                                dateFormat="yyyy-MM-dd" 
-                                placeholderText="YYYY-MM-DD"
+                                selected={this.state.startPublish} onChange={this.onStartDateChange} 
+                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                                 className="date" 
                         /></Tooltip> to&nbsp;
                         <Tooltip title="Search by publishing metadata before this date.  Leave blank to include all">
                             <DatePicker
-                                selected={this.state.endPublish}
-                                onChange={this.onEndDateChange}
-                                dateFormat="yyyy-MM-dd" 
-                                placeholderText="YYYY-MM-DD"
+                                selected={this.state.endPublish} onChange={this.onEndDateChange}
+                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                                 className="date" 
                         /></Tooltip>
                         <label>Comment date</label>
                         <Tooltip title="Exclude documents with comment metadata before this date.  Leave blank to include all">
                             <DatePicker
-                                selected={this.state.startComment} 
-                                onChange={this.onStartCommentChange} 
-                                dateFormat="yyyy-MM-dd" 
-                                placeholderText="YYYY-MM-DD"
+                                selected={this.state.startComment} onChange={this.onStartCommentChange} 
+                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                                 className="date" 
                         /></Tooltip> to&nbsp;
                         <Tooltip title="Exclude documents with comment metadata after this date.  Leave blank to include all">
                             <DatePicker
-                                selected={this.state.endComment}
-                                onChange={this.onEndCommentChange}
-                                dateFormat="yyyy-MM-dd" 
-                                placeholderText="YYYY-MM-DD"
+                                selected={this.state.endComment} onChange={this.onEndCommentChange}
+                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                                 className="date" 
                         /></Tooltip>
                         <div>

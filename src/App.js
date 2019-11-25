@@ -14,7 +14,7 @@ class App extends React.Component {
 
 	state = {
 		searcherInputs: {
-			title: '',
+			searchMode: '',
 			startPublish: '',
 			endPublish: '',
 			agency: [],
@@ -55,9 +55,16 @@ class App extends React.Component {
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
 				this.props.history.push('/login') // Prompt login if no auth token
 			}
+			let titleToPass = "";
+			if(this.state.searcherInputs.searchMode==='natural'){
+				titleToPass = this.state.searcherInputs.naturalTitle;
+			} else {
+				titleToPass = this.state.searcherInputs.booleanTitle;
+			}
 
 			let dataToPass = { 
-				title: this.state.searcherInputs.title, 
+				searchMode: this.state.searcherInputs.searchMode,
+				title: titleToPass, 
 				startPublish: this.state.searcherInputs.startPublish,
 				endPublish: this.state.searcherInputs.endPublish,
 				startComment: this.state.searcherInputs.startComment,
