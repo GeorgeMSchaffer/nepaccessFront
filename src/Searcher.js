@@ -37,7 +37,9 @@ class Searcher extends React.Component {
             collapsibleText: '- Search Criteria',
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
-		this.collapsibles = this.collapsibles.bind(this);
+        this.collapsibles = this.collapsibles.bind(this);
+        this.alphabetOnly = this.alphaNumeric.bind(this);
+        this.process = this.process.bind(this);
 	}
     
     /**
@@ -45,12 +47,37 @@ class Searcher extends React.Component {
      */
     // TODO: moment.js?
 
+    /** Return string with special characters stripped */
+    alphaNumeric(value) {
+        var sanitized = /[a-zA-Z0-9\s]+/g.exec(value);
+        if(sanitized){
+            return (sanitized.toString().trim());
+        } else {
+            return "";
+        }
+    }
+
+    /** Return whitespace-normalized string with optional prepended character per word in given text. */
+    process(character, text) {        
+        if(text && text.length > 0){
+            var processArray = text.split(/[\s]+/);
+            console.log(processArray);
+            processArray = processArray.map(function(word) {
+                return character + word.trim();
+            });
+            return processArray.join(' ');
+        } else {
+            return '';
+        }
+    }
+
     onKeyUp = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
             this.debouncedSearch(this.state);
         }
-        console.log(this.state.title);
+        console.log(this.state.booleanTitle);
+        console.log(this.state.naturalTitle);
     }
 
     onRadioChange = (evt) => {
@@ -58,66 +85,58 @@ class Searcher extends React.Component {
     }
 
     onInputTitleAll = (evt) => {
-        var mod = "";
-        if(evt.target.value && evt.target.value.length > 0){
-            var allArray = evt.target.value.trim().split(' ');
-            allArray = allArray.map(function(word) {
-                return "+" + word;
-            });
-            mod = allArray.join(' ');
-        } else {
-            mod = '';
-        }
+        var alphabetized = this.alphaNumeric(evt.target.value);
+        alphabetized = this.process("+", alphabetized);
+
         this.setState( 
         { 
-            titleAll: mod,
-            booleanTitle: mod + " " + this.state.titleExact + " " + this.state.titleAny + " " + this.state.titleNone,
+            titleAll: alphabetized,
+            booleanTitle: alphabetized + " " + this.state.titleExact + " " + this.state.titleAny + " " + this.state.titleNone,
         }, () => { 
             this.debouncedSearch(this.state);
         });
     }
 
     onInputTitleNone = (evt) => {
-        var mod = "";
-        if(evt.target.value && evt.target.value.length > 0){
-            var allArray = evt.target.value.trim().split(' ');
-            allArray = allArray.map(function(word) {
-                return "-" + word;
-            });
-            mod = allArray.join(' ');
-        } else {
-            mod = '';
-        }
+        var alphabetized = this.alphaNumeric(evt.target.value);
+        alphabetized = this.process("-", alphabetized);
+
         this.setState( 
         { 
-            titleNone: mod,
-            booleanTitle: mod + " " + this.state.titleExact + " " + this.state.titleAny + " " + this.state.titleAll,
+            titleNone: alphabetized,
+            booleanTitle: alphabetized + " " + this.state.titleExact + " " + this.state.titleAny + " " + this.state.titleAll,
         }, () => { 
             this.debouncedSearch(this.state);
         });
     }
 
     onInputTitleAny = (evt) => {
+        var alphabetized = this.alphaNumeric(evt.target.value);
+        alphabetized = this.process("", alphabetized);
+
         this.setState( 
         { 
-            titleAny: evt.target.value,
-            booleanTitle: evt.target.value + " " + this.state.titleExact + " " + this.state.titleAll + " " + this.state.titleNone,
+            titleAny: alphabetized,
+            booleanTitle: alphabetized + " " + this.state.titleExact + " " + this.state.titleAll + " " + this.state.titleNone,
         }, () => { 
             this.debouncedSearch(this.state);
         });
     }
     
     onInputTitleExact = (evt) => {
-        var mod = "";
+        var alphabetized = this.alphaNumeric(evt.target.value);
+        alphabetized = this.process("", alphabetized);
+
         if(evt.target.value){
-            mod = "\"" + evt.target.value + "\"";
+            alphabetized = "\"" + alphabetized + "\"";
         } else {
             // do nothing
         }
+
         this.setState( 
         { 
-            titleExact: mod,
-            booleanTitle: mod + " " + this.state.titleAny + " " + this.state.titleAll + " " + this.state.titleNone,
+            titleExact: alphabetized,
+            booleanTitle: alphabetized + " " + this.state.titleAny + " " + this.state.titleAll + " " + this.state.titleNone,
         }, () => { 
             this.debouncedSearch(this.state);
         });
@@ -287,7 +306,7 @@ class Searcher extends React.Component {
 
                         <div id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}>
                             <br />
-                            <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.">
+                            <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.  Special characters are ignored.">
                                 <input id="searchTitle" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all" autoFocus onInput={this.onInput} />
                             </Tooltip>
                         </div>
@@ -392,7 +411,7 @@ class Searcher extends React.Component {
                                 Must have document file(s)
                             </label>
                             </Tooltip>
-                            
+
                             <label>
                                 Limit&nbsp;
                                 <input id="searchLimit" type="number" step="100" min="0" max="100000" 
