@@ -61,7 +61,7 @@ class Searcher extends React.Component {
     process(character, text) {        
         if(text && text.length > 0){
             var processArray = text.split(/[\s]+/);
-            console.log(processArray);
+            // console.log(processArray);
             processArray = processArray.map(function(word) {
                 return character + word.trim();
             });
@@ -76,8 +76,8 @@ class Searcher extends React.Component {
             evt.preventDefault();
             this.debouncedSearch(this.state);
         }
-        console.log(this.state.booleanTitle);
-        console.log(this.state.naturalTitle);
+        // console.log(this.state.booleanTitle);
+        // console.log(this.state.naturalTitle);
     }
 
     onRadioChange = (evt) => {
