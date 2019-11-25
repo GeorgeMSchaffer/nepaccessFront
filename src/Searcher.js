@@ -287,15 +287,17 @@ class Searcher extends React.Component {
 
                         <div id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}>
                             <br />
-                            <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance">
+                            <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.">
                                 <input id="searchTitle" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all" autoFocus onInput={this.onInput} />
                             </Tooltip>
                         </div>
 
                         <div id="booleanModeOptions" hidden={this.state.searchMode==="natural"}>
                             <label htmlFor="searchTitleAll">All these words</label>
-                            <input id="searchTitleAll" type="search" size="50" name="titleAll"  
-                            onInput={this.onInputTitleAll} />
+                            <Tooltip title="Inclusion of extremely common words (of, the, etc.) will return zero results.">
+                                <input id="searchTitleAll" type="search" size="50" name="titleAll"  
+                                onInput={this.onInputTitleAll} />
+                            </Tooltip>
                             <label htmlFor="searchTitleExact">This exact word or phrase</label>
                             <input id="searchTitleExact" type="search" size="50" name="titleExact" 
                             onInput={this.onInputTitleExact} />
@@ -336,6 +338,7 @@ class Searcher extends React.Component {
                                 dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                                 className="date" 
                         /></Tooltip>
+
                         <div>
                         <label htmlFor="searchAgency">Agencies</label>
                         {/* <select multiple id="searchAgency">
@@ -351,6 +354,7 @@ class Searcher extends React.Component {
                                 // menuIsOpen={true}
                         /></Tooltip>
                         </div>
+
                         <div>
                         <label htmlFor="searchState">States</label>
                         {/* <select multiple id="searchState">
@@ -364,6 +368,7 @@ class Searcher extends React.Component {
                             placeholder="Type here to search..." 
                         /></Tooltip>
                         </div>
+
                         <div><label>Version:</label><input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
                                 All&nbsp;
                                 <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
@@ -373,6 +378,7 @@ class Searcher extends React.Component {
                                 <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
                                 Other&nbsp;
                         </div>
+
                         <div>
                             <Tooltip title="Exclude records without comment downloads">
                             <label className="checkbox">
@@ -386,6 +392,7 @@ class Searcher extends React.Component {
                                 Must have document file(s)
                             </label>
                             </Tooltip>
+                            
                             <label>
                                 Limit&nbsp;
                                 <input id="searchLimit" type="number" step="100" min="0" max="100000" 
