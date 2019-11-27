@@ -14,6 +14,7 @@ class Searcher extends React.Component {
         super(props);
 		this.state = {
             searchMode: "natural",
+            booleanOption: "all",
             booleanTitle: '',
             naturalTitle: '',
             titleAll: '',
@@ -46,10 +47,11 @@ class Searcher extends React.Component {
      * Event handlers
      */
     // TODO: moment.js?
-
     /** Return string with special characters stripped */
     alphaNumeric(value) {
-        var sanitized = /[a-zA-Z0-9\s]+/g.exec(value);
+        // Special characters (must be escaped to get in regex): [ \ ^ $ . | ? * + ( )
+        // Allow * for partial word search
+        var sanitized = /[a-zA-Z0-9\*\s]+/g.exec(value);
         if(sanitized){
             return (sanitized.toString().trim());
         } else {
@@ -71,14 +73,33 @@ class Searcher extends React.Component {
         }
     }
 
+
+    /** Capture enter key to prevent default behavior of form submit, force a new search (refresh results).
+     *  Also, sort out boolean mode
+     */
     onKeyUp = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
-            this.debouncedSearch(this.state);
+
+            let searchTerm = "";
+            if(this.state.booleanOption==="any") {
+                searchTerm = this.state.titleAny;
+            } else if(this.state.booleanOption==="all") {
+                searchTerm = this.state.titleAll;
+            } else if(this.state.booleanOption==="exact") {
+                searchTerm = this.state.titleExact;
+            }
+            this.setState( 
+                { 
+                    booleanTitle: searchTerm + this.state.titleNone,
+                }, () => { 
+                    this.debouncedSearch(this.state);
+            });
         }
         // console.log(this.state.booleanTitle);
         // console.log(this.state.naturalTitle);
     }
+
 
     onRadioChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value });
@@ -91,38 +112,12 @@ class Searcher extends React.Component {
         this.setState( 
         { 
             titleAll: alphabetized,
-            booleanTitle: alphabetized + " " + this.state.titleExact + " " + this.state.titleAny + " " + this.state.titleNone,
+            booleanTitle: alphabetized + this.state.titleNone,
         }, () => { 
             this.debouncedSearch(this.state);
         });
     }
 
-    onInputTitleNone = (evt) => {
-        var alphabetized = this.alphaNumeric(evt.target.value);
-        alphabetized = this.process("-", alphabetized);
-
-        this.setState( 
-        { 
-            titleNone: alphabetized,
-            booleanTitle: alphabetized + " " + this.state.titleExact + " " + this.state.titleAny + " " + this.state.titleAll,
-        }, () => { 
-            this.debouncedSearch(this.state);
-        });
-    }
-
-    onInputTitleAny = (evt) => {
-        var alphabetized = this.alphaNumeric(evt.target.value);
-        alphabetized = this.process("", alphabetized);
-
-        this.setState( 
-        { 
-            titleAny: alphabetized,
-            booleanTitle: alphabetized + " " + this.state.titleExact + " " + this.state.titleAll + " " + this.state.titleNone,
-        }, () => { 
-            this.debouncedSearch(this.state);
-        });
-    }
-    
     onInputTitleExact = (evt) => {
         var alphabetized = this.alphaNumeric(evt.target.value);
         alphabetized = this.process("", alphabetized);
@@ -136,11 +131,46 @@ class Searcher extends React.Component {
         this.setState( 
         { 
             titleExact: alphabetized,
-            booleanTitle: alphabetized + " " + this.state.titleAny + " " + this.state.titleAll + " " + this.state.titleNone,
+            booleanTitle: alphabetized + " " + this.state.titleNone,
         }, () => { 
             this.debouncedSearch(this.state);
         });
     }
+
+    onInputTitleAny = (evt) => {
+        var alphabetized = this.alphaNumeric(evt.target.value);
+        alphabetized = this.process("", alphabetized);
+
+        this.setState( 
+        { 
+            titleAny: alphabetized,
+            booleanTitle: alphabetized + " " + this.state.titleNone,
+        }, () => { 
+            this.debouncedSearch(this.state);
+        });
+    }
+    
+    onInputTitleNone = (evt) => {
+        var alphabetized = this.alphaNumeric(evt.target.value);
+        alphabetized = this.process("-", alphabetized);
+        var searchTerm = "";
+        if(this.state.booleanOption==="any"){
+            searchTerm = this.state.titleAny;
+        } else if(this.state.booleanOption==="all"){
+            searchTerm = this.state.titleAll;
+        } else if(this.state.booleanOption==="exact"){
+            searchTerm = this.state.titleExact;
+        }
+
+        this.setState( 
+        { 
+            titleNone: alphabetized,
+            booleanTitle: searchTerm + " " + alphabetized,
+        }, () => { 
+            this.debouncedSearch(this.state);
+        });
+    }
+
 
 	onInput = (evt) => {
         // const name = evt.target.name;
@@ -297,11 +327,11 @@ class Searcher extends React.Component {
                     <form className="content dark" onSubmit={this.submitHandler}>
 
                         
-                        <label>Search by title: 
-                            <input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
-                            defaultChecked />Default
-                            <input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
-                            />Advanced options
+                        <label htmlFor="searchMode">Search by title: 
+                            <label class="inline"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
+                            defaultChecked />Default</label>
+                            <label class="inline"><input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
+                            />Advanced</label>
                         </label>
 
                         <div id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}>
@@ -311,18 +341,32 @@ class Searcher extends React.Component {
                             </Tooltip>
                         </div>
 
+                        {/** This section causes Edge problems */}
                         <div id="booleanModeOptions" hidden={this.state.searchMode==="natural"}>
-                            <label htmlFor="searchTitleAll">All these words</label>
-                            <Tooltip title="Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                <input id="searchTitleAll" type="search" size="50" name="titleAll"  
-                                onInput={this.onInputTitleAll} />
-                            </Tooltip>
-                            <label htmlFor="searchTitleExact">This exact word or phrase</label>
-                            <input id="searchTitleExact" type="search" size="50" name="titleExact" 
-                            onInput={this.onInputTitleExact} />
-                            <label htmlFor="searchTitleAny">Any of these words</label>
+                            <br />
+                            <label class="inline"><input type="radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
+                            defaultChecked />All</label>
+                            <label class="inline"><input type="radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
+                            />Exact phrase</label>
+                            <label class="inline"><input type="radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
+                            />Any</label>
+                            <div hidden={this.state.booleanOption!=="all"}>
+                                {/* <label htmlFor="searchTitleAll">All these words</label> */}
+                                <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
+                                    <input id="searchTitleAll" type="search" size="50" name="titleAll"  
+                                    onInput={this.onInputTitleAll} />
+                                </Tooltip>
+                            </div>
+                            <div hidden={this.state.booleanOption!=="exact"}>
+                                {/* <label htmlFor="searchTitleExact">This exact word or phrase</label> */}
+                                <input id="searchTitleExact" type="search" size="50" name="titleExact" 
+                                onInput={this.onInputTitleExact} />
+                            </div>
+                            <div hidden={this.state.booleanOption!=="any"}>
+                            {/* <label htmlFor="searchTitleAny">Any of these words</label> */}
                             <input id="searchTitleAny" type="search" size="50" name="titleAny" 
                             onInput={this.onInputTitleAny} />
+                            </div>
                             <label htmlFor="searchTitleNone">None of these words</label>
                             <Tooltip title="Excludes results containing any of these words.  NOTE: If all other title fields are empty, this will return no results.">
                                 <input id="searchTitleNone" type="search" size="50" name="titleNone" 

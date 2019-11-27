@@ -116,6 +116,9 @@ input {
 .block {
   display: block;
 }
+.inline {
+  display: inline;
+}
 
 /* React-Select custom (multi-select) styling */
 .multi {
