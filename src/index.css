@@ -120,6 +120,10 @@ input {
   display: inline;
 }
 
+.highlight:hover {
+  color: rgb(153,216,210);
+}
+
 /* React-Select custom (multi-select) styling */
 .multi {
 	background-color: #333;

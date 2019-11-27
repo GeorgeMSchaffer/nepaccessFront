@@ -326,12 +326,15 @@ class Searcher extends React.Component {
                 <div className={this.state.searcherClassName}>
                     <form className="content dark" onSubmit={this.submitHandler}>
 
-                        
                         <label htmlFor="searchMode">Search by title: 
-                            <label class="inline"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
-                            defaultChecked />Default</label>
-                            <label class="inline"><input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
-                            />Advanced</label>
+                            <Tooltip title="Natural language mode:  Search results are returned in order of relevance according to rarity of the words given, relative to all records in the database">
+                                <label className="inline highlight"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
+                                defaultChecked />Default</label>
+                            </Tooltip>
+                            <Tooltip title="Boolean mode: Search results are either found or not found, using more specific options.">
+                                <label className="inline highlight"><input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
+                                />Advanced</label>
+                            </Tooltip>
                         </label>
 
                         <div id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}>
@@ -344,31 +347,41 @@ class Searcher extends React.Component {
                         {/** This section causes Edge problems */}
                         <div id="booleanModeOptions" hidden={this.state.searchMode==="natural"}>
                             <br />
-                            <label class="inline"><input type="radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
-                            defaultChecked />All</label>
-                            <label class="inline"><input type="radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
-                            />Exact phrase</label>
-                            <label class="inline"><input type="radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
-                            />Any</label>
+                            <Tooltip title="Return only records containing all of these words">
+                                <label className="inline highlight"><input type="radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
+                                defaultChecked />All</label>
+                            </Tooltip>
+                            <Tooltip title="Return only records containing this exact phrase">
+                                <label className="inline highlight"><input type="radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
+                                />Exact phrase</label>
+                            </Tooltip>
+                            <Tooltip title="Return records containing any of these words">
+                                <label className="inline highlight"><input type="radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
+                                />Any</label>
+                            </Tooltip>
                             <div hidden={this.state.booleanOption!=="all"}>
-                                {/* <label htmlFor="searchTitleAll">All these words</label> */}
-                                <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                    <input id="searchTitleAll" type="search" size="50" name="titleAll"  
-                                    onInput={this.onInputTitleAll} />
-                                </Tooltip>
+                            {/* <label htmlFor="searchTitleAll">All these words</label> */}
+                            <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
+                                <input id="searchTitleAll" type="search" size="50" name="titleAll"  
+                                onInput={this.onInputTitleAll} />
+                            </Tooltip>
                             </div>
                             <div hidden={this.state.booleanOption!=="exact"}>
-                                {/* <label htmlFor="searchTitleExact">This exact word or phrase</label> */}
+                            {/* <label htmlFor="searchTitleExact">This exact word or phrase</label> */}
+                            <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
                                 <input id="searchTitleExact" type="search" size="50" name="titleExact" 
                                 onInput={this.onInputTitleExact} />
+                            </Tooltip>
                             </div>
                             <div hidden={this.state.booleanOption!=="any"}>
                             {/* <label htmlFor="searchTitleAny">Any of these words</label> */}
-                            <input id="searchTitleAny" type="search" size="50" name="titleAny" 
-                            onInput={this.onInputTitleAny} />
+                            <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
+                                <input id="searchTitleAny" type="search" size="50" name="titleAny" 
+                                onInput={this.onInputTitleAny} />
+                            </Tooltip>
                             </div>
                             <label htmlFor="searchTitleNone">None of these words</label>
-                            <Tooltip title="Excludes results containing any of these words.  NOTE: If all other title fields are empty, this will return no results.">
+                            <Tooltip title="Excludes results containing any of these words.  NOTE: If the above field is empty, this will return no results.">
                                 <input id="searchTitleNone" type="search" size="50" name="titleNone" 
                                 onInput={this.onInputTitleNone} />
                             </Tooltip>
@@ -432,14 +445,19 @@ class Searcher extends React.Component {
                         /></Tooltip>
                         </div>
 
-                        <div><label>Version:</label><input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
-                                All&nbsp;
-                                <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                Final&nbsp;
-                                <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                Draft&nbsp;
-                                <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
-                                Other&nbsp;
+                        <div><label>Version:</label>
+                                <label className="inline highlight">
+                                    <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
+                                All&nbsp;</label>
+                                <label className="inline highlight">
+                                    <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                Final&nbsp;</label>
+                                <label className="inline highlight">
+                                    <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
+                                Draft&nbsp;</label>
+                                <label className="inline highlight">
+                                    <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
+                                Other&nbsp;</label>
                         </div>
 
                         <div>
