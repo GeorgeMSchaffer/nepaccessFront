@@ -244,7 +244,7 @@ button.download, button.link {
   cursor: pointer;
 }
 
-/* Checkboxes */
+/* Checkbox lines */
 label.checkbox {
   display: block;
   border:1px solid #888;
@@ -252,19 +252,6 @@ label.checkbox {
 label.checkbox:hover {
   background:#444;
   cursor:pointer;
-}
-
-/* Modal styling */
-.ReactModal__Content {
-  background:black !important;
-  color: white;
-}
-span.modal-title {
-  color: lightgreen;
-}
-p.modal-line {
-  display: block;
-  margin: 8px;
 }
 
 /* Custom tabulator styling */
@@ -289,4 +276,21 @@ p.modal-line {
 
 div.ReactModalPortal>.ReactModal__Overlay--after-open {
   background-color: rgba(128, 128, 255, 0.75) !important;
+}
+.ReactModal__Content {
+  background:black !important;
+  color: white;
+}
+span.modal-title {
+  color: lightgreen;
+}
+p.modal-line {
+  display: block;
+  margin: 8px;
+}
+
+/* Custom tooltip styling */
+
+div.tippy-tooltip div.enter {
+  background-color: rgb(0,40,20)
 }
