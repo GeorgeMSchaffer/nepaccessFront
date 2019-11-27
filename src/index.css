@@ -110,6 +110,10 @@ input {
   user-select: none;
 }
 
+*[hidden] { 
+  display: none; 
+}
+
 .display-none {
   display: none;
 }
