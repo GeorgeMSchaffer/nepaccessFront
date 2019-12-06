@@ -290,10 +290,10 @@ class Searcher extends React.Component {
             option: (styles, state) => ({
                  ...styles,
                 borderBottom: '1px dotted',
-	            backgroundColor: '#333',
-                color: '#ddd',
+	            backgroundColor: 'white',
+                color: 'black',
                 '&:hover': {
-                    backgroundColor: 'darkgreen'
+                    backgroundColor: 'lightgreen'
                 },
                 // ':active': {
                 //     ...styles[':active'],
@@ -303,7 +303,7 @@ class Searcher extends React.Component {
             }),
             control: (styles) => ({
                 ...styles,
-                backgroundColor: '#333',
+                backgroundColor: 'white',
             })
         }
 
@@ -325,8 +325,7 @@ class Searcher extends React.Component {
                 </Tooltip>
                 <div className={this.state.searcherClassName}>
                     <form className="content dark" onSubmit={this.submitHandler}>
-
-                        <label htmlFor="searchMode">Search by title: 
+                        <label htmlFor="searchMode">Search by keywords within titles: 
                             <Tooltip title="Natural language mode:  Search results are returned in order of relevance according to rarity of the words given, relative to all records in the database">
                                 <label className="inline highlight"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
                                 defaultChecked />Default</label>
@@ -337,10 +336,10 @@ class Searcher extends React.Component {
                             </Tooltip>
                         </label>
 
-                        <div id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}>
+                        <div id="naturalModeOptions" class="search" hidden={this.state.searchMode==="boolean"}>
                             <br />
                             <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.  Special characters are ignored.">
-                                <input id="searchTitle" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all" autoFocus onInput={this.onInput} />
+                                <input id="searchTitle" class="search" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInput} />
                             </Tooltip>
                         </div>
 
@@ -359,24 +358,24 @@ class Searcher extends React.Component {
                                 <label className="inline highlight"><input type="radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
                                 />Any</label>
                             </Tooltip>
-                            <div hidden={this.state.booleanOption!=="all"}>
+                            <div class="search" hidden={this.state.booleanOption!=="all"}>
                             {/* <label htmlFor="searchTitleAll">All these words</label> */}
                             <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                <input id="searchTitleAll" type="search" size="50" name="titleAll"  
+                                <input id="searchTitleAll" class="search" type="search" size="50" name="titleAll"  
                                 onInput={this.onInputTitleAll} />
                             </Tooltip>
                             </div>
-                            <div hidden={this.state.booleanOption!=="exact"}>
+                            <div class="search" hidden={this.state.booleanOption!=="exact"}>
                             {/* <label htmlFor="searchTitleExact">This exact word or phrase</label> */}
                             <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                <input id="searchTitleExact" type="search" size="50" name="titleExact" 
+                                <input id="searchTitleExact" class="search" type="search" size="50" name="titleExact" 
                                 onInput={this.onInputTitleExact} />
                             </Tooltip>
                             </div>
-                            <div hidden={this.state.booleanOption!=="any"}>
+                            <div class="search" hidden={this.state.booleanOption!=="any"}>
                             {/* <label htmlFor="searchTitleAny">Any of these words</label> */}
                             <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                <input id="searchTitleAny" type="search" size="50" name="titleAny" 
+                                <input id="searchTitleAny" class="search" type="search" size="50" name="titleAny" 
                                 onInput={this.onInputTitleAny} />
                             </Tooltip>
                             </div>
@@ -425,7 +424,7 @@ class Searcher extends React.Component {
                                 styles={customStyles}
                                 options={agencyOptions} 
                                 onChange={this.onAgencyChange} 
-                                placeholder="Type here to search..." 
+                                placeholder="Click here to select from dropdown and/or type to search..." 
                                 // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
                                 // menuIsOpen={true}
                         /></Tooltip>
@@ -441,7 +440,7 @@ class Searcher extends React.Component {
                             styles={customStyles}
                             options={stateOptions} 
                             onChange={this.onLocationChange} 
-                            placeholder="Type here to search..." 
+                            placeholder="Click here to select from dropdown and/or type to search..." 
                         /></Tooltip>
                         </div>
 
