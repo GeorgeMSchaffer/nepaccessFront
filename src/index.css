@@ -10,7 +10,6 @@
   position: relative;
 }
 
-
 html {
   background: rgb(255,255,255);
 	color: black;
@@ -53,6 +52,16 @@ button:hover {
 }
 .button-text {
   pointer-events: none; /* webkit fix */
+}
+
+#searchGlass {
+  width: 52px;
+  height: 52px;
+}
+.icon-search {
+  position: relative;
+  right: 6%;
+  pointer-events: none;
 }
 
 .search {
@@ -199,7 +208,7 @@ label.table {
 }
 
 .highlight:hover {
-  color: rgb(153,216,210);
+  color: rgb(120,190,210);
 }
 
 #nav-background {
@@ -311,6 +320,13 @@ input[type=checkbox]:checked + span {
   color: black;
 }
 
+div.react-select__indicator {
+  color: purple;
+}
+div.react-select__indicator:hover {
+  color: rgb(255,0,128);
+}
+
 /* Custom tabulator styling */
 
 .tabulator {
@@ -330,7 +346,7 @@ div.ReactModalPortal>.ReactModal__Overlay--after-open {
   color: black;
 }
 span.modal-title {
-  color: lightgreen;
+  color: darkgreen;
 }
 p.modal-line {
   display: block;

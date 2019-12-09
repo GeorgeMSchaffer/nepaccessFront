@@ -320,8 +320,8 @@ class Searcher extends React.Component {
             <div onKeyUp={this.onKeyUp}>
                 <div>
                     <div className="content" onSubmit={this.submitHandler}>
-                        <h2 class="title">NEPAccess</h2>
-                        <h4 class="tagline">Find NEPA documents by searching for keywords in title, as well as by agencies, states, and more</h4>
+                        <h2 className="title">NEPAccess</h2>
+                        <h4 className="tagline">Find NEPA documents by searching for keywords in title, as well as by agencies, states, and more</h4>
                         
                         <div className="search">
                             <label className="search" htmlFor="searchMode">Search by keywords within titles: 
@@ -336,17 +336,18 @@ class Searcher extends React.Component {
                             </label>
                         </div>
 
-                        <table className="search" id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}>
+                        <table className="search" id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}><tbody>
                             <tr><td className="search">
                                 <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.  Special characters are ignored.">
-                                    <input id="searchTitle" className="search" type="search" results size="50" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInput} />
+                                    <input id="searchTitle" className="search" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInput} />
                                 </Tooltip>
+                                <img id="searchGlass" className="icon-search" src="search.ico" />
                             </td></tr>
-                        </table>
+                        </tbody></table>
 
                         <div id="booleanModeOptions" hidden={this.state.searchMode==="natural"}>
                             <br />
-                            <div class="search">
+                            <div className="search">
                                 <Tooltip title="Return only records containing all of these words">
                                     <label className="inline highlight"><input type="radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                     defaultChecked />All</label>
@@ -361,30 +362,30 @@ class Searcher extends React.Component {
                                 </Tooltip>
                             </div>
                             <div hidden={this.state.booleanOption!=="all"}>
-                                <div class="search">
+                                <div className="search">
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                    <input id="searchTitleAll" class="search" type="search" size="50" name="titleAll" placeholder="Leave blank to include all titles"
+                                    <input id="searchTitleAll" className="search" type="search" size="50" name="titleAll" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleAll} />
                                     </Tooltip>
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="exact"}>
-                                <div class="search">
+                                <div className="search">
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                    <input id="searchTitleExact" class="search" type="search" size="50" name="titleExact" placeholder="Leave blank to include all titles"
+                                    <input id="searchTitleExact" className="search" type="search" size="50" name="titleExact" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleExact} />
                                     </Tooltip>
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="any"}>
-                                <div class="search">
+                                <div className="search">
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                        <input id="searchTitleAny" class="search" type="search" size="50" name="titleAny" placeholder="Leave blank to include all titles"
+                                        <input id="searchTitleAny" className="search" type="search" size="50" name="titleAny" placeholder="Leave blank to include all titles"
                                         onInput={this.onInputTitleAny} />
                                     </Tooltip>
                                 </div>
                             </div>
-                            <div class="search">
+                            <div className="search">
                             <label htmlFor="searchTitleNone">None of these words: </label>
                             <Tooltip title="Excludes results containing any of these words.  NOTE: If the above field is empty, this will return no results.">
                                 <input id="searchTitleNone" className="searchSecondary" type="search" name="titleNone" placeholder="Type to exclude words..."
@@ -393,7 +394,7 @@ class Searcher extends React.Component {
                             </div>
                         </div>
 
-                        <table className="searchContainer">
+                        <table className="searchContainer"><tbody>
                             <tr>
                                 <td><label className="table">Publication date</label></td>
                                 <td>
@@ -456,7 +457,7 @@ class Searcher extends React.Component {
                                 /></Tooltip>
                                 </td>
                             </tr>
-                        </table>
+                        </tbody></table>
 
 
 
@@ -464,7 +465,7 @@ class Searcher extends React.Component {
                         <Tooltip title="Click to hide/show advanced search options">
                             <button className="collapsible" onClick={this.collapsibles}>{this.state.collapsibleText}</button>
                         </Tooltip>
-                        <table id="advanced" className={this.state.searcherClassName}>
+                        <table id="advanced" className={this.state.searcherClassName}><tbody>
                             
 
                             <tr><td><label>Version:
@@ -502,7 +503,7 @@ class Searcher extends React.Component {
                                     <input id="searchLimit" type="number" step="100" min="0" max="100000" 
                                     placeholder="1000" name="limit" onInput={this.onInput} /> records at most
                                 </label></td></tr>
-                        </table>
+                        </tbody></table>
                         <br />
                     </div>
                 </div>
