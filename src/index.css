@@ -10,6 +10,7 @@
   position: relative;
 }
 
+
 html {
   background: rgb(255,255,255);
 	color: black;
@@ -17,9 +18,21 @@ html {
   min-width: 1080px;
 }
 
-input {
-  color: #222;
-  background: #eee;
+.title {
+  color: darkslategray;
+  margin: 10px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tagline {
+  color: darkslategray;
+  margin: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 label {
@@ -42,17 +55,13 @@ button:hover {
   pointer-events: none; /* webkit fix */
 }
 
-input {
-  background: #bbb;
-}
-
-label.search {
+.search {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-div.search {
+.flex {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,28 +89,29 @@ input.search {
   color: black;
 }
 
-.title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tagline {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.datesContainer {
+.searchContainer {
   border: 1px solid;
   padding: 5px;
   background: lightgray;
   color: black;
+  width: 100%;
+}
+.searchContainer tr td:first-child {
+  width: 110px;
+}
+.searchContainer tr td:nth-child(2){
+  width: 400px;
+}
+.searchContainer tr td:nth-child(3){
+  width: 4%;
 }
 
 .date {
   background: white;
   color: black;
+}
+label.table {
+  display: inline;
 }
 
 /* Side navbar */
@@ -238,6 +248,7 @@ span a:hover {
 }
 
 /* Download links, download buttons */
+
 .download {
   color: darkblue;
   text-decoration-style: underline;
@@ -270,7 +281,8 @@ button.download, button.link {
   cursor: pointer;
 }
 
-/* Checkbox lines */
+/* Checkbox lines, checkboxes */
+
 label.checkbox {
   border:1px solid #888;
 }
@@ -278,12 +290,19 @@ label.checkbox:hover {
   background:#aaa;
   cursor:pointer;
 }
+input[type=checkbox] + span {
+  font-style: normal;
+} 
+input[type=checkbox]:checked + span {
+  font-weight: bold;
+}
 
 /* Custom React-Select styling */
+
 .react-select__value-container {
-  border: solid;
-  border-radius:1.5rem;
-  box-shadow: 0px 0px 2px 2px #555555;
+  border: solid #444;
+  border-radius:0.5rem;
+  box-shadow: 0px 0px 5px 1px #444;
   padding: 4% 5%;
   width: 50%; 
   margin: 0px;
@@ -293,8 +312,12 @@ label.checkbox:hover {
 }
 
 /* Custom tabulator styling */
+
 .tabulator {
   min-height: 500px;
+}
+div.tabulator-row.tabulator-row-even {
+  background-color: #ddd;
 }
 
 /* Custom modal stlying */
