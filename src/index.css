@@ -60,17 +60,16 @@ button:hover {
 }
 .icon-search {
   position: relative;
-  right: 6%;
+  right: 24px;
+  pointer-events: none;
+}
+.icon-search-advanced {
+  position: relative;
+  right: 24px;
   pointer-events: none;
 }
 
 .search {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.flex {
   display: flex;
   align-items: center;
   justify-content: center;

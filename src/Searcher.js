@@ -367,6 +367,7 @@ class Searcher extends React.Component {
                                     <input id="searchTitleAll" className="search" type="search" size="50" name="titleAll" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleAll} />
                                     </Tooltip>
+                                    <img id="searchGlass" className="icon-search-advanced" src="search.ico" />
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="exact"}>
@@ -375,6 +376,7 @@ class Searcher extends React.Component {
                                     <input id="searchTitleExact" className="search" type="search" size="50" name="titleExact" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleExact} />
                                     </Tooltip>
+                                    <img id="searchGlass" className="icon-search-advanced" src="search.ico" />
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="any"}>
@@ -383,6 +385,7 @@ class Searcher extends React.Component {
                                         <input id="searchTitleAny" className="search" type="search" size="50" name="titleAny" placeholder="Leave blank to include all titles"
                                         onInput={this.onInputTitleAny} />
                                     </Tooltip>
+                                    <img id="searchGlass" className="icon-search-advanced" src="search.ico" />
                                 </div>
                             </div>
                             <div className="search">
