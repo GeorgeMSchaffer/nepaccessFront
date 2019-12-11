@@ -60,31 +60,49 @@ button:hover {
   pointer-events: none; /* webkit fix */
 }
 
-#searchGlass {
-  width: 52px;
-  height: 52px;
-  position: fixed;
-}
-.icon-search {
+/** Magnifying glass icon */
+
+#search-glass {
+  width: 30px;
+  height: 30px;
+  right: 40px;
+  top: 10px;
   position: relative;
-  right: 24px;
-  pointer-events: none;
+  z-index: 1;
 }
-.icon-search-advanced {
-  position: relative;
-  right: 24px;
-  pointer-events: none;
+#search-glass path {
+  fill: darkslateblue;
 }
+.icon:hover {
+  filter: invert(0.5);
+}
+.icon--click {
+	animation: icon-effect 0.3s forwards;
+}
+@keyframes icon-effect {
+	0% {
+		transform: scale3d(0.3, 0.3, 1);
+	}
+	25%, 50% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+		transform: scale3d(1.0, 1.0, 1);
+	}
+}
+
 
 input.search {
   border: solid;
   border-radius:1.5rem;
   box-shadow: 0px 0px 2px 2px #555555;
-  padding-left: 10px;
+  text-indent: 20px;
   padding-top: 18px;
   padding-bottom: 18px;
+  padding-right: 40px;
   width: 60%;
-  margin: 5px 20% 5px 20%;
+  margin: 5px 0% 5px 20%;
   cursor: pointer;
   background: white;
   color: black;
@@ -94,18 +112,18 @@ input.search {
   border: solid;
   border-radius:1.5rem;
   box-shadow: 0px 0px 2px 2px #555555;
-  padding-left: 10px;
+  text-indent: 10px;
   padding-top: 15px;
   padding-bottom: 15px;
-  width: 50%;
-  margin: 5px 20% 5px 5px;
+  width: 45%;
+  margin: 5px 0% 5px 5px;
   cursor: pointer;
   background: white;
   color: black;
 }
 
 .none-label {
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .searchContainer {

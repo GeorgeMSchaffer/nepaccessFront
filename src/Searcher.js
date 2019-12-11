@@ -34,6 +34,7 @@ class Searcher extends React.Component {
             needsComments: false,
             needsDocument: false,
             searcherClassName: 'display-none',
+            iconClassName: 'icon icon--effect',
             limit: '',
             collapsibleText: '+ Advanced Options',
 		};
@@ -73,6 +74,23 @@ class Searcher extends React.Component {
         }
     }
 
+    forceSearch() {
+        let searchTerm = "";
+        if(this.state.booleanOption==="any") {
+            searchTerm = this.state.titleAny;
+        } else if(this.state.booleanOption==="all") {
+            searchTerm = this.state.titleAll;
+        } else if(this.state.booleanOption==="exact") {
+            searchTerm = this.state.titleExact;
+        }
+        this.setState( 
+            { 
+                booleanTitle: searchTerm + this.state.titleNone,
+            }, () => { 
+                this.debouncedSearch(this.state);
+        });
+    }
+
 
     /** Capture enter key to prevent default behavior of form submit, force a new search (refresh results).
      *  Also, sort out boolean mode
@@ -81,25 +99,20 @@ class Searcher extends React.Component {
         if(evt.keyCode ===13){
             evt.preventDefault();
 
-            let searchTerm = "";
-            if(this.state.booleanOption==="any") {
-                searchTerm = this.state.titleAny;
-            } else if(this.state.booleanOption==="all") {
-                searchTerm = this.state.titleAll;
-            } else if(this.state.booleanOption==="exact") {
-                searchTerm = this.state.titleExact;
-            }
-            this.setState( 
-                { 
-                    booleanTitle: searchTerm + this.state.titleNone,
-                }, () => { 
-                    this.debouncedSearch(this.state);
-            });
+            this.forceSearch();
         }
         // console.log(this.state.booleanTitle);
         // console.log(this.state.naturalTitle);
     }
 
+    onIconClick = (evt) => {
+        this.setState({ iconClassName: 'icon icon--click' });
+        
+        this.forceSearch();
+    }
+    iconCleaning = (evt) => {
+        this.setState({ iconClassName: 'icon' });
+    }
 
     onRadioChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value });
@@ -340,7 +353,9 @@ class Searcher extends React.Component {
                             <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.  Special characters are ignored.">
                                 <input id="searchTitle" className="search" type="search" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInput} />
                             </Tooltip>
-                            <svg id="searchGlass" className="icon-search"><path></path></svg>
+                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+							    <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+						    </svg>
                         </div>
 
                         <div hidden={this.state.searchMode==="natural"}>
@@ -362,28 +377,34 @@ class Searcher extends React.Component {
                             <div hidden={this.state.booleanOption!=="all"}>
                                 <div>
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                    <input id="searchTitleAll" className="search" type="search" size="50" name="titleAll" placeholder="Leave blank to include all titles"
+                                    <input id="searchTitleAll" className="search" type="search" name="titleAll" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleAll} />
                                     </Tooltip>
-                                    {/* <img id="searchGlass" className="icon-search-advanced" src="search.ico" /> */}
+                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+						            </svg>
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="exact"}>
                                 <div>
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                    <input id="searchTitleExact" className="search" type="search" size="50" name="titleExact" placeholder="Leave blank to include all titles"
+                                    <input id="searchTitleExact" className="search" type="search"name="titleExact" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleExact} />
                                     </Tooltip>
-                                    {/* <img id="searchGlass" className="icon-search-advanced" src="search.ico" /> */}
+                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+						            </svg>
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="any"}>
                                 <div className="search">
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                        <input id="searchTitleAny" className="search" type="search" size="50" name="titleAny" placeholder="Leave blank to include all titles"
+                                        <input id="searchTitleAny" className="search" type="search" name="titleAny" placeholder="Leave blank to include all titles"
                                         onInput={this.onInputTitleAny} />
                                     </Tooltip>
-                                    {/* <img id="searchGlass" className="icon-search-advanced" src="search.ico" /> */}
+                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+						            </svg>
                                 </div>
                             </div>
                             <div className="inline center">
