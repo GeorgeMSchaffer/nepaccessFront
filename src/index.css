@@ -37,6 +37,12 @@ html {
 label {
   display: block;
 }
+label.center {
+  text-align: center;
+}
+div.center {
+  text-align: center;
+}
 
 button.button {
   margin-top: 15px;
@@ -57,6 +63,7 @@ button:hover {
 #searchGlass {
   width: 52px;
   height: 52px;
+  position: fixed;
 }
 .icon-search {
   position: relative;
@@ -69,18 +76,15 @@ button:hover {
   pointer-events: none;
 }
 
-.search {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 input.search {
   border: solid;
   border-radius:1.5rem;
   box-shadow: 0px 0px 2px 2px #555555;
-  padding: 4% 5%;
-  margin: 5px;
+  padding-left: 10px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  width: 60%;
+  margin: 5px 20% 5px 20%;
   cursor: pointer;
   background: white;
   color: black;
@@ -90,11 +94,18 @@ input.search {
   border: solid;
   border-radius:1.5rem;
   box-shadow: 0px 0px 2px 2px #555555;
-  padding: 4% 5%;
-  margin: 5px;
+  padding-left: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 50%;
+  margin: 5px 20% 5px 5px;
   cursor: pointer;
   background: white;
   color: black;
+}
+
+.none-label {
+  margin-left: 10%;
 }
 
 .searchContainer {
@@ -112,6 +123,9 @@ input.search {
 }
 .searchContainer tr td:nth-child(3){
   width: 4%;
+}
+.searchContainer tbody tr {
+  height: 25px;
 }
 
 .date {
@@ -291,12 +305,9 @@ button.download, button.link {
 
 /* Checkbox lines, checkboxes */
 
-label.checkbox {
+label.checkbox-list {
   border:1px solid #888;
-}
-label.checkbox:hover {
-  background:#aaa;
-  cursor:pointer;
+  padding: 2px;
 }
 input[type=checkbox] + span {
   font-style: normal;

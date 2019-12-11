@@ -323,8 +323,8 @@ class Searcher extends React.Component {
                         <h2 className="title">NEPAccess</h2>
                         <h4 className="tagline">Find NEPA documents by searching for keywords in title, as well as by agencies, states, and more</h4>
                         
-                        <div className="search">
-                            <label className="search" htmlFor="searchMode">Search by keywords within titles: 
+                        <div>
+                            <label className="center" htmlFor="searchMode">Search by keywords within titles: 
                                 <Tooltip title="Natural language mode:  Search results are returned in order of relevance according to rarity of the words given, relative to all records in the database">
                                     <label className="inline highlight"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
                                     defaultChecked />Default</label>
@@ -336,18 +336,16 @@ class Searcher extends React.Component {
                             </label>
                         </div>
 
-                        <table className="search" id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}><tbody>
-                            <tr><td className="search">
-                                <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.  Special characters are ignored.">
-                                    <input id="searchTitle" className="search" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInput} />
-                                </Tooltip>
-                                <svg id="searchGlass" className="icon-search"><path></path></svg>
-                            </td></tr>
-                        </tbody></table>
+                        <div hidden={this.state.searchMode==="boolean"}>
+                            <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.  Special characters are ignored.">
+                                <input id="searchTitle" className="search" type="search" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInput} />
+                            </Tooltip>
+                            <svg id="searchGlass" className="icon-search"><path></path></svg>
+                        </div>
 
-                        <div id="booleanModeOptions" hidden={this.state.searchMode==="natural"}>
+                        <div hidden={this.state.searchMode==="natural"}>
                             <br />
-                            <div className="search">
+                            <div className="center">
                                 <Tooltip title="Return only records containing all of these words">
                                     <label className="inline highlight"><input type="radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                     defaultChecked />All</label>
@@ -362,21 +360,21 @@ class Searcher extends React.Component {
                                 </Tooltip>
                             </div>
                             <div hidden={this.state.booleanOption!=="all"}>
-                                <div className="search">
+                                <div>
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
                                     <input id="searchTitleAll" className="search" type="search" size="50" name="titleAll" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleAll} />
                                     </Tooltip>
-                                    <img id="searchGlass" className="icon-search-advanced" src="search.ico" />
+                                    {/* <img id="searchGlass" className="icon-search-advanced" src="search.ico" /> */}
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="exact"}>
-                                <div className="search">
+                                <div>
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
                                     <input id="searchTitleExact" className="search" type="search" size="50" name="titleExact" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleExact} />
                                     </Tooltip>
-                                    <img id="searchGlass" className="icon-search-advanced" src="search.ico" />
+                                    {/* <img id="searchGlass" className="icon-search-advanced" src="search.ico" /> */}
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="any"}>
@@ -385,21 +383,24 @@ class Searcher extends React.Component {
                                         <input id="searchTitleAny" className="search" type="search" size="50" name="titleAny" placeholder="Leave blank to include all titles"
                                         onInput={this.onInputTitleAny} />
                                     </Tooltip>
-                                    <img id="searchGlass" className="icon-search-advanced" src="search.ico" />
+                                    {/* <img id="searchGlass" className="icon-search-advanced" src="search.ico" /> */}
                                 </div>
                             </div>
-                            <div className="search">
-                            <label htmlFor="searchTitleNone">None of these words: </label>
-                            <Tooltip title="Excludes results containing any of these words.  NOTE: If the above field is empty, this will return no results.">
-                                <input id="searchTitleNone" className="searchSecondary" type="search" name="titleNone" placeholder="Type to exclude words..."
-                                onInput={this.onInputTitleNone} />
-                            </Tooltip>
+                            <div className="inline center">
+                                <label className="none-label inline" htmlFor="searchTitleNone">None of these words: 
+                                </label>
+                                <Tooltip title="Excludes results containing any of these words.  NOTE: If the above field is empty, this will return no results.">
+                                    <input id="searchTitleNone" className="searchSecondary" type="search" name="titleNone" placeholder="Type to exclude words..."
+                                    onInput={this.onInputTitleNone} />
+                                </Tooltip>
                             </div>
                         </div>
 
                         <table className="searchContainer"><tbody>
                             <tr>
-                                <td><label className="table">Publication date</label></td>
+                                <td>
+                                    <label className="table">Publication date</label>
+                                </td>
                                 <td>
                                 <Tooltip title="Search by publishing metadata after this date.  Leave blank to include all">
                                         <DatePicker
@@ -415,7 +416,9 @@ class Searcher extends React.Component {
                                     /></Tooltip>
                                 </td>
                                 
-                                <td><label className="table" htmlFor="searchAgency">Agencies</label></td>
+                                <td>
+                                    <label className="table" htmlFor="searchAgency">Agencies</label>
+                                </td>
                                 <td>
                                     <Tooltip title="Search by specific agencies or departments.  Leave blank to include all">
                                         <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
@@ -448,27 +451,64 @@ class Searcher extends React.Component {
                                 
                                 <td><label className="table" htmlFor="searchState">States</label></td>
                                 <td>
-                                {/* <select multiple id="searchState">
-                                    <option value="AK">Alaska</option><option value="AL">Alabama</option><option value="AQ">Antarctica</option><option value="AR">Arkansas</option><option value="AS">American Samoa</option><option value="AZ">Arizona</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DC">District of Columbia</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="GU">Guam</option><option value="HI">Hawaii</option><option value="IA">Iowa</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="MA">Massachusetts</option><option value="MD">Maryland</option><option value="ME">Maine</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MO">Missouri</option><option value="MS">Mississippi</option><option value="MT">Montana</option><option value="NAT">National</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="NE">Nebraska</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NV">Nevada</option><option value="NY">New York</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="PR">Puerto Rico</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TT">Trust Territory of the Pacific Islands</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VA">Virginia</option><option value="VI">Virgin Islands</option><option value="VT">Vermont</option><option value="WA">Washington</option><option value="WI">Wisconsin</option><option value="WV">West Virginia</option><option value="WY">Wyoming</option>
-                                </select> */}
-                                <Tooltip title="Search by states or territories in metadata.  Leave blank to include all">
-                                <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
-                                    styles={customStyles}
-                                    options={stateOptions} 
-                                    onChange={this.onLocationChange} 
-                                    placeholder="Click here to select from dropdown and/or type to search..." 
-                                /></Tooltip>
+                                    {/* <select multiple id="searchState">
+                                        <option value="AK">Alaska</option><option value="AL">Alabama</option><option value="AQ">Antarctica</option><option value="AR">Arkansas</option><option value="AS">American Samoa</option><option value="AZ">Arizona</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DC">District of Columbia</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="GU">Guam</option><option value="HI">Hawaii</option><option value="IA">Iowa</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="MA">Massachusetts</option><option value="MD">Maryland</option><option value="ME">Maine</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MO">Missouri</option><option value="MS">Mississippi</option><option value="MT">Montana</option><option value="NAT">National</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="NE">Nebraska</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NV">Nevada</option><option value="NY">New York</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="PR">Puerto Rico</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TT">Trust Territory of the Pacific Islands</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VA">Virginia</option><option value="VI">Virgin Islands</option><option value="VT">Vermont</option><option value="WA">Washington</option><option value="WI">Wisconsin</option><option value="WV">West Virginia</option><option value="WY">Wyoming</option>
+                                    </select> */}
+                                    <Tooltip title="Search by states or territories in metadata.  Leave blank to include all">
+                                    <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
+                                        styles={customStyles}
+                                        options={stateOptions} 
+                                        onChange={this.onLocationChange} 
+                                        placeholder="Click here to select from dropdown and/or type to search..." 
+                                    /></Tooltip>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className='checkbox-list'>Version</td>
+                                <td>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
+                                        <span>All&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                        <span>Final&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
+                                        <span>Draft&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
+                                        <span>Other&nbsp;</span></label>
+                                </td>
+                            
+                            <td className='checkbox-list'>Downloads</td>
+                                <td><Tooltip title="Exclude records without comment downloads">
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="needsComments" checked={this.state.needsComments} onChange={this.onChecked} />
+                                        <span>Must have comment file(s)</span>
+                                    </label></Tooltip>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Return</label>
+                                </td>
+                                <td>
+                                    <input id="searchLimit" type="number" step="100" min="0" max="100000" 
+                                    placeholder="1000" name="limit" onInput={this.onInput} /> records at most
+                                </td>
+                                <td></td>
+                                <td><Tooltip title="Exclude records without document downloads">
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
+                                        <span>Must have document file(s)</span>
+                                    </label></Tooltip>
                                 </td>
                             </tr>
                         </tbody></table>
-
-
-
-                        <br />
-                        <Tooltip title="Click to hide/show advanced search options">
+                        
+                        {/* <Tooltip title="Click to hide/show advanced search options">
                             <button className="collapsible" onClick={this.collapsibles}>{this.state.collapsibleText}</button>
-                        </Tooltip>
-                        <table id="advanced" className={this.state.searcherClassName}><tbody>
+                        </Tooltip> */}
+                        {/* <table id="advanced" className={this.state.searcherClassName}><tbody>
                             
 
                             <tr><td><label>Version:
@@ -506,8 +546,7 @@ class Searcher extends React.Component {
                                     <input id="searchLimit" type="number" step="100" min="0" max="100000" 
                                     placeholder="1000" name="limit" onInput={this.onInput} /> records at most
                                 </label></td></tr>
-                        </tbody></table>
-                        <br />
+                        </tbody></table> */}
                     </div>
                 </div>
             </div>
