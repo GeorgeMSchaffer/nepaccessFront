@@ -341,7 +341,7 @@ class Searcher extends React.Component {
                                 <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.  Special characters are ignored.">
                                     <input id="searchTitle" className="search" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInput} />
                                 </Tooltip>
-                                <img id="searchGlass" className="icon-search" src="search.ico" />
+                                <svg id="searchGlass" className="icon-search"><path></path></svg>
                             </td></tr>
                         </tbody></table>
 
