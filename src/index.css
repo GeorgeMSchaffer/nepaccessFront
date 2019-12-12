@@ -97,7 +97,7 @@ button:hover {
   user-select: none;
 }
 #search-mode:hover {
-  color: skyblue;
+  color: rgb(120,190,210);
 }
 
 .animation1 {
@@ -336,7 +336,7 @@ span a:hover {
   background: none!important;
   border: none;
   padding: 0!important;
-  color: lightgray;
+  color: rgb(59, 59, 59);
   /*optional*/
   font-family: arial, sans-serif;
   /*input has OS specific font-family*/
