@@ -11,24 +11,20 @@
 }
 
 html {
-  background: rgb(255,255,255);
+  background: #FCFAF5;
 	color: black;
   min-height: 1200px;
   min-width: 1080px;
 }
 
 .title {
-  color: darkslategray;
   margin: 10px;
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .tagline {
+  margin: 20px 0px 50px 0px;
+}
+.tagline, .title {
   color: darkslategray;
-  margin: 5px;
-  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,38 +88,74 @@ button:hover {
 	}
 }
 
+#search-mode {
+  margin-left: -20px;
+  font-weight: bold;
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+  user-select: none;
+}
+#search-mode:hover {
+  color: skyblue;
+}
 
-input.search {
+.animation1 {
+  animation: icon-effect 0.3s forwards;
+}
+.animation2 {
+  animation: pop 0.3s linear 1;
+}
+@keyframes pop{
+  50%  {transform: scale(1.5);}
+  from {background-color: gray;}
+  to {background-color: #FCFAF5;}
+}
+
+.searchSecondary, input.search {
+  font: 600 17px Arial;
   border: solid;
   border-radius:1.5rem;
-  box-shadow: 0px 0px 2px 2px #555555;
+  box-shadow: 2px 2px 10px 4px #CCC;
   text-indent: 20px;
+  cursor: pointer;
+  background: white;
+  color: black;
+}
+input:hover, .multi:hover {
+  box-shadow: 2px 2px 10px 4px #AAA;
+}
+
+input.search {
+  border-width: 3px;
   padding-top: 18px;
   padding-bottom: 18px;
   padding-right: 40px;
   width: 60%;
   margin: 5px 0% 5px 20%;
-  cursor: pointer;
-  background: white;
-  color: black;
 }
 
 .searchSecondary {
-  border: solid;
-  border-radius:1.5rem;
-  box-shadow: 0px 0px 2px 2px #555555;
-  text-indent: 10px;
+  font: 500 16px Arial;
+  border-width: 2px;
+  box-shadow: 0px 0px 2px 2px #CCC;
   padding-top: 15px;
   padding-bottom: 15px;
   width: 45%;
   margin: 5px 0% 5px 5px;
-  cursor: pointer;
-  background: white;
-  color: black;
 }
 
 .none-label {
+  border-radius: 1.5em;
   margin-left: 20%;
+  user-select: none;
+}
+.no-select {
+  user-select: none;
+}
+
+.search-label {
+  margin: 0px 0% 5px 20%;
 }
 
 .searchContainer {
@@ -238,6 +270,11 @@ label.table {
   display: inline;
 }
 
+.boolean-radio {
+  border-radius: 1.5em;
+  margin-top: 0px;
+}
+
 .highlight:hover {
   color: rgb(120,190,210);
 }
@@ -290,7 +327,6 @@ span a:hover {
 /* Download links, download buttons */
 
 .download {
-  color: darkblue;
   text-decoration-style: underline;
 }
 .disabled_download {

@@ -13,7 +13,7 @@ class Searcher extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-            searchMode: "natural",
+            searchMode: 'natural',
             booleanOption: "all",
             booleanTitle: '',
             naturalTitle: '',
@@ -34,6 +34,7 @@ class Searcher extends React.Component {
             needsComments: false,
             needsDocument: false,
             searcherClassName: 'display-none',
+            searchModeName: 'Advanced search',
             iconClassName: 'icon icon--effect',
             limit: '',
             collapsibleText: '+ Advanced Options',
@@ -114,9 +115,9 @@ class Searcher extends React.Component {
         this.setState({ iconClassName: 'icon' });
     }
 
-    onRadioChange = (evt) => {
-        this.setState({ [evt.target.name]: evt.target.value });
-    }
+    // onRadioChange = (evt) => {
+    //     this.setState({ [evt.target.name]: evt.target.value });
+    // }
 
     onInputTitleAll = (evt) => {
         var alphabetized = this.alphaNumeric(evt.target.value);
@@ -276,6 +277,20 @@ class Searcher extends React.Component {
     onEndCommentChange = (date) => { 
         this.setState( { endComment: date}, () => { this.debouncedSearch(this.state); }); 
     }
+
+    searchModeClick = (evt) => {
+        if(this.state.searchModeName === 'Advanced search'){
+            this.setState ({
+                searchModeName: 'Basic search',
+                searchMode: 'boolean'
+            });
+        } else {
+            this.setState ({
+                searchModeName: 'Advanced search',
+                searchMode: 'natural'
+            });
+        }
+    }
     
     // Can either just make the form a div or use this to prevent Submit default behavior
 	submitHandler(e) { e.preventDefault(); }
@@ -333,20 +348,35 @@ class Searcher extends React.Component {
             <div onKeyUp={this.onKeyUp}>
                 <div>
                     <div className="content" onSubmit={this.submitHandler}>
-                        <h2 className="title">NEPAccess</h2>
-                        <h4 className="tagline">Find NEPA documents by searching for keywords in title, as well as by agencies, states, and more</h4>
+                        <h1 className="title">NEPAccess</h1>
+                        <h2 className="tagline">Find NEPA documents by searching for keywords in title, as well as by agencies, states, and more</h2>
                         
                         <div>
-                            <label className="center" htmlFor="searchMode">Search by keywords within titles: 
-                                <Tooltip title="Natural language mode:  Search results are returned in order of relevance according to rarity of the words given, relative to all records in the database">
+                            <label className="search-label" htmlFor="searchMode"><span className="no-select">Search by keywords within titles: </span>
+                                {/* <Tooltip title="Natural language mode:  Search results are returned in order of relevance according to rarity of the words given, relative to all records in the database">
                                     <label className="inline highlight"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
                                     defaultChecked />Default</label>
                                 </Tooltip>
                                 <Tooltip title="Boolean mode: Search results are either found or not found, using more specific options.">
                                     <label className="inline highlight"><input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
                                     />Advanced</label>
-                                </Tooltip>
+                                </Tooltip> */}
+                                <span hidden={this.state.searchMode==="natural"} className="animation2" >
+                                    <Tooltip title="Return only records containing all of these words">
+                                        <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
+                                        defaultChecked />All</label>
+                                    </Tooltip>
+                                    <Tooltip title="Return only records containing this exact phrase">
+                                        <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
+                                        />Exact phrase</label>
+                                    </Tooltip>
+                                    <Tooltip title="Return records containing any of these words">
+                                        <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
+                                        />Any</label>
+                                    </Tooltip>
+                                </span>
                             </label>
+                        
                         </div>
 
                         <div hidden={this.state.searchMode==="boolean"}>
@@ -356,11 +386,13 @@ class Searcher extends React.Component {
                             <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
 							    <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
 						    </svg>
+                            <label id="search-mode" className="inline" onClick={this.searchModeClick}>
+                                {this.state.searchModeName}
+                            </label>
                         </div>
 
                         <div hidden={this.state.searchMode==="natural"}>
-                            <br />
-                            <div className="center">
+                            {/* <div className="center animation1" hidden={this.state.searchMode==="natural"}>
                                 <Tooltip title="Return only records containing all of these words">
                                     <label className="inline highlight"><input type="radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                     defaultChecked />All</label>
@@ -373,25 +405,28 @@ class Searcher extends React.Component {
                                     <label className="inline highlight"><input type="radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
                                     />Any</label>
                                 </Tooltip>
-                            </div>
+                            </div> */}
                             <div hidden={this.state.booleanOption!=="all"}>
                                 <div>
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                    <input id="searchTitleAll" className="search" type="search" name="titleAll" placeholder="Leave blank to include all titles"
-                                    onInput={this.onInputTitleAll} />
+                                        <input id="searchTitleAll" className="search boolean" type="search" name="titleAll" placeholder="Leave blank to include all titles"
+                                        onInput={this.onInputTitleAll} />
                                     </Tooltip>
-                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
-							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
-						            </svg>
+                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+                                        <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+                                    </svg>
+                                    <label id="search-mode" className="inline" onClick={this.searchModeClick}>
+                                        {this.state.searchModeName}
+                                    </label>
                                 </div>
                             </div>
                             <div hidden={this.state.booleanOption!=="exact"}>
                                 <div>
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                    <input id="searchTitleExact" className="search" type="search"name="titleExact" placeholder="Leave blank to include all titles"
+                                    <input id="searchTitleExact" className="search boolean" type="search"name="titleExact" placeholder="Leave blank to include all titles"
                                     onInput={this.onInputTitleExact} />
                                     </Tooltip>
-                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
 							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
 						            </svg>
                                 </div>
@@ -399,19 +434,19 @@ class Searcher extends React.Component {
                             <div hidden={this.state.booleanOption!=="any"}>
                                 <div className="search">
                                     <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                        <input id="searchTitleAny" className="search" type="search" name="titleAny" placeholder="Leave blank to include all titles"
+                                        <input id="searchTitleAny" className="search boolean" type="search" name="titleAny" placeholder="Leave blank to include all titles"
                                         onInput={this.onInputTitleAny} />
                                     </Tooltip>
-                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
 							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
 						            </svg>
                                 </div>
                             </div>
                             <div className="inline center">
-                                <label className="none-label inline" htmlFor="searchTitleNone">None of these words: 
+                                <label className="none-label inline animation2" htmlFor="searchTitleNone">None of these words: 
                                 </label>
                                 <Tooltip title="Excludes results containing any of these words.  NOTE: If the above field is empty, this will return no results.">
-                                    <input id="searchTitleNone" className="searchSecondary" type="search" name="titleNone" placeholder="Type to exclude words..."
+                                    <input id="searchTitleNone" className="searchSecondary animation1" type="search" name="titleNone" placeholder="Type to exclude words..."
                                     onInput={this.onInputTitleNone} />
                                 </Tooltip>
                             </div>
