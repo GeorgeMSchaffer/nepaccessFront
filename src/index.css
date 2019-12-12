@@ -64,7 +64,6 @@ button:hover {
   right: 40px;
   top: 10px;
   position: relative;
-  z-index: 1;
 }
 #search-glass path {
   fill: darkslateblue;
@@ -401,6 +400,10 @@ div.tabulator-row.tabulator-row-even {
 }
 
 /* Custom modal stlying */
+
+/* .ReactModal__Overlay {
+  z-index: 2;
+} */
 
 div.ReactModalPortal>.ReactModal__Overlay--after-open {
   background-color: rgba(128, 128, 255, 0.75) !important;
