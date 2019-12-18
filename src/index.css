@@ -58,6 +58,15 @@ button:hover {
 
 /** Magnifying glass icon */
 
+#x {
+  width: 0px;
+  height: 0px;
+  /* position: relative; */
+}
+#x path {
+  fill: orange;
+}
+
 #search-glass {
   width: 30px;
   height: 30px;
@@ -276,6 +285,16 @@ label.table {
 
 .highlight:hover {
   color: rgb(120,190,210);
+}
+
+.tooltip-icon {
+  display: inline;
+  position: absolute;
+  /* padding-top: 100px; */
+  /* margin-top: 100px; */
+}
+.tooltip-icon:hover {
+  color: darkgreen;
 }
 
 #nav-background {
