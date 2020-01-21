@@ -468,7 +468,7 @@ class Searcher extends React.Component {
                         <div hidden={this.state.searchModeName==='Advanced search'}>
                             <div hidden={this.state.booleanOption!=="all"}>
                                 <div>
-                                    <input id="searchTitleAll" className="search boolean" type="search" name="titleAll" placeholder=""
+                                    <input id="searchTitleAll" className="search boolean" type="search" name="titleAll" 
                                         onInput={this.onInputTitleAll} onKeyUp={this.onKeyUpBoolean} 
                                         placeholder="Example: alaska* &quot;beaufort sea&quot;" />
                                     <Tooltip title="Boolean mode search.  Use * for partial words.  Surround with &quot;double quotes&quot; to match exact phrases.  Inclusion of extremely common words (of, the, etc.) or words smaller than three letters will return zero results.">
