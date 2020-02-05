@@ -152,7 +152,7 @@ class App extends React.Component {
 	render() {
 		// console.log("App");
 		return (
-			<div>
+			<div id="app-content">
 				<label className="errorLabel">{this.state.networkError}</label>
 				<Searcher search={this.search} />
 				<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} />

@@ -1,268 +1,178 @@
-/* Need min height to prevent upward shifts when advancing table page */
-/* Need min width to maintain table columns (prevent collapse/hide) */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url(http://fonts.googleapis.com/css?family=EB+Garamond);
 
-#main {
-  margin-top: 20px;
-  /* margin-left: 160px; /*Same as the width of the sidebar */
-}
-
-#advanced {
+#home-page {
   position: relative;
+  margin: auto;
+  min-width: 1440px;
+  height: 1440px;
+  overflow-y: scroll;
+
+  background: #FFFBF1;
 }
 
-html {
-  background: #FCFAF5;
-	color: black;
-  min-height: 1200px;
-  min-width: 1080px;
+#header {
+  position: fixed;
+  width: 100%;
+  min-width: 1440px;
+  height: 102px;
+  left: 0px;
+  top: 0px;
+
+  background: #C4C4C4;
+  border: 1px solid #FFFFFF;
+  box-sizing: border-box;
+  z-index: 2;
 }
 
-.title {
-  margin: 10px;
-}
-.tagline {
-  margin: 20px 0px 50px 0px;
-}
-.tagline, .title {
-  color: darkslategray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Header contents */
+
+#logo {
+  position: absolute;
+  width: 353.38px;
+  height: 123px;
 }
 
-label {
-  display: block;
-}
-label.center {
-  text-align: center;
-}
-div.center {
-  text-align: center;
+/* Logo contents */
+
+#logo-box {
+  position: absolute;
+  width: 353.38px;
+  height: 102px;
+  top: 0px;
+
+  background: #FFFFFF;
 }
 
-button.button {
-  margin-top: 15px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  display: block;
-  background: white;
-  color: #555;
-}
-button:hover {
-  background: wheat;
-}
-.button-text {
-  pointer-events: none; /* webkit fix */
+#logo-type {
+  position: absolute;
+  width: 289.2px;
+  height: 123px;
+  left: 48.8px;
+  top: -10px;
+  z-index: 1;
 }
 
-/** Magnifying glass icon */
-
-#x {
-  width: 0px;
-  height: 0px;
-  /* position: relative; */
-}
-#x path {
-  fill: orange;
-}
-
-#search-glass {
-  width: 30px;
-  height: 30px;
-  right: 40px;
-  top: 10px;
-  position: relative;
-}
-#search-glass path {
-  fill: darkslateblue;
-}
-.icon:hover {
-  filter: invert(0.5);
-}
-.icon--click {
-	animation: icon-effect 0.3s forwards;
-}
-@keyframes icon-effect {
-	0% {
-		transform: scale3d(0.3, 0.3, 1);
-	}
-	25%, 50% {
-		opacity: 0.5;
-	}
-	100% {
-		opacity: 1;
-		transform: scale3d(1.0, 1.0, 1);
-	}
-}
-
-#search-mode {
-  margin-left: -20px;
+#logo-type #NEP {
+  position: absolute;
+  width: 139.34px;
+  height: 78px;
+  left: 48.8px;
+  top: -10px;
+  
+  font-family: "EB Garamond";
+  font-style: normal;
   font-weight: bold;
-  color: blue;
-  cursor: pointer;
-  text-decoration: underline;
-  user-select: none;
-}
-#search-mode:hover {
-  color: rgb(120,190,210);
-}
-
-.animation1 {
-  animation: icon-effect 0.3s forwards;
-}
-.animation2 {
-  animation: pop 0.3s linear 1;
-}
-@keyframes pop{
-  50%  {transform: scale(1.5);}
-  from {background-color: gray;}
-  to {background-color: #FCFAF5;}
+  font-size: 48px;
+  line-height: 63px;
+  display: flex;
+  align-items: flex-end;
+  
+  color: #737272;
 }
 
-.searchSecondary, input.search {
-  font: 600 17px Arial;
-  border: solid;
-  border-radius:1.5rem;
-  box-shadow: 2px 2px 10px 4px #CCC;
-  text-indent: 20px;
-  cursor: pointer;
-  background: white;
-  color: black;
-}
-input:hover, .multi:hover {
-  box-shadow: 2px 2px 10px 4px #AAA;
-}
-
-input.search {
-  border-width: 3px;
-  padding-top: 18px;
-  padding-bottom: 18px;
-  padding-right: 40px;
-  width: 60%;
-  margin: 5px 0% 5px 20%;
+#logo-type #A {
+  position: absolute;
+  width: 107.74px;
+  height: 67px;
+  left: 123.54px;
+  top: 46px;
+  
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 96px;
+  line-height: 125px;
+  display: flex;
+  align-items: flex-end;
+  
+  color: #000000;
+  
 }
 
-.searchSecondary {
-  font: 500 16px Arial;
-  border-width: 2px;
-  box-shadow: 0px 0px 2px 2px #CCC;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  width: 45%;
-  margin: 5px 0% 5px 5px;
+#logo-type #ccess {
+  position: absolute;
+  width: 150.83px;
+  height: 23px;
+  left: 187.17px;
+  top: 68px;
+  
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 63px;
+  display: flex;
+  align-items: flex-end;
+  
+  color: #737272;
+  
 }
 
-.none-label {
-  border-radius: 1.5em;
-  margin-left: 20%;
-  user-select: none;
-}
-.no-select {
-  user-select: none;
-}
+/* End logo contents */
 
-.search-label {
-  margin: 0px 0% 5px 20%;
-}
-
-.searchContainer {
-  border: 1px solid;
-  padding: 5px;
-  background: lightgray;
-  color: black;
-  width: 100%;
-}
-.searchContainer tr td:first-child {
-  width: 110px;
-}
-.searchContainer tr td:nth-child(2){
-  width: 400px;
-}
-.searchContainer tr td:nth-child(3){
-  width: 4%;
-}
-.searchContainer tbody tr {
-  height: 25px;
-}
-
-.date {
-  background: white;
-  color: black;
-}
-label.table {
-  display: inline;
-}
-
-/* Side navbar */
-
-.sidenav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 160px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 100; /* Stay on top */
-  top: 0; /* Stay at the top */
-  left: 0;
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 20px;
-}
-.sidenav * {
-  padding-top: 20px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #313131;
-  display: block;
-}
-.sidenav *:hover {
-  color: green;
-}
-
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-
-.errorLabel {
+#top-menu {
+  position: absolute;
   display: inline-block;
-  padding: 0 0 0 25px;
-  font-style: italic;
-  color: coral;
-}
-.infoLabel {
-  color: darkblue;
+  right: 2%;
+  top: 18.75%;
+  bottom: 46.43%;
 }
 
-.collapsible {
-	display: block;
-  background-color: #bbb;
-  border-radius: 10px;
-  color: black;
+.top-menu-link {
+  position: relative;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 25px;
+
+  text-decoration: none;
+
+  color: #000000;
+}
+
+.right-nav-item {
+  margin-left: 10px;
+}
+
+#main-menu {
+  position: relative;
+  margin-left: 454px;
+  top: 58.04%;
+  bottom: 8.04%;
+}
+
+.main-menu-link {
+  position: relative;
+  margin-right: 30px;
+  min-width: 143px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+  display: inline-flex;
+  align-items: flex-end;
+  
+  color: #000000;
+
   cursor: pointer;
-  padding: 18px;
-  margin-bottom: 10px;
+  text-decoration: none;
+  
+}
+
+#bottom-border-header {
+  position: fixed;
   width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  text-decoration: underline;
-}
-.collapsible:hover {
-  background-color: #999;
+  min-width: 1440px;
+  top: 102px;
+
+  border: 4px solid #FFFFFF;
 }
 
-.content {
-  padding: 0px 0px;
-}
-
-.checkLabel {
-	cursor: pointer;
-	user-select: none;
-}
-
-.noSelect {
-  user-select: none;
-}
+/* End header content */
 
 *[hidden] { 
   display: none; 
@@ -271,176 +181,17 @@ label.table {
 .display-none {
   display: none;
 }
-.block {
-  display: block;
-}
-.inline {
-  display: inline;
-}
 
-.boolean-radio {
-  border-radius: 1.5em;
-  margin-top: 0px;
-}
-
-.highlight:hover {
-  color: rgb(120,190,210);
-}
-
-.tooltip-icon {
-  display: inline;
-  position: absolute;
-  /* padding-top: 100px; */
-  /* margin-top: 100px; */
-}
-.tooltip-icon:hover {
-  color: darkgreen;
-}
-
-#nav-background {
-  position: fixed;
-  z-index: 100;
-  height: 40px;
-  width: 100%;
-  background: #ccc;
-  color: black;
-  top: 0px;
-  left: 0px;
-}
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-li {
-  float: left;
-}
-a {
-  min-width: 100px;
-  min-height: 20px;
-  color: rgb(44,44,44);
-}
-li a:hover,
-span a:hover {
-  border-radius: 16px;
-  background-color: #eee;
-}
-.nav-link {
-  display: block;
-  text-align: center;
-  padding: 10px 16px;
-  text-decoration: underline;
-}
-.right-nav-item {
-  float: right;
-}
-
-.loadDefault {
+.cursor-default {
   cursor: default;
 }
-.loadWait {
-  cursor: wait;
-}
 
-/* Download links, download buttons */
-
-.download {
-  text-decoration-style: underline;
-}
-.disabled_download {
-  pointer-events: none;
-  cursor: default !important;
-  
-  background: none!important;
-  border: none;
-  padding: 0!important;
-  color: rgb(59, 59, 59);
-  /*optional*/
-  font-family: arial, sans-serif;
-  /*input has OS specific font-family*/
-  cursor: pointer;
-}
-.download:hover {
-  text-decoration: underline;
-}
-button.download, button.link {
-  background: none!important;
-  border: none;
-  padding: 0!important;
-  /*optional*/
-  font-family: arial, sans-serif;
-  /*input has OS specific font-family*/
-  color: darkblue;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-/* Checkbox lines, checkboxes */
-
-label.checkbox-list {
-  border:1px solid #888;
-  padding: 2px;
-}
-input[type=checkbox] + span {
-  font-style: normal;
-} 
-input[type=checkbox]:checked + span {
-  font-weight: bold;
-}
-
-/* Custom React-Select styling */
-
-.react-select__value-container {
-  border: solid #444;
-  border-radius:0.5rem;
-  box-shadow: 0px 0px 5px 1px #444;
-  padding: 4% 5%;
-  width: 50%; 
-  margin: 0px;
-  cursor: pointer;
-  background: white;
-  color: black;
-}
-
-div.react-select__indicator {
-  color: purple;
-}
-div.react-select__indicator:hover {
-  color: rgb(255,0,128);
-}
-
-/* Custom tabulator styling */
-
-.tabulator {
-  min-height: 500px;
-}
-div.tabulator-row.tabulator-row-even {
-  background-color: #ddd;
-}
-
-/* Custom modal stlying */
-
-/* .ReactModal__Overlay {
-  z-index: 2;
-} */
-
-div.ReactModalPortal>.ReactModal__Overlay--after-open {
-  background-color: rgba(128, 128, 255, 0.75) !important;
-}
-.ReactModal__Content {
-  background:white !important;
-  color: black;
-}
-span.modal-title {
-  color: darkgreen;
-}
-p.modal-line {
-  display: block;
-  margin: 8px;
-}
-
-/* Custom tooltip styling */
-
-div.tippy-tooltip div.enter {
-  background-color: rgb(40,80,60)
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
 }
