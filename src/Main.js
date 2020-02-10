@@ -127,6 +127,7 @@ class Main extends React.Component {
                 </div>
 
                 <div id="main-menu">
+                    <Link className="main-menu-link" to="/search">Search</Link>
                     <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
                     <Link className="main-menu-link" to="/aboutsite">About this site</Link>
                     <Link className="main-menu-link" to="/help">Help</Link>
@@ -141,6 +142,7 @@ class Main extends React.Component {
                 <Route path="/reset" component={Reset}/>
                 <Route path="/logout" component={Logout}/>
 
+                <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutsite" component={AboutSite}/>
                 <Route path="/help" component={Help}/>

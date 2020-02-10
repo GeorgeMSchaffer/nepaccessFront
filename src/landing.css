@@ -97,7 +97,7 @@
   cursor: text;
 }
 
-#search-box {
+#search-box, .search-box {
   width: 680px;
   height: 50px;
   margin: 0px;
@@ -138,3 +138,11 @@
 }
 
 /* End search box */
+
+/* Non landing search styling */
+
+#searcher-container {
+  width: 1140px;
+  height: 220px;
+  background: #737272;
+}

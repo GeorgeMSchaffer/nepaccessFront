@@ -1,0 +1,13 @@
+/* Custom tabulator styling */
+
+.tabulator {
+    height: 100%;
+}
+
+.tabulator-row .tabulator-cell {
+    white-space: normal;
+}
+
+.tabulator-row {
+    white-space: normal;
+}

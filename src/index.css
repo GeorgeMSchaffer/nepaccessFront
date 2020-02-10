@@ -174,12 +174,27 @@
 
 /* End header content */
 
+/* Main page should have a margin equal to the header size: */
+.content {
+  margin-top: 102px;
+}
+
+/* Special tags */
+
 *[hidden] { 
   display: none; 
 }
 
 .display-none {
   display: none;
+}
+
+.inline {
+  display: inline;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .cursor-default {

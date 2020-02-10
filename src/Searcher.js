@@ -3,6 +3,8 @@ import axios from 'axios';
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 
+import "./tabulator.css";
+
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
 import {Tooltip,} from 'react-tippy';
@@ -210,31 +212,31 @@ class Searcher extends React.Component {
 
     }
 
-    // onInputTitleExact = (evt) => {
-    //     var alphabetized = this.alphaNumeric(evt.target.value);
-    //     alphabetized = this.process("", alphabetized);
+    onInputTitleExact = (evt) => {
+        var alphabetized = this.alphaNumeric(evt.target.value);
+        alphabetized = this.process("", alphabetized);
 
-    //     if(evt.target.value){
-    //         alphabetized = "+\"" + alphabetized + "\"";
-    //     } else {
-    //         // do nothing
-    //     }
+        if(evt.target.value){
+            alphabetized = "+\"" + alphabetized + "\"";
+        } else {
+            // do nothing
+        }
         
-    //     let searchTerm = "";
-    //     // searchTerm += this.state.titleAny;
-    //     // searchTerm += " " + this.state.titleAll;
-    //     searchTerm += " " + alphabetized;
-    //     searchTerm += " " + this.state.titleNone;
+        let searchTerm = "";
+        // searchTerm += this.state.titleAny;
+        // searchTerm += " " + this.state.titleAll;
+        searchTerm += " " + alphabetized;
+        searchTerm += " " + this.state.titleNone;
 
-    //     this.setState( 
-    //     { 
-    //         titleExact: alphabetized,
-    //         searchMode: 'boolean',
-    //         booleanTitle: searchTerm,
-    //     }, () => { 
-    //         this.debouncedSearch(this.state);
-    //     });
-    // }
+        this.setState( 
+        { 
+            titleExact: alphabetized,
+            searchMode: 'boolean',
+            booleanTitle: searchTerm,
+        }, () => { 
+            this.debouncedSearch(this.state);
+        });
+    }
 
     onInputTitleAny = (evt) => {
         var alphabetized = this.alphaNumeric(evt.target.value);
@@ -391,7 +393,7 @@ class Searcher extends React.Component {
     searchModeClick = (evt) => {
         if(this.state.searchModeName === 'Advanced search'){
             this.setState ({
-                searchModeName: 'Basic search',
+                searchModeName: 'Simple search',
                 searchMode: 'boolean',
 				advancedClassName: 'searchContainer'
             });
@@ -459,207 +461,105 @@ class Searcher extends React.Component {
             <div>
                 <div>
                     <div className="content" onSubmit={this.submitHandler}>
-                        <h1 className="title">NEPAccess</h1>
-                        <h2 className="tagline">Find NEPA documents by searching for keywords in title, as well as by agencies, states, and more</h2>
-                        
-                        {/* <div className="sidenav"><div><label><span>Insert lorem ipsum here</span></label></div>
-                        <table className="side-table"><tbody>
-                            <tr>
-                                <td>
-                                    <label className="side-table">Publication date</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <DatePicker
-                                        selected={this.state.startPublish} onChange={this.onStartDateChange} 
-                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                        className="side-date" 
-                                    />
-                                    &nbsp;to&nbsp;
-                                    <DatePicker
-                                        selected={this.state.endPublish} onChange={this.onEndDateChange}
-                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                        className="side-date" 
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label className="side-table" htmlFor="searchAgency">Agencies</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
-                                        styles={customStyles}
-                                        options={agencyOptions} 
-                                        onChange={this.onAgencyChange} 
-                                        placeholder="Click here to select from dropdown and/or type to search..." 
-                                        // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
-                                        // menuIsOpen={true}
-                                    />
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td><label className="side-table">Comment date</label></td>
-                                <td>
-                                    <DatePicker
-                                        selected={this.state.startComment} onChange={this.onStartCommentChange} 
-                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                        className="date" 
-                                    />
-                                    &nbsp;to&nbsp;
-                                    <DatePicker
-                                        selected={this.state.endComment} onChange={this.onEndCommentChange}
-                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                        className="date" 
-                                    />
-                                </td>
-                                
-                                <td><label className="side-table" htmlFor="searchState">States</label></td>
-                                <td>
-                                    <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
-                                        styles={customStyles}
-                                        options={stateOptions} 
-                                        onChange={this.onLocationChange} 
-                                        placeholder="Click here to select from dropdown and/or type to search..." 
-                                     />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className='checkbox-list'>Version</td>
-                                <td>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
-                                        <span>All&nbsp;</span></label>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                        <span>Final&nbsp;</span></label>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                        <span>Draft&nbsp;</span></label>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
-                                        <span>Other&nbsp;</span></label>
-                                </td>
-                            
-                            <td className='checkbox-list'>Downloads</td>
-                                <td>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="needsComments" checked={this.state.needsComments} onChange={this.onChecked} />
-                                        <span>Must have comment file(s)</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><label>Return</label>
-                                </td>
-                                <td>
-                                    <input id="searchLimit" type="number" step="100" min="0" max="100000" 
-                                    placeholder="1000" name="limit" onInput={this.onInput} /> records at most
-                                </td>
-                                <td></td>
-                                <td>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
-                                        <span>Must have document file(s)</span>
-                                    </label>
-                                </td>
-                            </tr>
-                        </tbody>
-                        </table>
-                        </div> */}
-
-                        <div>
-                            <label className="search-label" htmlFor="searchMode"><span className="no-select">Search by keywords within titles: </span>
-                                {/* <Tooltip title="Natural language mode:  Search results are returned in order of relevance according to rarity of the words given, relative to all records in the database">
-                                    <label className="inline highlight"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
-                                    defaultChecked />Default</label>
-                                </Tooltip>
-                                <Tooltip title="Boolean mode: Search results are either found or not found, using more specific options.">
-                                    <label className="inline highlight"><input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
-                                    />Advanced</label>
-                                </Tooltip> */}
-                                <span hidden={this.state.searchMode==="natural"} className="animation2" >
-                                    <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
-                                    defaultChecked />All</label>
-                                    {/* <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
-                                    />Exact phrase</label> */}
-                                    <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
-                                    />Any</label>
+                        <div id="searcher-container">
+                            <label hidden={this.state.searchMode==="boolean"} className="search-label">
+                                <span className="no-select">
+                                    &nbsp;
                                 </span>
                             </label>
-                        </div>
+                            <label hidden={this.state.searchMode==="natural"} className="search-label" htmlFor="searchMode">
+                                <span className="no-select">
+                                    Search by:
+                                </span>
+                                
+                                <span hidden={this.state.searchMode==="natural"} className="animation2" >
+                                    <label className="inline highlight no-select">
+                                        <input type="radio" className="animation2 boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
+                                        defaultChecked />
+                                        All of these words
+                                    </label>
+                                    <label className="inline highlight no-select">
+                                        <input type="radio" className="animation2 boolean-radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
+                                        />
+                                        Exact phrase
+                                    </label>
+                                    <label className="inline highlight no-select">
+                                        <input type="radio" className="animation2 boolean-radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
+                                        />
+                                        Any of these words
+                                    </label>
+                                </span>
+                            </label>
 
-                        <div hidden={this.state.searchModeName==='Basic search'}>
-                            <input id="searchTitle" className="search" type="search" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInputNatural} onKeyUp={this.onKeyUpNatural}/>
-                            <Tooltip title="Natural language mode search.  Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.">
-                                <label className="tooltip-icon">?</label>
-                            </Tooltip>
-                            {/* <svg id="x" onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
-                                <path></path>
-                            </svg> */}
-                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconNaturalClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
-							    <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
-						    </svg>
-                            <label id="search-mode" className="inline" onClick={this.searchModeClick}>
+
+                        <div id="search-box-container" hidden={this.state.searchModeName==='Simple search'}>
+                            <div id="fake-search-box" className="inline-block">
+                                <input id="search-box" 
+                                    name="naturalTitle" 
+                                    placeholder="Search by keywords within title" 
+                                    autoFocus 
+                                    onInput={this.onInputNatural} onKeyUp={this.onKeyUpNatural}
+                                />
+                                <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fill-opacity="0.54"/>
+                                </svg>
+                                <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                                </svg>
+                            </div>
+                            <label id="search-mode" className="inline-block" onClick={this.searchModeClick}>
                                 {this.state.searchModeName}
                             </label>
                         </div>
 
-                        <div hidden={this.state.searchModeName==='Advanced search'}>
-                            <div hidden={this.state.booleanOption!=="all"}>
-                                <div>
-                                    <input id="searchTitleAll" className="search boolean" type="search" name="titleAll" 
-                                        onInput={this.onInputTitleAll} onKeyUp={this.onKeyUpBoolean} 
-                                        placeholder="Example: alaska* &quot;beaufort sea&quot;" />
-                                    <Tooltip title="Boolean mode search.  Use * for partial words.  Surround with &quot;double quotes&quot; to match exact phrases.  Inclusion of extremely common words (of, the, etc.) or words smaller than three letters will return zero results.">
-                                        <label className="tooltip-icon">?</label>
-                                    </Tooltip>
-                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconBooleanClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
-                                        <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
-                                    </svg>
-                                    
-                                    <label id="search-mode" className="inline" onClick={this.searchModeClick}>
-                                        {this.state.searchModeName}
-                                    </label>
-                                </div>
+                        <div id="search-box-container" hidden={this.state.searchModeName==='Advanced search'}>
+                            <div id="fake-search-box" className="inline-block" hidden={this.state.booleanOption!=="all"}>
+                                <input id="search-box" className="search boolean inline-block" type="search" 
+                                    name="titleAll" 
+                                    onInput={this.onInputTitleAll} onKeyUp={this.onKeyUpBoolean} 
+                                    placeholder="Search by keywords within title" />
+                                <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fill-opacity="0.54"/>
+                                </svg>
+                                <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                                </svg>
                             </div>
-                            {/* <div hidden={this.state.booleanOption!=="exact"}>
-                                <div>
-                                    <input id="searchTitleExact" className="search boolean" type="search"name="titleExact" placeholder=""
-                                        onInput={this.onInputTitleExact} onKeyUp={this.onKeyUpBoolean} />
-                                    <Tooltip title="Exact phrase matches only">
-                                        <label className="tooltip-icon">?</label>
-                                    </Tooltip>
-                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconBooleanClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
-							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
-						            </svg>
-                                    <label id="search-mode" className="inline" onClick={this.searchModeClick}>
-                                        {this.state.searchModeName}
-                                    </label>
-                                </div>
-                            </div> */}
-                            <div hidden={this.state.booleanOption!=="any"}>
-                                <div>
-                                    <input id="searchTitleAny" className="search boolean" type="search" name="titleAny" placeholder=""
-                                        onInput={this.onInputTitleAny} onKeyUp={this.onKeyUpBoolean} />
-                                    <Tooltip title="Boolean mode search.  Use * for partial words. &quot;Exact phrases&quot; are supported">
-                                        <label className="tooltip-icon">?</label>
-                                    </Tooltip>
-                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconBooleanClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
-							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
-						            </svg>
-                                    <label id="search-mode" className="inline" onClick={this.searchModeClick}>
-                                        {this.state.searchModeName}
-                                    </label>
-                                </div>
+                            <div id="fake-search-box" hidden={this.state.booleanOption!=="exact"}>
+                                <input id="search-box" className="search boolean inline-block" type="search" 
+                                    name="titleExact" 
+                                    onInput={this.onInputTitleExact} onKeyUp={this.onKeyUpBoolean} 
+                                    placeholder="Search by keywords within title" />
+                                <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fill-opacity="0.54"/>
+                                </svg>
+                                <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                                </svg>
                             </div>
+                            <div id="fake-search-box" hidden={this.state.booleanOption!=="any"}>
+                                <input id="searchTitleAny" className="search boolean inline-block" 
+                                    type="search" name="titleAny" 
+                                    placeholder="Search by keywords within title"
+                                    onInput={this.onInputTitleAny} onKeyUp={this.onKeyUpBoolean} />
+                                <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fill-opacity="0.54"/>
+                                </svg>
+                                <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                                </svg>
+                            </div>
+                            <label id="search-mode" className="inline-block" onClick={this.searchModeClick}>
+                                {this.state.searchModeName}
+                            </label>
 
                             <div className="inline center">
-                                <label className="none-label inline" htmlFor="searchTitleNone">Can't have any of these words: 
+                                <label className="none-label inline" htmlFor="searchTitleNone">
+                                    Exclude these words:
                                 </label>
                                 <input id="searchTitleNone" className="searchSecondary animation1" type="search" name="titleNone" placeholder="Type to exclude words..."
                                     onInput={this.onInputTitleNone} onKeyUp={this.onKeyUpBoolean} />
@@ -668,172 +568,79 @@ class Searcher extends React.Component {
                                 </Tooltip>
                             </div>
                         </div>
+                        </div>
 
                         <table className="searchContainer"><tbody>
                             <tr>
                                 <td>
-                                    <label className="table">Publication date</label>
+                                    <label className="table">Date Range</label>
                                 </td>
                                 <td>
-                                    {/* <Tooltip title="Search by publishing metadata after this date.  Leave blank to include all"> */}
-                                        <DatePicker
-                                            selected={this.state.startPublish} onChange={this.onStartDateChange} 
-                                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                            className="date" 
-                                        />
-                                    {/* </Tooltip> */}
+                                    from&nbsp;
+                                    <DatePicker
+                                        selected={this.state.startPublish} onChange={this.onStartDateChange} 
+                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                        className="date" 
+                                    />
                                     &nbsp;to&nbsp;
-                                    {/* <Tooltip title="Search by publishing metadata before this date.  Leave blank to include all"> */}
-                                        <DatePicker
-                                            selected={this.state.endPublish} onChange={this.onEndDateChange}
-                                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                            className="date" 
-                                        />
-                                    {/* </Tooltip> */}
+                                    <DatePicker
+                                        selected={this.state.endPublish} onChange={this.onEndDateChange}
+                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                        className="date" 
+                                    />
                                 </td>
                                 
                                 <td>
-                                    <label className="table" htmlFor="searchAgency">Agencies</label>
+                                    <label className="table" htmlFor="searchAgency">Lead agency</label>
                                 </td>
                                 <td>
-                                    {/* <Tooltip title="Search by specific agencies or departments.  Leave blank to include all"> */}
-                                        <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
-                                            styles={customStyles}
-                                            options={agencyOptions} 
-                                            onChange={this.onAgencyChange} 
-                                            placeholder="Click here to select from dropdown and/or type to search..." 
-                                            // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
-                                            // menuIsOpen={true}
-                                        />
-                                    {/* </Tooltip> */}
+                                    <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
+                                        styles={customStyles}
+                                        options={agencyOptions} 
+                                        onChange={this.onAgencyChange} 
+                                        placeholder="Type or select lead agency" 
+                                        // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                                        // menuIsOpen={true}
+                                    />
                                 </td>
 
                             </tr>
                             <tr>
+                                <td><label className="table" htmlFor="searchState">State</label></td>
                                 <td>
-                                    <label className="table">Comment date</label>
-                                </td>
-                                <td>
-                                    {/* <Tooltip title="Exclude documents with comment metadata before this date.  Leave blank to include all"> */}
-                                        <DatePicker
-                                            selected={this.state.startComment} onChange={this.onStartCommentChange} 
-                                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                            className="date" 
-                                        />
-                                    {/* </Tooltip> */}
-                                    &nbsp;to&nbsp;
-                                    {/* <Tooltip title="Exclude documents with comment metadata after this date.  Leave blank to include all"> */}
-                                        <DatePicker
-                                            selected={this.state.endComment} onChange={this.onEndCommentChange}
-                                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                            className="date" 
-                                        />
-                                    {/* </Tooltip> */}
-                                </td>
-                                
-                                <td><label className="table" htmlFor="searchState">States</label></td>
-                                <td>
-                                    {/* <select multiple id="searchState">
-                                        <option value="AK">Alaska</option><option value="AL">Alabama</option><option value="AQ">Antarctica</option><option value="AR">Arkansas</option><option value="AS">American Samoa</option><option value="AZ">Arizona</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DC">District of Columbia</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="GU">Guam</option><option value="HI">Hawaii</option><option value="IA">Iowa</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="MA">Massachusetts</option><option value="MD">Maryland</option><option value="ME">Maine</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MO">Missouri</option><option value="MS">Mississippi</option><option value="MT">Montana</option><option value="NAT">National</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="NE">Nebraska</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NV">Nevada</option><option value="NY">New York</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="PR">Puerto Rico</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TT">Trust Territory of the Pacific Islands</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VA">Virginia</option><option value="VI">Virgin Islands</option><option value="VT">Vermont</option><option value="WA">Washington</option><option value="WI">Wisconsin</option><option value="WV">West Virginia</option><option value="WY">Wyoming</option>
-                                    </select> */}
-                                    {/* <Tooltip title="Search by states or territories in metadata.  Leave blank to include all"> */}
                                     <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
                                         styles={customStyles}
                                         options={stateOptions} 
                                         onChange={this.onLocationChange} 
-                                        placeholder="Click here to select from dropdown and/or type to search..." 
+                                        placeholder="Type or select state" 
                                      />
-                                    {/* </Tooltip> */}
                                 </td>
                             </tr>
                             <tr>
-                                <td className='checkbox-list'>Document Type</td>
+                                <td className='checkbox-list'>Document type</td>
                                 <td>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
-                                        <span>All&nbsp;</span></label>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                        <span>Final EIS&nbsp;</span></label>
                                     <label className="inline highlight">
                                         <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                        <span>Draft EIS&nbsp;</span></label>
+                                        <span>Draft</span>
+                                    </label>
                                     <label className="inline highlight">
-                                        <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
-                                        <span>Other&nbsp;</span></label>
+                                        <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                        <span>Final</span>
+                                    </label>
                                 </td>
                             
-                            <td className='checkbox-list'>Downloads</td>
-                                <td>
-                                    {/* <Tooltip title="Exclude records without comment downloads"> */}
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="needsComments" checked={this.state.needsComments} onChange={this.onChecked} />
-                                        <span>Must have comment file(s)</span>
-                                    </label>
-                                    {/* </Tooltip> */}
-                                </td>
                             </tr>
                             <tr>
-                                <td><label>Return</label>
+                                <td>
+                                    <label>Show results per page </label>
                                 </td>
                                 <td>
                                     <input id="searchLimit" type="number" step="100" min="0" max="100000" 
-                                    placeholder="1000" name="limit" onInput={this.onInput} /> records at most
-                                </td>
-                                <td></td>
-                                <td>
-                                    {/* <Tooltip title="Exclude records without document downloads"> */}
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
-                                        <span>Must have document file(s)</span>
-                                    </label>
-                                    {/* </Tooltip> */}
+                                    placeholder="1000" name="limit" onInput={this.onInput} />
                                 </td>
                             </tr>
                         </tbody></table>
                         
-                        {/* <Tooltip title="Click to hide/show advanced search options">
-                            <button className="collapsible" onClick={this.collapsibles}>{this.state.collapsibleText}</button>
-                        </Tooltip> */}
-                        {/* <table id="advanced" className={this.state.searcherClassName}><tbody>
-                            
-
-                            <tr><td><label>Version:
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
-                                        <span>All&nbsp;</span></label>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                        <span>Final&nbsp;</span></label>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                        <span>Draft&nbsp;</span></label>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
-                                        <span>Other&nbsp;</span></label></label></td>
-                            </tr>
-
-                            <tr><td>
-                                <Tooltip title="Exclude records without comment downloads">
-                                <label className="checkbox">
-                                    <input type="checkbox" name="needsComments" checked={this.state.needsComments} onChange={this.onChecked} />
-                                    <span>Must have comment file(s)</span>
-                                </label>
-                                </Tooltip></td></tr>
-                                <tr><td>
-                                <Tooltip title="Exclude records without document downloads">
-                                <label className="checkbox">
-                                    <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
-                                    <span>Must have document file(s)</span>
-                                </label>
-                                </Tooltip></td></tr>
-
-                                <tr><td><label>
-                                    Return &nbsp;
-                                    <input id="searchLimit" type="number" step="100" min="0" max="100000" 
-                                    placeholder="1000" name="limit" onInput={this.onInput} /> records at most
-                                </label></td></tr>
-                        </tbody></table> */}
                     </div>
                 </div>
             </div>
