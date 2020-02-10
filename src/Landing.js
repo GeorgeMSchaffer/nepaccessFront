@@ -1,18 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 import './index.css';
 import './landing.css';
-import Globals from './globals.js';
 
 import SearcherLanding from './SearcherLanding.js';
 
 class Landing extends React.Component {
-    state = {
-    }
-
-    constructor(props){
-        super(props);
-    }
 
     render(){
           return (

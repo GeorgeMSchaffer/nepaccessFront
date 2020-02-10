@@ -176,7 +176,14 @@
 
 /* Main page should have a margin equal to the header size: */
 .content {
+  
+  position: relative;
+  margin: auto;
   margin-top: 102px;
+  
+  min-width: 1440px;
+
+  background: #FFFBF1;
 }
 
 /* Special tags */

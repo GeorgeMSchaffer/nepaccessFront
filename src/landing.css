@@ -142,7 +142,18 @@
 /* Non landing search styling */
 
 #searcher-container {
+  
+  position: relative;
+  margin: auto;
+  margin-top: 102px;
   width: 1140px;
   height: 220px;
   background: #737272;
+}
+
+#searcher-inner-container {
+  position: relative;
+  margin: auto;
+  width: 850px;
+  height: 100px;
 }
