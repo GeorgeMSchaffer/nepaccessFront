@@ -467,135 +467,111 @@ class Searcher extends React.Component {
                                     &nbsp;
                                 </span>
                             </label>
-                            <label hidden={this.state.searchMode==="natural"} className="search-label" htmlFor="searchMode">
-                                <span className="no-select">
+                            <label hidden={this.state.searchMode==="natural"} className="search-label">
+                                <span id="search-by" className="no-select">
                                     Search by:
                                 </span>
                                 
-                                <span hidden={this.state.searchMode==="natural"} className="animation2" >
-                                    <label className="inline highlight no-select">
-                                        <input type="radio" className="animation2 boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
+                                <span className="advanced-radio" hidden={this.state.searchMode==="natural"}>
+                                    <label className="inline no-select">
+                                        <input type="radio" className="boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                         defaultChecked />
                                         All of these words
                                     </label>
-                                    <label className="inline highlight no-select">
-                                        <input type="radio" className="animation2 boolean-radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
-                                        />
-                                        Exact phrase
-                                    </label>
-                                    <label className="inline highlight no-select">
-                                        <input type="radio" className="animation2 boolean-radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
+                                    <label className="inline no-select">
+                                        <input type="radio" className="boolean-radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
                                         />
                                         Any of these words
+                                    </label>
+                                    <label className="inline no-select">
+                                        <input type="radio" className="boolean-radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
+                                        />
+                                        Exact phrase
                                     </label>
                                 </span>
                             </label>
 
+                            <div id="searcher-inner-container">
+                                <div hidden={this.state.searchModeName==='Simple search'}>
+                                    <div id="fake-search-box" className="inline-block">
+                                        <input id="search-box" 
+                                            name="naturalTitle" 
+                                            placeholder="Search by keywords within title" 
+                                            autoFocus 
+                                            onInput={this.onInputNatural} onKeyUp={this.onKeyUpNatural}
+                                        />
+                                        <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
+                                        </svg>
+                                        <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                                            <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                                        </svg>
+                                    </div>
+                                </div>
 
-<div id="searcher-inner-container">
-                        <div id="search-box-container" hidden={this.state.searchModeName==='Simple search'}>
-                            <div id="fake-search-box" className="inline-block">
-                                <input id="search-box" 
-                                    name="naturalTitle" 
-                                    placeholder="Search by keywords within title" 
-                                    autoFocus 
-                                    onInput={this.onInputNatural} onKeyUp={this.onKeyUpNatural}
-                                />
-                                <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
-                                </svg>
-                                <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
-                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
-                                </svg>
+                                <div hidden={this.state.searchModeName==='Advanced search'}>
+                                    
+                                    <div id="fake-search-box" className="inline-block">
+                                        <input id="search-box" type="search" 
+                                            hidden={this.state.booleanOption!=="all"}
+                                            name="titleAll" 
+                                            onInput={this.onInputTitleAll} onKeyUp={this.onKeyUpBoolean} 
+                                            placeholder="Search by all keywords within title" />
+                                        <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
+                                        </svg>
+                                        <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                                            <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                                        </svg>
+                                        <input id="search-box" type="search" 
+                                            hidden={this.state.booleanOption!=="exact"}
+                                            name="titleExact" 
+                                            onInput={this.onInputTitleExact} onKeyUp={this.onKeyUpBoolean} 
+                                            placeholder="Search by exact keywords within title" />
+                                        <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
+                                        </svg>
+                                        <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                                            <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                                        </svg>
+                                        <input id="search-box"
+                                            hidden={this.state.booleanOption!=="any"}
+                                            type="search" name="titleAny" 
+                                            placeholder="Search by any keywords within title"
+                                            onInput={this.onInputTitleAny} onKeyUp={this.onKeyUpBoolean} />
+                                        <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
+                                        </svg>
+                                        <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                                            <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                                        </svg>
+                                    </div>
+
+                                    <div className="inline center">
+                                        <label className="no-select inline" htmlFor="searchTitleNone">
+                                            Exclude these words:
+                                        </label>
+                                        <input id="searchTitleNone" type="search" name="titleNone"
+                                            onInput={this.onInputTitleNone} onKeyUp={this.onKeyUpBoolean} />
+                                    </div>
+
+                                </div>
                             </div>
-                            <label id="search-mode" className="inline-block" onClick={this.searchModeClick}>
+                            <label id="search-mode" className="inline-block no-select" onClick={this.searchModeClick}>
                                 {this.state.searchModeName}
                             </label>
-                        </div>
-</div>
-                        <div id="search-box-container" hidden={this.state.searchModeName==='Advanced search'}>
-                            <div id="fake-search-box" className="inline-block" hidden={this.state.booleanOption!=="all"}>
-                                <input id="search-box" className="search boolean inline-block" type="search" 
-                                    name="titleAll" 
-                                    onInput={this.onInputTitleAll} onKeyUp={this.onKeyUpBoolean} 
-                                    placeholder="Search by keywords within title" />
-                                <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
-                                </svg>
-                                <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
-                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
-                                </svg>
-                            </div>
-                            <div id="fake-search-box" hidden={this.state.booleanOption!=="exact"}>
-                                <input id="search-box" className="search boolean inline-block" type="search" 
-                                    name="titleExact" 
-                                    onInput={this.onInputTitleExact} onKeyUp={this.onKeyUpBoolean} 
-                                    placeholder="Search by keywords within title" />
-                                <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
-                                </svg>
-                                <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
-                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
-                                </svg>
-                            </div>
-                            <div id="fake-search-box" hidden={this.state.booleanOption!=="any"}>
-                                <input id="searchTitleAny" className="search boolean inline-block" 
-                                    type="search" name="titleAny" 
-                                    placeholder="Search by keywords within title"
-                                    onInput={this.onInputTitleAny} onKeyUp={this.onKeyUpBoolean} />
-                                <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
-                                </svg>
-                                <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
-                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
-                                </svg>
-                            </div>
-                            <label id="search-mode" className="inline-block" onClick={this.searchModeClick}>
-                                {this.state.searchModeName}
-                            </label>
 
-                            <div className="inline center">
-                                <label className="none-label inline" htmlFor="searchTitleNone">
-                                    Exclude these words:
-                                </label>
-                                <input id="searchTitleNone" className="searchSecondary animation1" type="search" name="titleNone" placeholder="Type to exclude words..."
-                                    onInput={this.onInputTitleNone} onKeyUp={this.onKeyUpBoolean} />
-                                <Tooltip title="Excludes results containing any of these words.  Surround with &quot;double quotes&quot; to match exact phrases.  NOTE: If the all/any field is empty, this will return no results.">
-                                    <label className="tooltip-icon">?</label>
-                                </Tooltip>
-                            </div>
-                        </div>
                         </div>
 
-                        <table className="searchContainer"><tbody>
+                        <table id="advanced-search-box" hidden={this.state.searchModeName==='Advanced search'}><tbody>
                             <tr>
                                 <td>
-                                    <label className="table">Date Range</label>
-                                </td>
-                                <td>
-                                    from&nbsp;
-                                    <DatePicker
-                                        selected={this.state.startPublish} onChange={this.onStartDateChange} 
-                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                        className="date" 
-                                    />
-                                    &nbsp;to&nbsp;
-                                    <DatePicker
-                                        selected={this.state.endPublish} onChange={this.onEndDateChange}
-                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                        className="date" 
-                                    />
-                                </td>
-                                
-                                <td>
-                                    <label className="table" htmlFor="searchAgency">Lead agency</label>
-                                </td>
-                                <td>
-                                    <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
+                                    <label className="advanced-label" htmlFor="searchAgency">Lead agency</label>
+                                    <Select id="searchAgency" className="multi inline-block" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
                                         styles={customStyles}
                                         options={agencyOptions} 
                                         onChange={this.onAgencyChange} 
@@ -603,45 +579,67 @@ class Searcher extends React.Component {
                                         // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
                                         // menuIsOpen={true}
                                     />
+                                    <svg className="down-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.8414 16L0.841402 -1.04853e-06L16.8414 0L8.8414 16Z" fill="black"/>
+                                    </svg>
+                                </td>
+
+                                <td>
+                                    <label className="advanced-label" htmlFor="dates">Date Range</label>
+                                    <div id="dates">
+                                        <span className="date-text inline">
+                                            from
+                                            <DatePicker
+                                                selected={this.state.startPublish} onChange={this.onStartDateChange} 
+                                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                                className="date" 
+                                            />
+                                            to
+                                            <DatePicker
+                                                selected={this.state.endPublish} onChange={this.onEndDateChange}
+                                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                                className="date" 
+                                        /></span>
+                                    </div>
+                                </td>
+
+                                <td><label className="block advanced-label">Document type</label>
+                                    <div>
+                                        <label className="advanced-checkbox-label">
+                                            <input type="checkbox" name="typeDraft" 
+                                                checked={this.state.typeDraft} onChange={this.onTypeChecked} />
+                                            <span>Draft</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label className="advanced-checkbox-label">
+                                            <input type="checkbox" name="typeFinal" 
+                                                checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                            <span>Final</span>
+                                        </label>
+                                    </div>
                                 </td>
 
                             </tr>
                             <tr>
-                                <td><label className="table" htmlFor="searchState">State</label></td>
+                                <td className="empty-cell"></td>
                                 <td>
-                                    <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
+                                    <label className="advanced-label" htmlFor="searchState">State</label>
+                                    <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
                                         styles={customStyles}
                                         options={stateOptions} 
                                         onChange={this.onLocationChange} 
                                         placeholder="Type or select state" 
                                      />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className='checkbox-list'>Document type</td>
-                                <td>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                        <span>Draft</span>
-                                    </label>
-                                    <label className="inline highlight">
-                                        <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                        <span>Final</span>
-                                    </label>
-                                </td>
-                            
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Show results per page </label>
-                                </td>
-                                <td>
-                                    <input id="searchLimit" type="number" step="100" min="0" max="100000" 
-                                    placeholder="1000" name="limit" onInput={this.onInput} />
+                                     <svg className="down-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.8414 16L0.841402 -1.04853e-06L16.8414 0L8.8414 16Z" fill="black"/>
+                                    </svg>
                                 </td>
                             </tr>
                         </tbody></table>
-                        
+                        <label>Show results per page </label>
+                        <input id="searchLimit" type="number" step="100" min="0" max="100000" 
+                                    placeholder="1000" name="limit" onInput={this.onInput} />
                     </div>
                 </div>
             </div>
