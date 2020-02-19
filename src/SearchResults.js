@@ -10,13 +10,10 @@ class SearchResults extends React.Component {
 
     constructor(props) {
         super(props);
-		this.state = {
-            resultsPerPage: "10"
-		};
-	}
+    }
 
 	render() {
-      // console.log("SearchResults");
+      console.log("SearchResults");
 
       // TODO: At some point, the backend/database should probably be giving us the headers to use.
       const results = this.props.results;
@@ -31,7 +28,7 @@ class SearchResults extends React.Component {
           });
           
           const columns = [
-              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight:true },
+              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />) },
               { title: "Lead Agency", field: "agency", width: 242 },
               { title: "Published date", field: "registerDate", width: 180 },
               { title: "State", field: "state", width: 112 },
@@ -42,9 +39,9 @@ class SearchResults extends React.Component {
 
           var options = {
               tooltips:true,
-              responsiveLayout:"collapse",  //collapse columns that dont fit on the table
               pagination:"local",       //paginate the data
-              paginationSize:this.state.resultsPerPage,       //allow 25 rows per page of data
+              paginationSize:10,       //allow 10 rows per page of data
+              paginationSizeSelector:[10, 25, 50, 100],
               movableColumns:true,      //allow column order to be changed
               resizableRows:true,       //allow row order to be changed
               layout:"fitColumns"
@@ -53,13 +50,6 @@ class SearchResults extends React.Component {
           return (
               <div>
                   <h2>{this.props.resultsText}</h2>
-                  <div>
-                      <label>
-                        Show results per page
-                      </label>
-                      <input>
-                      </input>
-                  </div>
                   <ReactTabulator
                       data={data}
                       columns={columns}

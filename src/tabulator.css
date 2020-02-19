@@ -1,6 +1,6 @@
 /* Custom tabulator styling */
 
-.tabulator {
+/* .tabulator {
     height: 100%;
 }
 
@@ -10,4 +10,13 @@
 
 .tabulator-row {
     white-space: normal;
+} */
+
+/* .tabulator-row .tabulator-cell {
+  white-space: pre-wrap;
+  word-break: break-all;
+} */
+
+.tabulator-row, .tabulator-cell {
+  cursor: default;
 }

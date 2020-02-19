@@ -5,7 +5,7 @@
   position: relative;
   margin: auto;
   min-width: 1440px;
-  height: 1440px;
+  min-height: 1440px;
   overflow-y: scroll;
 
   background: #FFFBF1;
@@ -220,4 +220,8 @@
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Opera and Firefox */
+}
+
+button {
+  cursor: pointer;
 }

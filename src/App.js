@@ -28,10 +28,6 @@ class App extends React.Component {
 		networkError: ''
 	}
 
-	// constructor(props){
-	// 	super(props);
-	// }
-
 	search = (searcherState) => {
 		// console.log("In search");
 

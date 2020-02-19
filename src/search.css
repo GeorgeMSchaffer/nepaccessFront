@@ -1,0 +1,325 @@
+/* Non landing search styling */
+
+.search-label {
+  position: absolute;
+  top: 40px;
+  margin-left: 122px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 111%;
+  /* or 20px */
+
+  color: #FFFFFF;
+
+  z-index: 3;
+}
+
+#searcher-container {
+  margin-top: 243px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  width: 1140px;
+  height: 220px;
+  background: #737272;
+}
+
+#searcher-inner-container {
+  position: relative;
+  margin-left: 97px;
+  width: 850px;
+  height: 100px;
+  top: 55px;
+}
+
+#search-mode {
+  position: absolute;
+  width: 200px;
+  text-align: center;
+  top: 100px;
+  right: 5px;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 111%;
+  /* or 20px */
+
+  cursor: pointer;
+
+  color: #64D6FA;
+}
+
+#search-by {
+  margin-right: 10px;
+}
+
+.advanced-radio {
+  width: 800px;
+  display: inline-flex;
+  justify-content: space-evenly;
+}
+
+.advanced-radio label {
+  padding-right: 80px;
+}
+
+/* Advanced search table */
+
+#advanced-search-box {
+  position: relative;
+  width: 1140px;
+  height: 248px;
+  
+  background: white;
+  margin: auto;
+  padding-top: 20px;
+  border: 1px solid black;
+  border-top: none;
+}
+
+#advanced-search-box tr {
+  vertical-align: top;
+}
+
+#advanced-search-box tr td:first-child {
+  width: 360px;
+  padding-left: 48px;
+}
+
+#advanced-search-box tr td:nth-child(2) {
+  width: 365px;
+  padding-left: 78px;
+}
+
+#advanced-search-box tr td:nth-child(3) {
+  height: 86px;
+  padding-left: 78px;
+}
+
+#advanced-search-box .advanced-label {
+  height: 45px;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 27px;
+
+  display: flex;
+  align-items: center;
+
+  color: black;
+  border: 1px solid white;
+}
+
+#advanced-search-box tr td input[type=checkbox] {
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+
+  margin-left: auto;
+  
+  cursor: pointer;
+}
+
+#advanced-search-box .advanced-checkbox-label {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 32px;
+  /* or 178% */
+
+  color: #000000;
+
+  border: 1px solid #FFFFFF;
+
+  cursor: pointer;
+}
+
+/* Advanced search react-select elements */
+
+#advanced-search-box .react-select__placeholder {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 125%;
+  /* or 22px */
+
+  display: flex;
+  align-items: center;
+
+  color: #737272;
+}
+
+#advanced-search-box .react-select__control {
+  border: 1px solid black;
+  border-radius: 0px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  
+  cursor: pointer;
+}
+
+#advanced-search-box .react-select__indicator-separator {
+  display: none;
+}
+
+#advanced-search-box .multi {
+  width: 355px;
+}
+
+#advanced-search-box path {
+  display: none;
+}
+
+#advanced-search-box .down-arrow {
+  position: absolute;
+  width: 17px;
+  height: 16px;
+  margin-top: 12px;
+  margin-left: -34px;
+  
+  pointer-events: none;
+}
+
+#advanced-search-box .down-arrow path {
+  display: inline-block;
+}
+
+/* Custom datepicker style */
+#advanced-search-box .date {
+  width: 136px;
+  height: 40px;
+  margin-left: 8px;
+  margin-right: 8px;
+  background: #FFFFFF;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 125%;
+  /* or 22px */
+  
+  display: flex;
+  align-items: center;
+  text-align: center;
+  
+  color: #737272;
+
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+  
+}
+
+#advanced-search-box .date-text {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 150%;
+  /* identical to box height, or 27px */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #000000;
+
+  border: 1px solid #FFFFFF;
+}
+
+#excludeLabel {
+  width: 270.37px;
+  height: 27.62px;
+  margin-left: 25px;
+  margin-right: 25px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 111%;
+  /* or 20px */
+
+  color: #FFFFFF;
+}
+
+#searchTitleNone {
+  margin-top: 20px;
+  height: 40px;
+  width: 600px;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+}
+
+/** Tooltip and custom react-tippy styling */
+
+#tooltip1Mark {
+  position: absolute;
+  
+  margin-left: -50px;
+  margin-top: 15px;
+
+  width: 20px;
+  height: 20.72px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 111%;
+  /* or 20px */
+
+  color: #000000;
+}
+
+#tooltip1 {
+  position: absolute;
+  
+  margin-left: -62px;
+  margin-top: 9px;
+
+  width: 32px;
+  height: 31.57px;
+}
+
+.tippy-tooltip--small {
+  border: 1px solid #737272;
+}
+
+.tippy-tooltip--small, .tippy-tooltip--small .tippy-tooltip-content {
+  width: 148px;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 111%;
+  /* or 11px */
+
+  color: black;
+  background: white !important;
+  
+}
+
+.arrow-regular {
+  border-left: 7px solid white !important;
+}
+
+#falseAdvanced {
+    position: relative;
+    width: 1140px;
+    height: 248px;
+    
+    background: white;
+    margin: auto;
+    padding-top: 20px;
+}
