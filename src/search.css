@@ -310,6 +310,7 @@
   
 }
 
+/** Tooltip right-facing arrow - replaces all tooltip arrows */
 .arrow-regular {
   border-left: 7px solid white !important;
 }
@@ -322,4 +323,8 @@
     background: white;
     margin: auto;
     padding-top: 20px;
+}
+
+.tabulator-cell, .link {
+    padding: 0;
 }

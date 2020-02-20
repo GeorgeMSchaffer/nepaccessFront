@@ -39,6 +39,7 @@ class SearchResults extends React.Component {
               responsiveLayout:"collapse",  //collapse columns that dont fit on the table
               pagination:"local",       //paginate the data
               paginationSize:"25",       //allow 25 rows per page of data
+              paginationSizeSelector:[10, 25, 50, 100],
               movableColumns:true,      //allow column order to be changed
               resizableRows:true,       //allow row order to be changed
               layout:"fitColumns"

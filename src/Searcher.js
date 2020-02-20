@@ -19,10 +19,11 @@ class Searcher extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-            searchMode: 'natural',
+            searchMode: 'boolean',
             booleanOption: "all",
             booleanTitle: '',
             naturalTitle: '',
+            titleRaw: '',
             titleAll: '',
             titleExact: '',
             titleAny: '',
@@ -44,14 +45,11 @@ class Searcher extends React.Component {
             advancedClassName: 'display-none',
             searchModeName: 'Advanced search',
             iconClassName: 'icon icon--effect',
-            limit: '',
-            collapsibleText: '+ Advanced Options',
+            limit: '100000',
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
-        this.collapsibles = this.collapsibles.bind(this);
         this.alphabetOnly = this.alphaNumeric.bind(this);
         this.process = this.process.bind(this);
-        this.getTitles = this.getTitles.bind(this);
 	}
     
     /**
@@ -88,7 +86,8 @@ class Searcher extends React.Component {
         }
     }
     /**  Determines which boolean title field to use and then searches.  Natural title manages already itself (if not in boolean mode, natural title is used). */
-    forceSearch() {  
+    forceSearch() {
+        
         let searchTerm = "";
         if(this.state.booleanOption==="any") {
             searchTerm = this.state.titleAny;
@@ -97,6 +96,7 @@ class Searcher extends React.Component {
         } else if(this.state.booleanOption==="exact") {
             searchTerm = this.state.titleExact;
         }
+        
         this.setState( 
             { 
                 booleanTitle: searchTerm + " " + this.state.titleNone,
@@ -106,33 +106,6 @@ class Searcher extends React.Component {
     }
     
 
-    // TODO: Get shortlist of title suggestions ordered by relevance from backend using NLM, alphanumeric only, maybe use
-    // autocomplete library to fill selectables
-    getTitles() {
-        let titlesUrl = new URL('test/titles', Globals.currentHost);
-        //Send the AJAX call to the server
-			axios({
-				method: 'POST', 
-				url: titlesUrl,
-				data: ''
-			}).then(response => {
-				let responseOK = response && response.status === 200;
-				if (responseOK) {
-					return response.data;
-				} else {
-					return null;
-				}
-			}).then(parsedJson => {
-				console.log('this should be json', parsedJson);
-				if(parsedJson){
-					this.setState({
-						titles: parsedJson,
-					});
-				} 
-			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
-                // Don't necessarily need to do anything, autocomplete just won't work and the user probably will need to login anyway
-			});
-    }
 
 
     /** Capture enter key to prevent default behavior of form submit, force a new search (refresh results) */
@@ -140,7 +113,8 @@ class Searcher extends React.Component {
         if(evt.keyCode ===13){
             evt.preventDefault();
             this.setState({
-                searchMode: 'natural'
+                // searchMode: 'natural'
+                booleanOption: 'all'
             }, () => {
                 this.forceSearch();
             });
@@ -161,20 +135,76 @@ class Searcher extends React.Component {
     }
 
     onIconNaturalClick = (evt) => {
-        this.setState({ iconClassName: 'icon icon--click', searchMode: 'natural' });
+        this.setState({ 
+            // searchMode: 'natural' 
+            booleanOption: 'all'
+        });
         
-        this.forceSearch();
+        this.standardizeAndSearch();
     }
     onIconBooleanClick = (evt) => {
-        this.setState({ iconClassName: 'icon icon--click', searchMode: 'boolean' });
+        this.setState({ searchMode: 'boolean' });
         
-        this.forceSearch();
+        this.standardizeAndSearch();
     }
-    iconCleaning = (evt) => {
-        this.setState({ iconClassName: 'icon' });
+    onClearClick = (evt) => {
+        this.setState({ titleRaw: '' });
+    }
+
+    standardizeAndSearch = () => {
+        // Convert raw title to all possible fields to carry input over
+        var all = this.alphaNumeric(this.state.titleRaw);
+        all = this.process("+", all);
+
+        var exact = this.alphaNumeric(this.state.titleRaw);
+        exact = this.process("", exact);
+
+        if(this.state.titleRaw){
+            exact = "+\"" + exact + "\"";
+        } else {
+            // do nothing
+        }
+
+        var any = this.alphaNumeric(this.state.titleRaw);
+        any = this.process("", any);
+
+        this.setState({ 
+            naturalTitle: this.state.titleRaw,
+            titleAll: all,
+            titleExact: exact,
+            titleAny: any
+        }, () => {
+            this.forceSearch();
+        });
+    }
+
+    standardizeTitle = () => {
+        // Convert raw title to all possible fields to carry input over
+        var all = this.alphaNumeric(this.state.titleRaw);
+        all = this.process("+", all);
+
+        var exact = this.alphaNumeric(this.state.titleRaw);
+        exact = this.process("", exact);
+
+        if(this.state.titleRaw){
+            exact = "+\"" + exact + "\"";
+        } else {
+            // do nothing
+        }
+
+        var any = this.alphaNumeric(this.state.titleRaw);
+        any = this.process("", any);
+
+        this.setState({ 
+            naturalTitle: this.state.titleRaw,
+            titleAll: all,
+            titleExact: exact,
+            titleAny: any
+        });
     }
 
     onRadioChange = (evt) => {
+        this.standardizeTitle();
         this.setState({ [evt.target.name]: evt.target.value });
     }
 
@@ -196,14 +226,11 @@ class Searcher extends React.Component {
 
         let searchTerm = "";
         searchTerm = alphabetized;
-
-        // searchTerm += this.state.titleAny;
-        // searchTerm += " " + alphabetized;
-        // searchTerm += " " + this.state.titleExact;
         searchTerm += " " + this.state.titleNone;
 
         this.setState( 
         { 
+            titleRaw: evt.target.value,
             titleAll: alphabetized,
             searchMode: 'boolean',
             booleanTitle: searchTerm,
@@ -224,13 +251,12 @@ class Searcher extends React.Component {
         }
         
         let searchTerm = "";
-        // searchTerm += this.state.titleAny;
-        // searchTerm += " " + this.state.titleAll;
         searchTerm += " " + alphabetized;
         searchTerm += " " + this.state.titleNone;
 
         this.setState( 
         { 
+            titleRaw: evt.target.value,
             titleExact: alphabetized,
             searchMode: 'boolean',
             booleanTitle: searchTerm,
@@ -245,12 +271,11 @@ class Searcher extends React.Component {
 
         let searchTerm = "";
         searchTerm += alphabetized;
-        // searchTerm += " " + this.state.titleAll;
-        // searchTerm += " " + this.state.titleExact;
         searchTerm += " " + this.state.titleNone;
 
         this.setState( 
         { 
+            titleRaw: evt.target.value,
             titleAny: alphabetized,
             searchMode: 'boolean',
             booleanTitle: searchTerm,
@@ -273,9 +298,6 @@ class Searcher extends React.Component {
             searchTerm = this.state.titleExact;
         }
 
-        // searchTerm += this.state.titleAny;
-        // searchTerm += " " + this.state.titleAll;
-        // searchTerm += " " + this.state.titleExact;
         searchTerm += " " + alphabetized;
         
         this.setState( 
@@ -311,18 +333,19 @@ class Searcher extends React.Component {
             [evt.target.name]: evt.target.value,
 		}, () => { // callback ensures state is set before state is used for search
             this.debouncedSearch(this.state);
-			// console.log("Searcher state");
-			// console.log(this.state);
         });
     }
 
+    // Natural language mode currently being overridden by all-word boolean
     onInputNatural = (evt) => {
 		this.setState( 
 		{ 
+            titleRaw: evt.target.value,
             [evt.target.name]: evt.target.value,
-            searchMode: 'natural'
+            booleanOption: 'all'
+            // searchMode: 'natural'
 		}, () => { // callback ensures state is set before state is used for search
-            this.debouncedSearch(this.state);
+            this.standardizeAndSearch(this.state);
         });
     }
 
@@ -401,7 +424,8 @@ class Searcher extends React.Component {
         } else {
             this.setState ({
                 searchModeName: 'Advanced search',
-                searchMode: 'natural',
+                // searchMode: 'natural',
+                booleanOption: 'all',
 				advancedClassName: 'display-none'
             });
         }
@@ -409,21 +433,6 @@ class Searcher extends React.Component {
     
     // Can either just make the form a div or use this to prevent Submit default behavior
 	submitHandler(e) { e.preventDefault(); }
-
-	// TODO: Animation?
-	collapsibles(){
-		if(this.state.searcherClassName===''){
-			this.setState({
-				searcherClassName: 'display-none',
-				collapsibleText: "+ Advanced Options"
-			});
-		} else {
-			this.setState({
-				searcherClassName: '',
-				collapsibleText: "- Advanced Options"
-			});
-		}
-    }
     
 
     render () {
@@ -463,17 +472,12 @@ class Searcher extends React.Component {
                 <div>
                     <div className="content" onSubmit={this.submitHandler}>
                         <div id="searcher-container">
-                            <label hidden={this.state.searchMode==="boolean"} className="search-label">
-                                <span className="no-select">
-                                    &nbsp;
-                                </span>
-                            </label>
-                            <label hidden={this.state.searchMode==="natural"} className="search-label">
+                            <label hidden={this.state.searchModeName==='Advanced search'} className="search-label">
                                 <span id="search-by" className="no-select">
                                     Search by:
                                 </span>
                                 
-                                <span className="advanced-radio" hidden={this.state.searchMode==="natural"}>
+                                <span className="advanced-radio" hidden={this.state.searchModeName==='Advanced search'}>
                                     <label className="inline no-select">
                                         <input type="radio" className="boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                         defaultChecked />
@@ -500,11 +504,13 @@ class Searcher extends React.Component {
                                             arrow="true"
                                             size="small"
                                             distance="80"
-                                            offset="30"
+                                            offset="40"
                                             // open="true"
                                             title="Search by words in the title.<br>
-                                            &bull;Surround with &quot;double quotes&quot; to match exact phrases.<br>
-                                            &bull;Use exact spelling, case insensitive.">
+                                            &bull;Surround phrases with &quot;double quotes&quot; to match exact phrases.<br>
+                                            &bull;Append words with an asterisk* to match partial words.<br>
+                                            &bull;Use exact spelling, case insensitive."
+                                        >
                                             
                                             <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" stroke-width="2"/>
@@ -514,13 +520,14 @@ class Searcher extends React.Component {
                                         <input id="search-box" 
                                             name="naturalTitle" 
                                             placeholder="Search by keywords within title" 
+                                            value={this.state.titleRaw}
                                             autoFocus 
                                             onInput={this.onInputNatural} onKeyUp={this.onKeyUpNatural}
                                         />
-                                        <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <svg onClick={this.onIconNaturalClick} id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
                                         </svg>
-                                        <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <svg onClick={this.onClearClick} id="cancel-icon" width="24" height="24" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
                                             <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
                                         </svg>
@@ -535,10 +542,12 @@ class Searcher extends React.Component {
                                             arrow="true"
                                             size="small"
                                             distance="80"
-                                            offset="30"
+                                            offset="40"
                                             title="Search by words in the title.<br>
-                                            &bull;Surround with &quot;double quotes&quot; to match exact phrases.<br>
-                                            &bull;Use exact spelling, case insensitive.">
+                                            &bull;Surround phrases with &quot;double quotes&quot; to match exact phrases.<br>
+                                            &bull;Append words with an asterisk* to match partial words.<br>
+                                            &bull;Use exact spelling, case insensitive."
+                                        >
                                             
                                             <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" stroke-width="2"/>
@@ -546,28 +555,31 @@ class Searcher extends React.Component {
                                             <span id="tooltip1Mark" className="cursor-default no-select">?</span>
                                         </Tooltip>
 
-                                        <input id="search-box" type="search" 
+                                        <input id="search-box" 
                                             hidden={this.state.booleanOption!=="all"}
                                             name="titleAll" 
+                                            value={this.state.titleRaw}
                                             onInput={this.onInputTitleAll} onKeyUp={this.onKeyUpBoolean} 
                                             placeholder="Search by all keywords within title" />
 
-                                        <input id="search-box" type="search" 
+                                        <input id="search-box" 
                                             hidden={this.state.booleanOption!=="exact"}
                                             name="titleExact" 
+                                            value={this.state.titleRaw}
                                             onInput={this.onInputTitleExact} onKeyUp={this.onKeyUpBoolean} 
                                             placeholder="Search by exact keywords within title" />
 
                                         <input id="search-box"
                                             hidden={this.state.booleanOption!=="any"}
-                                            type="search" name="titleAny" 
-                                            placeholder="Search by any keywords within title"
-                                            onInput={this.onInputTitleAny} onKeyUp={this.onKeyUpBoolean} />
+                                            name="titleAny" 
+                                            value={this.state.titleRaw}
+                                            onInput={this.onInputTitleAny} onKeyUp={this.onKeyUpBoolean}
+                                            placeholder="Search by any keywords within title" />
 
-                                        <svg id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <svg onClick={this.onIconBooleanClick} id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
                                         </svg>
-                                        <svg id="cancel-icon" width="48" height="26" viewBox="0 0 48 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <svg onClick={this.onClearClick} id="cancel-icon" width="24" height="24" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
                                             <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
                                         </svg>
@@ -673,7 +685,6 @@ class Searcher extends React.Component {
     
 	// After render
 	componentDidMount() {
-		this.getTitles();
 	}
 }
 

@@ -20,3 +20,8 @@
 .tabulator-row, .tabulator-cell {
   cursor: default;
 }
+
+/* Row auto adjusts to accommodate cell size */
+.tabulator-cell {
+  height: 31px;
+}

@@ -128,11 +128,11 @@
 #cancel-icon {
   position: absolute;
 
-  width: 48px;
+  width: 24px;
   height: 26px;
 
-  right: 60px;
-  top: 37px;
+  right: 80px;
+  top: 39px;
   
   cursor: pointer;
 }
