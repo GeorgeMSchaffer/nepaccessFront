@@ -8,7 +8,7 @@ body {
   position: relative;
   width: 1440px;
   margin: auto;
-  height: 1077px;
+  min-height: 1077px;
   top: 102px;
 }
 
