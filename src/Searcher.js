@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 
@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
 import {Tooltip,} from 'react-tippy';
 
-import Globals from './globals.js';
+import globals from './globals.js';
 
 const _ = require('lodash');
 
@@ -105,9 +105,6 @@ class Searcher extends React.Component {
         });
     }
     
-
-
-
     /** Capture enter key to prevent default behavior of form submit, force a new search (refresh results) */
     onKeyUpNatural = (evt) => {
         if(evt.keyCode ===13){
@@ -153,20 +150,20 @@ class Searcher extends React.Component {
 
     standardizeAndSearch = () => {
         // Convert raw title to all possible fields to carry input over
-        var all = this.alphaNumeric(this.state.titleRaw);
-        all = this.process("+", all);
-
-        var exact = this.alphaNumeric(this.state.titleRaw);
-        exact = this.process("", exact);
-
         if(this.state.titleRaw){
+            var all = this.alphaNumeric(this.state.titleRaw);
+            all = this.process("+", all);
+            
+            var any = this.alphaNumeric(this.state.titleRaw);
+            any = this.process("", any);
+
+            var exact = this.alphaNumeric(this.state.titleRaw);
+            exact = this.process("", exact);
+
             exact = "+\"" + exact + "\"";
         } else {
-            // do nothing
+            this.setState({ titleRaw: '' });
         }
-
-        var any = this.alphaNumeric(this.state.titleRaw);
-        any = this.process("", any);
 
         this.setState({ 
             naturalTitle: this.state.titleRaw,
@@ -513,7 +510,7 @@ class Searcher extends React.Component {
                                         >
                                             
                                             <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" stroke-width="2"/>
+                                                <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
                                             </svg>
                                             <span id="tooltip1Mark" className="cursor-default no-select">?</span>
                                         </Tooltip>
@@ -550,7 +547,7 @@ class Searcher extends React.Component {
                                         >
                                             
                                             <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" stroke-width="2"/>
+                                                <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
                                             </svg>
                                             <span id="tooltip1Mark" className="cursor-default no-select">?</span>
                                         </Tooltip>
@@ -682,9 +679,20 @@ class Searcher extends React.Component {
             
         )
     }
-    
+
 	// After render
 	componentDidMount() {
+        var queryString = globals.getParameterByName("q");
+        console.log("Param " + queryString);
+        if(queryString){
+            this.setState({
+                titleRaw: queryString
+            }, () => {
+                if(this.state.titleRaw){
+                    this.standardizeAndSearch();
+                }
+            });
+        }
 	}
 }
 
