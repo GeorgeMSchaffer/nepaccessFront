@@ -656,7 +656,7 @@ class Searcher extends React.Component {
 
                             </tr>
                             <tr>
-                                <td className="empty-cell"></td>
+                                {/* <td className="empty-cell"></td> */}
                                 <td>
                                     <label className="advanced-label" htmlFor="searchState">State</label>
                                     <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 

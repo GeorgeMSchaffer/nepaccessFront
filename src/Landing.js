@@ -46,7 +46,7 @@ class Landing extends React.Component {
               <div id="image-1"></div>
               <div id="image-2"></div>
           </div>
-          <span id="headline" className="no-select cursor-default">Headline goes here: Find NEPA documents and find em good</span>
+          <span id="headline" className="no-select cursor-default">Headline goes here: Find NEPA documents</span>
           <span id="subhead" className="no-select cursor-default">Subhead here. The viewer should understand concisely what the site does for them.</span>
           <div id="search-container">
             <SearcherLanding 
