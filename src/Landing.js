@@ -29,11 +29,7 @@ class Landing extends React.Component {
     handleClick(id, val){
       this.setState({ [id]: val }, () =>
         {
-          // this.props.handleChange(id, val);
           this.props.history.push('search?q='+this.state.rawInput);
-          // this.props.history.push({
-          //     pathname: '/search?' + test
-          // })
         });
 
       
@@ -46,8 +42,14 @@ class Landing extends React.Component {
               <div id="image-1"></div>
               <div id="image-2"></div>
           </div>
-          <span id="headline" className="no-select cursor-default">Headline goes here: Find NEPA documents</span>
-          <span id="subhead" className="no-select cursor-default">Subhead here. The viewer should understand concisely what the site does for them.</span>
+
+          <span id="headline" className="no-select cursor-default">
+            Find NEPA documents
+          </span>
+          <span id="subhead" className="no-select cursor-default">
+            {/* Subhead here. The viewer should understand concisely what the site does for them. */}
+          </span>
+
           <div id="search-container">
             <SearcherLanding 
               id="rawInput"
