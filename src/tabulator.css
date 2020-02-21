@@ -25,3 +25,23 @@
 .tabulator-cell {
   height: 31px;
 }
+
+.tabulator-col-content {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 125%;
+  /* or 22px */
+  
+  display: flex;
+  align-items: center;
+  
+  color: #FFFFFF;
+
+  background: #737272;
+}
+
+.tabulator .tabulator-header {
+  border-bottom: 0px;
+}

@@ -5,8 +5,6 @@ import './landing.css';
 import SearcherLanding from './SearcherLanding.js';
 import './login.css';
 
-import Globals from './globals.js';
-
 class Landing extends React.Component {
 
     constructor(props) {
