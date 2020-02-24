@@ -197,7 +197,7 @@ body {
 /* Special tags */
 
 *[hidden] { 
-  display: none; 
+  display: none !important; 
 }
 
 .display-none {
