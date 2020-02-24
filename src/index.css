@@ -1,6 +1,15 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans);
 @import url(http://fonts.googleapis.com/css?family=EB+Garamond);
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #FFFBF1;
+}
+
+
 #home-page {
   position: relative;
   margin: auto;

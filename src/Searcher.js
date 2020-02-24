@@ -50,11 +50,16 @@ class Searcher extends React.Component {
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.alphabetOnly = this.alphaNumeric.bind(this);
         this.process = this.process.bind(this);
-	}
+
+        this.myRef = React.createRef();
+    }
     
     /**
      * Event handlers
-     */
+     */  
+
+    scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop)   
+
     // TODO: moment.js?
 
     /** Return trimmed alphanumeric (plus " and *) string with most basic special characters turned into whitespace*/
@@ -113,6 +118,7 @@ class Searcher extends React.Component {
                 // searchMode: 'natural'
                 booleanOption: 'all'
             }, () => {
+                this.scrollToMyRef();
                 this.forceSearch();
             });
         }
@@ -124,6 +130,7 @@ class Searcher extends React.Component {
             this.setState({
                 searchMode: 'boolean'
             }, () => {
+                this.scrollToMyRef();
                 this.forceSearch();
             });
         }
@@ -136,12 +143,13 @@ class Searcher extends React.Component {
             // searchMode: 'natural' 
             booleanOption: 'all'
         });
-        
+        this.scrollToMyRef();
         this.standardizeAndSearch();
     }
     onIconBooleanClick = (evt) => {
         this.setState({ searchMode: 'boolean' });
         
+        this.scrollToMyRef();
         this.standardizeAndSearch();
     }
     onClearClick = (evt) => {
@@ -675,6 +683,7 @@ class Searcher extends React.Component {
                                 </td>
                             </tr>
                         </tbody></table>
+                        <span ref={this.myRef}></span>
                         {/* <input id="searchLimit" type="number" step="100" min="0" max="100000" 
                                     placeholder="1000" name="limit" onInput={this.onInput} /> */}
                     </div>
