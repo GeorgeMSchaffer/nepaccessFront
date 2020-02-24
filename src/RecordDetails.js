@@ -165,11 +165,11 @@ export default class RecordDetails extends React.Component {
             ReactModal.setAppElement('body');
         }
 
-        // TODO: Get related files from database, display here in interactive table with % slider
         return (
             <div onKeyUp={this.onKeyUp}>
                 {this.Build()}
                 <ReactModal 
+                    onRequestClose={this.hideModal}
                     isOpen={this.state.show}
                     parentSelector={() => document.body}
                     // ariaHideApp={false}

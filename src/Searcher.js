@@ -161,43 +161,45 @@ class Searcher extends React.Component {
             exact = this.process("", exact);
 
             exact = "+\"" + exact + "\"";
+            this.setState({ 
+                naturalTitle: this.state.titleRaw,
+                titleAll: all,
+                titleExact: exact,
+                titleAny: any
+            }, () => {
+                this.forceSearch();
+            });
         } else {
-            this.setState({ titleRaw: '' });
+            this.setState({ titleRaw: '' }, () => {
+                this.forceSearch();
+            });
         }
 
-        this.setState({ 
-            naturalTitle: this.state.titleRaw,
-            titleAll: all,
-            titleExact: exact,
-            titleAny: any
-        }, () => {
-            this.forceSearch();
-        });
     }
 
     standardizeTitle = () => {
         // Convert raw title to all possible fields to carry input over
-        var all = this.alphaNumeric(this.state.titleRaw);
-        all = this.process("+", all);
-
-        var exact = this.alphaNumeric(this.state.titleRaw);
-        exact = this.process("", exact);
-
         if(this.state.titleRaw){
+            var all = this.alphaNumeric(this.state.titleRaw);
+            all = this.process("+", all);
+            
+            var any = this.alphaNumeric(this.state.titleRaw);
+            any = this.process("", any);
+
+            var exact = this.alphaNumeric(this.state.titleRaw);
+            exact = this.process("", exact);
+
             exact = "+\"" + exact + "\"";
+
+            this.setState({ 
+                naturalTitle: this.state.titleRaw,
+                titleAll: all,
+                titleExact: exact,
+                titleAny: any
+            });
         } else {
-            // do nothing
+            this.setState({ titleRaw: '' });
         }
-
-        var any = this.alphaNumeric(this.state.titleRaw);
-        any = this.process("", any);
-
-        this.setState({ 
-            naturalTitle: this.state.titleRaw,
-            titleAll: all,
-            titleExact: exact,
-            titleAny: any
-        });
     }
 
     onRadioChange = (evt) => {
@@ -242,8 +244,10 @@ class Searcher extends React.Component {
         alphabetized = this.process("", alphabetized);
 
         if(evt.target.value){
+            console.log(evt.target.value);
             alphabetized = "+\"" + alphabetized + "\"";
         } else {
+            console.log("Do nothing");
             // do nothing
         }
         
