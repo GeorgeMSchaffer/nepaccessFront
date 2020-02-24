@@ -74,6 +74,7 @@ class SearcherLanding extends React.Component {
                         value={this.state.titleRaw}
                         onChange={this.onInput}
                         onKeyUp={this.onKeyUp}
+                        autoFocus
                         name="titleRaw"
                         placeholder="Search for NEPA documents">
 

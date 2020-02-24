@@ -328,3 +328,21 @@
 .tabulator-cell, .link {
     padding: 0;
 }
+
+button.link, button.download {
+  
+  /* text-align: center; */
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13.3333px;
+  line-height: 111%;
+  /* or 20px */
+
+  cursor: pointer;
+
+  color: #64D6FA;
+  background: none;
+  border: none;
+}
