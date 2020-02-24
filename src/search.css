@@ -119,9 +119,14 @@
   border: 1px solid white;
 }
 
-input[type=checkbox], input[type=radio] {
+input[type=radio] {
   width: 26px;
   height: 26px;
+}
+
+input[type=checkbox] {
+  width: 16px;
+  height: 16px;
 }
 
 #advanced-search-box tr td input[type=checkbox] {
