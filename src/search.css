@@ -166,15 +166,13 @@
   cursor: pointer;
 }
 
-#advanced-search-box .react-select__indicator-separator {
-  display: none;
-}
-
 #advanced-search-box .multi {
   width: 355px;
 }
 
-#advanced-search-box path {
+/** React-select custom styling within advanced serach box */
+
+#advanced-search-box .react-select__dropdown-indicator, #advanced-search-box .react-select__clear-indicator, #advanced-search-box .react-select__indicator-separator {
   display: none;
 }
 
@@ -357,4 +355,8 @@ button.link, button.download {
 .ReactModal__Content table.details tbody tr td {
   margin: 0;
   padding: 0;
+}
+
+.react-select__multi-value__remove {
+  /* display: block !important; */
 }
