@@ -346,3 +346,15 @@ button.link, button.download {
   background: none;
   border: none;
 }
+
+.ReactModal__Content {
+  height: 70%;
+  width: 80%;
+  margin: auto;
+  margin-top: 100px;
+}
+
+.ReactModal__Content table.details tbody tr td {
+  margin: 0;
+  padding: 0;
+}
