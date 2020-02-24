@@ -340,7 +340,7 @@ button.link, button.download {
 
   cursor: pointer;
 
-  color: #64D6FA;
+  color: darkblue;
   background: none;
   border: none;
 }
@@ -355,8 +355,4 @@ button.link, button.download {
 .ReactModal__Content table.details tbody tr td {
   margin: 0;
   padding: 0;
-}
-
-.react-select__multi-value__remove {
-  /* display: block !important; */
 }
