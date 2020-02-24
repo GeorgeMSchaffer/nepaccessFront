@@ -487,18 +487,18 @@ class Searcher extends React.Component {
                                 </span>
                                 
                                 <span className="advanced-radio" hidden={this.state.searchModeName==='Advanced search'}>
-                                    <label className="flex-center no-select">
-                                        <input type="radio" className="boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
+                                    <label className="flex-center no-select cursor-pointer">
+                                        <input type="radio" className="cursor-pointer" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                         defaultChecked />
                                         All of these words
                                     </label>
-                                    <label className="flex-center no-select">
-                                        <input type="radio" className="boolean-radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
+                                    <label className="flex-center no-select cursor-pointer">
+                                        <input type="radio" className="cursor-pointer" name="booleanOption" value="any" onChange={this.onRadioChange} 
                                         />
                                         Any of these words
                                     </label>
-                                    <label className="flex-center no-select">
-                                        <input type="radio" className="boolean-radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
+                                    <label className="flex-center no-select cursor-pointer">
+                                        <input type="radio" className="cursor-pointer" name="booleanOption" value="exact" onChange={this.onRadioChange} 
                                         />
                                         Exact phrase
                                     </label>
