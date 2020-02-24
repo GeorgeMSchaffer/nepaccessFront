@@ -487,17 +487,17 @@ class Searcher extends React.Component {
                                 </span>
                                 
                                 <span className="advanced-radio" hidden={this.state.searchModeName==='Advanced search'}>
-                                    <label className="inline no-select">
+                                    <label className="flex-center no-select">
                                         <input type="radio" className="boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                         defaultChecked />
                                         All of these words
                                     </label>
-                                    <label className="inline no-select">
+                                    <label className="flex-center no-select">
                                         <input type="radio" className="boolean-radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
                                         />
                                         Any of these words
                                     </label>
-                                    <label className="inline no-select">
+                                    <label className="flex-center no-select">
                                         <input type="radio" className="boolean-radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
                                         />
                                         Exact phrase
@@ -651,14 +651,14 @@ class Searcher extends React.Component {
 
                                 <td><label className="block advanced-label">Document type</label>
                                     <div>
-                                        <label className="advanced-checkbox-label">
+                                        <label className="advanced-checkbox-label flex-center">
                                             <input type="checkbox" name="typeDraft" 
                                                 checked={this.state.typeDraft} onChange={this.onTypeChecked} />
                                             <span>Draft</span>
                                         </label>
                                     </div>
                                     <div>
-                                        <label className="advanced-checkbox-label">
+                                        <label className="advanced-checkbox-label flex-center">
                                             <input type="checkbox" name="typeFinal" 
                                                 checked={this.state.typeFinal} onChange={this.onTypeChecked} />
                                             <span>Final</span>

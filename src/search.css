@@ -1,6 +1,8 @@
 /* Non landing search styling */
 
 .search-label {
+  display: inline-flex;
+  align-items: center;
   position: absolute;
   top: 40px;
   margin-left: 122px;
@@ -115,6 +117,11 @@
 
   color: black;
   border: 1px solid white;
+}
+
+input[type=checkbox], input[type=radio] {
+  width: 26px;
+  height: 26px;
 }
 
 #advanced-search-box tr td input[type=checkbox] {

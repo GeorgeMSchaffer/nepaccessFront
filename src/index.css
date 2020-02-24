@@ -216,6 +216,11 @@ body {
   display: block;
 }
 
+.flex-center {
+  display: inline-flex;
+  align-items: center;
+}
+
 .cursor-default {
   cursor: default;
 }
