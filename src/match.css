@@ -1,13 +1,13 @@
-/* table.record-details {
-
-} */
-
 .modal-title {
     font-weight: bold;
 }
 
 .modal-close {
     float: right;
+}
+
+.modal-results {
+    min-height: 480px;
 }
 
 .ReactModal__Overlay--after-open {
