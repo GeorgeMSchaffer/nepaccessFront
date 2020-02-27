@@ -1,0 +1,17 @@
+/* table.record-details {
+
+} */
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-close {
+    float: right;
+}
+
+.ReactModal__Overlay--after-open {
+    z-index: 4;
+    min-width: 1280px;
+    min-height: 720px;
+}
