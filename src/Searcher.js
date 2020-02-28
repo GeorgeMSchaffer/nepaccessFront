@@ -48,7 +48,7 @@ class Searcher extends React.Component {
             limit: '100000',
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
-        this.alphabetOnly = this.alphaNumeric.bind(this);
+        this.alphaNumeric = this.alphaNumeric.bind(this);
         this.process = this.process.bind(this);
 
         this.myRef = React.createRef();
@@ -178,7 +178,7 @@ class Searcher extends React.Component {
                 this.forceSearch();
             });
         } else {
-            this.setState({ titleRaw: '' }, () => {
+            this.setState({ titleRaw: '', titleAll: '', titleExact: '', titleAny: '' }, () => {
                 this.forceSearch();
             });
         }
