@@ -44,10 +44,10 @@ class Landing extends React.Component {
           </div>
 
           <span id="headline" className="no-select cursor-default">
-            Find NEPA documents
+            Headline goes here: Find NEPA documents and find em good
           </span>
           <span id="subhead" className="no-select cursor-default">
-            {/* Subhead here. The viewer should understand concisely what the site does for them. */}
+            Subhead here. The viewer should understand concisely what the site does for them.
           </span>
 
           <div id="search-container">
