@@ -133,8 +133,7 @@ class Main extends React.Component {
                     <Link className="main-menu-link" to="/aboutsite">About this site</Link>
                     <Link className="main-menu-link" to="/help">Help</Link>
                 </div>
-
-                <div id="bottom-border-header"></div>
+                
             </div>
             <Switch>
                 <Route path="/details" component={UserDetails}/>

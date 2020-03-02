@@ -37,7 +37,7 @@ class Landing extends React.Component {
 
     render(){
       return (
-        <div>
+        <div id="landing">
           <div id="landing-images">
             <div id="image-1">
               <span id="headline" className="no-select cursor-default">
