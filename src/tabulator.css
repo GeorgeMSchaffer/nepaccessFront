@@ -17,8 +17,10 @@
 }
 
 /* Row auto adjusts to accommodate cell size */
-.tabulator-cell {
-  height: 35px;
+.tabulator-row .tabulator-cell {
+  height: 44px;
+  /* Assuming 6px padding, line-height of height minus padding vertically centers text */
+  line-height: 32px;
 }
 
 .tabulator-col-content {
@@ -26,7 +28,7 @@
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
-  line-height: 125%;
+  /* line-height: 125%; */
   /* or 22px */
   
   display: flex;
