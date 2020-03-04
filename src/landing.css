@@ -22,7 +22,7 @@
 
   font-family: "Open Sans";
   font-style: normal;
-  font-size: 36px;
+  font-size: 24pt;
   line-height: 160%;
 
   color: #FFFFFF;
@@ -88,8 +88,13 @@
   cursor: text;
 }
 
+
+#search-box::placeholder {
+  color: #ccc;
+}
+
 #search-box, .search-box {
-  width: 680px;
+  width: 670px;
   height: 50px;
   margin: 0px;
   padding: 0px 0px 0px 31px;

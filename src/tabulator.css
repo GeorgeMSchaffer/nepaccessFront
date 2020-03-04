@@ -1,21 +1,16 @@
 /* Custom tabulator styling */
 
-/* .tabulator {
-    height: 100%;
+.tabulator {
+  margin: 0 5px;
 }
 
-.tabulator-row .tabulator-cell {
+/* .tabulator-row .tabulator-cell {
     white-space: normal;
 }
 
 .tabulator-row {
     white-space: normal;
-} */
-
-/* .tabulator-row .tabulator-cell {
-  white-space: pre-wrap;
-  word-break: break-all;
-} */
+}  */
 
 .tabulator-row, .tabulator-cell {
   cursor: default;
@@ -23,7 +18,7 @@
 
 /* Row auto adjusts to accommodate cell size */
 .tabulator-cell {
-  height: 31px;
+  height: 35px;
 }
 
 .tabulator-col-content {

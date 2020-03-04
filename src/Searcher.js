@@ -513,7 +513,7 @@ class Searcher extends React.Component {
                                             arrow="true"
                                             size="small"
                                             distance="80"
-                                            offset="40"
+                                            offset="80"
                                             // open="true"
                                             title="Search by words in the title.<br>
                                             &bull;Surround phrases with &quot;double quotes&quot; to match exact phrases.<br>
@@ -551,7 +551,7 @@ class Searcher extends React.Component {
                                             arrow="true"
                                             size="small"
                                             distance="80"
-                                            offset="40"
+                                            offset="80"
                                             title="Search by words in the title.<br>
                                             &bull;Surround phrases with &quot;double quotes&quot; to match exact phrases.<br>
                                             &bull;Append words with an asterisk* to match partial words.<br>
@@ -629,25 +629,20 @@ class Searcher extends React.Component {
                                         <path d="M8.8414 16L0.841402 -1.04853e-06L16.8414 0L8.8414 16Z" fill="black"/>
                                     </svg>
                                 </td>
-
                                 <td>
-                                    <label className="advanced-label" htmlFor="dates">Date Range</label>
-                                    <div id="dates">
-                                        <span className="date-text inline">
-                                            from
-                                            <DatePicker
-                                                selected={this.state.startPublish} onChange={this.onStartDateChange} 
-                                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                                className="date" 
-                                            />
-                                            to
-                                            <DatePicker
-                                                selected={this.state.endPublish} onChange={this.onEndDateChange}
-                                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                                className="date" 
-                                        /></span>
-                                    </div>
+                                    <label className="advanced-label" htmlFor="searchState">State</label>
+                                    <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
+                                        styles={customStyles}
+                                        options={stateOptions} 
+                                        onChange={this.onLocationChange} 
+                                        placeholder="Type or select state" 
+                                     />
+                                     <svg className="down-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.8414 16L0.841402 -1.04853e-06L16.8414 0L8.8414 16Z" fill="black"/>
+                                    </svg>
                                 </td>
+
+                                
 
                                 <td><label className="block advanced-label">Document type</label>
                                     <div>
@@ -670,16 +665,22 @@ class Searcher extends React.Component {
                             <tr>
                                 {/* <td className="empty-cell"></td> */}
                                 <td>
-                                    <label className="advanced-label" htmlFor="searchState">State</label>
-                                    <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
-                                        styles={customStyles}
-                                        options={stateOptions} 
-                                        onChange={this.onLocationChange} 
-                                        placeholder="Type or select state" 
-                                     />
-                                     <svg className="down-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M8.8414 16L0.841402 -1.04853e-06L16.8414 0L8.8414 16Z" fill="black"/>
-                                    </svg>
+                                    <label className="advanced-label" htmlFor="dates">Date Range</label>
+                                    <div id="dates">
+                                        <span className="date-text inline">
+                                            from
+                                            <DatePicker
+                                                selected={this.state.startPublish} onChange={this.onStartDateChange} 
+                                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                                className="date" 
+                                            />
+                                            to
+                                            <DatePicker
+                                                selected={this.state.endPublish} onChange={this.onEndDateChange}
+                                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                                className="date" 
+                                        /></span>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody></table>

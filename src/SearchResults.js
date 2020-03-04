@@ -49,8 +49,8 @@ class SearchResults extends React.Component {
           };
           
           return (
-              <div>
-                  <h2>{this.props.resultsText}</h2>
+              <div id="search-results">
+                  <h2 id="results-label">{this.props.resultsText}</h2>
                   <ReactTabulator
                       data={data}
                       columns={columns}
@@ -64,7 +64,7 @@ class SearchResults extends React.Component {
           // Show the user something other than a blank page
           return (
           <div>
-              <h2>{this.props.resultsText}</h2>
+              <h2 id="results-label">{this.props.resultsText}</h2>
               <ReactTabulator />
           </div>
           )

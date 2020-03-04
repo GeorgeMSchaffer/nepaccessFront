@@ -2,6 +2,7 @@
 @import url(http://fonts.googleapis.com/css?family=EB+Garamond);
 
 html, body, #home-page, #root {
+  min-width: 900px;
   height: 100%;
 }
 
@@ -25,7 +26,7 @@ body {
 #header {
   position: fixed;
   width: 100%;
-  min-width: 1080px;
+  min-width: 980px;
   height: 102px;
   left: 0px;
   top: 0px;
@@ -56,10 +57,13 @@ body {
 
 #logo-type {
   position: absolute;
-  width: 289.2px;
-  height: 123px;
-  left: 48.8px;
-  top: -10px;
+  width: 289x;
+  height: 122px;
+  left: 48px;
+  
+  /* Center vertically using top 50% and margin - half of height */
+  top: 50%;
+  margin-top: -61px;
   z-index: 1;
 }
 
@@ -155,8 +159,7 @@ body {
 
 .main-menu-link {
   position: relative;
-  margin-right: 30px;
-  min-width: 143px;
+  margin-right: 35px;
 
   font-family: "Open Sans";
   font-style: normal;
@@ -243,4 +246,11 @@ body {
 
 button {
   cursor: pointer;
+}
+
+.errorLabel {
+  color: coral;
+  font-style: italic;
+  position: absolute;
+  top: -20px;
 }

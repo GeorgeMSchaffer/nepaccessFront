@@ -79,7 +79,7 @@
   
   background: white;
   margin: auto;
-  padding-top: 20px;
+  padding-top: 15px;
   border: 1px solid black;
   border-top: none;
 }
@@ -95,22 +95,21 @@
 
 #advanced-search-box tr td:nth-child(2) {
   width: 365px;
-  padding-left: 78px;
+  padding-left: 64px;
 }
 
 #advanced-search-box tr td:nth-child(3) {
   height: 86px;
-  padding-left: 78px;
+  padding-left: 64px;
 }
 
 #advanced-search-box .advanced-label {
-  height: 45px;
 
   font-family: Open Sans;
   font-style: normal;
   font-weight: bold;
   font-size: 18px;
-  line-height: 27px;
+  line-height: 26px;
 
   display: flex;
   align-items: center;
@@ -301,6 +300,10 @@ input[type=checkbox] {
   height: 31.57px;
 }
 
+.tippy-tooltip {
+  text-align: left;
+}
+
 .tippy-tooltip--small {
   border: 1px solid #737272;
 }
@@ -311,7 +314,7 @@ input[type=checkbox] {
   font-family: Open Sans;
   font-style: normal;
   font-weight: normal;
-  font-size: 10px;
+  font-size: 14px;
   line-height: 111%;
   /* or 11px */
 
@@ -367,4 +370,8 @@ button.link, button.download {
 .ReactModal__Content table.details tbody tr td {
   margin: 0;
   padding: 0;
+}
+
+#results-label {
+  margin-left: 5px;
 }
