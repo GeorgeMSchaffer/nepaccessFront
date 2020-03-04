@@ -19,8 +19,13 @@
 /* Row auto adjusts to accommodate cell size */
 .tabulator-row .tabulator-cell {
   height: 44px;
-  /* Assuming 6px padding, line-height of height minus padding vertically centers text */
+  /* Assuming 6px included padding (default), line-height of height minus padding vertically centers line of text */
   line-height: 32px;
+  border-color: black;
+}
+
+.tabulator-row.tabulator-row-even {
+  background-color: #F0EFED;
 }
 
 .tabulator-col-content {
