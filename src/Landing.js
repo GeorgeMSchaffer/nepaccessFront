@@ -41,15 +41,21 @@ class Landing extends React.Component {
           <div id="landing-images">
             <div id="image-1">
               <span id="headline" className="no-select cursor-default">
-                Headline goes here
+              The National Environmental Policy Act of 1970 (NEPA) is the cornerstone of US environmental policy. The heart of NEPA is the Environmental Impact Statement (EIS).
               </span>
             </div>
             <div id="image-2">
               <span id="subhead" className="no-select cursor-default">
-                Subhead here
+              This site provides unprecedented access to decades of environmental data.  Get started with a simple search.
               </span>
             </div>
           </div>
+          <div>
+            <span id="post-text">
+            From a local flood control project, to interstate highways, to regional management of national forests, NEPAccess gives you the power to gather data, assess impacts, and determine the effectiveness of the governmental process.
+            </span>
+          </div>
+
 
 
           <div id="search-container">
