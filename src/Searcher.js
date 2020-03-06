@@ -703,6 +703,7 @@ class Searcher extends React.Component {
                 titleRaw: queryString
             }, () => {
                 if(this.state.titleRaw){
+                    this.scrollToMyRef();
                     this.standardizeAndSearch();
                 }
             });
