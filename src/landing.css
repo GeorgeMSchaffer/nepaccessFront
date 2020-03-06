@@ -42,6 +42,7 @@
 } 
 
 #landing-images {
+  min-height: 600px;
   height: 80%;
 }
 
