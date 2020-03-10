@@ -32,7 +32,7 @@ export default class RecordDetails extends React.Component {
             searchResults: [],
             networkError: '',
             searcherClassName: '',
-            message: "Related documents:",
+            message: "Similar results by title:",
             show: false,
             resultsText: "",
         };
@@ -127,15 +127,21 @@ export default class RecordDetails extends React.Component {
         const cellData = this.props.cell._cell.row.data;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
+                let keyName = key;
+                if(key==='registerDate'){
+                    keyName = 'date';
+                } else if (key==='documentType') {
+                    keyName = 'type';
+                }
                 if(key==='filename') {
-                    return <div><p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p></div>;
+                    return <div><p key={i} className='modal-line'><span className='modal-title'>document:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p></div>;
                 } else if(key==='commentsFilename') {
-                    return <div><p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p></div>;
+                    return <div><p key={i} className='modal-line'><span className='modal-title'>comments:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p></div>;
                 } else if(key==='matchPercent' || key==='commentDate' || key==='id') { // exclusions
                     return '';
                 }
                 else {
-                    return <div><p key={i} className='modal-line'><span className='modal-title'>{key}:</span> {cellData[key]}</p></div>;
+                    return <div><p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p></div>;
                 }
             }));
         }

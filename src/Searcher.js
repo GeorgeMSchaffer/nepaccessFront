@@ -118,7 +118,7 @@ class Searcher extends React.Component {
                 // searchMode: 'natural'
                 booleanOption: 'all'
             }, () => {
-                this.scrollToMyRef();
+                // this.scrollToMyRef();
                 this.forceSearch();
             });
         }
@@ -130,7 +130,7 @@ class Searcher extends React.Component {
             this.setState({
                 searchMode: 'boolean'
             }, () => {
-                this.scrollToMyRef();
+                // this.scrollToMyRef();
                 this.forceSearch();
             });
         }
@@ -143,13 +143,13 @@ class Searcher extends React.Component {
             // searchMode: 'natural' 
             booleanOption: 'all'
         });
-        this.scrollToMyRef();
+        // this.scrollToMyRef();
         this.standardizeAndSearch();
     }
     onIconBooleanClick = (evt) => {
         this.setState({ searchMode: 'boolean' });
         
-        this.scrollToMyRef();
+        // this.scrollToMyRef();
         this.standardizeAndSearch();
     }
     onClearClick = (evt) => {
@@ -696,7 +696,7 @@ class Searcher extends React.Component {
                 titleRaw: queryString
             }, () => {
                 if(this.state.titleRaw){
-                    this.scrollToMyRef();
+                    // this.scrollToMyRef();
                     this.standardizeAndSearch();
                 }
             });

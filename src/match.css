@@ -7,11 +7,51 @@
 }
 
 .modal-results {
-    min-height: 480px;
+    /* Prevents scrolling when tabbing through results */
+    min-height: 500px;
 }
 
 .ReactModal__Overlay--after-open {
     z-index: 4;
-    min-width: 1280px;
-    min-height: 720px;
+    min-width: 400px;
+    min-height: 300px;
 }
+
+#tooltip2Mark {
+    position: absolute;
+    
+    margin-left: 12px;
+    margin-top: 10px;
+  
+    width: 20px;
+    height: 20.72px;
+  
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 111%;
+    /* or 20px */
+  
+    color: #000000;
+  }
+  
+  #tooltip2 {
+    position: absolute;
+    
+    /* margin-left: -62px; */
+    margin-top: 4px;
+  
+    width: 32px;
+    height: 31.57px;
+  }
+
+  .titleMatchForm input{
+      height: 10px;
+  }
+
+  .matchSearchLabel {
+      margin-left: 38px;
+      display: inline-block;
+      line-height: 40px;
+  }

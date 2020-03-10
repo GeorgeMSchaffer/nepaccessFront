@@ -13,9 +13,9 @@ import Generate from './Generate.js';
 import UserDetails from './UserDetails.js';
 import ForgotPassword from './ForgotPassword';
 
-import AboutNepa from './AboutNepa.js';
-import AboutSite from './AboutSite';
-import Help from './Help';
+// import AboutNepa from './AboutNepa.js';
+// import AboutSite from './AboutSite';
+// import Help from './Help';
 
 import Globals from './globals.js';
 

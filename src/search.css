@@ -20,7 +20,7 @@
 }
 
 #searcher-container {
-  margin-top: 243px;
+  margin-top: 150px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -365,10 +365,9 @@ button.link, button.download {
 }
 
 .ReactModal__Content {
-  height: 70%;
+  height: 80%;
   width: 80%;
   margin: auto;
-  margin-top: 100px;
 }
 
 .ReactModal__Content table.details tbody tr td {
@@ -381,5 +380,9 @@ button.link, button.download {
 }
 
 #search-results {
+  min-width: 1050px;
+}
+
+.modal-results {
   min-width: 1050px;
 }

@@ -52,13 +52,21 @@ class MatchSearcher extends React.Component {
     
     render () {
         return (
-            <form onSubmit={this.submitHandler}>
-                <label htmlFor="matchSearchPercent">Search by match percentage</label>
-                <Tooltip title="Search by title match certainty">
-                    <input id="matchSearchPercent" type="range" min="1" max="100" step="1" value={this.state.matchPercent} 
-                        name="matchPercent" autoFocus onChange={this.onChange} />
+            <form className="titleMatchForm" onSubmit={this.submitHandler}>
+                <Tooltip 
+                size="small"
+                title="Higher percentage = more strict, less results">
+                    <svg className="cursor-default no-select" id="tooltip2" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
+                                            </svg>
+                                            <span id="tooltip2Mark" className="cursor-default no-select">?</span>
                 </Tooltip>
-                {this.state.matchPercent}
+                <label className="matchSearchLabel" htmlFor="matchSearchPercent">
+                    Search by title similarity
+                </label>
+                <input id="matchSearchPercent" type="range" min="1" max="100" step="1" value={this.state.matchPercent} 
+                        name="matchPercent" autoFocus onChange={this.onChange} />
+                {this.state.matchPercent}%
             </form>
         )
     }
