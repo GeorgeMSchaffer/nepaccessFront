@@ -5,7 +5,7 @@
   margin: auto;
   /** The search box now has a percentage-based position, which means the overall page
    needs a minimum height that does not clip into the header texts. */
-  min-height: 900px;
+  min-height: 810px;
   height: 100%;
   width: 100%;
 }
@@ -34,7 +34,9 @@
 
 #post-text {
   display: block;
-  padding: 0% 20%;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-top: 2%;
 
   text-align: left;
 

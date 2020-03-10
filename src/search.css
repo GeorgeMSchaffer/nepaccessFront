@@ -323,10 +323,14 @@ input[type=checkbox] {
   
 }
 
-/** Tooltip right-facing arrow - replaces all tooltip arrows */
-.arrow-regular {
-  border-left: 7px solid white !important;
+.tippy-tooltip [x-circle] {
+  background: none;
 }
+
+/** Tooltip right-facing arrow - replaces all tooltip arrows */
+/* .arrow-regular {
+  border-left: 7px solid white !important;
+} */
 
 #falseAdvanced {
     position: relative;
@@ -374,4 +378,8 @@ button.link, button.download {
 
 #results-label {
   margin-left: 5px;
+}
+
+#search-results {
+  min-width: 1050px;
 }

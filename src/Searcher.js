@@ -509,11 +509,11 @@ class Searcher extends React.Component {
                                 <div hidden={this.state.searchModeName==='Simple search'}>
                                     <div id="fake-search-box" className="inline-block">
                                         <Tooltip 
-                                            position="left-end"
-                                            arrow="true"
+                                            // position="left-end"
+                                            // arrow="true"
                                             size="small"
-                                            distance="80"
-                                            offset="80"
+                                            // distance="80"
+                                            // offset="80"
                                             // open="true"
                                             title="Search by words in the title.<br>
                                             &bull;Surround phrases with &quot;double quotes&quot; to match exact phrases.<br>
@@ -547,11 +547,7 @@ class Searcher extends React.Component {
                                     <div id="fake-search-box" className="inline-block">
                                         <Tooltip 
                                             className="cursor-default no-select"
-                                            position="left-end"
-                                            arrow="true"
                                             size="small"
-                                            distance="80"
-                                            offset="80"
                                             title="Search by words in the title.<br>
                                             &bull;Surround phrases with &quot;double quotes&quot; to match exact phrases.<br>
                                             &bull;Append words with an asterisk* to match partial words.<br>
@@ -610,9 +606,6 @@ class Searcher extends React.Component {
 
                         </div>
 
-
-                        <table id="falseAdvanced" hidden={this.state.searchModeName==='Simple search'}>
-                        </table>
                         <table id="advanced-search-box" hidden={this.state.searchModeName==='Advanced search'}><tbody>
                             <tr>
                                 <td>
