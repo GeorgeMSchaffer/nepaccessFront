@@ -54,11 +54,12 @@ class Landing extends React.Component {
           </div>
           <div>
             <span id="post-text">
-            Our goal is to encourage efficiency, transparency, and public participation in environmental policy decisions. This is essential for addressing emerging 21st-century social, environmental, and economic challenges. 
-            <br /><br />
-            From a local flood control project, to interstate highways, to regional management of national forests, NEPAccess gives you the power to gather data, assess impacts, and determine the effectiveness of the governmental process. 
+              <p>Our goal is to encourage efficiency, transparency, and public participation in environmental policy decisions. This is essential for addressing emerging 21st-century social, environmental, and economic challenges. 
+              </p>
+              <p>From a local flood control project, to interstate highways, to regional management of national forests, NEPAccess gives you the power to gather data, assess impacts, and determine the effectiveness of the governmental process. 
+              </p>
             </span>
-            <br /><br />
+            <br />
           </div>
 
           <div id="search-container">
