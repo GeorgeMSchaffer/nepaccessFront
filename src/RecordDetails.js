@@ -92,6 +92,7 @@ export default class RecordDetails extends React.Component {
                     });
 				} else { // 200 from server, but empty results
 					this.setState({
+                        searchResults: parsedJson,
 						resultsText: "No results found"
 					});
 				}

@@ -58,9 +58,8 @@ class Landing extends React.Component {
             <br /><br />
             From a local flood control project, to interstate highways, to regional management of national forests, NEPAccess gives you the power to gather data, assess impacts, and determine the effectiveness of the governmental process. 
             </span>
+            <br /><br />
           </div>
-
-
 
           <div id="search-container">
             <SearcherLanding 

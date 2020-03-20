@@ -314,7 +314,6 @@ input[type=checkbox] {
   font-family: Open Sans;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
   line-height: 111%;
   /* or 11px */
 
@@ -325,6 +324,11 @@ input[type=checkbox] {
 
 .tippy-tooltip [x-circle] {
   background: none;
+}
+
+.tippy-tooltip p {
+  font-size: 9px;
+  margin: 8px 0px;
 }
 
 /** Tooltip right-facing arrow - replaces all tooltip arrows */

@@ -114,6 +114,9 @@
 #search-box::placeholder {
   color: #ccc;
 }
+#search-box:focus {
+  outline: none;
+}
 
 #search-box, .search-box {
   width: 670px;

@@ -509,16 +509,18 @@ class Searcher extends React.Component {
                                 <div hidden={this.state.searchModeName==='Simple search'}>
                                     <div id="fake-search-box" className="inline-block">
                                         <Tooltip 
+                                            className="cursor-default no-select"
                                             // position="left-end"
                                             // arrow="true"
                                             size="small"
                                             // distance="80"
                                             // offset="80"
                                             // open="true"
-                                            title="Search by words in the title.<br>
-                                            &bull;Surround phrases with &quot;double quotes&quot; to match exact phrases.<br>
-                                            &bull;Append words with an asterisk* to match partial words.<br>
-                                            &bull;Use exact spelling, case insensitive."
+                                            title="<p className=&quot;tooltip-line&quot;>Search by words in the title.</p>
+                                            <p className=&quot;tooltip-line&quot;>&bull; Leave search box blank to return all results in database.</p>
+                                            <p className=&quot;tooltip-line&quot;>&bull; Surround phrases with &quot;double quotes&quot; to match exact phrases.</p>
+                                            <p className=&quot;tooltip-line&quot;>&bull; Append words with an asterisk* to match partial words.</p>
+                                            <p className=&quot;tooltip-line&quot;>&bull; Use exact spelling, case insensitive.</p>"
                                         >
                                             
                                             <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -548,10 +550,11 @@ class Searcher extends React.Component {
                                         <Tooltip 
                                             className="cursor-default no-select"
                                             size="small"
-                                            title="Search by words in the title.<br>
-                                            &bull;Surround phrases with &quot;double quotes&quot; to match exact phrases.<br>
-                                            &bull;Append words with an asterisk* to match partial words.<br>
-                                            &bull;Use exact spelling, case insensitive."
+                                            title="<p className=&quot;tooltip-line&quot;>Search by words in the title.</p>
+                                            <p className=&quot;tooltip-line&quot;>&bull; Leave search box blank to return all results in database.</p>
+                                            <p className=&quot;tooltip-line&quot;>&bull; Surround phrases with &quot;double quotes&quot; to match exact phrases.</p>
+                                            <p className=&quot;tooltip-line&quot;>&bull; Append words with an asterisk* to match partial words.</p>
+                                            <p className=&quot;tooltip-line&quot;>&bull; Use exact spelling, case insensitive.</p>"
                                         >
                                             
                                             <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
