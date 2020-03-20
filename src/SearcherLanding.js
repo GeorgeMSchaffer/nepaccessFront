@@ -34,6 +34,7 @@ class SearcherLanding extends React.Component {
     }
     onClearClick = (evt) => {
         this.setState({ titleRaw: '' });
+        this.props.onChange(this.props.id, '');
     }
 
     // TODO: Get shortlist of title suggestions ordered by relevance from backend using NLM, alphanumeric only, maybe use
