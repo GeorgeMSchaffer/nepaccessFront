@@ -60,6 +60,20 @@
   margin-right: 10px;
 }
 
+#post-search-box-text {
+  height: 27px;
+
+  font-family: "Open Sans";
+  font-size: 12px;
+  /* or 13px */
+
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+
+  color: #FFFFFF;
+}
+
 .advanced-radio {
   width: 800px;
   display: inline-flex;
