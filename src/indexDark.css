@@ -1,0 +1,296 @@
+/* dark colors for readability */
+/* Need min height to prevent upward shifts when advancing table page */
+/* Need min width to maintain table columns (prevent collapse/hide) */
+
+#main {
+  padding-top: 20px;
+}
+
+html {
+  background: black;
+	color: white;
+  min-height: 1200px;
+  min-width: 1080px;
+}
+
+input .dark {
+  color: #eee;
+  background: #222;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+}
+
+button.button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: block;
+  background: #555;
+  color: white;
+}
+button:hover {
+  background: #559;
+}
+.button-text {
+  pointer-events: none; /* webkit fix */
+}
+
+/* general table styling; overwritten by react-tabulator midnight theme */
+/* table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+thead tr {
+  background-color: #112;
+}
+td,
+th {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even) {
+  background-color: #212;
+}
+td a {
+  color: #777;
+} */
+
+form .dark {
+  background: #111;
+}
+
+input {
+  background: #bbb;
+}
+
+.errorLabel {
+  display: inline-block;
+  padding: 0 0 0 25px;
+  font-style: italic;
+  color: coral;
+}
+.infoLabel {
+  color: skyblue;
+}
+
+.collapsible {
+	display: block;
+  background-color: #222;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+.collapsible:hover {
+  background-color: #333;
+}
+
+.content {
+  padding: 0px 18px;
+  display: block;
+}
+
+.checkLabel {
+	cursor: pointer;
+	user-select: none;
+}
+
+.noSelect {
+  user-select: none;
+}
+
+*[hidden] { 
+  display: none; 
+}
+
+.display-none {
+  display: none;
+}
+.block {
+  display: block;
+}
+.inline {
+  display: inline;
+}
+
+.highlight:hover {
+  color: rgb(153,216,210);
+}
+
+/* React-Select custom (multi-select) styling */
+.multi {
+	background-color: #333;
+	color: white;
+}
+.react-select__menu {
+  color: white;
+}
+.react-select__control {
+  color: white;
+}
+/* Text and/or added items are children of value-container, no consistent class between children */
+.react-select__value-container *{
+  background-color: #333;
+  color: #ddd;
+}
+/* .react-select__value-container *:hover{
+  background-color: #555;
+  color: #ddd;
+} */
+.react-select__menu-list {
+  background-color: #555;
+}
+.react-select__multi-value__label {
+  background-color:#ddd;
+}
+.react-select__multi-value__remove {
+  background-color:#559;
+}
+.react-select__clear-indicator {
+  background-color:#559;
+  border-radius:5px;
+}
+
+/* navbar styling TODO: use only classes */
+/* #navbar {
+  height: 40px;
+  position: fixed;
+  top: 0px;
+} */
+#nav-background {
+  position: fixed;
+  z-index: 100;
+  height: 40px;
+  width: 100%;
+  background: #333;
+  top: 0px;
+  left: 0px;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  float: left;
+}
+a {
+  min-width: 100px;
+  min-height: 20px;
+  color: lightgray;
+}
+li a:hover,
+span a:hover {
+  border-radius: 16px;
+  background-color: #111;
+}
+.nav-link {
+  display: block;
+  text-align: center;
+  padding: 10px 16px;
+  text-decoration: underline;
+}
+.right-nav-item {
+  float: right;
+}
+
+.loadDefault {
+  cursor: default;
+}
+.loadWait {
+  cursor: wait;
+}
+
+/* Download links, download buttons */
+.download {
+  color: skyblue;
+  text-decoration-style: underline;
+}
+.disabled_download {
+  pointer-events: none;
+  cursor: default !important;
+  
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: lightgray;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  cursor: pointer;
+}
+.download:hover {
+  text-decoration: underline;
+}
+button.download, button.link {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: rgb(135, 206, 235);
+  cursor: pointer;
+}
+
+/* Checkbox lines */
+label.checkbox {
+  display: block;
+  border:1px solid #888;
+}
+label.checkbox:hover {
+  background:#444;
+  cursor:pointer;
+}
+
+/* Custom tabulator styling */
+.tabulator {
+  min-height: 500px;
+}
+
+.tabulator-table .tabulator-row:nth-child(even) {
+  background-color: #222;
+}
+.tabulator-table .tabulator-row {
+  background-color: #444;
+}
+.tabulator-table div.tabulator-row:hover {
+  background-color: #000;
+}
+.tabulator-cell div.formatterCell:hover {
+  background-color: #333;
+}
+
+/* Custom modal stlying */
+
+div.ReactModalPortal>.ReactModal__Overlay--after-open {
+  background-color: rgba(128, 128, 255, 0.75) !important;
+}
+.ReactModal__Content {
+  background:black !important;
+  color: white;
+}
+span.modal-title {
+  color: lightgreen;
+}
+p.modal-line {
+  display: block;
+  margin: 8px;
+}
+
+/* Custom tooltip styling */
+
+div.tippy-tooltip div.enter {
+  background-color: rgb(0,40,20)
+}

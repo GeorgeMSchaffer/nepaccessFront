@@ -92,6 +92,10 @@ class App extends React.Component {
 				let responseOK = response && response.status === 200;
 				if (responseOK) {
 					return response.data;
+				 } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
+					this.setState({
+						resultsText: "No results: Please check use of * and \" characters"
+					})
 				} else {
 					return null;
 				}
@@ -102,18 +106,19 @@ class App extends React.Component {
 						searchResults: parsedJson,
 						resultsText: parsedJson.length + " Results",
 					});
-				} else { // Probably can't get here, if it isn't a 200 it should be some kind of caught error
-					this.setState({
-						resultsText: "Unknown error: Couldn't parse results"
-					});
-				}
+				} 
+				// else {
+				// 	this.setState({
+				// 		resultsText: "Unknown error: Couldn't parse results"
+				// 	});
+				// }
 			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
 				// console.error('Server is down or verification failed.', error);
 				this.setState({
 					networkError: 'Server is down or you may need to login again.'
 				});
 				this.setState({
-					resultsText: "Error: Couldn't get results"
+					resultsText: "Error: Couldn't get results from server"
 				});
 				// this.props.history.push('/login'); // TODO: Preserve Search state
 			});

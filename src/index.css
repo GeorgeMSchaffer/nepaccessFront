@@ -1,26 +1,43 @@
-/* dark colors for readability */
 /* Need min height to prevent upward shifts when advancing table page */
 /* Need min width to maintain table columns (prevent collapse/hide) */
 
 #main {
-  padding-top: 20px;
+  margin-top: 20px;
+  /* margin-left: 160px; /*Same as the width of the sidebar */
+}
+
+#advanced {
+  position: relative;
 }
 
 html {
-  background: black;
-	color: white;
+  background: #FCFAF5;
+	color: black;
   min-height: 1200px;
   min-width: 1080px;
 }
 
-input .dark {
-  color: #eee;
-  background: #222;
+.title {
+  margin: 10px;
+}
+.tagline {
+  margin: 20px 0px 50px 0px;
+}
+.tagline, .title {
+  color: darkslategray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 label {
   display: block;
-  margin-top: 15px;
+}
+label.center {
+  text-align: center;
+}
+div.center {
+  text-align: center;
 }
 
 button.button {
@@ -29,44 +46,180 @@ button.button {
   border-radius: 10px;
   cursor: pointer;
   display: block;
-  background: #555;
-  color: white;
+  background: white;
+  color: #555;
 }
 button:hover {
-  background: #559;
+  background: wheat;
 }
 .button-text {
   pointer-events: none; /* webkit fix */
 }
 
-/* general table styling; overwritten by react-tabulator midnight theme */
-/* table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
+/** Magnifying glass icon */
+
+#x {
+  width: 0px;
+  height: 0px;
+  /* position: relative; */
+}
+#x path {
+  fill: orange;
+}
+
+#search-glass {
+  width: 30px;
+  height: 30px;
+  right: 40px;
+  top: 10px;
+  position: relative;
+}
+#search-glass path {
+  fill: darkslateblue;
+}
+.icon:hover {
+  filter: invert(0.5);
+}
+.icon--click {
+	animation: icon-effect 0.3s forwards;
+}
+@keyframes icon-effect {
+	0% {
+		transform: scale3d(0.3, 0.3, 1);
+	}
+	25%, 50% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+		transform: scale3d(1.0, 1.0, 1);
+	}
+}
+
+#search-mode {
+  margin-left: -20px;
+  font-weight: bold;
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+  user-select: none;
+}
+#search-mode:hover {
+  color: rgb(120,190,210);
+}
+
+.animation1 {
+  animation: icon-effect 0.3s forwards;
+}
+.animation2 {
+  animation: pop 0.3s linear 1;
+}
+@keyframes pop{
+  50%  {transform: scale(1.5);}
+  from {background-color: gray;}
+  to {background-color: #FCFAF5;}
+}
+
+.searchSecondary, input.search {
+  font: 600 17px Arial;
+  border: solid;
+  border-radius:1.5rem;
+  box-shadow: 2px 2px 10px 4px #CCC;
+  text-indent: 20px;
+  cursor: pointer;
+  background: white;
+  color: black;
+}
+input:hover, .multi:hover {
+  box-shadow: 2px 2px 10px 4px #AAA;
+}
+
+input.search {
+  border-width: 3px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  padding-right: 40px;
+  width: 60%;
+  margin: 5px 0% 5px 20%;
+}
+
+.searchSecondary {
+  font: 500 16px Arial;
+  border-width: 2px;
+  box-shadow: 0px 0px 2px 2px #CCC;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 45%;
+  margin: 5px 0% 5px 5px;
+}
+
+.none-label {
+  border-radius: 1.5em;
+  margin-left: 20%;
+  user-select: none;
+}
+.no-select {
+  user-select: none;
+}
+
+.search-label {
+  margin: 0px 0% 5px 20%;
+}
+
+.searchContainer {
+  border: 1px solid;
+  padding: 5px;
+  background: lightgray;
+  color: black;
   width: 100%;
 }
-thead tr {
-  background-color: #112;
+.searchContainer tr td:first-child {
+  width: 110px;
 }
-td,
-th {
-  border: 1px solid #ddd;
-  text-align: left;
-  padding: 8px;
+.searchContainer tr td:nth-child(2){
+  width: 400px;
 }
-tr:nth-child(even) {
-  background-color: #212;
+.searchContainer tr td:nth-child(3){
+  width: 4%;
 }
-td a {
-  color: #777;
-} */
-
-form .dark {
-  background: #111;
+.searchContainer tbody tr {
+  height: 25px;
 }
 
-input {
-  background: #bbb;
+.date {
+  background: white;
+  color: black;
+}
+label.table {
+  display: inline;
+}
+
+/* Side navbar */
+
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 160px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 100; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+.sidenav * {
+  padding-top: 20px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #313131;
+  display: block;
+}
+.sidenav *:hover {
+  color: green;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
 }
 
 .errorLabel {
@@ -76,29 +229,30 @@ input {
   color: coral;
 }
 .infoLabel {
-  color: skyblue;
+  color: darkblue;
 }
 
 .collapsible {
 	display: block;
-  background-color: #222;
+  background-color: #bbb;
   border-radius: 10px;
-  color: white;
+  color: black;
   cursor: pointer;
   padding: 18px;
+  margin-bottom: 10px;
   width: 100%;
   border: none;
   text-align: left;
   outline: none;
   font-size: 15px;
+  text-decoration: underline;
 }
 .collapsible:hover {
-  background-color: #333;
+  background-color: #999;
 }
 
 .content {
-  padding: 0px 18px;
-  display: block;
+  padding: 0px 0px;
 }
 
 .checkLabel {
@@ -124,56 +278,32 @@ input {
   display: inline;
 }
 
+.boolean-radio {
+  border-radius: 1.5em;
+  margin-top: 0px;
+}
+
 .highlight:hover {
-  color: rgb(153,216,210);
+  color: rgb(120,190,210);
 }
 
-/* React-Select custom (multi-select) styling */
-.multi {
-	background-color: #333;
-	color: white;
+.tooltip-icon {
+  display: inline;
+  position: absolute;
+  /* padding-top: 100px; */
+  /* margin-top: 100px; */
 }
-.react-select__menu {
-  color: white;
-}
-.react-select__control {
-  color: white;
-}
-/* Text and/or added items are children of value-container, no consistent class between children */
-.react-select__value-container *{
-  background-color: #333;
-  color: #ddd;
-}
-/* .react-select__value-container *:hover{
-  background-color: #555;
-  color: #ddd;
-} */
-.react-select__menu-list {
-  background-color: #555;
-}
-.react-select__multi-value__label {
-  background-color:#ddd;
-}
-.react-select__multi-value__remove {
-  background-color:#559;
-}
-.react-select__clear-indicator {
-  background-color:#559;
-  border-radius:5px;
+.tooltip-icon:hover {
+  color: darkgreen;
 }
 
-/* navbar styling TODO: use only classes */
-/* #navbar {
-  height: 40px;
-  position: fixed;
-  top: 0px;
-} */
 #nav-background {
   position: fixed;
   z-index: 100;
   height: 40px;
   width: 100%;
-  background: #333;
+  background: #ccc;
+  color: black;
   top: 0px;
   left: 0px;
 }
@@ -188,12 +318,12 @@ li {
 a {
   min-width: 100px;
   min-height: 20px;
-  color: lightgray;
+  color: rgb(44,44,44);
 }
 li a:hover,
 span a:hover {
   border-radius: 16px;
-  background-color: #111;
+  background-color: #eee;
 }
 .nav-link {
   display: block;
@@ -213,8 +343,8 @@ span a:hover {
 }
 
 /* Download links, download buttons */
+
 .download {
-  color: skyblue;
   text-decoration-style: underline;
 }
 .disabled_download {
@@ -224,7 +354,7 @@ span a:hover {
   background: none!important;
   border: none;
   padding: 0!important;
-  color: lightgray;
+  color: rgb(59, 59, 59);
   /*optional*/
   font-family: arial, sans-serif;
   /*input has OS specific font-family*/
@@ -240,49 +370,69 @@ button.download, button.link {
   /*optional*/
   font-family: arial, sans-serif;
   /*input has OS specific font-family*/
-  color: rgb(135, 206, 235);
+  color: darkblue;
+  text-decoration: underline;
   cursor: pointer;
 }
 
-/* Checkbox lines */
-label.checkbox {
-  display: block;
+/* Checkbox lines, checkboxes */
+
+label.checkbox-list {
   border:1px solid #888;
+  padding: 2px;
 }
-label.checkbox:hover {
-  background:#444;
-  cursor:pointer;
+input[type=checkbox] + span {
+  font-style: normal;
+} 
+input[type=checkbox]:checked + span {
+  font-weight: bold;
+}
+
+/* Custom React-Select styling */
+
+.react-select__value-container {
+  border: solid #444;
+  border-radius:0.5rem;
+  box-shadow: 0px 0px 5px 1px #444;
+  padding: 4% 5%;
+  width: 50%; 
+  margin: 0px;
+  cursor: pointer;
+  background: white;
+  color: black;
+}
+
+div.react-select__indicator {
+  color: purple;
+}
+div.react-select__indicator:hover {
+  color: rgb(255,0,128);
 }
 
 /* Custom tabulator styling */
+
 .tabulator {
   min-height: 500px;
 }
-
-.tabulator-table .tabulator-row:nth-child(even) {
-  background-color: #222;
-}
-.tabulator-table .tabulator-row {
-  background-color: #444;
-}
-.tabulator-table div.tabulator-row:hover {
-  background-color: #000;
-}
-.tabulator-cell div.formatterCell:hover {
-  background-color: #333;
+div.tabulator-row.tabulator-row-even {
+  background-color: #ddd;
 }
 
 /* Custom modal stlying */
+
+/* .ReactModal__Overlay {
+  z-index: 2;
+} */
 
 div.ReactModalPortal>.ReactModal__Overlay--after-open {
   background-color: rgba(128, 128, 255, 0.75) !important;
 }
 .ReactModal__Content {
-  background:black !important;
-  color: white;
+  background:white !important;
+  color: black;
 }
 span.modal-title {
-  color: lightgreen;
+  color: darkgreen;
 }
 p.modal-line {
   display: block;
@@ -292,5 +442,5 @@ p.modal-line {
 /* Custom tooltip styling */
 
 div.tippy-tooltip div.enter {
-  background-color: rgb(0,40,20)
+  background-color: rgb(40,80,60)
 }

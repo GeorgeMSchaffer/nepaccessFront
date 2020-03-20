@@ -13,7 +13,7 @@ class Searcher extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-            searchMode: "natural",
+            searchMode: 'natural',
             booleanOption: "all",
             booleanTitle: '',
             naturalTitle: '',
@@ -33,9 +33,12 @@ class Searcher extends React.Component {
             typeOther: false,
             needsComments: false,
             needsDocument: false,
-            searcherClassName: '',
+            searcherClassName: 'display-none',
+            advancedClassName: 'display-none',
+            searchModeName: 'Advanced search',
+            iconClassName: 'icon icon--effect',
             limit: '',
-            collapsibleText: '- Search Criteria',
+            collapsibleText: '+ Advanced Options',
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.collapsibles = this.collapsibles.bind(this);
@@ -47,13 +50,17 @@ class Searcher extends React.Component {
      * Event handlers
      */
     // TODO: moment.js?
-    /** Return string with special characters stripped */
+
+    /** Return trimmed alphanumeric (plus " and *) string with most basic special characters turned into whitespace*/
     alphaNumeric(value) {
-        // Special characters (must be escaped to get in regex): [ \ ^ $ . | ? * + ( )
+        // Special characters (may need to be escaped in regex): [ ] \ ^ $ . | ? * - + ( )
         // Allow * for partial word search
-        var sanitized = /[a-zA-Z0-9\*\s]+/g.exec(value);
-        if(sanitized){
-            return (sanitized.toString().trim());
+        let sanitized = value.replace(/[[\]\\\-?{}|().,~`!@#$%^&/:;<>'=+]/g, " "); // Replace special characters with spaces
+        let ex = /[a-zA-Z0-9\s*"]+/g.exec(sanitized.trim());
+        // console.log(ex);
+        // console.log(sanitized);
+        if(ex){
+            return (ex.toString().trim());
         } else {
             return "";
         }
@@ -72,79 +79,144 @@ class Searcher extends React.Component {
             return '';
         }
     }
+    /**  Determines which boolean title field to use and then searches.  Natural title manages already itself (if not in boolean mode, natural title is used). */
+    forceSearch() {  
+        let searchTerm = "";
+        if(this.state.booleanOption==="any") {
+            searchTerm = this.state.titleAny;
+        } else if(this.state.booleanOption==="all") {
+            searchTerm = this.state.titleAll;
+        } else if(this.state.booleanOption==="exact") {
+            searchTerm = this.state.titleExact;
+        }
+        this.setState( 
+            { 
+                booleanTitle: searchTerm + " " + this.state.titleNone,
+            }, () => { 
+                this.debouncedSearch(this.state);
+        });
+    }
 
 
-    /** Capture enter key to prevent default behavior of form submit, force a new search (refresh results).
-     *  Also, sort out boolean mode
-     */
-    onKeyUp = (evt) => {
+    /** Capture enter key to prevent default behavior of form submit, force a new search (refresh results) */
+    onKeyUpNatural = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
+            this.setState({
+                searchMode: 'natural'
+            }, () => {
+                this.forceSearch();
+            });
+        }
+    }
 
-            let searchTerm = "";
-            if(this.state.booleanOption==="any") {
-                searchTerm = this.state.titleAny;
-            } else if(this.state.booleanOption==="all") {
-                searchTerm = this.state.titleAll;
-            } else if(this.state.booleanOption==="exact") {
-                searchTerm = this.state.titleExact;
-            }
-            this.setState( 
-                { 
-                    booleanTitle: searchTerm + this.state.titleNone,
-                }, () => { 
-                    this.debouncedSearch(this.state);
+    onKeyUpBoolean = (evt) => {        
+        if(evt.keyCode ===13){
+            evt.preventDefault();
+            this.setState({
+                searchMode: 'boolean'
+            }, () => {
+                this.forceSearch();
             });
         }
         // console.log(this.state.booleanTitle);
         // console.log(this.state.naturalTitle);
     }
 
+    onIconNaturalClick = (evt) => {
+        this.setState({ iconClassName: 'icon icon--click', searchMode: 'natural' });
+        
+        this.forceSearch();
+    }
+    onIconBooleanClick = (evt) => {
+        this.setState({ iconClassName: 'icon icon--click', searchMode: 'boolean' });
+        
+        this.forceSearch();
+    }
+    iconCleaning = (evt) => {
+        this.setState({ iconClassName: 'icon' });
+    }
 
     onRadioChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value });
+    }
+
+    validated = (term) => {
+        
+        term = term.trim();
+        console.log(term);
+        if(term && /[a-zA-Z0-9\s]+/g.exec(term) === null){
+            console.log("Invalid search query " + term);
+            return false;
+        }
+
+        return true;
     }
 
     onInputTitleAll = (evt) => {
         var alphabetized = this.alphaNumeric(evt.target.value);
         alphabetized = this.process("+", alphabetized);
 
+        let searchTerm = "";
+        searchTerm = alphabetized;
+
+        // searchTerm += this.state.titleAny;
+        // searchTerm += " " + alphabetized;
+        // searchTerm += " " + this.state.titleExact;
+        searchTerm += " " + this.state.titleNone;
+
         this.setState( 
         { 
             titleAll: alphabetized,
-            booleanTitle: alphabetized + this.state.titleNone,
+            searchMode: 'boolean',
+            booleanTitle: searchTerm,
         }, () => { 
             this.debouncedSearch(this.state);
         });
+
     }
 
-    onInputTitleExact = (evt) => {
-        var alphabetized = this.alphaNumeric(evt.target.value);
-        alphabetized = this.process("", alphabetized);
+    // onInputTitleExact = (evt) => {
+    //     var alphabetized = this.alphaNumeric(evt.target.value);
+    //     alphabetized = this.process("", alphabetized);
 
-        if(evt.target.value){
-            alphabetized = "\"" + alphabetized + "\"";
-        } else {
-            // do nothing
-        }
+    //     if(evt.target.value){
+    //         alphabetized = "+\"" + alphabetized + "\"";
+    //     } else {
+    //         // do nothing
+    //     }
+        
+    //     let searchTerm = "";
+    //     // searchTerm += this.state.titleAny;
+    //     // searchTerm += " " + this.state.titleAll;
+    //     searchTerm += " " + alphabetized;
+    //     searchTerm += " " + this.state.titleNone;
 
-        this.setState( 
-        { 
-            titleExact: alphabetized,
-            booleanTitle: alphabetized + " " + this.state.titleNone,
-        }, () => { 
-            this.debouncedSearch(this.state);
-        });
-    }
+    //     this.setState( 
+    //     { 
+    //         titleExact: alphabetized,
+    //         searchMode: 'boolean',
+    //         booleanTitle: searchTerm,
+    //     }, () => { 
+    //         this.debouncedSearch(this.state);
+    //     });
+    // }
 
     onInputTitleAny = (evt) => {
         var alphabetized = this.alphaNumeric(evt.target.value);
         alphabetized = this.process("", alphabetized);
 
+        let searchTerm = "";
+        searchTerm += alphabetized;
+        // searchTerm += " " + this.state.titleAll;
+        // searchTerm += " " + this.state.titleExact;
+        searchTerm += " " + this.state.titleNone;
+
         this.setState( 
         { 
             titleAny: alphabetized,
-            booleanTitle: alphabetized + " " + this.state.titleNone,
+            searchMode: 'boolean',
+            booleanTitle: searchTerm,
         }, () => { 
             this.debouncedSearch(this.state);
         });
@@ -153,7 +225,9 @@ class Searcher extends React.Component {
     onInputTitleNone = (evt) => {
         var alphabetized = this.alphaNumeric(evt.target.value);
         alphabetized = this.process("-", alphabetized);
-        var searchTerm = "";
+
+        let searchTerm = "";
+        
         if(this.state.booleanOption==="any"){
             searchTerm = this.state.titleAny;
         } else if(this.state.booleanOption==="all"){
@@ -162,10 +236,16 @@ class Searcher extends React.Component {
             searchTerm = this.state.titleExact;
         }
 
+        // searchTerm += this.state.titleAny;
+        // searchTerm += " " + this.state.titleAll;
+        // searchTerm += " " + this.state.titleExact;
+        searchTerm += " " + alphabetized;
+        
         this.setState( 
         { 
             titleNone: alphabetized,
-            booleanTitle: searchTerm + " " + alphabetized,
+            searchMode: 'boolean',
+            booleanTitle: searchTerm,
         }, () => { 
             this.debouncedSearch(this.state);
         });
@@ -196,6 +276,16 @@ class Searcher extends React.Component {
             this.debouncedSearch(this.state);
 			// console.log("Searcher state");
 			// console.log(this.state);
+        });
+    }
+
+    onInputNatural = (evt) => {
+		this.setState( 
+		{ 
+            [evt.target.name]: evt.target.value,
+            searchMode: 'natural'
+		}, () => { // callback ensures state is set before state is used for search
+            this.debouncedSearch(this.state);
         });
     }
 
@@ -263,22 +353,37 @@ class Searcher extends React.Component {
     onEndCommentChange = (date) => { 
         this.setState( { endComment: date}, () => { this.debouncedSearch(this.state); }); 
     }
+
+    searchModeClick = (evt) => {
+        if(this.state.searchModeName === 'Advanced search'){
+            this.setState ({
+                searchModeName: 'Basic search',
+                searchMode: 'boolean',
+				advancedClassName: 'searchContainer'
+            });
+        } else {
+            this.setState ({
+                searchModeName: 'Advanced search',
+                searchMode: 'natural',
+				advancedClassName: 'display-none'
+            });
+        }
+    }
     
     // Can either just make the form a div or use this to prevent Submit default behavior
 	submitHandler(e) { e.preventDefault(); }
-
 
 	// TODO: Animation?
 	collapsibles(){
 		if(this.state.searcherClassName===''){
 			this.setState({
 				searcherClassName: 'display-none',
-				collapsibleText: "+ Search Criteria"
+				collapsibleText: "+ Advanced Options"
 			});
 		} else {
 			this.setState({
 				searcherClassName: '',
-				collapsibleText: "- Search Criteria"
+				collapsibleText: "- Advanced Options"
 			});
 		}
     }
@@ -290,10 +395,10 @@ class Searcher extends React.Component {
             option: (styles, state) => ({
                  ...styles,
                 borderBottom: '1px dotted',
-	            backgroundColor: '#333',
-                color: '#ddd',
+	            backgroundColor: 'white',
+                color: 'black',
                 '&:hover': {
-                    backgroundColor: 'darkgreen'
+                    backgroundColor: 'lightgreen'
                 },
                 // ':active': {
                 //     ...styles[':active'],
@@ -303,7 +408,7 @@ class Searcher extends React.Component {
             }),
             control: (styles) => ({
                 ...styles,
-                backgroundColor: '#333',
+                backgroundColor: 'white',
             })
         }
 
@@ -317,171 +422,273 @@ class Searcher extends React.Component {
         ];
 
         return (
-            <div onKeyUp={this.onKeyUp}>
-                <Tooltip title="Click to hide/show search options">
-                    <button className="collapsible" onClick={this.collapsibles}>
-                        <span className="button-text">{this.state.collapsibleText}</span>
-                    </button>
-                </Tooltip>
-                <div className={this.state.searcherClassName}>
-                    <form className="content dark" onSubmit={this.submitHandler}>
-
-                        <label htmlFor="searchMode">Search by title: 
-                            <Tooltip title="Natural language mode:  Search results are returned in order of relevance according to rarity of the words given, relative to all records in the database">
-                                <label className="inline highlight"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
-                                defaultChecked />Default</label>
-                            </Tooltip>
-                            <Tooltip title="Boolean mode: Search results are either found or not found, using more specific options.">
-                                <label className="inline highlight"><input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
-                                />Advanced</label>
-                            </Tooltip>
-                        </label>
-
-                        <div id="naturalModeOptions" hidden={this.state.searchMode==="boolean"}>
-                            <br />
-                            <Tooltip title="Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.  Special characters are ignored.">
-                                <input id="searchTitle" type="search" size="50" name="naturalTitle" placeholder="Leave blank to include all" autoFocus onInput={this.onInput} />
-                            </Tooltip>
+            <div>
+                <div>
+                    <div className="content" onSubmit={this.submitHandler}>
+                        <h1 className="title">NEPAccess</h1>
+                        <h2 className="tagline">Find NEPA documents by searching for keywords in title, as well as by agencies, states, and more</h2>
+                        
+                        <div>
+                            <label className="search-label" htmlFor="searchMode"><span className="no-select">Search by keywords within titles: </span>
+                                {/* <Tooltip title="Natural language mode:  Search results are returned in order of relevance according to rarity of the words given, relative to all records in the database">
+                                    <label className="inline highlight"><input type="radio" name="searchMode" value="natural" onChange={this.onRadioChange} 
+                                    defaultChecked />Default</label>
+                                </Tooltip>
+                                <Tooltip title="Boolean mode: Search results are either found or not found, using more specific options.">
+                                    <label className="inline highlight"><input type="radio" name="searchMode" value="boolean" onChange={this.onRadioChange} 
+                                    />Advanced</label>
+                                </Tooltip> */}
+                                <span hidden={this.state.searchMode==="natural"} className="animation2" >
+                                    <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
+                                    defaultChecked />All</label>
+                                    {/* <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
+                                    />Exact phrase</label> */}
+                                    <label className="inline highlight no-select"><input type="radio" className="animation2 boolean-radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
+                                    />Any</label>
+                                </span>
+                            </label>
                         </div>
 
-                        {/** This section causes Edge problems */}
-                        <div id="booleanModeOptions" hidden={this.state.searchMode==="natural"}>
-                            <br />
-                            <Tooltip title="Return only records containing all of these words">
-                                <label className="inline highlight"><input type="radio" name="booleanOption" value="all" onChange={this.onRadioChange} 
-                                defaultChecked />All</label>
+                        <div hidden={this.state.searchModeName==='Basic search'}>
+                            <input id="searchTitle" className="search" type="search" name="naturalTitle" placeholder="Leave blank to include all titles" autoFocus onInput={this.onInputNatural} onKeyUp={this.onKeyUpNatural}/>
+                            <Tooltip title="Natural language mode search.  Search by words in title as they are typed.  Surround with &quot;double quotes&quot; to match exact phrases.  Exact spelling only, case insensitive.  Pressing enter will refresh the search.  Results sorted by relevance.  Extremely common words present in most records (of, the, etc.) will return zero results.">
+                                <label className="tooltip-icon">?</label>
                             </Tooltip>
-                            <Tooltip title="Return only records containing this exact phrase">
-                                <label className="inline highlight"><input type="radio" name="booleanOption" value="exact" onChange={this.onRadioChange} 
-                                />Exact phrase</label>
-                            </Tooltip>
-                            <Tooltip title="Return records containing any of these words">
-                                <label className="inline highlight"><input type="radio" name="booleanOption" value="any" onChange={this.onRadioChange} 
-                                />Any</label>
-                            </Tooltip>
+                            {/* <svg id="x" onClick={this.onIconClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+                                <path></path>
+                            </svg> */}
+                            <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconNaturalClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+							    <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+						    </svg>
+                            <label id="search-mode" className="inline" onClick={this.searchModeClick}>
+                                {this.state.searchModeName}
+                            </label>
+                        </div>
+
+                        <div hidden={this.state.searchModeName==='Advanced search'}>
                             <div hidden={this.state.booleanOption!=="all"}>
-                            {/* <label htmlFor="searchTitleAll">All these words</label> */}
-                            <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                <input id="searchTitleAll" type="search" size="50" name="titleAll"  
-                                onInput={this.onInputTitleAll} />
-                            </Tooltip>
+                                <div>
+                                    <input id="searchTitleAll" className="search boolean" type="search" name="titleAll" 
+                                        onInput={this.onInputTitleAll} onKeyUp={this.onKeyUpBoolean} 
+                                        placeholder="Example: alaska* &quot;beaufort sea&quot;" />
+                                    <Tooltip title="Boolean mode search.  Use * for partial words.  Surround with &quot;double quotes&quot; to match exact phrases.  Inclusion of extremely common words (of, the, etc.) or words smaller than three letters will return zero results.">
+                                        <label className="tooltip-icon">?</label>
+                                    </Tooltip>
+                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconBooleanClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+                                        <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+                                    </svg>
+                                    
+                                    <label id="search-mode" className="inline" onClick={this.searchModeClick}>
+                                        {this.state.searchModeName}
+                                    </label>
+                                </div>
                             </div>
-                            <div hidden={this.state.booleanOption!=="exact"}>
-                            {/* <label htmlFor="searchTitleExact">This exact word or phrase</label> */}
-                            <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                <input id="searchTitleExact" type="search" size="50" name="titleExact" 
-                                onInput={this.onInputTitleExact} />
-                            </Tooltip>
-                            </div>
+                            {/* <div hidden={this.state.booleanOption!=="exact"}>
+                                <div>
+                                    <input id="searchTitleExact" className="search boolean" type="search"name="titleExact" placeholder=""
+                                        onInput={this.onInputTitleExact} onKeyUp={this.onKeyUpBoolean} />
+                                    <Tooltip title="Exact phrase matches only">
+                                        <label className="tooltip-icon">?</label>
+                                    </Tooltip>
+                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconBooleanClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+						            </svg>
+                                    <label id="search-mode" className="inline" onClick={this.searchModeClick}>
+                                        {this.state.searchModeName}
+                                    </label>
+                                </div>
+                            </div> */}
                             <div hidden={this.state.booleanOption!=="any"}>
-                            {/* <label htmlFor="searchTitleAny">Any of these words</label> */}
-                            <Tooltip title="Use * for partial words.  Inclusion of extremely common words (of, the, etc.) will return zero results.">
-                                <input id="searchTitleAny" type="search" size="50" name="titleAny" 
-                                onInput={this.onInputTitleAny} />
-                            </Tooltip>
+                                <div>
+                                    <input id="searchTitleAny" className="search boolean" type="search" name="titleAny" placeholder=""
+                                        onInput={this.onInputTitleAny} onKeyUp={this.onKeyUpBoolean} />
+                                    <Tooltip title="Boolean mode search.  Use * for partial words. &quot;Exact phrases&quot; are supported">
+                                        <label className="tooltip-icon">?</label>
+                                    </Tooltip>
+                                    <svg id="search-glass" className={this.state.iconClassName} onClick={this.onIconBooleanClick} onAnimationEnd={this.iconCleaning} viewBox="0 0 20 20">
+							            <path d="M18.125,15.804l-4.038-4.037c0.675-1.079,1.012-2.308,1.01-3.534C15.089,4.62,12.199,1.75,8.584,1.75C4.815,1.75,1.982,4.726,2,8.286c0.021,3.577,2.908,6.549,6.578,6.549c1.241,0,2.417-0.347,3.44-0.985l4.032,4.026c0.167,0.166,0.43,0.166,0.596,0l1.479-1.478C18.292,16.234,18.292,15.968,18.125,15.804 M8.578,13.99c-3.198,0-5.716-2.593-5.733-5.71c-0.017-3.084,2.438-5.686,5.74-5.686c3.197,0,5.625,2.493,5.64,5.624C14.242,11.548,11.621,13.99,8.578,13.99 M16.349,16.981l-3.637-3.635c0.131-0.11,0.721-0.695,0.876-0.884l3.642,3.639L16.349,16.981z"></path>
+						            </svg>
+                                    <label id="search-mode" className="inline" onClick={this.searchModeClick}>
+                                        {this.state.searchModeName}
+                                    </label>
+                                </div>
                             </div>
-                            <label htmlFor="searchTitleNone">None of these words</label>
-                            <Tooltip title="Excludes results containing any of these words.  NOTE: If the above field is empty, this will return no results.">
-                                <input id="searchTitleNone" type="search" size="50" name="titleNone" 
-                                onInput={this.onInputTitleNone} />
-                            </Tooltip>
+
+                            <div className="inline center">
+                                <label className="none-label inline" htmlFor="searchTitleNone">Can't have any of these words: 
+                                </label>
+                                <input id="searchTitleNone" className="searchSecondary animation1" type="search" name="titleNone" placeholder="Type to exclude words..."
+                                    onInput={this.onInputTitleNone} onKeyUp={this.onKeyUpBoolean} />
+                                <Tooltip title="Excludes results containing any of these words.  Surround with &quot;double quotes&quot; to match exact phrases.  NOTE: If the all/any field is empty, this will return no results.">
+                                    <label className="tooltip-icon">?</label>
+                                </Tooltip>
+                            </div>
                         </div>
 
-                        <label>Publication date</label>
-                        {/* <input className="date" type="date" name="startPublish" onChange={this.onKeyUp}/> to <input className="endDate date" type="date" name="endPublish" onChange={this.onKeyUp}/> */}
-                        <Tooltip title="Search by publishing metadata after this date.  Leave blank to include all">
-                            <DatePicker
-                                selected={this.state.startPublish} onChange={this.onStartDateChange} 
-                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                className="date" 
-                        /></Tooltip> to&nbsp;
-                        <Tooltip title="Search by publishing metadata before this date.  Leave blank to include all">
-                            <DatePicker
-                                selected={this.state.endPublish} onChange={this.onEndDateChange}
-                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                className="date" 
-                        /></Tooltip>
-                        <label>Comment date</label>
-                        <Tooltip title="Exclude documents with comment metadata before this date.  Leave blank to include all">
-                            <DatePicker
-                                selected={this.state.startComment} onChange={this.onStartCommentChange} 
-                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                className="date" 
-                        /></Tooltip> to&nbsp;
-                        <Tooltip title="Exclude documents with comment metadata after this date.  Leave blank to include all">
-                            <DatePicker
-                                selected={this.state.endComment} onChange={this.onEndCommentChange}
-                                dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                className="date" 
-                        /></Tooltip>
+                        <table className="searchContainer"><tbody>
+                            <tr>
+                                <td>
+                                    <label className="table">Publication date</label>
+                                </td>
+                                <td>
+                                    {/* <Tooltip title="Search by publishing metadata after this date.  Leave blank to include all"> */}
+                                        <DatePicker
+                                            selected={this.state.startPublish} onChange={this.onStartDateChange} 
+                                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                            className="date" 
+                                        />
+                                    {/* </Tooltip> */}
+                                    &nbsp;to&nbsp;
+                                    {/* <Tooltip title="Search by publishing metadata before this date.  Leave blank to include all"> */}
+                                        <DatePicker
+                                            selected={this.state.endPublish} onChange={this.onEndDateChange}
+                                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                            className="date" 
+                                        />
+                                    {/* </Tooltip> */}
+                                </td>
+                                
+                                <td>
+                                    <label className="table" htmlFor="searchAgency">Agencies</label>
+                                </td>
+                                <td>
+                                    {/* <Tooltip title="Search by specific agencies or departments.  Leave blank to include all"> */}
+                                        <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
+                                            styles={customStyles}
+                                            options={agencyOptions} 
+                                            onChange={this.onAgencyChange} 
+                                            placeholder="Click here to select from dropdown and/or type to search..." 
+                                            // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                                            // menuIsOpen={true}
+                                        />
+                                    {/* </Tooltip> */}
+                                </td>
 
-                        <div>
-                        <label htmlFor="searchAgency">Agencies</label>
-                        {/* <select multiple id="searchAgency">
-                            <option value="ACHP">Advisory Council on Historic Preservation (ACHP)</option><option value="USAID">Agency for International Development (USAID)</option><option value="ARS">Agriculture Research Service (ARS)</option><option value="APHIS">Animal and Plant Health Inspection Service (APHIS)</option><option value="AFRH">Armed Forces Retirement Home (AFRH)</option><option value="BPA">Bonneville Power Administration (BPA)</option><option value="BIA">Bureau of Indian Affairs (BIA)</option><option value="BLM">Bureau of Land Management (BLM)</option><option value="USBM">Bureau of Mines (USBM)</option><option value="BOEM">Bureau of Ocean Energy Management (BOEM)</option><option value="BOP">Bureau of Prisons (BOP)</option><option value="BR">Bureau of Reclamation (BR)</option><option value="Caltrans">California Department of Transportation (Caltrans)</option><option value="CHSRA">California High-Speed Rail Authority (CHSRA)</option><option value="CIA">Central Intelligence Agency (CIA)</option><option value="NYCOMB">City of New York, Office of Management and Budget (NYCOMB)</option><option value="CDBG">Community Development Block Grant (CDBG)</option><option value="CTDOH">Connecticut Department of Housing (CTDOH)</option><option value="BRAC">Defense Base Closure and Realignment Commission (BRAC)</option><option value="DLA">Defense Logistics Agency (DLA)</option><option value="DNA">Defense Nuclear Agency (DNA)</option><option value="DNFSB">Defense Nuclear Fac. Safety Board (DNFSB)</option><option value="DSA">Defense Supply Agency (DSA)</option><option value="DRB">Delaware River Basin Commission (DRB)</option><option value="DC">Denali Commission (DC)</option><option value="USDA">Department of Agriculture (USDA)</option><option value="DOC">Department of Commerce (DOC)</option><option value="DOD">Department of Defense (DOD)</option><option value="DOE">Department of Energy (DOE)</option><option value="HHS">Department of Health and Human Services (HHS)</option><option value="DHS">Department of Homeland Security (DHS)</option><option value="HUD">Department of Housing and Urban Development (HUD)</option><option value="DOJ">Department of Justice (DOJ)</option><option value="DOL">Department of Labor (DOL)</option><option value="DOS">Department of State (DOS)</option><option value="DOT">Department of Transportation (DOT)</option><option value="TREAS">Department of Treasury (TREAS)</option><option value="VA">Department of Veteran Affairs (VA)</option><option value="DOI">Department of the Interior (DOI)</option><option value="DEA">Drug Enforcement Administration (DEA)</option><option value="EDA">Economic Development Administration (EDA)</option><option value="ERA">Energy Regulatory Administration (ERA)</option><option value="ERDA">Energy Research and Development Administration (ERDA)</option><option value="EPA">Environmental Protection Agency (EPA)</option><option value="FSA">Farm Service Agency (FSA)</option><option value="FHA">Farmers Home Administration (FHA)</option><option value="FAA">Federal Aviation Administration (FAA)</option><option value="FCC">Federal Communications Commission (FCC)</option><option value="FEMA">Federal Emergency Management Agency (FEMA)</option><option value="FEA">Federal Energy Administration (FEA)</option><option value="FERC">Federal Energy Regulatory Commission (FERC)</option><option value="FHWA">Federal Highway Administration (FHWA)</option><option value="FMC">Federal Maritime Commission (FMC)</option><option value="FMSHRC">Federal Mine Safety and Health Review Commission (FMSHRC)</option><option value="FMCSA">Federal Motor Carrier Safety Administration (FMCSA)</option><option value="FPC">Federal Power Commission (FPC)</option><option value="FRA">Federal Railroad Administration (FRA)</option><option value="FRBSF">Federal Reserve Bank of San Francisco (FRBSF)</option><option value="FTA">Federal Transit Administration (FTA)</option><option value="USFWS">Fish and Wildlife Service (USFWS)</option><option value="FDOT">Florida Department of Transportation (FDOT)</option><option value="FDA">Food and Drug Administration (FDA)</option><option value="USFS">Forest Service (USFS)</option><option value="GSA">General Services Administration (GSA)</option><option value="USGS">Geological Survey (USGS)</option><option value="GLB">Great Lakes Basin Commission (GLB)</option><option value="IHS">Indian Health Service (IHS)</option><option value="IRS">Internal Revenue Service (IRS)</option><option value="IBWC">International Boundary and Water Commission (IBWC)</option><option value="ICC">Interstate Commerce Commission (ICC)</option><option value="JCS">Joint Chiefs of Staff (JCS)</option><option value="MARAD">Maritime Administration (MARAD)</option><option value="MTB">Materials Transportation Bureau (MTB)</option><option value="MSHA">Mine Safety and Health Administration (MSHA)</option><option value="MMS">Minerals Management Service (MMS)</option><option value="MESA">Mining Enforcement and Safety (MESA)</option><option value="MRB">Missouri River Basin Commission (MRB)</option><option value="NASA">National Aeronautics and Space Administration (NASA)</option><option value="NCPC">National Capital Planning Commission (NCPC)</option><option value="NGA">National Geospatial-Intelligence Agency (NGA)</option><option value="NHTSA">National Highway Traffic Safety Administration (NHTSA)</option><option value="NIGC">National Indian Gaming Commission (NIGC)</option><option value="NIH">National Institute of Health (NIH)</option><option value="NMFS">National Marine Fisheries Service (NMFS)</option><option value="NNSA">National Nuclear Security Administration (NNSA)</option><option value="NOAA">National Oceanic and Atmospheric Administration (NOAA)</option><option value="NPS">National Park Service (NPS)</option><option value="NSF">National Science Foundation (NSF)</option><option value="NSA">National Security Agency (NSA)</option><option value="NTSB">National Transportation Safety Board (NTSB)</option><option value="NRCS">Natural Resource Conservation Service (NRCS)</option><option value="NER">New England River Basin Commission (NER)</option><option value="NJDEP">New Jersey Department of Environmental Protection (NJDEP)</option><option value="NRC">Nuclear Regulatory Commission (NRC)</option><option value="OCR">Office of Coal Research (OCR)</option><option value="OSM">Office of Surface Mining (OSM)</option><option value="OBR">Ohio River Basin Commission (OBR)</option><option value="RSPA">Research and Special Programs (RSPA)</option><option value="REA">Rural Electrification Administration (REA)</option><option value="RUS">Rural Utilities Service (RUS)</option><option value="SEC">Security and Exchange Commission (SEC)</option><option value="SBA">Small Business Administration (SBA)</option><option value="SCS">Soil Conservation Service (SCS)</option><option value="SRB">Souris-Red-Rainy River Basin Commission (SRB)</option><option value="STB">Surface Transportation Board (STB)</option><option value="SRC">Susquehanna River Basin Commission (SRC)</option><option value="TVA">Tennessee Valley Authority (TVA)</option><option value="TxDOT">Texas Department of Transportation (TxDOT)</option><option value="TPT">The Presidio Trust (TPT)</option><option value="TDA">Trade and Development Agency (TDA)</option><option value="USACE">U.S. Army Corps of Engineers (USACE)</option><option value="USCG">U.S. Coast Guard (USCG)</option><option value="CBP">U.S. Customs and Border Protection (CBP)</option><option value="RRB">U.S. Railroad Retirement Board (RRB)</option><option value="USAF">United States Air Force (USAF)</option><option value="USA">United States Army (USA)</option><option value="USMC">United States Marine Corps (USMC)</option><option value="USN">United States Navy (USN)</option><option value="USPS">United States Postal Service (USPS)</option><option value="USTR">United States Trade Representative (USTR)</option><option value="UMR">Upper Mississippi Basin Commission (UMR)</option><option value="UMTA">Urban Mass Transportation Administration (UMTA)</option><option value="UDOT">Utah Department of Transportation (UDOT)</option><option value="WAPA">Western Area Power Administration (WAPA)</option>
-                        </select> */}
-                        <Tooltip title="Search by specific agencies or departments.  Leave blank to include all">
-                            <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
-                                styles={customStyles}
-                                options={agencyOptions} 
-                                onChange={this.onAgencyChange} 
-                                placeholder="Type here to search..." 
-                                // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
-                                // menuIsOpen={true}
-                        /></Tooltip>
-                        </div>
+                            </tr>
+                            <tr>
+                                <td><label className="table">Comment date</label></td>
+                                <td>
+                                    {/* <Tooltip title="Exclude documents with comment metadata before this date.  Leave blank to include all"> */}
+                                        <DatePicker
+                                            selected={this.state.startComment} onChange={this.onStartCommentChange} 
+                                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                            className="date" 
+                                        />
+                                    {/* </Tooltip>  */}
+                                    &nbsp;to&nbsp;
+                                    {/* <Tooltip title="Exclude documents with comment metadata after this date.  Leave blank to include all"> */}
+                                        <DatePicker
+                                            selected={this.state.endComment} onChange={this.onEndCommentChange}
+                                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                                            className="date" 
+                                        />
+                                    {/* </Tooltip> */}
+                                </td>
+                                
+                                <td><label className="table" htmlFor="searchState">States</label></td>
+                                <td>
+                                    {/* <select multiple id="searchState">
+                                        <option value="AK">Alaska</option><option value="AL">Alabama</option><option value="AQ">Antarctica</option><option value="AR">Arkansas</option><option value="AS">American Samoa</option><option value="AZ">Arizona</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DC">District of Columbia</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="GU">Guam</option><option value="HI">Hawaii</option><option value="IA">Iowa</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="MA">Massachusetts</option><option value="MD">Maryland</option><option value="ME">Maine</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MO">Missouri</option><option value="MS">Mississippi</option><option value="MT">Montana</option><option value="NAT">National</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="NE">Nebraska</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NV">Nevada</option><option value="NY">New York</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="PR">Puerto Rico</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TT">Trust Territory of the Pacific Islands</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VA">Virginia</option><option value="VI">Virgin Islands</option><option value="VT">Vermont</option><option value="WA">Washington</option><option value="WI">Wisconsin</option><option value="WV">West Virginia</option><option value="WY">Wyoming</option>
+                                    </select> */}
+                                    {/* <Tooltip title="Search by states or territories in metadata.  Leave blank to include all"> */}
+                                    <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
+                                        styles={customStyles}
+                                        options={stateOptions} 
+                                        onChange={this.onLocationChange} 
+                                        placeholder="Click here to select from dropdown and/or type to search..." 
+                                     />
+                                    {/* </Tooltip> */}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className='checkbox-list'>Version</td>
+                                <td>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
+                                        <span>All&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                        <span>Final&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
+                                        <span>Draft&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
+                                        <span>Other&nbsp;</span></label>
+                                </td>
+                            
+                            <td className='checkbox-list'>Downloads</td>
+                                <td>
+                                    {/* <Tooltip title="Exclude records without comment downloads"> */}
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="needsComments" checked={this.state.needsComments} onChange={this.onChecked} />
+                                        <span>Must have comment file(s)</span>
+                                    </label>
+                                    {/* </Tooltip> */}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label>Return</label>
+                                </td>
+                                <td>
+                                    <input id="searchLimit" type="number" step="100" min="0" max="100000" 
+                                    placeholder="1000" name="limit" onInput={this.onInput} /> records at most
+                                </td>
+                                <td></td>
+                                <td>
+                                    {/* <Tooltip title="Exclude records without document downloads"> */}
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
+                                        <span>Must have document file(s)</span>
+                                    </label>
+                                    {/* </Tooltip> */}
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        
+                        {/* <Tooltip title="Click to hide/show advanced search options">
+                            <button className="collapsible" onClick={this.collapsibles}>{this.state.collapsibleText}</button>
+                        </Tooltip> */}
+                        {/* <table id="advanced" className={this.state.searcherClassName}><tbody>
+                            
 
-                        <div>
-                        <label htmlFor="searchState">States</label>
-                        {/* <select multiple id="searchState">
-                            <option value="AK">Alaska</option><option value="AL">Alabama</option><option value="AQ">Antarctica</option><option value="AR">Arkansas</option><option value="AS">American Samoa</option><option value="AZ">Arizona</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DC">District of Columbia</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="GU">Guam</option><option value="HI">Hawaii</option><option value="IA">Iowa</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="MA">Massachusetts</option><option value="MD">Maryland</option><option value="ME">Maine</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MO">Missouri</option><option value="MS">Mississippi</option><option value="MT">Montana</option><option value="NAT">National</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="NE">Nebraska</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NV">Nevada</option><option value="NY">New York</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="PR">Puerto Rico</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TT">Trust Territory of the Pacific Islands</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VA">Virginia</option><option value="VI">Virgin Islands</option><option value="VT">Vermont</option><option value="WA">Washington</option><option value="WI">Wisconsin</option><option value="WV">West Virginia</option><option value="WY">Wyoming</option>
-                        </select> */}
-                        <Tooltip title="Search by states or territories in metadata.  Leave blank to include all">
-                        <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
-                            styles={customStyles}
-                            options={stateOptions} 
-                            onChange={this.onLocationChange} 
-                            placeholder="Type here to search..." 
-                        /></Tooltip>
-                        </div>
+                            <tr><td><label>Version:
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
+                                        <span>All&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                        <span>Final&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
+                                        <span>Draft&nbsp;</span></label>
+                                    <label className="inline highlight">
+                                        <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
+                                        <span>Other&nbsp;</span></label></label></td>
+                            </tr>
 
-                        <div><label>Version:</label>
-                                <label className="inline highlight">
-                                    <input type="checkbox" name="typeAll" checked={this.state.typeAll} onChange={this.onTypeChecked} />
-                                All&nbsp;</label>
-                                <label className="inline highlight">
-                                    <input type="checkbox" name="typeFinal" checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                Final&nbsp;</label>
-                                <label className="inline highlight">
-                                    <input type="checkbox" name="typeDraft" checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                Draft&nbsp;</label>
-                                <label className="inline highlight">
-                                    <input type="checkbox" name="typeOther" checked={this.state.typeOther} onChange={this.onTypeChecked} />
-                                Other&nbsp;</label>
-                        </div>
+                            <tr><td>
+                                <Tooltip title="Exclude records without comment downloads">
+                                <label className="checkbox">
+                                    <input type="checkbox" name="needsComments" checked={this.state.needsComments} onChange={this.onChecked} />
+                                    <span>Must have comment file(s)</span>
+                                </label>
+                                </Tooltip></td></tr>
+                                <tr><td>
+                                <Tooltip title="Exclude records without document downloads">
+                                <label className="checkbox">
+                                    <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
+                                    <span>Must have document file(s)</span>
+                                </label>
+                                </Tooltip></td></tr>
 
-                        <div>
-                            <Tooltip title="Exclude records without comment downloads">
-                            <label className="checkbox">
-                                <input type="checkbox" name="needsComments" onChange={this.onChecked} />
-                                Must have comment file(s)
-                            </label>
-                            </Tooltip>
-                            <Tooltip title="Exclude records without document downloads">
-                            <label className="checkbox">
-                                <input type="checkbox" name="needsDocument" onChange={this.onChecked} />
-                                Must have document file(s)
-                            </label>
-                            </Tooltip>
-
-                            <label>
-                                Limit&nbsp;
-                                <input id="searchLimit" type="number" step="100" min="0" max="100000" 
-                                placeholder="1000" name="limit" onInput={this.onInput} />
-                            </label>
-                        </div>
-                        <br />
-                    </form>
+                                <tr><td><label>
+                                    Return &nbsp;
+                                    <input id="searchLimit" type="number" step="100" min="0" max="100000" 
+                                    placeholder="1000" name="limit" onInput={this.onInput} /> records at most
+                                </label></td></tr>
+                        </tbody></table> */}
+                    </div>
                 </div>
             </div>
             

@@ -125,14 +125,14 @@ export default class RecordDetails extends React.Component {
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
                 if(key==='filename') {
-                    return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p>;
+                    return <tr><td><p key={i} className='modal-line'><span className='modal-title'>{key}:</span></p></td><td> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</td></tr>;
                 } else if(key==='commentsFilename') {
-                    return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p>;
+                    return <tr><td><p key={i} className='modal-line'><span className='modal-title'>{key}:</span></p></td><td> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</td></tr>;
                 } else if(key==='matchPercent') {
                     return '';
                 }
                 else {
-                    return <p key={i} className='modal-line'><span className='modal-title'>{key}:</span> {cellData[key]}</p>;
+                    return <tr><td><p key={i} className='modal-line'><span className='modal-title'>{key}:</span></p></td><td> {cellData[key]}</td></tr>;
                 }
             }));
         }
@@ -176,7 +176,9 @@ export default class RecordDetails extends React.Component {
                     <button className='button' onClick={this.hideModal}>Close Details View</button>
                     <label className="errorLabel">{this.state.networkError}</label>
                     <h2>Record details:</h2>
-                    {this.showDetails()}
+                    <table className="details"><tbody>
+                        {this.showDetails()}
+                    </tbody></table>
                     <h2>{this.state.message}</h2>
                     {this.showDocuments()}
                 </ReactModal>
