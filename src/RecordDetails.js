@@ -6,6 +6,8 @@ import DownloadFile from './DownloadFile.js';
 import MatchSearcher from './MatchSearcher.js';
 import MatchResults from './MatchResults.js';
 
+import './match.css';
+
 import Globals from './globals.js';
 // -1. User clicks Record
 // -2. Modal opens, shows Record metadata from props
@@ -30,7 +32,7 @@ export default class RecordDetails extends React.Component {
             searchResults: [],
             networkError: '',
             searcherClassName: '',
-            message: "Related documents:",
+            message: "Similar results by title:",
             show: false,
             resultsText: "",
         };
@@ -124,15 +126,21 @@ export default class RecordDetails extends React.Component {
         const cellData = this.props.cell._cell.row.data;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
+                let keyName = key;
+                if(key==='registerDate'){
+                    keyName = 'date';
+                } else if (key==='documentType') {
+                    keyName = 'type';
+                }
                 if(key==='filename') {
-                    return <tr><td><p key={i} className='modal-line'><span className='modal-title'>{key}:</span></p></td><td> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</td></tr>;
+                    return <div><p key={i} className='modal-line'><span className='modal-title'>document:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p></div>;
                 } else if(key==='commentsFilename') {
-                    return <tr><td><p key={i} className='modal-line'><span className='modal-title'>{key}:</span></p></td><td> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</td></tr>;
-                } else if(key==='matchPercent') {
+                    return <div><p key={i} className='modal-line'><span className='modal-title'>comments:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p></div>;
+                } else if(key==='matchPercent' || key==='commentDate' || key==='id') { // exclusions
                     return '';
                 }
                 else {
-                    return <tr><td><p key={i} className='modal-line'><span className='modal-title'>{key}:</span></p></td><td> {cellData[key]}</td></tr>;
+                    return <div><p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p></div>;
                 }
             }));
         }
@@ -164,21 +172,21 @@ export default class RecordDetails extends React.Component {
             ReactModal.setAppElement('body');
         }
 
-        // TODO: Get related files from database, display here in interactive table with % slider
         return (
             <div onKeyUp={this.onKeyUp}>
                 {this.Build()}
                 <ReactModal 
+                    onRequestClose={this.hideModal}
                     isOpen={this.state.show}
                     parentSelector={() => document.body}
                     // ariaHideApp={false}
                 >
-                    <button className='button' onClick={this.hideModal}>Close Details View</button>
+                    <button className='button modal-close' onClick={this.hideModal}>Close Details View</button>
                     <label className="errorLabel">{this.state.networkError}</label>
                     <h2>Record details:</h2>
-                    <table className="details"><tbody>
+                    <div className="record-details">
                         {this.showDetails()}
-                    </tbody></table>
+                    </div>
                     <h2>{this.state.message}</h2>
                     {this.showDocuments()}
                 </ReactModal>

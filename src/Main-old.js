@@ -2,8 +2,8 @@ import React from 'react';
 import axios from 'axios';
 
 import './index.css';
+import './login.css';
 
-import Landing from './Landing.js';
 import App from './App';
 import Login from './Login.js';
 import Logout from './Logout.js';
@@ -12,10 +12,6 @@ import Reset from './Reset.js';
 import Generate from './Generate.js';
 import UserDetails from './UserDetails.js';
 import ForgotPassword from './ForgotPassword';
-
-// import AboutNepa from './AboutNepa.js';
-// import AboutSite from './AboutSite';
-// import Help from './Help';
 
 import Globals from './globals.js';
 
@@ -57,9 +53,15 @@ class Main extends React.Component {
                 loggedIn: false
             });
         });
-        console.log("Main check");
         
     }
+
+    // TODO: This and the relevant CSS is probably useless, use something like https://loading.io/css/
+	waitCursor = (waiting) =>{ 
+		if(waiting){ this.setState({ loaderClass: 'loadWait' }); }
+		else { this.setState({ loaderClass: 'loadDefault' }); }
+	}
+
 
     // refresh() has a global listener so as to change the loggedIn state and then update the navbar
     // as needed, from child components
@@ -97,59 +99,45 @@ class Main extends React.Component {
 
     render(){
         return (
-        <div id="home-page">
-
-            <div id="header" className="no-select">
-
-                <div id="logo" className="no-select" to="/">
-                    <Link id="logo-type" to="/">
-                        <span id="NEP">NEP</span>
-                        <span id="A">A</span>
-                        <span id="ccess">ccess</span>
-                    </Link>
-                    <div id="logo-box">
-
-                    </div>
-                </div>
-
-                <div id="top-menu" className="no-select">
-                    <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-                        <Link className="top-menu-link" to="/details">Profile</Link>
-                    </span>
-                    <span className={this.state.loggedInDisplay + " cursor-default no-select right-nav-item logged-in"}>
-                        |
-                    </span>
-                    <span className={this.state.loggedOutDisplay + " logged-out"}>
-                        <Link className="top-menu-link" to="/login">Log in</Link>
-                    </span>
-                    <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-                        <Link className="top-menu-link" to="/logout">Log out</Link>
-                    </span>
-                </div>
-
-                <div id="main-menu">
-                    <Link className="main-menu-link" to="/search">Search</Link>
-                    {/* <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
-                    <Link className="main-menu-link" to="/aboutsite">About this site</Link>
-                    <Link className="main-menu-link" to="/help">Help</Link> */}
-                </div>
+        <div id="main" className={this.state.loaderClass}>
+            <div id="nav-background">
+                <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                    <Link className="nav-link right-nav-item" to="/logout">Logout</Link>
+                </span>
+                <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                    <Link id="details" className="nav-link right-nav-item" to="/details">{this.state.displayUsername}</Link>
+                </span>
                 
+                {/* <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                    <Link id="records" className="nav-link right-nav-item" to="/">Manage Saved Records</Link>
+                </span>
+                <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                    <Link id="searches" className="nav-link right-nav-item" to="/">Manage Saved Searches</Link>
+                </span> */}
+
+                <div id="navbar">
+                    <ul>
+                        <li className={this.state.loggedInDisplay + " nav-item logged-in"}>
+                            <Link className="nav-link" to="/">Search</Link>
+                        </li>
+                        <li className={this.state.loggedOutDisplay + " nav-item logged-out"}>
+                            <Link className="nav-link" to="/login">Login</Link>
+                        </li>
+                        {/* <li className="nav-item logged-out">
+                            <Link className="nav-link" to="/register">Register</Link>
+                        </li> */}
+                    </ul>
+                </div>
             </div>
             <Switch>
-                <Route path="/details" component={UserDetails}/>
                 <Route path="/login" component={Login}/>
-                <Route path="/forgotPassword" component={ForgotPassword}/>
                 <Route path="/reset" component={Reset}/>
-                <Route path="/logout" component={Logout}/>
-
-                <Route path="/search" component={App}/>
-                {/* <Route path="/aboutnepa" component={AboutNepa}/>
-                <Route path="/aboutsite" component={AboutSite}/>
-                <Route path="/help" component={Help}/> */}
-                
                 <Route path="/generate" component={Generate}/>
-
-                <Route path="/" component={Landing}/>
+                {/* <Route path="/register" component={Register}/> */}
+                <Route path="/details" component={UserDetails}/>
+                <Route path="/logout" component={Logout}/>
+                <Route path="/forgotPassword" component={ForgotPassword}/>
+                <Route path="/" component={App}/>
             </Switch>
         </div>
         )

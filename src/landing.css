@@ -1,0 +1,158 @@
+/* Landing */
+
+#landing {
+  position: relative;
+  margin: auto;
+  /** The search box now has a percentage-based position, which means the overall page
+   needs a minimum height that does not clip into the header texts. */
+  min-height: 810px;
+  height: 100%;
+  width: 100%;
+}
+
+ #headline {
+  font-weight: 800;
+}
+
+#subhead {
+  font-weight: normal;
+}
+
+
+#headline, #subhead {
+  display: block;
+  padding: 30% 20%;
+  text-align: left;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-size: 140%;
+  line-height: 160%;
+
+  color: #FFFFFF;
+} 
+
+#post-text {
+  display: block;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-top: 2%;
+
+  text-align: left;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 130%;
+
+  color: black;
+}
+
+#landing-images {
+  min-height: 600px;
+  height: 80%;
+}
+
+#image-1 {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url("assets/landing1.jpg");
+}
+
+#image-2 {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url("assets/landing2.jpg");
+}
+
+#image-1, #image-2 {
+  height: 100%;
+  width: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  float: left;
+}
+
+/* Search box */
+
+#search-container {
+  position: absolute;
+  width: 850px;
+  height: 90px;
+
+  top: 60%;
+  /* Center horizontally using left 50% and -half of width */
+  left: 50%;
+  margin-left: -425px;
+  
+  background: rgba(0,0,0,0.5);
+}
+
+#search-box-container {
+  height: 100px;
+}
+
+#fake-search-box {
+  background: white;
+
+  min-width: 800px;
+  width: 60%;
+  height: 50px;
+  margin-top: 16px;
+  margin-left: 23px;
+  
+  padding: 1px 0px;
+
+  border-style: inset;
+  border-color: initial;
+  border-image: initial;
+  border: 4px solid #000000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px;
+
+  cursor: text;
+}
+
+
+#search-box::placeholder {
+  color: #ccc;
+}
+
+#search-box, .search-box {
+  width: 670px;
+  height: 50px;
+  margin: 0px;
+  padding: 0px 0px 0px 31px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 111%;
+  /* or 27px */
+
+  border-width: 0px;
+}
+
+#search-icon {
+  position: absolute;
+
+  width: 39px;
+  height: 38px;
+
+  right: 30px;
+  top: 26px;
+
+  cursor: pointer;
+}
+
+#cancel-icon {
+  position: absolute;
+
+  width: 24px;
+  height: 26px;
+
+  right: 88px;
+  top: 32px;
+  
+  cursor: pointer;
+}
+
+/* End search box */

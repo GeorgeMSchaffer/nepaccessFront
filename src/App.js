@@ -28,10 +28,6 @@ class App extends React.Component {
 		networkError: ''
 	}
 
-	// constructor(props){
-	// 	super(props);
-	// }
-
 	search = (searcherState) => {
 		// console.log("In search");
 
@@ -146,13 +142,14 @@ class App extends React.Component {
 				this.props.history.push('/login');
 			}
 		});
+		console.log("App check");
 	}
 	
 
 	render() {
 		// console.log("App");
 		return (
-			<div>
+			<div id="app-content">
 				<label className="errorLabel">{this.state.networkError}</label>
 				<Searcher search={this.search} />
 				<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} />

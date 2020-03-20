@@ -108,7 +108,7 @@ class Login extends React.Component {
                 verified = response && response.status === 200;
                 // Logged in user hitting login with valid JWT should be redirected to search, or user should logout.
                 if(verified) {
-                    this.props.history.push('/');
+                    this.props.history.push('/search');
                 }
             }).catch(error => { // JWT is invalid or missing, or server problem
                 if (!error.response) { // If no response, should mean server is down

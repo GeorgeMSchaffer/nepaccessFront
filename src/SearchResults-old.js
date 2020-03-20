@@ -8,12 +8,8 @@ import RecordDetails from './RecordDetails.js';
 
 class SearchResults extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
 	render() {
-      console.log("SearchResults");
+      // console.log("SearchResults");
 
       // TODO: At some point, the backend/database should probably be giving us the headers to use.
       const results = this.props.results;
@@ -29,10 +25,11 @@ class SearchResults extends React.Component {
           
           const columns = [
               { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />) },
-              { title: "Lead Agency", field: "agency", width: 242 },
-              { title: "Published date", field: "registerDate", width: 180 },
-              { title: "State", field: "state", width: 112 },
-              { title: "Version", field: "documentType", width: 114 },
+              { title: "Agency", field: "agency", width: 150 },
+              { title: "Register date", field: "registerDate", width: 140 },
+              { title: "Comment date", field: "commentDate", width: 140 },
+              { title: "State", field: "state", width: 80 },
+              { title: "Version", field: "documentType", width: 90 },
               { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
               { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
           ];
@@ -41,16 +38,21 @@ class SearchResults extends React.Component {
               tooltips:true,
               responsiveLayout:"collapse",  //collapse columns that dont fit on the table
               pagination:"local",       //paginate the data
-              paginationSize:10,       //allow 10 rows per page of data
+              paginationSize:"25",       //allow 25 rows per page of data
               paginationSizeSelector:[10, 25, 50, 100],
               movableColumns:true,      //allow column order to be changed
               resizableRows:true,       //allow row order to be changed
               layout:"fitColumns"
           };
-          
+
+          // TODO: Rig up a filter to help narrow down the results with another search.
+          // This could also be used to entirely replace the MySQL fulltext search, which is weird.
+
+          // Could use just a bool prop to build the results text here instead of resultsText prop?
           return (
-              <div id="search-results">
-                  <h2 id="results-label">{this.props.resultsText}</h2>
+              <div>
+                  {/* <h2>{results.length} Results</h2> */}
+                  <h2>{this.props.resultsText}</h2>
                   <ReactTabulator
                       data={data}
                       columns={columns}
@@ -64,7 +66,7 @@ class SearchResults extends React.Component {
           // Show the user something other than a blank page
           return (
           <div>
-              <h2 id="results-label">{this.props.resultsText}</h2>
+              <h2>{this.props.resultsText}</h2>
               <ReactTabulator />
           </div>
           )
