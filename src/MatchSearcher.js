@@ -52,14 +52,15 @@ class MatchSearcher extends React.Component {
     
     render () {
         return (
-            <form onSubmit={this.submitHandler}>
-                <label htmlFor="matchSearchPercent">Search by match percentage</label>
-                <Tooltip title="Search by title match certainty">
-                    <input id="matchSearchPercent" type="range" min="1" max="100" step="1" value={this.state.matchPercent} 
-                        name="matchPercent" autoFocus onChange={this.onChange} />
-                </Tooltip>
-                {this.state.matchPercent}
-            </form>
+            <div className={this.state.searcherClassName}>
+                <form className="content dark" onSubmit={this.submitHandler}>
+                    <label htmlFor="matchSearchPercent">Search by match percentage</label>
+                    <Tooltip title="Search by title match certainty">
+                    <input id="matchSearchPercent" type="range" min="1" max="100" value={this.state.matchPercent} name="matchPercent" autoFocus onChange={this.onChange} />
+                    </Tooltip>
+                    {this.state.matchPercent}
+                </form>
+            </div>
         )
     }
 
