@@ -116,9 +116,49 @@ class Generate extends React.Component {
                 
                 <br /><br /><br />
                 <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
+                <br /><br /><br />
+                <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
+                <br /><br /><br />
+                <button className="button" onClick={() => this.testBulkIndex()}>Test bulk index</button>
             </div>
           )
         // }
+    }
+    
+
+    testBulkImport() {
+      console.log("Activating test for " + Globals.currentHost);
+
+      axios.get((Globals.currentHost + 'file/bulk'),{
+        responseType: 'blob'
+      })
+      .then((response) => {
+        console.log("Activating bulk import");
+        console.log(response);
+        // verified = response && response.status === 200;
+      })
+      .catch((err) => { // This will show exceptions, will also fire if server down
+        console.log(err);
+      });
+      
+    }
+
+    testBulkIndex() {
+
+      console.log("Activating test for " + Globals.currentHost);
+
+      axios.get((Globals.currentHost + 'text/sync'),{
+        responseType: 'blob'
+      })
+      .then((response) => {
+        console.log("Activating bulk index");
+        console.log(response);
+        // verified = response && response.status === 200;
+      })
+      .catch((err) => { 
+        console.log(err);
+      });
+      
     }
 
     
