@@ -13,8 +13,8 @@ import Generate from './Generate.js';
 import UserDetails from './UserDetails.js';
 import ForgotPassword from './ForgotPassword';
 
-// import AboutNepa from './AboutNepa.js';
-// import AboutSite from './AboutSite';
+import AboutNepa from './AboutNepa.js';
+import AboutNepaccess from './AboutNepaccess';
 // import Help from './Help';
 
 import Globals from './globals.js';
@@ -128,10 +128,10 @@ class Main extends React.Component {
                 </div>
 
                 <div id="main-menu">
-                    <Link className="main-menu-link" to="/search">Search</Link>
-                    {/* <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
-                    <Link className="main-menu-link" to="/aboutsite">About this site</Link>
-                    <Link className="main-menu-link" to="/help">Help</Link> */}
+                    <Link className="main-menu-link" to="/search">Search NEPAccess</Link>
+                    <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
+                    <Link className="main-menu-link" to="/aboutnepaccess">About this site</Link>
+                    {/* <Link className="main-menu-link" to="/help">Help</Link> */}
                 </div>
                 
             </div>
@@ -143,9 +143,9 @@ class Main extends React.Component {
                 <Route path="/logout" component={Logout}/>
 
                 <Route path="/search" component={App}/>
-                {/* <Route path="/aboutnepa" component={AboutNepa}/>
-                <Route path="/aboutsite" component={AboutSite}/>
-                <Route path="/help" component={Help}/> */}
+                <Route path="/aboutnepa" component={AboutNepa}/>
+                <Route path="/aboutnepaccess" component={AboutNepaccess}/>
+                {/* <Route path="/help" component={Help}/> */}
                 
                 <Route path="/generate" component={Generate}/>
 

@@ -3,8 +3,6 @@ import axios from 'axios';
 
 import Globals from './globals.js';
 
-const _ = require('lodash');
-
 /** Search box with planned autocomplete suggestion that loads the main search page (app.js) with the search input
  *  or preloaded results when search is confirmed */
 class SearcherLanding extends React.Component {
@@ -33,8 +31,9 @@ class SearcherLanding extends React.Component {
         this.props.onClick("render", "app");
     }
     onClearClick = (evt) => {
+        // Custom clear icon not captured by onInput(), so update the relevant props and state here
         this.setState({ titleRaw: '' });
-        this.props.onChange(this.props.id, '');
+        this.props.onChange(this.props.id, ''); 
     }
 
     // TODO: Get shortlist of title suggestions ordered by relevance from backend using NLM, alphanumeric only, maybe use
@@ -61,7 +60,7 @@ class SearcherLanding extends React.Component {
 					});
 				} 
 			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
-                // Don't necessarily need to do anything, autocomplete just won't work and the user probably will need to login anyway
+                // Don't necessarily need to do anything, autocomplete won't work and user probably needs to login anyway
 			});
     }
 

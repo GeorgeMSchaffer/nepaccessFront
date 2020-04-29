@@ -34,14 +34,16 @@ body {
   background: #C4C4C4;
   box-sizing: border-box;
   z-index: 3;
+
+  background: #8FBC3F;
 }
 
 /* Header contents */
 
 #logo {
   position: absolute;
-  width: 353.38px;
-  height: 123px;
+  width: 270.18px;
+  height: 160.08px;
 }
 
 /* Logo contents */
@@ -73,15 +75,16 @@ body {
   left: 48.8px;
   top: -10px;
   
-  font-family: "EB Garamond";
+  font-family: "Playfair Display";
   font-style: normal;
   font-weight: bold;
   font-size: 48px;
-  line-height: 63px;
+  line-height: 64px;
   display: flex;
   align-items: flex-end;
-  
-  color: #737272;
+  letter-spacing: 0.03em;
+
+  color: #000000;
 }
 
 #logo-type #A {
@@ -91,15 +94,15 @@ body {
   left: 123.54px;
   top: 46px;
   
-  font-family: "EB Garamond";
+  font-family: "Playfair Display";
   font-style: normal;
-  font-weight: 600;
-  font-size: 96px;
-  line-height: 125px;
+  font-weight: bold;
+  font-size: 110px;
+  line-height: 147px;
   display: flex;
   align-items: flex-end;
   
-  color: #000000;
+  color: #DC3131;
   
 }
 
@@ -107,18 +110,19 @@ body {
   position: absolute;
   width: 150.83px;
   height: 23px;
-  left: 187.17px;
-  top: 68px;
+  left: 198px;
+  top: 64px;
   
-  font-family: "EB Garamond";
+  font-family: "Playfair Display";
   font-style: normal;
-  font-weight: 600;
+  font-weight: normal;
   font-size: 48px;
-  line-height: 63px;
+  line-height: 64px;
   display: flex;
   align-items: flex-end;
-  
-  color: #737272;
+  letter-spacing: -0.03em;
+
+  color: #000000;
   
 }
 
@@ -151,8 +155,9 @@ body {
 
 #main-menu {
   position: relative;
-  margin-left: 384px;
-  top: 69%;
+  left: 400px;
+  height: 32px;
+  top: 58px;
 }
 
 .main-menu-link {

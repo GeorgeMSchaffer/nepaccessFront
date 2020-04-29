@@ -1,0 +1,117 @@
+#about-nepa-content {
+    min-width: 900px;
+    width: 50%;
+
+    position: relative;
+
+    margin: auto;
+    margin-top: 102px;
+
+    background: #FFFBF1;
+
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 26px;
+
+    color: #000000;
+}
+
+#about-nepa-banner {
+    margin-bottom: 10%;
+}
+
+.about-nepa-title {
+    display: block;
+
+    font-family: "Open Sans Condensed";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 49px;
+    
+    margin-bottom: 49px;
+
+    color: #8FBC3F;
+}
+
+.about-nepa-bold {
+    display: block;
+
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 26px;
+
+    margin-bottom: 26px;
+
+    color: #000000;
+}
+
+.bold {
+    display: inline;
+
+    font-weight: bold;
+    margin: 0;
+}
+
+.about-nepa-subhead, .about-nepa-subhead2 {
+    display: block;
+
+    font-family: "Open Sans Condensed";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 13px;
+    /* or 54% */
+
+    margin-top: 39px;
+    margin-bottom: 13px;
+
+
+    color: #000000;
+}
+
+.about-nepa-subhead2 {
+    margin-bottom: 39px;
+}
+
+.about-nepa-table {
+    margin-bottom: 100px;
+}
+
+.about-nepa-table td:first-child {
+    width: 20px;
+    padding-left: 5px;
+    vertical-align: top;
+}
+
+.about-nepa-table>tr>td {
+    padding-bottom: 25px;
+}
+
+.default-style {
+    display: block;
+    margin-bottom: 24px;
+}
+
+.about-nepa-button {
+    cursor: pointer;
+
+    text-decoration: none;
+    color: #0091BE;
+}
+
+.about-nepaccess-contact-header {
+    display: block;
+
+    font-weight: bold;
+    margin-top: 72px;
+}
+
+
+.about-nepaccess-contact-content {
+    display: block;
+}
