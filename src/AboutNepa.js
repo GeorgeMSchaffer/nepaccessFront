@@ -8,17 +8,18 @@ class AboutNepa extends React.Component {
     render () {
         return (
             <div>
-                <div id="about-nepa-banner">
-                    
-                </div>
-                <div id="about-nepa-image"></div>
+                <div id="about-nepa-banner"> </div>
+
                 <p id="about-nepa-content">
+
+                    
                     <span className="about-nepa-title">
                         About NEPA
                     </span>
 
 
                     <span className="about-nepa-bold">
+                        <div id="about-nepa-side-image"></div>
                         Some 50 years ago, a near-unanimous U.S. Congress passed, and President Richard Nixon signed into law, the National Environmental Policy Act of 1969 (NEPA). 
                     </span>
 

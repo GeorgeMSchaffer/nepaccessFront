@@ -3,48 +3,66 @@
 #landing {
   position: relative;
   margin: auto;
+  margin-top: 102px;
   /** The search box now has a percentage-based position, which means the overall page
    needs a minimum height that does not clip into the header texts. */
-  min-height: 810px;
+  min-height: 850px;
   height: 100%;
   width: 100%;
 }
 
  #headline {
-  font-weight: 800;
+  font-weight: bold;
+  line-height: 140%;
 }
 
 #subhead {
-  font-weight: normal;
+  font-weight: 600;
+  line-height: 160%;
 }
 
 
 #headline, #subhead {
   display: block;
-  padding: 30% 20%;
+  padding: 10% 10%;
   text-align: left;
 
   font-family: "Open Sans";
   font-style: normal;
-  font-size: 140%;
-  line-height: 160%;
+  font-size: 24px;
 
   color: #FFFFFF;
+  
+  text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.5);
 } 
 
 #post-text {
   display: block;
-  padding-left: 20%;
-  padding-right: 20%;
 
   text-align: left;
-
+  width: 50%;
+  margin: auto;
+  margin-top: 25px;
+  
   font-family: "Open Sans";
   font-style: normal;
-  font-weight: normal;
-  font-size: 130%;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
 
-  color: black;
+  color: #333333;
+}
+
+#post-text>span {
+  display: block;
+}
+
+#post-text>span:first-child {
+  font-weight: 800;
+}
+
+.post-text-bullet {
+  padding-left: 15px;
 }
 
 #landing-images {
@@ -53,11 +71,15 @@
 }
 
 #image-1 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url("assets/landing1.jpg");
+  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url("assets/landing1.jpg"); */
+  background-image: linear-gradient(180deg, rgba(0, 57, 61, 0.75) 33.33%, rgba(2, 78, 83, 0.3075) 83.33%), url("assets/landing1.jpg");
+  /* background-image: url("assets/nature.png"); */
 }
 
 #image-2 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url("assets/landing2.jpg");
+  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4)), url("assets/landing2.jpg"); */
+  background-image: linear-gradient(180deg, rgba(0, 57, 61, 0.75) 33.33%, rgba(2, 78, 83, 0.3075) 83.33%), url("assets/landing2.jpg");
+  /* background-image: url("assets/people.png"); */
 }
 
 #image-1, #image-2 {
@@ -70,6 +92,22 @@
 }
 
 /* Search box */
+
+#landing-container-text {
+  position: absolute;
+  top: -40px;
+  left: 30px;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 140%;
+  /* or 34px */
+
+
+  color: #FFFFFF;
+}
 
 #search-container {
   position: absolute;

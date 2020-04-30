@@ -7,17 +7,16 @@ class AboutNepaccess extends React.Component {
     render() {
         return (
             <div>
-                <div id="about-nepa-banner">
-                    
-                </div>
+                <div id="about-nepaccess-banner"></div>
                 
                 <p id="about-nepa-content">
-
-                <span className="about-nepa-title">
-                    About NEPAccess
-                </span>
+                
+                    <span className="about-nepa-title">
+                        About NEPAccess
+                    </span>
 
                     <span className="default-style bold">
+                        <div id="about-nepaccess-side-image"></div>
                         NEPAccess helps bring <Link className="about-nepa-button" to="/aboutnepa">NEPA</Link> into the 21st century by harnessing the power of data science to enable the full vision of NEPA as a strategy to deal with emerging 21st-century social, economic, and environmental challenges.
                     </span>
                     <span className="default-style">

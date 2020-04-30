@@ -1,11 +1,11 @@
 #about-nepa-content {
-    min-width: 900px;
+    min-width: 682px;
     width: 50%;
 
     position: relative;
 
     margin: auto;
-    margin-top: 102px;
+    margin-top: 70px;
 
     background: #FFFBF1;
 
@@ -17,9 +17,39 @@
 
     color: #000000;
 }
+#about-nepaccess-banner, #about-nepa-banner {
+    height: 212px;
+    max-width: 1439px;
+    margin: auto;
+    margin-top: 102px;
+}
+
+#about-nepaccess-banner {
+    background-image: url("assets/about_nepaccess_banner.png");
+}
 
 #about-nepa-banner {
-    margin-bottom: 10%;
+    background-image: url("assets/about_nepa_banner.png");
+}
+
+#about-nepaccess-side-image {
+    position: absolute;
+    width: 212px;
+    height: 213px;
+    left: -232px;
+    top: 103px;
+    
+    background-image: url("assets/about_side_1.png");
+}
+
+#about-nepa-side-image {
+    position: absolute;
+    width: 215px;
+    height: 223px;
+    right: -250px;
+    top: 140px;
+    
+    background-image: url("assets/nixon.png");
 }
 
 .about-nepa-title {
