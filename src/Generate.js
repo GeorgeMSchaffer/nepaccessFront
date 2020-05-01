@@ -15,6 +15,7 @@ class Generate extends React.Component {
         this.generate = this.generate.bind(this);
         this.csvChange = this.csvChange.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.test = this.test.bind(this);
 
         // If there's no reason for user to be here, redirect them
@@ -40,10 +41,10 @@ class Generate extends React.Component {
     }
 
     handleChange(event){
-      let val = event.target.value;
-      this.setState({
-        textId: val
-      });
+        let val = event.target.value;
+        this.setState({
+          textId: val
+        });
     }
 
     handleRadioChange(event){
@@ -125,7 +126,7 @@ class Generate extends React.Component {
                 <br /><br /><br />
                 <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
                 <br /><br /><br />
-                <input type="text" onChange={this.handleChange}></input><button className="button" onClick={() => this.getText(this.state.textId)}>Get DocumentText by ID</button>
+                <input type="text" value={this.state.textId} onChange={this.handleChange}></input><button className="button" onClick={() => this.getText(this.state.textId)}>Get DocumentText by ID</button>
                 <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
                 <br /><br /><br />
