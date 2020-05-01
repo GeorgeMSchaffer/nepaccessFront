@@ -6,7 +6,8 @@ import Globals from './globals.js';
 class Generate extends React.Component {
     state = {
         users: [], // Naming should mirror Generate POJO on backend
-        shouldSend: false
+        shouldSend: false,
+        textId: 22
     }
 
     constructor(props){
@@ -36,6 +37,13 @@ class Generate extends React.Component {
         let text = event.target.value;
         const jsonArray = csvToJSON(text);
         this.setState({users: jsonArray});
+    }
+
+    handleChange(event){
+      let val = event.target.value;
+      this.setState({
+        textId: val
+      });
     }
 
     handleRadioChange(event){
@@ -117,12 +125,32 @@ class Generate extends React.Component {
                 <br /><br /><br />
                 <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
                 <br /><br /><br />
+                <input type="text" onChange={this.handleChange}></input><button className="button" onClick={() => this.getText(this.state.textId)}>Get DocumentText by ID</button>
+                <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
                 <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkIndex()}>Test bulk index</button>
             </div>
           )
         // }
+    }
+
+    getText(textId) {
+      console.log("Activating text test for " + Globals.currentHost);
+      const FileDownload = require('js-file-download');
+
+      axios.get((Globals.currentHost + 'text/get_by_id'),{
+        params: {
+          id: textId
+        }
+      })
+      .then((response) => {
+        // verified = response && response.status === 200;
+        console.log(response);
+      })
+      .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
+        console.log(err);
+      });
     }
     
 
@@ -158,7 +186,7 @@ class Generate extends React.Component {
       .catch((err) => { 
         console.log(err);
       });
-      
+
     }
 
     
