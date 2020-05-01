@@ -4,13 +4,9 @@
   margin: 0 5px;
 }
 
-/* .tabulator-row .tabulator-cell {
-    white-space: normal;
+.tabulator-row .tabulator-cell {
+  white-space: pre-wrap;
 }
-
-.tabulator-row {
-    white-space: normal;
-}  */
 
 .tabulator-row, .tabulator-cell {
   cursor: default;
@@ -18,9 +14,10 @@
 
 /* Row auto adjusts to accommodate cell size */
 .tabulator-row .tabulator-cell {
-  height: 44px;
+  min-height: 44px;
   /* Assuming 6px included padding (default), line-height of height minus padding vertically centers line of text */
   line-height: 32px;
+  /* padding: 10px 6px; */
   border-color: black;
 }
 

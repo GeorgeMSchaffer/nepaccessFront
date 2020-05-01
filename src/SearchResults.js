@@ -10,13 +10,28 @@ class SearchResults extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.my_table = React.createRef();
     }
 
 	render() {
-      console.log("SearchResults");
+    //   console.log("SearchResults");
+      if(this.my_table){
+        // if(this.my_table.props.data.length > 0){
+            // console.log(this.my_table);
+            // this.my_table.table.setSort("title", "asc");
+            // this.my_table.table.redraw();
+            // console.log("Redrawn");
+        // }
+      }
 
-      // TODO: At some point, the backend/database should probably be giving us the headers to use.
+      // Note: At some point, the backend/database could give us the headers to use.
       const results = this.props.results;
+    //   if(results.length == 0){
+    //       return (
+    //             <div id="search-results"></div>
+    //         );
+    //   }
       try {
           var data = results.map((result, idx) =>{
               var newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
@@ -28,7 +43,7 @@ class SearchResults extends React.Component {
           });
           
           const columns = [
-              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />) },
+              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight: true },
               { title: "Lead Agency", field: "agency", width: 242 },
               { title: "Published date", field: "registerDate", width: 180 },
               { title: "State", field: "state", width: 112 },
@@ -38,6 +53,7 @@ class SearchResults extends React.Component {
           ];
 
           var options = {
+              layoutColumnsOnNewData: true,
               tooltips:true,
               responsiveLayout:"collapse",  //collapse columns that dont fit on the table
               pagination:"local",       //paginate the data
@@ -50,12 +66,19 @@ class SearchResults extends React.Component {
           
           return (
               <div id="search-results">
-                  <h2 id="results-label">{this.props.resultsText}</h2>
-                  <ReactTabulator
-                      data={data}
-                      columns={columns}
-                      options={options}
-                  />
+                {/* <button className="button" onClick={() => this.testRedraw()}>Test redraw</button> */}
+                <h2 id="results-label">{this.props.resultsText}</h2>
+                <ReactTabulator
+                    ref={this.my_table}
+                    data={data}
+                    columns={columns}
+                    options={options}
+                    dataLoading={()=>{
+                    }}
+                    dataLoaded={()=>{
+                    }}
+                    
+                />
               </div>
           )
       }
@@ -69,7 +92,31 @@ class SearchResults extends React.Component {
           </div>
           )
       }
-	}
+    }
+    
+    // testRedraw = () => {
+    //     if(this.my_table.current){
+    //         this.my_table.current.table.redraw();
+    //         console.log(this.my_table.current);
+    //         console.log("Redrawn manually");
+    //     }
+    // }
+
+    componentDidUpdate() {
+        // console.log("Update");
+        /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
+         * Does not work when simply fired on componentDidUpdate().
+         */
+        if(this.my_table){
+            const tbltr = this.my_table.current;
+            setTimeout(function() {
+                console.log(tbltr);
+                // Redraw table to fix text wrapping issues
+                tbltr.table.redraw();
+                // console.log("Redrawn automatically");
+            },0)
+        }
+    }
 }
 
 export default SearchResults;

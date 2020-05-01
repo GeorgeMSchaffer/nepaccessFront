@@ -445,6 +445,7 @@ class Searcher extends React.Component {
     
 
     render () {
+        // console.log("Searcher");
 
         const customStyles = {
             option: (styles, state) => ({
