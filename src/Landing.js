@@ -58,12 +58,12 @@ class Landing extends React.Component {
           </div>
           <div>
             <span id="post-text">
-              <span>Whether you are a:</span>
+              {/* <span>Whether you are a:</span>
               <span className="post-text-bullet">  • community stakeholder,</span>
               <span className="post-text-bullet">  • NEPA project manager or engineer, </span>
               <span className="post-text-bullet">  • researcher or student, </span>
-              <span className="post-text-bullet">  • environmental advocate, librarian, or member of the public, </span>
-              <span>NEPAccess is a useful portal to science, public participation, and environmental decision making.</span>
+              <span className="post-text-bullet">  • environmental advocate, librarian, or member of the public, </span> */}
+              <span>For a vast set of users involved in or impacted by NEPA decision-making, NEPAccess is a useful portal to science, public participation, and environmental decision making.</span>
             </span>
             <br />
           </div>
