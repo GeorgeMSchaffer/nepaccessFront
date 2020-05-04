@@ -61,9 +61,8 @@ class MatchResults extends React.Component {
             }
             const columns = [
                 { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />) },
-                { title: "Agency", field: "agency", width: 150 },
-                { title: "Register date", field: "registerDate", width: 140 },
-                { title: "Comment date", field: "commentDate", width: 140 },
+                { title: "Lead Agency", field: "agency", width: 150 },
+                { title: "Published date", field: "registerDate", width: 140 },
                 { title: "State", field: "state", width: 80 },
                 { title: "Version", field: "documentType", width: 90 },
                 { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
