@@ -137,7 +137,7 @@ export default class RecordDetails extends React.Component {
                     return <div><p key={i} className='modal-line'><span className='modal-title'>document:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p></div>;
                 } else if(key==='commentsFilename') {
                     return <div><p key={i} className='modal-line'><span className='modal-title'>comments:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p></div>;
-                } else if(key==='matchPercent' || key==='commentDate' || key==='id') { // exclusions
+                } else if(key==='matchPercent' || key==='commentDate' || key==='id' || key==='plaintext') { // exclusions
                     return '';
                 }
                 else {

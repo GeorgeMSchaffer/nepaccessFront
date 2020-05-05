@@ -1,20 +1,24 @@
 import React from 'react';
 
-import Select from 'react-select';
-import DatePicker from "react-datepicker";
-
 import "./tabulator.css";
 import "./search.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
-import {Tooltip,} from 'react-tippy';
 
 import globals from './globals.js';
+
+import PropTypes from "prop-types";
+import { withRouter } from "react-router";
 
 const _ = require('lodash');
 
 class FulltextSearcher extends React.Component {
+    static propTypes = {
+        match: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired
+      };
 
     constructor(props) {
         super(props);
@@ -76,6 +80,7 @@ class FulltextSearcher extends React.Component {
     
 
     render () {
+        const { match, location, history } = this.props;
         console.log("FulltextSearcher");
 
         const customStyles = {
@@ -129,6 +134,7 @@ class FulltextSearcher extends React.Component {
                                 </div>
 
                             </div>
+                            <span onClick={() => { history.push('/search'); }} id="fulltext-mode" className="inline-block no-select">Metadata search</span>
                         </div>
                     </div>
                 </div>
@@ -154,4 +160,4 @@ class FulltextSearcher extends React.Component {
 	}
 }
 
-export default FulltextSearcher;
+export default withRouter(FulltextSearcher);

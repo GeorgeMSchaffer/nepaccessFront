@@ -42,14 +42,34 @@
   width: 200px;
   text-align: center;
   right: 5px;
-  top: 50px;
+  top: 90px;
 
   font-family: Open Sans;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
-  line-height: 100px;
+  /* line-height: 100px; */
   /* or 20px */
+
+  cursor: pointer;
+
+  color: #64D6FA;
+}
+
+#fulltext-mode {
+  
+  position: absolute;
+  text-align: center;
+  width: 200px;
+  right: 12px;
+  top: 60px;
+
+  text-decoration: none;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
 
   cursor: pointer;
 
