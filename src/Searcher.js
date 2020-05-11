@@ -619,7 +619,7 @@ class Searcher extends React.Component {
                             <label id="search-mode" className="inline-block no-select" onClick={this.searchModeClick}>
                                 {this.state.searchModeName}
                             </label>
-                            <span onClick={() => { history.push('/fulltext'); }} id="fulltext-mode" className="inline-block no-select">Full-text search</span>
+                            {/* <span onClick={() => { history.push('/fulltext'); }} id="fulltext-mode" className="inline-block no-select">Full-text search</span> */}
 
                         </div>
 

@@ -133,7 +133,7 @@ class Main extends React.Component {
                     <Link className="main-menu-link" to="/search">Search NEPAccess</Link>
                     <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
                     <Link className="main-menu-link" to="/aboutnepaccess">About this site</Link>
-                    <Link className="main-menu-link" to="/fulltext">Fulltext search</Link>
+                    {/* <Link className="main-menu-link" to="/fulltext">Fulltext search</Link> */}
                 </div>
                 
             </div>
