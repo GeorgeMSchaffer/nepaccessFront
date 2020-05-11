@@ -40,7 +40,7 @@ class FulltextResults extends React.Component {
           });
           
           const columns = [
-              { title: "Title", field: "title", width: 150, formatter: reactFormatter(<RecordDetails />), variableHeight: true },
+              { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetails />), variableHeight: true },
               { title: "Text", field: "plaintext", formatter: "html" },
               { title: "Version", field: "documentType", width: 114 },
               { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
