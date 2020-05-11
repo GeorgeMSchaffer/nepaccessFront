@@ -21,6 +21,9 @@ class Fulltext extends React.Component {
 
 	/** Fulltext search(String searcherState) */
 	search = (searcherState) => {
+		if(!searcherState || searcherState.length == 0){
+			return;
+		}
 		console.log("In search :");
 		console.log(searcherState);
 
