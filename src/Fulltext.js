@@ -24,8 +24,8 @@ class Fulltext extends React.Component {
 		if(!searcherState || searcherState.length == 0){
 			return;
 		}
-		console.log("In search :");
-		console.log(searcherState);
+		// console.log("In search :");
+		// console.log(searcherState);
 
 		this.setState({
 			terms: searcherState,
@@ -55,7 +55,7 @@ class Fulltext extends React.Component {
 					return null;
 				}
 			}).then(parsedJson => {
-				console.log('this should be json', parsedJson);
+				// console.log('this should be json', parsedJson);
 				if(parsedJson){
 					this.setState({
 						searchResults: parsedJson,
@@ -77,7 +77,7 @@ class Fulltext extends React.Component {
 				});
 			});
 			
-			console.log("Out search");
+			// console.log("Out search");
 		
 		});
 	}
@@ -107,7 +107,7 @@ class Fulltext extends React.Component {
 	
 
 	render() {
-		console.log("Fulltext");
+		// console.log("Fulltext");
 		return (
 			<div id="app-content">
 				<label className="errorLabel">{this.state.networkError}</label>

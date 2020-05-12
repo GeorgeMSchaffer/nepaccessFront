@@ -14,9 +14,11 @@
 
 /* Row auto adjusts to accommodate cell size */
 .tabulator-row .tabulator-cell {
-  min-height: 44px;
+  /* min-height: 44px; */
   /* Assuming 6px included padding (default), line-height of height minus padding vertically centers line of text */
-  line-height: 32px;
+  /* line-height: 32px; */
+  padding-top: 16px;
+  padding-bottom: 16px;
   /* padding: 10px 6px; */
   border-color: black;
 }

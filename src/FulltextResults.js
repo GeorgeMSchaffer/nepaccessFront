@@ -15,11 +15,11 @@ class FulltextResults extends React.Component {
     }
 
 	render() {
-      console.log("FulltextResults");
+    //   console.log("FulltextResults");
 
       const results = this.props.results;
 
-      console.log(results);
+    //   console.log(results);
 
     //   if(results.length == 0){
     //       return (
@@ -64,6 +64,7 @@ class FulltextResults extends React.Component {
                 {/* <button className="button" onClick={() => this.testRedraw()}>Test redraw</button> */}
                 <h2 id="results-label">{this.props.resultsText}</h2>
                 <ReactTabulator
+                    ref={this.my_table}
                     data={data}
                     columns={columns}
                     options={options}
@@ -96,15 +97,15 @@ class FulltextResults extends React.Component {
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
-        // if(this.my_table){
-        //     const tbltr = this.my_table.current;
-        //     setTimeout(function() {
-        //         console.log(tbltr);
-        //         // Redraw table to fix text wrapping issues
-        //         tbltr.table.redraw();
-        //         // console.log("Redrawn automatically");
-        //     },0)
-        // }
+        if(this.my_table && this.my_table.current){
+            const tbltr = this.my_table.current;
+            setTimeout(function() {
+                // console.log(tbltr);
+                // Redraw table to fix text wrapping issues
+                tbltr.table.redraw();
+                // console.log("Redrawn automatically");
+            },0)
+        }
     }
 }
 

@@ -25,7 +25,7 @@ class FulltextSearcher extends React.Component {
 		this.state = {
             terms: ''
 		};
-        this.debouncedSearch = _.debounce(this.props.search, 300);
+        this.debouncedSearch = _.debounce(this.props.search, 500);
     }
     
     /**
@@ -49,7 +49,7 @@ class FulltextSearcher extends React.Component {
     }
 
 	onInput = (evt) => {
-        console.log(evt.target.value);
+        // console.log(evt.target.value);
 		//get the evt.target.name (defined by name= in input)
 		//and use it to target the key on our `state` object with the same name, using bracket syntax
 		this.setState( 
@@ -68,7 +68,7 @@ class FulltextSearcher extends React.Component {
     validated = (term) => {
         
         term = term.trim();
-        console.log(term);
+        // console.log(term);
         if(term && /[a-zA-Z0-9\s]+/g.exec(term) === null){
             console.log("Invalid search query " + term);
             return false;
@@ -81,7 +81,7 @@ class FulltextSearcher extends React.Component {
 
     render () {
         const { match, location, history } = this.props;
-        console.log("FulltextSearcher");
+        // console.log("FulltextSearcher");
 
         const customStyles = {
             option: (styles, state) => ({
@@ -147,7 +147,7 @@ class FulltextSearcher extends React.Component {
     /** Supporting potential for fulltext search query from elsewhere (such as landing), currently unused; or support saved search via bookmark */
 	componentDidMount() {
         var queryString = globals.getParameterByName("q");
-        console.log("Param " + queryString);
+        // console.log("Param " + queryString);
         if(queryString){
             this.setState({
                 terms: queryString
