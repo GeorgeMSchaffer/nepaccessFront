@@ -14,96 +14,123 @@ class FulltextResults extends React.Component {
         this.my_table = React.createRef();
     }
 
-	render() {
-    //   console.log("FulltextResults");
-
-      const results = this.props.results;
-
-    //   console.log(results);
-
-    //   if(results.length == 0){
-    //       return (
-    //             <div id="search-results"></div>
-    //         );
-    //   }
-      try {
-          var data = results.map((result, idx) =>{
-              let doc = result.doc;
-              let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
-                registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
-                filename: doc.filename, 
-                commentsFilename: doc.commentsFilename,
-                documentId: doc.id,
-                plaintext: result.highlight
+    setupData = (results, context) => {
+        if(context){
+            return results.map((result, idx) =>{
+                let doc = result.doc;
+                let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
+                    registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
+                    filename: doc.filename, 
+                    commentsFilename: doc.commentsFilename,
+                    documentId: doc.id,
+                    plaintext: result.highlight,
+                    name: result.filename
                 };
-              return newObject;
-          });
-          
-          const columns = [
-              { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetails />), variableHeight: true },
-              { title: "Text", field: "plaintext", formatter: "html" },
-              { title: "Version", field: "documentType", width: 114 },
-              { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-              { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
-          ];
+                return newObject;
+            });
+        } else {
+            return results.map((result, idx) =>{
+                let doc = result.eisdoc;
+                let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
+                    registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
+                    filename: doc.filename, 
+                    commentsFilename: doc.commentsFilename,
+                    documentId: doc.id
+                };
+                return newObject;
+            });
+        }
+    }
 
-          var options = {
-              layoutColumnsOnNewData: true,
-              tooltips:true,
-              responsiveLayout:"collapse",  //collapse columns that dont fit on the table
-              pagination:"local",       //paginate the data
-              paginationSize:10,       //allow 10 rows per page of data
-              paginationSizeSelector:[10, 25, 50, 100],
-              movableColumns:true,      //allow column order to be changed
-              resizableRows:true,       //allow row order to be changed
-              layout:"fitColumns"
-          };
-          
-          return (
-              <div id="search-results">
-                {/* <button className="button" onClick={() => this.testRedraw()}>Test redraw</button> */}
-                <h2 id="results-label">{this.props.resultsText}</h2>
-                <ReactTabulator
-                    ref={this.my_table}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                />
-              </div>
-          )
-      }
-      catch (e) {
-          console.log(e.toString());
-          // Show the user something other than a blank page
-          return (
-          <div>
-              <h2 id="results-label">{this.props.resultsText}</h2>
-              <ReactTabulator />
-          </div>
-          )
-      }
+    setupColumns = (context) => {
+        if(context){
+            return [
+                { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetails />), variableHeight: true },
+                { title: "Filename", field: "name", width: 120, formatter: "textarea", variableHeight: true },
+                { title: "Text", field: "plaintext", formatter: "html" },
+                { title: "Version", field: "documentType", width: 114 },
+                { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
+                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
+            ];
+        } else {
+            return [
+                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight: true },
+                { title: "Lead Agency", field: "agency", width: 242 },
+                { title: "Published date", field: "registerDate", width: 180 },
+                { title: "State", field: "state", width: 112 },
+                { title: "Version", field: "documentType", width: 114 },
+                { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
+                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
+            ];
+        }
+    }
+
+	render() {
+
+        const results = this.props.results;
+        const context = this.props.context;
+
+        if(results && results.length > 0) {
+
+        }
+        else {
+            return (
+                <div id="search-results">
+                <h2 id="results-label">{this.props.resultsText}</h2></div>
+            );
+        }
+        
+        try {
+            const data = this.setupData(results, context);
+            const columns = this.setupColumns(context);
+
+            var options = {
+                layoutColumnsOnNewData: true,
+                tooltips:true,
+                responsiveLayout:"collapse",  //collapse columns that dont fit on the table
+                pagination:"local",       //paginate the data
+                paginationSize:10,       //allow 10 rows per page of data
+                paginationSizeSelector:[10, 25, 50],
+                movableColumns:true,      //allow column order to be changed
+                resizableRows:true,       //allow row order to be changed
+                layout:"fitColumns"
+            };
+
+            return (
+                <div id="search-results">
+                    <h2 id="results-label">{this.props.resultsText}</h2>
+                    <ReactTabulator
+                        ref={this.my_table}
+                        data={data}
+                        columns={columns}
+                        options={options}
+                        context={context}
+                    />
+                </div>
+            );
+        }
+        catch (e) {
+            if(e instanceof TypeError){
+                // expected problem with Tabulator trying to render new results before it switches to new column definitions
+            } else {
+                console.log(e.toString());
+            }
+            return (
+                <div>
+                    <h2 id="results-label">{this.props.resultsText}</h2>
+                </div>
+            )
+        }
     }
     
-    // testRedraw = () => {
-    //     if(this.my_table.current){
-    //         this.my_table.current.table.redraw();
-    //         console.log(this.my_table.current);
-    //         console.log("Redrawn manually");
-    //     }
-    // }
-
     componentDidUpdate() {
-        // console.log("Update");
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
         if(this.my_table && this.my_table.current){
             const tbltr = this.my_table.current;
             setTimeout(function() {
-                // console.log(tbltr);
-                // Redraw table to fix text wrapping issues
                 tbltr.table.redraw();
-                // console.log("Redrawn automatically");
             },0)
         }
     }

@@ -257,3 +257,15 @@ button {
   position: absolute;
   top: -20px;
 }
+
+.disabled_download {
+  pointer-events: none;
+  cursor: default !important;
+  
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: rgb(59, 59, 59);
+  
+  cursor: pointer;
+}

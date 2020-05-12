@@ -8,24 +8,20 @@ import 'react-tippy/dist/tippy.css';
 
 import globals from './globals.js';
 
-import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 
 const _ = require('lodash');
 
 class FulltextSearcher extends React.Component {
-    static propTypes = {
-        match: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
-        history: PropTypes.object.isRequired
-      };
 
     constructor(props) {
         super(props);
 		this.state = {
-            terms: ''
-		};
-        this.debouncedSearch = _.debounce(this.props.search, 500);
+            terms: '',
+            context: false
+        };
+        this.updateChecked = this.props.updateChecked;
+        this.debouncedSearch = _.debounce(this.props.search, 300);
     }
     
     /**
@@ -36,12 +32,12 @@ class FulltextSearcher extends React.Component {
     onKeyUp = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
-            this.debouncedSearch(this.state.terms);
+            this.debouncedSearch(this.state);
         }
     }
 
     onIconClick = (evt) => {
-        this.debouncedSearch(this.state.terms);
+        this.debouncedSearch(this.state);
     }
     
     onClearClick = (evt) => {
@@ -56,10 +52,16 @@ class FulltextSearcher extends React.Component {
 		{ 
             [evt.target.name]: evt.target.value,
 		}, () => { // callback ensures state is set before state is used for search
-            this.debouncedSearch(this.state.terms);
+            this.debouncedSearch(this.state);
         });
     }
     
+    onCheckboxChange = (evt) => {
+        this.setState( { [evt.target.name]: evt.target.checked}, () => {
+            this.debouncedSearch(this.state);
+        } );
+    }
+
     // Can either just make the form a div or use this to prevent Submit default behavior
 	submitHandler(e) { e.preventDefault(); }
 
@@ -80,35 +82,20 @@ class FulltextSearcher extends React.Component {
     
 
     render () {
-        const { match, location, history } = this.props;
         // console.log("FulltextSearcher");
-
-        const customStyles = {
-            option: (styles, state) => ({
-                 ...styles,
-                borderBottom: '1px dotted',
-	            backgroundColor: 'white',
-                color: 'black',
-                '&:hover': {
-                    backgroundColor: 'lightgreen'
-                },
-                // ':active': {
-                //     ...styles[':active'],
-                //     backgroundColor: !isDisabled && (isSelected ? data.color : color.alpha(0.3).css()),
-                //   },
-                //   padding: 20,
-            }),
-            control: (styles) => ({
-                ...styles,
-                backgroundColor: 'white',
-            })
-        }
 
         return (
             <div>
                 <div>
                     <div className="content" onSubmit={this.submitHandler}>
                         <div id="searcher-container">
+                            <label className="search-label">
+                                <label className="flex-center no-select cursor-pointer">
+                                    <input type="checkbox" className="cursor-pointer" name="context" value={this.state.context} onChange={this.onCheckboxChange} 
+                                    />
+                                    Search for highlights with context
+                                </label>
+                            </label>
                             <div id="searcher-inner-container">
 
                                 <div id="fake-search-box" className="inline-block">
@@ -153,7 +140,7 @@ class FulltextSearcher extends React.Component {
                 terms: queryString
             }, () => {
                 if(this.state.terms){
-                    this.debouncedSearch(this.state.terms);
+                    this.debouncedSearch(this.state);
                 }
             });
         }

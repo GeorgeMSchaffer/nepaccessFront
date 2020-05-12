@@ -13,27 +13,30 @@ import Globals from './globals.js';
 class Fulltext extends React.Component {
 
 	state = {
-		terms: '',
-		searchResults: [],
 		resultsText: 'Results',
 		networkError: ''
 	}
 
 	/** Fulltext search(String searcherState) */
 	search = (searcherState) => {
-		if(!searcherState || searcherState.length == 0){
+		if(!searcherState || !searcherState.terms || searcherState.terms.length == 0){
 			return;
 		}
 		// console.log("In search :");
 		// console.log(searcherState);
 
 		this.setState({
-			terms: searcherState,
+			terms: searcherState.terms,
+			context: searcherState.context,
 			resultsText: "Loading results...",
 			networkError: "" // Clear network error
 		}, () => {
-
-			let searchUrl = new URL('text/fulltext_meta', Globals.currentHost);
+			var searchUrl;
+			if(searcherState.context){
+				searchUrl = new URL('text/fulltext_meta', Globals.currentHost);
+			} else {
+				searchUrl = new URL('text/full', Globals.currentHost);
+			}
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
 				this.props.history.push('/login') // Prompt login if no auth token
@@ -101,7 +104,6 @@ class Fulltext extends React.Component {
 				this.props.history.push('/login');
 			}
 		});
-		// console.log("App check");
 		return false;
 	}
 	
@@ -111,8 +113,8 @@ class Fulltext extends React.Component {
 		return (
 			<div id="app-content">
 				<label className="errorLabel">{this.state.networkError}</label>
-				<FulltextSearcher search={this.search} />
-				<FulltextResults results={this.state.searchResults} resultsText={this.state.resultsText} />
+				<FulltextSearcher search={this.search} updateChecked={this.updateChecked} />
+				<FulltextResults results={this.state.searchResults} resultsText={this.state.resultsText} context={this.state.context} />
 			</div>
 		)
 	}
