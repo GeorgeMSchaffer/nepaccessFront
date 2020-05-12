@@ -138,7 +138,6 @@ class Generate extends React.Component {
 
     getText(textId) {
       console.log("Activating text test for " + Globals.currentHost);
-      const FileDownload = require('js-file-download');
 
       axios.get((Globals.currentHost + 'text/get_by_id'),{
         params: {

@@ -12,18 +12,11 @@ import {Tooltip,} from 'react-tippy';
 
 import globals from './globals.js';
 
-import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 
 const _ = require('lodash');
 
 class Searcher extends React.Component {
-
-    static propTypes = {
-        match: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
-        history: PropTypes.object.isRequired
-      };
 
     constructor(props) {
         super(props);
@@ -454,7 +447,6 @@ class Searcher extends React.Component {
     
 
     render () {
-        const { match, location, history } = this.props;
         // console.log("Searcher");
 
         const customStyles = {
