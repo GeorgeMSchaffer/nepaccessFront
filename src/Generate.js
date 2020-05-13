@@ -155,13 +155,13 @@ class Generate extends React.Component {
     
 
     testBulkImport() {
-      console.log("Activating test for " + Globals.currentHost);
+      console.log("Activating bulk2 test for " + Globals.currentHost);
 
-      axios.get((Globals.currentHost + 'file/bulk'),{
+      axios.get((Globals.currentHost + 'file/bulk2'),{
         responseType: 'blob'
       })
       .then((response) => {
-        console.log("Activating bulk import");
+        console.log("Activating smart bulk import");
         console.log(response);
         // verified = response && response.status === 200;
       })
