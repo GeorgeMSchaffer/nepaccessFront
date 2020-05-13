@@ -5,8 +5,8 @@
   margin: auto;
   margin-top: 102px;
   /** The search box now has a percentage-based position, which means the overall page
-   needs a minimum height that does not clip into the header texts. */
-  min-height: 850px;
+   needs a minimum height that does not clip into the header texts. This needs to change if the landing text changes. */
+  min-height: 750px;
   height: 100%;
   width: 100%;
 }

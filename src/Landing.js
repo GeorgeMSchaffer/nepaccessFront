@@ -41,17 +41,17 @@ class Landing extends React.Component {
           <div id="landing-images">
             <div id="image-1">
               <span id="headline" className="no-select cursor-default">
-                <p>The National Environmental Policy Act of 1970 (NEPA) requires review of the potential impacts on the natural and human environment of all major Federal actions. 
+                <p>The National Environmental Policy Act of 1970 (NEPA) requires review of the potential impacts of all major Federal actions on the natural and human environment.
                 </p>
-                <p>The Environmental Impact Statement (EIS) is NEPA’s central means to conduct this review.  
+                <p>The Environmental Impact Statement (EIS) is NEPA’s central means to conduct this review.
                 </p>
               </span>
             </div>
             <div id="image-2">
               <span id="subhead" className="no-select cursor-default">
-                <p>NEPAccess makes available to you thousands of EIS and related documents to search, download, and analyze. NEPAccess offers you the power to gather useable data from multiple review processes.
+                <p>NEPAccess makes available to you thousands of EISs, and related documents, to search, download, and analyze.
                 </p>
-                <p>Learning from decades of EIS experience will improve NEPA decision making tomorrow.
+                <p>NEPAccess offers you the power to gather useable data from multiple review processes.
                 </p>
               </span>
             </div>
@@ -63,7 +63,7 @@ class Landing extends React.Component {
               <span className="post-text-bullet">  • NEPA project manager or engineer, </span>
               <span className="post-text-bullet">  • researcher or student, </span>
               <span className="post-text-bullet">  • environmental advocate, librarian, or member of the public, </span> */}
-              <span>For a vast set of users involved in or impacted by NEPA decision-making, NEPAccess is a useful portal to science, public participation, and environmental decision making.</span>
+              <span>NEPAccess is a portal to decades of applied science, and information about public participation in environment decision making.</span>
             </span>
             <br />
           </div>

@@ -29,7 +29,7 @@ class AboutNepaccess extends React.Component {
                         NEPAccess is a knowledge catalyst and decision-making platform that provides access to thousands of NEPA documents and makes available for the first-time analytical tools that enable systematic research by scholars in the social and natural sciences, law, and public health, and application by NEPA practitioners, project proponents, and a range of 
                     </span>
                     <span className="default-style">
-                        Using cutting-edge NLP and other analytic tools, scholars, citizens, environmental professionals, and agency staff can use NEPAccess to answer a host of critical questions about how humans impact the environment and how the environment 
+                        Using cutting-edge NLP and other analytic tools, scholars, citizens, environmental professionals, and agency staff can use NEPAccess to answer a host of critical questions about how humans impact the environment and how the environment impacts us.
                     </span>
 
                     <span className="about-nepaccess-contact-header">
