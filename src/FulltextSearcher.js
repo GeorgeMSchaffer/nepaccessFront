@@ -20,7 +20,6 @@ class FulltextSearcher extends React.Component {
             terms: '',
             context: false
         };
-        this.updateChecked = this.props.updateChecked;
         this.debouncedSearch = _.debounce(this.props.search, 300);
     }
     
@@ -58,6 +57,7 @@ class FulltextSearcher extends React.Component {
     
     onCheckboxChange = (evt) => {
         this.setState( { [evt.target.name]: evt.target.checked}, () => {
+            console.log(this.state.context);
             this.debouncedSearch(this.state);
         } );
     }

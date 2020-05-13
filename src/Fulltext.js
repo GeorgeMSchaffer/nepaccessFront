@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import FulltextResults from './FulltextResults.js';
+import FulltextResults2 from './FulltextResults2.js';
 import FulltextSearcher from './FulltextSearcher.js';
 
 // import './App.css';
@@ -13,6 +14,7 @@ import Globals from './globals.js';
 class Fulltext extends React.Component {
 
 	state = {
+		context: false,
 		resultsText: 'Results',
 		networkError: ''
 	}
@@ -84,6 +86,14 @@ class Fulltext extends React.Component {
 		
 		});
 	}
+
+	renderFulltextResults = () => {
+		if(this.state.context){
+			return <FulltextResults results={this.state.searchResults} resultsText={this.state.resultsText} context={this.state.context} />;
+		} else {
+			return <FulltextResults2 results={this.state.searchResults} resultsText={this.state.resultsText} />;
+		}
+	}
 	
 
 	check = () => { // check if JWT is expired/invalid
@@ -113,8 +123,8 @@ class Fulltext extends React.Component {
 		return (
 			<div id="app-content">
 				<label className="errorLabel">{this.state.networkError}</label>
-				<FulltextSearcher search={this.search} updateChecked={this.updateChecked} />
-				<FulltextResults results={this.state.searchResults} resultsText={this.state.resultsText} context={this.state.context} />
+				<FulltextSearcher search={this.search} />
+				{this.renderFulltextResults()}
 			</div>
 		)
 	}

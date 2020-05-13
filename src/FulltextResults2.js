@@ -6,7 +6,7 @@ import { reactFormatter } from "react-tabulator";
 import DownloadFile from './DownloadFile.js';
 import RecordDetails from './RecordDetails.js';
 
-class FulltextResults extends React.Component {
+class FulltextResults2 extends React.Component {
 
     constructor(props) {
         super(props);
@@ -14,22 +14,9 @@ class FulltextResults extends React.Component {
         this.my_table = React.createRef();
     }
 
-    setupData = (results, context) => {
+    setupData = (results) => {
         console.log(results);
-        if(context){
-            return results.map((result, idx) =>{
-                let doc = result.doc;
-                let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
-                    registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
-                    filename: doc.filename, 
-                    commentsFilename: doc.commentsFilename,
-                    documentId: doc.id,
-                    plaintext: result.highlight,
-                    name: result.filename
-                };
-                return newObject;
-            });
-        } else if(results[0].title){
+        if(results[0].title){
             return results.map((result, idx) =>{
                 let doc = result;
                 let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
@@ -45,17 +32,7 @@ class FulltextResults extends React.Component {
         }
     }
 
-    setupColumns = (context) => {
-        if(context){
-            return [
-                { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetails />), variableHeight: true },
-                { title: "Filename", field: "name", width: 120, formatter: "textarea", variableHeight: true },
-                { title: "Text", field: "plaintext", formatter: "html" },
-                { title: "Version", field: "documentType", width: 114 },
-                { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
-            ];
-        } else {
+    setupColumns = () => {
             return [
                 { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight: true },
                 { title: "Lead Agency", field: "agency", width: 242 },
@@ -65,13 +42,11 @@ class FulltextResults extends React.Component {
                 { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
                 { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
             ];
-        }
     }
 
 	render() {
 
         const results = this.props.results;
-        const context = this.props.context;
 
         if(results && results.length > 0) {
 
@@ -84,8 +59,8 @@ class FulltextResults extends React.Component {
         }
         
         try {
-            const data = this.setupData(results, context);
-            const columns = this.setupColumns(context);
+            const data = this.setupData(results);
+            const columns = this.setupColumns();
 
             var options = {
                 layoutColumnsOnNewData: true,
@@ -138,4 +113,4 @@ class FulltextResults extends React.Component {
     }
 }
 
-export default FulltextResults;
+export default FulltextResults2;
