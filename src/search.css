@@ -40,8 +40,8 @@
 #search-mode {
   position: absolute;
   width: 200px;
-  text-align: center;
-  right: 5px;
+  text-align: left;
+  right: -23px;
   top: 90px;
 
   font-family: Open Sans;
@@ -56,13 +56,35 @@
   color: #64D6FA;
 }
 
+/* #search-mode-container {
+  position: absolute;
+  text-align: left;
+  width: 200px;
+  right: -23px;
+  top: 75px;
+
+  text-decoration: none;
+
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+
+  color: #64D6FA;
+}
+
+#search-mode-container>* {
+  margin-bottom: 8px;
+  cursor: pointer;
+} */
+
 #fulltext-mode {
   
   position: absolute;
-  text-align: center;
+  text-align: left;
   width: 200px;
-  right: 12px;
-  top: 60px;
+  right: -23px;
+  top: 0px;
 
   text-decoration: none;
 
