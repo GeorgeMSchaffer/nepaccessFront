@@ -11,12 +11,21 @@ import 'react-tippy/dist/tippy.css';
 import {Tooltip,} from 'react-tippy';
 
 import globals from './globals.js';
+import persist from './persist.js';
 
 import { withRouter } from "react-router";
+
+import PropTypes from "prop-types";
 
 const _ = require('lodash');
 
 class Searcher extends React.Component {
+
+	static propTypes = {
+        match: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired
+    };
 
     constructor(props) {
         super(props);
@@ -447,6 +456,7 @@ class Searcher extends React.Component {
     
 
     render () {
+        const { match, location, history } = this.props;
         // console.log("Searcher");
 
         const customStyles = {
@@ -611,7 +621,7 @@ class Searcher extends React.Component {
                             <label id="search-mode" className="inline-block no-select" onClick={this.searchModeClick}>
                                 {this.state.searchModeName}
                             </label>
-                            {/* <span onClick={() => { history.push('/fulltext'); }} id="fulltext-mode" className="inline-block no-select">Full-text search</span> */}
+                            <span onClick={() => { history.push('/fulltext'); }} id="fulltext-mode" className="inline-block no-select">Full-text search</span>
 
                         </div>
 
@@ -695,6 +705,21 @@ class Searcher extends React.Component {
             
         )
     }
+
+    componentWillUnmount() {
+		persist.setItem('appState', JSON.stringify(this.state));
+	}
+	  
+	// Pre-render
+	componentWillMount() {
+        try {
+            const rehydrate = JSON.parse(persist.getItem('appState'));
+            this.setState(rehydrate);
+        }
+        catch {
+            // do nothing
+        }
+	}
 
 	// After render
 	componentDidMount() {

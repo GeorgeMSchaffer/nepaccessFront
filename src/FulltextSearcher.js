@@ -7,12 +7,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
 
 import globals from './globals.js';
+import persist from './persist.js';
 
 import { withRouter } from "react-router";
+
+import PropTypes from "prop-types";
 
 const _ = require('lodash');
 
 class FulltextSearcher extends React.Component {
+
+	static propTypes = {
+        match: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired
+    };
 
     constructor(props) {
         super(props);
@@ -82,6 +91,7 @@ class FulltextSearcher extends React.Component {
     
 
     render () {
+        const { match, location, history } = this.props;
         // console.log("FulltextSearcher");
 
         return (
@@ -121,7 +131,7 @@ class FulltextSearcher extends React.Component {
                                 </div>
 
                             </div>
-                            {/* <span onClick={() => { history.push('/search'); }} id="fulltext-mode" className="inline-block no-select">Metadata search</span> */}
+                            <span onClick={() => { history.push('/search'); }} id="fulltext-mode" className="inline-block no-select">Metadata search</span>
                         </div>
                     </div>
                 </div>
@@ -129,6 +139,21 @@ class FulltextSearcher extends React.Component {
             
         )
     }
+    
+	componentWillUnmount() {
+		persist.setItem('fulltextState', JSON.stringify(this.state));
+	}
+	  
+	// Pre-render
+	componentWillMount() {
+        try {
+            const rehydrate = JSON.parse(persist.getItem('fulltextState'));
+            this.setState(rehydrate);
+        }
+        catch {
+            // do nothing
+        }
+	}
 
     // After render
     /** Supporting potential for fulltext search query from elsewhere (such as landing), currently unused; or support saved search via bookmark */
