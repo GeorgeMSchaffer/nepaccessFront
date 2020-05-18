@@ -5,6 +5,7 @@ import "./search.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
+import {Tooltip,} from 'react-tippy';
 
 import globals from './globals.js';
 import persist from './persist.js';
@@ -52,14 +53,18 @@ class FulltextSearcher extends React.Component {
         this.setState({ terms: '' });
     }
 
+    // Stopwords:
+    // "a", "an", "and", "are", "as", "at", "be", "but", "by",
+    // "for", "if", "in", "into", "is", "it",
+    // "no", "not", "of", "on", "or", "such",
+    // "that", "the", "their", "then", "there", "these",
+    // "they", "this", "to", "was", "will", "with"
+
 	onInput = (evt) => {
-        // console.log(evt.target.value);
-		//get the evt.target.name (defined by name= in input)
-		//and use it to target the key on our `state` object with the same name, using bracket syntax
 		this.setState( 
 		{ 
-            [evt.target.name]: evt.target.value,
-		}, () => { // callback ensures state is set before state is used for search
+            [evt.target.name]: evt.target.value.trim(),
+		}, () => { 
             this.debouncedSearch(this.state);
         });
     }
@@ -71,7 +76,6 @@ class FulltextSearcher extends React.Component {
         } );
     }
 
-    // Can either just make the form a div or use this to prevent Submit default behavior
 	submitHandler(e) { e.preventDefault(); }
 
     /** Other */
@@ -109,7 +113,25 @@ class FulltextSearcher extends React.Component {
                             <div id="searcher-inner-container">
 
                                 <div id="fake-search-box" className="inline-block">
-
+                                    <Tooltip 
+                                        className="cursor-default no-select"
+                                        // position="left-end"
+                                        // arrow="true"
+                                        size="small"
+                                        // distance="80"
+                                        // offset="80"
+                                        // open="true"
+                                        title="<p className=&quot;tooltip-line&quot;>Including any of these stopwords will get zero results: &quot;a&quot;, &quot;an&quot;, &quot;and&quot;, &quot;are&quot;, &quot;as&quot;, &quot;at&quot;, &quot;be&quot;, &quot;but&quot;, &quot;by&quot;,
+                                        &quot;for&quot;, &quot;if&quot;, &quot;in&quot;, &quot;into&quot;, &quot;is&quot;, &quot;it&quot;,
+                                        &quot;no&quot;, &quot;not&quot;, &quot;of&quot;, &quot;on&quot;, &quot;or&quot;, &quot;such&quot;,
+                                        &quot;that&quot;, &quot;the&quot;, &quot;their&quot;, &quot;then&quot;, &quot;there&quot;, &quot;these&quot;,
+                                        &quot;they&quot;, &quot;this&quot;, &quot;to&quot;, &quot;was&quot;, &quot;will&quot;, &quot;with&quot;"
+                                    >
+                                        <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
+                                        </svg>
+                                        <span id="tooltip1Mark" className="cursor-default no-select">?</span>
+                                    </Tooltip>
                                     <input id="search-box" 
                                         name="terms" 
                                         placeholder="Search by keyword or phrase within document text" 
@@ -118,7 +140,8 @@ class FulltextSearcher extends React.Component {
                                         onChange={this.onInput}
                                         onInput={this.onInput} onKeyUp={this.onKeyUp}
                                     />
-                                    {/* <div id="post-search-box-text">Leave search box blank to return all results in database.</div> */}
+
+                                    <div id="post-search-box-text">Stopwords (a, and, the, ...) are not indexed and will not get results.</div>
 
                                     <svg onClick={this.onIconClick} id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
