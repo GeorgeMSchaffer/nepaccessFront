@@ -61,12 +61,16 @@ class FulltextSearcher extends React.Component {
     // "they", "this", "to", "was", "will", "with"
 
 	onInput = (evt) => {
-		this.setState( 
-		{ 
-            [evt.target.name]: evt.target.value.trim(),
-		}, () => { 
-            this.debouncedSearch(this.state);
-        });
+        if(this.state.terms === evt.target.value.trim()){ // Don't bother searching on spacebar hits
+            this.setState({ [evt.target.name]: evt.target.value });
+        } else {
+            this.setState( 
+            { 
+                [evt.target.name]: evt.target.value,
+            }, () => { 
+                this.debouncedSearch(this.state);
+            });
+        }
     }
     
     onCheckboxChange = (evt) => {
