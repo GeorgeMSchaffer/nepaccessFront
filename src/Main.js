@@ -59,7 +59,7 @@ class Main extends React.Component {
                 loggedIn: false
             });
         });
-        console.log("Main check");
+        // console.log("Main check");
         
     }
 

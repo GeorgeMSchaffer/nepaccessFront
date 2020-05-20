@@ -15,7 +15,7 @@ class FulltextResults2 extends React.Component {
     }
 
     setupData = (results) => {
-        console.log(results);
+        // console.log(results);
         if(results[0].title){
             return results.map((result, idx) =>{
                 let doc = result;

@@ -229,7 +229,7 @@ class Searcher extends React.Component {
     validated = (term) => {
         
         term = term.trim();
-        console.log(term);
+        // console.log(term);
         if(term && /[a-zA-Z0-9\s]+/g.exec(term) === null){
             console.log("Invalid search query " + term);
             return false;
@@ -263,10 +263,10 @@ class Searcher extends React.Component {
         alphabetized = this.process("", alphabetized);
 
         if(evt.target.value){
-            console.log(evt.target.value);
+            // console.log(evt.target.value);
             alphabetized = "+\"" + alphabetized + "\"";
         } else {
-            console.log("Do nothing");
+            // console.log("Do nothing");
             // do nothing
         }
         
@@ -354,6 +354,11 @@ class Searcher extends React.Component {
 		}, () => { // callback ensures state is set before state is used for search
             this.debouncedSearch(this.state);
         });
+    }
+
+    // suppress warning
+    onChangeHandler = (evt) => {
+        // do nothing
     }
 
     // Natural language mode currently being overridden by all-word boolean
@@ -541,11 +546,12 @@ class Searcher extends React.Component {
                                             <span id="tooltip1Mark" className="cursor-default no-select">?</span>
                                         </Tooltip>
 
-                                        <input id="search-box" 
+                                        <input className="search-box" 
                                             name="naturalTitle" 
                                             placeholder="Search by keywords within title" 
                                             value={this.state.titleRaw}
                                             autoFocus 
+                                            onChange={this.onChangeHandler}
                                             onInput={this.onInputNatural} onKeyUp={this.onKeyUpNatural}
                                         />
                                         <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
@@ -578,24 +584,27 @@ class Searcher extends React.Component {
                                             <span id="tooltip1Mark" className="cursor-default no-select">?</span>
                                         </Tooltip>
 
-                                        <input id="search-box" 
+                                        <input className="search-box" 
                                             hidden={this.state.booleanOption!=="all"}
                                             name="titleAll" 
                                             value={this.state.titleRaw}
+                                            onChange={this.onChangeHandler}
                                             onInput={this.onInputTitleAll} onKeyUp={this.onKeyUpBoolean} 
                                             placeholder="Search by all keywords within title" />
 
-                                        <input id="search-box" 
+                                        <input className="search-box" 
                                             hidden={this.state.booleanOption!=="exact"}
                                             name="titleExact" 
                                             value={this.state.titleRaw}
+                                            onChange={this.onChangeHandler}
                                             onInput={this.onInputTitleExact} onKeyUp={this.onKeyUpBoolean} 
                                             placeholder="Search by exact keywords within title" />
 
-                                        <input id="search-box"
+                                        <input className="search-box"
                                             hidden={this.state.booleanOption!=="any"}
                                             name="titleAny" 
                                             value={this.state.titleRaw}
+                                            onChange={this.onChangeHandler}
                                             onInput={this.onInputTitleAny} onKeyUp={this.onKeyUpBoolean}
                                             placeholder="Search by any keywords within title" />
 
@@ -724,7 +733,7 @@ class Searcher extends React.Component {
 	// After render
 	componentDidMount() {
         var queryString = globals.getParameterByName("q");
-        console.log("Param " + queryString);
+        // console.log("Param " + queryString);
         if(queryString){
             this.setState({
                 titleRaw: queryString

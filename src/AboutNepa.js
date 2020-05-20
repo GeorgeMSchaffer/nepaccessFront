@@ -37,6 +37,7 @@ class AboutNepa extends React.Component {
 
 
                     <table className="about-nepa-table">
+                        <tbody>
                         <tr>
                             <td>
                                 1.
@@ -69,6 +70,7 @@ class AboutNepa extends React.Component {
                                 <span className="bold">A final EIS</span> presents the course of action chosen (the original proposed action or an alternative) and the agency’s response to public comments. The process concludes with a <span className="bold">Record of Decision</span> (ROD) explaining the agency’s reasoning for its decision.
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                     <span className="about-nepa-subhead2">
                         NEPA’s Results

@@ -142,7 +142,7 @@ class App extends React.Component {
 				this.props.history.push('/login');
 			}
 		});
-		console.log("App check");
+		// console.log("App check");
 	}
 	
 

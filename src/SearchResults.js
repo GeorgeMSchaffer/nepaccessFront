@@ -110,7 +110,7 @@ class SearchResults extends React.Component {
         if(this.my_table){
             const tbltr = this.my_table.current;
             setTimeout(function() {
-                console.log(tbltr);
+                // console.log(tbltr);
                 // Redraw table to fix text wrapping issues
                 tbltr.table.redraw();
                 // console.log("Redrawn automatically");

@@ -75,7 +75,7 @@ class FulltextSearcher extends React.Component {
     
     onCheckboxChange = (evt) => {
         this.setState( { [evt.target.name]: evt.target.checked}, () => {
-            console.log(this.state.context);
+            // console.log(this.state.context);
             this.debouncedSearch(this.state);
         } );
     }

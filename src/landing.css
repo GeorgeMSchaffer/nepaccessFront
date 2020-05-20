@@ -148,10 +148,10 @@
 }
 
 
-#search-box::placeholder {
+.search-box::placeholder {
   color: #ccc;
 }
-#search-box:focus {
+.search-box:focus {
   outline: none;
 }
 

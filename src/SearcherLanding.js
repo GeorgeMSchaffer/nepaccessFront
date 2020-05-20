@@ -70,7 +70,7 @@ class SearcherLanding extends React.Component {
                 
                 <div id="fake-search-box">
 
-                    <input id="search-box" 
+                    <input className="search-box" 
                         value={this.state.titleRaw}
                         onChange={this.onInput}
                         onKeyUp={this.onKeyUp}
