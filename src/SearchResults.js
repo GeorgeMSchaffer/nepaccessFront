@@ -45,7 +45,7 @@ class SearchResults extends React.Component {
           const columns = [
               { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight: true },
               { title: "Lead Agency", field: "agency", width: 242 },
-              { title: "Published date", field: "registerDate", width: 180 },
+              { title: "Published date", field: "registerDate", width: 154 },
               { title: "State", field: "state", width: 112 },
               { title: "Version", field: "documentType", width: 114 },
               { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },

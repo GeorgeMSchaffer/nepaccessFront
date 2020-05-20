@@ -716,7 +716,7 @@ class Searcher extends React.Component {
             const rehydrate = JSON.parse(persist.getItem('appState'));
             this.setState(rehydrate);
         }
-        catch {
+        catch(e) {
             // do nothing
         }
 	}

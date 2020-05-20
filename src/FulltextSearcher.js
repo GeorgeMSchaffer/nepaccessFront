@@ -177,7 +177,7 @@ class FulltextSearcher extends React.Component {
             const rehydrate = JSON.parse(persist.getItem('fulltextState'));
             this.setState(rehydrate);
         }
-        catch {
+        catch(e) {
             // do nothing
         }
 	}
