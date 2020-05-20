@@ -46,26 +46,26 @@ class FulltextResults extends React.Component {
     }
 
     setupColumns = (context) => {
-        if(context){
+        // if(context){
             return [
                 { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetails />), variableHeight: true },
-                { title: "Filename", field: "name", width: 120, formatter: "textarea", variableHeight: true },
+                { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true },
                 { title: "Text", field: "plaintext", formatter: "html" },
                 { title: "Version", field: "documentType", width: 114 },
                 { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
+                { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
             ];
-        } else {
-            return [
-                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight: true },
-                { title: "Lead Agency", field: "agency", width: 242 },
-                { title: "Published date", field: "registerDate", width: 180 },
-                { title: "State", field: "state", width: 112 },
-                { title: "Version", field: "documentType", width: 114 },
-                { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
-            ];
-        }
+        // } else {
+        //     return [
+        //         { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight: true },
+        //         { title: "Lead Agency", field: "agency", width: 242 },
+        //         { title: "Published date", field: "registerDate", width: 180 },
+        //         { title: "State", field: "state", width: 112 },
+        //         { title: "Version", field: "documentType", width: 114 },
+        //         { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
+        //         { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
+        //     ];
+        // }
     }
 
 	render() {

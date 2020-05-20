@@ -49,7 +49,7 @@ class SearchResults extends React.Component {
               { title: "State", field: "state", width: 112 },
               { title: "Version", field: "documentType", width: 114 },
               { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-              { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
+              { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
           ];
 
           var options = {
