@@ -109,7 +109,7 @@ class FulltextSearcher extends React.Component {
                         <div id="searcher-container">
                             <label className="search-label">
                                 <label className="flex-center no-select cursor-pointer">
-                                    <input type="checkbox" className="cursor-pointer" name="context" value={this.state.context} onChange={this.onCheckboxChange} 
+                                    <input type="checkbox" className="cursor-pointer" name="context" checked={this.state.context} onChange={this.onCheckboxChange} 
                                     />
                                     Search for highlights with context
                                 </label>

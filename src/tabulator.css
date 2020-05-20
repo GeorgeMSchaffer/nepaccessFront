@@ -2,6 +2,7 @@
 
 .tabulator {
   margin: 0 5px;
+  min-width: 1200px; /* With title text wrapping, table gets ridiculous any smaller than this */
 }
 
 .tabulator-row .tabulator-cell {
