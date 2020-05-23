@@ -188,11 +188,11 @@ class Login extends React.Component {
         // console.log("Login");
         return (
             <div className="container login-form">
-                <label className="errorLabel">{this.state.networkError}</label>
                 <div className="form">
                     <div className="note">
                         <p>Login</p>
                     </div>
+                    <label className="loginErrorLabel">{this.state.networkError}</label>
 
                     <div className="form-content">
                         <div className="row">
@@ -200,14 +200,14 @@ class Login extends React.Component {
                                 <div className="form-group">
                                     <input type="text" id="username" className="form-control" name="username" 
                                     placeholder="Username" value={this.state.username} autoFocus onChange={this.onChange} onKeyUp={this.onKeyUp}/>
-                                    <label className="errorLabel">{this.state.usernameError}</label>
+                                    <label className="loginErrorLabel">{this.state.usernameError}</label>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <input type={this.state.passwordType} id="password" className="form-control" name="password" 
                                     placeholder="Password"  value={this.state.password} onChange={this.onChange} onKeyUp={this.onKeyUp}/>
-                                    <label className="errorLabel">{this.state.passwordError}</label>
+                                    <label className="loginErrorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
                                     <label className="inline noSelect">Show password</label>

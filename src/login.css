@@ -39,3 +39,8 @@
 .login-form {
     margin-top: 102px;
 }
+
+.loginErrorLabel {
+    color: coral;
+    font-style: italic;
+  }
