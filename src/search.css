@@ -102,7 +102,7 @@
   margin-right: 10px;
 }
 
-#post-search-box-text {
+#post-search-box-text, .post-search-box-text {
   height: 27px;
 
   font-family: "Open Sans";

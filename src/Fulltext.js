@@ -16,7 +16,8 @@ class Fulltext extends React.Component {
 	state = {
 		context: false,
 		resultsText: 'Results',
-		networkError: ''
+		networkError: '',
+		searching: false
 	}
 
 	/** Fulltext search(String searcherState) */
@@ -24,8 +25,17 @@ class Fulltext extends React.Component {
 		if(!searcherState || !searcherState.terms || searcherState.terms.length === 0){
 			return;
 		}
+		
 		// console.log("In search :");
 		// console.log(searcherState);
+
+		// set searching prop to true for contextual search
+		if(searcherState.context){
+			this.setState({
+				searching: true
+			})
+		}
+		
 
 		this.setState({
 			terms: searcherState.terms,
@@ -43,6 +53,7 @@ class Fulltext extends React.Component {
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
 				this.props.history.push('/login') // Prompt login if no auth token
 			}
+
 
 			//Send the AJAX call to the server
 			axios({
@@ -80,6 +91,10 @@ class Fulltext extends React.Component {
 				this.setState({
 					resultsText: "Error: Couldn't get results from server"
 				});
+			}).finally(x => {
+				this.setState({
+					searching: false
+				})
 			});
 			
 			// console.log("Out search");
@@ -123,7 +138,7 @@ class Fulltext extends React.Component {
 		return (
 			<div id="app-content">
 				<label className="errorLabel">{this.state.networkError}</label>
-				<FulltextSearcher search={this.search} />
+				<FulltextSearcher search={this.search} searching={this.state.searching}/>
 				{this.renderFulltextResults()}
 			</div>
 		)
