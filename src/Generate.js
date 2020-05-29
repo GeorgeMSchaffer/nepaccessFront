@@ -3,11 +3,12 @@ import axios from 'axios';
 import './login.css';
 import Globals from './globals.js';
 
+import DocumentText from './DocumentText.js';
+
 class Generate extends React.Component {
     state = {
         users: [], // Naming should mirror Generate POJO on backend
-        shouldSend: false,
-        textId: 22
+        shouldSend: false
     }
 
     constructor(props){
@@ -15,7 +16,6 @@ class Generate extends React.Component {
         this.generate = this.generate.bind(this);
         this.csvChange = this.csvChange.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
-        this.handleChange = this.handleChange.bind(this);
         this.test = this.test.bind(this);
 
         // If there's no reason for user to be here, redirect them
@@ -37,13 +37,9 @@ class Generate extends React.Component {
     csvChange(event){
         let text = event.target.value;
         const jsonArray = csvToJSON(text);
-        this.setState({users: jsonArray});
-    }
-
-    handleChange(event){
-        let val = event.target.value;
-        this.setState({
-          textId: val
+        this.setState({users: jsonArray}, () => {
+          console.log("Users: ");
+          console.log(this.state.users);
         });
     }
 
@@ -126,33 +122,16 @@ class Generate extends React.Component {
                 <br /><br /><br />
                 <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
                 <br /><br /><br />
-                <input type="text" value={this.state.textId} onChange={this.handleChange}></input><button className="button" onClick={() => this.getText(this.state.textId)}>Get DocumentText by ID</button>
-                <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
                 <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkImportSmart()}>Test smart bulk import</button>
                 <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkIndex()}>Test bulk index</button>
+                <br /><br /><br />
+                <DocumentText />
             </div>
           )
         // }
-    }
-
-    getText(textId) {
-      console.log("Activating text test for " + Globals.currentHost);
-
-      axios.get((Globals.currentHost + 'text/get_by_id'),{
-        params: {
-          id: textId
-        }
-      })
-      .then((response) => {
-        // verified = response && response.status === 200;
-        console.log(response);
-      })
-      .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
-        console.log(err);
-      });
     }
     
 
