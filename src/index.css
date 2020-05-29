@@ -269,3 +269,11 @@ button {
   
   cursor: pointer;
 }
+
+.tabulator-cell button {
+  text-align: left;
+}
+
+a.email-text {
+  cursor: text;
+}
