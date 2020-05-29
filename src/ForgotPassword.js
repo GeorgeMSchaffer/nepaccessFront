@@ -99,7 +99,7 @@ class ForgotPassword extends React.Component {
                     });
                 } else if (error.response.status === 500) {
                     this.setState({ // 500
-                        networkError: "Unknown email server error, please try again later."
+                        networkError: "Email server error."
                     });
                 } 
             } else {
@@ -108,7 +108,7 @@ class ForgotPassword extends React.Component {
                 });
             }
             this.setState({
-                successLabel: "Email could not be sent."
+                successLabel: "Email could not be sent, please check address and try again."
             });
             console.error('error message', error);
         });
