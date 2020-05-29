@@ -14,6 +14,19 @@ class SearchResults extends React.Component {
         this.my_table = React.createRef();
     }
 
+    // Only works when results focused (ie clicking on a row), could focus programmatically after hitting enter.
+    /** Left and right arrow keys scroll results pages */
+    onArrow = (e) => {
+        if(this.my_table){
+            const tbltr = this.my_table.current;
+            if(e.which===39){
+                tbltr.table.nextPage();
+            } else if(e.which===37){
+                tbltr.table.previousPage();
+            }
+        }
+    }
+
 	render() {
     //   console.log("SearchResults");
       if(this.my_table){
@@ -77,20 +90,21 @@ class SearchResults extends React.Component {
                     }}
                     dataLoaded={()=>{
                     }}
+                    onKeyUp={this.onArrow}
                     
                 />
               </div>
           )
       }
       catch (e) {
-          console.log(e.toString());
-          // Show the user something other than a blank page
-          return (
-          <div>
-              <h2 id="results-label">{this.props.resultsText}</h2>
-              <ReactTabulator />
-          </div>
-          )
+        console.log(e.toString());
+        // Show the user something other than a blank page
+        return (
+            <div>
+                <h2 id="results-label">{this.props.resultsText}</h2>
+                <ReactTabulator />
+            </div>
+        )
       }
     }
     
