@@ -122,7 +122,7 @@ class Reset extends React.Component {
                             <p>Set New Password</p>
                         </div>
                         <div className="col-md-6">
-                            <label className="errorLabel">Token is expired or invalid, please try again.</label>
+                            <label className="loginErrorLabel">Token is expired or invalid, please try again.</label>
                         </div>
                     </div>
                 </div>)
@@ -139,7 +139,7 @@ class Reset extends React.Component {
                                 <label htmlFor="newPassword">Enter a new password:</label>
                                 <input type={this.state.newChecked} id="newPassword" className="form-control password-field" 
                                     name="newPassword" placeholder="New Password *" value={this.state.newPassword} onChange={this.onNewPasswordChange}/>
-                                <label className="errorLabel">{this.state.newPasswordError}</label>
+                                <label className="loginErrorLabel">{this.state.newPasswordError}</label>
                                 <br />
                                 <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
                                 <label className="inline noSelect">Show password</label>

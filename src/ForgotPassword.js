@@ -86,7 +86,7 @@ class ForgotPassword extends React.Component {
         }).then(success => {
             if(success){
                 this.setState({
-                    successLabel: "Reset link sent to provided email address."
+                    successLabel: "Reset link sent to provided email address from root@mis-jvinalappl1.catnet.arizona.edu. Please allow roughly one minute for email to arrive."
                 });
             } else {
                 // Server down?
@@ -120,7 +120,7 @@ class ForgotPassword extends React.Component {
     render() {
         return (
             <div className="container login-form">
-                <label className="errorLabel">{this.state.networkError}</label>
+                <label className="loginErrorLabel">{this.state.networkError}</label>
                 <div className="form">
                     <div className="note">
                         <p>Reset Password</p>
@@ -132,7 +132,7 @@ class ForgotPassword extends React.Component {
                                 <div className="form-group">
                                     <input type="text" id="email" className="form-control" name="email" 
                                     placeholder="Email address" autoFocus onChange={this.onChange} onKeyUp={this.onKeyUp}/>
-                                    <label className="errorLabel">{this.state.emailError}</label>
+                                    <label className="loginErrorLabel">{this.state.emailError}</label>
                                 </div>
                             </div>
                         </div>
