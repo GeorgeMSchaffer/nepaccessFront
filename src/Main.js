@@ -103,12 +103,14 @@ class Main extends React.Component {
 
             <div id="header" className="no-select">
 
-                <div id="logo" className="no-select" to="/">
-                    <Link id="logo-type" to="/">
+                <div id="logo" className="no-select">
+                    <Link id="logo-link" to="/">
+                    </Link>
+                    <div id="logo-type">
                         <span id="NEP">NEP</span>
                         <span id="A">A</span>
                         <span id="ccess">ccess</span>
-                    </Link>
+                    </div>
                     <div id="logo-box">
 
                     </div>

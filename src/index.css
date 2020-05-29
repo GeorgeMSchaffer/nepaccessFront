@@ -46,6 +46,13 @@ body {
   height: 160.08px;
 }
 
+#logo-link {
+  position: absolute;
+  width: 353.38px;
+  height: 102px;
+  z-index: 2;
+}
+
 /* Logo contents */
 
 #logo-box {
