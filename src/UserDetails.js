@@ -155,7 +155,7 @@ class UserDetails extends React.Component {
                         <div className="form-group">
                             <label htmlFor="currentPassword">Enter your current password:</label>
                             <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" onChange={this.onOldPasswordChange}/>
-                            <label className="errorLabel">{this.state.oldPasswordError}</label>
+                            <label className="loginErrorLabel">{this.state.oldPasswordError}</label>
                             <br />
                             <input type="checkbox" id="showCurrentPassword" onClick={this.showCurrentPassword}></input>
                             <label className="inline noSelect">Show password</label>
@@ -167,7 +167,7 @@ class UserDetails extends React.Component {
                         <div className="form-group">
                             <label htmlFor="newPassword">Enter a new password:</label>
                             <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
-                            <label className="errorLabel">{this.state.newPasswordError}</label>
+                            <label className="loginErrorLabel">{this.state.newPasswordError}</label>
                             <br />
                             <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
                             <label className="inline noSelect">Show password</label>
