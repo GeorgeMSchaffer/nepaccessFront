@@ -98,8 +98,12 @@ class ForgotPassword extends React.Component {
                         networkError: "Too many reset emails sent, please wait 24 hours between requests."
                     });
                 } else if (error.response.status === 500) {
-                    this.setState({ // 500
+                    this.setState({ 
                         networkError: "Email server error."
+                    });
+                } else if (error.response.status === 404) {
+                    this.setState({ 
+                        networkError: "Email address not found."
                     });
                 } 
             } else {
