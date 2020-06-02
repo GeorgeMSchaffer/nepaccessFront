@@ -176,11 +176,15 @@
 #search-icon {
   position: absolute;
 
+  background: #8FBC3F;
+
+  padding: 7px;
+
   width: 39px;
   height: 38px;
 
-  right: 30px;
-  top: 26px;
+  right: 23px;
+  top: 20px;
 
   cursor: pointer;
 }
@@ -199,7 +203,7 @@
 
 /* End search box */
 
-
+/** These numbers have to change every time the front page text changes, or else don't use dynamic font scaling */
 .size {
   font-size: 2vmax;
 }

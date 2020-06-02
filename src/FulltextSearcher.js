@@ -139,7 +139,7 @@ class FulltextSearcher extends React.Component {
                                         </svg>
                                         <span id="tooltip1Mark" className="cursor-default no-select">?</span>
                                     </Tooltip>
-                                    <input id="search-box" 
+                                    <input className="search-box" 
                                         name="terms" 
                                         placeholder="Search by keyword or phrase within document text" 
                                         value={this.state.terms}
