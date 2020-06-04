@@ -206,6 +206,11 @@
 /** These numbers have to change every time the front page text changes, or else don't use dynamic font scaling */
 .size {
   font-size: 2vmax;
+  line-height: 3vmax;
+}
+
+#subhead>p.size {
+  line-height: 3.1vmax;
 }
 
 @media (max-width:1000px) {
