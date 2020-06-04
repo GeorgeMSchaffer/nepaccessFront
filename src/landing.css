@@ -216,11 +216,19 @@
 @media (max-width:1000px) {
   .size {
     font-size: 20px;
+    line-height: 140%;
+  }
+  #subhead>p.size {
+    line-height: 160%;
   }
 }
 
 @media (min-width: 1600px) {
   .size {
     font-size: 33px;
+    line-height: 180%;
+  }
+  #subhead>p.size {
+    line-height: 200%;
   }
 }
