@@ -216,17 +216,17 @@
 @media (max-width:1000px) {
   .size {
     font-size: 20px;
-    line-height: 140%;
+    line-height: 130%;
   }
   #subhead>p.size {
-    line-height: 160%;
+    line-height: 150%;
   }
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1400px) {
   .size {
-    font-size: 33px;
-    line-height: 145%;
+    font-size: 28px;
+    line-height: 140%;
   }
   #subhead>p.size {
     line-height: 165%;
