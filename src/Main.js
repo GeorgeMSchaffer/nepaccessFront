@@ -19,6 +19,8 @@ import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess';
 // import Help from './Help';
 
+import Importer from './Importer';
+
 import Globals from './globals.js';
 
 import { Link, Switch, Route } from 'react-router-dom';
@@ -151,6 +153,7 @@ class Main extends React.Component {
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
                 
+                <Route path="/importer" component={Importer}/>
                 <Route path="/generate" component={Generate}/>
 
                 <Route path="/" component={Landing}/>
