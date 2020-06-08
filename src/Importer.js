@@ -2,6 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import Globals from './globals';
 
+// TODO: Add support for multiple files and also for a .csv which would be processed and should probably require links between metadata and files
+// or just have multiple file upload functionality for a single record
+// file: null would just become files: [] and files: evt.target.files instead of files[0]?
+
 class Importer extends React.Component {
 
 
@@ -74,7 +78,7 @@ class Importer extends React.Component {
              disabled: true 
         });
         
-        let importUrl = new URL('file/import', Globals.currentHost);
+        let importUrl = new URL('file/uploadFile', Globals.currentHost);
 
         let uploadFile = new FormData();
 

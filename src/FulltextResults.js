@@ -23,7 +23,7 @@ class FulltextResults extends React.Component {
                     registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
                     filename: doc.filename, 
                     commentsFilename: doc.commentsFilename,
-                    documentId: doc.id,
+                    id: doc.id,
                     plaintext: result.highlight,
                     name: result.filename
                 };
@@ -99,9 +99,14 @@ class FulltextResults extends React.Component {
                 layout:"fitColumns"
             };
 
+            var resultsText = this.props.resultsText;
+            if(resultsText==="100 Results") { // Probably more results, can get rid of this logic if pagination is implemented to support more results
+                resultsText = "100+ Results";
+            }
+
             return (
                 <div id="search-results">
-                    <h2 id="results-label">{this.props.resultsText}</h2>
+                    <h2 id="results-label">{resultsText}</h2>
                     <ReactTabulator
                         ref={this.my_table}
                         data={data}
