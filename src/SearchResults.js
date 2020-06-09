@@ -110,7 +110,7 @@ class SearchResults extends React.Component {
     
     // testRedraw = () => {
     //     if(this.my_table.current){
-    //         this.my_table.current.table.redraw();
+    //         this.my_table.current.table.redraw(true);
     //         console.log(this.my_table.current);
     //         console.log("Redrawn manually");
     //     }
@@ -126,7 +126,7 @@ class SearchResults extends React.Component {
             setTimeout(function() {
                 // console.log(tbltr);
                 // Redraw table to fix text wrapping issues
-                tbltr.table.redraw();
+                tbltr.table.redraw(true);
                 // console.log("Redrawn automatically");
             },0)
         }

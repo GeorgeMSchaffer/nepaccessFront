@@ -107,7 +107,7 @@ class FulltextResults2 extends React.Component {
         if(this.my_table && this.my_table.current){
             const tbltr = this.my_table.current;
             setTimeout(function() {
-                tbltr.table.redraw();
+                tbltr.table.redraw(true);
             },0)
         }
     }
