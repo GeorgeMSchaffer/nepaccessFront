@@ -32,25 +32,16 @@ class Importer extends React.Component {
             }
         };
     }
-    
-    // TODO: Add inputs and sanity checks for all of doc{}
-
-    onPublishDateChange = (value, x, y) => {
-        console.log(value);
-        console.log(x);
-        console.log(y);
-
-    }
 
     onSelect = (val, act) => {
-        console.log(val);
-        console.log(act);
+        // console.log(val);
+        // console.log(act);
 
         const name = act.name;
         const value = val.value;
         
-        console.log(value);
-        console.log(name);
+        // console.log(value);
+        // console.log(name);
 
         this.setState( prevState =>
         { 
@@ -60,15 +51,15 @@ class Importer extends React.Component {
                 doc: updatedDoc
             }
         }, () => {
-            console.log(this.state.doc);
+            // console.log(this.state.doc);
         });
 
     }
 
     onChange = (evt) => {
         if(evt && evt.target){
-            console.log(evt);
-            console.log(evt.target);
+            // console.log(evt);
+            // console.log(evt.target);
     
             const name = evt.target.name;
             const value = evt.target.value;
@@ -85,12 +76,14 @@ class Importer extends React.Component {
     }
 
     onFileChange = (evt) => {
-        this.setState({ 
-            /** TODO: Add this component to record details modal and we can save it for the ID or title of that, 
-              * creating a link between metadata, file data, otherwise can create a new record with a new unique title and potentially more metadata **/
-            file: evt.target.files[0],
-            filename: evt.target.files[0].name // includes extension
-        });
+        if(evt != null && evt.target != null && evt.target.files[0] != null){ // Ignore aborted events
+            this.setState({ 
+                /** TODO: Add this component to record details modal and we can save it for the ID or title of that, 
+                  * creating a link between metadata, file data, otherwise can create a new record with a new unique title and potentially more metadata **/
+                file: evt.target.files[0],
+                filename: evt.target.files[0].name // includes extension
+            });
+        }
     }
 
     onKeyUp = (evt) => {
@@ -111,7 +104,7 @@ class Importer extends React.Component {
         } else {
         }
 
-        if(this.state.doc.title.trim().length == 0){
+        if(this.state.doc.title.trim().length === 0){
             valid = false;
             this.setState({titleLabel: "Title required"});
         }
@@ -133,7 +126,8 @@ class Importer extends React.Component {
         document.body.style.cursor = 'wait';
         this.setState({ 
             networkError: '',
-             disabled: true 
+            titleLabel: '',
+            disabled: true 
         });
         
         let importUrl = new URL('file/uploadFile', Globals.currentHost);
@@ -145,6 +139,7 @@ class Importer extends React.Component {
         // uploadFile.append('file', new Blob([this.state.file]) );
         // uploadFile.append('file', new Blob([this.state.file], { type: 'text/csv' }) );
 
+        console.log(this.state.doc);
         console.log(this.state.file);
 
         // axios.post(importUrl, uploadFile, { 
@@ -204,7 +199,7 @@ class Importer extends React.Component {
 
     showDate = () => {
         const setPublishDate = (date) => {
-            console.log(date);
+            // console.log(date);
             this.setState( prevState =>
                 { 
                     const updatedDoc = prevState.doc;
@@ -213,7 +208,7 @@ class Importer extends React.Component {
                         doc: updatedDoc
                     }
                 }, () => {
-                    console.log(this.state.doc);
+                    // console.log(this.state.doc);
                 }
             );
         }
@@ -275,6 +270,7 @@ class Importer extends React.Component {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
+                                <label className="infoLabel">Note: Full text search may only function with .zip or .pdf uploads</label>
                                 <input type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} autoFocus onChange={this.onFileChange} />
                             </div>
                         </div>
@@ -287,69 +283,69 @@ class Importer extends React.Component {
                     <label className="infoLabel">
                         {this.state.successLabel}
                     </label>
+                    
+                    <label className="loginErrorLabel">{this.state.titleLabel}</label>
+                    <div className="center">
+                        <div id="fake-search-box-import" className="inline-block">
+                            <input className="search-box" 
+                                name="title" 
+                                placeholder="Title" 
+                                value={this.state.doc.title}
+                                autoFocus 
+                                onChange={this.onChange}
+                            />
+                        </div>
+                    </div>
+
+                    <table id="advanced-search-box" className="import-table"><tbody>
+                        <tr>
+                            <td>
+                                <label className="advanced-label" htmlFor="agency">Lead agency</label>
+                                <Select id="searchAgency" className="multi inline-block" classNamePrefix="react-select" name='agency' isSearchable isClearable 
+                                    styles={customStyles}
+                                    options={agencyOptions} 
+                                    selected={this.state.doc.agency}
+                                    onChange={this.onSelect} 
+                                    placeholder="Type or select lead agency" 
+                                    // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                                    // menuIsOpen={true}
+                                />
+                            </td>
+                            <td>
+                                <label className="advanced-label" htmlFor="state">State</label>
+                                <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="state" isSearchable isClearable 
+                                    styles={customStyles}
+                                    options={stateOptions} 
+                                    selected={this.state.doc.state}
+                                    onChange={this.onSelect} 
+                                    placeholder="Type or select state" 
+                                />
+                            </td>
+                            
+                            <td>
+                                {/**TODO: Grab all types from db?  Allow custom?*/}
+                                <label className="block advanced-label">Document type</label>
+                                <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="type" isSearchable isClearable 
+                                    styles={customStyles}
+                                    options={typeOptions} 
+                                    selected={this.state.doc.type}
+                                    onChange={this.onSelect} 
+                                    placeholder="Type or select document type" 
+                                />
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <label className="advanced-label" htmlFor="publishDate">Date</label>
+                                <div id="date">
+                                    {this.showDate()}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody></table>
                 </div>
-
-                <label className="advanced-label" htmlFor="title">Title</label>
-                <div id="fake-search-box" className="inline-block">
-                    <input className="search-box" 
-                        name="title" 
-                        placeholder="Title" 
-                        value={this.state.doc.title}
-                        autoFocus 
-                        onChange={this.onChange}
-                    />
-                </div>
-                <label className="loginErrorLabel">{this.state.titleLabel}</label>
-
-                <table id="advanced-search-box"><tbody>
-                    <tr>
-                        <td>
-                            <label className="advanced-label" htmlFor="agency">Lead agency</label>
-                            <Select id="searchAgency" className="multi inline-block" classNamePrefix="react-select" name='agency' isSearchable isClearable 
-                                styles={customStyles}
-                                options={agencyOptions} 
-                                selected={this.state.doc.agency}
-                                onChange={this.onSelect} 
-                                placeholder="Type or select lead agency" 
-                                // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
-                                // menuIsOpen={true}
-                            />
-                        </td>
-                        <td>
-                            <label className="advanced-label" htmlFor="state">State</label>
-                            <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="state" isSearchable isClearable 
-                                styles={customStyles}
-                                options={stateOptions} 
-                                selected={this.state.doc.state}
-                                onChange={this.onSelect} 
-                                placeholder="Type or select state" 
-                            />
-                        </td>
-                        
-                        <td>
-                            {/**TODO: Grab all types from db?  Allow custom?*/}
-                            <label className="block advanced-label">Document type</label>
-                            <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="type" isSearchable isClearable 
-                                styles={customStyles}
-                                options={typeOptions} 
-                                selected={this.state.doc.type}
-                                onChange={this.onSelect} 
-                                placeholder="Type or select document type" 
-                            />
-                        </td>
-
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label className="advanced-label" htmlFor="publishDate">Date</label>
-                            <div id="date">
-                                {this.showDate()}
-                            </div>
-                        </td>
-                    </tr>
-                </tbody></table>
-
             </div>
         )
     }
