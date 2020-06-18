@@ -285,7 +285,7 @@ a.email-text {
   cursor: text;
 }
 
-.loginErrorLabel {
+.loginErrorLabel, .networkErrorLabel {
   display: inline-block;
   padding: 0 0 0 25px;
   color: coral;
@@ -295,4 +295,8 @@ a.email-text {
 .infoLabel {
   display: block;
   color: darkblue;
+}
+
+#date input.no-margin, .no-margin {
+  margin: 0px;
 }
