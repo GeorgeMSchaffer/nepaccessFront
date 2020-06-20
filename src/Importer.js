@@ -3,6 +3,8 @@ import React from 'react';
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 
+import { CSVReader } from 'react-papaparse';
+
 import axios from 'axios';
 import Globals from './globals';
 
@@ -20,6 +22,8 @@ class Importer extends React.Component {
             titleLabel: '',
             disabled: false,
             file: null,
+            csv: null,
+            canImportCSV: false,
             filename: '',
             doc: {
                 title: '',
@@ -116,6 +120,25 @@ class Importer extends React.Component {
         this.setState({successLabel: labelValue});
         return valid;
     }
+
+    csvValidated = () => {
+        let headers = this.state.csv[0].data;
+        // console.log(this.state.csv[0]);
+        headers.forEach(header => console.log(header));
+
+        // Check headers:
+        let result = (
+            ('title' in headers) && ('register_date' in headers) && ('agency' in headers) && ('state' in headers) && ('document_type' in headers)
+        );
+
+        if(!result){
+            this.setState({
+                csvError: "Missing one or more CSV headers (title, register_date, agency, state, document_type)"
+            });
+        }
+
+        return result;
+    }
     
 
     importFile = () => {
@@ -194,6 +217,83 @@ class Importer extends React.Component {
 
     }
 
+    importCSV = () => {
+        console.log("Click");
+        if(!this.csvValidated()) {
+            return;
+        }
+        
+        document.body.style.cursor = 'wait';
+        this.setState({ 
+            csvLabel: '',
+            csvError: '',
+            disabled: true 
+        });
+        
+        let importUrl = new URL('file/uploadCSV', Globals.currentHost);
+
+        let uploadFile = new FormData();
+        uploadFile.append("csv", JSON.stringify(this.state.csv));
+
+        console.log(this.state.csv);
+
+        let networkString = '';
+        let successString = '';
+
+        axios({ 
+            method: 'POST',
+            url: importUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: uploadFile
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return true;
+            } else { 
+                return false;
+            }
+        }).then(success => {
+            if(success){
+                successString = "Success.";
+            } else {
+                successString = "Failed to import."; // Server down?
+            }
+        }).catch(error => {
+            if(error.response) {
+                if (error.response.status === 500) {
+                    networkString = "Internal server error.";
+                } else if (error.response.status === 404) {
+                    networkString = "Not found.";
+                } 
+            } else {
+                networkString = "Server may be down (no response), please try again later.";
+            }
+            successString = "Couldn't import.";
+            console.error('error message ', error);
+        }).finally(e => {
+            this.setState({
+                csvError: networkString,
+                csvLabel: successString,
+                disabled: false
+            });
+    
+            document.body.style.cursor = 'default'; 
+        });
+    }
+
+    handleOnDrop = (evt) => {
+        this.setState({ 
+            csv: evt
+        }, () => {
+            console.log(evt);
+            this.setState({ canImportCSV: true });
+        });
+    }
+
+    handleOnRemoveFile = (evt) => { this.setState({ csv: null, canImportCSV: false }); }
+
     
     
 
@@ -265,20 +365,44 @@ class Importer extends React.Component {
                 <label className="networkErrorLabel">
                     {this.state.networkError}
                 </label>
+                
+                
 
                 <div className="form-content">
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="infoLabel">Note: Full text search may only function with .zip or .pdf uploads</label>
-                                <input type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} autoFocus onChange={this.onFileChange} />
-                            </div>
-                        </div>
+                    <div className="importFile">
+                        <label className="infoLabel">Import CSV:</label>
+                        <CSVReader
+                            onDrop={this.handleOnDrop}
+                            onError={this.handleOnError}
+                            style={{}}
+                            config={{}}
+                            addRemoveButton
+                            onRemoveFile={this.handleOnRemoveFile}
+                        >
+                            <span>Drop CSV file here or click to upload.</span>
+                        </CSVReader>
+                        <button type="button" className="button" id="submit" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
+                            Import CSV
+                        </button>
                     </div>
-                    {/** TODO: CSV import, bulk file import */}
-                    <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.importFile}>
-                        Import
-                    </button>
+
+                    <label className="infoLabel">
+                        {this.state.csvLabel}
+                    </label>
+                    <label className="loginErrorLabel">{this.state.csvError}</label>
+                    <hr />
+
+                    <div className="importFile">
+                        <div>
+                            <label className="infoLabel">Note: Full text search may only function with .zip or .pdf uploads</label>
+                            <input title="Test" type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} onChange={this.onFileChange} />
+                        </div>
+                        {/** TODO: bulk file import */}
+                        <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.importFile}>
+                            Import Single Record
+                        </button>
+                    </div>
+                    
 
                     <label className="infoLabel">
                         {this.state.successLabel}
@@ -345,7 +469,9 @@ class Importer extends React.Component {
                             </td>
                         </tr>
                     </tbody></table>
+                    
                 </div>
+                <hr />
             </div>
         )
     }
