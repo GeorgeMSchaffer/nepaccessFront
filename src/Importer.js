@@ -137,7 +137,8 @@ class Importer extends React.Component {
             valid = false;
             this.setState({agencyError: "Agency required"});
         } 
-        if(this.state.doc.publishDate.trim().length === 0){
+        console.log(this.state.doc.publishDate);
+        if(this.state.doc.publishDate.toString().trim().length === 0){
             valid = false;
             this.setState({dateError: "Date required"});
         } if (this.state.doc.type.trim().length === 0) {
@@ -155,16 +156,18 @@ class Importer extends React.Component {
 
     csvValidated = () => {
         let result = false;
-        if(this.state.csv[0] && this.state.csv[0].data){
-            let headers = this.state.csv[0].data;
-            // console.log(this.state.csv[0]);
-            headers.forEach(header => console.log(header));
+        if(this.state.csv[0]){
+            let headers = this.state.csv[0];
+            console.log(headers);
+            // headers.forEach(header => console.log(header));
     
             // Check headers:
-            result = ( // TODO: Make sure these are standard, reasonable values to require based on current spreadsheets
-                ('title' in headers) && ('register_date' in headers) && ('agency' in headers) && ('state' in headers) && ('document_type' in headers) 
-                && ('filename' in headers)
-            );
+            // result = ( // TODO: Make sure these are standard, reasonable values to require based on current spreadsheets
+            //     headers.includes('title') && headers.includes('register_date') && headers.includes('agency') && headers.includes('state') 
+            //     && headers.includes('document_type') 
+            //     && headers.includes('filename')
+            // );
+            result = ('title' in headers && 'agency' in headers && 'register_date' in headers && 'state' in headers && 'document_type' in headers && 'filename' in headers);
     
             if(!result){
                 this.setState({
@@ -262,7 +265,6 @@ class Importer extends React.Component {
     }
 
     importCSV = () => {
-        console.log("Click");
         if(!this.csvValidated()) {
             return;
         }
@@ -273,13 +275,18 @@ class Importer extends React.Component {
             csvError: '',
             disabled: true 
         });
+
         
         let importUrl = new URL('file/uploadCSV', Globals.currentHost);
 
         let uploadFile = new FormData();
         uploadFile.append("csv", JSON.stringify(this.state.csv));
+        
+        // let importObject = {"UploadInputs": this.state.csv};
+        // uploadFile.append("csv", JSON.stringify(importObject));
 
         console.log(this.state.csv);
+        console.log(uploadFile.get("csv"));
 
         let networkString = '';
         let successString = '';
@@ -326,12 +333,22 @@ class Importer extends React.Component {
             document.body.style.cursor = 'default'; 
         });
     }
-
+    // TODO: Map array into new array of just data, without the name data
     handleOnDrop = (evt) => {
+        console.log("Data:");
+        console.log(evt);
+        console.log(evt[0]);
+        console.log(evt[0].data);
+        let newArray = [];
+        for(let i = 0; i < evt.length; i++){
+            newArray.push(evt[i].data);
+        }
+        console.log(newArray);
         this.setState({ 
-            csv: evt
+            csv: newArray
         }, () => {
-            console.log(evt);
+            // console.log("Event:");
+            // console.log(evt);
             this.setState({ canImportCSV: true });
         });
     }
@@ -423,7 +440,9 @@ class Importer extends React.Component {
                             onDrop={this.handleOnDrop}
                             onError={this.handleOnError}
                             style={{}}
-                            config={{}}
+                            config={{
+                                header:true
+                            }}
                             addRemoveButton
                             onRemoveFile={this.handleOnRemoveFile}
                         >
