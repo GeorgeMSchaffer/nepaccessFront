@@ -8,9 +8,14 @@ import { CSVReader } from 'react-papaparse';
 import axios from 'axios';
 import Globals from './globals';
 
-// TODO: Add support for multiple files and also for a .csv which would be processed and should probably require links between metadata and files
-// or just have multiple file upload functionality for a single record
+/** TODO: Add support for multiple files and also for a .csv which would be processed and should probably require:
+ * - links between metadata and files (require filenames; handle linking up, loose/missing files in Spring and other components)
+ * - title, register_date, document_type, state, agency (we should be able to design system to handle them in any order)
+ **/
+// also need multiple file upload functionality for a single record
 // file: null would just become files: [] and files: evt.target.files instead of files[0]?
+
+// TODO: Full CSV export for EISDoc table
 
 class Importer extends React.Component {
 
@@ -35,6 +40,19 @@ class Importer extends React.Component {
                 filename: '',
             }
         };
+        
+        let checkUrl = new URL('user/checkCurator', Globals.currentHost);
+        axios({
+            url: checkUrl,
+            method: 'POST'
+          }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (!responseOK) { // this probably isn't possible with current backend design (either 200 or error?)
+                this.props.history.push('/');
+            }
+          }).catch(error => { // redirect
+            this.props.history.push('/');
+          })
     }
 
     onSelect = (val, act) => {
@@ -105,12 +123,26 @@ class Importer extends React.Component {
         if(!this.state.file){
             valid = false;
             labelValue = "No file";
-        } else {
         }
 
         if(this.state.doc.title.trim().length === 0){
             valid = false;
             this.setState({titleLabel: "Title required"});
+        }
+        if(this.state.doc.state.trim().length === 0){
+            valid = false;
+            this.setState({stateError: "State required"});
+        } 
+        if(this.state.doc.agency.trim().length === 0){
+            valid = false;
+            this.setState({agencyError: "Agency required"});
+        } 
+        if(this.state.doc.publishDate.trim().length === 0){
+            valid = false;
+            this.setState({dateError: "Date required"});
+        } if (this.state.doc.type.trim().length === 0) {
+            valid = false;
+            this.setState({typeError: "Type required"});
         }
 
         if(labelValue.length===0 && valid === false){ // File, but invalid inputs
@@ -122,18 +154,26 @@ class Importer extends React.Component {
     }
 
     csvValidated = () => {
-        let headers = this.state.csv[0].data;
-        // console.log(this.state.csv[0]);
-        headers.forEach(header => console.log(header));
-
-        // Check headers:
-        let result = (
-            ('title' in headers) && ('register_date' in headers) && ('agency' in headers) && ('state' in headers) && ('document_type' in headers)
-        );
-
-        if(!result){
+        let result = false;
+        if(this.state.csv[0] && this.state.csv[0].data){
+            let headers = this.state.csv[0].data;
+            // console.log(this.state.csv[0]);
+            headers.forEach(header => console.log(header));
+    
+            // Check headers:
+            result = ( // TODO: Make sure these are standard, reasonable values to require based on current spreadsheets
+                ('title' in headers) && ('register_date' in headers) && ('agency' in headers) && ('state' in headers) && ('document_type' in headers) 
+                && ('filename' in headers)
+            );
+    
+            if(!result){
+                this.setState({
+                    csvError: "Missing one or more CSV headers (title, register_date, agency, state, document_type)"
+                });
+            }
+        } else {
             this.setState({
-                csvError: "Missing one or more CSV headers (title, register_date, agency, state, document_type)"
+                csvError: "No headers found or no data found"
             });
         }
 
@@ -150,6 +190,10 @@ class Importer extends React.Component {
         this.setState({ 
             networkError: '',
             titleLabel: '',
+            agencyError: '',
+            stateError: '',
+            typeError: '',
+            dateError: '',
             disabled: true 
         });
         
@@ -294,6 +338,10 @@ class Importer extends React.Component {
 
     handleOnRemoveFile = (evt) => { this.setState({ csv: null, canImportCSV: false }); }
 
+    handleOnError = (evt) => {
+        // TODO
+        // Note: Just because errors are generated does not necessarily mean that parsing failed.
+    }
     
     
 
@@ -434,6 +482,7 @@ class Importer extends React.Component {
                                     // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
                                     // menuIsOpen={true}
                                 />
+                                <label className="loginErrorLabel">{this.state.agencyError}</label>
                             </td>
                             <td>
                                 <label className="advanced-label" htmlFor="state">State</label>
@@ -444,6 +493,7 @@ class Importer extends React.Component {
                                     onChange={this.onSelect} 
                                     placeholder="Type or select state" 
                                 />
+                                <label className="loginErrorLabel">{this.state.stateError}</label>
                             </td>
                             
                             <td>
@@ -456,6 +506,7 @@ class Importer extends React.Component {
                                     onChange={this.onSelect} 
                                     placeholder="Type or select document type" 
                                 />
+                                <label className="loginErrorLabel">{this.state.typeError}</label>
                             </td>
 
                         </tr>
@@ -465,6 +516,7 @@ class Importer extends React.Component {
                                 <label className="advanced-label" htmlFor="publishDate">Date</label>
                                 <div id="date">
                                     {this.showDate()}
+                                    <label className="loginErrorLabel">{this.state.dateError}</label>
                                 </div>
                             </td>
                         </tr>
