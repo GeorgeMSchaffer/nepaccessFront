@@ -10,7 +10,7 @@ class AboutNepa extends React.Component {
             <div>
                 <div id="about-nepa-banner"> </div>
 
-                <p id="about-nepa-content">
+                <div id="about-nepa-content">
 
                     
                     <span className="about-nepa-title">
@@ -87,7 +87,7 @@ class AboutNepa extends React.Component {
                     <br />
                     <br />
                     <br />
-                </p>
+                </div>
             </div>
         );
     }

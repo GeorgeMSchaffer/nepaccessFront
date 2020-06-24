@@ -9,7 +9,7 @@ class AboutNepaccess extends React.Component {
             <div>
                 <div id="about-nepaccess-banner"></div>
                 
-                <p id="about-nepa-content">
+                <div id="about-nepa-content">
                 
                     <span className="about-nepa-title">
                         About NEPAccess
@@ -42,12 +42,12 @@ class AboutNepaccess extends React.Component {
                         NEPAccess Project Manager
                     </span>
                     <span className="about-nepaccess-contact-content">
-                        <Link className="about-nepa-button email-text">derbridge@arizona.edu</Link>
+                        <a className="about-nepa-button email-text">derbridge@arizona.edu</a>
                     </span>
                     
                     <span className="default-style"></span>
 
-                </p>
+                </div>
 
             </div>
         );
