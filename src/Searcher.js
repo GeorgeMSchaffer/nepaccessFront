@@ -731,8 +731,14 @@ class Searcher extends React.Component {
             // console.log(rehydrate.startPublish);
             // console.log(Date.parse(rehydrate.startPublish));
             console.log(rehydrate.startPublish);
-            rehydrate.startPublish = Date.parse(rehydrate.startPublish);
-            rehydrate.endPublish = Date.parse(rehydrate.endPublish);
+            console.log(typeof(rehydrate.startPublish));
+            if(typeof(rehydrate.startPublish) === "string"){
+                rehydrate.startPublish = Date.parse(rehydrate.startPublish);
+            } // else number
+            
+            if(typeof(rehydrate.endPublish) === "string"){
+                rehydrate.endPublish = Date.parse(rehydrate.endPublish);
+            }
             console.log(rehydrate.startPublish);
             this.setState(rehydrate);
         }
