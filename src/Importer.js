@@ -32,10 +32,10 @@ class Importer extends React.Component {
             filename: '',
             doc: {
                 title: '',
-                publishDate: '',
+                register_date: '',
                 state: '',
                 agency: '',
-                type: '',
+                document_type: '',
                 commentsFilename: '',
                 filename: '',
             }
@@ -137,11 +137,11 @@ class Importer extends React.Component {
             valid = false;
             this.setState({agencyError: "Agency required"});
         } 
-        console.log(this.state.doc.publishDate);
-        if(this.state.doc.publishDate.toString().trim().length === 0){
+        console.log(this.state.doc.register_date);
+        if(this.state.doc.register_date.toString().trim().length === 0){
             valid = false;
             this.setState({dateError: "Date required"});
-        } if (this.state.doc.type.trim().length === 0) {
+        } if (this.state.doc.document_type.trim().length === 0) {
             valid = false;
             this.setState({typeError: "Type required"});
         }
@@ -363,12 +363,12 @@ class Importer extends React.Component {
     
 
     showDate = () => {
-        const setPublishDate = (date) => {
+        const setRegisterDate = (date) => {
             // console.log(date);
             this.setState( prevState =>
                 { 
                     const updatedDoc = prevState.doc;
-                    updatedDoc['publishDate'] = date;
+                    updatedDoc['register_date'] = date;
                     return {
                         doc: updatedDoc
                     }
@@ -379,9 +379,9 @@ class Importer extends React.Component {
         }
         return (
             <DatePicker
-                selected={this.state.doc.publishDate} 
-                onChange={date => setPublishDate(date)}
-                name='publishDate'
+                selected={this.state.doc.register_date} 
+                onChange={date => setRegisterDate(date)}
+                name='register_date'
                 dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                 className="date no-margin" 
             />
@@ -511,10 +511,10 @@ class Importer extends React.Component {
                             <td>
                                 {/**TODO: Grab all types from db?  Allow custom?*/}
                                 <label className="block advanced-label">Document type</label>
-                                <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="type" isSearchable isClearable 
+                                <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="document_type" isSearchable isClearable 
                                     styles={customStyles}
                                     options={typeOptions} 
-                                    selected={this.state.doc.type}
+                                    selected={this.state.doc.document_type}
                                     onChange={this.onSelect} 
                                     placeholder="Type or select document type" 
                                 />
@@ -525,7 +525,7 @@ class Importer extends React.Component {
 
                         <tr>
                             <td>
-                                <label className="advanced-label" htmlFor="publishDate">Date</label>
+                                <label className="advanced-label" htmlFor="register_date">Date</label>
                                 <div id="date">
                                     {this.showDate()}
                                     <label className="loginErrorLabel">{this.state.dateError}</label>
@@ -553,6 +553,20 @@ class Importer extends React.Component {
     componentDidUpate() {
 
     }
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
 }
 
 export default Importer;
