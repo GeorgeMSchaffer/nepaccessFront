@@ -429,16 +429,18 @@ class Searcher extends React.Component {
     }
     
     onStartDateChange = (date) => { 
-        this.setState( { startPublish: date}, () => { this.debouncedSearch(this.state); }); 
+        console.log(typeof(date));
+        console.log(date);
+        this.setState( { startPublish: date }, () => { this.debouncedSearch(this.state); }); 
     }
     onEndDateChange = (date) => { 
-        this.setState( { endPublish: date}, () => { this.debouncedSearch(this.state); }); 
+        this.setState( { endPublish: date }, () => { this.debouncedSearch(this.state); }); 
     }
     onStartCommentChange = (date) => { 
-        this.setState( { startComment: date}, () => { this.debouncedSearch(this.state); }); 
+        this.setState( { startComment: date }, () => { this.debouncedSearch(this.state); }); 
     }
     onEndCommentChange = (date) => { 
-        this.setState( { endComment: date}, () => { this.debouncedSearch(this.state); }); 
+        this.setState( { endComment: date }, () => { this.debouncedSearch(this.state); }); 
     }
 
     searchModeClick = (evt) => {
@@ -725,13 +727,7 @@ class Searcher extends React.Component {
 	componentDidMount() {
         console.log("Mounted");
         try {
-            // console.log(persist.getItem('appState'));
             const rehydrate = JSON.parse(persist.getItem('appState'));
-            // console.log(rehydrate);
-            // console.log(rehydrate.startPublish);
-            // console.log(Date.parse(rehydrate.startPublish));
-            console.log(rehydrate.startPublish);
-            console.log(typeof(rehydrate.startPublish));
             if(typeof(rehydrate.startPublish) === "string"){
                 rehydrate.startPublish = Date.parse(rehydrate.startPublish);
             } // else number
@@ -739,7 +735,6 @@ class Searcher extends React.Component {
             if(typeof(rehydrate.endPublish) === "string"){
                 rehydrate.endPublish = Date.parse(rehydrate.endPublish);
             }
-            console.log(rehydrate.startPublish);
             this.setState(rehydrate);
         }
         catch(e) {
