@@ -42,10 +42,10 @@ class Searcher extends React.Component {
             titleExact: '',
             titleAny: '',
             titleNone: '',
-            startPublish: '',
-            endPublish: '',
-            startComment: '',
-            endComment: '',
+            startPublish: null,
+            endPublish: null,
+            startComment: null,
+            endComment: null,
             titles: [],
             agency: [],
             state: [],
@@ -728,12 +728,15 @@ class Searcher extends React.Component {
 	componentDidMount() {
         try {
             const rehydrate = JSON.parse(persist.getItem('appState'));
+            // console.log(rehydrate.startPublish);
+            // console.log(new Date(rehydrate.startPublish));
             if(typeof(rehydrate.startPublish) === "string"){
-                rehydrate.startPublish = Date.parse(rehydrate.startPublish);
+                // rehydrate.startPublish = Date.parse(rehydrate.startPublish);
+                rehydrate.startPublish = new Date(rehydrate.startPublish);
             } // else number
             
             if(typeof(rehydrate.endPublish) === "string"){
-                rehydrate.endPublish = Date.parse(rehydrate.endPublish);
+                rehydrate.endPublish = new Date(rehydrate.endPublish);
             }
             this.setState(rehydrate);
         }

@@ -60,10 +60,10 @@ class App extends React.Component {
 			let dataToPass = { 
 				searchMode: this.state.searcherInputs.searchMode,
 				title: titleToPass, 
-				startPublish: ensureDateString(this.state.searcherInputs.startPublish),
-				endPublish: ensureDateString(this.state.searcherInputs.endPublish),
-				startComment: ensureDateString(this.state.searcherInputs.startComment),
-				endComment: ensureDateString(this.state.searcherInputs.endComment),
+				startPublish: this.state.searcherInputs.startPublish,
+				endPublish: this.state.searcherInputs.endPublish,
+				startComment: this.state.searcherInputs.startComment,
+				endComment: this.state.searcherInputs.endComment,
 				agency: this.state.searcherInputs.agency,
 				state: this.state.searcherInputs.state,
 				typeAll: this.state.searcherInputs.typeAll,
@@ -161,17 +161,6 @@ class App extends React.Component {
 		this.check();
 	}
 	
-}
-
-function ensureDateString(date) {
-    try{
-        if(typeof(date)==="number"){
-            return new Date(date).toISOString();
-        } // else string or Date object
-    } catch (e) {
-		// do nothing
-	}
-	return date;
 }
 
 export default App;
