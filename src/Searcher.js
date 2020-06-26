@@ -36,6 +36,7 @@ class Searcher extends React.Component {
             booleanOption: "all",
             booleanTitle: '',
             naturalTitle: '',
+            titleNoneRaw: '',
             titleRaw: '',
             titleAll: '',
             titleExact: '',
@@ -323,7 +324,8 @@ class Searcher extends React.Component {
         searchTerm += " " + alphabetized;
         
         this.setState( 
-        { 
+        {  
+            titleNoneRaw: evt.target.value,
             titleNone: alphabetized,
             searchMode: 'boolean',
             booleanTitle: searchTerm,
@@ -429,8 +431,6 @@ class Searcher extends React.Component {
     }
     
     onStartDateChange = (date) => { 
-        console.log(typeof(date));
-        console.log(date);
         this.setState( { startPublish: date }, () => { this.debouncedSearch(this.state); }); 
     }
     onEndDateChange = (date) => { 
@@ -625,7 +625,8 @@ class Searcher extends React.Component {
                                         <label id="excludeLabel" className="no-select inline" htmlFor="searchTitleNone">
                                             Exclude these words:
                                         </label>
-                                        <input id="searchTitleNone" type="search" name="titleNone"
+                                        <input id="searchTitleNone" type="search" name="titleNone" value={this.state.titleNoneRaw}
+                                            onChange={this.onChangeHandler}
                                             onInput={this.onInputTitleNone} onKeyUp={this.onKeyUpBoolean} />
                                     </div>
 
@@ -725,7 +726,6 @@ class Searcher extends React.Component {
 	  
 	// After render
 	componentDidMount() {
-        console.log("Mounted");
         try {
             const rehydrate = JSON.parse(persist.getItem('appState'));
             if(typeof(rehydrate.startPublish) === "string"){
@@ -738,8 +738,6 @@ class Searcher extends React.Component {
             this.setState(rehydrate);
         }
         catch(e) {
-            // console.log("Searcher Rehydrate Error");
-            // console.log(e);
             // do nothing
         }
         var queryString = globals.getParameterByName("q");

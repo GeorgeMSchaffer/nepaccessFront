@@ -167,7 +167,7 @@ function ensureDateString(date) {
     try{
         if(typeof(date)==="number"){
             return new Date(date).toISOString();
-        } // else number or Date
+        } // else string or Date object
     } catch (e) {
 		// do nothing
 	}
