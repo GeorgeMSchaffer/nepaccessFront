@@ -179,9 +179,9 @@ class FulltextSearcher extends React.Component {
 	componentWillUnmount() {
 		persist.setItem('fulltextState', JSON.stringify(this.state));
 	}
-	  
-	// Pre-render
-	componentWillMount() {
+
+    // After render
+	componentDidMount() {
         try {
             const rehydrate = JSON.parse(persist.getItem('fulltextState'));
             this.setState(rehydrate);
@@ -189,11 +189,7 @@ class FulltextSearcher extends React.Component {
         catch(e) {
             // do nothing
         }
-	}
-
-    // After render
-    /** Supporting potential for fulltext search query from elsewhere (such as landing), currently unused; or support saved search via bookmark */
-	componentDidMount() {
+        /** Supporting potential for fulltext search query from elsewhere (such as landing), currently unused; or support saved search via bookmark */
         var queryString = globals.getParameterByName("q");
         // console.log("Param " + queryString);
         if(queryString){

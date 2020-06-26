@@ -19,6 +19,8 @@ import PropTypes from "prop-types";
 
 const _ = require('lodash');
 
+const parseISO = require('date-fns/parseISO')
+
 class Searcher extends React.Component {
 
 	static propTypes = {
@@ -719,19 +721,26 @@ class Searcher extends React.Component {
 		persist.setItem('appState', JSON.stringify(this.state));
 	}
 	  
-	// Pre-render
-	componentWillMount() {
+	// After render
+	componentDidMount() {
+        console.log("Mounted");
         try {
+            // console.log(persist.getItem('appState'));
             const rehydrate = JSON.parse(persist.getItem('appState'));
+            // console.log(rehydrate);
+            // console.log(rehydrate.startPublish);
+            // console.log(Date.parse(rehydrate.startPublish));
+            console.log(rehydrate.startPublish);
+            rehydrate.startPublish = Date.parse(rehydrate.startPublish);
+            rehydrate.endPublish = Date.parse(rehydrate.endPublish);
+            console.log(rehydrate.startPublish);
             this.setState(rehydrate);
         }
         catch(e) {
+            // console.log("Searcher Rehydrate Error");
+            // console.log(e);
             // do nothing
         }
-	}
-
-	// After render
-	componentDidMount() {
         var queryString = globals.getParameterByName("q");
         // console.log("Param " + queryString);
         if(queryString){

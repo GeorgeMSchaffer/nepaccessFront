@@ -460,14 +460,7 @@ class Importer extends React.Component {
                     <hr />
 
                     <div className="importFile">
-                        <div>
-                            <label className="infoLabel">Note: Full text search may only function with .zip or .pdf uploads</label>
-                            <input title="Test" type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} onChange={this.onFileChange} />
-                        </div>
-                        {/** TODO: bulk file import */}
-                        <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.importFile}>
-                            Import Single Record
-                        </button>
+                        <label className="infoLabel">Import single record with archive or PDF:</label>
                     </div>
                     
 
@@ -542,6 +535,16 @@ class Importer extends React.Component {
                     </tbody></table>
                     
                 </div>
+                    <div className="importFile">
+                        <div>
+                            <label className="infoLabel">Note: Full text search may only function with .zip or .pdf uploads</label>
+                            <input title="Test" type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} onChange={this.onFileChange} />
+                        </div>
+                        {/** TODO: bulk file import */}
+                        <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.importFile}>
+                            Import Single Record
+                        </button>
+                    </div>
                 <hr />
             </div>
         )
