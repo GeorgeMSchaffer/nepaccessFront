@@ -45,16 +45,205 @@ class AboutNepaccess extends React.Component {
                         <span className="about-nepaccess-contact-content">
                             <a className="about-nepa-button email-text">derbridge@arizona.edu</a>
                         </span>
-                        
-                        <span className="default-style"></span>
-                        <br />
-                        <br />
                         <br />
                         <br />
                         
                     </div>
+
                     <div id="about-nepaccess-nsf-logo"></div>
                     <div id="about-nepaccess-ua-logo"></div>
+
+                    <div className="about-personnel">
+                        <span className="personnel-header">
+                            Team Personnel
+                        </span>
+
+
+                        <label className="about-block">
+                            <span className="italic-header">
+                                Principal Investigator
+                            </span>
+                            <span className="about-name">
+                            Laura López Hoffman
+                            </span>
+                            <span className="about">
+                            , Professor, School of Natural Resources and the Environment, and Research Professor, Udall Center for Studies in Public Policy
+                            </span>
+                        </label>
+
+
+                        <label className="about-block">
+                            <span className="italic-header">
+                                Co-Principal Investigators
+                            </span>
+                            <label className="block">
+                                <span className="about-name">
+                                    Elizabeth Baldwin
+                                </span>
+                                <span className="about">
+                                    , Assistant Professor, School of Government and Public Policy
+                                </span>
+                            </label>
+                            <label className="block">
+                                <span className="about-name">
+                                    Steven Bethard
+                                </span>
+                                <span className="about">
+                                    , Associate Professor, School of Information
+                                </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Marc Miller</span>
+                            <span className="about">
+                                , Dean &amp; Ralph W. Bilby Professor, James E. Rogers College of Law
+                            </span>
+                            </label>
+
+                            <label className="block">
+                            <span className="about-name">Sudha Ram</span>
+                            <span className="about">
+                                , Anheuser-Busch Endowed Professor of MIS, Entrepreneurship &amp; Innovation, and Professor of Computer Science
+                            </span>
+                            </label>
+                        </label>
+
+
+                        <label className="about-block">
+                            <span className="italic-header">Senior Personnel
+                            </span>
+
+                            <label className="block">
+                            <span className="about-name">Faiz Currim</span><span className="about">
+                                , Senior Lecturer, Management Information Systems
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Jonathan Derbridge</span><span className="about">
+                                , Research Director, López-Hoffman Lab
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Kirk Emerson</span><span className="about">
+                                , Professor of Practice, School of Government and Public Policy
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Egoitz Laparra</span><span className="about">
+                                , Postdoctoral Research Associate, School of Information
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Aaron Lien</span><span className="about">
+                                , Assistant Professor, Rangeland Ecology and Adaptive Management
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Robert Merideth</span><span className="about">
+                                , Senior Researcher, López-Hoffman Lab, and Editor in Chief (ret.), Udall Center for Studies in Public Policy
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Justin Pidot</span><span className="about">
+                                , Professor of Law, and Co-Director of the Environmental Studies Program, James E. Rogers College of Law
+                            </span>
+                            </label>
+                        </label>
+
+
+                        <label className="about-block">
+                            <span className="italic-header">Other Personnel
+                            </span>
+                            <label className="block">
+                            <span className="about-name">Alex Binford-Walsh</span><span className="about">
+                                , Supervisor, Undergraduate Student Researchers, and Undergraduate Student, Natural Resources
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">John Caleb Jackson</span><span className="about">
+                                , Media Specialist, James E. Rogers College of Law
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Paul Mirocha</span><span className="about">
+                                , User Experience Designer, Udall Center for Studies of Public Policy, and Desert Laboratory on Tumamoc Hill
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Maya R. Stahl</span><span className="about">
+                                , Freelance Artist
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Josh Vinal</span><span className="about">
+                                , Full-stack Developer, MIS, Eller College of Management
+                            </span>
+                            </label>
+                        </label>
+
+
+                        <label className="about-block">
+                            <span className="italic-header">Graduate Student Researchers
+                            </span>
+                            <label className="block">
+                            <span className="about-name">Xiaoxiao Chen</span><span className="about">
+                                , Doctoral Student, School of Information
+                            </span>
+                            </label>
+
+                            <label className="block">
+                            <span className="about-name">Buomsoo Kim</span><span className="about">
+                                , Doctoral Student, MIS, Eller College of Management
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Kyuhan Lee</span>
+
+                            <span className="about">
+                                , Doctoral Student, INSITE Center, MIS, Eller College of Management
+                                </span>
+                            </label>
+                        </label>
+
+
+
+
+
+
+                        <label className="about-block">
+                            <span className="italic-header">Undergraduate Student Researchers
+                            </span>
+                            <label className="block">
+                            <span className="about-name">Samantha Johnson</span><span className="about">
+                                , Undergraduate Student, Natural Resources and Veterinary Science
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Natasha Lofgreen</span><span className="about">
+                                , Undergraduate Student, Natural Resources
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Amber Petrie</span><span className="about">
+                                , Undergraduate Student, Geosciences, Marine Science, and Natural Resources
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Ashley Stava</span><span className="about">
+                                , Undergraduate Student, Marine Science and Natural Resources
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Britney Swiniuch</span><span className="about">
+                                , Undergraduate Student, Marine Science and Natural Resources
+                            </span>
+                            </label>
+                            <label className="block">
+                            <span className="about-name">Daniel Velasco</span><span className="about">
+                                , Undergraduate Student, Anthropology and Natural Resources
+                            </span>
+                            </label>
+                        </label>
+                    </div>
 
                 </div>
 
