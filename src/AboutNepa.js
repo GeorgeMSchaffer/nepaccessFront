@@ -13,9 +13,9 @@ class AboutNepa extends React.Component {
                 <div id="about-nepa-content">
 
                     
-                    <span className="about-nepa-title">
+                    <h1 className="about-nepa-title">
                         About NEPA
-                    </span>
+                    </h1>
 
 
                     <span className="about-nepa-bold">
