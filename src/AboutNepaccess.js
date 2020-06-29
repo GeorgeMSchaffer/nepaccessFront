@@ -63,12 +63,14 @@ class AboutNepaccess extends React.Component {
                             <h3 className="italic-header">
                                 Principal Investigator
                             </h3>
-                            <span className="about-name">
-                            Laura López-Hoffman
-                            </span>
-                            <span className="about">
-                            , Professor, School of Natural Resources and the Environment, and Research Professor, Udall Center for Studies in Public Policy
-                            </span>
+                            <label className="block">
+                                <span className="about-name">
+                                    Laura López-Hoffman
+                                </span>
+                                <span className="about">
+                                    , Professor, School of Natural Resources and the Environment, and Research Professor, Udall Center for Studies in Public Policy
+                                </span>
+                            </label>
                         </label>
 
 
