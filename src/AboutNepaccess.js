@@ -105,6 +105,12 @@ class AboutNepaccess extends React.Component {
                                 , Anheuser-Busch Endowed Professor of MIS, Entrepreneurship &amp; Innovation, and Professor of Computer Science
                             </span>
                             </label>
+                            <label className="block">
+                            <span className="about-name">Tyler Scott</span>
+                            <span className="about">
+                                , Assistant Professor, Environmental Science and Policy, University of California Davis
+                            </span>
+                            </label>
                         </label>
 
 
@@ -212,6 +218,11 @@ class AboutNepaccess extends React.Component {
                         <label className="about-block">
                             <span className="italic-header">Undergraduate Student Researchers
                             </span>
+                            <label className="block">
+                            <span className="about-name">John Guthrie</span><span className="about">
+                                , Undergraduate student, Natural Resources
+                            </span>
+                            </label>
                             <label className="block">
                             <span className="about-name">Samantha Johnson</span><span className="about">
                                 , Undergraduate Student, Natural Resources and Veterinary Science

@@ -1,5 +1,5 @@
 #about-nepa-content {
-    min-width: 682px;
+    min-width: 1000px;
     width: 50%;
 
     position: relative;
@@ -48,6 +48,9 @@
 
     width: 250px;
     height: 220px;
+
+    /* top: 640px; */
+    right: 350px;
     
     background-repeat: no-repeat;
     background-size: contain;
@@ -61,7 +64,8 @@
     width: 250px;
     height: 220px;
 
-    right: 0px;
+    /* top: 640px; */
+    right: 100px;
 
     background-repeat: no-repeat;
     background-size: contain;
@@ -192,13 +196,13 @@
 .about-name {
     font-weight: bold;
     font-size: 1.15em;
-    font-family: "Times New Roman";
+    /* font-family: "Times New Roman"; */
 }
 
 span.about {
     display: inline;
     font-size: 1.15em;
-    font-family: "Times New Roman";
+    /* font-family: "Times New Roman"; */
 }
 
 label.block {
