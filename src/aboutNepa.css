@@ -32,25 +32,25 @@
     background-image: url("assets/about_nepa_banner.png");
 }
 
-#about-nepaccess-side-image {
-    /* position: absolute;
+/* #about-nepaccess-side-image {
+    position: absolute;
     width: 350px;
     height: 220px;
     left: -300px;
     top: 103px;
     
-    background-image: url("assets/bitmaplogo_nolayers.png"); */
-}
+    background-image: url("assets/bitmaplogo_nolayers.png");
+} */
 
 #about-nepaccess-nsf-logo {
     position: absolute;
     display: inline-block;
 
     width: 250px;
-    height: 220px;
+    height: 200px;
 
     /* top: 640px; */
-    right: 350px;
+    right: 300px;
     
     background-repeat: no-repeat;
     background-size: contain;
@@ -62,10 +62,10 @@
     display: inline-block;
 
     width: 250px;
-    height: 220px;
+    height: 200px;
 
     /* top: 640px; */
-    right: 100px;
+    right: 50px;
 
     background-repeat: no-repeat;
     background-size: contain;
@@ -91,6 +91,7 @@
     font-size: 36px;
     line-height: 49px;
     
+    margin-top: 0;
     margin-bottom: 49px;
 
     color: #8FBC3F;
@@ -117,7 +118,7 @@
     margin: 0;
 }
 
-.about-nepa-subhead, .about-nepa-subhead2 {
+/* .about-nepa-subhead, .about-nepa-subhead2 {
     display: block;
 
     font-family: "Open Sans Condensed";
@@ -125,7 +126,6 @@
     font-weight: bold;
     font-size: 24px;
     line-height: 13px;
-    /* or 54% */
 
     margin-top: 39px;
     margin-bottom: 13px;
@@ -136,7 +136,7 @@
 
 .about-nepa-subhead2 {
     margin-bottom: 39px;
-}
+} */
 
 .about-nepa-table {
     /* margin-bottom: 100px; */
@@ -155,6 +155,7 @@
 
 .default-style {
     display: block;
+    
     margin-bottom: 24px;
 }
 
@@ -167,9 +168,10 @@
 
 .about-nepaccess-contact-header {
     display: block;
+    
+    margin-top: 72px;
 
     font-weight: bold;
-    margin-top: 72px;
 }
 
 .about-nepaccess-contact-content {
@@ -178,18 +180,31 @@
 
 .personnel-header {
     display: block;
-    font-weight: bold;
+    
+    margin-top: 0;
     margin-bottom: 1em;
+
+    font-size: 1em;
+    font-weight: bold;
 }
 
 .about-block {
     display: block;
+    
+    margin-top: 0;
     margin-bottom: 1em;
 }
 
 .italic-header {
     display: block;
+
+    font-size: 1em;
     /* font-size: 1.1em; */
+
+    margin-top: 0;
+    margin-bottom: 0;
+
+    font-weight: normal;
     font-style: italic;
 }
 
@@ -201,6 +216,7 @@
 
 span.about {
     display: inline;
+
     /* font-size: 1.15em; */
     /* font-family: "Times New Roman"; */
 }

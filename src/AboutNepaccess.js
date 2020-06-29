@@ -11,9 +11,9 @@ class AboutNepaccess extends React.Component {
                 
                 <div id="about-nepa-content">
                 
-                    <span className="about-nepa-title">
+                    <h1 className="about-nepa-title">
                         About NEPAccess
-                    </span>
+                    </h1>
 
                     <span className="default-style bold">
                         NEPAccess helps bring <Link className="about-nepa-button" to="/aboutnepa">NEPA</Link> into the 21st century by harnessing the power of data science to enable the full vision of NEPA as a strategy to deal with emerging 21st-century social, economic, and environmental challenges.
@@ -54,15 +54,15 @@ class AboutNepaccess extends React.Component {
                     <div id="about-nepaccess-ua-logo"></div>
 
                     <div className="about-personnel">
-                        <span className="personnel-header">
+                        <h2 className="personnel-header">
                             Team Personnel
-                        </span>
+                        </h2>
 
 
                         <label className="about-block">
-                            <span className="italic-header">
+                            <h3 className="italic-header">
                                 Principal Investigator
-                            </span>
+                            </h3>
                             <span className="about-name">
                             Laura López-Hoffman
                             </span>
@@ -73,9 +73,9 @@ class AboutNepaccess extends React.Component {
 
 
                         <label className="about-block">
-                            <span className="italic-header">
+                            <h3 className="italic-header">
                                 Co-Principal Investigators
-                            </span>
+                            </h3>
                             <label className="block">
                                 <span className="about-name">
                                     Elizabeth Baldwin
@@ -115,8 +115,8 @@ class AboutNepaccess extends React.Component {
 
 
                         <label className="about-block">
-                            <span className="italic-header">Senior Personnel
-                            </span>
+                            <h3 className="italic-header">Senior Personnel
+                            </h3>
 
                             <label className="block">
                             <span className="about-name">Faiz Currim</span><span className="about">
@@ -157,8 +157,8 @@ class AboutNepaccess extends React.Component {
 
 
                         <label className="about-block">
-                            <span className="italic-header">Other Personnel
-                            </span>
+                            <h3 className="italic-header">Other Personnel
+                            </h3>
                             <label className="block">
                             <span className="about-name">Alex Binford-Walsh</span><span className="about">
                                 , Supervisor, Undergraduate Student Researchers, and Undergraduate Student, Natural Resources
@@ -188,8 +188,8 @@ class AboutNepaccess extends React.Component {
 
 
                         <label className="about-block">
-                            <span className="italic-header">Graduate Student Researchers
-                            </span>
+                            <h3 className="italic-header">Graduate Student Researchers
+                            </h3>
                             <label className="block">
                             <span className="about-name">Xiaoxiao Chen</span><span className="about">
                                 , Doctoral Student, School of Information
@@ -216,8 +216,8 @@ class AboutNepaccess extends React.Component {
 
 
                         <label className="about-block">
-                            <span className="italic-header">Undergraduate Student Researchers
-                            </span>
+                            <h3 className="italic-header">Undergraduate Student Researchers
+                            </h3>
                             <label className="block">
                             <span className="about-name">John Guthrie</span><span className="about">
                                 , Undergraduate Student, Natural Resources
