@@ -189,19 +189,19 @@
 
 .italic-header {
     display: block;
-    font-size: 1.1em;
+    /* font-size: 1.1em; */
     font-style: italic;
 }
 
 .about-name {
     font-weight: bold;
-    font-size: 1.15em;
+    /* font-size: 1.15em; */
     /* font-family: "Times New Roman"; */
 }
 
 span.about {
     display: inline;
-    font-size: 1.15em;
+    /* font-size: 1.15em; */
     /* font-family: "Times New Roman"; */
 }
 
