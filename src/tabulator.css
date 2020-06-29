@@ -3,6 +3,7 @@
 .tabulator {
   margin: 0 5px;
   min-width: 1200px; /* With title text wrapping, table gets ridiculous any smaller than this */
+  overflow: hidden;
 }
 
 .tabulator-row .tabulator-cell {
