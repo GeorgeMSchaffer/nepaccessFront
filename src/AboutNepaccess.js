@@ -64,7 +64,7 @@ class AboutNepaccess extends React.Component {
                                 Principal Investigator
                             </span>
                             <span className="about-name">
-                            Laura López Hoffman
+                            Laura López-Hoffman
                             </span>
                             <span className="about">
                             , Professor, School of Natural Resources and the Environment, and Research Professor, Udall Center for Studies in Public Policy
@@ -220,7 +220,7 @@ class AboutNepaccess extends React.Component {
                             </span>
                             <label className="block">
                             <span className="about-name">John Guthrie</span><span className="about">
-                                , Undergraduate student, Natural Resources
+                                , Undergraduate Student, Natural Resources
                             </span>
                             </label>
                             <label className="block">
