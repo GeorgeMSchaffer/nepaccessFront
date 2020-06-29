@@ -3,7 +3,7 @@
 
 html, body, #home-page, #root {
   min-width: 900px;
-  height: 100%;
+  height: calc(100% - 102px);
 }
 
 html {
