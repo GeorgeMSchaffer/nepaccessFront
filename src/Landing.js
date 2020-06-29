@@ -40,20 +40,20 @@ class Landing extends React.Component {
         <div id="landing">
           <div id="landing-images">
             <div id="image-1">
-              <span id="headline" className="no-select cursor-default">
-                <p className="size">The National Environmental Policy Act of 1970 (NEPA) requires review of the potential impacts of all major Federal actions on the natural and human environment.
+              <h1 id="headline" className="no-select cursor-default">
+                <p className="size">The National Environmental Policy Act of 1969 (NEPA) requires review of the potential impacts of all major Federal actions on the natural and human environment.
                 </p>
                 <p className="size">The Environmental Impact Statement (EIS) is NEPA’s central means to conduct this review.
                 </p>
-              </span>
+              </h1>
             </div>
             <div id="image-2">
-              <span id="subhead" className="no-select cursor-default">
+              <h2 id="subhead" className="no-select cursor-default">
                 <p className="size">NEPAccess makes available to you thousands of EISs, and related documents, to search, download, and analyze.
                 </p>
                 <p className="size">NEPAccess offers you the power to gather useable data from multiple review processes.
                 </p>
-              </span>
+              </h2>
             </div>
           </div>
           <div>

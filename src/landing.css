@@ -24,6 +24,7 @@
 #headline, #subhead {
   display: block;
   padding: 10% 10%;
+  margin: 0;
   text-align: left;
 
   font-family: "Open Sans";

@@ -20,7 +20,7 @@ class AboutNepa extends React.Component {
 
                     <span className="about-nepa-bold">
                         <div id="about-nepa-side-image"></div>
-                        Some 50 years ago, a near-unanimous U.S. Congress passed, and President Richard Nixon signed into law, the National Environmental Policy Act of 1969 (NEPA). 
+                        Some 50 years ago, a near-unanimous U.S. Congress passed the National Environmental Policy Act of 1969 (NEPA), which President Richard Nixon signed into law on January 1, 1970.
                     </span>
 
                     <span className="default-style">
