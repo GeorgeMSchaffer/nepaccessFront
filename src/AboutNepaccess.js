@@ -19,7 +19,7 @@ class AboutNepaccess extends React.Component {
                         NEPAccess helps bring <Link className="about-nepa-button" to="/aboutnepa">NEPA</Link> into the 21st century by harnessing the power of data science to enable the full vision of NEPA as a strategy to deal with emerging 21st-century social, economic, and environmental challenges.
                     </span>
                     <span className="default-style">
-                        NEPAccess is housed at the University of Arizona and is supported by <a id="link-award" href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1831551">a research grant from the National Science Foundation (no. 1831551, Dr. Laura López-Hoffman, PI)</a>, with additional resources from the University of Arizona and the Morris K. Udall and Stewart L. Udall Foundation.
+                        NEPAccess is housed at the University of Arizona and is supported by <a id="link-award" target="_blank" href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1831551">a research grant from the National Science Foundation (no. 1831551, Dr. Laura López-Hoffman, PI)</a>, with additional resources from the University of Arizona and the Morris K. Udall and Stewart L. Udall Foundation.
                     </span>
                     <span className="default-style">
                         The NEPAccess team is interdisciplinary (principally based at UArizona, with one member from the University of California, Davis) and comprises researchers from data science, natural language processing (NLP), public administration, political science, law, natural resources policy, and UX design and outreach.
@@ -49,7 +49,7 @@ class AboutNepaccess extends React.Component {
                         <br />
                         
                     </div>
-
+ 
                     <div id="about-nepaccess-nsf-logo"></div>
                     <div id="about-nepaccess-ua-logo"></div>
 
