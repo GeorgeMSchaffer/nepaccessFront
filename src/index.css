@@ -333,3 +333,7 @@ a.email-text {
   top: 80px;
   border-top: solid 1px black !important;
 }
+
+.inline-block {
+  display: inline-block;
+}

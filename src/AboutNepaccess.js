@@ -16,7 +16,6 @@ class AboutNepaccess extends React.Component {
                     </span>
 
                     <span className="default-style bold">
-                        <div id="about-nepaccess-side-image"></div>
                         NEPAccess helps bring <Link className="about-nepa-button" to="/aboutnepa">NEPA</Link> into the 21st century by harnessing the power of data science to enable the full vision of NEPA as a strategy to deal with emerging 21st-century social, economic, and environmental challenges.
                     </span>
                     <span className="default-style">
@@ -32,20 +31,30 @@ class AboutNepaccess extends React.Component {
                         Using cutting-edge NLP and other analytic tools, scholars, citizens, environmental professionals, and agency staff can use NEPAccess to answer a host of critical questions about how humans impact the environment and how the environment impacts us.
                     </span>
 
-                    <span className="about-nepaccess-contact-header">
-                        For more information about NEPAcces contact:
-                    </span>
-                    <span className="about-nepaccess-contact-content">
-                        Jonathan Derbridge,
-                    </span>
-                    <span className="about-nepaccess-contact-content">
-                        NEPAccess Project Manager
-                    </span>
-                    <span className="about-nepaccess-contact-content">
-                        <a className="about-nepa-button email-text">derbridge@arizona.edu</a>
-                    </span>
-                    
-                    <span className="default-style"></span>
+                    <div className="inline-block">
+
+                        <span className="about-nepaccess-contact-header">
+                            For more information about NEPAcces contact:
+                        </span>
+                        <span className="about-nepaccess-contact-content">
+                            Jonathan Derbridge,
+                        </span>
+                        <span className="about-nepaccess-contact-content">
+                            NEPAccess Project Manager
+                        </span>
+                        <span className="about-nepaccess-contact-content">
+                            <a className="about-nepa-button email-text">derbridge@arizona.edu</a>
+                        </span>
+                        
+                        <span className="default-style"></span>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        
+                    </div>
+                    <div id="about-nepaccess-nsf-logo"></div>
+                    <div id="about-nepaccess-ua-logo"></div>
 
                 </div>
 

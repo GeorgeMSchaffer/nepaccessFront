@@ -25,7 +25,8 @@ class App extends React.Component {
 		},
 		searchResults: [],
 		resultsText: 'Results',
-		networkError: ''
+		networkError: '',
+		verified: false
 	}
 
 	search = (searcherState) => {
@@ -127,10 +128,13 @@ class App extends React.Component {
 	check = () => { // check if JWT is expired/invalid
 		
 		let checkURL = new URL('test/check', Globals.currentHost);
-
+		let result = false;
 		axios.post(checkURL)
 		.then(response => {
-			// verified = response && response.status === 200;
+			result = response && response.status === 200;
+			this.setState({
+				verified: result
+			})
 		})
 		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
 			if(!err.response){ // Probably no need to redirect to login if server isn't responding
@@ -138,8 +142,11 @@ class App extends React.Component {
 					networkError: "Server may be down, please try again later."
 				});
 			} else { // 403
-				this.props.history.push('/login');
+				// this.props.history.push('/login');
 			}
+		})
+		.finally(() => {
+			// console.log("Returning... " + result);
 		});
 		// console.log("App check");
 	}
@@ -147,13 +154,25 @@ class App extends React.Component {
 
 	render() {
 		// console.log("App");
-		return (
-			<div id="app-content">
-				<label className="errorLabel">{this.state.networkError}</label>
-				<Searcher search={this.search} />
-				<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
-			</div>
-		)
+		if(this.state.verified){
+
+			return (
+				<div id="app-content">
+					<label className="errorLabel">{this.state.networkError}</label>
+					<Searcher search={this.search} />
+					<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
+				</div>
+			)
+
+		}
+		else 
+		{
+			return (
+				<div className="content">
+					<label className="info-label">NEPAccess searches are not currently available to the public.</label>
+				</div>
+			)
+		}
 	}
 
 	// After render

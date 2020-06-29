@@ -33,15 +33,39 @@
 }
 
 #about-nepaccess-side-image {
-    position: absolute;
-    /* width: 100%;
-    height: 100%; */
+    /* position: absolute;
     width: 350px;
     height: 220px;
     left: -300px;
     top: 103px;
     
+    background-image: url("assets/bitmaplogo_nolayers.png"); */
+}
+
+#about-nepaccess-nsf-logo {
+    position: absolute;
+    display: inline-block;
+
+    width: 250px;
+    height: 220px;
+    
+    background-repeat: no-repeat;
+    background-size: contain;
     background-image: url("assets/bitmaplogo_nolayers.png");
+}
+
+#about-nepaccess-ua-logo {
+    position: absolute;
+    display: inline-block;
+
+    width: 250px;
+    height: 220px;
+
+    right: 0px;
+
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("assets/ua_stack_rgb_4_0.png");
 }
 
 #about-nepa-side-image {
@@ -111,7 +135,8 @@
 }
 
 .about-nepa-table {
-    margin-bottom: 100px;
+    /* margin-bottom: 100px; */
+    margin-bottom: 20px;
 }
 
 .about-nepa-table td:first-child {

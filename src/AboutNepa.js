@@ -26,10 +26,10 @@ class AboutNepa extends React.Component {
                     <span className="default-style">
                         NEPA is elegant in its vision—that science results in more informed decisions, and that a democratic process that engages the public results in better environmental and social outcomes. The heart of NEPA is the Environmental Impact Statement (EIS), a detailed, scientific analysis of the expected impacts of federal actions (plans, projects, and activities) and an assessment of possible alternative actions. 
                     </span>
-
+{/* 
                     <span className="about-nepa-subhead">
                         The NEPA Process 
-                    </span>
+                    </span> */}
 
                     <span className="default-style">
                         An EIS provides a systematic process to analyze the expected direct, indirect, and cumulative impacts of a proposed federal action on the environment and on human well-being.
@@ -72,9 +72,11 @@ class AboutNepa extends React.Component {
                         </tr>
                         </tbody>
                     </table>
+{/* 
                     <span className="about-nepa-subhead2">
                         NEPA’s Results
-                    </span>
+                    </span> */}
+
                     <span className="default-style">
                         Since 1970, some 37,000 EISs have analyzed the impacts of federal actions such as construction of transportation infrastructure; permit approvals for oil, gas, and mineral extraction; management of public lands; and proposed regulations. Taken together, these EISs provide a vast store of varied data—hydrological, ecological, social, economic, and cultural, and public health. 
                     </span>
