@@ -124,11 +124,12 @@ class ForgotPassword extends React.Component {
     render() {
         return (
             <div className="container login-form">
-                <label className="loginErrorLabel">{this.state.networkError}</label>
                 <div className="form">
                     <div className="note">
                         <p>Reset Password</p>
                     </div>
+                    
+                    <label className="loginErrorLabel">{this.state.networkError}</label>
 
                     <div className="form-content">
                         <div className="row">

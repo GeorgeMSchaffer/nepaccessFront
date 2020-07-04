@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
+
+import Dropzone from 'react-dropzone';
 
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
@@ -7,6 +9,8 @@ import { CSVReader } from 'react-papaparse';
 
 import axios from 'axios';
 import Globals from './globals';
+
+import './importer.css';
 
 /** TODO: Add support for multiple files and also for a .csv which would be processed and should probably require:
  * - links between metadata and files (require filenames; handle linking up, loose/missing files in Spring and other components)
@@ -17,10 +21,31 @@ import Globals from './globals';
 
 // TODO: Full CSV export for EISDoc table
 
-class Importer extends React.Component {
+class Importer extends Component {
 
     constructor(props) {
         super(props);
+
+        this.onDrop = (dropped) => {
+            this.setState({
+                files: dropped,
+                dragClass: ''
+            })
+        };
+
+        this.onDragEnter = (e) => {
+            this.setState({
+                dragClass: 'over'
+            });
+            console.log("Enter");
+        }
+    
+        this.onDragLeave = (e) => {
+            this.setState({
+                dragClass: ''
+            });
+        }
+
         this.state = { 
             networkError: '',
             successLabel: '',
@@ -38,7 +63,9 @@ class Importer extends React.Component {
                 document_type: '',
                 commentsFilename: '',
                 filename: '',
-            }
+            },
+            dragClass: '',
+            files: []
         };
         
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -120,7 +147,7 @@ class Importer extends React.Component {
         let valid = true;
         let labelValue = "";
 
-        if(!this.state.file){
+        if(!this.state.file && this.state.files.length===0){ // No file(s)
             valid = false;
             labelValue = "No file";
         }
@@ -181,6 +208,87 @@ class Importer extends React.Component {
         }
 
         return result;
+    }
+
+
+    uploadFiles = () => {
+        if(!this.validated()) {
+            return;
+        }
+
+        console.log("1");
+        
+        document.body.style.cursor = 'wait';
+        this.setState({ 
+            networkError: '',
+            titleLabel: '',
+            agencyError: '',
+            stateError: '',
+            typeError: '',
+            dateError: '',
+            disabled: true 
+        });
+        
+        let importUrl = new URL('file/uploadFiles', Globals.currentHost);
+
+        let uploadFiles = new FormData();
+        for(let i=0; i < this.state.files.length; i++){
+            uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
+        }
+        uploadFiles.append("doc", JSON.stringify(this.state.doc));
+
+        let networkString = '';
+        let successString = '';
+
+        axios({ 
+            method: 'POST',
+            url: importUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: uploadFiles
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return true;
+            } else { 
+                return false;
+            }
+        }).then(success => {
+            if(success){
+                successString = "Success.";
+            } else {
+                successString = "Failed to import."; // Server down?
+            }
+        }).catch(error => {
+            if(error.response) {
+                if (error.response.status === 500) {
+                    networkString = "Internal server error.";
+                } else if (error.response.status === 404) {
+                    networkString = "Not found.";
+                } 
+            } else {
+                networkString = "Server may be down (no response), please try again later.";
+            }
+            successString = "Couldn't import.";
+            console.error('error message ', error);
+        }).finally(e => {
+            this.setState({
+                networkError: networkString,
+                successLabel: successString,
+                disabled: false
+            });
+    
+            document.body.style.cursor = 'default'; 
+        });
+
+
+        function renameFile(originalFile, newName) {
+            return new File([originalFile], newName, {
+                type: originalFile.type,
+                lastModified: originalFile.lastModified,
+            });
+        }
     }
     
 
@@ -388,7 +496,118 @@ class Importer extends React.Component {
         )
     }
 
+
+
+
+    /* constructs a simple directory view from a filesystem */
+    // makedir = (entries) => {
+
+    //     const systems = entries.map(entry => traverse(entry, {}));
+    //     return Promise.all(systems);
+
+    //     async function traverse(entry, fs) {
+    //         if (entry.isDirectory) {
+    //         fs[entry.name] = {};
+    //         let dirReader = entry.createReader();
+    //         await new Promise((res, rej) => {
+    //             dirReader.readEntries(async entries => {
+    //             for (let e of entries) {
+    //                 await traverse(e, fs[entry.name]);
+    //             }
+    //             res();
+    //             }, rej);
+    //         });
+    //         } else if (entry.isFile) {
+    //         await new Promise((res, rej) => {
+    //             entry.file(file => {
+    //                 fs[entry.name] = file;
+    //                 res();
+    //             }, rej);
+    //         });
+    //         }
+    //         return fs;
+    //     }
+    // }
+
+    // readDropped = (dT) => {
+    //     const entries = [...dT.items].map(item => {
+    //         return item.webkitGetAsEntry ? item.webkitGetAsEntry() : null;
+    //         })
+    //         .filter(entry => entry);
+    //     if (entries.length) {
+    //         this.makedir(entries)
+    //         .then(this.output)
+    //         .catch(this.handleSecurityLimitation);
+    //     } 
+    //     else {
+    //         this.notadir();
+    //     }
+
+    // }
+
+    // notadir = () => {
+    //     this.setState({
+    //         logText:  "wasn't a directory, or webkitdirectory is not supported"
+    //     });
+    // }
+
+    // dropzoneOndragover = e => {
+    //     if(e){
+    //         e.preventDefault();
+    //         this.setState({ dropzoneClass: 'over' });
+    //     }
+    // }
+    
+    // dropZoneDragStart = e => { /** do nothing */ }
+
+    // dropzoneOnDragExit = e => { 
+    //     if(e){
+    //         this.setState({ dropzoneClass: '' });
+    //     }
+    // }
+
+    // dropzoneOnDrop = e => {
+    //     if(e){
+    //         e.preventDefault();
+    //         this.setState({ dropzoneClass: '' });
+    //         this.readDropped(e.dataTransfer);
+    //     }
+    // }
+
+    // output = (system_trees) => {
+    //     console.log(system_trees);
+
+    //     this.setState({
+    //         files: []
+    //     }, () => {
+    //         this.setState({
+    //             logText: JSON.stringify(system_trees, checkFile, 2)
+    //         });
+    //         this.uploadFiles(system_trees);
+    //     });
+        
+
+    //     function checkFile(key, value) {
+    //         if (value instanceof File) {
+    //             return '{[File] ' + value.name + ', ' + value.size + 'b}';
+    //         } else {
+    //             return value;
+    //         }
+    //     }
+    // }  
+
+    // handleSecurityLimitation = (error) => {
+    //     console.error(error);
+    // }
+
+
     render() {
+
+        const files = this.state.files.map(file => (
+            <li key={file.name}>
+              {file.name} - {file.size} bytes
+            </li>
+        ));
         
         const agencyOptions = [	{ value: 'ACHP', label: 'Advisory Council on Historic Preservation (ACHP)' },{ value: 'USAID', label: 'Agency for International Development (USAID)' },{ value: 'ARS', label: 'Agriculture Research Service (ARS)' },{ value: 'APHIS', label: 'Animal and Plant Health Inspection Service (APHIS)' },{ value: 'AFRH', label: 'Armed Forces Retirement Home (AFRH)' },{ value: 'BPA', label: 'Bonneville Power Administration (BPA)' },{ value: 'BIA', label: 'Bureau of Indian Affairs (BIA)' },{ value: 'BLM', label: 'Bureau of Land Management (BLM)' },{ value: 'USBM', label: 'Bureau of Mines (USBM)' },{ value: 'BOEM', label: 'Bureau of Ocean Energy Management (BOEM)' },{ value: 'BOP', label: 'Bureau of Prisons (BOP)' },{ value: 'BR', label: 'Bureau of Reclamation (BR)' },{ value: 'Caltrans', label: 'California Department of Transportation (Caltrans)' },{ value: 'CHSRA', label: 'California High-Speed Rail Authority (CHSRA)' },{ value: 'CIA', label: 'Central Intelligence Agency (CIA)' },{ value: 'NYCOMB', label: 'City of New York, Office of Management and Budget (NYCOMB)' },{ value: 'CDBG', label: 'Community Development Block Grant (CDBG)' },{ value: 'CTDOH', label: 'Connecticut Department of Housing (CTDOH)' },{ value: 'BRAC', label: 'Defense Base Closure and Realignment Commission (BRAC)' },{ value: 'DLA', label: 'Defense Logistics Agency (DLA)' },{ value: 'DNA', label: 'Defense Nuclear Agency (DNA)' },{ value: 'DNFSB', label: 'Defense Nuclear Fac. Safety Board (DNFSB)' },{ value: 'DSA', label: 'Defense Supply Agency (DSA)' },{ value: 'DRB', label: 'Delaware River Basin Commission (DRB)' },{ value: 'DC', label: 'Denali Commission (DC)' },{ value: 'USDA', label: 'Department of Agriculture (USDA)' },{ value: 'DOC', label: 'Department of Commerce (DOC)' },{ value: 'DOD', label: 'Department of Defense (DOD)' },{ value: 'DOE', label: 'Department of Energy (DOE)' },{ value: 'HHS', label: 'Department of Health and Human Services (HHS)' },{ value: 'DHS', label: 'Department of Homeland Security (DHS)' },{ value: 'HUD', label: 'Department of Housing and Urban Development (HUD)' },{ value: 'DOJ', label: 'Department of Justice (DOJ)' },{ value: 'DOL', label: 'Department of Labor (DOL)' },{ value: 'DOS', label: 'Department of State (DOS)' },{ value: 'DOT', label: 'Department of Transportation (DOT)' },{ value: 'TREAS', label: 'Department of Treasury (TREAS)' },{ value: 'VA', label: 'Department of Veteran Affairs (VA)' },{ value: 'DOI', label: 'Department of the Interior (DOI)' },{ value: 'DEA', label: 'Drug Enforcement Administration (DEA)' },{ value: 'EDA', label: 'Economic Development Administration (EDA)' },{ value: 'ERA', label: 'Energy Regulatory Administration (ERA)' },{ value: 'ERDA', label: 'Energy Research and Development Administration (ERDA)' },{ value: 'EPA', label: 'Environmental Protection Agency (EPA)' },{ value: 'FSA', label: 'Farm Service Agency (FSA)' },{ value: 'FHA', label: 'Farmers Home Administration (FHA)' },{ value: 'FAA', label: 'Federal Aviation Administration (FAA)' },{ value: 'FCC', label: 'Federal Communications Commission (FCC)' },{ value: 'FEMA', label: 'Federal Emergency Management Agency (FEMA)' },{ value: 'FEA', label: 'Federal Energy Administration (FEA)' },{ value: 'FERC', label: 'Federal Energy Regulatory Commission (FERC)' },{ value: 'FHWA', label: 'Federal Highway Administration (FHWA)' },{ value: 'FMC', label: 'Federal Maritime Commission (FMC)' },{ value: 'FMSHRC', label: 'Federal Mine Safety and Health Review Commission (FMSHRC)' },{ value: 'FMCSA', label: 'Federal Motor Carrier Safety Administration (FMCSA)' },{ value: 'FPC', label: 'Federal Power Commission (FPC)' },{ value: 'FRA', label: 'Federal Railroad Administration (FRA)' },{ value: 'FRBSF', label: 'Federal Reserve Bank of San Francisco (FRBSF)' },{ value: 'FTA', label: 'Federal Transit Administration (FTA)' },{ value: 'USFWS', label: 'Fish and Wildlife Service (USFWS)' },{ value: 'FDOT', label: 'Florida Department of Transportation (FDOT)' },{ value: 'FDA', label: 'Food and Drug Administration (FDA)' },{ value: 'USFS', label: 'Forest Service (USFS)' },{ value: 'GSA', label: 'General Services Administration (GSA)' },{ value: 'USGS', label: 'Geological Survey (USGS)' },{ value: 'GLB', label: 'Great Lakes Basin Commission (GLB)' },{ value: 'IHS', label: 'Indian Health Service (IHS)' },{ value: 'IRS', label: 'Internal Revenue Service (IRS)' },{ value: 'IBWC', label: 'International Boundary and Water Commission (IBWC)' },{ value: 'ICC', label: 'Interstate Commerce Commission (ICC)' },{ value: 'JCS', label: 'Joint Chiefs of Staff (JCS)' },{ value: 'MARAD', label: 'Maritime Administration (MARAD)' },{ value: 'MTB', label: 'Materials Transportation Bureau (MTB)' },{ value: 'MSHA', label: 'Mine Safety and Health Administration (MSHA)' },{ value: 'MMS', label: 'Minerals Management Service (MMS)' },{ value: 'MESA', label: 'Mining Enforcement and Safety (MESA)' },{ value: 'MRB', label: 'Missouri River Basin Commission (MRB)' },{ value: 'NASA', label: 'National Aeronautics and Space Administration (NASA)' },{ value: 'NCPC', label: 'National Capital Planning Commission (NCPC)' },{ value: 'NGA', label: 'National Geospatial-Intelligence Agency (NGA)' },{ value: 'NHTSA', label: 'National Highway Traffic Safety Administration (NHTSA)' },{ value: 'NIGC', label: 'National Indian Gaming Commission (NIGC)' },{ value: 'NIH', label: 'National Institute of Health (NIH)' },{ value: 'NMFS', label: 'National Marine Fisheries Service (NMFS)' },{ value: 'NNSA', label: 'National Nuclear Security Administration (NNSA)' },{ value: 'NOAA', label: 'National Oceanic and Atmospheric Administration (NOAA)' },{ value: 'NPS', label: 'National Park Service (NPS)' },{ value: 'NSF', label: 'National Science Foundation (NSF)' },{ value: 'NSA', label: 'National Security Agency (NSA)' },{ value: 'NTSB', label: 'National Transportation Safety Board (NTSB)' },{ value: 'NRCS', label: 'Natural Resource Conservation Service (NRCS)' },{ value: 'NER', label: 'New England River Basin Commission (NER)' },{ value: 'NJDEP', label: 'New Jersey Department of Environmental Protection (NJDEP)' },{ value: 'NRC', label: 'Nuclear Regulatory Commission (NRC)' },{ value: 'OCR', label: 'Office of Coal Research (OCR)' },{ value: 'OSM', label: 'Office of Surface Mining (OSM)' },{ value: 'OBR', label: 'Ohio River Basin Commission (OBR)' },{ value: 'RSPA', label: 'Research and Special Programs (RSPA)' },{ value: 'REA', label: 'Rural Electrification Administration (REA)' },{ value: 'RUS', label: 'Rural Utilities Service (RUS)' },{ value: 'SEC', label: 'Security and Exchange Commission (SEC)' },{ value: 'SBA', label: 'Small Business Administration (SBA)' },{ value: 'SCS', label: 'Soil Conservation Service (SCS)' },{ value: 'SRB', label: 'Souris-Red-Rainy River Basin Commission (SRB)' },{ value: 'STB', label: 'Surface Transportation Board (STB)' },{ value: 'SRC', label: 'Susquehanna River Basin Commission (SRC)' },{ value: 'TVA', label: 'Tennessee Valley Authority (TVA)' },{ value: 'TxDOT', label: 'Texas Department of Transportation (TxDOT)' },{ value: 'TPT', label: 'The Presidio Trust (TPT)' },{ value: 'TDA', label: 'Trade and Development Agency (TDA)' },{ value: 'USACE', label: 'U.S. Army Corps of Engineers (USACE)' },{ value: 'USCG', label: 'U.S. Coast Guard (USCG)' },{ value: 'CBP', label: 'U.S. Customs and Border Protection (CBP)' },{ value: 'RRB', label: 'U.S. Railroad Retirement Board (RRB)' },{ value: 'USAF', label: 'United States Air Force (USAF)' },{ value: 'USA', label: 'United States Army (USA)' },{ value: 'USMC', label: 'United States Marine Corps (USMC)' },{ value: 'USN', label: 'United States Navy (USN)' },{ value: 'USPS', label: 'United States Postal Service (USPS)' },{ value: 'USTR', label: 'United States Trade Representative (USTR)' },{ value: 'UMR', label: 'Upper Mississippi Basin Commission (UMR)' },{ value: 'UMTA', label: 'Urban Mass Transportation Administration (UMTA)' },{ value: 'UDOT', label: 'Utah Department of Transportation (UDOT)' },{ value: 'WAPA', label: 'Western Area Power Administration (WAPA)' }
         ];
@@ -536,13 +755,31 @@ class Importer extends React.Component {
                     
                 </div>
                     <div className="importFile">
-                        <div>
+                        {/* <div>
                             <label className="infoLabel">Note: Full text search may only function with .zip or .pdf uploads</label>
                             <input title="Test" type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} onChange={this.onFileChange} />
-                        </div>
+                        </div> */}
                         {/** TODO: bulk file import */}
+                        <Dropzone onDrop={this.onDrop} onDragEnter={this.onDragEnter} onDragLeave={this.onDragLeave} >
+                            {({getRootProps, getInputProps}) => (
+                                <section>
+                                    <div className={this.state.dragClass} {...getRootProps({id: 'dropzone'})}>
+                                        <input {...getInputProps()} />
+                                        <p>Drag and drop file(s) or directory here</p>
+                                    </div>
+                                    <aside>
+                                        <h4>Files</h4>
+                                        <ul>{files}</ul>
+                                    </aside>
+                                </section>
+                            )}
+                        </Dropzone>
                         <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.importFile}>
                             Import Single Record
+                        </button>
+                        
+                        <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.uploadFiles}>
+                            Test Import Single Record with Multiple Files
                         </button>
                     </div>
                 <hr />
@@ -551,7 +788,6 @@ class Importer extends React.Component {
     }
 
     componentDidUpate() {
-
     }
 }
 
