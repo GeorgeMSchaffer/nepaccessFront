@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Dropzone from 'react-dropzone';
 
 import Select from 'react-select';
+import Creatable from 'react-select/lib/Creatable';
 import DatePicker from "react-datepicker";
 
 import { CSVReader } from 'react-papaparse';
@@ -83,6 +84,10 @@ class Importer extends Component {
     }
 
     onSelect = (val, act) => {
+        if(!val || !act){
+            return;
+        }
+        
         // console.log(val);
         // console.log(act);
 
@@ -372,6 +377,9 @@ class Importer extends Component {
 
     }
 
+    // TODO: Expect these headers:
+    // Title, Document, EPA Comment Letter Date, Federal Register Date, Agency, State, EIS Identifier, Filename, Link
+    // Translate these into a standard before sending it on?
     importCSV = () => {
         if(!this.csvValidated()) {
             return;
@@ -730,7 +738,7 @@ class Importer extends Component {
                             <td>
                                 {/**TODO: Grab all types from db?  Allow custom?*/}
                                 <label className="block advanced-label">Document type</label>
-                                <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="document_type" isSearchable isClearable 
+                                <Creatable id="searchType" className="multi inline-block" classNamePrefix="react-select" name="document_type" isSearchable isClearable 
                                     styles={customStyles}
                                     options={typeOptions} 
                                     selected={this.state.doc.document_type}
