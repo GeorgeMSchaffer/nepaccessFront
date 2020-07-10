@@ -167,7 +167,8 @@ class Searcher extends React.Component {
         this.standardizeAndSearch();
     }
     onClearClick = (evt) => {
-        this.setState({ naturalTitle: '', titleRaw: '', titleAll: '', titleExact: '', titleAny: '' });
+        console.log("Click");
+        this.setState({ booleanTitle: '', naturalTitle: '', titleRaw: '', titleAll: '', titleExact: '', titleAny: '' }); // the important one is probably booleanTitle
     }
 
     standardizeAndSearch = () => {
