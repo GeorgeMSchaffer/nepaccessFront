@@ -84,7 +84,7 @@ class Fulltext extends React.Component {
 					});
 				}
 			}).catch(error => {
-				console.log(error);
+				console.log("Connection error", error);
 				this.setState({
 					networkError: 'Server is down or you may need to login again.'
 				});

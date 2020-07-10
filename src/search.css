@@ -383,7 +383,7 @@ input[type=checkbox] {
 }
 
 .tippy-tooltip p {
-  font-size: 9px;
+  font-size: 11px;
   margin: 8px 0px;
 }
 
@@ -445,4 +445,19 @@ button.link, button.download {
 
 .modal-results {
   min-width: 1050px;
+}
+
+span.fragment {
+  display: inline-block;
+}
+
+span.fragment:hover {
+  text-decoration: underline;
+}
+
+.fragment:nth-of-type(odd) {
+  background-color: rgb(241, 241, 241);
+}
+.fragment:nth-of-type(even) {
+  background-color: rgb(228, 246, 252);
 }

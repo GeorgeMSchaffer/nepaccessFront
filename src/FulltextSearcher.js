@@ -84,7 +84,7 @@ class FulltextSearcher extends React.Component {
 
     onChangeHandler = (evt) => {} // just to silence warnings
 
-    /** Other */
+    /** Sanity checking & Validation */
 
     validated = (term) => {
         
@@ -103,6 +103,11 @@ class FulltextSearcher extends React.Component {
     render () {
         const { match, location, history } = this.props;
         const specials = '+ - && || ! ( ) { } [ ] ^ \" ~ * ? : \\ /';
+        const fulltextTooltipTitle = "<p className=&quot;tooltip-line&quot;>Including any of these stopwords will get zero results: &quot;a&quot;, &quot;an&quot;, &quot;and&quot;, &quot;are&quot;, &quot;as&quot;, &quot;at&quot;, &quot;be&quot;, &quot;but&quot;, &quot;by&quot;,"
+        + "&quot;for&quot;, &quot;if&quot;, &quot;in&quot;, &quot;into&quot;, &quot;is&quot;, &quot;it&quot;,"
+        + "&quot;no&quot;, &quot;not&quot;, &quot;of&quot;, &quot;on&quot;, &quot;or&quot;, &quot;such&quot;,"
+        + "&quot;that&quot;, &quot;the&quot;, &quot;their&quot;, &quot;then&quot;, &quot;there&quot;, &quot;these&quot;,"
+        + "&quot;they&quot;, &quot;this&quot;, &quot;to&quot;, &quot;was&quot;, &quot;will&quot;, &quot;with&quot;";
         // console.log("FulltextSearcher");
 
         return (
@@ -114,7 +119,7 @@ class FulltextSearcher extends React.Component {
                                 <label className="flex-center no-select cursor-pointer">
                                     <input type="checkbox" className="cursor-pointer" name="context" checked={this.state.context} onChange={this.onCheckboxChange} 
                                         disabled={this.props.searching} />
-                                    Search for highlights with context
+                                    Show search terms in context (full view)
                                 </label>
                             </label>
                             <div id="searcher-inner-container">
@@ -128,11 +133,7 @@ class FulltextSearcher extends React.Component {
                                         // distance="80"
                                         // offset="80"
                                         // open="true"
-                                        title="<p className=&quot;tooltip-line&quot;>Including any of these stopwords will get zero results: &quot;a&quot;, &quot;an&quot;, &quot;and&quot;, &quot;are&quot;, &quot;as&quot;, &quot;at&quot;, &quot;be&quot;, &quot;but&quot;, &quot;by&quot;,
-                                        &quot;for&quot;, &quot;if&quot;, &quot;in&quot;, &quot;into&quot;, &quot;is&quot;, &quot;it&quot;,
-                                        &quot;no&quot;, &quot;not&quot;, &quot;of&quot;, &quot;on&quot;, &quot;or&quot;, &quot;such&quot;,
-                                        &quot;that&quot;, &quot;the&quot;, &quot;their&quot;, &quot;then&quot;, &quot;there&quot;, &quot;these&quot;,
-                                        &quot;they&quot;, &quot;this&quot;, &quot;to&quot;, &quot;was&quot;, &quot;will&quot;, &quot;with&quot;"
+                                        title={fulltextTooltipTitle}
                                     >
                                         <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
@@ -175,6 +176,8 @@ class FulltextSearcher extends React.Component {
             
         )
     }
+
+    /** Lifecycle */
     
 	componentWillUnmount() {
 		persist.setItem('fulltextState', JSON.stringify(this.state));
@@ -189,7 +192,8 @@ class FulltextSearcher extends React.Component {
         catch(e) {
             // do nothing
         }
-        /** Supporting potential for fulltext search query from elsewhere (such as landing), currently unused; or support saved search via bookmark */
+
+        /** Supporting potential for fulltext search query from elsewhere (such as landing), or support saved search via bookmark; currently unused */
         var queryString = globals.getParameterByName("q");
         // console.log("Param " + queryString);
         if(queryString){

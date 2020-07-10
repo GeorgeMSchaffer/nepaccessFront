@@ -14,8 +14,10 @@ class FulltextResults extends React.Component {
         this.my_table = React.createRef();
     }
 
+    // While the context is working, the columns are not being filled properly on switch for unknown reasons, so we use FulltextResults2 for now
     setupData = (results, context) => {
         // console.log(results);
+        // console.log("Context: ", context);
         if(context){
             return results.map((result, idx) =>{
                 let doc = result.doc;
@@ -29,28 +31,29 @@ class FulltextResults extends React.Component {
                 };
                 return newObject;
             });
-        } else if(results[0].title){
-            return results.map((result, idx) =>{
-                let doc = result;
-                let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
-                    registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
-                    filename: doc.filename, 
-                    commentsFilename: doc.commentsFilename,
-                    documentId: doc.id
-                };
-                return newObject;
-            });
+        // } else if(results[0].title){
+        //     return results.map((result, idx) =>{
+        //         let doc = result;
+        //         let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
+        //             registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
+        //             filename: doc.filename, 
+        //             commentsFilename: doc.commentsFilename,
+        //             documentId: doc.id
+        //         };
+        //         return newObject;
+        //     });
         } else {
             return [];
         }
     }
 
     setupColumns = (context) => {
-        // if(context){
+        if(context){
             return [
                 { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetails />), variableHeight: true },
                 { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true },
                 { title: "Text", field: "plaintext", formatter: "html" },
+                // { title: "Published date", field: "registerDate", width: 180 }, // can include but space is a premium with context
                 { title: "Version", field: "documentType", width: 114 },
                 { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
                 { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
@@ -65,13 +68,15 @@ class FulltextResults extends React.Component {
         //         { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
         //         { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
         //     ];
-        // }
+        } else {
+            return [];
+        }
     }
 
 	render() {
 
-        const results = this.props.results;
-        const context = this.props.context;
+        let results = this.props.results;
+        let context = this.props.context;
 
         if(results && results.length > 0) {
 
@@ -84,10 +89,10 @@ class FulltextResults extends React.Component {
         }
         
         try {
-            const data = this.setupData(results, context);
-            const columns = this.setupColumns(context);
+            let data = this.setupData(results, context);
+            let columns = this.setupColumns(context);
 
-            var options = {
+            let options = {
                 layoutColumnsOnNewData: true,
                 tooltips:true,
                 responsiveLayout:"collapse",  //collapse columns that dont fit on the table
@@ -96,7 +101,8 @@ class FulltextResults extends React.Component {
                 paginationSizeSelector:[10, 25, 50],
                 movableColumns:true,      //allow column order to be changed
                 resizableRows:true,       //allow row order to be changed
-                layout:"fitColumns"
+                layout:"fitColumns",
+                tooltips: false
             };
 
             var resultsText = this.props.resultsText;

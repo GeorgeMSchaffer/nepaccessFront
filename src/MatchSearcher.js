@@ -64,7 +64,7 @@ class MatchSearcher extends React.Component {
                 <label className="matchSearchLabel" htmlFor="matchSearchPercent">
                     Search by title similarity
                 </label>
-                <input id="matchSearchPercent" type="range" min="1" max="100" step="1" value={this.state.matchPercent} 
+                <input id="matchSearchPercent" type="range" min="10" max="100" step="1" value={this.state.matchPercent} 
                         name="matchPercent" autoFocus onChange={this.onChange} />
                 {this.state.matchPercent}%
             </form>
