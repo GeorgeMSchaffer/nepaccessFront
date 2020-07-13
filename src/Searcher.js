@@ -57,7 +57,7 @@ class Searcher extends React.Component {
             needsDocument: false,
             searcherClassName: 'display-none',
             advancedClassName: 'display-none',
-            searchModeName: 'Advanced search',
+            searchModeName: 'Show more options',
             iconClassName: 'icon icon--effect',
             limit: '100000',
 		};
@@ -445,15 +445,15 @@ class Searcher extends React.Component {
     }
 
     searchModeClick = (evt) => {
-        if(this.state.searchModeName === 'Advanced search'){
+        if(this.state.searchModeName === 'Show more options'){
             this.setState ({
-                searchModeName: 'Simple search',
+                searchModeName: 'Hide options',
                 searchMode: 'boolean',
 				advancedClassName: 'searchContainer'
             });
         } else {
             this.setState ({
-                searchModeName: 'Advanced search',
+                searchModeName: 'Show more options',
                 // searchMode: 'natural',
                 booleanOption: 'all',
 				advancedClassName: 'display-none'
@@ -462,7 +462,7 @@ class Searcher extends React.Component {
     }
     
     // Can either just make the form a div or use this to prevent Submit default behavior
-	submitHandler(e) { e.preventDefault(); }
+    submitHandler(e) { e.preventDefault(); }
     
 
     render () {
@@ -509,12 +509,12 @@ class Searcher extends React.Component {
                 <div>
                     <div className="content" onSubmit={this.submitHandler}>
                         <div id="searcher-container">
-                            <label hidden={this.state.searchModeName==='Advanced search'} className="search-label">
+                            <label hidden={this.state.searchModeName==='Show more options'} className="search-label">
                                 <span id="search-by" className="no-select">
                                     Search by:
                                 </span>
                                 
-                                <span className="advanced-radio" hidden={this.state.searchModeName==='Advanced search'}>
+                                <span className="advanced-radio" hidden={this.state.searchModeName==='Show more options'}>
                                     <label className="flex-center no-select cursor-pointer">
                                         <input type="radio" className="cursor-pointer" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                         defaultChecked />
@@ -534,7 +534,7 @@ class Searcher extends React.Component {
                             </label>
 
                             <div id="searcher-inner-container">
-                                <div hidden={this.state.searchModeName==='Simple search'}>
+                                <div hidden={this.state.searchModeName==='Hide options'}>
                                     <div id="fake-search-box" className="inline-block">
                                         
                                         <Tooltip 
@@ -573,7 +573,7 @@ class Searcher extends React.Component {
 
                                     </div>
                                 </div>
-                                <div hidden={this.state.searchModeName==='Advanced search'}>
+                                <div hidden={this.state.searchModeName==='Show more options'}>
                                     
                                     <div id="fake-search-box" className="inline-block">
                                         <Tooltip 
@@ -638,7 +638,7 @@ class Searcher extends React.Component {
 
                         </div>
 
-                        <table id="advanced-search-box" hidden={this.state.searchModeName==='Advanced search'}><tbody>
+                        <table id="advanced-search-box" hidden={this.state.searchModeName==='Show more options'}><tbody>
                             <tr>
                                 <td>
                                     <label className="advanced-label" htmlFor="searchAgency">Lead agency</label>

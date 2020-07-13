@@ -27,7 +27,7 @@ export default class RecordDetails extends React.Component {
         this.state = {
             searcherInputs: {
                 id: 0,
-                matchPercent: 75,
+                matchPercent: 50,
             },
             searchResults: [],
             networkError: '',
@@ -93,7 +93,7 @@ export default class RecordDetails extends React.Component {
 				} else { // 200 from server, but empty results
 					this.setState({
                         searchResults: parsedJson,
-						resultsText: "No results found"
+						resultsText: "No similar titles found (try lowering the percentage?)"
 					});
 				}
 			}).catch(error => {

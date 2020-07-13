@@ -86,7 +86,7 @@
   right: -23px;
   top: 0px;
 
-  text-decoration: none;
+  /* text-decoration: none; */
 
   font-family: Open Sans;
   font-style: normal;
@@ -449,15 +449,20 @@ button.link, button.download {
 
 span.fragment {
   display: inline-block;
+  margin-bottom: 3px;
 }
 
-span.fragment:hover {
-  text-decoration: underline;
+.fragment:nth-last-of-type(1) { /** No need to add space below the final text snippet */
+  margin-bottom: 0;
 }
+
+/* span.fragment:hover {
+  text-decoration: underline;
+} */
 
 .fragment:nth-of-type(odd) {
-  background-color: rgb(241, 241, 241);
+  background-color: rgb(244, 244, 244);
 }
 .fragment:nth-of-type(even) {
-  background-color: rgb(228, 246, 252);
+  background-color: rgb(222, 222, 222);
 }

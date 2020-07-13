@@ -168,7 +168,7 @@ class FulltextSearcher extends React.Component {
                                 </div>
 
                             </div>
-                            <span onClick={() => { history.push('/search'); }} id="fulltext-mode" className="inline-block no-select">Metadata search</span>
+                            <span onClick={() => { history.push('/search'); }} id="fulltext-mode" className="inline-block no-select">Default search</span>
                         </div>
                     </div>
                 </div>
