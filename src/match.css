@@ -51,7 +51,9 @@
   }
 
   .matchSearchLabel {
-      margin-left: 38px;
+      /* margin-left: 38px; */
+      margin-right: 20px;
       display: inline-block;
+      font-weight: bold;
       line-height: 40px;
   }

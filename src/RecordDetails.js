@@ -32,7 +32,7 @@ export default class RecordDetails extends React.Component {
             searchResults: [],
             networkError: '',
             searcherClassName: '',
-            message: "Similar results by title:",
+            message: "Find similar documents by title:",
             show: false,
             resultsText: "",
         };
