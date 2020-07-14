@@ -62,8 +62,8 @@ export default class RecordDetails extends React.Component {
 				matchPercent: (this.state.searcherInputs.matchPercent/100)
 			};
 
-			console.log("Inputs");
-            console.log(JSON.stringify(this.state.searcherInputs));
+			// console.log("Inputs");
+            // console.log(JSON.stringify(this.state.searcherInputs));
             
 			//Send the AJAX call to the server
 			axios({
@@ -105,7 +105,7 @@ export default class RecordDetails extends React.Component {
 				});
 			});
 			
-			console.log("Out search");
+			// console.log("Out search");
 		
 		});
 	}
@@ -184,11 +184,12 @@ export default class RecordDetails extends React.Component {
                 >
                     <button className='button modal-close' onClick={this.hideModal}>Close Details View</button>
                     <label className="errorLabel">{this.state.networkError}</label>
-                    <h2>Record details:</h2>
+                    <h2 className="title-color">Record details:</h2>
                     <div className="record-details">
                         {this.showDetails()}
                     </div>
-                    <h2>{this.state.message}</h2>
+                    <hr />
+                    <h2 className="title-color">{this.state.message}</h2>
                     {this.showDocuments()}
                 </ReactModal>
             </div>
