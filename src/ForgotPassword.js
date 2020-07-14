@@ -129,19 +129,23 @@ class ForgotPassword extends React.Component {
                         <p>Reset Password</p>
                     </div>
                     
-                    <label className="loginErrorLabel">{this.state.networkError}</label>
+                    <label className="loginErrorLabel">
+                        {this.state.networkError}
+                    </label>
 
                     <div className="form-content">
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type="text" id="email" className="form-control" name="email" 
-                                    placeholder="Email address" autoFocus onChange={this.onChange} onKeyUp={this.onKeyUp}/>
+                                    <input type="text" id="email" className="form-control" name="email" autoFocus 
+                                            placeholder="Email address" onChange={this.onChange} onKeyUp={this.onKeyUp}/>
                                     <label className="loginErrorLabel">{this.state.emailError}</label>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" className="button" id="submit" onClick={this.sendResetLink} >Send reset link</button>
+                        <button type="button" className="button" id="submit" onClick={this.sendResetLink}>
+                            Send reset link
+                        </button>
                         <label className="infoLabel">{this.state.successLabel}</label>
                     </div>
                 </div>

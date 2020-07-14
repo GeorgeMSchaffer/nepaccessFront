@@ -23,24 +23,23 @@ class DocumentText extends React.Component {
                 </button>
             </div>
           )
-        // }
     }
 
     getText(textId) {
-      console.log("Activating text test for " + Globals.currentHost);
+        console.log("Activating text test for " + Globals.currentHost);
 
-      axios.get((Globals.currentHost + 'text/get_by_id'),{
+        axios.get((Globals.currentHost + 'text/get_by_id'),{
         params: {
-          id: textId
+            id: textId
         }
-      })
-      .then((response) => {
-        // verified = response && response.status === 200;
-        console.log(response);
-      })
-      .catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
-        console.log(err);
-      });
+        })
+        .then((response) => {
+            // verified = response && response.status === 200;
+            console.log(response);
+        })
+        .catch((err) => { // Catch a 403 from the server from a malformed/expired JWT, will also fire if server down
+            console.log(err);
+        });
     }
 }
 

@@ -17,7 +17,6 @@ import Fulltext from './Fulltext.js';
 
 import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess';
-// import Help from './Help';
 
 import Importer from './Importer';
 

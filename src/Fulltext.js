@@ -137,8 +137,10 @@ class Fulltext extends React.Component {
 		// console.log("Fulltext");
 		return (
 			<div id="app-content">
-				<label className="errorLabel">{this.state.networkError}</label>
-				<FulltextSearcher search={this.search} searching={this.state.searching}/>
+				<label className="errorLabel">
+                    {this.state.networkError}
+                </label>
+				<FulltextSearcher search={this.search} searching={this.state.searching} />
 				{this.renderFulltextResults()}
 			</div>
 		)

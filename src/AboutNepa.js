@@ -12,11 +12,10 @@ class AboutNepa extends React.Component {
 
                 <div id="about-nepa-content">
 
-                    
+
                     <h1 className="about-nepa-title">
                         About NEPA
                     </h1>
-
 
                     <span className="about-nepa-bold">
                         <div id="about-nepa-side-image"></div>
@@ -26,7 +25,7 @@ class AboutNepa extends React.Component {
                     <span className="default-style">
                         NEPA is elegant in its vision—that science results in more informed decisions, and that a democratic process that engages the public results in better environmental and social outcomes. The heart of NEPA is the Environmental Impact Statement (EIS), a detailed, scientific analysis of the expected impacts of federal actions (plans, projects, and activities) and an assessment of possible alternative actions. 
                     </span>
-{/* 
+                    {/* 
                     <span className="about-nepa-subhead">
                         The NEPA Process 
                     </span> */}
@@ -72,7 +71,7 @@ class AboutNepa extends React.Component {
                         </tr>
                         </tbody>
                     </table>
-{/* 
+                    {/* 
                     <span className="about-nepa-subhead2">
                         NEPA’s Results
                     </span> */}
@@ -89,6 +88,8 @@ class AboutNepa extends React.Component {
                     <br />
                     <br />
                     <br />
+
+
                 </div>
             </div>
         );

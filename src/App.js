@@ -169,7 +169,9 @@ class App extends React.Component {
 		{
 			return (
 				<div className="content">
-					<label className="logged-out-header">NEPAccess searches are not currently available to the public.</label>
+					<label className="logged-out-header">
+                        NEPAccess searches are not currently available to the public.
+                    </label>
 				</div>
 			)
 		}

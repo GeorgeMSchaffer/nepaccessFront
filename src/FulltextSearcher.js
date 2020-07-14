@@ -118,7 +118,7 @@ class FulltextSearcher extends React.Component {
                             <label className="search-label">
                                 <label className="flex-center no-select cursor-pointer">
                                     <input type="checkbox" className="cursor-pointer" name="context" checked={this.state.context} onChange={this.onCheckboxChange} 
-                                        disabled={this.props.searching} />
+                                            disabled={this.props.searching} />
                                     Show search terms in context (full view)
                                 </label>
                             </label>
