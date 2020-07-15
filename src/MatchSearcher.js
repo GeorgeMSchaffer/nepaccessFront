@@ -77,6 +77,7 @@ class MatchSearcher extends React.Component {
     }
 
     componentDidMount() {
+        console.log("From props: ", this.props.id);
         this.setState({
             matchPercent: this.props.matchPercent,
             id: this.props.id

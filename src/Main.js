@@ -20,6 +20,8 @@ import AboutNepaccess from './AboutNepaccess';
 
 import Importer from './Importer';
 
+import RecordDetailsTab from './RecordDetailsTab';
+
 import Globals from './globals.js';
 
 import { Link, Switch, Route } from 'react-router-dom';
@@ -151,6 +153,8 @@ class Main extends React.Component {
                 <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
+
+                <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
                 
                 <Route path="/importer" component={Importer}/>
                 <Route path="/generate" component={Generate}/>

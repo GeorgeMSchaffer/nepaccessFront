@@ -4,7 +4,10 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 import DownloadFile from './DownloadFile.js';
-import RecordDetails from './RecordDetails.js';
+import RecordDetailsLink from './RecordDetailsLink.js';
+// import DetailsLink from './DetailsLink.js';
+
+import { Link, Switch, Route } from 'react-router-dom';
 
 class SearchResults extends React.Component {
 
@@ -56,7 +59,7 @@ class SearchResults extends React.Component {
           });
           
           const columns = [
-              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight: true },
+              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true },
               { title: "Lead Agency", field: "agency", width: 242 },
               { title: "Published date", field: "registerDate", width: 154 },
               { title: "State", field: "state", width: 112 },
@@ -91,6 +94,7 @@ class SearchResults extends React.Component {
                     dataLoaded={()=>{
                     }}
                     onKeyUp={this.onArrow}
+                    rowClick={(e, row) => this.Action}
                     
                 />
               </div>
