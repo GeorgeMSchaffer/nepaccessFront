@@ -54,7 +54,12 @@ const Globals = {
         localStorage.removeItem("JWT");
         axios.defaults.headers.common['Authorization'] = null;
         localStorage.removeItem("username");
-    }
+    },
+
+    
+    anEnum: Object.freeze({"test":1, "test2":2, "test3":3})
+
+    
 }
 
 export default Globals;

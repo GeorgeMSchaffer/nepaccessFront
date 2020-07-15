@@ -348,3 +348,7 @@ a.email-text {
 .title-color {
     color: #8FBC3F;
 }
+
+.tippy-popper>.tippy-tooltip--small [x-circle] {
+    background: none;
+}

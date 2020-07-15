@@ -42,7 +42,11 @@
   width: 200px;
   text-align: left;
   right: -23px;
-  top: 90px;
+  top: 86px;
+
+  display: inline-flex;
+  align-items: center;
+  line-height: 32px;
 
   font-family: Open Sans;
   font-style: normal;
@@ -53,7 +57,8 @@
 
   cursor: pointer;
 
-  color: #64D6FA;
+  /* color: #64D6FA; */
+  color: white;
 }
 
 /* #search-mode-container {

@@ -57,15 +57,20 @@ class Searcher extends React.Component {
             needsDocument: false,
             searcherClassName: 'display-none',
             advancedClassName: 'display-none',
-            searchModeName: 'Show more options',
+            optionsChecked: false,
             iconClassName: 'icon icon--effect',
             limit: '100000',
+            test: globals.anEnum.options
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.alphaNumeric = this.alphaNumeric.bind(this);
         this.process = this.process.bind(this);
 
+
         this.myRef = React.createRef();
+
+        // console.log(this.state.test === globals.anEnum.options);
+        // console.log(Object.keys(globals.anEnum));
     }
     
     /**
@@ -412,7 +417,11 @@ class Searcher extends React.Component {
     }
     
     onTypeChecked = (evt) => {
-        if(evt.target.name==="typeAll" && evt.target.checked) { // All: Check all, uncheck others
+        if(evt.target.name==="optionsChecked") {
+            this.setState({ 
+                [evt.target.name]: evt.target.checked
+            });
+        } else if(evt.target.name==="typeAll" && evt.target.checked) { // All: Check all, uncheck others
             this.setState({
                 typeAll: true,
                 typeFinal: false,
@@ -445,15 +454,15 @@ class Searcher extends React.Component {
     }
 
     searchModeClick = (evt) => {
-        if(this.state.searchModeName === 'Show more options'){
+        if(!this.state.optionsChecked){
             this.setState ({
-                searchModeName: 'Hide options',
+                // searchModeName: 'Hide options',
                 searchMode: 'boolean',
 				advancedClassName: 'searchContainer'
             });
         } else {
             this.setState ({
-                searchModeName: 'Show more options',
+                // searchModeName: 'More options',
                 // searchMode: 'natural',
                 booleanOption: 'all',
 				advancedClassName: 'display-none'
@@ -509,12 +518,12 @@ class Searcher extends React.Component {
                 <div>
                     <div className="content" onSubmit={this.submitHandler}>
                         <div id="searcher-container">
-                            <label hidden={this.state.searchModeName==='Show more options'} className="search-label">
+                            <label hidden={!this.state.optionsChecked} className="search-label">
                                 <span id="search-by" className="no-select">
                                     Search by:
                                 </span>
                                 
-                                <span className="advanced-radio" hidden={this.state.searchModeName==='Show more options'}>
+                                <span className="advanced-radio" >
                                     <label className="flex-center no-select cursor-pointer">
                                         <input type="radio" className="cursor-pointer" name="booleanOption" value="all" onChange={this.onRadioChange} 
                                         defaultChecked />
@@ -534,7 +543,7 @@ class Searcher extends React.Component {
                             </label>
 
                             <div id="searcher-inner-container">
-                                <div hidden={this.state.searchModeName==='Hide options'}>
+                                <div hidden={this.state.optionsChecked}>
                                     <div id="fake-search-box" className="inline-block">
                                         
                                         <Tooltip 
@@ -573,7 +582,7 @@ class Searcher extends React.Component {
 
                                     </div>
                                 </div>
-                                <div hidden={this.state.searchModeName==='Show more options'}>
+                                <div hidden={!this.state.optionsChecked}>
                                     
                                     <div id="fake-search-box" className="inline-block">
                                         <Tooltip 
@@ -631,14 +640,21 @@ class Searcher extends React.Component {
 
                                 </div>
                             </div>
-                            <label id="search-mode" className="inline-block no-select" onClick={this.searchModeClick}>
+                            {/* <label id="search-mode" className="inline-block no-select" onClick={this.searchModeClick}>
                                 {this.state.searchModeName}
+                            </label> */}
+                            <label id="search-mode" className="advanced-checkbox-label inline-block no-select">
+                                    <input type="checkbox" name="optionsChecked" 
+                                            checked={this.state.optionsChecked} onChange={this.onTypeChecked} />
+                                    <span>
+                                        More options
+                                    </span>
                             </label>
                             <span onClick={() => { history.push('/fulltext'); }} id="fulltext-mode" className="inline-block no-select">Full-text search</span>
 
                         </div>
 
-                        <table id="advanced-search-box" hidden={this.state.searchModeName==='Show more options'}><tbody>
+                        <table id="advanced-search-box" hidden={!this.state.optionsChecked}><tbody>
                             <tr>
                                 <td>
                                     <label className="advanced-label" htmlFor="searchAgency">Lead agency</label>
