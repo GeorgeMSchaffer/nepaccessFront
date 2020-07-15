@@ -45,8 +45,6 @@ export default class RecordDetailsTab extends React.Component {
 
     populate = () => {
             let populateUrl = Globals.currentHost + "test/get_by_id";
-
-            console.log("Running", populateUrl, this.state.detailsID);
             
 			//Send the AJAX call to the server
 			axios.get(populateUrl, {
@@ -133,14 +131,11 @@ export default class RecordDetailsTab extends React.Component {
 					resultsText: "Error: Couldn't get results"
 				});
 			});
-			
-			// console.log("Out search");
 		
 		});
 	}
 
-    // TODO: Include a download link?
-    /** Return all metadata, not just what search table shows (right now table has all, though)*/
+    /** Return all metadata, not just what search table shows */
     showDetails = () => {
         const cellData = this.state.details;
         if(cellData) {
@@ -202,13 +197,11 @@ export default class RecordDetailsTab extends React.Component {
     // After render
 	componentDidMount() {
         const idString = Globals.getParameterByName("id");
-        console.log(idString);
         if(idString){
             this.setState({
                 detailsID: idString
             }, () => {
                 if(this.state.detailsID){
-                    console.log("Populating",this.state.detailsID);
                     this.populate();
                 } else {
                     this.setState({
