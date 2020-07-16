@@ -58,6 +58,7 @@
       line-height: 40px;
   }
 
-  #details {
-      margin-top: 102px;
-  }
+#details {
+    margin: 5px;
+    margin-top: 102px;
+}

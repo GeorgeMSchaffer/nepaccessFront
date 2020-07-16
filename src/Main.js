@@ -109,11 +109,11 @@ class Main extends React.Component {
                 <div id="logo" className="no-select">
                     <Link id="logo-link" to="/">
                     </Link>
-                    <div id="logo-type">
+                    {/* <div id="logo-type">
                         <span id="NEP">NEP</span>
                         <span id="A">A</span>
                         <span id="ccess">ccess</span>
-                    </div>
+                    </div> */}
                     <div id="logo-box">
 
                     </div>
