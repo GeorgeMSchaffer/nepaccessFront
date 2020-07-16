@@ -64,7 +64,7 @@ class SearchResults extends React.Component {
               { title: "Published date", field: "registerDate", width: 154 },
               { title: "State", field: "state", width: 112 },
               { title: "Version", field: "documentType", width: 114 },
-              { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
+              { title: "Documents", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
               { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
           ];
 

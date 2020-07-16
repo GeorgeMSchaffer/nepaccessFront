@@ -65,8 +65,8 @@ class MatchResults extends React.Component {
                 { title: "Date", field: "registerDate", width: 90 },
                 { title: "State", field: "state", width: 80 },
                 { title: "Version", field: "documentType", width: 90 },
-                { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-                { title: "Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) },
+                { title: "Documents", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
+                { title: "EPA Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) },
                 { title: "Match", field: "matchPercent", width: 95 }
             ];
 

@@ -30,9 +30,15 @@ class App extends React.Component {
 	}
 
 	search = (searcherState) => {
-		// console.log("In search");
+        // console.log("In search");
+        let _inputs = searcherState;
+
+        // If search executes with advanced options collapsed, assume user does not want to run with the advanced options
+        if(!searcherState.optionsChecked){
+            _inputs = Globals.convertToSimpleSearch(searcherState);
+        }
 		this.setState({
-			searcherInputs: searcherState,
+			searcherInputs: _inputs,
 			resultsText: "Loading results...",
 			networkError: "" // Clear network error
 		}, () => {
