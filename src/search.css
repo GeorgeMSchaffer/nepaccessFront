@@ -361,10 +361,6 @@ input[type=checkbox] {
   height: 31.57px;
 }
 
-.tippy-tooltip {
-  text-align: left;
-}
-
 .tippy-tooltip--small {
   border: 1px solid #737272;
 }
@@ -377,6 +373,8 @@ input[type=checkbox] {
   font-weight: normal;
   line-height: 111%;
   /* or 11px */
+  
+  text-align: left;
 
   color: black;
   background: white !important;
