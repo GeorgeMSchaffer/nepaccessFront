@@ -647,7 +647,7 @@ class Searcher extends React.Component {
                                     <input type="checkbox" name="optionsChecked" 
                                             checked={this.state.optionsChecked} onChange={this.onTypeChecked} />
                                     <span>
-                                        More options
+                                        Advanced search
                                     </span>
                             </label>
                             <span onClick={() => { history.push('/fulltext'); }} id="fulltext-mode" className="inline-block no-select">Full-text search</span>
