@@ -4,7 +4,7 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 import DownloadFile from './DownloadFile.js';
-import RecordDetails from './RecordDetails.js';
+import RecordDetailsLink from './RecordDetailsLink.js';
 
 class MatchResults extends React.Component {
 
@@ -60,7 +60,7 @@ class MatchResults extends React.Component {
                 )
             }
             const columns = [
-                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />) },
+                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />) },
                 { title: "Lead Agency", field: "agency", width: 150 },
                 { title: "Date", field: "registerDate", width: 90 },
                 { title: "State", field: "state", width: 80 },

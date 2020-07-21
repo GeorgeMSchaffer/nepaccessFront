@@ -4,7 +4,7 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 import DownloadFile from './DownloadFile.js';
-import RecordDetails from './RecordDetails.js';
+import RecordDetailsLink from './RecordDetailsLink.js';
 
 class FulltextResults extends React.Component {
 
@@ -50,7 +50,7 @@ class FulltextResults extends React.Component {
     setupColumns = (context) => {
         if(context){
             return [
-                { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetails />), variableHeight: true },
+                { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true },
                 { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true },
                 { title: "Text", field: "plaintext", formatter: "html" },
                 // { title: "Published date", field: "registerDate", width: 180 }, // can include but space is a premium with context

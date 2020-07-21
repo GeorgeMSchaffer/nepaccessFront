@@ -13,11 +13,18 @@ import Globals from './globals';
 
 import './importer.css';
 
-/** TODO: Add support for multiple files and also for a .csv which would be processed and should probably require:
- * - links between metadata and files (require filenames; handle linking up, loose/missing files in Spring and other components)
- * - title, register_date, document_type, state, agency (we should be able to design system to handle them in any order)
+// TODO: Tell backend to give express server ID as folder for single record imports and make sure that it's linked up correctly
+// (Because we can't just dump everything in base folder and hope there are no collisions in the future)
+
+/** DONE: 
+ * * Add support for multiple files and also for a .csv which would be processed and should probably require:
+    * - links between metadata and files (require filenames; handle linking up, loose/missing files in Spring and other components)
+    * - title, federal_register_date, document, state, agency (we should be able to design system to handle them in any order)
+ * * multiple file upload functionality for a single record
  **/
-// also need multiple file upload functionality for a single record
+// TODO: Test single, multi file record import; test csv upload; build logic for bulk import and then test that
+// TODO: Fix error handling to ensure we see an error if something breaks
+// TODO: Finally, set up for live
 // file: null would just become files: [] and files: evt.target.files instead of files[0]?
 
 // TODO: Full CSV export for EISDoc table
@@ -58,15 +65,16 @@ class Importer extends Component {
             filename: '',
             doc: {
                 title: '',
-                register_date: '',
+                federal_register_date: '',
                 state: '',
                 agency: '',
-                document_type: '',
+                document: '',
                 commentsFilename: '',
                 filename: '',
             },
             dragClass: '',
-            files: []
+            files: [],
+            importOption: "single"
         };
         
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -88,10 +96,13 @@ class Importer extends Component {
             return;
         }
         
-        // console.log(val);
-        // console.log(act);
+        console.log(val);
+        console.log(act);
 
-        const name = act.name;
+        let name = act.name;
+        if(act.action === "create-option"){ // Custom value for document type support
+            name = "document";
+        }
         const value = val.value;
         
         // console.log(value);
@@ -146,6 +157,12 @@ class Importer extends Component {
             this.importFile();
         }
     }
+    
+    // set booleanOpton to name of radio button clicked
+    onRadioChange = (evt) => {
+        // console.log("Radio", evt.target.value);
+        this.setState({ [evt.target.name]: evt.target.value });
+    }
 
 
     validated = () => {
@@ -154,7 +171,7 @@ class Importer extends Component {
 
         if(!this.state.file && this.state.files.length===0){ // No file(s)
             valid = false;
-            labelValue = "No file";
+            labelValue = "File is required";
         }
 
         if(this.state.doc.title.trim().length === 0){
@@ -169,11 +186,11 @@ class Importer extends Component {
             valid = false;
             this.setState({agencyError: "Agency required"});
         } 
-        console.log(this.state.doc.register_date);
-        if(this.state.doc.register_date.toString().trim().length === 0){
+        console.log("Date", this.state.doc.federal_register_date);
+        if(this.state.doc.federal_register_date.toString().trim().length === 0){
             valid = false;
             this.setState({dateError: "Date required"});
-        } if (this.state.doc.document_type.trim().length === 0) {
+        } if (this.state.doc.document.trim().length === 0) {
             valid = false;
             this.setState({typeError: "Type required"});
         }
@@ -186,24 +203,24 @@ class Importer extends Component {
         return valid;
     }
 
-    csvValidated = () => {
+    csvValidated = (csv) => {
         let result = false;
-        if(this.state.csv[0]){
-            let headers = this.state.csv[0];
-            console.log(headers);
+        if(csv[0]){
+            let headers = csv[0];
+            console.log("Headers", headers);
             // headers.forEach(header => console.log(header));
     
             // Check headers:
             // result = ( // TODO: Make sure these are standard, reasonable values to require based on current spreadsheets
-            //     headers.includes('title') && headers.includes('register_date') && headers.includes('agency') && headers.includes('state') 
-            //     && headers.includes('document_type') 
+            //     headers.includes('title') && headers.includes('federal_register_date') && headers.includes('agency') && headers.includes('state') 
+            //     && headers.includes('document') 
             //     && headers.includes('filename')
             // );
-            result = ('title' in headers && 'agency' in headers && 'register_date' in headers && 'state' in headers && 'document_type' in headers && 'filename' in headers);
+            result = ('title' in headers && 'agency' in headers && 'federal_register_date' in headers && 'state' in headers && 'document' in headers && 'filename' in headers);
     
             if(!result){
                 this.setState({
-                    csvError: "Missing one or more CSV headers (title, register_date, agency, state, document_type)"
+                    csvError: "Missing one or more CSV headers (title, federal register date, agency, state, document)"
                 });
             }
         } else {
@@ -220,8 +237,6 @@ class Importer extends Component {
         if(!this.validated()) {
             return;
         }
-
-        console.log("1");
         
         document.body.style.cursor = 'wait';
         this.setState({ 
@@ -381,7 +396,20 @@ class Importer extends Component {
     // Title, Document, EPA Comment Letter Date, Federal Register Date, Agency, State, EIS Identifier, Filename, Link
     // Translate these into a standard before sending it on?
     importCSV = () => {
-        if(!this.csvValidated()) {
+        let newCSV = [];
+        for(let i = 0; i < this.state.csv.length; i++){
+            let key, keys = Object.keys(this.state.csv[i]);
+            let n = keys.length;
+            let newObj={};
+            while (n--) {
+                key = keys[n];
+                newObj[key.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
+            }
+            newObj["title"] = newObj["title"].replace(/\s{2,}/g, ' ');
+            newCSV[i] = newObj;
+        }
+
+        if(!this.csvValidated(newCSV)) {
             return;
         }
         
@@ -396,13 +424,14 @@ class Importer extends Component {
         let importUrl = new URL('file/uploadCSV', Globals.currentHost);
 
         let uploadFile = new FormData();
-        uploadFile.append("csv", JSON.stringify(this.state.csv));
+        // uploadFile.append("csv", JSON.stringify(this.state.csv));
+        uploadFile.append("csv", JSON.stringify(newCSV));
         
         // let importObject = {"UploadInputs": this.state.csv};
         // uploadFile.append("csv", JSON.stringify(importObject));
 
-        console.log(this.state.csv);
-        console.log(uploadFile.get("csv"));
+        // console.log(this.state.csv);
+        // console.log(uploadFile.get("csv"));
 
         let networkString = '';
         let successString = '';
@@ -484,7 +513,7 @@ class Importer extends Component {
             this.setState( prevState =>
                 { 
                     const updatedDoc = prevState.doc;
-                    updatedDoc['register_date'] = date;
+                    updatedDoc['federal_register_date'] = date;
                     return {
                         doc: updatedDoc
                     }
@@ -495,9 +524,9 @@ class Importer extends Component {
         }
         return (
             <DatePicker
-                selected={this.state.doc.register_date} 
+                selected={this.state.doc.federal_register_date} 
                 onChange={date => setRegisterDate(date)}
-                name='register_date'
+                name='federal_register_date'
                 dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                 className="date no-margin" 
             />
@@ -648,10 +677,10 @@ class Importer extends Component {
         }
 
         return (
-            <div className="form">
-
+            <div className="form content">
+                
                 <div className="note">
-                    <p>Import Data</p>
+                    <p>Import New Data with File(s)</p>
                 </div>
                 
                 <label className="networkErrorLabel">
@@ -660,9 +689,31 @@ class Importer extends Component {
                 
                 
 
-                <div className="form-content">
-                    <div className="importFile">
-                        <label className="infoLabel">Import CSV:</label>
+
+                <div className="import-meta">
+
+                    <span className="advanced-radio" >
+                        <label className="flex-center no-select cursor-pointer">
+                            <input type="radio" className="cursor-pointer" name="importOption" value="single" onChange={this.onRadioChange} 
+                            defaultChecked />
+                            Single document
+                        </label>
+                        <label className="flex-center no-select cursor-pointer">
+                            <input type="radio" className="cursor-pointer" name="importOption" value="csv" onChange={this.onRadioChange} 
+                            />
+                            CSV
+                        </label>
+                        <label className="flex-center no-select cursor-pointer">
+                            <input type="radio" className="cursor-pointer" name="importOption" value="bulk" onChange={this.onRadioChange} 
+                            />
+                            Bulk file import (for adding and linking files to already-imported CSV)
+                        </label>
+                    </span>
+
+                    <hr />
+
+                    <div className="importFile" hidden={this.state.importOption !== "csv"}>
+                        <h1>Import CSV:</h1>
                         <CSVReader
                             onDrop={this.handleOnDrop}
                             onError={this.handleOnError}
@@ -678,96 +729,120 @@ class Importer extends Component {
                         <button type="button" className="button" id="submit" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
                             Import CSV
                         </button>
+
+                        <label className="infoLabel">
+                            {this.state.csvLabel}
+                        </label>
+                        <label className="loginErrorLabel">
+                            {this.state.csvError}
+                        </label>
                     </div>
 
-                    <label className="infoLabel">
-                        {this.state.csvLabel}
-                    </label>
-                    <label className="loginErrorLabel">{this.state.csvError}</label>
-                    <hr />
-
-                    <div className="importFile">
-                        <label className="infoLabel">Import single record with archive or PDF:</label>
-                    </div>
+                    <div hidden={this.state.importOption !== "single"}>
+                        <h1>
+                            Import single record:
+                        </h1>
+                        
+                        <div className="center title-container">
+                            <div id="fake-search-box-import" className="inline-block">
+                                <label className="loginErrorLabel">
+                                    {this.state.titleLabel}
+                                </label>
+                                <input className="search-box" 
+                                    name="title" 
+                                    placeholder="Title" 
+                                    value={this.state.doc.title}
+                                    autoFocus 
+                                    onChange={this.onChange}
+                                />
+                            </div>
+                        </div>
                     
 
-                    <label className="infoLabel">
-                        {this.state.successLabel}
-                    </label>
+                        <table id="advanced-search-box" className="import-table"><tbody>
+                            <tr>
+                                <td>
+                                    <label className="advanced-label" htmlFor="agency">Lead agency</label>
+                                    <Select id="searchAgency" className="multi inline-block" classNamePrefix="react-select" name='agency' isSearchable isClearable 
+                                        styles={customStyles}
+                                        options={agencyOptions} 
+                                        selected={this.state.doc.agency}
+                                        onChange={this.onSelect} 
+                                        placeholder="Type or select lead agency" 
+                                        // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                                        // menuIsOpen={true}
+                                    />
+                                    <label className="loginErrorLabel">{this.state.agencyError}</label>
+                                </td>
+                                <td>
+                                    <label className="advanced-label" htmlFor="state">State</label>
+                                    <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="state" isSearchable isClearable 
+                                        styles={customStyles}
+                                        options={stateOptions} 
+                                        selected={this.state.doc.state}
+                                        onChange={this.onSelect} 
+                                        placeholder="Type or select state" 
+                                    />
+                                    <label className="loginErrorLabel">{this.state.stateError}</label>
+                                </td>
+                                
+                                <td>
+                                    {/**TODO: Grab all types from db? */}
+                                    <label className="block advanced-label">Document type</label>
+                                    {/** Creatable allows custom value, vs. Select */}
+                                    <Creatable id="searchType" className="multi inline-block" classNamePrefix="react-select" name="document" isSearchable isClearable 
+                                        styles={customStyles}
+                                        options={typeOptions} 
+                                        selected={this.state.doc.document}
+                                        onChange={this.onSelect} 
+                                        placeholder="Type or select document type" 
+                                    />
+                                    <label className="loginErrorLabel">{this.state.typeError}</label>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <label className="advanced-label" htmlFor="federal_register_date">Date</label>
+                                    <div id="date">
+                                        {this.showDate()}
+                                        <label className="loginErrorLabel">{this.state.dateError}</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody></table>
                     
-                    <label className="loginErrorLabel">{this.state.titleLabel}</label>
-                    <div className="center">
-                        <div id="fake-search-box-import" className="inline-block">
-                            <input className="search-box" 
-                                name="title" 
-                                placeholder="Title" 
-                                value={this.state.doc.title}
-                                autoFocus 
-                                onChange={this.onChange}
-                            />
+                
+                        <div className="importFile">
+                            <h2>
+                                Option 1: Import with single file
+                            </h2>
+                            <div>
+                                <label className="infoLabel">
+                                    Note: Full text search may only function with .zip or .pdf uploads
+                                </label>
+                                <input title="Test" type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} onChange={this.onFileChange} />
+                            </div>
+                            <h3 className="infoLabel">
+                                {this.state.successLabel}
+                            </h3>
+                        </div>
+                        
+                        <div className="importFile">
+                            <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.importFile}>
+                                Import Single Record With File
+                            </button>
                         </div>
                     </div>
-
-                    <table id="advanced-search-box" className="import-table"><tbody>
-                        <tr>
-                            <td>
-                                <label className="advanced-label" htmlFor="agency">Lead agency</label>
-                                <Select id="searchAgency" className="multi inline-block" classNamePrefix="react-select" name='agency' isSearchable isClearable 
-                                    styles={customStyles}
-                                    options={agencyOptions} 
-                                    selected={this.state.doc.agency}
-                                    onChange={this.onSelect} 
-                                    placeholder="Type or select lead agency" 
-                                    // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
-                                    // menuIsOpen={true}
-                                />
-                                <label className="loginErrorLabel">{this.state.agencyError}</label>
-                            </td>
-                            <td>
-                                <label className="advanced-label" htmlFor="state">State</label>
-                                <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" name="state" isSearchable isClearable 
-                                    styles={customStyles}
-                                    options={stateOptions} 
-                                    selected={this.state.doc.state}
-                                    onChange={this.onSelect} 
-                                    placeholder="Type or select state" 
-                                />
-                                <label className="loginErrorLabel">{this.state.stateError}</label>
-                            </td>
                             
-                            <td>
-                                {/**TODO: Grab all types from db?  Allow custom?*/}
-                                <label className="block advanced-label">Document type</label>
-                                <Creatable id="searchType" className="multi inline-block" classNamePrefix="react-select" name="document_type" isSearchable isClearable 
-                                    styles={customStyles}
-                                    options={typeOptions} 
-                                    selected={this.state.doc.document_type}
-                                    onChange={this.onSelect} 
-                                    placeholder="Type or select document type" 
-                                />
-                                <label className="loginErrorLabel">{this.state.typeError}</label>
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <label className="advanced-label" htmlFor="register_date">Date</label>
-                                <div id="date">
-                                    {this.showDate()}
-                                    <label className="loginErrorLabel">{this.state.dateError}</label>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody></table>
                     
-                </div>
-                    <div className="importFile">
-                        {/* <div>
-                            <label className="infoLabel">Note: Full text search may only function with .zip or .pdf uploads</label>
-                            <input title="Test" type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} onChange={this.onFileChange} />
-                        </div> */}
-                        {/** TODO: bulk file import */}
+                    
+                    <div className="importFile" hidden={this.state.importOption==="csv"}>
+                        <h1 hidden={this.state.importOption !== "bulk"}>Bulk directory import:</h1>
+                        <h2 hidden={this.state.importOption !== "single"}>Option 2: Import with multiple files</h2> 
+                        
+
                         <Dropzone onDrop={this.onDrop} onDragEnter={this.onDragEnter} onDragLeave={this.onDragLeave} >
                             {({getRootProps, getInputProps}) => (
                                 <section>
@@ -775,27 +850,28 @@ class Importer extends Component {
                                         <input {...getInputProps()} />
                                         <p>Drag and drop file(s) or directory here</p>
                                     </div>
-                                    <aside>
+                                    <aside className="dropzone-aside">
                                         <h4>Files</h4>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
                             )}
                         </Dropzone>
-                        <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.importFile}>
-                            Import Single Record
-                        </button>
                         
                         <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.uploadFiles}>
-                            Test Import Single Record with Multiple Files
+                            Import Single Record with Multiple Files
                         </button>
                     </div>
+                </div>
                 <hr />
             </div>
         )
     }
 
     componentDidUpate() {
+    }
+    componentDidMount() {
+        console.log(this.state.importOption);
     }
 }
 

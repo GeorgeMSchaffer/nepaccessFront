@@ -4,7 +4,7 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 import DownloadFile from './DownloadFile.js';
-import RecordDetails from './RecordDetails.js';
+import RecordDetailsLink from './RecordDetailsLink.js';
 
 class FulltextResults2 extends React.Component {
 
@@ -34,7 +34,7 @@ class FulltextResults2 extends React.Component {
 
     setupColumns = () => {
             return [
-                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetails />), variableHeight: true },
+                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true },
                 { title: "Lead Agency", field: "agency", width: 242 },
                 { title: "Published date", field: "registerDate", width: 154 },
                 { title: "State", field: "state", width: 112 },
