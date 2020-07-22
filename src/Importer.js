@@ -165,6 +165,20 @@ class Importer extends Component {
     }
 
 
+    hasFiles = () => {
+        let valid = true;
+        let labelValue = "";
+
+        if(this.state.files.length===0){ // No files
+            valid = false;
+            labelValue = "File(s) required";
+        }
+        
+        this.setState({successLabel: labelValue});
+        return valid;
+    }
+
+
     validated = () => {
         let valid = true;
         let labelValue = "";
@@ -501,10 +515,86 @@ class Importer extends Component {
     handleOnRemoveFile = (evt) => { this.setState({ csv: null, canImportCSV: false }); }
 
     handleOnError = (evt) => {
-        // TODO
         // Note: Just because errors are generated does not necessarily mean that parsing failed.
     }
+
+
+    dictateButtonStates = () => {
+        // TODO: Decide here when called, to set the button states to disabled or not
+    }
+
+    // TODO: Bulk import function
+    bulkUpload = () => {
+        if(!this.hasFiles()) {
+            return;
+        }
+        
+        document.body.style.cursor = 'wait';
+        this.setState({ 
+            networkError: '',
+            disabled: true 
+        });
+        
+        let importUrl = new URL('file/uploadFilesBulk', Globals.currentHost);
+
+        let uploadFiles = new FormData();
+        for(let i=0; i < this.state.files.length; i++){
+            uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
+        }
+
+        let networkString = '';
+        let successString = '';
+
+        axios({ 
+            method: 'POST',
+            url: importUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: uploadFiles
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return true;
+            } else { 
+                return false;
+            }
+        }).then(success => {
+            if(success){
+                successString = "Success.";
+            } else {
+                successString = "Failed to import."; // Server down?
+            }
+        }).catch(error => {
+            if(error.response) {
+                if (error.response.status === 500) {
+                    networkString = "Internal server error.";
+                } else if (error.response.status === 404) {
+                    networkString = "Not found.";
+                } 
+            } else {
+                networkString = "Server may be down (no response), please try again later.";
+            }
+            successString = "Couldn't import.";
+            console.error('error message ', error);
+        }).finally(e => {
+            this.setState({
+                networkError: networkString,
+                successLabel: successString,
+                disabled: false
+            });
     
+            document.body.style.cursor = 'default'; 
+        });
+
+
+        function renameFile(originalFile, newName) {
+            return new File([originalFile], newName, {
+                type: originalFile.type,
+                lastModified: originalFile.lastModified,
+            });
+        }
+    }
     
 
     showDate = () => {
@@ -858,8 +948,13 @@ class Importer extends Component {
                             )}
                         </Dropzone>
                         
-                        <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.uploadFiles}>
+                        <button hidden={this.state.importOption !== "single"} type="button" className="button" id="submit" 
+                                disabled={this.state.disabled} onClick={this.uploadFiles}>
                             Import Single Record with Multiple Files
+                        </button>
+                        <button hidden={this.state.importOption !== "bulk"} type="button" className="button" id="submit" 
+                                disabled={this.state.disabled} onClick={this.bulkUpload}>
+                            Import Directories with Files to Link with Existing Metadata
                         </button>
                     </div>
                 </div>
