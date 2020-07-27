@@ -449,6 +449,7 @@ class Importer extends Component {
 
         let networkString = '';
         let successString = '';
+        let resultString = "";
 
         axios({ 
             method: 'POST',
@@ -459,6 +460,13 @@ class Importer extends Component {
             data: uploadFile
         }).then(response => {
             let responseOK = response && response.status === 200;
+            console.log(response);
+
+            let responseArray = response.data;
+            responseArray.forEach(element => {
+                resultString += element + "\n";
+            });
+            
             if (responseOK) {
                 return true;
             } else { 
@@ -486,7 +494,8 @@ class Importer extends Component {
             this.setState({
                 csvError: networkString,
                 csvLabel: successString,
-                disabled: false
+                disabled: false,
+                results : resultString
             });
     
             document.body.style.cursor = 'default'; 
@@ -804,6 +813,9 @@ class Importer extends Component {
 
                     <div className="importFile" hidden={this.state.importOption !== "csv"}>
                         <h1>Import CSV:</h1>
+                        <h3>One CSV at a time supported.  </h3>
+                        <h3>Required headers:  Federal Register Date, Document, EIS Identifier, Title</h3>
+                        <h3>Optional headers: Agency, State, Filename, Link, Notes, Comments Filename, EPA Comment Letter Date</h3>
                         <CSVReader
                             onDrop={this.handleOnDrop}
                             onError={this.handleOnError}
@@ -826,6 +838,14 @@ class Importer extends Component {
                         <label className="loginErrorLabel">
                             {this.state.csvError}
                         </label>
+                        
+                        <div className="importFile" hidden={this.state.importOption!=="csv"}>
+                            <h1>Results from CSV import:</h1>
+                            <textarea value={this.state.results} />
+                        </div>
+                        
+
+                        
                     </div>
 
                     <div hidden={this.state.importOption !== "single"}>

@@ -36,8 +36,8 @@ class Main extends React.Component {
             loggedInDisplay: 'display-none',
             loggedOutDisplay: '',
             loaderClass: 'loadDefault',
+            curator: false
         };
-        this.check = this.check.bind(this);
         this.refresh = this.refresh.bind(this);
         this.refreshNav = this.refreshNav.bind(this);
         Globals.setUp();
@@ -77,6 +77,8 @@ class Main extends React.Component {
     }
 
     refreshNav() {
+        this.checkCurator();
+
         this.setState({
             loggedOutDisplay: 'display-none',
             loggedInDisplay: 'display-none'
@@ -138,6 +140,7 @@ class Main extends React.Component {
                     <Link className="main-menu-link" to="/search">Search NEPAccess</Link>
                     <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
                     <Link className="main-menu-link" to="/aboutnepaccess">About NEPAccess</Link>
+                    {this.state.menuItems}
                     {/* <Link className="main-menu-link" to="/fulltext">Fulltext search</Link> */}
                 </div>
                 
@@ -165,10 +168,59 @@ class Main extends React.Component {
         )
     }
 
+
+    checkCurator = () => {
+        if(this.state.loggedIn === false) { // No need for axios call
+            this.setState({
+                curator: false
+            }, () =>{
+                this.getCuratorMenuItems();
+            })
+        } else {
+            let checkUrl = new URL('user/checkCurator', Globals.currentHost);
+            let result = false;
+            axios({
+                url: checkUrl,
+                method: 'POST'
+            }).then(response => {
+                result = response && response.status === 200;
+                this.setState({
+                    curator: result
+                }, () => {
+                    this.getCuratorMenuItems();
+                });
+            }).catch(error => { // 401/403
+                this.setState({
+                    curator: false
+                }, () => {
+                    this.getCuratorMenuItems();
+                });
+            });
+        }
+
+
+    }
+
+    getCuratorMenuItems = () => {
+        if(this.state.curator === true) {
+            this.setState({
+                menuItems: 
+                <>
+                    <Link className="main-menu-link" to="/importer">Import New Documents</Link>
+                </>
+            })
+        } else {
+            this.setState({
+                menuItems: <></>
+            })
+        }
+    }
+
     
     componentDidMount() {
         Globals.registerListener('refresh', this.refresh);
         this.check();
+        this.checkCurator();
     }
 }
 
