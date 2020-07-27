@@ -48,7 +48,7 @@
     overflow: auto;
 }
 
-.button {
+.import-meta .button {
     font-size: 2em;
     margin: auto;
     margin-top: 15px;
@@ -59,11 +59,11 @@
     background: white;
     color: #555;
 }
-.button:hover {
+.import-meta .button:hover {
     background: wheat;
 }
 
-.button:disabled {
+.import-meta .button:disabled {
     color: #888;
 }
 
@@ -85,7 +85,7 @@
     margin: auto;
 }
 
-textarea {
+.import-meta textarea {
     width: 100%;
     height: 900px;
 }

@@ -147,10 +147,10 @@ class UserDetails extends React.Component {
     render() {
         return (
             <div className="container login-form">
-                <div className="form">
-                    <div className="note">
-                        <p>User Details</p>
-                    </div>
+            <div className="note">
+                <p>User Details</p>
+            </div>
+                <div className="form-content">
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="currentPassword">Enter your current password:</label>

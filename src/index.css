@@ -342,3 +342,21 @@ a.email-text {
 .tippy-popper>.tippy-tooltip--small [x-circle] {
     background: none;
 }
+
+.button {
+    font-size: 2em;
+    margin-top: 15px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+    background: white;
+    color: #555;
+}
+.button:hover {
+    background: wheat;
+}
+
+.button:disabled {
+    color: #888;
+}

@@ -130,7 +130,7 @@ class Reset extends React.Component {
             console.log("Reset");
             return (
                 <div className="container login-form">
-                    <div className="form">
+                    <div className="form-content">
                         <div className="note">
                             <p>Set New Password</p>
                         </div>
