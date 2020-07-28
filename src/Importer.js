@@ -38,14 +38,15 @@ class Importer extends Component {
             this.setState({
                 files: dropped,
                 dragClass: ''
-            })
+            // }, ()=> {
+            //     console.log(this.state.files);
+            });
         };
 
         this.onDragEnter = (e) => {
             this.setState({
                 dragClass: 'over'
             });
-            console.log("Enter");
         }
     
         this.onDragLeave = (e) => {
@@ -96,8 +97,8 @@ class Importer extends Component {
             return;
         }
         
-        console.log(val);
-        console.log(act);
+        // console.log(val);
+        // console.log(act);
 
         let name = act.name;
         if(act.action === "create-option"){ // Custom value for document type support
@@ -200,7 +201,7 @@ class Importer extends Component {
             valid = false;
             this.setState({agencyError: "Agency required"});
         } 
-        console.log("Date", this.state.doc.federal_register_date);
+        // console.log("Date", this.state.doc.federal_register_date);
         if(this.state.doc.federal_register_date.toString().trim().length === 0){
             valid = false;
             this.setState({dateError: "Date required"});
@@ -221,7 +222,7 @@ class Importer extends Component {
         let result = false;
         if(csv[0]){
             let headers = csv[0];
-            console.log("Headers", headers);
+            // console.log("Headers", headers);
             // headers.forEach(header => console.log(header));
     
             // Check headers:
@@ -351,8 +352,8 @@ class Importer extends Component {
         // uploadFile.append('file', new Blob([this.state.file]) );
         // uploadFile.append('file', new Blob([this.state.file], { type: 'text/csv' }) );
 
-        console.log(this.state.doc);
-        console.log(this.state.file);
+        // console.log(this.state.doc);
+        // console.log(this.state.file);
 
         // axios.post(importUrl, uploadFile, { 
         //     headers: { 'Content-Type': 'multipart/form-data' } 
@@ -460,7 +461,7 @@ class Importer extends Component {
             data: uploadFile
         }).then(response => {
             let responseOK = response && response.status === 200;
-            console.log(response);
+            // console.log(response);
 
             let responseArray = response.data;
             responseArray.forEach(element => {
@@ -503,15 +504,15 @@ class Importer extends Component {
     }
     // TODO: Map array into new array of just data, without the name data
     handleOnDrop = (evt) => {
-        console.log("Data:");
-        console.log(evt);
-        console.log(evt[0]);
-        console.log(evt[0].data);
+        // console.log("Data:");
+        // console.log(evt);
+        // console.log(evt[0]);
+        // console.log(evt[0].data);
         let newArray = [];
         for(let i = 0; i < evt.length; i++){
             newArray.push(evt[i].data);
         }
-        console.log(newArray);
+        // console.log(newArray);
         this.setState({ 
             csv: newArray
         }, () => {
@@ -812,10 +813,26 @@ class Importer extends Component {
                     <hr />
 
                     <div className="importFile" hidden={this.state.importOption !== "csv"}>
-                        <h1>Import CSV:</h1>
-                        <h3>One CSV at a time supported.  </h3>
+                        <h2>Instructions:</h2>
+                        <h3>One CSV at a time supported.  
+                            Header names must be exact.  
+                            "EIS Identifier" must represent a foldername that will be uploaded with files in it.  This foldername must be unique system-wide.  
+                            If separated into subfolders by document type (which is required if you are linking multiple records to the same EIS Identifier, presumably because they are part of the same process), then the "Document" field must be exactly the same as the subfolder name.  </h3>
+                        <h3>Example: If you are going to upload NSF/NSF_00001/Final/file.pdf, then the corresponding CSV line must say Final under the Document header, and NSF_00001 for the EIS Identifier.  
+                            When uploading, use bulk file import and drag the entire NSF/ base folder in.  
+                            Otherwise, there will be incorrect search results and wrong/unavailable files listed for download.  
+                            Filename is optional, but if there is only one file for a record, it can help ensure data integrity to include it.</h3>
+                        <h3>The system detects matches by title, register date and document type.  
+                            Existing metadata with no files will be updated if it's a match.  
+                            Existing metadata with an existing filename will be skipped if it's a match.  
+                            In this situation, when you do the bulk upload, the files for that record will be skipped, because if we already have the documents the system assumes incoming data is duplicate data.  
+                            This is to prevent converting and storing duplicate document texts associated with one record.  
+                            If you're sure you want to update existing metadata with an existing filename, then use the Force Update header and put Yes.
+                            Valid, non-duplicate data will become new metadata records.
+                            </h3>
                         <h3>Required headers:  Federal Register Date, Document, EIS Identifier, Title</h3>
-                        <h3>Optional headers: Agency, State, Filename, Link, Notes, Comments Filename, EPA Comment Letter Date</h3>
+                        <h3>Optional headers: Agency, State, Filename, Link, Notes, Comments Filename, EPA Comment Letter Date, Force Update</h3>
+                        <h1>Import CSV:</h1>
                         <CSVReader
                             onDrop={this.handleOnDrop}
                             onError={this.handleOnError}
@@ -949,7 +966,20 @@ class Importer extends Component {
                     
                     
                     <div className="importFile" hidden={this.state.importOption==="csv"}>
-                        <h1 hidden={this.state.importOption !== "bulk"}>Bulk directory import:</h1>
+                        <div hidden={this.state.importOption !=="bulk"}>
+                            <h2>Instructions:</h2>
+                            <h3>This functionality has only been tested so far on Chrome, in Windows.  Results on other OSes/browsers is unpredictable.  </h3>
+                            <h3>Import one or more directories.  
+                                If you have a structure like NSF/NSF_00001/..., you can drag the entire NSF folder in, or you can drag one or more identifying folders in (e.g. NSF_00001, NSF_00002, ...).  
+                                If you're dragging the identifying folders in and not their base agency folder, then the folder must start with the base folder name followed by an underscore.  
+                                So if you drag in EPA_5555, the system will still put the files in EPA/EPA_5555/.  </h3>
+                            <h3>The system will check to see if each file has been converted to text and added to the database for the associated record before.  
+                                If so, it's regarded as a duplicate and skipped.  
+                                If there is no association found between the folder name and an existing EIS Identifier in the metadata, it's skipped.  
+                                If there is a subfolder for document type like with EPA_5000/Final/..., the system will try to match the files with a metadata record with EIS Identifier EPA_5000 and document type Final.  
+                                The more new files being uploaded, the longer it will take.</h3>
+                            <h1>Bulk directory import:</h1>
+                        </div>
                         <h2 hidden={this.state.importOption !== "single"}>Option 2: Import with multiple files</h2> 
                         
 
@@ -986,7 +1016,7 @@ class Importer extends Component {
     componentDidUpate() {
     }
     componentDidMount() {
-        console.log(this.state.importOption);
+        // console.log(this.state.importOption);
     }
 }
 

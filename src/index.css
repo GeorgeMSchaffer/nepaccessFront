@@ -356,7 +356,6 @@ a.email-text {
 .button:hover {
     background: wheat;
 }
-
 .button:disabled {
     color: #888;
 }
