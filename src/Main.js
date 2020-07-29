@@ -184,6 +184,7 @@ class Main extends React.Component {
                 method: 'POST'
             }).then(response => {
                 result = response && response.status === 200;
+                console.log(result);
                 this.setState({
                     curator: result
                 }, () => {

@@ -1,24 +1,23 @@
 import React from 'react';
+
+import Select from 'react-select';
 import ReactModal from 'react-modal';
 import axios from 'axios';
 
 import DownloadFile from './DownloadFile.js';
 import MatchSearcher from './MatchSearcher.js';
 import MatchResults from './MatchResults.js';
+import DetailsUpdate from './DetailsUpdate.js';
 
 import './index.css';
 import './match.css';
 
 import Globals from './globals.js';
-// -1. User clicks Record
-// -2. Modal opens, shows Record metadata from props
-// 3. ID of record or foreign process ID is sent to backend with getRecordDetails(this.props.ID) and message becomes "Loading related documents..."
-// 4. Table of title/type/% match/download for related records, message becomes "Related documents:"
-// 5. Slider/1-100 textbox for % match (will have to re-request from database with new percentage, debounced)
-// 0%+ match would return all records, and that would be silly, need to restrict on backend also
-// 6. Good place to put curation options for authorized users
+// 1. User clicks Record
+// 2. Tab opens, shows Record metadata from backend call
+// Good place to put curation options for authorized users
 // i.e. alter metadata, import new relations (maybe do this elsewhere), verify/unlink existing relations...  
-// and the database updates to reflect it after they confirm changes
+// and the database updates to reflect it after they confirm changes (confirmation window is a big plus, also cancel/reset option to put the original values back in)
 
 export default class RecordDetailsTab extends React.Component {
 
@@ -33,15 +32,23 @@ export default class RecordDetailsTab extends React.Component {
             details: {
 
             },
+            dropdownOption: {value: 'Details', label: 'Details'},
             detailsID: 0,
-            searchResults: [],
+            searchResults: [
+
+            ],
             networkError: '',
             searcherClassName: '',
-            message: "Find similar documents by title:",
             show: false,
             resultsText: "",
         };
     }
+
+    
+	onDropdownChange = (evt) => {
+        this.setState({ dropdownOption: evt });
+    }
+
 
     populate = () => {
             let populateUrl = Globals.currentHost + "test/get_by_id";
@@ -133,7 +140,14 @@ export default class RecordDetailsTab extends React.Component {
 			});
 		
 		});
-	}
+    }
+    
+    
+    getIdParam = () => {
+        let idString = Globals.getParameterByName("id");
+        return parseInt(idString);
+    }
+
 
     /** Return all metadata, not just what search table shows */
     showDetails = () => {
@@ -155,15 +169,39 @@ export default class RecordDetailsTab extends React.Component {
                     return '';
                 }
                 else {
-                    return <div><p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p></div>;
+                    console.log(i, keyName, cellData[key]);
+                    return (<div><p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p></div>);
                 }
             }));
         }
     }
 
-    getIdParam = () => {
-        let idString = Globals.getParameterByName("id");
-        return parseInt(idString);
+
+    
+    showView = () => {
+        // One benefit of switching here instead of dynamically hiding elements is that Tabulator doesn't error out when hidden
+        if(this.state.dropdownOption.value === 'Details'){ // Show details panel
+            return (
+                <div className="record-details">
+                    <h2 className="title-color">Record details:</h2>
+                    {this.showDetails()}
+                </div>
+            );
+        } else if(this.state.dropdownOption.value === 'Match') {
+            return (
+                <div className="record-details">
+                    <h2 className="title-color">Find similar documents by title:</h2>
+                    <div><p className='modal-line'><span className='modal-title'>Title:</span> {this.state.details.title} </p></div>
+                    {this.showDocuments()}
+                </div>
+            );
+        } else { // Show update panel
+            return (
+                <div className="record-details">
+                    {this.showUpdate()}
+                </div>
+            );
+        }
     }
 
     showDocuments = () => {
@@ -173,7 +211,15 @@ export default class RecordDetailsTab extends React.Component {
                 <MatchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
             </div>
         )
-	}
+    }
+    
+    
+    
+    showUpdate = () => {
+        return (
+            <DetailsUpdate record={this.state.details} />
+        );
+    }
 
     render () {
 
@@ -181,19 +227,51 @@ export default class RecordDetailsTab extends React.Component {
             ReactModal.setAppElement('body');
         }
 
+        
+        const customStyles = {
+            option: (styles, state) => ({
+                 ...styles,
+                borderBottom: '1px dotted',
+	            backgroundColor: 'white',
+                color: 'black',
+                '&:hover': {
+                    backgroundColor: 'lightgreen'
+                },
+                width: "500px",
+            }),
+            control: (styles) => ({
+                ...styles,
+                backgroundColor: 'white',
+            })
+        }
+
+        // TODO: Curator check
+
+        let curator = true;
+        let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'Title similarity search'}];
+        if(curator) {
+            viewOptions.push({ value: 'Update', label: 'Edit' });
+        }
+        
+
         return (
             <div id="details">
                 <label className="errorLabel">{this.state.networkError}</label>
-                <h2 className="title-color">Record details:</h2>
-                <div className="record-details">
-                    {this.showDetails()}
-                </div>
-                <hr />
-                <h2 className="title-color">{this.state.message}</h2>
-                {this.showDocuments()}
+                <br />
+                <h3 className="advanced-label inline" htmlFor="detailsDropdown">Select view:</h3>
+                <Select id="detailsDropdown" className="multi inline-block" classNamePrefix="react-select" name="detailsDropdown" isSearchable 
+                    styles={customStyles}
+                    options={viewOptions} 
+                    onChange={this.onDropdownChange} 
+                    value={this.state.dropdownOption}
+                    // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                    // menuIsOpen={true}
+                />
+                {this.showView()}
             </div>
         );
     }
+
 
     // After render
 	componentDidMount() {

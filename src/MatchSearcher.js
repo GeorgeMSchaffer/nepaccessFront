@@ -52,7 +52,7 @@ class MatchSearcher extends React.Component {
     
     render () {
 
-        let similarityTooltip = "A lower percentage yields more results.";
+        let similarityTooltip = "A lower match percentage yields more results.";
         return (
             <form className="titleMatchForm" onSubmit={this.submitHandler}>
                 {/* <Tooltip 

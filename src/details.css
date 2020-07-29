@@ -1,0 +1,23 @@
+label.update {
+    font-weight: bold;
+    display: inline;
+    margin: 10px;
+}
+
+div.update>input {
+    display: block;
+    line-height: 1.5em;
+    font-size: 1.1em;
+    padding: 5px;
+    width: 80%;
+}
+
+div.update>.react-datepicker-wrapper {
+    display: block;
+}
+div.update .react-datepicker__input-container>input {
+    line-height: 1.5em;
+    font-size: 1.1em;
+    padding: 5px;
+    width: 80%;
+}
