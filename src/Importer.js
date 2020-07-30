@@ -202,7 +202,7 @@ class Importer extends Component {
             this.setState({agencyError: "Agency required"});
         } 
         // console.log("Date", this.state.doc.federal_register_date);
-        if(this.state.doc.federal_register_date.toString().trim().length === 0){
+        if(!this.state.doc.federal_register_date || this.state.doc.federal_register_date.toString().trim().length === 0){
             valid = false;
             this.setState({dateError: "Date required"});
         } if (this.state.doc.document.trim().length === 0) {
@@ -845,7 +845,7 @@ class Importer extends Component {
                         >
                             <span>Drop CSV file here or click to upload.</span>
                         </CSVReader>
-                        <button type="button" className="button" id="submit" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
+                        <button type="button" className="button" id="submitCSV" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
                             Import CSV
                         </button>
 
@@ -957,7 +957,7 @@ class Importer extends Component {
                         </div>
                         
                         <div className="importFile">
-                            <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.importFile}>
+                            <button type="button" className="button" id="submitImport" disabled={this.state.disabled} onClick={this.importFile}>
                                 Import Single Record With File
                             </button>
                         </div>
@@ -1002,7 +1002,7 @@ class Importer extends Component {
                                 disabled={this.state.disabled} onClick={this.uploadFiles}>
                             Import Single Record with Multiple Files
                         </button>
-                        <button hidden={this.state.importOption !== "bulk"} type="button" className="button" id="submit" 
+                        <button hidden={this.state.importOption !== "bulk"} type="button" className="button" id="submitBulk" 
                                 disabled={this.state.disabled} onClick={this.bulkUpload}>
                             Import Directories with Files to Link with Existing Metadata
                         </button>
@@ -1018,20 +1018,6 @@ class Importer extends Component {
     componentDidMount() {
         // console.log(this.state.importOption);
     }
-}
-
-function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [year, month, day].join('-');
 }
 
 export default Importer;

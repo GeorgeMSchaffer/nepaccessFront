@@ -54,6 +54,7 @@ const Globals = {
         localStorage.removeItem("JWT");
         axios.defaults.headers.common['Authorization'] = null;
         localStorage.removeItem("username");
+        localStorage.removeItem("curator");
     },
 
     /** Return search options that are all default except use the incoming title/mode.  Options based on what Spring DAL uses. 
@@ -85,6 +86,13 @@ const Globals = {
 			needsDocument: false,
 			limit: ''
 		};
+    },
+
+    // Date parsing with hyphens forces current timezone, whereas alternate separators like / result in using utc/gmt which means a correct year/month/date item
+    // whereas hyphens cause you to potentially be off by an entire day
+    getCorrectDate(sDate){
+        let oddity = sDate.replace(/-/g,'/');
+        return new Date(oddity);
     },
 
     

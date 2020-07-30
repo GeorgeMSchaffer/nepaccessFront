@@ -247,7 +247,7 @@ export default class RecordDetailsTab extends React.Component {
 
         // TODO: Curator check
 
-        let curator = true;
+        let curator = localStorage.curator;
         let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'Title similarity search'}];
         if(curator) {
             viewOptions.push({ value: 'Update', label: 'Edit' });

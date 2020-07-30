@@ -204,6 +204,7 @@ class Main extends React.Component {
 
     getCuratorMenuItems = () => {
         if(this.state.curator === true) {
+            localStorage.curator = true;
             this.setState({
                 menuItems: 
                 <>
