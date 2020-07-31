@@ -23,7 +23,8 @@ class FulltextResults2 extends React.Component {
                     registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
                     filename: doc.filename, 
                     commentsFilename: doc.commentsFilename,
-                    id: doc.id
+                    id: doc.id,
+                    folder: doc.folder
                 };
                 return newObject;
             });

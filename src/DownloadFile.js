@@ -16,35 +16,60 @@ class DownloadFile extends React.Component {
 
 	// TODO: Cell resets to default state after saving/resizing window due to parent (SearchResults) re-rendering
 	// - is this behavior fine or do we want to preserve this state and for how long?
-	download = (_filename) => {
+	download = (filenameOrID, isFolder) => {
 		const FileDownload = require('js-file-download');
 
 		// Indicate download
 		this.setState({
 			downloadText: 'Downloading...',
 			downloadClass: 'disabled_download'
-		});
+        });
+        
+        let _filename = filenameOrID;
+        if(isFolder){ // folder case handles this on download if _filename===null
+            _filename = null;
+        }
 
-		axios.get(Globals.currentHost + 'file/downloadFile', {
+        let getRoute = Globals.currentHost + 'file/downloadFile';
+        if(isFolder){
+            getRoute = Globals.currentHost + 'file/downloadFolder';
+        }
+		axios.get(getRoute, {
 				params: {
-					filename: _filename
+                    filename: filenameOrID,
+                    id: filenameOrID
 				},
 				responseType: 'blob',
 				onDownloadProgress: (progressEvent) => { // Show progress if available
 					const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-					// console.log("onDownloadProgress", totalLength);
-					if (totalLength !== null) {
+                    
+                    if(isFolder && !_filename){ // multi-file case, archive filename needs to be extracted from header
+                        // filename is surrounded by "quotes" so get that and remove those
+                        let fileInfo = progressEvent.target.getResponseHeader('content-disposition');
+                        let fileInfoName = fileInfo.split("filename=");
+
+                        // set filename for saving from backend, sans quotes
+                        _filename = fileInfoName[1].substr(1, fileInfoName[1].length - 2);
+                    }
+
+					if (totalLength !== null) { // Progress as percent, if we have total
 						this.setState({
 							progressValue: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
 						});
-					} // else progress remains blank
+                    } else if(progressEvent.loaded){ // Progress as KB
+						this.setState({
+							progressValue: Math.round(progressEvent.loaded / 1024) + 'KB'
+						});
+                    }
+                    // else progress remains blank
 				}
 			}).then((response) => {
 
 				// Indicate download completed as file is saved/prompted save as (depending on browser settings)
 				this.setState({
 					downloadText: 'Done'
-				});
+                });
+                
 				FileDownload(response.data, _filename);
 				// verified = response && response.status === 200;
 			})
@@ -53,7 +78,7 @@ class DownloadFile extends React.Component {
 					downloadText: 'Download not found',
 					downloadClass: 'disabled_download'
 				});
-				// console.log(err);
+				console.log("Error::: ", err);
 				this.setState({
 					downloadText: 'Error: Not found'
 				});
@@ -64,27 +89,37 @@ class DownloadFile extends React.Component {
 	render() {
 		if (this.props) {
 			let cellData = null;
-			let propFilename = null;
+            let propFilename = null;
+            let propID = null;
 			if (this.props.cell) { // filename from React-Tabulator props
-				cellData = this.props.cell._cell.row.data;
+                cellData = this.props.cell._cell.row.data;
+                // console.log(cellData);
 				if (this.props.downloadType === "Comments") {
 					propFilename = cellData.commentsFilename;
 				}
+                else if (cellData.id && cellData.folder) {
+                    propID = cellData.id;
+                }
 				else if (this.props.downloadType === "EIS") {
 					propFilename = cellData.filename;
-				}
+                }
 			}
 			else if (this.props.filename) { // filename only
 				propFilename = this.props.filename;
-			}
+			} 
 			if (propFilename) {
                 return (
-                    <button className = {this.state.downloadClass} onClick = { () => {this.download(propFilename)} }> 
+                    <button className = {this.state.downloadClass} onClick = { () => {this.download(propFilename, false)} }> 
                         {this.state.downloadText} {this.state.progressValue} 
                     </button>
-                    );
-			}
-			else {
+                );
+			} else if (propID) {
+                return (
+                    <button className = {this.state.downloadClass} onClick = { () => {this.download(propID, true)} }> 
+                        {this.state.downloadText} {this.state.progressValue} 
+                    </button>
+                );
+            } else {
 				return propFilename;
 			}
 		}

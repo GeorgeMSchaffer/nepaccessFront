@@ -54,7 +54,8 @@ class SearchResults extends React.Component {
               registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
               filename: result.filename, 
               commentsFilename: result.commentsFilename,
-              id: result.id};
+              id: result.id,
+              folder: result.folder};
               return newObject;
           });
           
