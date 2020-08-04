@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+.tabulator .tabulator-tableHolder {
+    overflow: hidden;
+}
+
 .tabulator-row .tabulator-cell {
   white-space: pre-wrap;
 }
@@ -68,4 +72,8 @@
     margin-top: 2px;
     width: 100%;
     text-align: center;
+}
+
+.tabulator .fragment {
+    padding: 0px 4px 0px 4px;
 }

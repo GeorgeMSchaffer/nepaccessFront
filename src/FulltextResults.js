@@ -53,7 +53,7 @@ class FulltextResults extends React.Component {
                 { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true, headerFilter:"input" },
                 { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true, headerFilter:"input" },
                 { title: "Text", field: "plaintext", formatter: "html", headerFilter:"input" },
-                // { title: "Published date", field: "registerDate", width: 180 }, // can include but space is a premium with context
+                { title: "Date", field: "registerDate", width: 90, headerFilter:"input" }, 
                 { title: "Version", field: "documentType", width: 114, headerFilter:"input" },
                 { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
                 { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
