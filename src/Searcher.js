@@ -398,7 +398,8 @@ class Searcher extends React.Component {
         // });
         this.setState( 
 		{ 
-			agency: agencyLabels
+            agency: agencyLabels,
+            agencyRaw: evt
 		}, () => { 
 			this.debouncedSearch(this.state);
 		});
@@ -410,10 +411,11 @@ class Searcher extends React.Component {
 		}
         this.setState( 
 		{ 
-			state: stateValues
+			state: stateValues,
+            stateRaw: evt
 		}, () => { 
 			this.debouncedSearch(this.state);
-		});
+        });
     }
     
     onTypeChecked = (evt) => {
@@ -525,18 +527,18 @@ class Searcher extends React.Component {
                                 
                                 <span className="advanced-radio" >
                                     <label className="flex-center no-select cursor-pointer">
-                                        <input type="radio" className="cursor-pointer" name="booleanOption" value="all" onChange={this.onRadioChange} 
-                                        defaultChecked />
+                                        <input type="radio" className="cursor-pointer" name="booleanOption" value="all" onChange={this.onRadioChange}
+                                        checked={this.state.booleanOption==="all"} />
                                         All of these words
                                     </label>
                                     <label className="flex-center no-select cursor-pointer">
                                         <input type="radio" className="cursor-pointer" name="booleanOption" value="any" onChange={this.onRadioChange} 
-                                        />
+                                        checked={this.state.booleanOption==="any"} />
                                         Any of these words
                                     </label>
                                     <label className="flex-center no-select cursor-pointer">
                                         <input type="radio" className="cursor-pointer" name="booleanOption" value="exact" onChange={this.onRadioChange} 
-                                        />
+                                        checked={this.state.booleanOption==="exact"} />
                                         Exact phrase
                                     </label>
                                 </span>
@@ -662,6 +664,7 @@ class Searcher extends React.Component {
                                         styles={customStyles}
                                         options={agencyOptions} 
                                         onChange={this.onAgencyChange} 
+                                        value={this.state.agencyRaw}
                                         placeholder="Type or select lead agency" 
                                         // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
                                         // menuIsOpen={true}
@@ -676,6 +679,7 @@ class Searcher extends React.Component {
                                         styles={customStyles}
                                         options={stateOptions} 
                                         onChange={this.onLocationChange} 
+                                        value={this.state.stateRaw}
                                         placeholder="Type or select state" 
                                      />
                                      <svg className="down-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -771,7 +775,7 @@ class Searcher extends React.Component {
             });
         } else {
             // Search on load to get all results so user can start filtering
-            this.standardizeAndSearch();
+            // this.standardizeAndSearch();
         }
 	}
 }
