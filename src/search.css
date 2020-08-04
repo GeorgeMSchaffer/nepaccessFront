@@ -409,7 +409,7 @@ input[type=checkbox] {
     padding: 0;
 }
 
-button.link, button.download {
+button.link, button.download, a.link {
   
   /* text-align: center; */
 
@@ -425,6 +425,10 @@ button.link, button.download {
   color: darkblue;
   background: none;
   border: none;
+}
+
+a.link {
+    text-decoration: none;
 }
 
 .ReactModal__Content {

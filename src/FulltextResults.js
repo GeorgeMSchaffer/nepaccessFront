@@ -50,11 +50,11 @@ class FulltextResults extends React.Component {
     setupColumns = (context) => {
         if(context){
             return [
-                { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true },
-                { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true },
-                { title: "Text", field: "plaintext", formatter: "html" },
+                { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true, headerFilter:"input" },
+                { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true, headerFilter:"input" },
+                { title: "Text", field: "plaintext", formatter: "html", headerFilter:"input" },
                 // { title: "Published date", field: "registerDate", width: 180 }, // can include but space is a premium with context
-                { title: "Version", field: "documentType", width: 114 },
+                { title: "Version", field: "documentType", width: 114, headerFilter:"input" },
                 { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
                 { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
             ];
@@ -102,7 +102,8 @@ class FulltextResults extends React.Component {
                 movableColumns:true,      //allow column order to be changed
                 resizableRows:true,       //allow row order to be changed
                 layout:"fitColumns",
-                tooltips: false
+                tooltips: false,
+                footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
 
             var resultsText = this.props.resultsText;

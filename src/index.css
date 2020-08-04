@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
 @import url('http://fonts.googleapis.com/css?family=EB+Garamond');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:400,600,700');
 
 html, body, #home-page, #root {
   min-width: 900px;
@@ -8,6 +9,7 @@ html, body, #home-page, #root {
 
 html {
   scroll-behavior: smooth;
+  font-family: "Open Sans";
 }
 
 body {

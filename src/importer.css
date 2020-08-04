@@ -89,3 +89,7 @@
     width: 100%;
     height: 900px;
 }
+
+.import-table .react-select__control {
+    margin-left: 0;
+}

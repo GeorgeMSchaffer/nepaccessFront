@@ -60,7 +60,7 @@ class MatchResults extends React.Component {
                 )
             }
             const columns = [
-                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />) },
+                { title: "Title", field: "title" },
                 { title: "Lead Agency", field: "agency", width: 150 },
                 { title: "Date", field: "registerDate", width: 90 },
                 { title: "State", field: "state", width: 80 },
@@ -78,7 +78,8 @@ class MatchResults extends React.Component {
                 paginationSizeSelector:[10, 25, 50, 100],
                 movableColumns:true,      //allow column order to be changed
                 resizableRows:true,       //allow row order to be changed
-                layout:"fitColumns"
+                layout:"fitColumns",
+                footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
 
             // TODO: Rig up a filter to help narrow down the results with another search.

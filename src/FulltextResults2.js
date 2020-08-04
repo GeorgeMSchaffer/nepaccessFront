@@ -35,11 +35,11 @@ class FulltextResults2 extends React.Component {
 
     setupColumns = () => {
             return [
-                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true },
-                { title: "Lead Agency", field: "agency", width: 242 },
-                { title: "Published date", field: "registerDate", width: 154 },
-                { title: "State", field: "state", width: 112 },
-                { title: "Version", field: "documentType", width: 114 },
+                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true, headerFilter:"input", headerFilterPlaceholder:"Type to filter results..." },
+                { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
+                { title: "Published date", field: "registerDate", width: 154, headerFilter:"input" },
+                { title: "State", field: "state", width: 112, headerFilter:"input" },
+                { title: "Version", field: "documentType", width: 114, headerFilter:"input" },
                 { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
                 { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
             ];
@@ -72,7 +72,8 @@ class FulltextResults2 extends React.Component {
                 paginationSizeSelector:[10, 25, 50],
                 movableColumns:true,      //allow column order to be changed
                 resizableRows:true,       //allow row order to be changed
-                layout:"fitColumns"
+                layout:"fitColumns",
+                footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
 
             return (

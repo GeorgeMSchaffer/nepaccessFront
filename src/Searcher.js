@@ -769,6 +769,9 @@ class Searcher extends React.Component {
                     this.standardizeAndSearch();
                 }
             });
+        } else {
+            // Search on load to get all results so user can start filtering
+            this.standardizeAndSearch();
         }
 	}
 }
