@@ -90,8 +90,9 @@ const Globals = {
 
     // Date parsing with hyphens forces current timezone, whereas alternate separators like / result in using utc/gmt which means a correct year/month/date item
     // whereas hyphens cause you to potentially be off by an entire day
+    // everything after the actual 10-character Date e.g. T07:00:00.000Z breaks everything and has to be stripped off
     getCorrectDate(sDate){
-        let oddity = sDate.replace(/-/g,'/');
+        let oddity = sDate.replace(/-/g,'/').substr(0, 10);
         return new Date(oddity);
     },
 
