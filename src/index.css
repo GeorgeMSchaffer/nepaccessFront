@@ -374,3 +374,7 @@ a.email-text {
 .react-select__value-container {
     width: 355px;
 }
+
+.react-select__multi-value {
+    max-width: 290px;
+}
