@@ -77,3 +77,7 @@
 .tabulator .fragment {
     padding: 0px 4px 0px 4px;
 }
+
+[tabulator-field="name"] {
+    word-break: break-all;
+}
