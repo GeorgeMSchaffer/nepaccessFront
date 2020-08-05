@@ -30,6 +30,14 @@ class SearchResults extends React.Component {
         }
     }
 
+    onClearFiltersClick = (e) => {
+        if(this.my_table && this.my_table.current){
+            const tbltr = this.my_table.current;
+            tbltr.table.clearFilter(true);
+            // tbltr.table.clearHeaderFilter();
+        }
+    }
+
 	render() {
     //   console.log("SearchResults");
       if(this.my_table){
@@ -86,6 +94,7 @@ class SearchResults extends React.Component {
               <div id="search-results">
                 {/* <button className="button" onClick={() => this.testRedraw()}>Test redraw</button> */}
                 <h2 id="results-label">{this.props.resultsText}</h2>
+                <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
                 <ReactTabulator
                     ref={this.my_table}
                     data={data}

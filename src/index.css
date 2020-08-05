@@ -363,7 +363,6 @@ a.email-text {
 }
 
 .react-select__control {
-    /* margin-left: 10px; */
     border: 1px solid black;
     border-radius: 0px;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
@@ -377,4 +376,8 @@ a.email-text {
 
 .react-select__multi-value {
     max-width: 290px;
+}
+
+.margin {
+    margin-left: 10px;
 }
