@@ -3,11 +3,13 @@
 .tabulator {
   margin: 0 5px;
   min-width: 1200px; /* With title text wrapping, table gets ridiculous any smaller than this */
-  overflow: hidden;
+  min-height: 400px;
+  height: 600px;
+  /* overflow: hidden; */
 }
 
 .tabulator .tabulator-tableHolder {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .tabulator-row .tabulator-cell {
