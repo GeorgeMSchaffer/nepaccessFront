@@ -13,6 +13,13 @@ class FulltextResults extends React.Component {
 
         this.my_table = React.createRef();
     }
+    
+    onClearFiltersClick = (e) => {
+        if(this.my_table && this.my_table.current){
+            const tbltr = this.my_table.current;
+            tbltr.table.clearFilter(true);
+        }
+    }
 
     // While the context is working, the columns are not being filled properly on switch for unknown reasons, so we use FulltextResults2 for now
     setupData = (results, context) => {
@@ -95,12 +102,12 @@ class FulltextResults extends React.Component {
             let options = {
                 layoutColumnsOnNewData: true,
                 tooltips:true,
-                responsiveLayout:"collapse",  //collapse columns that dont fit on the table
-                pagination:"local",       //paginate the data
-                paginationSize:10,       //allow 10 rows per page of data
+                responsiveLayout:"collapse",    //collapse columns that dont fit on the table
+                pagination:"local",             //paginate the data
+                paginationSize:10,              //allow 10 rows per page of data
                 paginationSizeSelector:[10, 25, 50, 100],
-                movableColumns:true,      //allow column order to be changed
-                resizableRows:true,       //allow row order to be changed
+                movableColumns:true,            //allow column order to be changed
+                resizableRows:true,             //allow row order to be changed
                 layout:"fitColumns",
                 tooltips: false,
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
@@ -114,6 +121,7 @@ class FulltextResults extends React.Component {
             return (
                 <div id="search-results">
                     <h2 id="results-label">{resultsText}</h2>
+                    <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
                     <ReactTabulator
                         ref={this.my_table}
                         data={data}

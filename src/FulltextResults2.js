@@ -13,6 +13,13 @@ class FulltextResults2 extends React.Component {
 
         this.my_table = React.createRef();
     }
+    
+    onClearFiltersClick = (e) => {
+        if(this.my_table && this.my_table.current){
+            const tbltr = this.my_table.current;
+            tbltr.table.clearFilter(true);
+        }
+    }
 
     setupData = (results) => {
         // console.log(results);
@@ -79,6 +86,7 @@ class FulltextResults2 extends React.Component {
             return (
                 <div id="search-results">
                     <h2 id="results-label">{this.props.resultsText}</h2>
+                    <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
                     <ReactTabulator
                         ref={this.my_table}
                         data={data}

@@ -151,7 +151,7 @@ class FulltextSearcher extends React.Component {
                                     />
 
                                     <div className="post-search-box-text" hidden={!this.state.context}>
-                                        Press enter to search for terms.  Stopwords (a, and, the, ...) are not indexed and will not get results.
+                                        Press enter to search for terms.  Stopwords (a, and, the, ...) are not indexed.
                                     </div>
                                     <div className="post-search-box-text" hidden={!this.state.context}>
                                         Special characters treated as spaces: {specials}
