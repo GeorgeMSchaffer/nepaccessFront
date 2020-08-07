@@ -258,7 +258,7 @@ export default class RecordDetailsTab extends React.Component {
             <div id="details">
                 <label className="errorLabel">{this.state.networkError}</label>
                 <br />
-                <h3 className="advanced-label inline" htmlFor="detailsDropdown">Select view:</h3>
+                <h3 className="advanced-label inline" htmlFor="detailsDropdown">Select view: </h3>
                 <Select id="detailsDropdown" className="multi inline-block" classNamePrefix="react-select" name="detailsDropdown" isSearchable 
                     styles={customStyles}
                     options={viewOptions} 
