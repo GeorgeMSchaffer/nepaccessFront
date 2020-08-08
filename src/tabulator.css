@@ -83,3 +83,7 @@
 [tabulator-field="name"] {
     word-break: break-all;
 }
+
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+    padding-right: 12px;
+}
