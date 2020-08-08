@@ -5,10 +5,8 @@ import DatePicker from "react-datepicker";
 import axios from 'axios';
 import Globals from './globals';
 
-
 import "./details.css";
 
-// TODO: Add in save
 
 class DetailsUpdate extends React.Component {
 
@@ -19,6 +17,45 @@ class DetailsUpdate extends React.Component {
             isDirty: false
         };
         // console.log("Constructor", this.props.record);
+    }
+
+    // TODO: Add confirmation box, other safeguards
+    deleteRecord = () => {
+        const deleteUrl = Globals.currentHost + "admin/deleteDoc";
+
+        const idToDelete = this.props.record.id;
+
+        console.log("Props", this.props);
+        console.log("Record", this.props.record);
+        console.log("ID to delete", this.props.record.id);
+        
+        //Send the AJAX call to the server
+        axios({
+            url: deleteUrl,
+            method: 'POST', 
+            data: idToDelete,
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return response.data;
+            } else {
+                console.log(response.status);
+                return null;
+            }
+        }).then(parsedJson => { // can be empty if nothing found
+            if(parsedJson){
+                this.setState({
+                    result: parsedJson
+                });
+            } else { // 404?
+
+            }
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     updateRecord = () => {
@@ -229,6 +266,10 @@ class DetailsUpdate extends React.Component {
                     </h3>
 
                     <button type="button" className="button" disabled={!this.state.isDirty} onClick={this.updateRecord}>Save changes</button>
+                    <hr />
+                    <label>Delete metadata and all associated files cleanly from the database.  This cannot be reversed.</label>
+                    <button type="button" className="button" onClick={this.deleteRecord}>Delete everything</button>
+                    <hr />
                 </div>
             );
         }
@@ -246,7 +287,7 @@ class DetailsUpdate extends React.Component {
         console.log("Mounted", this.state.record)
     }
     componentDidUpdate() {
-        console.log("Updated", this.state.record);
+        console.log("Component update event", this.state.record);
     }
 }
 
