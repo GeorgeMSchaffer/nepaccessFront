@@ -8,6 +8,7 @@ import DownloadFile from './DownloadFile.js';
 import MatchSearcher from './MatchSearcher.js';
 import MatchResults from './MatchResults.js';
 import DetailsUpdate from './DetailsUpdate.js';
+import DetailsFileResults from './DetailsFileResults.js';
 
 import './index.css';
 import './match.css';
@@ -47,6 +48,68 @@ export default class RecordDetailsTab extends React.Component {
     
 	onDropdownChange = (evt) => {
         this.setState({ dropdownOption: evt });
+    }
+
+    getNepaFileResults = () => {
+        let populateUrl = Globals.currentHost + "file/nepafiles";
+            
+			//Send the AJAX call to the server
+			axios.get(populateUrl, {
+				params: {
+					id: this.state.detailsID
+				}
+			}).then(response => {
+				let responseOK = response && response.status === 200;
+				if (responseOK) {
+					return response.data;
+				} else {
+					return null;
+				}
+			}).then(parsedJson => { // can be empty if nothing found
+				if(parsedJson){
+                    this.setState({
+                        nepaResults: parsedJson,
+                    }, () => {
+                        if(!this.state.nepaResults || !this.state.nepaResults[0]){
+                            this.getDocumentTextResults();
+                        }
+                    });
+                } else { // 404
+                    
+				}
+			}).catch(error => {
+                
+            });
+            
+        
+    }
+    
+    getDocumentTextResults = () => {
+        let populateUrl = Globals.currentHost + "file/doc_texts";
+            
+			//Send the AJAX call to the server
+			axios.get(populateUrl, {
+				params: {
+					id: this.state.detailsID
+				}
+			}).then(response => {
+				let responseOK = response && response.status === 200;
+				if (responseOK) {
+					return response.data;
+				} else {
+					return null;
+				}
+			}).then(parsedJson => { // can be empty if nothing found
+				if(parsedJson){
+                    this.setState({
+                        nepaResults: parsedJson,
+                    });
+                } else { // 404
+                    
+				}
+			}).catch(error => {
+                
+			});
     }
 
 
@@ -149,38 +212,11 @@ export default class RecordDetailsTab extends React.Component {
     }
 
 
-    /** Return all metadata, not just what search table shows */
-    showDetails = () => {
-        const cellData = this.state.details;
-        if(cellData) {
-            return Object.keys(cellData).map( ((key, i) => {
-                let keyName = key;
-                if(key==='registerDate'){
-                    keyName = 'date';
-                } else if (key==='documentType') {
-                    keyName = 'type';
-                }
-                if(key==='filename') {
-                    return <div><p key={i} className='modal-line'><span className='modal-title'>document:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p></div>;
-                } else if(key==='commentsFilename') {
-                    return <div><p key={i} className='modal-line'><span className='modal-title'>comments:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p></div>;
-                // exclusions:
-                } else if(key==='matchPercent' || key==='commentDate' || key==='id' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
-                    return '';
-                }
-                else {
-                    console.log(i, keyName, cellData[key]);
-                    return (<div><p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p></div>);
-                }
-            }));
-        }
-    }
-
-
     
     showView = () => {
         // One benefit of switching here instead of dynamically hiding elements is that Tabulator doesn't error out when hidden
         if(this.state.dropdownOption.value === 'Details'){ // Show details panel
+            const cellData = this.state.details;
             return (
                 <div className="record-details">
                     <h2 className="title-color">Record details:</h2>
@@ -204,6 +240,46 @@ export default class RecordDetailsTab extends React.Component {
         }
     }
 
+
+    /** Return all metadata, not just what search table shows */
+    showDetails = () => {
+        const cellData = this.state.details;
+        if(cellData) {
+            return Object.keys(cellData).map( ((key, i) => {
+                let keyName = key;
+                console.log(i, keyName, cellData[key]);
+                if(key==='registerDate'){
+                    keyName = 'date';
+                } else if (key==='documentType') {
+                    keyName = 'type';
+                }
+                if(key==='folder' && cellData[key] && cellData[key].length > 0) {
+                    console.log("Okay...", cellData[key]);
+                    return <div><p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="Folder" id={cellData["id"]}/> {cellData[key]}</p></div>;
+                } else if(key==='filename'){
+                    // If we have a folder available for download, never mind showing the filename, certainly not a (probably invalid) download link for it
+                    if (cellData[key] && cellData[key].length > 0
+                        && (!cellData["folder"] || !(cellData["folder"].length > 0))) {
+                        return <div><p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p></div>;
+                    } else {
+                        return '';
+                    }
+                } else if(key==='commentsFilename') {
+                    if (cellData[key] && cellData[key].length > 0) {
+                        return <div><p key={i} className='modal-line'><span className='modal-title'>download EPA comments:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p></div>;
+                    } else {
+                        return '';
+                    }
+                // exclusions:
+                } else if(key==='matchPercent' || key==='commentDate' || key==='id_' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
+                    return '';
+                } else {
+                    return (<div><p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p></div>);
+                }
+            }));
+        }
+    }
+
     showDocuments = () => {
         return (
             <div>
@@ -213,13 +289,14 @@ export default class RecordDetailsTab extends React.Component {
         )
     }
     
-    
-    
     showUpdate = () => {
-        return (
-            <DetailsUpdate record={this.state.details} />
+        return (<>
+                <DetailsUpdate record={this.state.details} />
+                <DetailsFileResults results={this.state.nepaResults} />
+            </>
         );
     }
+
 
     render () {
 
@@ -282,6 +359,7 @@ export default class RecordDetailsTab extends React.Component {
             }, () => {
                 if(this.state.detailsID){
                     this.populate();
+                    this.getNepaFileResults();
                 } else {
                     this.setState({
                         networkError: "No record found (try a different ID)"

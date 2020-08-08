@@ -1,10 +1,13 @@
 /* Custom tabulator styling */
 
+.tabulator-holder {
+    height: 800px;
+}
+
 .tabulator {
   margin: 0 5px;
   min-width: 1200px; /* With title text wrapping, table gets ridiculous any smaller than this */
-  min-height: 400px;
-  height: 600px;
+  /* height: 600px; */
   /* overflow: hidden; */
 }
 

@@ -87,6 +87,8 @@ class SearchResults extends React.Component {
               movableColumns:true,      //allow column order to be changed
               resizableRows:true,       //allow row order to be changed
               layout:"fitColumns",
+              tooltips: false,
+              maxHeight:"100%",
               footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
           };
           
@@ -95,19 +97,21 @@ class SearchResults extends React.Component {
                 {/* <button className="button" onClick={() => this.testRedraw()}>Test redraw</button> */}
                 <h2 id="results-label">{this.props.resultsText}</h2>
                 <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
-                <ReactTabulator
-                    ref={this.my_table}
-                    data={data}
-                    columns={columns}
-                    options={options}
-                    dataLoading={()=>{
-                    }}
-                    dataLoaded={()=>{
-                    }}
-                    onKeyUp={this.onArrow}
-                    rowClick={(e, row) => this.Action}
-                    
-                />
+                <div className="tabulator-holder">
+                    <ReactTabulator
+                        ref={this.my_table}
+                        data={data}
+                        columns={columns}
+                        options={options}
+                        dataLoading={()=>{
+                        }}
+                        dataLoaded={()=>{
+                        }}
+                        onKeyUp={this.onArrow}
+                        rowClick={(e, row) => this.Action}
+                        
+                    />
+                </div>
               </div>
           )
       }

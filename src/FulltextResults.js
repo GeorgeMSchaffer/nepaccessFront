@@ -110,6 +110,7 @@ class FulltextResults extends React.Component {
                 resizableRows:true,             //allow row order to be changed
                 layout:"fitColumns",
                 tooltips: false,
+                maxHeight:"100%",
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
 
@@ -122,12 +123,14 @@ class FulltextResults extends React.Component {
                 <div id="search-results">
                     <h2 id="results-label">{resultsText}</h2>
                     <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
-                    <ReactTabulator
-                        ref={this.my_table}
-                        data={data}
-                        columns={columns}
-                        options={options}
-                    />
+                    <div className="tabulator-holder">
+                        <ReactTabulator
+                            ref={this.my_table}
+                            data={data}
+                            columns={columns}
+                            options={options}
+                        />
+                    </div>
                 </div>
             );
         }

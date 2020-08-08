@@ -46,6 +46,9 @@ class DownloadFile extends React.Component {
                     if(isFolder && !_filename){ // multi-file case, archive filename needs to be extracted from header
                         // filename is surrounded by "quotes" so get that and remove those
                         let fileInfo = progressEvent.target.getResponseHeader('content-disposition');
+                        if (!fileInfo){
+                            return null; // Never mind
+                        }
                         let fileInfoName = fileInfo.split("filename=");
 
                         // set filename for saving from backend, sans quotes
@@ -65,12 +68,14 @@ class DownloadFile extends React.Component {
 				}
 			}).then((response) => {
 
-				// Indicate download completed as file is saved/prompted save as (depending on browser settings)
-				this.setState({
-					downloadText: 'Done'
-                });
+                // Indicate download completed as file is saved/prompted save as (depending on browser settings)
+                if(response){
+                    this.setState({
+                        downloadText: 'Done'
+                    });
+                    FileDownload(response.data, _filename);
+                }
                 
-				FileDownload(response.data, _filename);
 				// verified = response && response.status === 200;
 			})
 			.catch((err) => { // TODO: Test, This will catch a 404
@@ -91,12 +96,11 @@ class DownloadFile extends React.Component {
 			let cellData = null;
             let propFilename = null;
             let propID = null;
-			if (this.props.cell) { // filename from React-Tabulator props
+			if (this.props.cell) { // filename/cell data from React-Tabulator props
                 cellData = this.props.cell._cell.row.data;
-                // console.log(cellData);
 				if (this.props.downloadType === "Comments") {
 					propFilename = cellData.commentsFilename;
-				}
+                }
                 else if (cellData.id && cellData.folder) {
                     propID = cellData.id;
                 }
@@ -104,6 +108,10 @@ class DownloadFile extends React.Component {
 					propFilename = cellData.filename;
                 }
 			}
+            else if (this.props.downloadType && this.props.downloadType === "Folder") { // from record details page
+                console.log("Okay", this.props.id);
+                propID = this.props.id;
+            }
 			else if (this.props.filename) { // filename only
 				propFilename = this.props.filename;
 			} 
