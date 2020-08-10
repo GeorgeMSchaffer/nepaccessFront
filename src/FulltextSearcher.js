@@ -102,7 +102,8 @@ class FulltextSearcher extends React.Component {
 
     render () {
         const { match, location, history } = this.props;
-        const specials = '+ - && || ! ( ) { } [ ] ^ \" ~ * ? : \\ /';
+        // const specials = '+ - && || ! ( ) { } [ ] ^ \" ~ * ? : \\ /';
+        const specials = '+ && || ! ( ) { } [ ] ^ ~ ? : \\ /';
         const fulltextTooltipTitle = "<p className=&quot;tooltip-line&quot;>Including any of these stopwords will get zero results: &quot;a&quot;, &quot;an&quot;, &quot;and&quot;, &quot;are&quot;, &quot;as&quot;, &quot;at&quot;, &quot;be&quot;, &quot;but&quot;, &quot;by&quot;,"
         + "&quot;for&quot;, &quot;if&quot;, &quot;in&quot;, &quot;into&quot;, &quot;is&quot;, &quot;it&quot;,"
         + "&quot;no&quot;, &quot;not&quot;, &quot;of&quot;, &quot;on&quot;, &quot;or&quot;, &quot;such&quot;,"
@@ -142,7 +143,7 @@ class FulltextSearcher extends React.Component {
                                     </Tooltip>
                                     <input className="search-box" 
                                         name="terms" 
-                                        placeholder="Search by keyword or phrase within document text" 
+                                        placeholder="Search by keywords within files" 
                                         value={this.state.terms}
                                         disabled={this.props.searching}
                                         autoFocus 
@@ -151,7 +152,7 @@ class FulltextSearcher extends React.Component {
                                     />
 
                                     <div className="post-search-box-text" hidden={!this.state.context}>
-                                        Press enter to search for terms.  Stopwords (a, and, the, ...) are not indexed.
+                                        Press enter to search for terms.  Stopwords (a, and, the, ...) are not indexed.  Searching for "exact phrases" is supported, as well as wildcards* or -excluded -words.
                                     </div>
                                     <div className="post-search-box-text" hidden={!this.state.context}>
                                         Special characters treated as spaces: {specials}
@@ -173,8 +174,7 @@ class FulltextSearcher extends React.Component {
                     </div>
                 </div>
             </div>
-            
-        )
+        );
     }
 
     /** Lifecycle */
