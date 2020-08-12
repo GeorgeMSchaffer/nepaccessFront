@@ -43,7 +43,7 @@ class AboutNepaccess extends React.Component {
                             NEPAccess Project Manager
                         </span>
                         <span className="about-nepaccess-contact-content">
-                            <a className="about-nepa-button email-text">derbridge@arizona.edu</a>
+                            <span className="about-nepa-button email-text">derbridge@arizona.edu</span>
                         </span>
                         <br />
                         <br />

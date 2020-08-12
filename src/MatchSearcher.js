@@ -2,7 +2,7 @@ import React from 'react';
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
-import {Tooltip,} from 'react-tippy';
+// import {Tooltip,} from 'react-tippy';
 
 const _ = require('lodash');
 

@@ -19,13 +19,13 @@ import PropTypes from "prop-types";
 
 const _ = require('lodash');
 
-const parseISO = require('date-fns/parseISO')
+// const parseISO = require('date-fns/parseISO')
 
 class Searcher extends React.Component {
 
 	static propTypes = {
-        match: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
+        // match: PropTypes.object.isRequired,
+        // location: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired
     };
 
@@ -477,7 +477,8 @@ class Searcher extends React.Component {
     
 
     render () {
-        const { match, location, history } = this.props;
+        // const { match, location, history } = this.props;
+        const { history } = this.props;
         // console.log("Searcher");
 
         const customStyles = {

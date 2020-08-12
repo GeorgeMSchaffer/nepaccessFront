@@ -72,7 +72,7 @@ class FulltextResults2 extends React.Component {
 
             var options = {
                 layoutColumnsOnNewData: true,
-                tooltips:true,
+                tooltips:false,
                 responsiveLayout:"collapse",  //collapse columns that dont fit on the table
                 pagination:"local",       //paginate the data
                 paginationSize:10,       //allow 10 rows per page of data
@@ -80,8 +80,8 @@ class FulltextResults2 extends React.Component {
                 movableColumns:true,      //allow column order to be changed
                 resizableRows:true,       //allow row order to be changed
                 layout:"fitColumns",
-                tooltips: false,
                 maxHeight:"100%",
+                invalidOptionWarnings:false, // spams warnings without this
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
 

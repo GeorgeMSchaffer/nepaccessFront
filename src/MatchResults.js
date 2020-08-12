@@ -4,7 +4,7 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 import DownloadFile from './DownloadFile.js';
-import RecordDetailsLink from './RecordDetailsLink.js';
+// import RecordDetailsLink from './RecordDetailsLink.js';
 
 class MatchResults extends React.Component {
 
@@ -79,6 +79,8 @@ class MatchResults extends React.Component {
                 movableColumns:true,      //allow column order to be changed
                 resizableRows:true,       //allow row order to be changed
                 layout:"fitColumns",
+                maxHeight:"100%",
+                invalidOptionWarnings:false, // spams warnings without this
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
 

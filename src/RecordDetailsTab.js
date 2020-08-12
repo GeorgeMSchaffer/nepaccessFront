@@ -216,7 +216,6 @@ export default class RecordDetailsTab extends React.Component {
     showView = () => {
         // One benefit of switching here instead of dynamically hiding elements is that Tabulator doesn't error out when hidden
         if(this.state.dropdownOption.value === 'Details'){ // Show details panel
-            const cellData = this.state.details;
             return (
                 <div className="record-details">
                     <h2 className="title-color">Record details:</h2>

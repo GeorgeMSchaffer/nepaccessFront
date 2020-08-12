@@ -295,7 +295,7 @@ button {
   text-align: left;
 }
 
-a.email-text {
+span.email-text {
   cursor: text;
 }
 

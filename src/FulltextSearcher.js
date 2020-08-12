@@ -19,8 +19,8 @@ const _ = require('lodash');
 class FulltextSearcher extends React.Component {
 
 	static propTypes = {
-        match: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
+        // match: PropTypes.object.isRequired,
+        // location: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired
     };
 
@@ -101,7 +101,8 @@ class FulltextSearcher extends React.Component {
     
 
     render () {
-        const { match, location, history } = this.props;
+        // const { match, location, history } = this.props;
+        const { history } = this.props;
         // const specials = '+ - && || ! ( ) { } [ ] ^ \" ~ * ? : \\ /';
         const specials = '+ && || ! ( ) { } [ ] ^ ~ ? : \\ /';
         const fulltextTooltipTitle = "<p className=&quot;tooltip-line&quot;>Including any of these stopwords will get zero results: &quot;a&quot;, &quot;an&quot;, &quot;and&quot;, &quot;are&quot;, &quot;as&quot;, &quot;at&quot;, &quot;be&quot;, &quot;but&quot;, &quot;by&quot;,"

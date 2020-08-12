@@ -7,9 +7,9 @@ import Globals from './globals.js';
 // TODO: Determine whether documenttext or nepafile by existence of plaintext/plaintext key in cell object prop
 class DeleteFileLink extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     deleteRecord = () => {
         console.log("Apparently this is just firing");
