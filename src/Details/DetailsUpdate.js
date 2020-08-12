@@ -3,7 +3,7 @@ import React from 'react';
 import DatePicker from "react-datepicker";
 
 import axios from 'axios';
-import Globals from './globals';
+import Globals from '../globals.js';
 
 import "./details.css";
 

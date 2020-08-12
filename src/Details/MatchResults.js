@@ -1,9 +1,12 @@
 import React from 'react';
+
 import 'react-tabulator/lib/styles.css'; // required styles
 import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
+
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
-import DownloadFile from './DownloadFile.js';
+
+import DownloadFile from '../DownloadFile.js';
 // import RecordDetailsLink from './RecordDetailsLink.js';
 
 class MatchResults extends React.Component {

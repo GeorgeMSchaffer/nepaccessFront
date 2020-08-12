@@ -1,9 +1,10 @@
 import React from 'react';
 
 import axios from 'axios';
-import Globals from './globals.js';
 
-// TODO: delete button and confirmation box
+import Globals from '../globals.js';
+
+// TODO: Confirmation boxes or such
 // TODO: Determine whether documenttext or nepafile by existence of plaintext/plaintext key in cell object prop
 class DeleteFileLink extends React.Component {
 

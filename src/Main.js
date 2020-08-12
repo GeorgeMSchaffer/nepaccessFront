@@ -11,16 +11,16 @@ import Reset from './Reset.js';
 // import Register from './Register.js';
 import Generate from './Generate.js';
 import UserDetails from './UserDetails.js';
-import ForgotPassword from './ForgotPassword';
+import ForgotPassword from './ForgotPassword.js';
 
 import Fulltext from './Fulltext.js';
 
 import AboutNepa from './AboutNepa.js';
-import AboutNepaccess from './AboutNepaccess';
+import AboutNepaccess from './AboutNepaccess.js';
 
-import Importer from './Importer';
+import Importer from './Importer.js';
 
-import RecordDetailsTab from './RecordDetailsTab';
+import RecordDetailsTab from './Details/RecordDetailsTab.js';
 
 import Globals from './globals.js';
 

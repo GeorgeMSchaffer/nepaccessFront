@@ -8,6 +8,7 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 
 import DeleteFileLink from './DeleteFileLink.js';
 
+
 // TODO: delete button and confirmation box
 // Results component expects NEPAFile list if available, else DocumentTexts only (meaning the files were derived from an archive)
 class DetailsFileResults extends React.Component {

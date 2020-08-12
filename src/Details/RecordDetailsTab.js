@@ -4,16 +4,16 @@ import Select from 'react-select';
 import ReactModal from 'react-modal';
 import axios from 'axios';
 
-import DownloadFile from './DownloadFile.js';
+import DownloadFile from '../DownloadFile.js';
 import MatchSearcher from './MatchSearcher.js';
 import MatchResults from './MatchResults.js';
 import DetailsUpdate from './DetailsUpdate.js';
 import DetailsFileResults from './DetailsFileResults.js';
 
-import './index.css';
+import '../index.css';
 import './match.css';
 
-import Globals from './globals.js';
+import Globals from '../globals.js';
 // 1. User clicks Record
 // 2. Tab opens, shows Record metadata from backend call
 // Good place to put curation options for authorized users
