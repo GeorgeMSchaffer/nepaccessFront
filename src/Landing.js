@@ -3,7 +3,7 @@ import './index.css';
 import './landing.css';
 
 import SearcherLanding from './SearcherLanding.js';
-import './login.css';
+import './User/login.css';
 
 class Landing extends React.Component {
 

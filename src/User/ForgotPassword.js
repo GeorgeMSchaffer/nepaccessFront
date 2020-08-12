@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import Globals from './globals';
+
+import Globals from '../globals.js';
+
 import './login.css';
 
 class ForgotPassword extends React.Component {

@@ -1,8 +1,11 @@
 import React from 'react';
-import axios from 'axios';
-import './login.css';
-import Globals from './globals';
 import { Link } from 'react-router-dom';
+
+import axios from 'axios';
+
+import Globals from '../globals.js';
+
+import './login.css';
 
 class Login extends React.Component {
     

@@ -68,7 +68,7 @@ class SearchResults extends React.Component {
           });
           
           const columns = [
-              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true, headerFilter:"input", headerFilterPlaceholder:"Type to filter results..." },
+              { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />), variableHeight:true, headerFilter:"input", headerFilterPlaceholder:"Type to filter results...", responsive:0 },
               { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
               { title: "Published date", field: "registerDate", width: 154, headerFilter:"input" },
               { title: "State", field: "state", width: 112, headerFilter:"input" },
@@ -88,6 +88,7 @@ class SearchResults extends React.Component {
               resizableRows:true,       //allow row order to be changed
               layout:"fitColumns",
               invalidOptionWarnings:false, // spams warnings without this
+            //   responsiveLayout:"hide", // hide rows that no longer fit (a responsive:0 column is never hidden, default responsive value is 1 and are hidden right to left if equal priority)
               footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
           };
           

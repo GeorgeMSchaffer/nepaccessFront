@@ -1,7 +1,10 @@
 import React from 'react';
+
 import axios from 'axios';
+
+import Globals from '../globals.js';
+
 import './login.css';
-import Globals from './globals.js';
 
 class Reset extends React.Component {
 

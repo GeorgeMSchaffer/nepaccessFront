@@ -246,16 +246,15 @@ export default class RecordDetailsTab extends React.Component {
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
                 let keyName = key;
-                console.log(i, keyName, cellData[key]);
-                if(key==='registerDate'){
+                // console.log(i, keyName, cellData[key]);
+                if(key==='registerDate') {
                     keyName = 'date';
                 } else if (key==='documentType') {
                     keyName = 'type';
                 }
                 if(key==='folder' && cellData[key] && cellData[key].length > 0) {
-                    console.log("Okay...", cellData[key]);
                     return <div><p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="Folder" id={cellData["id"]}/> {cellData[key]}</p></div>;
-                } else if(key==='filename'){
+                } else if(key==='filename') {
                     // If we have a folder available for download, never mind showing the filename, certainly not a (probably invalid) download link for it
                     if (cellData[key] && cellData[key].length > 0
                         && (!cellData["folder"] || !(cellData["folder"].length > 0))) {
@@ -281,10 +280,10 @@ export default class RecordDetailsTab extends React.Component {
 
     showDocuments = () => {
         return (
-            <div>
+            <>
                 <MatchSearcher search={this.search} matchPercent={this.state.searcherInputs.matchPercent} id={this.getIdParam()} />
                 <MatchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
-            </div>
+            </>
         )
     }
     

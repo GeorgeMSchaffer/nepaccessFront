@@ -43,6 +43,8 @@ class DetailsFileResults extends React.Component {
         }
     }
 
+    // TODO: Have both if possible and clearly denote which is which
+
     // For NEPAFiles
     setupColumns = () => {
             return [

@@ -5,22 +5,23 @@ import './index.css';
 
 import Landing from './Landing.js';
 import App from './App';
-import Login from './Login.js';
-import Logout from './Logout.js';
-import Reset from './Reset.js';
-// import Register from './Register.js';
-import Generate from './Generate.js';
-import UserDetails from './UserDetails.js';
-import ForgotPassword from './ForgotPassword.js';
-
 import Fulltext from './Fulltext.js';
+
+import RecordDetailsTab from './Details/RecordDetailsTab.js';
+
+import Login from './User/Login.js';
+import Logout from './User/Logout.js';
+import Reset from './User/Reset.js';
+import UserDetails from './User/UserDetails.js';
+import ForgotPassword from './User/ForgotPassword.js';
+// import Register from './User/Register.js';
 
 import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess.js';
 
 import Importer from './Importer.js';
 
-import RecordDetailsTab from './Details/RecordDetailsTab.js';
+import Generate from './Generate.js';
 
 import Globals from './globals.js';
 

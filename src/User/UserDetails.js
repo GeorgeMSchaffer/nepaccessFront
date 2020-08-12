@@ -1,6 +1,9 @@
 import React from 'react';
+
 import axios from 'axios';
-import Globals from './globals';
+
+import Globals from '../globals';
+
 import './login.css';
 
 // TODO: Move this to its own "change password" component and link to it from userdetails?

@@ -1,6 +1,8 @@
 import React from 'react';
+
+import Globals from '../globals.js';
+
 import './login.css';
-import Globals from './globals';
 
 class Logout extends React.Component {
     state = {
