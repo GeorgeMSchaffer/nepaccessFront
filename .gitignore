@@ -38,3 +38,4 @@ src/NEPAccess frontend source/Reset.txt
 src/NEPAccess frontend source/Searcher.txt
 src/NEPAccess frontend source/SearchResults.txt
 src/NEPAccess frontend source/UserDetails.txt
+*.old

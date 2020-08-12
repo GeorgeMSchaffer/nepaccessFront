@@ -3,7 +3,7 @@ import React from 'react';
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 
-import "./tabulator.css";
+import './css/tabulator.css';
 import "./search.css";
 
 import "react-datepicker/dist/react-datepicker.css";

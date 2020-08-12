@@ -1,6 +1,6 @@
 import React from 'react';
 
-import "./tabulator.css";
+import './css/tabulator.css';
 import "./search.css";
 
 import "react-datepicker/dist/react-datepicker.css";

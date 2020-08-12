@@ -79,7 +79,6 @@ class MatchResults extends React.Component {
                 movableColumns:true,      //allow column order to be changed
                 resizableRows:true,       //allow row order to be changed
                 layout:"fitColumns",
-                maxHeight:"100%",
                 invalidOptionWarnings:false, // spams warnings without this
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
@@ -92,11 +91,13 @@ class MatchResults extends React.Component {
                 <div className='modal-results'>
                     {/* <h2>{results.length} Results</h2> */}
                     <h2>{this.props.resultsText}</h2>
-                    <ReactTabulator
-                        data={data}
-                        columns={columns}
-                        options={options}
-                    />
+                    <div className="tabulator-holder">
+                        <ReactTabulator
+                            data={data}
+                            columns={columns}
+                            options={options}
+                        />
+                    </div>
                 </div>
             )
         }

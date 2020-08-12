@@ -80,7 +80,6 @@ class FulltextResults2 extends React.Component {
                 movableColumns:true,      //allow column order to be changed
                 resizableRows:true,       //allow row order to be changed
                 layout:"fitColumns",
-                maxHeight:"100%",
                 invalidOptionWarnings:false, // spams warnings without this
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
