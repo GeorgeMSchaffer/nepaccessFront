@@ -1,6 +1,8 @@
 .modal-title {
+    display: inline-block;
     text-transform: capitalize;
     font-weight: bold;
+    width: 150px;
 }
 
 .modal-close {

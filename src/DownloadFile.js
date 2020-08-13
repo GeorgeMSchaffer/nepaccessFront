@@ -109,7 +109,6 @@ class DownloadFile extends React.Component {
                 }
 			}
             else if (this.props.downloadType && this.props.downloadType === "Folder") { // from record details page
-                console.log("Okay", this.props.id);
                 propID = this.props.id;
             }
 			else if (this.props.filename) { // filename only

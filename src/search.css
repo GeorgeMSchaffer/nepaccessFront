@@ -418,6 +418,7 @@ button.link, button.download, a.link {
   font-weight: 600;
   font-size: 13.3333px;
   line-height: 111%;
+  padding: 0;
   /* or 20px */
 
   cursor: pointer;

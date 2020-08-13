@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Select from 'react-select';
-import ReactModal from 'react-modal';
 import axios from 'axios';
 
 import DownloadFile from '../DownloadFile.js';
@@ -242,7 +241,7 @@ export default class RecordDetailsTab extends React.Component {
 
     /** Return all metadata, not just what search table shows */
     showDetails = () => {
-        const cellData = this.state.details;
+        let cellData = this.state.details;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
                 let keyName = key;
@@ -253,18 +252,18 @@ export default class RecordDetailsTab extends React.Component {
                     keyName = 'type';
                 }
                 if(key==='folder' && cellData[key] && cellData[key].length > 0) {
-                    return <div><p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="Folder" id={cellData["id"]}/> {cellData[key]}</p></div>;
+                    return <p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="Folder" id={cellData["id"]}/> {cellData[key]}</p>;
                 } else if(key==='filename') {
                     // If we have a folder available for download, never mind showing the filename, certainly not a (probably invalid) download link for it
                     if (cellData[key] && cellData[key].length > 0
                         && (!cellData["folder"] || !(cellData["folder"].length > 0))) {
-                        return <div><p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p></div>;
+                        return <p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p>;
                     } else {
                         return '';
                     }
                 } else if(key==='commentsFilename') {
                     if (cellData[key] && cellData[key].length > 0) {
-                        return <div><p key={i} className='modal-line'><span className='modal-title'>download EPA comments:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p></div>;
+                        return <p key={i} className='modal-line'><span className='modal-title'>download EPA comments:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p>;
                     } else {
                         return '';
                     }
@@ -272,7 +271,7 @@ export default class RecordDetailsTab extends React.Component {
                 } else if(key==='matchPercent' || key==='commentDate' || key==='id_' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
                     return '';
                 } else {
-                    return (<div><p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p></div>);
+                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p>);
                 }
             }));
         }
@@ -297,11 +296,6 @@ export default class RecordDetailsTab extends React.Component {
 
 
     render () {
-
-        if (typeof(window) !== 'undefined') {
-            ReactModal.setAppElement('body');
-        }
-
         
         const customStyles = {
             option: (styles, state) => ({
