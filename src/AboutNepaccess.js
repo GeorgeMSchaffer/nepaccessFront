@@ -35,28 +35,35 @@ class AboutNepaccess extends React.Component {
                         Using cutting-edge NLP and other analytic tools, scholars, citizens, environmental professionals, and agency staff can use NEPAccess to answer a host of critical questions about how humans impact the environment and how the environment impacts us.
                     </span>
 
-                    <div className="inline-block">
+                    {/* <div className="inline-block"> */}
+                    <div className="flex-contact-box">
+                        <div className="flex-contact">
 
-                        <span className="about-nepaccess-contact-header">
-                            For more information about NEPAcces contact:
-                        </span>
-                        <span className="about-nepaccess-contact-content">
-                            Jonathan Derbridge,
-                        </span>
-                        <span className="about-nepaccess-contact-content">
-                            NEPAccess Project Manager
-                        </span>
-                        <span className="about-nepaccess-contact-content">
-                            <span className="about-nepa-button email-text">derbridge@arizona.edu</span>
-                        </span>
-                        <br />
-                        <br />
-                        
+                            <span className="about-nepaccess-contact-header">
+                                For more information about NEPAccess contact:
+                            </span>
+                            <span className="about-nepaccess-contact-content">
+                                Jonathan Derbridge,
+                            </span>
+                            <span className="about-nepaccess-contact-content">
+                                NEPAccess Project Manager
+                            </span>
+                            <span className="about-nepaccess-contact-content">
+                                <span className="about-nepa-button email-text">derbridge@arizona.edu</span>
+                            </span>
+                            
+                        </div>
+                        <div className="flex-image-box">
+                            <div id="nsf-logo" className="flex-image"></div>
+                            <div id="ua-logo" className="flex-image"></div>
+                        </div>
                     </div>
  
-                    <div id="about-nepaccess-nsf-logo"></div>
-                    <div id="about-nepaccess-ua-logo"></div>
+                    {/* <div id="about-nepaccess-nsf-logo"></div>
+                    <div id="about-nepaccess-ua-logo"></div> */}
 
+                    {/* <br /> */}
+                    <br />
                     <div className="about-personnel">
                         <h2 className="personnel-header">
                             Team Personnel
