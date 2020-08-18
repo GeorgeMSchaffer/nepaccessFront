@@ -142,6 +142,7 @@ class Main extends React.Component {
                     <Link className="main-menu-link" to="/search">Search NEPAccess</Link>
                     <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
                     <Link className="main-menu-link" to="/aboutnepaccess">About NEPAccess</Link>
+                    <Link className="main-menu-link" to="/abouthelp">Help</Link>
                     {this.state.menuItems}
                     {/* <Link className="main-menu-link" to="/fulltext">Fulltext search</Link> */}
                 </div>
