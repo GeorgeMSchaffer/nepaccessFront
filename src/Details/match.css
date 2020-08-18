@@ -16,8 +16,19 @@
 
 .ReactModal__Overlay--after-open {
     z-index: 4;
-    min-width: 400px;
-    min-height: 300px;
+}
+
+.ReactModal__Content {
+  height: 50%;
+  width: 50%;
+  min-width: 400px;
+  min-height: 300px;
+  margin: auto;
+}
+
+.ReactModal__Content table.details tbody tr td {
+  margin: 0;
+  padding: 0;
 }
 
 #tooltip2Mark {

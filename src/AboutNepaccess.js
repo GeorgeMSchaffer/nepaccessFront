@@ -14,6 +14,10 @@ class AboutNepaccess extends React.Component {
                     <h1 className="about-nepa-title">
                         About NEPAccess
                     </h1>
+                    
+                    <span className="default-style">
+                        <Link className="about-nepa-button underline" to="/abouthelp">How to search NEPAccess</Link>
+                    </span>
 
                     <span className="default-style bold">
                         NEPAccess helps bring <Link className="about-nepa-button" to="/aboutnepa">NEPA</Link> into the 21st century by harnessing the power of data science to enable the full vision of NEPA as a strategy to deal with emerging 21st-century social, economic, and environmental challenges.

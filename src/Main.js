@@ -18,6 +18,7 @@ import ForgotPassword from './User/ForgotPassword.js';
 
 import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess.js';
+import AboutHelp from './AboutHelp.js';
 
 import Importer from './Importer.js';
 
@@ -157,6 +158,7 @@ class Main extends React.Component {
                 <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
+                <Route path="/abouthelp" component={AboutHelp}/>
 
                 <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
                 

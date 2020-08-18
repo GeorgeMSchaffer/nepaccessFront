@@ -17,7 +17,9 @@ export default class DeleteFileLink extends React.Component {
         };
     }
     
-    showModal = (e) => { this.setState({ show: true }); }
+    showModal = (e) => { 
+        this.setState({ show: true }); 
+    }
     hideModal = (e) => { this.setState({ show: false }); }
     
     onKeyUp = (evt) => {
@@ -113,13 +115,26 @@ export default class DeleteFileLink extends React.Component {
                     // ariaHideApp={false}
                 >
                     <button className='button modal-close' onClick={this.hideModal}>Cancel</button>
+
                     <label className="errorLabel">{this.state.networkError}</label>
+
                     <h2 className="title-color">Type DELETE and confirm to really delete this record:</h2>
-                    <input type="text" name="deleteTextBox" value={this.state.deleteText} onChange={this.deleteStateChange}/>
+                    
+                    <span>Enter "DELETE" here to enable delete button: </span>
+                    <input type="text" name="deleteTextBox" 
+                        autoFocus
+                        value={this.state.deleteText} onChange={this.deleteStateChange}
+                    />
+
                     <hr />
+
                     <button className='button' onClick={this.deleteRecord} disabled={this.state.deleteText!=='DELETE'}>Delete</button>
                 </ReactModal>
             </div>
         );
+    }
+
+    componentDidUpdate() {
+        // console.log("Modal update");
     }
 }

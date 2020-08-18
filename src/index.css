@@ -223,6 +223,10 @@ body {
   background: #FFFBF1;
 }
 
+.spacer {
+    margin-top: 102px;
+}
+
 /* Special tags */
 
 *[hidden] { 
@@ -281,6 +285,10 @@ button {
   font-style: italic;
   position: absolute;
   top: -20px;
+}
+
+.underline {
+    text-decoration: underline !important;
 }
 
 .disabled_download {
