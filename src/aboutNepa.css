@@ -1,6 +1,7 @@
 #about-nepa-content {
     min-width: 1000px;
-    width: 50%;
+    max-width: 3840px;
+    width: 40%;
 
     position: relative;
 
@@ -13,7 +14,7 @@
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
-    line-height: 26px;
+    line-height: 30px;
 
     color: #000000;
 }
@@ -79,6 +80,8 @@
     right: -250px;
     top: 140px;
     
+    background-repeat: no-repeat;
+    background-size: contain;
     background-image: url("assets/nixon.png");
 }
 
