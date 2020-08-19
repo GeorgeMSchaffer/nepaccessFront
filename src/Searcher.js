@@ -231,8 +231,10 @@ class Searcher extends React.Component {
     }
 
     onRadioChange = (evt) => {
-        this.standardizeTitle();
-        this.setState({ [evt.target.name]: evt.target.value });
+        // this.standardizeTitle();
+        this.setState({ [evt.target.name]: evt.target.value }, () => {
+            this.standardizeAndSearch();
+        });
     }
 
     validated = (term) => {
