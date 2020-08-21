@@ -13,6 +13,8 @@ import '../index.css';
 import './match.css';
 
 import Globals from '../globals.js';
+
+const _ = require('lodash');
 // 1. User clicks Record
 // 2. Tab opens, shows Record metadata from backend call
 // Good place to put curation options for authorized users
@@ -42,6 +44,8 @@ export default class RecordDetailsTab extends React.Component {
             show: false,
             resultsText: "",
         };
+
+        this.debouncedSize = _.debounce(this.getFileSize, 300);
     }
 
     
@@ -210,7 +214,37 @@ export default class RecordDetailsTab extends React.Component {
         return parseInt(idString);
     }
 
+    getFileSize = (_filename) => {
+        if(this.state.fileSize){
+            // do nothing
+        } else {
+            let sizeUrl = Globals.currentHost + "file/file_size";
 
+            // console.log("Inputs");
+            // console.log(JSON.stringify(this.state.searcherInputs));
+            
+            //Send the AJAX call to the server
+            axios.get(sizeUrl, {
+                params: {
+                    filename: _filename
+                }
+                }).then(response => {
+                    let responseOK = response && response.status === 200;
+                    if (responseOK) {
+                        this.setState({
+                            fileSize: Math.round(response.data / 1024)
+                        });
+                    } else {
+                        return null;
+                    }
+                }).then(parsedJson => { // can be empty (no results)
+                    // return "Unknown";
+                }).catch(error => {
+                    // return "Unknown (server error)";
+            });
+            
+        }
+    }
     
     showView = () => {
         // One benefit of switching here instead of dynamically hiding elements is that Tabulator doesn't error out when hidden
@@ -256,8 +290,17 @@ export default class RecordDetailsTab extends React.Component {
                 } else if(key==='filename') {
                     // If we have a folder available for download, never mind showing the filename, certainly not a (probably invalid) download link for it
                     if (cellData[key] && cellData[key].length > 0
-                        && (!cellData["folder"] || !(cellData["folder"].length > 0))) {
-                        return <p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="EIS" filename={cellData[key]}/> {cellData[key]}</p>;
+                                && (!cellData["folder"] || !(cellData["folder"].length > 0))) {
+                        /** If we do have just a filename then we should be able to get the filesize */
+                        return <div key={i}>
+                            <p className='modal-line'>
+                                <span className='modal-title'>download files:</span> 
+                                <DownloadFile downloadType="EIS" filename={cellData[key]}/>
+                            </p>
+                            {this.debouncedSize(cellData[key])}
+                            <p><span className='modal-title'>&nbsp;File size: </span>{this.state.fileSize} KB</p>
+                            <p><span className='modal-title'>&nbsp;Filename: </span>{cellData[key]}</p>
+                            </div>;
                     } else {
                         return '';
                     }

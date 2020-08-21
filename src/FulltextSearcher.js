@@ -155,6 +155,10 @@ class FulltextSearcher extends React.Component {
                                     <div className="post-search-box-text" hidden={!this.state.context}>
                                         Press enter to search for terms.  Common words (a, and, the, ...) are not indexed.  
                                     </div>
+                                    
+                                    <div className="post-search-box-text" hidden={this.state.context}>
+                                        Proximity searching (searching for terms within # words of each other) is done by encapsulating the terms in double quotes followed by tilde and the number of words. Example: "example phrase here"~100
+                                    </div>
                                     {/* <div className="post-search-box-text" hidden={!this.state.context}>
                                         Press enter to search for terms.  Stopwords (a, and, the, ...) are not indexed.  Searching for "exact phrases" is supported, as well as wildcards* or -excluded -words.
                                     </div> */}
