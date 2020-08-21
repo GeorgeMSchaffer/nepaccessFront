@@ -14,7 +14,6 @@ class App extends React.Component {
 
 	state = {
 		searcherInputs: {
-			searchMode: '',
 			startPublish: '',
 			endPublish: '',
 			agency: [],
@@ -52,21 +51,22 @@ class App extends React.Component {
 			// 	console.log(this.state.searcherInputs[value]);
 			// }
 
-			let searchUrl = new URL('test/search', Globals.currentHost);
+			// let searchUrl = new URL('test/search', Globals.currentHost);
+			let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene instead of MySQL fulltext search
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
 				this.props.history.push('/login') // Prompt login if no auth token
 			}
-			let titleToPass = "";
-			if(this.state.searcherInputs.searchMode==='natural'){
-				titleToPass = this.state.searcherInputs.naturalTitle;
-			} else {
-				titleToPass = this.state.searcherInputs.booleanTitle;
-			}
+			// let titleToPass = "";
+			// if(this.state.searcherInputs.searchMode==='natural'){
+			// 	titleToPass = this.state.searcherInputs.naturalTitle;
+			// } else {
+			// 	titleToPass = this.state.searcherInputs.booleanTitle;
+            // }
 
 			let dataToPass = { 
-				searchMode: this.state.searcherInputs.searchMode,
-				title: titleToPass, 
+				// searchMode: this.state.searcherInputs.searchMode,
+				title: this.state.searcherInputs.titleRaw, 
 				startPublish: this.state.searcherInputs.startPublish,
 				endPublish: this.state.searcherInputs.endPublish,
 				startComment: this.state.searcherInputs.startComment,

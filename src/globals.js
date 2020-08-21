@@ -57,21 +57,11 @@ const Globals = {
         localStorage.removeItem("curator");
     },
 
-    /** Return search options that are all default except use the incoming title/mode.  Options based on what Spring DAL uses. 
-     *  While natural vs. boolean is supported, only boolean is actually offered to the user at the time of this edit. 
-     */
+    /** Return search options that are all default except use the incoming title.  Options based on what Spring DAL uses. */
     convertToSimpleSearch(searcherState){
 
-        let titleToPass = searcherState.booleanTitle;
-        if(searcherState.searchMode === 'natural'){
-            titleToPass = searcherState.naturalTitle;
-        }
-
         return {
-            searchMode: searcherState.searchMode,
-            title: titleToPass,
-            booleanTitle: titleToPass,
-            naturalTitle: titleToPass,
+            titleRaw: searcherState.titleRaw,
 			startPublish: '',
 			endPublish: '',
 			startComment: '',
