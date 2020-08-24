@@ -204,6 +204,7 @@ class Searcher extends React.Component {
         + "<p className=&quot;tooltip-line&quot;>&bull; Surround phrases with &quot;double quotes&quot; to match exact phrases.</p>"
         + "<p className=&quot;tooltip-line&quot;>&bull; End words with an asterisk* to match partial words (example: rose* will match rosebud, roseburg, etc.).</p>"
         + "<p className=&quot;tooltip-line&quot;>&bull; Use exact spelling, case insensitive.</p>"
+        + "<p className=&quot;tooltip-line&quot;>&bull; Learn about more features in the Help link.</p>";
 
         return (
             <div className="content" onSubmit={this.submitHandler}>

@@ -50,11 +50,13 @@ class SearchResults extends React.Component {
         // }
 
         const results = this.props.results;
-    //   if(results.length == 0){
-    //       return (
-    //             <div id="search-results"></div>
-    //         );
-    //   }
+        
+        // If they haven't searched yet, don't show the empty results
+      if((!results || results.length === 0) && !this.props.isDirty){
+          return (
+                <div id="search-results"></div>
+            );
+      } else {
         try {
             const data = results.map((result, idx) =>{
                 let newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
@@ -90,7 +92,6 @@ class SearchResults extends React.Component {
                 //   responsiveLayout:"hide", // hide rows that no longer fit (a responsive:0 column is never hidden, default responsive value is 1 and are hidden right to left if equal priority)
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
-            
             return (
                 <div id="search-results">
                     {/* <button className="button" onClick={() => this.testRedraw()}>Test redraw</button> */}
@@ -119,6 +120,7 @@ class SearchResults extends React.Component {
                 </div>
             )
         }
+        }
     }
     
     // testRedraw = () => {
@@ -134,7 +136,7 @@ class SearchResults extends React.Component {
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
-        if(this.my_table) { 
+        if(this.my_table && this.my_table.current) { 
             const tbltr = this.my_table.current;
             setTimeout(function() {
                 // console.log(tbltr);

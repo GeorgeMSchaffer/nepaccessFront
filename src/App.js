@@ -20,7 +20,8 @@ class App extends React.Component {
 			state: [],
 			needsComments: false,
 			needsDocument: false,
-			limit: ''
+            limit: '',
+            isDirty: false
 		},
 		searchResults: [],
 		resultsText: 'Results',
@@ -37,7 +38,8 @@ class App extends React.Component {
             _inputs = Globals.convertToSimpleSearch(searcherState);
         }
 		this.setState({
-			searcherInputs: _inputs,
+            searcherInputs: _inputs,
+            isDirty: true,
 			resultsText: "Loading results...",
 			networkError: "" // Clear network error
 		}, () => {
@@ -166,7 +168,7 @@ class App extends React.Component {
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
 					<Searcher search={this.search} />
-					<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} />
+					<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} />
 				</div>
 			)
 
