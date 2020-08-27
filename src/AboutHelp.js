@@ -48,8 +48,10 @@ export default class AboutHelp extends React.Component {
                     </p>
                     
                     <span className="default-style">
-                        The current data uses a list of "stopwords" which are extremely common words that aren't indexed. They will be ignored, and therefore won't influence search results.
-                        These search terms are:
+                        <span className="about-nepa-bold">
+                            The current data uses a list of "stopwords" which are extremely common words that aren't indexed. They will be ignored, and therefore won't influence search results.
+                            These search terms are:
+                        </span>
                         <p>"a", "an", "and", "are", "as", "at", "be", "but", "by",</p>
                         <p>"for", "if", "in", "into", "is", "it",</p>
                         <p>"no", "not", "of", "on", "or", "such",</p>
