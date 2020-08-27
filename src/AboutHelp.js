@@ -23,7 +23,36 @@ export default class AboutHelp extends React.Component {
                         ).  
                         <p>Proximity matching, for example, is done by surrounding terms in double quotes and appending ~#, where # is the maximum number of words that may appear between them.
                         </p>
+                    
                     </span>
+                    
+                    <h3>Boolean queries explained</h3>
+                    <p>
+                        AND is implicit.  The term modifier is prepending with + but this is unnecessary.
+                    </p><p>
+                        OR is ||.
+                    </p><p>
+                        NOT is -.
+                    </p><p>
+                        Exact phrases are surrounded by double quotes.
+                    </p><p>
+                        Examples:
+                    </p><p>
+                        Searching "operation funding" "yonkers westchester" will return records containing both those phrases.  This is the same as searching +"operation funding" +"yonkers westchester".
+
+                        </p><p>
+                        Searching operation funding yonkers westchester (unquoted) will return records containing all those terms in any order.
+
+                        </p><p>
+                        Searching "operation funding" || "yonkers westchester" will return all results which have at least one of those phrases.
+
+                        </p><p>
+                        Searching "operation funding" -"yonkers westchester" will return all results which have the phrase "operation funding" but not the phrase "yonkers westchester".
+
+                        </p><p>
+                        "Phrases" can be single words.
+                    </p>
+                    
                     <span className="default-style">
                         The current data uses a list of "stopwords" which are extremely common words that aren't indexed. They will be ignored, and therefore won't influence search results.
                         These search terms are:
