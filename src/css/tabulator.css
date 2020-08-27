@@ -2,6 +2,8 @@
 
 .tabulator-holder {
     height: 800px; /* Need this as parent element to control max-height of .tabulator */
+    overflow: hidden;
+    scroll-behavior: auto;
 }
 
 .tabulator {
@@ -13,6 +15,7 @@
 }
 
 .tabulator .tabulator-tableHolder {
+    height: 100%;
     /* overflow: hidden; */
 }
 
