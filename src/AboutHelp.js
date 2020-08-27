@@ -28,29 +28,23 @@ export default class AboutHelp extends React.Component {
                     
                     <h3>Boolean queries explained</h3>
                     <p>
-                        AND is implicit.  The term modifier is prepending with + but this is unnecessary.
+                        AND is implicit.  The term modifier is prepending with AND or + but this is unnecessary.
                     </p><p>
-                        OR is ||.
+                        OR is OR, || or | (single or double pipe).
                     </p><p>
-                        NOT is -.
+                        NOT is NOT or -.
                     </p><p>
                         Exact phrases are surrounded by double quotes.
                     </p><p>
                         Examples:
                     </p><p>
                         Searching "operation funding" "yonkers westchester" will return records containing both those phrases.  This is the same as searching +"operation funding" +"yonkers westchester".
-
-                        </p><p>
+                    </p><p>
                         Searching operation funding yonkers westchester (unquoted) will return records containing all those terms in any order.
-
-                        </p><p>
+                    </p><p>
                         Searching "operation funding" || "yonkers westchester" will return all results which have at least one of those phrases.
-
-                        </p><p>
+                    </p><p>
                         Searching "operation funding" -"yonkers westchester" will return all results which have the phrase "operation funding" but not the phrase "yonkers westchester".
-
-                        </p><p>
-                        "Phrases" can be single words.
                     </p>
                     
                     <span className="default-style">
