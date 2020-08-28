@@ -42,11 +42,13 @@ export default class AboutHelp extends React.Component {
                     </p><p>
                         Searching operation funding yonkers westchester (unquoted) will return records containing all those terms in any order.
                     </p><p>
-                        Searching "wildlife refuge" || "construction operation" will return all results which have at least one of those phrases.
+                        Searching ("wildlife refuge") || ("construction operation") will return all results which have at least one of those phrases.
                     </p><p>
                         Searching "wildlife refuge" -"construction operation" will return all results which have the phrase "wildlife refuge" but not the phrase "construction operation".
                     </p><p>
-                        Boolean queries can be chained.  Terms can be surrounded by parentheses to ensure both the order of operations and the differentiation of term modifiers.  Lowercase and/or/not will be ignored because they are stopwords.
+                        Multiple boolean operators can be combined for more complex queries.  Terms can be surrounded by parentheses to ensure both the order of operations and the differentiation of term modifiers.  Lowercase and/or/not will be ignored because they are stopwords.
+                    </p><p>
+                        Here's an example including multiple operators, proximity matching and parentheses: (wildlife OR habitat) AND ("construction maintenance"~10)
                     </p>
                     
                     <span className="default-style">
