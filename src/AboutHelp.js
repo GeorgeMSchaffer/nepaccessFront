@@ -42,15 +42,17 @@ export default class AboutHelp extends React.Component {
                     </p><p>
                         Searching operation funding yonkers westchester (unquoted) will return records containing all those terms in any order.
                     </p><p>
-                        Searching "operation funding" || "yonkers westchester" will return all results which have at least one of those phrases.
+                        Searching "wildlife refuge" || "construction operation" will return all results which have at least one of those phrases.
                     </p><p>
-                        Searching "operation funding" -"yonkers westchester" will return all results which have the phrase "operation funding" but not the phrase "yonkers westchester".
+                        Searching "wildlife refuge" -"construction operation" will return all results which have the phrase "wildlife refuge" but not the phrase "construction operation".
+                    </p><p>
+                        Boolean queries can be chained.  Terms can be surrounded by parentheses to ensure both the order of operations and the differentiation of term modifiers.  Lowercase and/or/not will be ignored because they are stopwords.
                     </p>
                     
                     <span className="default-style">
                         <span className="about-nepa-bold">
-                            The current data uses a list of "stopwords" which are extremely common words that aren't indexed. They will be ignored, and therefore won't influence search results.
-                            These search terms are:
+                            The current data uses a list of "stopwords" which are extremely common words that aren't indexed. They will be ignored, and therefore won't influence search results.  Punctuation is also ignored if not recognized as term modifiers.
+                            Ignored search terms are:
                         </span>
                         <p>"a", "an", "and", "are", "as", "at", "be", "but", "by",</p>
                         <p>"for", "if", "in", "into", "is", "it",</p>
