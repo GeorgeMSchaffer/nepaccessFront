@@ -244,7 +244,11 @@ input[type=checkbox] {
   width: 355px;
 }
 
-/** React-select custom styling within advanced serach box */
+/** React-select custom styling within advanced search box */
+
+.react-select__menu-list>.react-select__option--is-focused {
+    background: lightgreen;
+}
 
 #advanced-search-box .react-select__dropdown-indicator, #advanced-search-box .react-select__clear-indicator, #advanced-search-box .react-select__indicator-separator {
   display: none;
