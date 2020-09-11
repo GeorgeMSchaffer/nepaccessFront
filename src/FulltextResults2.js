@@ -74,6 +74,7 @@ class FulltextResults2 extends React.Component {
                 layoutColumnsOnNewData: true,
                 tooltips:false,
                 responsiveLayout:"collapse",  //collapse columns that dont fit on the table
+                responsiveLayoutCollapseUseFormatters:false,
                 pagination:"local",       //paginate the data
                 paginationSize:10,       //allow 10 rows per page of data
                 paginationSizeSelector:[10, 25, 50],

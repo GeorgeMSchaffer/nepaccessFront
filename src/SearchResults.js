@@ -52,74 +52,75 @@ class SearchResults extends React.Component {
         const results = this.props.results;
         
         // If they haven't searched yet, don't show the empty results
-      if((!results || results.length === 0) && !this.props.isDirty){
-          return (
+         if((!results || results.length === 0) && !this.props.isDirty){
+            return (
                 <div id="search-results"></div>
             );
-      } else {
-        try {
-            const data = results.map((result, idx) =>{
-                let newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
-                registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
-                filename: result.filename, 
-                commentsFilename: result.commentsFilename,
-                id: result.id,
-                folder: result.folder};
-                return newObject;
-            });
-            
-            const columns = [
-                { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />), variableHeight:true, headerFilter:"input", headerFilterPlaceholder:"Type to filter results...", responsive:0 },
-                { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
-                { title: "Published date", field: "registerDate", width: 154, headerFilter:"input" },
-                { title: "State", field: "state", width: 112, headerFilter:"input" },
-                { title: "Version", field: "documentType", width: 114, headerFilter:"input" },
-                { title: "Documents", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-                { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
-            ];
+        } else {
+            try {
+                const data = results.map((result, idx) =>{
+                    let newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
+                    registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
+                    filename: result.filename, 
+                    commentsFilename: result.commentsFilename,
+                    id: result.id,
+                    folder: result.folder};
+                    return newObject;
+                });
+                
+                const columns = [
+                    { title: "Title", field: "title", formatter: reactFormatter(<RecordDetailsLink />), variableHeight:true, headerFilter:"input", headerFilterPlaceholder:"Type to filter results...", responsive:0 },
+                    { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
+                    { title: "Published date", field: "registerDate", width: 154, headerFilter:"input" },
+                    { title: "State", field: "state", width: 112, headerFilter:"input" },
+                    { title: "Version", field: "documentType", width: 114, headerFilter:"input" },
+                    { title: "Documents", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
+                    { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
+                ];
 
-            const options = {
-                layoutColumnsOnNewData: true,
-                tooltips:false,
-                responsiveLayout:"collapse",  //collapse columns that dont fit on the table
-                pagination:"local",       //paginate the data
-                paginationSize:10,       //allow 10 rows per page of data
-                paginationSizeSelector:[10, 25, 50, 100],
-                movableColumns:true,      //allow column order to be changed
-                resizableRows:true,       //allow row order to be changed
-                layout:"fitColumns",
-                invalidOptionWarnings:false, // spams warnings without this
-                //   responsiveLayout:"hide", // hide rows that no longer fit (a responsive:0 column is never hidden, default responsive value is 1 and are hidden right to left if equal priority)
-                footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
-            };
-            return (
-                <div id="search-results">
-                    {/* <button className="button" onClick={() => this.testRedraw()}>Test redraw</button> */}
-                    <h2 id="results-label">{this.props.resultsText}</h2>
-                    <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
-                    <div className="tabulator-holder">
-                        <ReactTabulator
-                            ref={this.my_table}
-                            data={data}
-                            columns={columns}
-                            options={options}
-                            onKeyUp={this.onArrow}
-                            // rowClick={(e, row) => this.Action}
-                        />
+                const options = {
+                    layoutColumnsOnNewData: true,
+                    tooltips:false,
+                    responsiveLayout:"collapse",  //collapse columns that dont fit on the table
+                    responsiveLayoutCollapseUseFormatters:false,
+                    pagination:"local",       //paginate the data
+                    paginationSize:10,       //allow 10 rows per page of data
+                    paginationSizeSelector:[10, 25, 50, 100],
+                    movableColumns:true,      //allow column order to be changed
+                    resizableRows:true,       //allow row order to be changed
+                    layout:"fitColumns",
+                    invalidOptionWarnings:false, // spams warnings without this
+                    //   responsiveLayout:"hide", // hide rows that no longer fit (a responsive:0 column is never hidden, default responsive value is 1 and are hidden right to left if equal priority)
+                    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
+                };
+                return (
+                    <div id="search-results">
+                        {/* <button className="button" onClick={() => this.testRedraw()}>Test redraw</button> */}
+                        <h2 id="results-label">{this.props.resultsText}</h2>
+                        <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
+                        <div className="tabulator-holder">
+                            <ReactTabulator
+                                ref={this.my_table}
+                                data={data}
+                                columns={columns}
+                                options={options}
+                                onKeyUp={this.onArrow}
+                                // rowClick={(e, row) => this.Action}
+                            />
+                        </div>
                     </div>
-                </div>
-            )
-        }
-        catch (e) {
-            console.log(e.toString());
-            // Show the user something other than a blank page
-            return (
-                <div>
-                    <h2 id="results-label">{this.props.resultsText}</h2>
-                    <ReactTabulator />
-                </div>
-            )
-        }
+                )
+            }
+            catch (e) {
+                console.log(e.toString());
+                // Show the user something other than a blank page
+                return (
+                    <div>
+                        <h2 id="results-label">{this.props.resultsText}</h2>
+                        <ReactTabulator />
+                    </div>
+                )
+            }
         }
     }
     

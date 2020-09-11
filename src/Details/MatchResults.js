@@ -76,6 +76,7 @@ class MatchResults extends React.Component {
             var options = {
                 tooltips:true,
                 responsiveLayout:"collapse",  //collapse columns that dont fit on the table
+                responsiveLayoutCollapseUseFormatters:false,
                 pagination:"local",       //paginate the data
                 paginationSize:10,       //allow 10 rows per page of data
                 paginationSizeSelector:[10, 25, 50, 100],
