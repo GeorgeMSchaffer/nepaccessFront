@@ -48,6 +48,7 @@ class Searcher extends React.Component {
             optionsChecked: false,
             iconClassName: 'icon icon--effect',
             limit: '100000',
+            searchOption: 'meta',
             test: globals.anEnum.options
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);

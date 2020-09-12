@@ -1,8 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import FulltextResults from './FulltextResults.js';
-import FulltextResults2 from './FulltextResults2.js';
+import CombinedResults from './CombinedResults.js';
 import FulltextSearcher from './FulltextSearcher.js';
 
 // import './App.css';
@@ -104,9 +103,9 @@ class Fulltext extends React.Component {
 
 	renderFulltextResults = () => {
 		if(this.state.context){
-			return <FulltextResults results={this.state.searchResults} resultsText={this.state.resultsText} context={this.state.context} />;
+			return <CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} context={this.state.context} />;
 		} else {
-			return <FulltextResults2 results={this.state.searchResults} resultsText={this.state.resultsText} />;
+			return <CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} />;
 		}
 	}
 	

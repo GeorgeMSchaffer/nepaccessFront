@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import SearchResults from './SearchResults.js';
+import CombinedResults from './CombinedResults.js';
 import Searcher from './Searcher.js';
 
 // import './App.css';
@@ -54,7 +54,15 @@ class App extends React.Component {
 			// }
 
 			// let searchUrl = new URL('test/search', Globals.currentHost);
-			let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene instead of MySQL fulltext search
+			// let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene instead of MySQL fulltext search
+            let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene on two fields
+            
+            
+            if(searcherState.searchOption && searcherState.searchOption === "A") {
+                searchUrl = new URL('text/search_title_priority', Globals.currentHost);
+            } else if(searcherState.searchOption && searcherState.searchOption === "B") {
+                searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
+            }
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
 				this.props.history.push('/login') // Prompt login if no auth token
@@ -117,7 +125,7 @@ class App extends React.Component {
 				// 	});
 				// }
 			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
-				// console.error('Server is down or verification failed.', error);
+				console.error('Server is down or verification failed.', error);
 				this.setState({
 					networkError: 'Server is down or you may need to login again.'
 				});
@@ -168,7 +176,7 @@ class App extends React.Component {
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
 					<Searcher search={this.search} />
-					<SearchResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} />
+					<CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} />
 				</div>
 			)
 

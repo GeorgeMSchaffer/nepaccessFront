@@ -28,7 +28,8 @@ class FulltextSearcher extends React.Component {
         super(props);
 		this.state = {
             terms: '',
-            context: false
+            context: false,
+            searchOption: "D",
         };
         this.debouncedSearch = _.debounce(this.props.search, 300);
     }
