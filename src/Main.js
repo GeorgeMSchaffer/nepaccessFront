@@ -6,6 +6,7 @@ import './index.css';
 import Landing from './Landing.js';
 import App from './App';
 import Fulltext from './Fulltext.js';
+import CombinedAB from './CombinedAB.js';
 
 import RecordDetailsTab from './Details/RecordDetailsTab.js';
 
@@ -155,6 +156,7 @@ class Main extends React.Component {
                 <Route path="/reset" component={Reset}/>
                 <Route path="/logout" component={Logout}/>
 
+                <Route path="/CombinedAB" component={CombinedAB}/>
                 <Route path="/fulltext" component={Fulltext}/>
                 <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
