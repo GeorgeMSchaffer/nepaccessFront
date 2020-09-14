@@ -2,28 +2,54 @@
 
 .tabulator-holder {
     margin: 0 25px;
-    /* height: 800px; /* Need this as parent element to control max-height of .tabulator */
+    /*height: 800px; /*Need this as parent element to control max-height of .tabulator*/
     /* overflow: hidden; */
     scroll-behavior: auto;
 }
 
 .tabulator {
-  /* max-height: 100%; /* With this, can't get larger than parent element */
-  /* height: 600px; */
+ /* max-height: 100%; /* With this, can't get larger than parent element */
+  /* min-width: 1000px; */
   /* overflow: hidden; */
 }
 
+.tabulator-responsive-collapse span.fragment {
+    white-space: normal;
+}
+
 .tabulator .tabulator-tableHolder {
-    height: 100%;
-    /* overflow: hidden; */
+    /* height: 100%; */
+    overflow: hidden;
+    /* overflow-x: hidden; */
 }
 
 .tabulator-row .tabulator-cell {
-  white-space: pre-wrap;
+    white-space: normal;
+}
+
+.tabulator-row {
+    flex-direction: row;
+    align-items: center;
+}
+.tabulator-row .tabulator-cell {
+    padding: 0;
+    height: auto;
+}
+
+.tabulator-row .tabulator-cell.formatterCell {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.formatterCell .link {
+    width: 200px;
+    white-space: normal;
 }
 
 .tabulator-row, .tabulator-cell {
-  cursor: default;
+    cursor: default;
 }
 
 /* Row auto adjusts to accommodate cell size */
