@@ -15,7 +15,7 @@ import persist from './persist.js';
 
 import { withRouter } from "react-router";
 
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 const _ = require('lodash');
 
@@ -23,11 +23,11 @@ const _ = require('lodash');
 
 class CombinedSearcher extends React.Component {
 
-	static propTypes = {
-        // match: PropTypes.object.isRequired,
-        // location: PropTypes.object.isRequired,
-        history: PropTypes.object.isRequired
-    };
+	// static propTypes = {
+    //     // match: PropTypes.object.isRequired,
+    //     // location: PropTypes.object.isRequired,
+    //     history: PropTypes.object.isRequired
+    // };
 
     constructor(props) {
         super(props);
@@ -168,13 +168,9 @@ class CombinedSearcher extends React.Component {
     onEndCommentChange = (date) => { 
         this.setState( { endComment: date }, () => { this.debouncedSearch(this.state); }); 
     }
-    
-    // Can either just make the form a div or use this to prevent Submit default behavior
-    submitHandler(e) { e.preventDefault(); }
-
 
     render () {
-        const { history } = this.props;
+        // const { history } = this.props;
 
         const customStyles = {
             option: (styles, state) => ({

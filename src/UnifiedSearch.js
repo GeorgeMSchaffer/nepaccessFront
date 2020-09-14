@@ -15,19 +15,17 @@ import persist from './persist.js';
 
 import { withRouter } from "react-router";
 
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 const _ = require('lodash');
 
-// const parseISO = require('date-fns/parseISO')
-
 class UnifiedSearch extends React.Component {
 
-	static propTypes = {
+	// static propTypes = {
         // match: PropTypes.object.isRequired,
         // location: PropTypes.object.isRequired,
-        history: PropTypes.object.isRequired
-    };
+        // history: PropTypes.object.isRequired
+    // };
 
     constructor(props) {
         super(props);
@@ -60,8 +58,6 @@ class UnifiedSearch extends React.Component {
      * Event handlers
      */  
 
-    scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop)   
-
     onIconClick = (evt) => {
         this.debouncedSearch(this.state);
     }
@@ -71,7 +67,7 @@ class UnifiedSearch extends React.Component {
 
     onRadioChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value }, () => {
-            this.debouncedSearch(this.state);
+            // this.debouncedSearch(this.state);
         });
     }
 
@@ -88,8 +84,8 @@ class UnifiedSearch extends React.Component {
 		this.setState( 
 		{ 
             [evt.target.name]: evt.target.value,
-        }, () => { // callback ensures state is set before state is used for search
-            this.debouncedSearch(this.state);
+        }, () => { // auto-searching is currently too expensive until asynchronous results
+            // this.debouncedSearch(this.state);
         });
     }
 
@@ -115,7 +111,7 @@ class UnifiedSearch extends React.Component {
             agency: agencyLabels,
             agencyRaw: evt
 		}, () => { 
-			this.debouncedSearch(this.state);
+			// this.debouncedSearch(this.state);
 		});
     }
 	onLocationChange = (evt) => {
@@ -128,7 +124,7 @@ class UnifiedSearch extends React.Component {
 			state: stateValues,
             stateRaw: evt
 		}, () => { 
-			this.debouncedSearch(this.state);
+			// this.debouncedSearch(this.state);
         });
     }
     
@@ -143,12 +139,16 @@ class UnifiedSearch extends React.Component {
                 typeFinal: false,
                 typeDraft: false,
                 typeOther: false
-            }, () => { this.debouncedSearch(this.state); });
+            }, () => { 
+                /**this.debouncedSearch(this.state);*/ 
+            });
         } else { // Not all: Check target, uncheck all
             this.setState({ 
                 [evt.target.name]: evt.target.checked,
                 typeAll: false
-            }, () => { this.debouncedSearch(this.state); });
+            }, () => { 
+                // this.debouncedSearch(this.state); 
+            });
         }
     }
 
@@ -157,24 +157,28 @@ class UnifiedSearch extends React.Component {
     // }
     
     onStartDateChange = (date) => { 
-        this.setState( { startPublish: date }, () => { this.debouncedSearch(this.state); }); 
+        this.setState( { startPublish: date }, () => { 
+            // this.debouncedSearch(this.state); 
+        }); 
     }
     onEndDateChange = (date) => { 
-        this.setState( { endPublish: date }, () => { this.debouncedSearch(this.state); }); 
+        this.setState( { endPublish: date }, () => { 
+            // this.debouncedSearch(this.state); 
+        }); 
     }
     onStartCommentChange = (date) => { 
-        this.setState( { startComment: date }, () => { this.debouncedSearch(this.state); }); 
+        this.setState( { startComment: date }, () => { 
+            // this.debouncedSearch(this.state); 
+        }); 
     }
     onEndCommentChange = (date) => { 
-        this.setState( { endComment: date }, () => { this.debouncedSearch(this.state); }); 
+        this.setState( { endComment: date }, () => {
+            // this.debouncedSearch(this.state); 
+        }); 
     }
-    
-    // Can either just make the form a div or use this to prevent Submit default behavior
-    submitHandler(e) { e.preventDefault(); }
-
 
     render () {
-        const { history } = this.props;
+        // const { history } = this.props;
 
         const customStyles = {
             option: (styles, state) => ({
@@ -211,7 +215,7 @@ class UnifiedSearch extends React.Component {
 
         return (
             <div className="content" onSubmit={this.submitHandler}>
-                <div id="searcher-container">
+                <div id="searcher-container" >
 
                     <div id="searcher-inner-container">
                         <div hidden={this.state.optionsChecked}>
@@ -240,6 +244,7 @@ class UnifiedSearch extends React.Component {
                                     autoFocus 
                                     onChange={this.onChangeHandler}
                                     onInput={this.onInput} onKeyUp={this.onKeyUp}
+                                    disabled={this.props.searching}
                                 />
                                 <div id="post-search-box-text">Leave search box blank to return all metadata results in database.</div>
 
@@ -273,6 +278,7 @@ class UnifiedSearch extends React.Component {
                                     onChange={this.onChangeHandler}
                                     onInput={this.onInput} onKeyUp={this.onKeyUp} 
                                     placeholder="Search by keywords within title" 
+                                    disabled={this.props.searching}
                                 />
                                 <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
 

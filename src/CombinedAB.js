@@ -25,7 +25,8 @@ class CombinedAB extends React.Component {
 		searchResults: [],
 		resultsText: 'Results',
 		networkError: '',
-		verified: false
+		verified: false,
+		searching: false
 	}
 
 	search = (searcherState) => {
@@ -144,7 +145,7 @@ class CombinedAB extends React.Component {
 			return (
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
-					<CombinedSearcher search={this.search} />
+					<CombinedSearcher search={this.search} searching={this.state.searching} />
 					<CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} />
 				</div>
 			)

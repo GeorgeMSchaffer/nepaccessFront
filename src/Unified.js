@@ -25,7 +25,8 @@ class CombinedAB extends React.Component {
 		searchResults: [],
 		resultsText: 'Results',
 		networkError: '',
-		verified: false
+		verified: false,
+		searching: false
 	}
 
 	search = (searcherState) => {
@@ -70,6 +71,10 @@ class CombinedAB extends React.Component {
 				needsDocument: this.state.searcherInputs.needsDocument,
 				limit: this.state.searcherInputs.limit
             };
+
+            this.setState({
+                searching: true
+            });
             
 			//Send the AJAX call to the server
 			axios({
@@ -103,6 +108,10 @@ class CombinedAB extends React.Component {
 				});
 				this.setState({
 					resultsText: "Error: Couldn't get results from server"
+				});
+			}).finally(x => {
+				this.setState({
+					searching: false
 				});
 			});
 		
@@ -144,7 +153,7 @@ class CombinedAB extends React.Component {
 			return (
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
-					<UnifiedSearch search={this.search} />
+					<UnifiedSearch search={this.search} searching={this.state.searching} />
 					<CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} />
 				</div>
 			)
