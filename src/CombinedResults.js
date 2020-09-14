@@ -52,7 +52,7 @@ class CombinedResults extends React.Component {
             }
             
             try {
-                this.my_table.current.table.setData(data);
+                this.my_table.current.table.replaceData(data);
             } catch (e) {
                 // that's okay
             }
@@ -66,7 +66,7 @@ class CombinedResults extends React.Component {
                 columns = [
                     { title: "Title", field: "title", width: 200, formatter: reactFormatter(<RecordDetailsLink />), variableHeight: true, headerFilter:"input" },
                     { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
-                    { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true, headerFilter:"input" },
+                    { title: "Filename", field: "name", width: 200, formatter: "textarea", headerFilter:"input" },
                     { title: "Text", field: "plaintext", minWidth: 200, formatter: "html", headerFilter:"input" },
                     { title: "Date", field: "registerDate", width: 90, headerFilter:"input" }, 
                     { title: "State", field: "state", width: 112, headerFilter:"input" },
@@ -113,7 +113,7 @@ class CombinedResults extends React.Component {
             // let columns = this.setupColumns();
 
             let options = {
-                layoutColumnsOnNewData: true,
+                // layoutColumnsOnNewData: true,
                 tooltips:false,
                 // responsiveLayout:"collapse",    //collapse columns that dont fit on the table
                 // responsiveLayoutCollapseUseFormatters:false,
@@ -163,14 +163,15 @@ class CombinedResults extends React.Component {
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
+        console.log("Results updated itself");
         if(this.my_table && this.my_table.current){
-            // console.log("Updating data and columns");
+            console.log("Updating data and columns");
             this.setupData();
             this.setupColumns();
-            // const tbltr = this.my_table.current;
-        //     setTimeout(function() {
-        //         tbltr.table.redraw(true);
-        //     },0)
+            const tbltr = this.my_table.current;
+            setTimeout(function() {
+                tbltr.table.redraw(true);
+            },0)
         }
     }
 }

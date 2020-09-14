@@ -1,15 +1,14 @@
 /* Custom tabulator styling */
 
 .tabulator-holder {
-    height: 800px; /* Need this as parent element to control max-height of .tabulator */
-    overflow: hidden;
+    margin: 0 25px;
+    /* height: 800px; /* Need this as parent element to control max-height of .tabulator */
+    /* overflow: hidden; */
     scroll-behavior: auto;
 }
 
 .tabulator {
-  margin: 0 25px;
-  /*min-width: 1000px; /* With title text wrapping, table gets ridiculous any smaller than this. Disabled for now because people may like the column collapsing */
-  max-height: 100%; /* With this, can't get larger than parent element */
+  /* max-height: 100%; /* With this, can't get larger than parent element */
   /* height: 600px; */
   /* overflow: hidden; */
 }
