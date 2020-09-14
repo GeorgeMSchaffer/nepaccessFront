@@ -156,7 +156,7 @@ class Main extends React.Component {
                 <Route path="/reset" component={Reset}/>
                 <Route path="/logout" component={Logout}/>
 
-                <Route path="/CombinedAB" component={CombinedAB}/>
+                <Route path="/test" component={CombinedAB}/>
                 <Route path="/fulltext" component={Fulltext}/>
                 <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
