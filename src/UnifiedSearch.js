@@ -21,7 +21,7 @@ const _ = require('lodash');
 
 // const parseISO = require('date-fns/parseISO')
 
-class CombinedSearcher extends React.Component {
+class UnifiedSearch extends React.Component {
 
 	static propTypes = {
         // match: PropTypes.object.isRequired,
@@ -48,7 +48,7 @@ class CombinedSearcher extends React.Component {
             optionsChecked: false,
             iconClassName: 'icon icon--effect',
             limit: '100000',
-            searchOption: "A",
+            searchOption: "B",
             test: globals.anEnum.options
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
@@ -212,30 +212,6 @@ class CombinedSearcher extends React.Component {
         return (
             <div className="content" onSubmit={this.submitHandler}>
                 <div id="searcher-container">
-
-                    <label className="search-label">
-                        <span id="search-by" className="no-select">
-                            Search using method:
-                        </span>
-                        
-                        <span className="advanced-radio" >
-                            <label className="flex-center no-select cursor-pointer">
-                                <input type="radio" className="cursor-pointer" name="searchOption" value="A" onChange={this.onRadioChange}
-                                checked={this.state.searchOption==="A"} />
-                                A
-                            </label>
-                            <label className="flex-center no-select cursor-pointer">
-                                <input type="radio" className="cursor-pointer" name="searchOption" value="B" onChange={this.onRadioChange} 
-                                checked={this.state.searchOption==="B"} />
-                                B
-                            </label>
-                            {/* <label className="flex-center no-select cursor-pointer">
-                                <input type="radio" className="cursor-pointer" name="searchOption" value="C" onChange={this.onRadioChange} 
-                                checked={this.state.searchOption==="C"} />
-                                Title search only
-                            </label> */}
-                        </span>
-                    </label>
 
                     <div id="searcher-inner-container">
                         <div hidden={this.state.optionsChecked}>
@@ -437,4 +413,4 @@ class CombinedSearcher extends React.Component {
 	}
 }
 
-export default withRouter(CombinedSearcher);
+export default withRouter(UnifiedSearch);
