@@ -52,7 +52,7 @@ class CombinedResults extends React.Component {
             }
             
             try {
-                this.my_table.current.table.replaceData(data);
+                this.my_table.current.table.setData(data);
             } catch (e) {
                 // that's okay
             }
@@ -66,13 +66,13 @@ class CombinedResults extends React.Component {
                 columns = [
                     { title: "Title", field: "title", minWidth: 200, formatter: reactFormatter(<RecordDetailsLink />), headerFilter:"input" },
                     { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
-                    { title: "Filename", field: "name", width: 200, formatter: "textarea", headerFilter:"input" },
+                    { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true, headerFilter:"input" },
+                    { title: "Text", field: "plaintext", minWidth: 200, formatter: "html", headerFilter:"input" },
                     { title: "Date", field: "registerDate", width: 90, headerFilter:"input" }, 
                     { title: "State", field: "state", width: 112, headerFilter:"input" },
                     { title: "Version", field: "documentType", width: 114, headerFilter:"input" },
                     { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-                    { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) },
-                    { title: "Text", field: "plaintext", width: 4000, formatter: "html", headerFilter:"input" }
+                    { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
                 ];
 
             } else {
@@ -113,10 +113,10 @@ class CombinedResults extends React.Component {
             // let columns = this.setupColumns();
 
             let options = {
-                layoutColumnsOnNewData: true,
+                // layoutColumnsOnNewData: true,
                 tooltips:false,
-                responsiveLayout:"collapse",    //collapse columns that dont fit on the table
-                responsiveLayoutCollapseUseFormatters:false,
+                // responsiveLayout:"collapse",    //collapse columns that dont fit on the table
+                // responsiveLayoutCollapseUseFormatters:false,
                 pagination:"local",             //paginate the data
                 paginationSize:10,              //allow 10 rows per page of data
                 paginationSizeSelector:[10, 25, 50, 100],
