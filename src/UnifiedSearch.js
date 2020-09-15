@@ -45,7 +45,8 @@ class UnifiedSearch extends React.Component {
             needsDocument: false,
             optionsChecked: false,
             iconClassName: 'icon icon--effect',
-            limit: '100000',
+            limit: 50,
+            offset: 0,
             searchOption: "B",
             test: globals.anEnum.options
 		};

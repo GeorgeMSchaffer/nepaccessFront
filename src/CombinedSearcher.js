@@ -47,7 +47,8 @@ class CombinedSearcher extends React.Component {
             needsDocument: false,
             optionsChecked: false,
             iconClassName: 'icon icon--effect',
-            limit: '100000',
+            limit: 1000000,
+            offset: 0,
             searchOption: "A",
             test: globals.anEnum.options
 		};

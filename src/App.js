@@ -21,7 +21,8 @@ class App extends React.Component {
 			needsComments: false,
 			needsDocument: false,
             limit: '',
-            isDirty: false
+            isDirty: false,
+            searchOption: 'meta'
 		},
 		searchResults: [],
 		resultsText: 'Results',
@@ -57,6 +58,7 @@ class App extends React.Component {
 			// let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene instead of MySQL fulltext search
             let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene on two fields
             
+            console.log(searcherState.searchOption);
             
             if(searcherState.searchOption && searcherState.searchOption === "A") {
                 searchUrl = new URL('text/search_title_priority', Globals.currentHost);

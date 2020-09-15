@@ -10,7 +10,9 @@ class CombinedResults extends React.Component {
 
     constructor(props) {
         super(props);
-
+        this.state = {
+            data: []
+        }
         this.my_table = React.createRef();
     }
     
@@ -24,9 +26,9 @@ class CombinedResults extends React.Component {
     // While the context is working, the columns are not being filled properly on switch for unknown reasons, so we use FulltextResults2 for now
     setupData = () => {
         if(this.props.results){
-            let data = [];
+            let _data = [];
             if(this.props.results[0] && this.props.results[0].doc) {
-                data = this.props.results.map((result, idx) =>{
+                _data = this.props.results.map((result, idx) =>{
                     let doc = result.doc;
                     let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
                         registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
@@ -39,7 +41,7 @@ class CombinedResults extends React.Component {
                     return newObject;
                 }); 
             } else {
-                data = this.props.results.map((result, idx) =>{
+                _data = this.props.results.map((result, idx) =>{
                     let doc = result;
                     let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
                         registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
@@ -52,7 +54,12 @@ class CombinedResults extends React.Component {
             }
             
             try {
-                this.my_table.current.table.setData(data);
+                this.my_table.current.table.setData(_data);
+                // this.my_table.current.table.addData(_data,false);
+                // this.setState({
+                //     data: _data
+                // });
+                // console.log(_data);
             } catch (e) {
                 // that's okay
             }
@@ -61,9 +68,9 @@ class CombinedResults extends React.Component {
 
     setupColumns = () => {
         if(this.props.results){
-            let columns = [];
+            let _columns = [];
             if(this.props.results[0] && this.props.results[0].doc) {
-                columns = [
+                _columns = [
                     { title: "Title", field: "title", minWidth: 200, formatter: reactFormatter(<RecordDetailsLink />), headerFilter:"input" },
                     { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
                     { title: "Filename", field: "name", width: 200, formatter: "textarea", variableHeight: true, headerFilter:"input" },
@@ -77,7 +84,7 @@ class CombinedResults extends React.Component {
 
             } else {
                 
-                columns = [
+                _columns = [
                     { title: "Title", field: "title", minWidth: 200, formatter: reactFormatter(<RecordDetailsLink />), headerFilter:"input" },
                     { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
                     { title: "Date", field: "registerDate", width: 90, headerFilter:"input" }, 
@@ -89,7 +96,10 @@ class CombinedResults extends React.Component {
 
             }
             try {
-                this.my_table.current.table.setColumns(columns); // Very important if supporting dynamic data sets (differing column definitions)
+                this.my_table.current.table.setColumns(_columns); // Very important if supporting dynamic data sets (differing column definitions)
+                // this.setState({
+                //     columns: _columns
+                // });
             } catch (e) {
                 // that's okay
             }
@@ -164,15 +174,15 @@ class CombinedResults extends React.Component {
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
-        console.log("Results updated itself");
+        // console.log("Results updated itself");
         if(this.my_table && this.my_table.current){
-            console.log("Updating data and columns");
-            this.setupData();
+            // console.log("Updating data and columns");
             this.setupColumns();
+            this.setupData();
             const tbltr = this.my_table.current;
             setTimeout(function() {
                 tbltr.table.redraw(true);
-            },0)
+            },2000)
         }
     }
 }

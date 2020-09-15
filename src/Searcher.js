@@ -47,7 +47,8 @@ class Searcher extends React.Component {
             needsDocument: false,
             optionsChecked: false,
             iconClassName: 'icon icon--effect',
-            limit: '100000',
+            limit: 50,
+            offset: 0,
             searchOption: 'meta',
             test: globals.anEnum.options
 		};
@@ -76,6 +77,7 @@ class Searcher extends React.Component {
     }
 
     onKeyUp = (evt) => {        
+        console.log(this.state.searchOption);
         if(evt.keyCode ===13){
             evt.preventDefault();
             this.debouncedSearch(this.state);

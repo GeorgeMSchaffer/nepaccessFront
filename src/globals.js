@@ -74,7 +74,8 @@ const Globals = {
             typeOther: false,
 			needsComments: false,
 			needsDocument: false,
-			limit: ''
+            limit: searcherState.limit, // definitely need to keep these
+            offset: searcherState.offset // definitely need to keep these
 		};
     },
 

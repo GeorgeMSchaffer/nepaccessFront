@@ -69,7 +69,8 @@ class CombinedAB extends React.Component {
 				typeOther: this.state.searcherInputs.typeOther,
 				needsComments: this.state.searcherInputs.needsComments,
 				needsDocument: this.state.searcherInputs.needsDocument,
-				limit: this.state.searcherInputs.limit
+                limit: this.state.searcherInputs.limit,
+                offset: this.state.searcherInputs.offset
             };
             
 			//Send the AJAX call to the server
