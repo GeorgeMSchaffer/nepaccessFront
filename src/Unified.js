@@ -87,61 +87,63 @@ class Unified extends React.Component {
 
             this.setState({
                 searching: true
+            }, () => {
+                //Send the AJAX call to the server
+                console.log("Running with offset: " + _offset + " and searching state: " + this.state.searching);
+
+
+                axios({
+                    method: 'POST', // or 'PUT'
+                    url: searchUrl,
+                    // data: this.state.searcherInputs // data can be `string` or {object}
+                    data: dataToPass
+                }).then(response => {
+                    let responseOK = response && response.status === 200;
+                    if (responseOK) {
+                        return response.data;
+                    } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
+                        this.setState({
+                        resultsText: "No results: Please check use of * and \" characters"
+                    })
+                    } else {
+                        return null;
+                    }
+                }).then(parsedJson => {
+                    // console.log('this should be json', parsedJson);
+                    if(parsedJson){
+
+                        currentResults = currentResults.concat(parsedJson);
+                        this.setState({
+                            searchResults: currentResults,
+                            resultsText: currentResults.length + " Results",
+                        });
+                        if (parsedJson.length < 50) {
+                            // this.setState({
+                            //     searchResults: currentResults,
+                            //     resultsText: currentResults.length + " Results",
+                            // });
+                        } else {
+                            // offset should be incremented by limit
+                            this.search(searcherState, _offset + searcherState.limit, currentResults);
+                        }
+
+                    }
+                }).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
+                    console.error('Server is down or verification failed.', error);
+                    this.setState({
+                        networkError: 'Server is down or you may need to login again.'
+                    });
+                    this.setState({
+                        resultsText: "Error: Couldn't get results from server"
+                    });
+                }).finally(x => {
+                    this.setState({
+                        searching: false
+                    });
+                });
             });
             
-            //Send the AJAX call to the server
-            console.log("Running with offset: " + _offset + " and searching state: " + this.state.searching);
-
-
-            axios({
-                method: 'POST', // or 'PUT'
-                url: searchUrl,
-                // data: this.state.searcherInputs // data can be `string` or {object}
-                data: dataToPass
-            }).then(response => {
-                let responseOK = response && response.status === 200;
-                if (responseOK) {
-                    return response.data;
-                } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
-                    this.setState({
-                    resultsText: "No results: Please check use of * and \" characters"
-                })
-                } else {
-                    return null;
-                }
-            }).then(parsedJson => {
-                // console.log('this should be json', parsedJson);
-                if(parsedJson){
-
-                    currentResults = currentResults.concat(parsedJson);
-                    this.setState({
-                        searchResults: currentResults,
-                        resultsText: currentResults.length + " Results",
-                    });
-                    if (parsedJson.length < 50) {
-                        // this.setState({
-                        //     searchResults: currentResults,
-                        //     resultsText: currentResults.length + " Results",
-                        // });
-                    } else {
-                        // offset should be incremented by limit
-                        this.search(searcherState, _offset + searcherState.limit, currentResults);
-                    }
-
-                }
-            }).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
-                console.error('Server is down or verification failed.', error);
-                this.setState({
-                    networkError: 'Server is down or you may need to login again.'
-                });
-                this.setState({
-                    resultsText: "Error: Couldn't get results from server"
-                });
-            }).finally(x => {
-                this.setState({
-                    searching: false
-                });
-            });
+            
 
 
             // axios({
