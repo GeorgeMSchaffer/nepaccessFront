@@ -60,7 +60,7 @@ const Globals = {
     /** Return search options that are all default except use the incoming title.  Options based on what Spring DAL uses. */
     convertToSimpleSearch(searcherState){
         let limitToUse = searcherState.limit;
-        if(searcherState.title.trim().length() < 1) {
+        if(searcherState.titleRaw.trim().length() < 1) {
             limitToUse = 1000000;
         }
 
