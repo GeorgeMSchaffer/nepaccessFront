@@ -179,10 +179,12 @@ class CombinedResults extends React.Component {
             // console.log("Updating data and columns");
             this.setupColumns();
             this.setupData();
-            const tbltr = this.my_table.current;
-            setTimeout(function() {
-                tbltr.table.redraw(true);
-            },2000)
+            if(!this.props.searching){
+                const tbltr = this.my_table.current;
+                setTimeout(function() {
+                    tbltr.table.redraw(true);
+                },2000)
+            }
         }
     }
 }

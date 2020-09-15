@@ -2,7 +2,7 @@
 
 .tabulator-holder {
     margin: 0 25px;
-    /*height: 800px; /*Need this as parent element to control max-height of .tabulator*/
+    height: 800px; /* Need this as parent element to control max-height of .tabulator and to prevent scroll to top on update */
     /* overflow: hidden; */
     scroll-behavior: auto;
 }

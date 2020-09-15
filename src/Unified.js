@@ -221,7 +221,7 @@ class Unified extends React.Component {
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
 					<UnifiedSearch search={this.search} searching={this.state.searching} />
-					<CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} />
+					<CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} searching={this.state.searching} />
 				</div>
 			)
 
@@ -244,8 +244,6 @@ class Unified extends React.Component {
         this._mounted = true;
     }
     
-
-        // TODO: Abort async search function here
     async componentWillUnmount() {
         this._mounted = false;
     }
