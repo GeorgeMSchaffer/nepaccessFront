@@ -90,7 +90,7 @@ class Unified extends React.Component {
             });
             
             //Send the AJAX call to the server
-            console.log("Running with offset: " + _offset);
+            console.log("Running with offset: " + _offset + " and searching state: " + this.state.searching);
 
 
             axios({
