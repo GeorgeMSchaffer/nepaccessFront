@@ -127,10 +127,11 @@ class Unified extends React.Component {
                             resultsText: currentResults.length + " Results",
                         });
                         if (parsedJson.length < this.state.searcherInputs.limit) {
-                            // this.setState({
+                            this.setState({
+                                searching: false
                             //     searchResults: currentResults,
                             //     resultsText: currentResults.length + " Results",
-                            // });
+                            });
                         } else {
                             // offset should be incremented by limit
                             this.search(searcherState, _offset + this.state.searcherInputs.limit, currentResults);
@@ -151,9 +152,6 @@ class Unified extends React.Component {
                     // });
                 });
             });
-            
-            
-
 
             // axios({
             //     method: 'POST', // or 'PUT'
@@ -193,10 +191,6 @@ class Unified extends React.Component {
             //     });
             // });
 		
-        });
-        
-        this.setState({
-            searching: false
         });
 	}
 	
