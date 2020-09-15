@@ -41,6 +41,21 @@ class Unified extends React.Component {
         if(!searcherState.optionsChecked){
             _inputs = Globals.convertToSimpleSearch(searcherState);
         }
+        
+        if (typeof _offset === 'undefined') {
+            console.log("Offset undefined, using " + searcherState.offset);
+            _offset = searcherState.offset;
+        }
+        if (typeof currentResults === 'undefined') {
+            currentResults = [];
+        }
+        
+        let limitToUse = searcherState.limit;
+        if(searcherState.titleRaw.trim().length < 1) {
+            limitToUse = 1000000;
+        }
+        _inputs.limit = limitToUse;
+
 		this.setState({
             searcherInputs: _inputs,
             isDirty: true,
@@ -48,12 +63,6 @@ class Unified extends React.Component {
 			networkError: "" // Clear network error
 		}, () => {
 
-            if (typeof _offset === 'undefined') {
-                _offset = this.state.searcherInputs.offset;
-            }
-            if (typeof currentResults === 'undefined') {
-                currentResults = [];
-            }
 
             let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene on two fields
             
@@ -117,14 +126,14 @@ class Unified extends React.Component {
                             searchResults: currentResults,
                             resultsText: currentResults.length + " Results",
                         });
-                        if (parsedJson.length < searcherState.limit) {
+                        if (parsedJson.length < this.state.searcherInputs.limit) {
                             // this.setState({
                             //     searchResults: currentResults,
                             //     resultsText: currentResults.length + " Results",
                             // });
                         } else {
                             // offset should be incremented by limit
-                            this.search(searcherState, _offset + searcherState.limit, currentResults);
+                            this.search(searcherState, _offset + this.state.searcherInputs.limit, currentResults);
                         }
 
                     }
