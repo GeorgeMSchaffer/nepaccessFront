@@ -127,6 +127,7 @@ class Unified extends React.Component {
                             resultsText: currentResults.length + " Results",
                         });
                         if (parsedJson.length < this.state.searcherInputs.limit) {
+                            console.log("Search complete");
                             this.setState({
                                 searching: false
                             //     searchResults: currentResults,
