@@ -177,12 +177,14 @@ class CombinedResults extends React.Component {
         // console.log("Results updated itself");
         if(this.my_table && this.my_table.current){
             // console.log("Updating data and columns");
+            console.log(this.props);
             this.setupColumns();
             this.setupData();
+            console.log("Searching: " + this.props.searching);
             if(!this.props.searching){
+                console.log("Redrawing table");
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
-                    console.log("Redrawing table, prop: " + this.props.searching);
                     tbltr.table.redraw(true);
                 },0)
             }

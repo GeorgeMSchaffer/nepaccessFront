@@ -395,6 +395,9 @@ class Searcher extends React.Component {
             if(typeof(rehydrate.endPublish) === "string"){
                 rehydrate.endPublish = globals.getCorrectDate(rehydrate.endPublish);
             }
+
+            rehydrate.searchOption = "C";
+
             this.setState(rehydrate);
         }
         catch(e) {

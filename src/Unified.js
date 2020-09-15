@@ -89,7 +89,7 @@ class Unified extends React.Component {
                 searching: true
             }, () => {
                 //Send the AJAX call to the server
-                console.log("Running with offset: " + _offset + " and searching state: " + this.state.searching);
+                console.log("Running with offset: " + _offset + " and limit: " + this.state.searcherInputs.limit + " and searching state: " + this.state.searching);
 
 
                 axios({
@@ -137,9 +137,9 @@ class Unified extends React.Component {
                         resultsText: "Error: Couldn't get results from server"
                     });
                 }).finally(x => {
-                    this.setState({
-                        searching: false
-                    });
+                    // this.setState({
+                    //     searching: false
+                    // });
                 });
             });
             
@@ -184,7 +184,11 @@ class Unified extends React.Component {
             //     });
             // });
 		
-		});
+        });
+        
+        this.setState({
+            searching: false
+        });
 	}
 	
 
