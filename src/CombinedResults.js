@@ -182,7 +182,7 @@ class CombinedResults extends React.Component {
             if(!this.props.searching){
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
-                    console.log("Redrawing table");
+                    console.log("Redrawing table, prop: " + this.props.searching);
                     tbltr.table.redraw(true);
                 },0)
             }

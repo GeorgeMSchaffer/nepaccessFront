@@ -47,7 +47,7 @@ class Searcher extends React.Component {
             needsDocument: false,
             optionsChecked: false,
             iconClassName: 'icon icon--effect',
-            limit: 50,
+            limit: 1000000,
             offset: 0,
             searchOption: 'meta',
             test: globals.anEnum.options
