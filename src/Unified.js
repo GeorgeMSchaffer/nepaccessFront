@@ -19,7 +19,7 @@ class Unified extends React.Component {
 			state: [],
 			needsComments: false,
 			needsDocument: false,
-            limit: 100000,
+            limit: 1000000,
             isDirty: false
 		},
 		searchResults: [],
@@ -117,7 +117,7 @@ class Unified extends React.Component {
                             searchResults: currentResults,
                             resultsText: currentResults.length + " Results",
                         });
-                        if (parsedJson.length < 50) {
+                        if (parsedJson.length < searcherState.limit) {
                             // this.setState({
                             //     searchResults: currentResults,
                             //     resultsText: currentResults.length + " Results",
