@@ -98,6 +98,7 @@ class DownloadFile extends React.Component {
             let propID = null;
 			if (this.props.cell) { // filename/cell data from React-Tabulator props
                 cellData = this.props.cell._cell.row.data;
+                // console.log(cellData);
 				if (this.props.downloadType === "Comments") {
 					propFilename = cellData.commentsFilename;
                 }

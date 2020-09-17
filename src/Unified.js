@@ -63,6 +63,8 @@ class Unified extends React.Component {
 			networkError: "" // Clear network error
 		}, () => {
 
+            console.log("USING LIMIT: " + _inputs.limit);
+
 
             let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene on two fields
             
@@ -126,6 +128,7 @@ class Unified extends React.Component {
                             searchResults: currentResults,
                             resultsText: currentResults.length + " Results",
                         });
+
                         if (parsedJson.length < this.state.searcherInputs.limit) {
                             console.log("Search complete");
                             this.setState({
@@ -134,6 +137,8 @@ class Unified extends React.Component {
                             //     resultsText: currentResults.length + " Results",
                             });
                         } else {
+                            // For now, run with strategy of first do a run of given limit and offset zero, then do a run of no limit with offset past limit
+                            searcherState.limit = 1000000;
                             // offset should be incremented by limit
                             this.search(searcherState, _offset + this.state.searcherInputs.limit, currentResults);
                         }

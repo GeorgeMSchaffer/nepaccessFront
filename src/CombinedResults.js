@@ -170,6 +170,8 @@ class CombinedResults extends React.Component {
         }
     }
     
+    // TODO: Maintain or clear filter text (filters stay in play, but annoyingly, any entered text in the filter boxes disappears?)
+    // TODO: Maintain page uesr is on, preferably even the current scroll position, future things like checkboxes, state of downloads if possible, etc.
     componentDidUpdate() {
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
@@ -177,12 +179,12 @@ class CombinedResults extends React.Component {
         // console.log("Results updated itself");
         if(this.my_table && this.my_table.current){
             // console.log("Updating data and columns");
-            console.log(this.props);
+            // console.log(this.props);
             this.setupColumns();
             this.setupData();
             console.log("Searching: " + this.props.searching);
             if(!this.props.searching){
-                console.log("Redrawing table");
+                // console.log("Redrawing table");
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
                     tbltr.table.redraw(true);
