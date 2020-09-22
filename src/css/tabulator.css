@@ -4,11 +4,11 @@
     margin: 0 25px;
     height: 800px; /* Need this as parent element to control max-height of .tabulator and to prevent scroll to top on update */
     /* overflow: hidden; */
-    scroll-behavior: auto;
+    /* scroll-behavior: auto; */
 }
 
 .tabulator {
- /* max-height: 100%; /* With this, can't get larger than parent element */
+    /* max-height: 100%; /* With this, can't get larger than parent element, can also be added to table options as maxHeight: 100% */
   /* min-width: 1000px; */
   /* overflow: hidden; */
 }
@@ -19,15 +19,15 @@
 
 .tabulator .tabulator-tableHolder {
     /* height: 100%; */
-    overflow: hidden;
+    /* overflow: hidden; */
     /* overflow-x: hidden; */
 }
 
-.tabulator-row .tabulator-cell {
+.tabulator-row .tabulator-cell .fragment {
     white-space: normal;
 }
 
-.tabulator-row {
+/* .tabulator-row {
     flex-direction: row;
     align-items: center;
 }
@@ -41,7 +41,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-}
+} */
 
 .formatterCell .link {
     width: 200px;
@@ -112,9 +112,9 @@
     padding: 0px 8px;
 }
 
-[tabulator-field="name"] {
+/* [tabulator-field="name"] {
     word-break: break-all;
-}
+} */
 
 .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
     padding-right: 12px;

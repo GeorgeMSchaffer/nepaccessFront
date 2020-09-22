@@ -123,12 +123,13 @@ class CombinedResults extends React.Component {
             // let columns = this.setupColumns();
 
             let options = {
+                // maxHeight: "100%",
                 // layoutColumnsOnNewData: true,
                 tooltips:false,
                 // responsiveLayout:"collapse",    //collapse columns that dont fit on the table
                 // responsiveLayoutCollapseUseFormatters:false,
                 pagination:"local",             //paginate the data
-                paginationSize:10,              //allow 10 rows per page of data
+                paginationSize:100,              //allow 10 rows per page of data
                 paginationSizeSelector:[10, 25, 50, 100],
                 movableColumns:true,            //allow column order to be changed
                 resizableRows:false,             //allow row order to be changed
@@ -182,7 +183,8 @@ class CombinedResults extends React.Component {
             // console.log(this.props);
             this.setupColumns();
             this.setupData();
-            console.log("Searching: " + this.props.searching);
+
+            // console.log("Searching: " + this.props.searching);
             if(!this.props.searching){
                 // console.log("Redrawing table");
                 const tbltr = this.my_table.current;

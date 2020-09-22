@@ -35,9 +35,9 @@ export default class AboutHelp extends React.Component {
                         NOT is NOT or -.
                     </p><p>
                         Exact phrases are surrounded by double quotes.
-                    </p><p>
+                    </p><h3>
                         Examples:
-                    </p><p>
+                    </h3><p>
                         Searching "operation funding" "yonkers westchester" will return records containing both those phrases.  This is the same as searching +"operation funding" +"yonkers westchester".
                     </p><p>
                         Searching operation funding yonkers westchester (unquoted) will return records containing all those terms in any order.
