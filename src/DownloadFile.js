@@ -14,8 +14,10 @@ class DownloadFile extends React.Component {
 		};
 	}
 
-	// TODO: Cell resets to default state after saving/resizing window due to parent (SearchResults) re-rendering
-	// - is this behavior fine or do we want to preserve this state and for how long?
+    // TODO: Cell resets to default state if parent re-renders, preserve the fact it was downloaded
+    // at least until user reloads the page or navigates
+    // TODO: reset download link if canceled
+    // these could be very difficult to figure out for low payoff, however
 	download = (filenameOrID, isFolder) => {
 		const FileDownload = require('js-file-download');
 

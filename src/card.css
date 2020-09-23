@@ -1,0 +1,44 @@
+
+
+.cardHeader {
+    font-weight: bold;
+    /* padding-right: 50px; */
+}
+
+.table-like {
+    display: table;
+  }
+  
+  .table-like div.table-row { 
+    display: table-row;
+  }
+  
+  .table-like div span.cardHeader { 
+    display: table-cell;
+    padding-bottom: 0.2em;
+    width: 125px;
+  }
+
+  .table-like div span.fragment {
+      display: inline-block;
+      padding: 0;
+      margin: 0;
+  }
+  
+  .table-like div span.highlight {
+    display: inline-block;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+  
+  /* add borders */
+  /* .table-like,
+  .table-like div span {
+    border: 1px solid black;  
+  }
+   */
+  /* bold on 1st row */
+  /* .table-like div:nth-child(1) {
+    font-weight: bold;
+  } */
