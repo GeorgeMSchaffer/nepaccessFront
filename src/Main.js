@@ -4,8 +4,7 @@ import axios from 'axios';
 import './index.css';
 
 import Landing from './Landing.js';
-import App from './App';
-import Fulltext from './Fulltext.js';
+// import App from './App';
 import CombinedAB from './CombinedAB.js';
 import Unified from './Unified.js';
 
@@ -146,7 +145,6 @@ class Main extends React.Component {
                     <Link className="main-menu-link" to="/aboutnepaccess">About NEPAccess</Link>
                     <Link className="main-menu-link" to="/abouthelp">Help</Link>
                     {this.state.menuItems}
-                    {/* <Link className="main-menu-link" to="/fulltext">Fulltext search</Link> */}
                 </div>
                 
             </div>
@@ -159,8 +157,7 @@ class Main extends React.Component {
 
                 <Route path="/test" component={CombinedAB}/>
                 <Route path="/unified" component={Unified}/>
-                <Route path="/fulltext" component={Fulltext}/>
-                <Route path="/search" component={App}/>
+                <Route path="/search" component={Unified}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
                 <Route path="/abouthelp" component={AboutHelp}/>
