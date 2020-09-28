@@ -15,29 +15,28 @@ export default class AboutHelp extends React.Component {
                     </h1>
                     
                     <span className="about-nepa-bold">
-                        You can search for terms in the title (default search), or in the documents (full-text search).  Search behavior is "all-word," meaning results will only be returned if all words in the search terms are found.
+                        You can search for terms in the title or in the documents.  Search behavior is "all-word," meaning results will only be returned if all words in the search terms are found.
                     </span>
                     <span className="about-nepa-bold">
-                        The fulltext search is powered by Apache Lucene, which allows the use of term modifiers like "" to find exact phrases, wildcards like * and ?, and more ( 
+                        The fulltext search is powered by Apache Lucene, which allows the use of parentheses, AND/OR/NOT, the * wildcard, and more ( 
                          <a className="about-nepa-button underline" href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html#Term Modifiers">described here</a>
-                        ).  
-                        <p>Proximity matching, for example, is done by surrounding terms in double quotes and appending ~#, where # is the maximum number of words that may appear between them.
-                        </p>
-                    
+                        ).
                     </span>
                     
                     <h3>Boolean queries explained</h3>
                     <p>
                         AND is implicit.  The term modifier is prepending with AND or + but this is unnecessary.
                     </p><p>
-                        OR is OR, || or | (single or double pipe).
+                        OR is OR, || or |.
                     </p><p>
                         NOT is NOT or -.
                     </p><p>
                         Exact phrases are surrounded by double quotes.
-                    </p><h3>
+                    </p>
+                    <h3>
                         Examples:
-                    </h3><p>
+                    </h3>
+                    <p>
                         Searching "operation funding" "yonkers westchester" will return records containing both those phrases.  This is the same as searching +"operation funding" +"yonkers westchester".
                     </p><p>
                         Searching operation funding yonkers westchester (unquoted) will return records containing all those terms in any order.
@@ -76,12 +75,8 @@ export default class AboutHelp extends React.Component {
                     </h3>
                     
                     <span className="default-style">
-                        The source files are sometimes available for both download and full-text search.  Because the source PDFs are often split into multiple files, the available downloads are for the archives containing one or more PDFs.
+                        The source files are sometimes available for both download and full-text search.  Because the source PDFs are often split into multiple files, the available downloads are for the archives containing one or more PDFs, but the results returned are per file and listed by filename (if files are available).
                     </span>
-                    <span className="default-style">
-                        The full-text search comes from the PDFs being converted to plaintext which is then stored in the database and indexed by Lucene, while maintaining their relationship to the metadata.
-                    </span>
-
 
                 </div>
             </div>
