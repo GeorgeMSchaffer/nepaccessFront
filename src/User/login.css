@@ -2,6 +2,10 @@
     margin-top: 102px;
 }
 
+span.highlight {
+    font-weight: bolder;
+}
+
 .note
 {
     text-align: center;
