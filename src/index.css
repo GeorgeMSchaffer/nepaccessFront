@@ -28,7 +28,7 @@ body {
 #header {
   position: fixed;
   width: 100%;
-  min-width: 900px;
+  /* min-width: 900px; */
   height: 102px;
   left: 0px;
   top: 0px;
@@ -152,9 +152,8 @@ body {
 #top-menu {
   position: absolute;
   display: inline-block;
-  right: 2%;
-  top: 18.75%;
-  bottom: 46.43%;
+  right: 1%;
+  top: 10%;
 }
 
 .top-menu-link {
@@ -170,15 +169,23 @@ body {
   color: #000000;
 }
 
+.right-nav-item:first-child {
+    margin: 0;
+    padding-right: 10px;
+    border-right: 2px black solid;
+}
+  
 .right-nav-item {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 #main-menu {
   position: relative;
   left: 400px;
+  margin-right: 400px; /** offset left: 400px */
+  min-width: 520px;
   height: 32px;
-  top: 58px;
+  top: 50px;
 }
 
 .main-menu-link {

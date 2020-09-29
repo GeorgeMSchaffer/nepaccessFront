@@ -128,9 +128,6 @@ class Main extends React.Component {
                     <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                         <Link className="top-menu-link" to="/details">Profile</Link>
                     </span>
-                    <span className={this.state.loggedInDisplay + " cursor-default no-select right-nav-item logged-in"}>
-                        |
-                    </span>
                     <span className={this.state.loggedOutDisplay + " logged-out"}>
                         <Link className="top-menu-link" to="/login">Log in</Link>
                     </span>
