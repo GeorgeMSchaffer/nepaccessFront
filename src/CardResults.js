@@ -7,12 +7,13 @@ import CardResult from './CardResult.js';
 
 import './card.css';
 
-class CombinedResults extends React.Component {
+class CardResults extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            showContext: true
         }
         this.my_table = React.createRef();
     }
@@ -22,6 +23,12 @@ class CombinedResults extends React.Component {
             const tbltr = this.my_table.current;
             tbltr.table.clearFilter(true);
         }
+    }
+
+    onCheckboxChange = (evt) => {
+        this.setState({ 
+            [evt.target.name]: evt.target.checked
+        });
     }
 
     // While the context is working, the columns are not being filled properly on switch for unknown reasons, so we use FulltextResults2 for now
@@ -76,7 +83,7 @@ class CombinedResults extends React.Component {
             if(this.props.results[0] && this.props.results[0].doc) {
 
                 _columns = [
-                    { title: "", field: "", formatter: reactFormatter(<CardResult />)}
+                    { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
                 ];
 
             } 
@@ -125,8 +132,8 @@ class CombinedResults extends React.Component {
                 pagination:"local",             //paginate the data
                 paginationSize:100,              //allow 10 rows per page of data
                 paginationSizeSelector:[10, 25, 50, 100],
-                movableColumns:true,            //allow column order to be changed
-                resizableRows:false,             //allow row order to be changed
+                movableColumns:false,            //don't allow column order to be changed
+                resizableRows:false,             //don't allow row order to be changed
                 resizableColumns:false,
                 layout:"fitColumns",
                 invalidOptionWarnings:false, // spams warnings without this
@@ -142,6 +149,9 @@ class CombinedResults extends React.Component {
                     </h2>
                     {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}
                     <div className="tabulator-holder">
+                        <span>Show context <input type="checkbox" name="showContext" 
+                            checked={this.state.showContext} onChange={this.onCheckboxChange} />
+                        </span>
                         <ReactTabulator
                             ref={this.my_table}
                             data={[]}
@@ -192,4 +202,4 @@ class CombinedResults extends React.Component {
     }
 }
 
-export default CombinedResults;
+export default CardResults;

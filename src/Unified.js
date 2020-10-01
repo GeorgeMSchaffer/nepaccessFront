@@ -1,10 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
-import CombinedResults from './CombinedResults.js';
+import CardResults from './CardResults.js';
 import UnifiedSearch from './UnifiedSearch.js';
 
-// import './App.css';
 import './User/login.css';
 
 import Globals from './globals.js';
@@ -236,7 +235,7 @@ class Unified extends React.Component {
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
 					<UnifiedSearch search={this.search} searching={this.state.searching} />
-					<CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} searching={this.state.searching} />
+					<CardResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} searching={this.state.searching} />
 				</div>
 			)
 

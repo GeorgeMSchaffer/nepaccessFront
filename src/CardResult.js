@@ -115,8 +115,8 @@ class CardResult extends React.Component {
 
     showAgency = () => {
         return (
-            <div className="table-row"><span className="cardHeader">Agency:</span>
-                {this.props.cell._cell.row.data.agency}
+            <div><span className="cardHeader">Agency:
+                <span>{this.props.cell._cell.row.data.agency}</span></span>
             </div>
         );
     }
@@ -125,8 +125,8 @@ class CardResult extends React.Component {
     showFilename = () => {
         if(this.props && this.props.cell._cell.row.data.filename){
             return (
-                <div className="table-row"><span className="cardHeader">Filename:</span>
-                    {this.props.cell._cell.row.data.filename}
+                <div><span className="cardHeader filename">Filename:
+                    <span>{this.props.cell._cell.row.data.filename}</span></span>
                 </div>
             );
         }
@@ -134,9 +134,11 @@ class CardResult extends React.Component {
     showText = () => {
         if(this.props && this.props.cell._cell.row.data.plaintext){
             return (
-                <><span className="cardHeader">Text fragment matches:</span>
-                    <div dangerouslySetInnerHTML={{
-                        __html: this.props.cell._cell.row.data.plaintext
+                <>
+                    {/* <span className="cardHeader">First fragment match:</span> */}
+                    <span hidden={!this.props.show} 
+                        dangerouslySetInnerHTML={{
+                            __html: this.props.cell._cell.row.data.plaintext
                     }} />
                 </>
             );
@@ -145,8 +147,8 @@ class CardResult extends React.Component {
     showDate = () => {
         if(this.props && this.props.cell._cell.row.data.registerDate){
             return (
-                <div className="table-row"><span className="cardHeader">Date:</span>
-                    {this.props.cell._cell.row.data.registerDate}
+                <div><span className="cardHeader">Date:
+                    <span>{this.props.cell._cell.row.data.registerDate}</span></span>
                 </div>
             );
         }
@@ -154,8 +156,8 @@ class CardResult extends React.Component {
     showState = () => {
         if(this.props && this.props.cell._cell.row.data.state){
             return (
-                <div className="table-row"><span className="cardHeader">State:</span>
-                    {this.props.cell._cell.row.data.state}
+                <div><span className="cardHeader">State:
+                    <span>{this.props.cell._cell.row.data.state}</span></span>
                 </div>
             );
         }
@@ -163,8 +165,11 @@ class CardResult extends React.Component {
     showVersion = () => {
         if(this.props && this.props.cell._cell.row.data.documentType){
             return (
-                <div className="table-row"><span className="cardHeader">Version:</span>
-                    {this.props.cell._cell.row.data.documentType}
+                <div>
+                    <span className="cardHeader">Version:
+                        <span>{this.props.cell._cell.row.data.documentType}</span>
+                    </span>
+                    
                 </div>
             );
         }
@@ -199,12 +204,14 @@ class CardResult extends React.Component {
             if(nameOrID){
                 return (
                     <div className="table-row">
-                        <span className="cardHeader">PDFS:</span>
-                        <button className = {this.state.downloadClass} onClick = { () => {this.download(nameOrID, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
-                            <span className="innerText">
-                                {this.state.downloadText} {this.state.fileProgressValue} 
-                            </span>
-                        </button>
+                        <span className="cardHeader">PDFS:
+                            <button className = {this.state.downloadClass} onClick = { () => {this.download(nameOrID, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                <span className="innerText">
+                                    {this.state.downloadText} {this.state.fileProgressValue} 
+                                </span>
+                            </button>
+                        </span>
+                        
                     </div>
                 );
             } else {
@@ -230,16 +237,19 @@ class CardResult extends React.Component {
             
 			if (propFilename) {
                 return (
-                    <div className="table-row"><span className="cardHeader">Comments:</span>
-                        <button 
-                            className = {this.state.commentDownloadClass} 
-                            onClick = { () => {
-                                this.download(propFilename, false, "commentDownloadText", "commentDownloadClass", "commentProgressValue")} 
-                            }> 
-                            <span className="innerText">
-                                {this.state.commentDownloadText} {this.state.commentProgressValue} 
-                            </span>
-                        </button>
+                    <div className="table-row">
+                        <span className="cardHeader">Comments:
+                            <button 
+                                className = {this.state.commentDownloadClass} 
+                                onClick = { () => {
+                                    this.download(propFilename, false, "commentDownloadText", "commentDownloadClass", "commentProgressValue")} 
+                                }> 
+                                <span className="innerText">
+                                    {this.state.commentDownloadText} {this.state.commentProgressValue} 
+                                </span>
+                            </button>
+                        </span>
+                        
                     </div>
                 );
             } else {
@@ -253,19 +263,26 @@ class CardResult extends React.Component {
 
 	render() {
         return (<>
+        <div className="table-holder">
             <div className="table-like">
-                {this.showTitle()}
-                {this.showAgency()}
-                {this.showFilename()}
-                {this.showDate()}
-                {this.showState()}
-                {this.showVersion()}
+                <div className="table-row">
+                    {this.showTitle()}
+                </div>
+                <div className="table-row">
+                    {this.showVersion()}
+                    {this.showDate()}
+                    {this.showAgency()}
+                    {this.showState()}
+                </div>
             </div>
-            {this.showText()}
             <div className="table-like">
+                {this.showFilename()}
                 {this.showFileDownload()}
                 {this.showCommentsDownload()}
             </div>
+            {this.showText()}
+        </div>
+            
         </>);
 	}
 }

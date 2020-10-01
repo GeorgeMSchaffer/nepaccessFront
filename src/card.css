@@ -1,30 +1,73 @@
-
-
-.cardHeader {
-    font-weight: bold;
+.table-holder {
+    display: inline;
 }
 
 .table-like {
-    display: table;
-  }
+    vertical-align: top;
+    display: inline-block;
+}
+
+.table-like:first-child {
+    width: 79%;
+    padding-right: 1%;
+}
+
+.table-like:last-child {
+    width: 20%;
+}
   
-  .table-like div.table-row { 
-    display: table-row;
-  }
-  
-  .table-like div span.cardHeader { 
-    display: table-cell;
-    padding-bottom: 0.2em;
-    width: 125px;
-  }
-  
-  /* add borders */
-  /* .table-like,
-  .table-like div span {
-    border: 1px solid black;  
-  }
-   */
-  /* bold on 1st row */
-  /* .table-like div:nth-child(1) {
+.table-like div.table-row { 
+    display: block;
+}
+
+.table-like div.table-row div { 
+    display: inline-block;
+    width: 20%;
+    padding-top: 1em;
+    padding-right: 1em;
+}
+
+.table-like div.table-row div:nth-child(3) { 
+    width: 35%;
+}
+.table-like div.table-row div:last-child { 
+    width: 10%;
+}
+
+.cardHeader>span, .cardHeader>.download, .cardHeader>.link {
+    padding-left: 0.5em;
     font-weight: bold;
-  } */
+    white-space: normal;
+}
+
+span.highlight {
+    font-weight: bolder;
+}
+
+span.fragment {
+    display: block;
+    white-space: normal;
+}
+
+span.filename {
+    display: block;
+    font-weight: bold;
+}
+
+span.filename>* {
+    display: block;
+    font-weight: normal;
+}
+
+/* add borders */
+.tabulator-cell {
+    border-top: 1px solid black;
+}
+/* .table-like,
+.table-like div span {
+border-top: 1px solid black;  
+} */
+/* bold on 1st row */
+/* .table-like div:nth-child(1) {
+font-weight: bold;
+} */

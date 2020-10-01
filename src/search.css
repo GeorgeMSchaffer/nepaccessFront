@@ -443,21 +443,22 @@ a.link {
 }
 
 #search-results {
-  min-width: 1050px;
+  min-width: 950px;
 }
 
 .modal-results {
   min-width: 1050px;
 }
 
-span.fragment {
+/* span.fragment {
   display: inline-block;
   margin-bottom: 3px;
-}
+} */
 
-.fragment:nth-last-of-type(1) { /** No need to add space below the final text snippet */
+/** No need to add space below the final text snippet */
+/* .fragment:nth-last-of-type(1) { 
   margin-bottom: 0;
-}
+} */
 
 /* span.fragment:hover {
   text-decoration: underline;

@@ -14,7 +14,7 @@
 }
 
 .tabulator-responsive-collapse span.fragment {
-    white-space: normal;
+    /* white-space: normal; */
 }
 
 .tabulator .tabulator-tableHolder {
@@ -24,7 +24,7 @@
 }
 
 .tabulator-row .tabulator-cell .fragment {
-    white-space: normal;
+    /* white-space: normal; */
 }
 
 /* .tabulator-row {
@@ -43,10 +43,10 @@
     align-items: center;
 } */
 
-.formatterCell .link {
+/* .formatterCell .link {
     width: 200px;
     white-space: normal;
-}
+} */
 
 .tabulator-row, .tabulator-cell {
     cursor: default;
@@ -57,8 +57,8 @@
   /* min-height: 44px; */
   /* Assuming 6px included padding (default), line-height of height minus padding vertically centers line of text */
   /* line-height: 32px; */
-  padding-top: 16px;
-  padding-bottom: 16px;
+  /* padding-top: 16px;
+  padding-bottom: 16px; */
   /* padding: 10px 6px; */
   border-color: black;
 }
@@ -109,7 +109,7 @@
 }
 
 .tabulator .fragment {
-    padding: 0px 8px;
+    /* padding: 0px 8px; */
 }
 
 /* [tabulator-field="name"] {
