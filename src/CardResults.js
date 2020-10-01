@@ -191,13 +191,14 @@ class CardResults extends React.Component {
             this.setupData();
 
             // console.log("Searching: " + this.props.searching);
-            if(!this.props.searching){
+            // card format totally breaks without a redraw so we need to disable this check
+            // if(!this.props.searching){ 
                 // console.log("Redrawing table");
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
                     tbltr.table.redraw(true);
                 },0)
-            }
+            // }
         }
     }
 }
