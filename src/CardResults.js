@@ -16,8 +16,20 @@ class CardResults extends React.Component {
             showContext: true
         }
         this.my_table = React.createRef();
+
+        // Table needs help to resize its cells if window is resized
+        window.addEventListener('resize', this.handleResize);
     }
     
+    // Table needs help to resize its cells if window is resized
+    handleResize = () => {
+        // console.log("Resize event");
+        this.setState({
+            height: window.innerHeight,
+            width: window.innerWidth
+        });
+    }
+
     onClearFiltersClick = (e) => {
         if(this.my_table && this.my_table.current){
             const tbltr = this.my_table.current;
