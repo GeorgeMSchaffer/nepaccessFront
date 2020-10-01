@@ -42,15 +42,17 @@ class Unified extends React.Component {
         }
         
         if (typeof _offset === 'undefined') {
-            console.log("Offset undefined, using " + searcherState.offset);
+            // console.log("Offset undefined, using " + searcherState.offset);
             _offset = searcherState.offset;
         }
         if (typeof currentResults === 'undefined') {
+            // console.log("Resetting results");
             currentResults = [];
         }
         
         let limitToUse = searcherState.limit;
         if(searcherState.titleRaw.trim().length < 1) {
+            // console.log("Limit being set to max");
             limitToUse = 1000000;
         }
         _inputs.limit = limitToUse;
@@ -62,7 +64,7 @@ class Unified extends React.Component {
 			networkError: "" // Clear network error
 		}, () => {
 
-            console.log("USING LIMIT: " + _inputs.limit);
+            // console.log("USING LIMIT: " + _inputs.limit);
 
 
             let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene on two fields
@@ -99,7 +101,7 @@ class Unified extends React.Component {
                 searching: true
             }, () => {
                 //Send the AJAX call to the server
-                console.log("Running with offset: " + _offset + " and limit: " + this.state.searcherInputs.limit + " and searching state: " + this.state.searching);
+                // console.log("Running with offset: " + _offset + " and limit: " + this.state.searcherInputs.limit + " and searching state: " + this.state.searching);
 
 
                 axios({
@@ -129,7 +131,7 @@ class Unified extends React.Component {
                         });
 
                         if (parsedJson.length < this.state.searcherInputs.limit) {
-                            console.log("Search complete");
+                            // console.log("Search complete");
                             this.setState({
                                 searching: false
                             //     searchResults: currentResults,
@@ -140,6 +142,8 @@ class Unified extends React.Component {
                             searcherState.limit = 1000000;
                             // offset should be incremented by limit
                             this.search(searcherState, _offset + this.state.searcherInputs.limit, currentResults);
+                            // Reset limit for next async run
+                            searcherState.limit = 100;
                         }
 
                     }
