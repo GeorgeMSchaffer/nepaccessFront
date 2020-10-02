@@ -246,7 +246,7 @@ class CardResult extends React.Component {
 			if (propFilename) {
                 return (
                     <div className="table-row">
-                        <span className="cardHeader">Comments:
+                        <span className="cardHeader">EPA Comments:
                             <button 
                                 className = {this.state.commentDownloadClass} 
                                 onClick = { () => {
