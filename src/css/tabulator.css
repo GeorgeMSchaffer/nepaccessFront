@@ -9,8 +9,8 @@
 
 .tabulator {
     /* max-height: 100%; /* With this, can't get larger than parent element, can also be added to table options as maxHeight: 100% */
-  /* min-width: 1000px; */
-  /* overflow: hidden; */
+    /* min-width: 1000px; */
+    /* overflow: hidden; */
 }
 
 .tabulator-responsive-collapse span.fragment {
@@ -54,33 +54,33 @@
 
 /* Row auto adjusts to accommodate cell size */
 .tabulator-row .tabulator-cell {
-  /* min-height: 44px; */
-  /* Assuming 6px included padding (default), line-height of height minus padding vertically centers line of text */
-  /* line-height: 32px; */
-  /* padding-top: 16px;
-  padding-bottom: 16px; */
-  /* padding: 10px 6px; */
-  border-color: black;
+    /* min-height: 44px; */
+    /* Assuming 6px included padding (default), line-height of height minus padding vertically centers line of text */
+    /* line-height: 32px; */
+    /* padding-top: 16px;
+    padding-bottom: 16px; */
+    /* padding: 10px 6px; */
+    border-color: black;
 }
 
 .tabulator-row.tabulator-row-even {
-  background-color: #F0EFED;
+    background-color: #F0EFED;
 }
 
 .tabulator-col-content {
-  font-family: Open Sans;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  /* line-height: 125%; */
-  /* or 22px */
-  
-  /* display: flex;
-  align-items: center;
-   */
-  color: #FFFFFF;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    /* line-height: 125%; */
+    /* or 22px */
+    
+    /* display: flex;
+    align-items: center;
+    */
+    color: #FFFFFF;
 
-  background: #737272;
+    background: #737272;
 }
 
 .tabulator .tabulator-header .tabulator-col {
@@ -88,7 +88,7 @@
 }
 
 .tabulator .tabulator-header {
-  border-bottom: 0px;
+    border-bottom: 0px;
 }
 
 .tabulator .tabulator-footer .tabulator-paginator label {

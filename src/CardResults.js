@@ -125,10 +125,23 @@ class CardResults extends React.Component {
 
         }
         else {
-            return (
-                <div id="search-results">
-                <h2 id="results-label">{this.props.resultsText}</h2></div>
-            );
+            /** Show nothing, until we are loading results.
+             * props.resultsText will just be "Results" before any search.
+             * During a search, it will be "Loading results..." and if 100+ async results we may
+             * simultaneously have 100 props.results
+             * After a search we won't hit this logic because we'll have props.results
+             */
+            if(this.props.resultsText && this.props.resultsText!=="Results") {
+                return (
+                    <div id="search-results">
+                        <h2 id="results-label">
+                            {this.props.resultsText}
+                        </h2>
+                    </div>
+                );
+            } else {
+                return "";
+            }
         }
         
         try {
@@ -181,6 +194,7 @@ class CardResults extends React.Component {
             } else {
                 console.log(e.toString());
             }
+            /** Wishlist: Put the most relevant error message in here */
             return (
                 <div>
                     <h2 id="results-label">{this.props.resultsText}</h2>
@@ -203,9 +217,11 @@ class CardResults extends React.Component {
             this.setupData();
 
             // console.log("Searching: " + this.props.searching);
-            // card format totally breaks without a redraw so we need to disable this check
+
+            // card height can't figure itself out precisely without a redraw so for now we 
+            // disable this check
             // if(!this.props.searching){ 
-                // console.log("Redrawing table");
+                console.log("Redrawing table");
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
                     tbltr.table.redraw(true);

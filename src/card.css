@@ -63,11 +63,17 @@ span.filename>* {
 .tabulator-cell {
     border-top: 1px solid black;
 }
-/* .table-like,
-.table-like div span {
-border-top: 1px solid black;  
+/* .table-like, .table-like div span {
+    border-top: 1px solid black;  
 } */
+
 /* bold on 1st row */
 /* .table-like div:nth-child(1) {
-font-weight: bold;
+    font-weight: bold;
 } */
+
+/** Tabulator cell custom CSS */
+
+.tabulator-tableHolder .tabulator-table .tabulator-row .tabulator-cell {
+    min-height: 84px;
+}

@@ -129,6 +129,8 @@ class CardResult extends React.Component {
                     <span>{this.props.cell._cell.row.data.filename}</span></span>
                 </div>
             );
+        } else {
+            return <div><span className="cardHeader"></span></div>
         }
     }
     showText = () => {
@@ -158,6 +160,12 @@ class CardResult extends React.Component {
             return (
                 <div><span className="cardHeader">State:
                     <span>{this.props.cell._cell.row.data.state}</span></span>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <span className="cardHeader">State: <span>?</span></span>
                 </div>
             );
         }
@@ -215,7 +223,7 @@ class CardResult extends React.Component {
                     </div>
                 );
             } else {
-                return "";
+                return <div className="table-row"><span className="cardHeader">(No file)</span></div>;
             }
 		}
 		else {
