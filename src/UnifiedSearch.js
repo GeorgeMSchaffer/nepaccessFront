@@ -240,7 +240,7 @@ class UnifiedSearch extends React.Component {
 
                                 <input className="search-box" 
                                     name="titleRaw" 
-                                    placeholder="Search by keywords within title or file text" 
+                                    placeholder="Search by keywords within document title or text" 
                                     value={this.state.titleRaw}
                                     autoFocus 
                                     onChange={this.onChangeHandler}
@@ -278,7 +278,7 @@ class UnifiedSearch extends React.Component {
                                     value={this.state.titleRaw}
                                     onChange={this.onChangeHandler}
                                     onInput={this.onInput} onKeyUp={this.onKeyUp} 
-                                    placeholder="Search by keywords within title or file text" 
+                                    placeholder="Search by keywords within document title or text" 
                                     disabled={this.props.searching}
                                 />
                                 <div id="post-search-box-text">Leave search box blank to return all results in database.</div>

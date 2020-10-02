@@ -72,8 +72,9 @@ span.filename>* {
     font-weight: bold;
 } */
 
-/** Tabulator cell custom CSS */
+/** Tabulator cell, row custom CSS */
 
-.tabulator-tableHolder .tabulator-table .tabulator-row .tabulator-cell {
+.tabulator-tableHolder .tabulator-table .tabulator-row .tabulator-cell, 
+.tabulator-table .tabulator-row {
     min-height: 84px;
 }
