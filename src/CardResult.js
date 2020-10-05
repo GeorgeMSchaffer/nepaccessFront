@@ -212,7 +212,7 @@ class CardResult extends React.Component {
             if(nameOrID){
                 return (
                     <div className="table-row">
-                        <span className="cardHeader">PDFS:
+                        <span className="cardHeader">EIS:
                             <button className = {this.state.downloadClass} onClick = { () => {this.download(nameOrID, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                 <span className="innerText">
                                     {this.state.downloadText} {this.state.fileProgressValue} 
