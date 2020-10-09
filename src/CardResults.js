@@ -174,7 +174,7 @@ class CardResults extends React.Component {
                     </h2>
                     {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}
                     <div className="tabulator-holder">
-                        <span>Show context <input type="checkbox" name="showContext" 
+                        <span>Show text snippets <input type="checkbox" name="showContext" 
                             checked={this.state.showContext} onChange={this.onCheckboxChange} />
                         </span>
                         <ReactTabulator
