@@ -78,3 +78,11 @@ span.filename>* {
 .tabulator-table .tabulator-row {
     min-height: 84px;
 }
+
+.tabulator-header {
+    display: none;
+    /* visibility: hidden; */
+}
+#post-results-input {
+    margin-left: 50px;
+}

@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 
 import './css/tabulator.css';
 import "./search.css";
+import "./sidebar.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
@@ -43,7 +44,7 @@ class UnifiedSearch extends React.Component {
             typeOther: false,
             needsComments: false,
             needsDocument: false,
-            optionsChecked: false,
+            optionsChecked: true,
             iconClassName: 'icon icon--effect',
             limit: 100,
             offset: 0,
@@ -215,170 +216,137 @@ class UnifiedSearch extends React.Component {
         + "<p className=&quot;tooltip-line&quot;>&bull; Learn about more features in the Help link.</p>";
 
         return (
+            <>
             <div className="content" onSubmit={this.submitHandler}>
-                <div id="searcher-container" >
+                <h1 className="search-header">Search for NEPA documents</h1>
+                <div className="search-holder" >
 
-                    <div id="searcher-inner-container">
-                        <div hidden={this.state.optionsChecked}>
-                            <div id="fake-search-box" className="inline-block">
-                                
-                                <Tooltip 
-                                    className="cursor-default no-select"
-                                    // position="left-end"
-                                    // arrow="true"
-                                    size="small"
-                                    // distance="80"
-                                    // offset="80"
-                                    // open="true"
-                                    title={tooltipTitle}
-                                >
-                                    <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
-                                    </svg>
-                                    <span id="tooltip1Mark" className="cursor-default no-select">?</span>
-                                </Tooltip>
+                    <div className="pre-checkbox-bar"></div>
+                    <div className="input-bar">
+                        <input id="check1" className="pre-search-input" type="checkbox" />
+                        <label className="sidebar-check-label" htmlFor="check1">
+                            Lorem ipsum
+                        </label>
+                    </div>
+                    
+                    <div className="search-bar-holder">
 
-                                <input className="search-box" 
-                                    name="titleRaw" 
-                                    placeholder="Search by keywords within document title or text" 
-                                    value={this.state.titleRaw}
-                                    autoFocus 
-                                    onChange={this.onChangeHandler}
-                                    onInput={this.onInput} onKeyUp={this.onKeyUp}
-                                    disabled={this.props.searching}
-                                />
-                                <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
-
-                                <svg onClick={this.onIconClick} id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
+                        <div className="pre-input-bar">
+                            <Tooltip 
+                                className="cursor-default no-select"
+                                // position="left-end"
+                                // arrow="true"
+                                size="small"
+                                // distance="80"
+                                // offset="80"
+                                // open="true"
+                                title={tooltipTitle}
+                            >
+                                <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    
+                                    <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
+                                    <text x="13" y="22" text-align="center" fill="black">?</text>
                                 </svg>
-                                <svg onClick={this.onClearClick} id="cancel-icon" width="24" height="24" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
-                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
-                                </svg>
-
-                            </div>
+                                {/* <span id="tooltip3Mark" className="cursor-default no-select">?</span> */}
+                            </Tooltip>
                         </div>
-                        <div hidden={!this.state.optionsChecked}>
-                            
-                            <div id="fake-search-box" className="inline-block">
-                                <Tooltip 
-                                    className="cursor-default no-select"
-                                    size="small"
-                                    title={tooltipTitle}
-                                >
-                                    <svg className="cursor-default no-select" id="tooltip1" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
-                                    </svg>
-                                    <span id="tooltip1Mark" className="cursor-default no-select">?</span>
-                                </Tooltip>
 
-                                <input className="search-box" 
-                                    name="titleRaw" 
-                                    value={this.state.titleRaw}
-                                    onChange={this.onChangeHandler}
-                                    onInput={this.onInput} onKeyUp={this.onKeyUp} 
-                                    placeholder="Search by keywords within document title or text" 
-                                    disabled={this.props.searching}
-                                />
-                                <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
+                        <input className="search-bar" 
+                            name="titleRaw" 
+                            placeholder="Search by keywords within document title or text" 
+                            value={this.state.titleRaw}
+                            autoFocus 
+                            onChange={this.onChangeHandler}
+                            onInput={this.onInput} onKeyUp={this.onKeyUp}
+                            disabled={this.props.searching}
+                        />
+                        <svg onClick={this.onIconClick} className="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
+                        </svg>
+                        <svg onClick={this.onClearClick} className="cancel-icon" width="24" height="24" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
+                            <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
+                        </svg>
 
-                                <svg onClick={this.onIconClick} id="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
-                                </svg>
-                                <svg onClick={this.onClearClick} id="cancel-icon" width="24" height="24" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"/>
-                                    <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
-                                </svg>
-                            </div>
+                        <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
 
-                        </div>
                     </div>
 
-                    <label id="search-mode" className="advanced-checkbox-label inline-block no-select">
-                        <input type="checkbox" name="optionsChecked" 
-                                checked={this.state.optionsChecked} onChange={this.onTypeChecked} />
-                        <span>
-                            Advanced search
-                        </span>
-                    </label>
-
+                </div>
+            </div>
+            <div className="sidebar-filters top-padded">
+                <span className="sidebar-header">Narrow your results</span>
+                <div className="sidebar-hr"></div>
+                <div className="filter">
+                    <label className="sidebar-label" htmlFor="searchAgency">Lead agency</label>
+                    <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
+                        styles={customStyles}
+                        options={agencyOptions} 
+                        onChange={this.onAgencyChange} 
+                        value={this.state.agencyRaw}
+                        placeholder="Type or select lead agency" 
+                        // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                        // menuIsOpen={true}
+                    />
+                </div>
+                <div className="filter">
+                    <label className="sidebar-label" htmlFor="searchState">State</label>
+                    <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
+                        styles={customStyles}
+                        options={stateOptions} 
+                        onChange={this.onLocationChange} 
+                        value={this.state.stateRaw}
+                        placeholder="Type or select state" 
+                        />
                 </div>
 
-                <table id="advanced-search-box" hidden={!this.state.optionsChecked}><tbody>
-                    <tr>
-                        <td>
-                            <label className="advanced-label" htmlFor="searchAgency">Lead agency</label>
-                            <Select id="searchAgency" className="multi inline-block" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
-                                styles={customStyles}
-                                options={agencyOptions} 
-                                onChange={this.onAgencyChange} 
-                                value={this.state.agencyRaw}
-                                placeholder="Type or select lead agency" 
-                                // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
-                                // menuIsOpen={true}
-                            />
-                            <svg className="down-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8.8414 16L0.841402 -1.04853e-06L16.8414 0L8.8414 16Z" fill="black"/>
-                            </svg>
-                        </td>
-                        <td>
-                            <label className="advanced-label" htmlFor="searchState">State</label>
-                            <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
-                                styles={customStyles}
-                                options={stateOptions} 
-                                onChange={this.onLocationChange} 
-                                value={this.state.stateRaw}
-                                placeholder="Type or select state" 
-                                />
-                                <svg className="down-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8.8414 16L0.841402 -1.04853e-06L16.8414 0L8.8414 16Z" fill="black"/>
-                            </svg>
-                        </td>
+                <div className="sidebar-hr"></div>
 
-                        <td><label className="block advanced-label">Document type</label>
-                            <div>
-                                <label className="advanced-checkbox-label flex-center">
-                                    <input type="checkbox" name="typeDraft" 
-                                        checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                    <span>Draft</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label className="advanced-checkbox-label flex-center">
-                                    <input type="checkbox" name="typeFinal" 
-                                        checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                    <span>Final</span>
-                                </label>
-                            </div>
-                        </td>
+                <div className="filter">
+                    <label className="sidebar-label-date" htmlFor="dates">Date Range:</label>
+                    <div className="sidebar-dates">
+                        <span className="sidebar-date-text">
+                            from
+                        </span>
+                        <DatePicker
+                            selected={this.state.startPublish} onChange={this.onStartDateChange} 
+                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                            className="sidebar-date" 
+                        />
+                        <span className="sidebar-date-text">
+                            to
+                        </span>
+                        <DatePicker
+                            selected={this.state.endPublish} onChange={this.onEndDateChange}
+                            dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                            className="sidebar-date" 
+                        />
+                    </div>
+                </div>
 
-                    </tr>
-                    <tr>
-                        <td>
-                            <label className="advanced-label" htmlFor="dates">Date Range</label>
-                            <div id="dates">
-                                <span className="date-text inline">
-                                    from
-                                    <DatePicker
-                                        selected={this.state.startPublish} onChange={this.onStartDateChange} 
-                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                        className="date" 
-                                    />
-                                    to
-                                    <DatePicker
-                                        selected={this.state.endPublish} onChange={this.onEndDateChange}
-                                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
-                                        className="date" 
-                                /></span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody></table>
-                <span ref={this.myRef}></span>
-                {/* <input id="searchLimit" type="number" step="100" min="0" max="100000" 
-                            placeholder="1000" name="limit" onInput={this.onInput} /> */}
+                <div className="sidebar-hr"></div>
+                
+                <div className="filter">
+                    <label className="sidebar-label">Document type</label>
+                    <div className="sidebar-checkboxes">
+                        <div>
+                            <label className="checkbox-text">
+                                <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
+                                    checked={this.state.typeDraft} onChange={this.onTypeChecked} />
+                                <span>Draft</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label className="checkbox-text">
+                                <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
+                                    checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                <span>Final</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
+            </>
         )
     }
 

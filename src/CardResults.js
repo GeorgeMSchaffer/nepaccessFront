@@ -133,11 +133,13 @@ class CardResults extends React.Component {
              */
             if(this.props.resultsText && this.props.resultsText!=="Results") {
                 return (
+                    <div className="sidebar-results">
                     <div id="search-results">
+                    <div className="tabulator-holder">
                         <h2 id="results-label">
                             {this.props.resultsText}
                         </h2>
-                    </div>
+                    </div></div></div>
                 );
             } else {
                 return "";
@@ -168,15 +170,21 @@ class CardResults extends React.Component {
             var resultsText = this.props.resultsText;
 
             return (
+                <div className="sidebar-results">
                 <div id="search-results">
-                    <h2 id="results-label">
-                        {resultsText}
-                    </h2>
+
                     {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}
                     <div className="tabulator-holder">
-                        <span>Show text snippets <input type="checkbox" name="showContext" 
-                            checked={this.state.showContext} onChange={this.onCheckboxChange} />
-                        </span>
+                        <div className="results-bar">
+                            <h2 id="results-label" className="inline">
+                                {resultsText}
+                            </h2>
+                            
+                            <span id="post-results-input" className="inline"> <input type="checkbox" name="showContext" 
+                                    checked={this.state.showContext} onChange={this.onCheckboxChange} />
+                                Show text snippets
+                            </span>
+                        </div>
                         <ReactTabulator
                             ref={this.my_table}
                             data={[]}
@@ -184,7 +192,7 @@ class CardResults extends React.Component {
                             options={options}
                         />
                     </div>
-                </div>
+                </div></div>
             );
         }
         catch (e) {
@@ -196,7 +204,7 @@ class CardResults extends React.Component {
             }
             /** Wishlist: Put the most relevant error message in here */
             return (
-                <div>
+                <div className="sidebar-results">
                     <h2 id="results-label">{this.props.resultsText}</h2>
                 </div>
             )
