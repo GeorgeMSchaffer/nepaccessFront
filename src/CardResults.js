@@ -182,7 +182,7 @@ class CardResults extends React.Component {
                             <div className="checkbox-container inline-block">
                             <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
                                     checked={this.state.showContext} onChange={this.onCheckboxChange} />
-                            <label className="checkbox-text" for="typeDraft">
+                            <label className="checkbox-text" htmlFor="post-results-input">
                                 Show text snippets
                             </label>
                             </div>

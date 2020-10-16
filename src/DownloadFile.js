@@ -19,6 +19,8 @@ class DownloadFile extends React.Component {
     // TODO: reset download link if canceled
     // these could be very difficult to figure out for low payoff, however
 	download = (filenameOrID, isFolder) => {
+        console.log("Downloading: " + filenameOrID);
+        console.log("Folder: " + isFolder);
 		const FileDownload = require('js-file-download');
 
 		// Indicate download
@@ -114,7 +116,8 @@ class DownloadFile extends React.Component {
             else if (this.props.downloadType && this.props.downloadType === "Folder") { // from record details page
                 propID = this.props.id;
             }
-			else if (this.props.filename) { // filename only
+            else if (this.props.filename) { // filename only
+                console.log("Filename only?: " + this.props.filename);
 				propFilename = this.props.filename;
 			} 
 			if (propFilename) {

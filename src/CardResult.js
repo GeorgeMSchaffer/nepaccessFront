@@ -23,6 +23,7 @@ class CardResult extends React.Component {
     }
     
 	download = (filenameOrID, isFolder, downloadTextName, className, progressName) => {
+        console.log("Downloading with filename; folder; dtn; class; progress",filenameOrID,isFolder,downloadTextName,className,progressName);
 		const FileDownload = require('js-file-download');
 
 		// Indicate download
@@ -129,6 +130,12 @@ class CardResult extends React.Component {
                     <span>{this.props.cell._cell.row.data.filename}</span></span>
                 </div>
             );
+        } else if(this.props && this.props.cell._cell.row.data.folder){
+            return (
+                <div><span className="cardHeader filename">Filename:
+                    <span>{this.props.cell._cell.row.data.folder}.zip</span></span>
+                </div>
+            );
         } else {
             return <div><span className="cardHeader"></span></div>
         }
@@ -190,30 +197,47 @@ class CardResult extends React.Component {
 			let cellData = null;
             let propFilename = null;
             let propID = null;
-            let nameOrID = null;
-
 			if (this.props.cell) { // filename/cell data from React-Tabulator props
                 cellData = this.props.cell._cell.row.data;
-                if (cellData.id && cellData.folder) {
+                // console.log(cellData);
+				if (this.props.downloadType === "Comments") {
+					propFilename = cellData.commentsFilename;
+                }
+                else if (cellData.id && cellData.folder) {
                     propID = cellData.id;
                 }
-                if (cellData.filename) {
-                    propFilename = cellData.filename;
+				else if (this.props.downloadType === "EIS") {
+					propFilename = cellData.filename;
+                } else {
+					propFilename = cellData.filename;
                 }
 			}
-            
-            // Note: Prioritizing filename over folder currently
-			if (propFilename) {
-                nameOrID = propFilename;
-			} else if (propID) {
-				nameOrID = propID;
+            else if (this.props.downloadType && this.props.downloadType === "Folder") { // from record details page
+                propID = this.props.id;
             }
+            else if (this.props.filename) { // filename only
+                console.log("Filename only?: " + this.props.filename);
+				propFilename = this.props.filename;
+            } 
             
-            if(nameOrID){
+			if (propFilename) {
                 return (
                     <div className="table-row">
                         <span className="cardHeader">EIS:
-                            <button className = {this.state.downloadClass} onClick = { () => {this.download(nameOrID, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                            <button className = {this.state.downloadClass} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                <span className="innerText">
+                                    {this.state.downloadText} {this.state.fileProgressValue} 
+                                </span>
+                            </button>
+                        </span>
+                        
+                    </div>
+                );
+			} else if (propID) {
+                return (
+                    <div className="table-row">
+                        <span className="cardHeader">EIS:
+                            <button className = {this.state.downloadClass} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                 <span className="innerText">
                                     {this.state.downloadText} {this.state.fileProgressValue} 
                                 </span>

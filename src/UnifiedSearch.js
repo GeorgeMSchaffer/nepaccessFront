@@ -332,14 +332,14 @@ class UnifiedSearch extends React.Component {
                         <div className="checkbox-container">
                             <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
                                     checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                            <label className="checkbox-text" for="typeDraft">
+                            <label className="checkbox-text" htmlFor="typeDraft">
                                 Draft
                             </label>
                         </div>
                         <div className="checkbox-container">
                             <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
                                     checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                            <label className="checkbox-text" for="typeFinal">
+                            <label className="checkbox-text" htmlFor="typeFinal">
                                 Final
                             </label>
                         </div>
