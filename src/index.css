@@ -249,7 +249,7 @@ body {
 }
 
 .inline-block {
-  display: inline-block;
+  display: inline-block !important;
 }
 
 .block {
@@ -343,10 +343,6 @@ span.email-text {
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, 0%);
-}
-
-.inline-block {
-  display: inline-block;
 }
 
 .logged-out-header {

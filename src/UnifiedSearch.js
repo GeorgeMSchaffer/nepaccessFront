@@ -225,7 +225,7 @@ class UnifiedSearch extends React.Component {
                     <div className="input-bar">
                         <input id="check1" className="pre-search-input" type="checkbox" />
                         <label className="sidebar-check-label" htmlFor="check1">
-                            Lorem ipsum
+                            Search titles only
                         </label>
                     </div>
                     
@@ -306,7 +306,7 @@ class UnifiedSearch extends React.Component {
                     <label className="sidebar-label-date" htmlFor="dates">Date Range:</label>
                     <div className="sidebar-dates">
                         <span className="sidebar-date-text">
-                            from
+                            From
                         </span>
                         <DatePicker
                             selected={this.state.startPublish} onChange={this.onStartDateChange} 
@@ -314,7 +314,7 @@ class UnifiedSearch extends React.Component {
                             className="sidebar-date" 
                         />
                         <span className="sidebar-date-text">
-                            to
+                            To
                         </span>
                         <DatePicker
                             selected={this.state.endPublish} onChange={this.onEndDateChange}
@@ -329,18 +329,18 @@ class UnifiedSearch extends React.Component {
                 <div className="filter">
                     <label className="sidebar-label">Document type</label>
                     <div className="sidebar-checkboxes">
-                        <div>
-                            <label className="checkbox-text">
-                                <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
+                        <div className="checkbox-container">
+                            <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
                                     checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                <span>Draft</span>
+                            <label className="checkbox-text" for="typeDraft">
+                                Draft
                             </label>
                         </div>
-                        <div>
-                            <label className="checkbox-text">
-                                <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
+                        <div className="checkbox-container">
+                            <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
                                     checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                <span>Final</span>
+                            <label className="checkbox-text" for="typeFinal">
+                                Final
                             </label>
                         </div>
                     </div>

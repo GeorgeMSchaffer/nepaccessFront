@@ -1,13 +1,15 @@
-
+/** Special style rules just for when the new sidebar search + card format results is used */
 
 .sidebar-filters {
     display: inline-block;
-    /* position: fixed; */ /* Having a fixed sidebar that is also capable of growing gets really ugly. */
+    /* position: fixed; /* Having a fixed sidebar that is also capable of growing vertically can clip off the page:
+    would need to move up and shrink the main search bar and then have overflow-y: scroll and a smart max height */
     vertical-align: top;
 
     width: 25%;
     padding: 2%;
     margin-top: 5%;
+    margin-bottom: 50px;
     margin-left: 2%;
 
     border: 2px solid rgba(218, 218, 218, 1);
@@ -25,6 +27,7 @@
 }
 
 .sidebar-header {
+    display: block;
     font-family: Open Sans;
     font-size: 18px;
     font-style: normal;
@@ -47,7 +50,10 @@
     display: inline-block;
     margin-top: 5%;
     width: 68%;
-    /* margin-left: 25%; */ /* For fixed sidebar */
+
+    /* For fixed sidebar */
+    /* width: 60%;
+    margin-left: 35%;  */
 }
 
 .sidebar-dates {
@@ -57,6 +63,14 @@
 
 .sidebar-date {
     display: block;
+
+    width: 170px;
+    height: 34px;
+    margin: 5px 0px;
+
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    border: 1px solid black;
+    background: rgba(255, 255, 255, 1);
 }
 
 .sidebar-date-text {
@@ -86,13 +100,15 @@
 }
 
 label.checkbox-text {
+    position: relative;
     font-family: Open Sans;
     font-size: 14px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 400;
     line-height: 32px;
     letter-spacing: 0em;
     text-align: left;
+    margin: auto;
 }
 
 .filter {
@@ -236,8 +252,25 @@ label.checkbox-text {
 
     color: white;
 }
-.pre-search-input:checked + .sidebar-check-label {
+input:checked + .sidebar-check-label,
+input:checked + .checkbox-text {
     font-weight: 600;
+}
+
+.checkbox-container {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    margin: auto;
+    padding: 0;
+}
+.checkbox-container>input, .checkbox-container>label {
+    vertical-align: middle;
+}
+.multi>.react-select__control {
+    border-color: black;
+    border-radius: 0px;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
 }
 
 

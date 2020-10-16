@@ -174,7 +174,7 @@ class CardResult extends React.Component {
         if(this.props && this.props.cell._cell.row.data.documentType){
             return (
                 <div>
-                    <span className="cardHeader">Version:
+                    <span className="cardHeader">Type:
                         <span>{this.props.cell._cell.row.data.documentType}</span>
                     </span>
                     
@@ -273,10 +273,10 @@ class CardResult extends React.Component {
         return (<>
         <div className="table-holder">
             <div className="table-like">
-                <div className="table-row">
+                <div className="table-row cardTitle">
                     {this.showTitle()}
                 </div>
-                <div className="table-row">
+                <div className="table-row table-meta">
                     {this.showVersion()}
                     {this.showDate()}
                     {this.showAgency()}
@@ -288,7 +288,9 @@ class CardResult extends React.Component {
                 {this.showFileDownload()}
                 {this.showCommentsDownload()}
             </div>
-            {this.showText()}
+            <div className="fragment-container">
+                {this.showText()}
+            </div>
         </div>
             
         </>);

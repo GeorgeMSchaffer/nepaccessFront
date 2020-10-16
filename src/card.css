@@ -44,9 +44,19 @@ span.highlight {
     font-weight: bolder;
 }
 
+.fragment-container {
+    /* or 129% */
+    margin: 15px 10px 5px 10px;
+}
 span.fragment {
     display: block;
     white-space: normal;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 10px;
 }
 
 span.filename {
@@ -59,9 +69,33 @@ span.filename>* {
     font-weight: normal;
 }
 
-/* add borders */
-.tabulator-cell {
-    border-top: 1px solid black;
+.tabulator-row .tabulator-cell {
+    padding: 10px 10px 0px 10px;
+    background: #FFFFFF;
+    border: 2px solid #DCDCDC;
+    box-sizing: border-box;
+}
+.cardTitle {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 125%;
+}
+.tabulator-cell a.link {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 125%;
+    color: #0067B1;
+}
+.table-meta {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 125%;
 }
 /* .table-like, .table-like div span {
     border-top: 1px solid black;  
@@ -78,11 +112,28 @@ span.filename>* {
 .tabulator-table .tabulator-row {
     min-height: 84px;
 }
+.tabulator-table .tabulator-row,
+.tabulator>.tabulator-footer {
+    border-top: 10px solid #FFFBF1;
+}
+.tabulator-row>.tabulator-cell,
+.tabulator[tabulator-layout=fitColumns] .tabulator-row .tabulator-cell:last-of-type {
+    border: 2px solid #DADADA;
+}
 
 .tabulator-header {
     display: none;
     /* visibility: hidden; */
 }
+
 #post-results-input {
     margin-left: 50px;
+}
+
+.fragment:nth-of-type(2n) {
+    background: white;
+}
+
+.fragment:nth-of-type(odd) {
+    background: rgba(196, 196, 196, 0.4);
 }

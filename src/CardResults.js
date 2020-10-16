@@ -179,11 +179,13 @@ class CardResults extends React.Component {
                             <h2 id="results-label" className="inline">
                                 {resultsText}
                             </h2>
-                            
-                            <span id="post-results-input" className="inline"> <input type="checkbox" name="showContext" 
+                            <div className="checkbox-container inline-block">
+                            <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
                                     checked={this.state.showContext} onChange={this.onCheckboxChange} />
+                            <label className="checkbox-text" for="typeDraft">
                                 Show text snippets
-                            </span>
+                            </label>
+                            </div>
                         </div>
                         <ReactTabulator
                             ref={this.my_table}
