@@ -22,16 +22,43 @@
 
 .table-like div.table-row div { 
     display: inline-block;
-    width: 20%;
-    padding-top: 1em;
-    padding-right: 1em;
+
+    /* Limiting height makes the in-between borders consistent if some elements are multi-line and therefore
+    require more height, but can result in overflow problems because the cell won't resize large enough.
+    Height of all these elements would need to be somehow set to the height of the largest one, dynamically. */
+    /* height: 20px; */
+
+    width: 15%;
+
+    margin-top: 1em;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+
+    vertical-align: middle;
+
+    border-right: 1px solid black;
 }
 
+/** Experimenting with :after border */
+/* .table-like div.table-row div:after {
+    content: "";
+    background: orange;
+    position: absolute;
+    height: 15%;
+    width: 1px;
+} */
+
+.table-like div.table-row div:first-child { 
+    width: 12.5%;
+    padding-left: 0%;
+}
 .table-like div.table-row div:nth-child(3) { 
     width: 35%;
 }
 .table-like div.table-row div:last-child { 
     width: 10%;
+    padding-right: 0%;
+    border-right: none;
 }
 
 .cardHeader>span, .cardHeader>.download, .cardHeader>.link {
