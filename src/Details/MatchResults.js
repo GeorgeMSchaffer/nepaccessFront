@@ -3,13 +3,31 @@ import React from 'react';
 import 'react-tabulator/lib/styles.css'; // required styles
 import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 
+import '../card.css';
+import '../sidebar.css';
+import '../css/tabulator.css';
+
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 
-import DownloadFile from '../DownloadFile.js';
+// import DownloadFile from '../DownloadFile.js';
+import CardResult from '../CardResult.js';
+
 // import RecordDetailsLink from './RecordDetailsLink.js';
 
 class MatchResults extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+            showContext: true
+        }
+        this.my_table = React.createRef();
+
+        // Table needs help to resize its cells if window is resized
+        window.addEventListener('resize', this.handleResize);
+    }
 
 	render() {
         const results = this.props.results;
@@ -62,26 +80,31 @@ class MatchResults extends React.Component {
                     </div>
                 )
             }
+            // const columns = [
+            //     { title: "Title", field: "title" },
+            //     { title: "Lead Agency", field: "agency", width: 150 },
+            //     { title: "Date", field: "registerDate", width: 90 },
+            //     { title: "State", field: "state", width: 80 },
+            //     { title: "Version", field: "documentType", width: 90 },
+            //     { title: "Documents", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
+            //     { title: "EPA Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) },
+            //     { title: "Match", field: "matchPercent", width: 95 }
+            // ];
+            
             const columns = [
-                { title: "Title", field: "title" },
-                { title: "Lead Agency", field: "agency", width: 150 },
-                { title: "Date", field: "registerDate", width: 90 },
-                { title: "State", field: "state", width: 80 },
-                { title: "Version", field: "documentType", width: 90 },
-                { title: "Documents", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-                { title: "EPA Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) },
-                { title: "Match", field: "matchPercent", width: 95 }
+                { title: "", field: "", formatter: reactFormatter(<CardResult />)}
             ];
 
             var options = {
-                tooltips:true,
-                responsiveLayout:"collapse",  //collapse columns that dont fit on the table
-                responsiveLayoutCollapseUseFormatters:false,
+                tooltips:false,
+                // responsiveLayout:"collapse",  //collapse columns that dont fit on the table
+                // responsiveLayoutCollapseUseFormatters:false,
                 pagination:"local",       //paginate the data
                 paginationSize:10,       //allow 10 rows per page of data
                 paginationSizeSelector:[10, 25, 50, 100],
-                movableColumns:true,      //allow column order to be changed
-                resizableRows:true,       //allow row order to be changed
+                movableColumns:false,      //allow column order to be changed
+                resizableRows:false,       //allow row order to be changed
+                resizableColumns:false,
                 layout:"fitColumns",
                 invalidOptionWarnings:false, // spams warnings without this
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
@@ -97,6 +120,7 @@ class MatchResults extends React.Component {
                     <h2>{this.props.resultsText}</h2>
                     <div className="tabulator-holder">
                         <ReactTabulator
+                            ref={this.my_table}
                             data={data}
                             columns={columns}
                             options={options}
@@ -115,7 +139,17 @@ class MatchResults extends React.Component {
                 </div>
             )
         }
-	}
+    }
+
+    componentDidUpdate() {
+        if(this.my_table && this.my_table.current){
+            const tbltr = this.my_table.current;
+            setTimeout(function() {
+                tbltr.table.redraw(true);
+            },0)
+        }
+    }
+
 }
 
 export default MatchResults;

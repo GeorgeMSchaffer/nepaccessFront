@@ -30,3 +30,7 @@ div.update .react-datepicker__input-container>input {
 #details .react-select__option {
     width: 100%;
 }
+
+#detailsDropdown {
+    min-width: 250px;
+}

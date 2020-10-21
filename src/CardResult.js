@@ -23,7 +23,7 @@ class CardResult extends React.Component {
     }
     
 	download = (filenameOrID, isFolder, downloadTextName, className, progressName) => {
-        console.log("Downloading with filename; folder; dtn; class; progress",filenameOrID,isFolder,downloadTextName,className,progressName);
+        // console.log("Downloading with filename; folder; dtn; class; progress",filenameOrID,isFolder,downloadTextName,className,progressName);
 		const FileDownload = require('js-file-download');
 
 		// Indicate download
@@ -151,6 +151,16 @@ class CardResult extends React.Component {
                     }} />
                 </>
             );
+        } else if(this.props && this.props.cell._cell.row.data.matchPercent) {
+            return (
+                <>
+                    <div>
+                        <span className="cardHeader"><span>
+                            {"Similarity: " + (this.props.cell._cell.row.data.matchPercent*100) + "%"}
+                        </span></span>
+                    </div>
+                </>
+            );
         }
     }
     showDate = () => {
@@ -216,7 +226,7 @@ class CardResult extends React.Component {
                 propID = this.props.id;
             }
             else if (this.props.filename) { // filename only
-                console.log("Filename only?: " + this.props.filename);
+                // console.log("Filename only?: " + this.props.filename);
 				propFilename = this.props.filename;
             } 
             
@@ -247,7 +257,7 @@ class CardResult extends React.Component {
                     </div>
                 );
             } else {
-                return <div className="table-row"><span className="cardHeader">(No file)</span></div>;
+                return <div className="table-row"><span className="cardHeader">EIS File unavailable</span></div>;
             }
 		}
 		else {
@@ -295,27 +305,27 @@ class CardResult extends React.Component {
 
 	render() {
         return (<>
-        <div className="table-holder">
-            <div className="table-like">
-                <div className="table-row cardTitle">
-                    {this.showTitle()}
+            <div className="table-holder">
+                <div className="table-like">
+                    <div className="table-row cardTitle">
+                        {this.showTitle()}
+                    </div>
+                    <div className="table-row table-meta">
+                        {this.showVersion()}
+                        {this.showDate()}
+                        {this.showAgency()}
+                        {this.showState()}
+                    </div>
                 </div>
-                <div className="table-row table-meta">
-                    {this.showVersion()}
-                    {this.showDate()}
-                    {this.showAgency()}
-                    {this.showState()}
+                <div className="table-like">
+                    {this.showFilename()}
+                    {this.showFileDownload()}
+                    {this.showCommentsDownload()}
+                </div>
+                <div className="fragment-container">
+                    {this.showText()}
                 </div>
             </div>
-            <div className="table-like">
-                {this.showFilename()}
-                {this.showFileDownload()}
-                {this.showCommentsDownload()}
-            </div>
-            <div className="fragment-container">
-                {this.showText()}
-            </div>
-        </div>
             
         </>);
 	}

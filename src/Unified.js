@@ -67,12 +67,12 @@ class Unified extends React.Component {
             // console.log("USING LIMIT: " + _inputs.limit);
 
 
-            let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene on two fields
+            let searchUrl = new URL('text/search', Globals.currentHost); // Title only search
             
             if(searcherState.searchOption && searcherState.searchOption === "A") {
                 searchUrl = new URL('text/search_title_priority', Globals.currentHost);
             } else if(searcherState.searchOption && searcherState.searchOption === "B") {
-                searchUrl = new URL('text/search_test', Globals.currentHost);
+                searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
             }
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call

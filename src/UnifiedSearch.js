@@ -129,6 +129,18 @@ class UnifiedSearch extends React.Component {
 			// this.debouncedSearch(this.state);
         });
     }
+
+    onTitleOnlyChecked = (evt) => {
+        if(evt.target.checked) {
+            this.setState({
+                searchOption: "C" // Title only
+            });
+        } else {
+            this.setState({
+                searchOption: "B" // Both fields, Lucene default scoring
+            });
+        }
+    }
     
     onTypeChecked = (evt) => {
         if(evt.target.name==="optionsChecked") {
@@ -223,7 +235,9 @@ class UnifiedSearch extends React.Component {
 
                     <div className="pre-checkbox-bar"></div>
                     <div className="input-bar">
-                        <input id="check1" className="pre-search-input" type="checkbox" />
+                        <input id="check1" className="pre-search-input" type="checkbox" 
+                                checked={this.state.searchOption==="C"}
+                                onChange={this.onTitleOnlyChecked} />
                         <label className="sidebar-check-label" htmlFor="check1">
                             Search only within titles
                         </label>

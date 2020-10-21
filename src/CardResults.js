@@ -97,8 +97,14 @@ class CardResults extends React.Component {
                 _columns = [
                     { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
                 ];
+            
+            } else if (this.props.results[0] && this.props.results[0].title) { // Metadata only
+                
+                _columns = [
+                    { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
+                ];
 
-            } 
+            }
             // else {
             //     _columns = [
             //         { title: "Title", field: "title", minWidth: 200, formatter: reactFormatter(<RecordDetailsLink />), headerFilter:"input" },
@@ -231,7 +237,7 @@ class CardResults extends React.Component {
             // card height can't figure itself out precisely without a redraw so for now we 
             // disable this check
             // if(!this.props.searching){ 
-                console.log("Redrawing table");
+                // console.log("Redrawing table");
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
                     tbltr.table.redraw(true);
