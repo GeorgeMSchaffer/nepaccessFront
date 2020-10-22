@@ -148,7 +148,7 @@ label.checkbox-text {
 }
 
 .search-header {
-    margin-top: 200px;
+    margin-top: 152px; /* combines with .content's 102px margin for the header; so this is actually just 50 off of that */
     margin-left: 8%;
     font-family: "Open Sans";
     font-size: 24px;

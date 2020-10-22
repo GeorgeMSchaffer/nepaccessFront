@@ -25,7 +25,8 @@ class Unified extends React.Component {
 		resultsText: 'Results',
 		networkError: '',
 		verified: false,
-		searching: false
+        searching: false,
+        snippetsDisabled: false
     }
     
     _mounted = false;
@@ -56,6 +57,10 @@ class Unified extends React.Component {
             limitToUse = 1000000;
         }
         _inputs.limit = limitToUse;
+
+        this.setState({
+            snippetsDisabled: _inputs.searchOption==="C"
+        });
 
 		this.setState({
             searcherInputs: _inputs,
@@ -239,7 +244,11 @@ class Unified extends React.Component {
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
 					<UnifiedSearch search={this.search} searching={this.state.searching} />
-					<CardResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} searching={this.state.searching} />
+                    <CardResults results={this.state.searchResults} 
+                                resultsText={this.state.resultsText} 
+                                isDirty={this.state.isDirty} 
+                                searching={this.state.searching}
+                                snippetsDisabled={this.state.snippetsDisabled} />
 				</div>
 			)
 

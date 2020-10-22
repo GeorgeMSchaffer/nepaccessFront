@@ -7,25 +7,25 @@
     /* scroll-behavior: auto; */
 }
 
-.tabulator {
+/* .tabulator { */
     /* max-height: 100%; /* With this, can't get larger than parent element, can also be added to table options as maxHeight: 100% */
     /* min-width: 1000px; */
     /* overflow: hidden; */
-}
+/* } */
 
-.tabulator-responsive-collapse span.fragment {
+/* .tabulator-responsive-collapse span.fragment { */
     /* white-space: normal; */
-}
+/* } */
 
-.tabulator .tabulator-tableHolder {
+/* .tabulator .tabulator-tableHolder { */
     /* height: 100%; */
     /* overflow: hidden; */
     /* overflow-x: hidden; */
-}
+/* } */
 
-.tabulator-row .tabulator-cell .fragment {
+/* .tabulator-row .tabulator-cell .fragment { */
     /* white-space: normal; */
-}
+/* } */
 
 /* .tabulator-row {
     flex-direction: row;
@@ -108,9 +108,9 @@
     text-align: center;
 }
 
-.tabulator .fragment {
+/* .tabulator .fragment { */
     /* padding: 0px 8px; */
-}
+/* } */
 
 /* [tabulator-field="name"] {
     word-break: break-all;

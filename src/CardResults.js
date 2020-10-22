@@ -187,7 +187,8 @@ class CardResults extends React.Component {
                             </h2>
                             <div className="checkbox-container inline-block">
                             <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
-                                    checked={this.state.showContext} onChange={this.onCheckboxChange} />
+                                    checked={this.state.showContext} onChange={this.onCheckboxChange}
+                                    disabled={this.props.snippetsDisabled}  />
                             <label className="checkbox-text" htmlFor="post-results-input">
                                 Show text snippets
                             </label>
