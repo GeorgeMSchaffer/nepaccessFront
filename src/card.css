@@ -7,13 +7,16 @@
     display: inline-block;
 }
 
+/* Title holder */
 .table-like:first-child {
-    width: 79%;
-    padding-right: 1%;
+    width: 79%; /* title can't flow into filename, downloads */
+    padding-right: 1%; /* buffer space */
 }
 
-.table-like:last-child {
-    width: 20%;
+/* Filename, downloads style */
+.table-holder>.table-like:nth-child(2) {
+    width: 20%; /* limit properly */
+    overflow-wrap: break-word; /* long filenames can't go off page */
 }
   
 .table-like div.table-row { 
@@ -47,6 +50,7 @@
     height: 15%;
     width: 1px;
 } */
+
 
 /* Type/Date/Agency/State style */
 .table-like div.table-row div:first-child { 
