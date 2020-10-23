@@ -396,3 +396,7 @@ span.email-text {
 .margin {
     margin-left: 10px;
 }
+
+.bold {
+    font-weight: bold !important;
+}

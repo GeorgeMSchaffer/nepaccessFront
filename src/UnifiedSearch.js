@@ -219,13 +219,12 @@ class UnifiedSearch extends React.Component {
         ];
         const stateOptions = [ { value: 'AK', label: 'Alaska' },{ value: 'AL', label: 'Alabama' },{ value: 'AQ', label: 'Antarctica' },{ value: 'AR', label: 'Arkansas' },{ value: 'AS', label: 'American Samoa' },{ value: 'AZ', label: 'Arizona' },{ value: 'CA', label: 'California' },{ value: 'CO', label: 'Colorado' },{ value: 'CT', label: 'Connecticut' },{ value: 'DC', label: 'District of Columbia' },{ value: 'DE', label: 'Delaware' },{ value: 'FL', label: 'Florida' },{ value: 'GA', label: 'Georgia' },{ value: 'GU', label: 'Guam' },{ value: 'HI', label: 'Hawaii' },{ value: 'IA', label: 'Iowa' },{ value: 'ID', label: 'Idaho' },{ value: 'IL', label: 'Illinois' },{ value: 'IN', label: 'Indiana' },{ value: 'KS', label: 'Kansas' },{ value: 'KY', label: 'Kentucky' },{ value: 'LA', label: 'Louisiana' },{ value: 'MA', label: 'Massachusetts' },{ value: 'MD', label: 'Maryland' },{ value: 'ME', label: 'Maine' },{ value: 'MI', label: 'Michigan' },{ value: 'MN', label: 'Minnesota' },{ value: 'MO', label: 'Missouri' },{ value: 'MS', label: 'Mississippi' },{ value: 'MT', label: 'Montana' },{ value: 'Multi', label: 'Multiple' },{ value: 'NAT', label: 'National' },{ value: 'NC', label: 'North Carolina' },{ value: 'ND', label: 'North Dakota' },{ value: 'NE', label: 'Nebraska' },{ value: 'NH', label: 'New Hampshire' },{ value: 'NJ', label: 'New Jersey' },{ value: 'NM', label: 'New Mexico' },{ value: 'NV', label: 'Nevada' },{ value: 'NY', label: 'New York' },{ value: 'OH', label: 'Ohio' },{ value: 'OK', label: 'Oklahoma' },{ value: 'OR', label: 'Oregon' },{ value: 'PA', label: 'Pennsylvania' },{ value: 'PRO', label: 'Programmatic' },{ value: 'PR', label: 'Puerto Rico' },{ value: 'RI', label: 'Rhode Island' },{ value: 'SC', label: 'South Carolina' },{ value: 'SD', label: 'South Dakota' },{ value: 'TN', label: 'Tennessee' },{ value: 'TT', label: 'Trust Territory of the Pacific Islands' },{ value: 'TX', label: 'Texas' },{ value: 'UT', label: 'Utah' },{ value: 'VA', label: 'Virginia' },{ value: 'VI', label: 'Virgin Islands' },{ value: 'VT', label: 'Vermont' },{ value: 'WA', label: 'Washington' },{ value: 'WI', label: 'Wisconsin' },{ value: 'WV', label: 'West Virginia' },{ value: 'WY', label: 'Wyoming' }
         ];
-        const tooltipTitle = "<p className=&quot;tooltip-line&quot;>Search by words in the title or file text.</p>"
-        + "<p className=&quot;tooltip-line&quot;>&bull; Default behavior is that all search terms must be found to get any results.</p>"
-        + "<p className=&quot;tooltip-line&quot;>&bull; Common words are ignored.</p>"
-        + "<p className=&quot;tooltip-line&quot;>&bull; Surround phrases with &quot;double quotes&quot; to match exact phrases.</p>"
-        + "<p className=&quot;tooltip-line&quot;>&bull; End words with an asterisk* to match partial words (example: rose* will match rosebud, roseburg, etc.).</p>"
-        + "<p className=&quot;tooltip-line&quot;>&bull; Use exact spelling, case insensitive.</p>"
-        + "<p className=&quot;tooltip-line&quot;>&bull; Learn about more features in the Help link.</p>";
+        const tooltipTitle = "<p class=tooltip-line><span class=bold>Search Tips</span></p>"
+        + "<p class=&quot;tooltip-line&quot;>&bull; Search for words in the title and document text.</p>"
+        + "<p class=&quot;tooltip-line&quot;>&bull; <span class=bold>All</span> words you enter must be found together to return a result.</p>"
+        + "<p class=&quot;tooltip-line&quot;>&bull; Type OR (all caps) to search for <span class=bold>any</span> of those words.</p>"
+        + "<p class=&quot;tooltip-line&quot;>&bull; Type NOT (all caps) to <span class=bold>exclude</span> a word or phrase.</p>"
+        + "<p class=&quot;tooltip-line&quot;>&bull; Surround words with quotes(&quot; &quot;) to search for an <span class=bold>exact phrase.</span></p>";
 
         return (
             <>
@@ -248,7 +247,7 @@ class UnifiedSearch extends React.Component {
                         <div className="pre-input-bar">
                             <Tooltip 
                                 className="cursor-default no-select"
-                                // position="left-end"
+                                position="bottom"
                                 // arrow="true"
                                 size="small"
                                 // distance="80"
@@ -257,9 +256,8 @@ class UnifiedSearch extends React.Component {
                                 title={tooltipTitle}
                             >
                                 <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    
                                     <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
-                                    <text x="13" y="22" text-align="center" fill="black">?</text>
+                                    <text className="bold" x="13" y="22" text-align="center" fill="black">?</text>
                                 </svg>
                                 {/* <span id="tooltip3Mark" className="cursor-default no-select">?</span> */}
                             </Tooltip>
