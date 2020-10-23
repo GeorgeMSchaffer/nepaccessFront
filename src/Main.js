@@ -20,6 +20,7 @@ import ForgotPassword from './User/ForgotPassword.js';
 import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess.js';
 import AboutHelp from './AboutHelp.js';
+import AboutHelpMore from './AboutHelpMore.js';
 
 import Importer from './Importer.js';
 
@@ -140,8 +141,18 @@ class Main extends React.Component {
                     <Link className="main-menu-link" to="/search">Search NEPAccess</Link>
                     <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
                     <Link className="main-menu-link" to="/aboutnepaccess">About NEPAccess</Link>
-                    <Link className="main-menu-link" to="/abouthelp">Help</Link>
                     {this.state.menuItems}
+                    <div id="help-dropdown" className="main-menu-link dropdown">
+                        <Link className="main-menu-link drop-button" id="help-button" to="/abouthelp">
+                            Help
+                        </Link>
+                        <i className="fa fa-caret-down"></i>
+                        
+                        <div className="dropdown-content">
+                            <Link to="/abouthelpmore">Database Contents</Link>
+                            <Link to="/abouthelp">Search Tips</Link>
+                        </div>
+                    </div>
                 </div>
                 
             </div>
@@ -158,6 +169,7 @@ class Main extends React.Component {
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
                 <Route path="/abouthelp" component={AboutHelp}/>
+                <Route path="/abouthelpmore" component={AboutHelpMore}/>
 
                 <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
                 

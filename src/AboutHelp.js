@@ -11,37 +11,35 @@ export default class AboutHelp extends React.Component {
 
                 <div id="about-nepa-content">
 
+                    
+
                     <h1 className="about-nepa-title">
-                        How to use NEPAccess
+                        Search tips
                     </h1>
                     
                     <h2>
-                        What the database contains
+                        A smart search box
                     </h2>
                     
                     <div>
-                        <span>
-                            
-                        <span className="bold">
-                            Environmental Impact Statements. </span>
-                            NEPAccess has all EIS records from 1987-2018, and associated PDF files for EIS’s from 2012-2018. NEPA access can search for any “environmental impact statement, or EIS, created between 2008 and 2017. This includes draft and final documents. NEPA access is a work in progress—as time goes on, other documents related to the National Environmental Policy Act of 1969 (NEPA) will be added.
-                        </span>
+                        By default, the unified search box (powered by Apache Lucene) looks for your search words both within the title, metadata, and the full body of the document. You can also check an option at the search box to search only within the title text. 
                     </div>
 
-                    <br></br>
+                    <h2>
+                        Text snippets
+                    </h2>
 
                     <div>
-                        <span className="bold">
-                            Downloadable Files. </span>
-
-                        <span>
-                            In most cases, there is a downloadable PDF file available. Because EISs are often split into multiple files, the downloaded archive may contain more than one PDF.
-                        </span>
+                        You can toggle on and off the option to show your search terms in bold in context of a snippet of body text.
                     </div>
+                    
+                    <br></br>
                     
                     <h2>
                         How to make advanced search queries
                     </h2>
+
+                    <br></br>
 
                     <span>
                         Punctuation is ignored except when used as search-term modifiers as shown below.
@@ -174,56 +172,11 @@ export default class AboutHelp extends React.Component {
                     <span>For example, the search query, “to be or not to be” will not return any results.</span>
                     
                     <br></br>
-                    
-                    <br></br>
-                    
-                    <br></br>
-                    
-                    <h3 className="help-header">
-                        Simple Search
-                    </h3>
-                    
-                    <span className="default-style">
-                        The default search box searches within titles. It finds documents that have "All of these words," meaning results will only be returned if all words entered in the search box are found within the title. This can sometimes give no results. Other times it can give too many results, in which case a good option is to use the advanced search and select "Any of these words."
-                    </span>
+
+                    <p>However, AND, NOT, and OR ( all caps) are read as search term modifiers.</p>
                     
                     <br></br>
 
-                    <h3 className="help-header">
-                        Advanced Search
-                    </h3>
-
-                    <span className="default-style">
-                        Advanced search narrows a search using metadata like
-                    </span>
-                    <div className="bullets">
-                        <p>
-                            &bull; <span>a date range.</span>
-                        </p>
-                        <p>
-                            &bull; <span>lead agencies.</span>
-                        </p>
-                        <p>
-                            &bull; <span>states.</span>
-                        </p>
-                        <p>
-                            &bull; <span>document type (draft or final).</span>
-                        </p>
-                        <p>
-                            &bull; <span>(More to be added)</span>
-                        </p>
-                    </div>
-                    
-                    <br></br>
-                    
-                    <br></br>
-                    
-                    <h3 className="help-header">
-                        Full-Text Search
-                    </h3>
-                    <span className="default-style">
-                        The full-text search (powered by Apache Lucene) looks for words within the full body of the document. You can toggle on and off the option to show your search terms in bold in context of a snippet of body text.
-                    </span>
                 </div>
             </div>
         );

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
 @import url('http://fonts.googleapis.com/css?family=EB+Garamond');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:400,600,700');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css');
 
 html, body, #home-page, #root {
   min-width: 800px;
@@ -28,7 +29,7 @@ body {
 #header {
   position: fixed;
   width: 100%;
-  /* min-width: 900px; */
+  min-width: 600px;
   height: 102px;
   left: 0px;
   top: 0px;
@@ -181,7 +182,7 @@ body {
 
 #main-menu {
   position: relative;
-  left: 400px;
+  left: 360px;
   margin-right: 400px; /** offset left: 400px */
   min-width: 520px;
   height: 32px;
@@ -190,7 +191,8 @@ body {
 
 .main-menu-link {
   position: relative;
-  margin-right: 40px;
+  float: left;
+  margin-left: 40px;
 
   font-family: "Open Sans";
   font-style: normal;
@@ -399,4 +401,57 @@ span.email-text {
 
 .bold {
     font-weight: bold !important;
+}
+
+/* New dropdown for help submenus */
+#help-dropdown {
+    height: 60px;
+}
+.dropdown {
+    display: block;
+    float: left;
+    width: relative;
+}
+.drop-button {
+    display: block;
+    position: relative;
+    border: none;
+    outline: none;
+    background-color: inherit;
+    font-family: inherit; 
+    margin: 0;
+    height: 25px;
+}
+.dropdown-content {
+    display: none;
+}
+.dropdown-content a {
+    display: block;
+    float: none;
+    width: 200px;
+    background-color: white;
+    padding: 5px;
+    border: 2px solid #C4C4C4;
+    text-decoration: none;
+    color: black;
+}
+.dropdown-content a:last-child {
+    border-top: none;
+}
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+.dropdown-content a:active {
+    background-color: #8FBC3F;
+}
+.dropdown:hover > .dropdown-content {
+    display: block;
+    position: absolute;
+    top: 50px;
+    left: -60px;
+    text-align: center;
+}
+
+#help-button {
+    margin-right: 10px;
 }
