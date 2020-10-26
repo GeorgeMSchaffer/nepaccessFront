@@ -52,7 +52,7 @@ class Unified extends React.Component {
         }
         
         let limitToUse = searcherState.limit;
-        if(searcherState.titleRaw.trim().length < 1) {
+        if(searcherState.titleRaw.trim().length < 1 || _inputs.searchOption==="C") {
             // console.log("Limit being set to max");
             limitToUse = 1000000;
         }
