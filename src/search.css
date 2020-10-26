@@ -393,7 +393,7 @@ input[type=checkbox] {
 
 .tippy-tooltip p {
   font-size: 11px;
-  margin: 8px 0px;
+  margin: 10px 10px;
 }
 
 /** Tooltip right-facing arrow - replaces all tooltip arrows */
