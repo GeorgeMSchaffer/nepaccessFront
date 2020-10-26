@@ -142,9 +142,15 @@ class CardResult extends React.Component {
     }
     showText = () => {
         if(this.props && this.props.cell._cell.row.data.plaintext){
+            let innerFilename = "";
+            if(this.props.cell._cell.row.data.name){
+                innerFilename = this.props.cell._cell.row.data.name;
+            }
             return (
                 <>
-                    {/* <span className="cardHeader">First fragment match:</span> */}
+                    <span className="cardHeader bold">
+                        {innerFilename}
+                    </span>
                     <span hidden={!this.props.show} 
                         dangerouslySetInnerHTML={{
                             __html: this.props.cell._cell.row.data.plaintext
