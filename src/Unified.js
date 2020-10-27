@@ -37,10 +37,10 @@ class Unified extends React.Component {
         }
         let _inputs = searcherState;
 
-        // If search executes with advanced options collapsed, assume user does not want to run with the advanced options
-        if(!searcherState.optionsChecked){
-            _inputs = Globals.convertToSimpleSearch(searcherState);
-        }
+        // There is no longer an advanced search so this is no longer useful
+        // if(!searcherState.optionsChecked){
+        //     _inputs = Globals.convertToSimpleSearch(searcherState);
+        // }
         
         if (typeof _offset === 'undefined') {
             // console.log("Offset undefined, using " + searcherState.offset);
@@ -136,19 +136,22 @@ class Unified extends React.Component {
                         });
 
                         if (parsedJson.length < this.state.searcherInputs.limit) {
-                            // console.log("Search complete");
+                            // console.log("This run used limit: " + limitToUse);
                             this.setState({
                                 searching: false
                             //     searchResults: currentResults,
                             //     resultsText: currentResults.length + " Results",
                             });
                         } else {
-                            // For now, run with strategy of first do a run of given limit and offset zero, then do a run of no limit with offset past limit
+                            // For now, first do a run of limit 100 with 0 offset, then a run of limit 1000000 and 100 offset
+                            
+                            // Set next run to max limit
+                           
                             searcherState.limit = 1000000;
-                            // offset should be incremented by limit
-                            this.search(searcherState, _offset + this.state.searcherInputs.limit, currentResults);
-                            // Reset limit for next async run
-                            searcherState.limit = 100;
+                            // console.log("This run used limit: " + limitToUse);
+                            
+                            // offset for next run should be incremented by limit we used
+                            this.search(searcherState, _offset + limitToUse, currentResults);
                         }
 
                     }
