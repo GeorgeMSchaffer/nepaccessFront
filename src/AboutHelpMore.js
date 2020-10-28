@@ -32,7 +32,7 @@ export default class AboutHelpMore extends React.Component {
                     </h2>
 
                     <div>
-                        In most cases, there is a downloadable PDF file available. Because EIS’s are often split into multiple files, the downloaded archive may contain more than one PDF.
+                        There are currently 1513 downloadable EIS archives available. Because EIS’s are often split into multiple files, the downloaded archive may contain more than one PDF.
                     </div>
 
                 </div>
