@@ -338,7 +338,10 @@ export default class RecordDetailsTab extends React.Component {
                     keyName = 'type';
                 }
                 if(key==='folder' && cellData[key] && cellData[key].length > 0) {
-                    return <p key={i} className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="Folder" id={cellData["id"]}/> {cellData[key]}</p>;
+                    return (<div key={i}>
+                        <p className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="Folder" id={cellData["id"]}/> {cellData[key]}</p>
+                        {this.showFilenames(cellData.id)}
+                    </div>);
                 } else if(key==='filename') {
                     // If we have a folder available for download, never mind showing the filename, certainly not a (probably invalid) download link for it
                     if (cellData[key] && cellData[key].length > 0
