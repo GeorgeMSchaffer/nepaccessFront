@@ -306,7 +306,8 @@ button {
   
   background: none!important;
   border: none;
-  padding: 0!important;
+  padding: 0;
+  padding-left: 1em;
   color: rgb(59, 59, 59);
   
   cursor: pointer;

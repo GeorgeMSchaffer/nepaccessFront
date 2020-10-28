@@ -139,6 +139,9 @@ class Unified extends React.Component {
                         // the new results condensing.  Therefore we need a new way to know if we
                         // actually ran out of results.
                         // if (parsedJson.length < this.state.searcherInputs.limit) {
+
+                        // With this logic we will always run at least two searches, however the second
+                        // search may instantly return with no new results so there isn't much harm
                         if (this.state.searcherInputs.limit === 1000000) {
                                 // console.log("This run used limit: " + limitToUse);
                             this.setState({
