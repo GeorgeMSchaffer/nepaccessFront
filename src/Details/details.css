@@ -34,3 +34,14 @@ div.update .react-datepicker__input-container>input {
 #detailsDropdown {
     min-width: 250px;
 }
+
+.detail-filename {
+    display: inline-block;
+}
+.detail-filenames {
+    margin-left: 1em;
+}
+.detail-filenames+div>span {
+    display: inline-block;
+    margin-left: 5em;
+}

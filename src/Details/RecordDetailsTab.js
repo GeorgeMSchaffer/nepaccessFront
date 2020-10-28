@@ -46,6 +46,7 @@ export default class RecordDetailsTab extends React.Component {
         };
 
         this.debouncedSize = _.debounce(this.getFileSize, 300);
+        this.debouncedFilenames = _.debounce(this.getFilenames, 300);
     }
 
     
@@ -213,6 +214,38 @@ export default class RecordDetailsTab extends React.Component {
         let idString = Globals.getParameterByName("id");
         return parseInt(idString);
     }
+    
+    getFilenames = (_id) => {
+        if(this.state.filenames){
+            // do nothing
+        } else {
+            let filenamesUrl = Globals.currentHost + "file/filenames";
+
+            // console.log("Inputs");
+            // console.log(JSON.stringify(this.state.searcherInputs));
+            
+            //Send the AJAX call to the server
+            axios.get(filenamesUrl, {
+                params: {
+                    document_id: _id
+                }
+                }).then(response => {
+                    let responseOK = response && response.status === 200;
+                    if (responseOK) {
+                        this.setState({
+                            filenames: response.data
+                        });
+                    } else {
+                        return null;
+                    }
+                }).then(parsedJson => { // can be empty (no results)
+                    // return "Unknown";
+                }).catch(error => {
+                    // return "Unknown (server error)";
+            });
+            
+        }
+    }
 
     getFileSize = (_filename) => {
         if(this.state.fileSize){
@@ -259,7 +292,9 @@ export default class RecordDetailsTab extends React.Component {
             return (
                 <div className="record-details">
                     <h2 className="title-color">Find similar documents by title:</h2>
-                    <div><p className='modal-line'><span className='modal-title'>Title:</span> {this.state.details.title} </p></div>
+                    <div><p className='modal-line'><span className='modal-title'>Title:</span> 
+                        <span className="bold">{this.state.details.title}</span> 
+                    </p></div>
                     {this.showDocuments()}
                 </div>
             );
@@ -272,14 +307,34 @@ export default class RecordDetailsTab extends React.Component {
         }
     }
 
+    showFilenames = (_id) => {
+        this.debouncedFilenames(_id);
+        if(this.state.filenames) {
+            console.log(this.state.filenames, "filenames");
+            
+            const filenameItems = this.state.filenames.map(
+                (filename) => <span className="detail-filename">{filename}</span>
+            );
+            return (<p className='modal-line'>
+            <span className='detail-filenames modal-title'>Contents:</span>
+                <div>{filenameItems}</div>
+            </p>);
+        }
+    }
 
     /** Return all metadata, not just what search table shows */
     showDetails = () => {
+        console.log(this.state.details);
         let cellData = this.state.details;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
                 let keyName = key;
-                // console.log(i, keyName, cellData[key]);
+                // Title now needs its own style
+                if(key==='title') {
+                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> 
+                        <span className="bold">{cellData[key]}</span>
+                    </p>);
+                }
                 if(key==='registerDate') {
                     keyName = 'date';
                 } else if (key==='documentType') {
@@ -297,9 +352,12 @@ export default class RecordDetailsTab extends React.Component {
                                 <span className='modal-title'>download files:</span> 
                                 <DownloadFile downloadType="EIS" filename={cellData[key]}/>
                             </p>
+
                             {this.debouncedSize(cellData[key])}
                             <p><span className='modal-title'>&nbsp;File size: </span>{this.state.fileSize} KB</p>
                             <p><span className='modal-title'>&nbsp;Filename: </span>{cellData[key]}</p>
+
+                            {this.showFilenames(cellData.id)}
                             </div>;
                     } else {
                         return '';
@@ -313,6 +371,7 @@ export default class RecordDetailsTab extends React.Component {
                 // exclusions:
                 } else if(key==='matchPercent' || key==='commentDate' || key==='id_' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
                     return '';
+                // everything else
                 } else {
                     return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p>);
                 }
