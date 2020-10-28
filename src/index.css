@@ -302,15 +302,13 @@ button {
 
 .disabled_download {
   pointer-events: none;
-  cursor: default !important;
+  cursor: default;
   
-  background: none!important;
+  background: lightgray !important;
   border: none;
   padding: 0;
   padding-left: 1em;
-  color: rgb(59, 59, 59);
-  
-  cursor: pointer;
+  color: black;
 }
 
 .tabulator-cell button {

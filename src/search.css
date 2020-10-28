@@ -434,6 +434,21 @@ button.link, button.download, a.link {
   border: none;
 }
 
+button.document-download {
+    padding-left: 0px !important;
+    margin-left: 0.5em;
+    height: 32px;
+    color: black;
+    background-color: #8FBC3F;
+    border-radius: 4px;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-size: 14px;
+    line-height: 100%;
+    text-align: center;
+    width: 50%;
+}
+
 a.link {
     text-decoration: none;
 }
