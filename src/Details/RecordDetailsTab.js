@@ -310,21 +310,18 @@ export default class RecordDetailsTab extends React.Component {
     showFilenames = (_id) => {
         this.debouncedFilenames(_id);
         if(this.state.filenames) {
-            console.log(this.state.filenames, "filenames");
-            
             const filenameItems = this.state.filenames.map(
-                (filename) => <span className="detail-filename">{filename}</span>
+                (filename) => <span key={filename} className="detail-filename">{filename}</span>
             );
-            return (<p className='modal-line'>
+            return (<div className='modal-line'>
             <span className='detail-filenames modal-title'>Contents:</span>
-                <div>{filenameItems}</div>
-            </p>);
+                <p>{filenameItems}</p>
+            </div>);
         }
     }
 
     /** Return all metadata, not just what search table shows */
     showDetails = () => {
-        console.log(this.state.details);
         let cellData = this.state.details;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {

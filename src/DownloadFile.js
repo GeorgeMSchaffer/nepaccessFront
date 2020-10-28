@@ -117,7 +117,7 @@ class DownloadFile extends React.Component {
                 propID = this.props.id;
             }
             else if (this.props.filename) { // filename only
-                console.log("Filename only?: " + this.props.filename);
+                // console.log("Filename only?: " + this.props.filename);
 				propFilename = this.props.filename;
 			} 
 			if (propFilename) {

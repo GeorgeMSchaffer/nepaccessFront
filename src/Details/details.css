@@ -41,7 +41,7 @@ div.update .react-datepicker__input-container>input {
 .detail-filenames {
     margin-left: 1em;
 }
-.detail-filenames+div>span {
+.detail-filenames+p>span {
     display: inline-block;
     margin-left: 5em;
 }
