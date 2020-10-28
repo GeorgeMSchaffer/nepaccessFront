@@ -20,7 +20,7 @@ export default class AboutHelpMore extends React.Component {
                     </h2>
                     
                     <div>
-                        NEPAccess contains all records from environmental impact statements (EIS) created between  1987-2018. There are downloadable PDF files for EIS’s from 2012-2018. 
+                        NEPAccess contains all records from environmental impact statements (EIS) created between  1987-2018. There are downloadable PDF files for EIS’s from 2001-2018. 
                     </div>
                     
                     <div><p>
@@ -32,7 +32,7 @@ export default class AboutHelpMore extends React.Component {
                     </h2>
 
                     <div>
-                        In most cases, there is a downloadable PDF file available. Because EISs are often split into multiple files, the downloaded archive may contain more than one PDF.
+                        In most cases, there is a downloadable PDF file available. Because EIS’s are often split into multiple files, the downloaded archive may contain more than one PDF.
                     </div>
 
                 </div>
