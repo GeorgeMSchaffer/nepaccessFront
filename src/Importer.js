@@ -38,8 +38,12 @@ class Importer extends Component {
             this.setState({
                 files: dropped,
                 dragClass: ''
-            // }, ()=> {
-            //     console.log(this.state.files);
+            }, ()=> {
+                this.setState({
+                    baseDirectory: this.getDirectoryName()
+                });
+                console.log(this.state.files);
+                console.log("Base directory should be " + this.getDirectoryName());
             });
         };
 
@@ -75,7 +79,8 @@ class Importer extends Component {
             },
             dragClass: '',
             files: [],
-            importOption: "single"
+            importOption: "single",
+            baseDirectory: ''
         };
         
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -90,6 +95,17 @@ class Importer extends Component {
           }).catch(error => { // redirect
             this.props.history.push('/');
           })
+    }
+
+    /** Return the base directory of a folder drop to display to user */
+    getDirectoryName = () => {
+        //this logic works for both Edge and Chrome (10/30/2020), expected first folder format: /folder/
+        let pathSegments = this.state.files[0].path.split('/');
+        let baseFolder = "";
+        if(pathSegments[1] && pathSegments[0].length === 0 && pathSegments[1].length > 0) {
+            baseFolder = pathSegments[1];
+        }
+        return baseFolder;
     }
 
     onSelect = (val, act) => {
@@ -991,7 +1007,9 @@ class Importer extends Component {
                                         <p>Drag and drop file(s) or directory here</p>
                                     </div>
                                     <aside className="dropzone-aside">
-                                        <h4>Files</h4>
+                                        <h4>First folder found:</h4>
+                                        <ul>{this.state.baseDirectory}</ul>
+                                        <h4>Files:</h4>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
