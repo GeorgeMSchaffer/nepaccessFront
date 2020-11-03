@@ -2,7 +2,7 @@ import React from 'react';
 import './aboutNepa.css';
 import './aboutHelp.css';
 
-export default class AboutHelpMore extends React.Component {
+export default class AboutHelpContents extends React.Component {
     
     render () {
         return (

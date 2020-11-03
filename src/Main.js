@@ -20,7 +20,7 @@ import ForgotPassword from './User/ForgotPassword.js';
 import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess.js';
 import AboutHelp from './AboutHelp.js';
-import AboutHelpMore from './AboutHelpMore.js';
+import AboutHelpContents from './AboutHelpContents.js';
 
 import Importer from './Importer.js';
 
@@ -149,7 +149,7 @@ class Main extends React.Component {
                         <i className="fa fa-caret-down"></i>
                         
                         <div className="dropdown-content">
-                            <Link to="/abouthelpmore">Database Contents</Link>
+                            <Link to="/abouthelpcontents">Database Contents</Link>
                             <Link to="/abouthelp">Search Tips</Link>
                         </div>
                     </div>
@@ -169,7 +169,7 @@ class Main extends React.Component {
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
                 <Route path="/abouthelp" component={AboutHelp}/>
-                <Route path="/abouthelpmore" component={AboutHelpMore}/>
+                <Route path="/abouthelpcontents" component={AboutHelpContents}/>
 
                 <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
                 
