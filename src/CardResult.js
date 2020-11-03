@@ -18,7 +18,8 @@ class CardResult extends React.Component {
             downloadClass: 'download',
             commentProgressValue: null,
             commentDownloadText: 'Download',
-            commentDownloadClass: 'download'
+            commentDownloadClass: 'download',
+            filenames: null
 		};
     }
     
@@ -90,14 +91,14 @@ class CardResult extends React.Component {
                 
 				// verified = response && response.status === 200;
 			})
-			.catch((err) => { // TODO: Test, This will catch a 404
+			.catch((err) => {
 				this.setState({
 					[downloadTextName]: 'Download not found',
 					[className]: 'disabled_download'
 				});
-				console.log("Error::: ", err);
+				// console.log("Error::: ", err);
 				this.setState({
-					downloadText: 'Error: Not found'
+					downloadText: 'File not found'
 				});
 			});
 
@@ -124,13 +125,14 @@ class CardResult extends React.Component {
 
     
     showFilename = () => {
-        if(this.props && this.props.cell._cell.row.data.filename){
+        // this.state.filenames is our check to see if there are actually any files to download
+        if(this.props && this.props.cell._cell.row.data.filename && this.state.filenames){
             return (
                 <div><span className="cardHeader filename">Filename:
                     <span>{this.props.cell._cell.row.data.filename}</span></span>
                 </div>
             );
-        } else if(this.props && this.props.cell._cell.row.data.folder){
+        } else if(this.props && this.props.cell._cell.row.data.folder && this.state.filenames){
             return (
                 <div><span className="cardHeader filename">Filename:
                     <span>{this.props.cell._cell.row.data.folder}.zip</span></span>
@@ -205,11 +207,31 @@ class CardResult extends React.Component {
             );
         }
     }
+
+    getFilenames = (_id) => {
+        let filenamesUrl = Globals.currentHost + "file/filenames";
+
+        //Send the AJAX call to the server
+        axios.get(filenamesUrl, {
+            params: {
+                document_id: _id
+            }
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK && response.data && response.data.length > 0) {
+                    this.setState({
+                        filenames: response.data
+                    });
+                }
+            }).catch(error => {
+        });
+    }
     
     // TODO: May need to ensure this actually works when we have a folder instead of a zip file
-    // TODO: Does too much get rerendered when user downloads, without using a dedicated component?
+    // TODO: Need to detect if the file actually exists before we offer it here
     showFileDownload = () => {
-        if (this.props) {
+        // this.state.filenames is our check to see if there are actually any files to download
+        if (this.props && this.state.filenames) {
 			let cellData = null;
             let propFilename = null;
             let propID = null;
@@ -271,6 +293,7 @@ class CardResult extends React.Component {
 		}
     }
 
+    // TODO: Don't show this is the actual file is for some reason missing from the server
     showCommentsDownload = () => {
         if (this.props) {
 			let cellData = null;
@@ -334,7 +357,21 @@ class CardResult extends React.Component {
             </div>
             
         </>);
-	}
+    }
+    
+    componentDidMount() {
+        if(
+            this.props 
+            && this.props.cell._cell.row.data.id 
+            && (this.props.cell._cell.row.data.folder || this.props.cell._cell.row.data.filename)
+        ) {
+            this.getFilenames(this.props.cell._cell.row.data.id);
+            // if(this.props.cell._cell.row.data.filename) {
+                // This means we can run a file size query, however in the future we want to
+                // have file sizes stored in the database so we don't have to ask the file server for them
+            // }
+        }
+    }
 }
 
 export default CardResult;
