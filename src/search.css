@@ -486,6 +486,16 @@ a.link {
   background-color: rgb(222, 222, 222);
 }
 
+.sort-container {
+    float: right;
+    margin-right: 20px !important;
+}
+
+.dropdown-text {
+    font-weight: bold;
+    margin-right: 20px;
+}
+
 #post-results-dropdown {
     line-height: 17px;
     width: 250px;

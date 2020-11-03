@@ -180,6 +180,8 @@ class CardResults extends React.Component {
                                 <label className="checkbox-text" htmlFor="post-results-input">
                                     Show text snippets
                                 </label>
+                            </div>
+                            <div className="sort-container inline-block">
                                 <label className="dropdown-text" htmlFor="post-results-dropdown">
                                     Sort by:
                                 </label>
@@ -188,7 +190,6 @@ class CardResults extends React.Component {
                                     // styles={customStyles}
                                     options={sortOptions} 
                                     onChange={this.onSortChange}
-                                    value={this.state.sortOption}
                                     placeholder="Select sort by"
                                 />
                             </div>
