@@ -1,9 +1,13 @@
 import React from 'react';
-import 'react-tabulator/lib/styles.css'; // required styles
-import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
+
+import Select from 'react-select';
+
+import CardResult from './CardResult.js';
+
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
-import CardResult from './CardResult.js';
+import 'react-tabulator/lib/styles.css'; // required styles
+import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 
 import './card.css';
 
@@ -12,7 +16,6 @@ class CardResults extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
             showContext: true
         }
         this.my_table = React.createRef();
@@ -43,48 +46,14 @@ class CardResults extends React.Component {
         });
     }
 
-    // While the context is working, the columns are not being filled properly on switch for unknown reasons, so we use FulltextResults2 for now
-    setupData = () => {
-        if(this.props.results){
-            let _data = [];
-            if(this.props.results[0] && this.props.results[0].doc) {
-                _data = this.props.results.map((result, idx) =>{
-                    let doc = result.doc;
-                    let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
-                        registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
-                        filename: doc.filename, 
-                        commentsFilename: doc.commentsFilename,
-                        id: doc.id,
-                        folder: doc.folder,
-                        plaintext: result.highlight,
-                        name: result.filename
-                    };
-                    return newObject;
-                }); 
-            } else {
-                _data = this.props.results.map((result, idx) =>{
-                    let doc = result;
-                    let newObject = {title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
-                        registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
-                        filename: doc.filename, 
-                        commentsFilename: doc.commentsFilename,
-                        id: doc.id
-                    };
-                    return newObject;
-                }); 
-            }
-            
-            try {
-                this.my_table.current.table.setData(_data);
-                // this.my_table.current.table.addData(_data,false);
-                // this.setState({
-                //     data: _data
-                // });
-                // console.log(_data);
-            } catch (e) {
-                // that's okay
-            }
+    onSortChange = (value_label, event) => {
+        if(event.action === "select-option"){
+            this.props.sort(value_label.value);
         }
+    }
+
+    resetSort = () => {
+        this.my_table.current.table.setData(this.props.results);
     }
 
     setupColumns = () => {
@@ -174,6 +143,25 @@ class CardResults extends React.Component {
             };
 
             var resultsText = this.props.resultsText;
+            
+            // title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
+            // registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
+            // filename: doc.filename, 
+            // commentsFilename: doc.commentsFilename,
+            // id: doc.id,
+            // folder: doc.folder,
+            // plaintext: result.highlight,
+            // name: result.filename,
+            // relevance: idx
+
+
+            const sortOptions = [ { value: 'relevance', label: 'Relevance' },
+                { value: 'title', label: 'Title'},
+                { value: 'agency', label: 'Lead Agency'},
+                { value: 'registerDate', label: 'Date'},
+                { value: 'state', label: 'State'},
+                { value: 'documentType', label: 'Type'}
+            ];
 
             return (
                 <div className="sidebar-results">
@@ -186,17 +174,28 @@ class CardResults extends React.Component {
                                 {resultsText}
                             </h2>
                             <div className="checkbox-container inline-block">
-                            <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
-                                    checked={this.state.showContext} onChange={this.onCheckboxChange}
-                                    disabled={this.props.snippetsDisabled}  />
-                            <label className="checkbox-text" htmlFor="post-results-input">
-                                Show text snippets
-                            </label>
+                                <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
+                                        checked={this.state.showContext} onChange={this.onCheckboxChange}
+                                        disabled={this.props.snippetsDisabled}  />
+                                <label className="checkbox-text" htmlFor="post-results-input">
+                                    Show text snippets
+                                </label>
+                                <label className="dropdown-text" htmlFor="post-results-dropdown">
+                                    Sort by:
+                                </label>
+                                <Select id="post-results-dropdown" 
+                                    className="multi inline-block" classNamePrefix="react-select" name="sort" 
+                                    // styles={customStyles}
+                                    options={sortOptions} 
+                                    onChange={this.onSortChange}
+                                    value={this.state.sortOption}
+                                    placeholder="Select sort by"
+                                />
                             </div>
                         </div>
                         <ReactTabulator
                             ref={this.my_table}
-                            data={[]}
+                            data={this.props.results}
                             columns={[]}
                             options={options}
                         />
@@ -231,7 +230,6 @@ class CardResults extends React.Component {
             // console.log("Updating data and columns");
             // console.log(this.props);
             this.setupColumns();
-            this.setupData();
 
             // console.log("Searching: " + this.props.searching);
 
@@ -242,6 +240,7 @@ class CardResults extends React.Component {
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
                     tbltr.table.redraw(true);
+                    console.log("Redraw");
                 },0)
             // }
         }

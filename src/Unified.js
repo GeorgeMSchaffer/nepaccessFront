@@ -31,6 +31,21 @@ class Unified extends React.Component {
     
     _mounted = false;
 
+    // Sort search results on call from results component
+    sort = (val) => {
+        // switch (val) {
+        //     default:
+                this.sortDataByField(val);
+        // }
+    }
+
+    // TODO: asc/desc (> vs. <, default desc === >)
+    sortDataByField = (field) => {
+        this.setState({
+            searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
+        });
+    }
+
 	search = (searcherState, _offset, currentResults) => {
         if(!this._mounted){
             return;
@@ -130,8 +145,34 @@ class Unified extends React.Component {
                     if(parsedJson){
 
                         currentResults = currentResults.concat(parsedJson);
+
+                        // console.log("Setup data");
+                        let _data = [];
+                        if(currentResults){
+                            if(currentResults[0] && currentResults[0].doc) {
+                                _data = currentResults.map((result, idx) =>{
+                                    let doc = result.doc;
+                                    let newObject = {title: doc.title, 
+                                        agency: doc.agency, 
+                                        commentDate: doc.commentDate, 
+                                        registerDate: doc.registerDate, 
+                                        state: doc.state, 
+                                        documentType: doc.documentType, 
+                                        filename: doc.filename, 
+                                        commentsFilename: doc.commentsFilename,
+                                        id: doc.id,
+                                        folder: doc.folder,
+                                        plaintext: result.highlight,
+                                        name: result.filename,
+                                        relevance: idx
+                                    };
+                                    return newObject;
+                                }); 
+                            }
+                        }
+
                         this.setState({
-                            searchResults: currentResults,
+                            searchResults: _data,
                             resultsText: currentResults.length + " Results",
                         });
                         
@@ -254,7 +295,8 @@ class Unified extends React.Component {
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
 					<UnifiedSearch search={this.search} searching={this.state.searching} />
-                    <CardResults results={this.state.searchResults} 
+                    <CardResults sort={this.sort}
+                                results={this.state.searchResults} 
                                 resultsText={this.state.resultsText} 
                                 isDirty={this.state.isDirty} 
                                 searching={this.state.searching}
