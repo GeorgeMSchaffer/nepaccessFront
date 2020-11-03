@@ -87,9 +87,9 @@ class DownloadFile extends React.Component {
 					downloadText: 'Download not found',
 					downloadClass: 'disabled_download'
 				});
-				console.log("Error::: ", err);
+				// console.log("Error::: ", err);
 				this.setState({
-					downloadText: 'Error: Not found'
+					downloadText: 'File not found'
 				});
 			});
 

@@ -424,7 +424,7 @@ button.link, button.download, a.link {
   font-weight: 600;
   font-size: 13.3333px;
   line-height: 111%;
-  padding: 0;
+  /* padding: 0; */
   /* or 20px */
 
   cursor: pointer;
@@ -435,7 +435,7 @@ button.link, button.download, a.link {
 }
 
 button.document-download {
-    padding-left: 0px !important;
+    /* padding-left: 0px !important; */
     margin-left: 0.5em;
     height: 32px;
     color: black;
@@ -446,7 +446,7 @@ button.document-download {
     font-size: 14px;
     line-height: 100%;
     text-align: center;
-    width: 50%;
+    /* width: 50%; */
 }
 
 a.link {
@@ -484,4 +484,9 @@ a.link {
 }
 .fragment:nth-of-type(even) {
   background-color: rgb(222, 222, 222);
+}
+
+#post-results-dropdown {
+    line-height: 17px;
+    width: 250px;
 }

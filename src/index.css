@@ -304,10 +304,10 @@ button {
   pointer-events: none;
   cursor: default;
   
-  background: lightgray !important;
+  /* background: lightgray !important; */
   border: none;
-  padding: 0;
-  padding-left: 1em;
+  /* padding: 0;
+  padding-left: 1em; */
   color: black;
 }
 
