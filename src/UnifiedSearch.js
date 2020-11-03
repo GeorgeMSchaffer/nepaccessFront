@@ -286,7 +286,11 @@ class UnifiedSearch extends React.Component {
 
                 </div>
             </div>
-            <div className="sidebar-filters top-padded">
+            <div className="loader-holder">
+                <div class="lds-ellipsis" hidden={!this.props.searching}><div></div><div></div><div></div><div></div></div>
+            </div>
+            
+            <div className="sidebar-filters">
                 <span className="sidebar-header">Narrow your results</span>
                 <div className="sidebar-hr"></div>
                 <div className="filter">

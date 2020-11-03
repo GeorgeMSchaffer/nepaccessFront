@@ -190,7 +190,7 @@ class CardResults extends React.Component {
                                     // styles={customStyles}
                                     options={sortOptions} 
                                     onChange={this.onSortChange}
-                                    placeholder="Select sort by"
+                                    placeholder="Relevance"
                                 />
                             </div>
                         </div>
