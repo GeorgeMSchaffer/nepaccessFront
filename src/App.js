@@ -86,12 +86,13 @@ class App extends React.Component {
 			networkError: "" // Clear network error
 		}, () => {
 
-            let searchUrl = new URL('text/search', Globals.currentHost); // Title only search
+            // supports title-only
+            let searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
             
-            if(searcherState.searchOption && searcherState.searchOption === "A") {
+            if(_inputs.searchOption && _inputs.searchOption === "A") {
                 searchUrl = new URL('text/search_title_priority', Globals.currentHost);
-            } else if(searcherState.searchOption && searcherState.searchOption === "B") {
-                searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
+            // } else if(searcherState.searchOption && searcherState.searchOption === "B") {
+            //     searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
             }
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
