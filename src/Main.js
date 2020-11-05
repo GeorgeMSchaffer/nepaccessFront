@@ -4,9 +4,8 @@ import axios from 'axios';
 import './index.css';
 
 import Landing from './Landing.js';
-// import App from './App';
+import App from './App';
 import CombinedAB from './CombinedAB.js';
-import Unified from './Unified.js';
 
 import RecordDetailsTab from './Details/RecordDetailsTab.js';
 
@@ -164,8 +163,8 @@ class Main extends React.Component {
                 <Route path="/logout" component={Logout}/>
 
                 <Route path="/test" component={CombinedAB}/>
-                <Route path="/unified" component={Unified}/>
-                <Route path="/search" component={Unified}/>
+                <Route path="/unified" component={App}/>
+                <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
                 <Route path="/abouthelp" component={AboutHelp}/>

@@ -1,15 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 
-import CombinedResults from './CombinedResults.js';
-import Searcher from './Searcher.js';
+import CardResults from './CardResults.js';
+import UnifiedSearch from './UnifiedSearch.js';
 
-// import './App.css';
 import './User/login.css';
 
 import Globals from './globals.js';
 
-// App and Main could trade names since App is normally the top level class
 class App extends React.Component {
 
 	state = {
@@ -20,24 +18,67 @@ class App extends React.Component {
 			state: [],
 			needsComments: false,
 			needsDocument: false,
-            limit: '',
-            isDirty: false,
-            searchOption: 'meta'
+            limit: 1000000,
+            isDirty: false
 		},
 		searchResults: [],
 		resultsText: 'Results',
 		networkError: '',
-		verified: false
-	}
+		verified: false,
+        searching: false,
+        snippetsDisabled: false
+    }
+    
+    _mounted = false;
 
-	search = (searcherState) => {
-        // console.log("In search");
+    // Sort search results on call from results component
+    sort = (val) => {
+        // switch (val) {
+        //     default:
+                this.sortDataByField(val);
+        // }
+    }
+
+    // TODO: asc/desc (> vs. <, default desc === >)
+    sortDataByField = (field) => {
+        this.setState({
+            searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
+        });
+    }
+
+	search = (searcherState, _offset, currentResults) => {
+        if(!this._mounted){
+            return;
+        }
         let _inputs = searcherState;
 
-        // If search executes with advanced options collapsed, assume user does not want to run with the advanced options
-        if(!searcherState.optionsChecked){
-            _inputs = Globals.convertToSimpleSearch(searcherState);
+        // There is no longer an advanced search so this is no longer useful
+        // if(!searcherState.optionsChecked){
+        //     _inputs = Globals.convertToSimpleSearch(searcherState);
+        // }
+        
+        if (typeof _offset === 'undefined') {
+            // console.log("Offset undefined, using " + searcherState.offset);
+            _offset = _inputs.offset;
         }
+        if (typeof currentResults === 'undefined') {
+            // console.log("Resetting results");
+            currentResults = [];
+        }
+        
+        // For now, first do a run of limit 100 with 0 offset, then a run of limit 1000000 and 100 offset
+        
+        let _limit = 100; // start with 100
+        if(_inputs.titleRaw.trim().length < 1 
+                || _inputs.searchOption==="C" 
+                || _offset === 100) {
+            _limit = 1000000; // go to 1000000 if this is the second pass (offset of 100) or textless/title-only search
+        }
+
+        this.setState({
+            snippetsDisabled: _inputs.searchOption==="C"
+        });
+
 		this.setState({
             searcherInputs: _inputs,
             isDirty: true,
@@ -45,20 +86,7 @@ class App extends React.Component {
 			networkError: "" // Clear network error
 		}, () => {
 
-			// TODO: Sanity check searcherInputs
-			// Object.keys(this.state.searcherInputs).forEach(key => {
-			// 	searchUrl.searchParams.append(key, this.state.searcherInputs[key]);
-			// });
-			// for(let value in this.state.searcherInputs) {
-			// 	console.log(value);
-			// 	console.log(this.state.searcherInputs[value]);
-			// }
-
-			// let searchUrl = new URL('test/search', Globals.currentHost);
-			// let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene instead of MySQL fulltext search
-            let searchUrl = new URL('text/search', Globals.currentHost); // This route uses Lucene on two fields
-            
-            console.log(searcherState.searchOption);
+            let searchUrl = new URL('text/search', Globals.currentHost); // Title only search
             
             if(searcherState.searchOption && searcherState.searchOption === "A") {
                 searchUrl = new URL('text/search_title_priority', Globals.currentHost);
@@ -68,16 +96,9 @@ class App extends React.Component {
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
 				this.props.history.push('/login') // Prompt login if no auth token
-			}
-			// let titleToPass = "";
-			// if(this.state.searcherInputs.searchMode==='natural'){
-			// 	titleToPass = this.state.searcherInputs.naturalTitle;
-			// } else {
-			// 	titleToPass = this.state.searcherInputs.booleanTitle;
-            // }
+            }
 
 			let dataToPass = { 
-				// searchMode: this.state.searcherInputs.searchMode,
 				title: this.state.searcherInputs.titleRaw, 
 				startPublish: this.state.searcherInputs.startPublish,
 				endPublish: this.state.searcherInputs.endPublish,
@@ -91,55 +112,143 @@ class App extends React.Component {
 				typeOther: this.state.searcherInputs.typeOther,
 				needsComments: this.state.searcherInputs.needsComments,
 				needsDocument: this.state.searcherInputs.needsDocument,
-				limit: this.state.searcherInputs.limit
-			};
+                limit: _limit,
+                offset: _offset
+            };
 
-			// console.log("Inputs");
-			// console.log(JSON.stringify(this.state.searcherInputs));
-			//Send the AJAX call to the server
-			axios({
-				method: 'POST', // or 'PUT'
-				url: searchUrl,
-				// data: this.state.searcherInputs // data can be `string` or {object}
-				data: dataToPass
-			}).then(response => {
-				let responseOK = response && response.status === 200;
-				if (responseOK) {
-					return response.data;
-				 } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
-					this.setState({
-						resultsText: "No results: Please check use of * and \" characters"
-					})
-				} else {
-					return null;
-				}
-			}).then(parsedJson => {
-				// console.log('this should be json', parsedJson);
-				if(parsedJson){
-					this.setState({
-						searchResults: parsedJson,
-						resultsText: parsedJson.length + " Results",
-					});
-				} 
-				// else {
-				// 	this.setState({
-				// 		resultsText: "Unknown error: Couldn't parse results"
-				// 	});
-				// }
-			}).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
-				console.error('Server is down or verification failed.', error);
-				this.setState({
-					networkError: 'Server is down or you may need to login again.'
-				});
-				this.setState({
-					resultsText: "Error: Couldn't get results from server"
-				});
-				// this.props.history.push('/login'); // TODO: Preserve Search state
-			});
-			
-			// console.log("Out search");
+            this.setState({
+                searching: true
+            }, () => {
+                //Send the AJAX call to the server
+                // console.log("Running with offset: " + _offset + " and limit: " + this.state.searcherInputs.limit + " and searching state: " + this.state.searching);
+
+
+                axios({
+                    method: 'POST', // or 'PUT'
+                    url: searchUrl,
+                    // data: this.state.searcherInputs // data can be `string` or {object}
+                    data: dataToPass
+                }).then(response => {
+                    let responseOK = response && response.status === 200;
+                    if (responseOK) {
+                        return response.data;
+                    } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
+                        this.setState({
+                        resultsText: "No results: Please check use of * and \" characters"
+                    })
+                    } else {
+                        return null;
+                    }
+                }).then(parsedJson => {
+                    // console.log('this should be json', parsedJson);
+                    if(parsedJson){
+
+                        currentResults = currentResults.concat(parsedJson);
+
+                        // console.log("Setup data");
+                        let _data = [];
+                        if(currentResults){
+                            if(currentResults[0] && currentResults[0].doc) {
+                                _data = currentResults.map((result, idx) =>{
+                                    let doc = result.doc;
+                                    let newObject = {title: doc.title, 
+                                        agency: doc.agency, 
+                                        commentDate: doc.commentDate, 
+                                        registerDate: doc.registerDate, 
+                                        state: doc.state, 
+                                        documentType: doc.documentType, 
+                                        filename: doc.filename, 
+                                        commentsFilename: doc.commentsFilename,
+                                        id: doc.id,
+                                        folder: doc.folder,
+                                        plaintext: result.highlight,
+                                        name: result.filename,
+                                        relevance: idx
+                                    };
+                                    return newObject;
+                                }); 
+                            }
+                        }
+
+                        this.setState({
+                            searchResults: _data,
+                            resultsText: currentResults.length + " Results",
+                        });
+                        
+                        // If we got less results than our limit allowed, this could be because of
+                        // the new results condensing.  Therefore we need a new way to know if we
+                        // actually ran out of results.
+                        // if (parsedJson.length < this.state.searcherInputs.limit) {
+
+                        // With this logic we will always run at least two searches, however the second
+                        // search may instantly return with no new results so there isn't much harm
+                        // if limit is maxed we can stop
+                        if (_limit === 1000000) { 
+                            this.setState({
+                                searching: false
+                            //     searchResults: currentResults,
+                            //     resultsText: currentResults.length + " Results",
+                            });
+                        } else {
+                            // offset for next run should be incremented by previous limit used
+                            this.search(searcherState, _offset + _limit, currentResults);
+                        }
+
+                    }
+                }).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
+                    console.error('Server is down or verification failed.', error);
+                    this.setState({
+                        networkError: 'Server is down or you may need to login again.'
+                    });
+                    this.setState({
+                        resultsText: "Error: Couldn't get results from server"
+                    });
+                }).finally(x => {
+                    // this.setState({
+                    //     searching: false
+                    // });
+                });
+            });
+
+            // axios({
+            //     method: 'POST', // or 'PUT'
+            //     url: searchUrl,
+            //     // data: this.state.searcherInputs // data can be `string` or {object}
+            //     data: dataToPass
+            // }).then(response => {
+            //     let responseOK = response && response.status === 200;
+            //     if (responseOK) {
+            //         return response.data;
+            //         } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
+            //         this.setState({
+            //             resultsText: "No results: Please check use of * and \" characters"
+            //         })
+            //     } else {
+            //         return null;
+            //     }
+            // }).then(parsedJson => {
+            //     // console.log('this should be json', parsedJson);
+            //     if(parsedJson){
+            //         this.setState({
+            //             searchResults: parsedJson,
+            //             resultsText: parsedJson.length + " Results",
+            //         });
+            //     }
+            // }).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
+            //     console.error('Server is down or verification failed.', error);
+            //     this.setState({
+            //         networkError: 'Server is down or you may need to login again.'
+            //     });
+            //     this.setState({
+            //         resultsText: "Error: Couldn't get results from server"
+            //     });
+            // }).finally(x => {
+            //     this.setState({
+            //         searching: false
+            //     });
+            // });
 		
-		});
+        });
 	}
 	
 
@@ -171,14 +280,18 @@ class App extends React.Component {
 	
 
 	render() {
-		// console.log("App");
 		if(this.state.verified){
 
 			return (
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
-					<Searcher search={this.search} />
-					<CombinedResults results={this.state.searchResults} resultsText={this.state.resultsText} isDirty={this.state.isDirty} />
+					<UnifiedSearch search={this.search} searching={this.state.searching} />
+                    <CardResults sort={this.sort}
+                                results={this.state.searchResults} 
+                                resultsText={this.state.resultsText} 
+                                isDirty={this.state.isDirty} 
+                                searching={this.state.searching}
+                                snippetsDisabled={this.state.snippetsDisabled} />
 				</div>
 			)
 
@@ -197,8 +310,13 @@ class App extends React.Component {
 
 	// After render
 	componentDidMount() {
-		this.check();
-	}
+        this.check();
+        this._mounted = true;
+    }
+    
+    async componentWillUnmount() {
+        this._mounted = false;
+    }
 	
 }
 
