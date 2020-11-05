@@ -236,7 +236,8 @@ class UnifiedSearch extends React.Component {
                     <div className="input-bar">
                         <input id="check1" className="pre-search-input" type="checkbox" 
                                 checked={this.state.searchOption==="C"}
-                                onChange={this.onTitleOnlyChecked} />
+                                onChange={this.onTitleOnlyChecked}
+                                disabled={this.props.searching} />
                         <label className="sidebar-check-label" htmlFor="check1">
                             Search only within titles
                         </label>

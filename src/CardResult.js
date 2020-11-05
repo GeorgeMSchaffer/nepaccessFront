@@ -149,25 +149,25 @@ class CardResult extends React.Component {
                 innerFilename = this.props.cell._cell.row.data.name;
             }
             return (
-                <>
-                    <span className="cardHeader bold">
+                <div className="fragment-container">
+                    <span className="cardHeader bold filename-inner">
                         {innerFilename}
                     </span>
                     <span hidden={!this.props.show} 
                         dangerouslySetInnerHTML={{
                             __html: this.props.cell._cell.row.data.plaintext
                     }} />
-                </>
+                </div>
             );
         } else if(this.props && this.props.cell._cell.row.data.matchPercent) {
             return (
-                <>
+                <div className="fragment-container">
                     <div>
                         <span className="cardHeader"><span>
                             {"Similarity: " + (this.props.cell._cell.row.data.matchPercent*100) + "%"}
                         </span></span>
                     </div>
-                </>
+                </div>
             );
         }
     }
@@ -275,7 +275,7 @@ class CardResult extends React.Component {
                 return (
                     <div className="table-row">
                         <span className="cardHeader">EIS:
-                            <button className = {this.state.downloadClass} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                            <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                 <span className="innerText">
                                     {this.state.downloadText} {this.state.fileProgressValue} 
                                 </span>
@@ -335,25 +335,25 @@ class CardResult extends React.Component {
 	render() {
         return (<>
             <div className="table-holder">
-                <div className="table-like">
-                    <div className="table-row cardTitle">
-                        {this.showTitle()}
+                <div className="upper-tables">
+                    <div className="table-like">
+                        <div className="table-row cardTitle">
+                            {this.showTitle()}
+                        </div>
+                        <div className="table-row table-meta">
+                            {this.showVersion()}
+                            {this.showDate()}
+                            {this.showAgency()}
+                            {this.showState()}
+                        </div>
                     </div>
-                    <div className="table-row table-meta">
-                        {this.showVersion()}
-                        {this.showDate()}
-                        {this.showAgency()}
-                        {this.showState()}
+                    <div className="table-like">
+                        {this.showFilename()}
+                        {this.showFileDownload()}
+                        {this.showCommentsDownload()}
                     </div>
                 </div>
-                <div className="table-like">
-                    {this.showFilename()}
-                    {this.showFileDownload()}
-                    {this.showCommentsDownload()}
-                </div>
-                <div className="fragment-container">
-                    {this.showText()}
-                </div>
+                {this.showText()}
             </div>
             
         </>);

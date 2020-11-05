@@ -315,6 +315,12 @@ button {
   color: black;
 }
 
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: darkgray;
+}
+
 .tabulator-cell button {
   text-align: left;
 }

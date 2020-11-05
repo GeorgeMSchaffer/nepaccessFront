@@ -20,18 +20,16 @@ class CardResults extends React.Component {
         }
         this.my_table = React.createRef();
 
-        // Table needs help to resize its cells if window is resized
-        window.addEventListener('resize', this.handleResize);
+        // window.addEventListener('resize', this.handleResize);
     }
     
     // Table needs help to resize its cells if window is resized
-    handleResize = () => {
-        // console.log("Resize event");
-        this.setState({
-            height: window.innerHeight,
-            width: window.innerWidth
-        });
-    }
+    // handleResize = () => {
+    //     this.setState({
+    //         height: window.innerHeight,
+    //         width: window.innerWidth
+    //     });
+    // }
 
     onClearFiltersClick = (e) => {
         if(this.my_table && this.my_table.current){
@@ -154,6 +152,11 @@ class CardResults extends React.Component {
             // name: result.filename,
             // relevance: idx
 
+            let disabledClass = "";
+            if(this.props.searching) {
+                disabledClass = " disabled";
+            }
+
 
             const sortOptions = [ { value: 'relevance', label: 'Relevance' },
                 { value: 'title', label: 'Title'},
@@ -176,7 +179,7 @@ class CardResults extends React.Component {
                             <div className="checkbox-container inline-block">
                                 <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
                                         checked={this.state.showContext} onChange={this.onCheckboxChange}
-                                        disabled={this.props.snippetsDisabled}  />
+                                        disabled={this.props.snippetsDisabled || this.props.searching}  />
                                 <label className="checkbox-text" htmlFor="post-results-input">
                                     Show text snippets
                                 </label>
@@ -186,7 +189,7 @@ class CardResults extends React.Component {
                                     Sort by:
                                 </label>
                                 <Select id="post-results-dropdown" 
-                                    className="multi inline-block" classNamePrefix="react-select" name="sort" 
+                                    className={"multi inline-block" + disabledClass} classNamePrefix="react-select" name="sort" 
                                     // styles={customStyles}
                                     options={sortOptions} 
                                     onChange={this.onSortChange}

@@ -2,6 +2,10 @@
     display: inline;
 }
 
+.upper-tables {
+    min-height: 89px;
+}
+
 .table-like {
     vertical-align: top;
     display: inline-block;
@@ -81,8 +85,7 @@ span.highlight {
 }
 
 .fragment-container {
-    /* or 129% */
-    margin: 15px 10px 5px 10px;
+    margin: 15px 10px 0px 10px;
 }
 span.fragment {
     display: block;
@@ -100,13 +103,17 @@ span.filename {
     font-weight: bold;
 }
 
+span.filename-inner {
+    white-space: normal;
+}
+
 span.filename>* {
     display: block;
     font-weight: normal;
 }
 
 .tabulator-row .tabulator-cell {
-    padding: 10px 10px 0px 10px;
+    padding: 10px 10px 10px 10px;
     background: #FFFFFF;
     border: 2px solid #DCDCDC;
     box-sizing: border-box;
