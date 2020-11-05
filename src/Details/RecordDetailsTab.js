@@ -41,8 +41,8 @@ export default class RecordDetailsTab extends React.Component {
             ],
             networkError: '',
             searcherClassName: '',
-            show: false,
             resultsText: "",
+            exists: true
         };
 
         this.debouncedSize = _.debounce(this.getFileSize, 300);
@@ -139,7 +139,8 @@ export default class RecordDetailsTab extends React.Component {
                     });
 				} else { // 404
 					this.setState({
-						networkError: "No record found (try a different ID)"
+                        networkError: "No record found (try a different ID)",
+                        exists: false
 					});
 				}
 			}).catch(error => {
@@ -405,6 +406,14 @@ export default class RecordDetailsTab extends React.Component {
 
 
     render () {
+
+        if(!this.state.exists) {
+            return(
+                <div id="details">
+                    <label className="errorLabel">{this.state.networkError}</label>
+                </div>
+            )
+        }
         
         const customStyles = {
             option: (styles, state) => ({
@@ -431,7 +440,6 @@ export default class RecordDetailsTab extends React.Component {
             viewOptions.push({ value: 'Update', label: 'Edit' });
         }
         
-
         return (
             <div id="details">
                 <label className="errorLabel">{this.state.networkError}</label>
