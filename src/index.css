@@ -293,7 +293,11 @@ button {
   color: coral;
   font-style: italic;
   position: absolute;
-  top: -20px;
+  /* top: -20px; */
+}
+
+#app-content>.errorLabel {
+    top: -20px;
 }
 
 .underline {
