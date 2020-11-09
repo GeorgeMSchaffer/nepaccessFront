@@ -35,15 +35,45 @@ class App extends React.Component {
     sort = (val) => {
         // switch (val) {
         //     default:
-                this.sortDataByField(val);
+                this.sortDataByField(val, true);
         // }
     }
 
     // TODO: asc/desc (> vs. <, default desc === >)
-    sortDataByField = (field) => {
+    sortDataByField = (field, ascending) => {
         this.setState({
-            searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
+            // searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
+            searchResults: this.state.searchResults.sort((this.alphabetically(field, ascending)))
         });
+    }
+
+    /** Sorts falsy (undefined, null, NaN, 0, "", and false) field value to the end instead of the top */
+    alphabetically(field, ascending) {
+
+        return function (a, b) {
+      
+            // equal items sort equally
+            if (a[field] === b[field]) {
+                return 0;
+            }
+            // falsy sort after anything else
+            else if (!a[field]) {
+                return 1;
+            }
+            else if (!b[field]) {
+                return -1;
+            }
+            // otherwise, if we're ascending, lowest sorts first
+            else if (ascending) {
+                return a[field] < b[field] ? -1 : 1;
+            }
+            // if descending, highest sorts first
+            else { 
+                return a[field] < b[field] ? 1 : -1;
+            }
+        
+        };
+      
     }
 
 	search = (searcherState, _offset, currentResults) => {

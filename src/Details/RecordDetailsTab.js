@@ -379,10 +379,9 @@ export default class RecordDetailsTab extends React.Component {
                 // exclusions:
                 } else if(key==='matchPercent' || key==='commentDate' || key==='id_' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
                     return '';
-                // everything else
-                } else {
-                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p>);
                 }
+                // else: everything else
+                return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p>);
             }));
         }
     }
