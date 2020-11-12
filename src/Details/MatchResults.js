@@ -23,7 +23,7 @@ class MatchResults extends React.Component {
             data: [],
             showContext: true
         }
-        this.my_table = React.createRef();
+        this.match_table = React.createRef();
 
         // Table needs help to resize its cells if window is resized
         window.addEventListener('resize', this.handleResize);
@@ -120,7 +120,7 @@ class MatchResults extends React.Component {
                     <h2>{this.props.resultsText}</h2>
                     <div className="tabulator-holder">
                         <ReactTabulator
-                            ref={this.my_table}
+                            ref={this.match_table}
                             data={data}
                             columns={columns}
                             options={options}
@@ -142,8 +142,8 @@ class MatchResults extends React.Component {
     }
 
     componentDidUpdate() {
-        if(this.my_table && this.my_table.current){
-            const tbltr = this.my_table.current;
+        if(this.match_table && this.match_table.current){
+            const tbltr = this.match_table.current;
             setTimeout(function() {
                 tbltr.table.redraw(true);
             },0)
