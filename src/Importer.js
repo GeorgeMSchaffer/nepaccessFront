@@ -63,6 +63,8 @@ class Importer extends Component {
             networkError: '',
             successLabel: '',
             titleLabel: '',
+            csvLabel: '',
+            csvError: '',
             disabled: false,
             file: null,
             csv: null,
@@ -549,7 +551,6 @@ class Importer extends Component {
         // TODO: Decide here when called, to set the button states to disabled or not
     }
 
-    // TODO: Bulk import function
     bulkUpload = () => {
         if(!this.hasFiles()) {
             return;
@@ -558,6 +559,7 @@ class Importer extends Component {
         document.body.style.cursor = 'wait';
         this.setState({ 
             networkError: '',
+            successLabel: 'Uploading...  (this tab must remain open to finish)',
             disabled: true 
         });
         
@@ -569,7 +571,7 @@ class Importer extends Component {
         }
 
         let networkString = '';
-        let successString = '';
+        let successString = 'Now importing files.  This could take some time.';
 
         axios({ 
             method: 'POST',
@@ -587,7 +589,7 @@ class Importer extends Component {
             }
         }).then(success => {
             if(success){
-                successString = "Success.";
+                successString = "Successfully imported.";
             } else {
                 successString = "Failed to import."; // Server down?
             }
@@ -810,19 +812,19 @@ class Importer extends Component {
 
                     <span className="advanced-radio" >
                         <label className="flex-center no-select cursor-pointer">
-                            <input type="radio" className="cursor-pointer" name="importOption" value="single" onChange={this.onRadioChange} 
-                            defaultChecked />
-                            Single document
-                        </label>
-                        <label className="flex-center no-select cursor-pointer">
                             <input type="radio" className="cursor-pointer" name="importOption" value="csv" onChange={this.onRadioChange} 
-                            />
+                            defaultChecked />
                             CSV
                         </label>
                         <label className="flex-center no-select cursor-pointer">
                             <input type="radio" className="cursor-pointer" name="importOption" value="bulk" onChange={this.onRadioChange} 
                             />
                             Bulk file import (for adding and linking files to already-imported CSV)
+                        </label>
+                        <label className="flex-center no-select cursor-pointer">
+                            <input type="radio" className="cursor-pointer" name="importOption" value="single" onChange={this.onRadioChange} 
+                            />
+                            Single document (deprecated)
                         </label>
                     </span>
 
@@ -865,9 +867,9 @@ class Importer extends Component {
                             Import CSV
                         </button>
 
-                        <label className="infoLabel">
-                            {this.state.csvLabel}
-                        </label>
+                        <h3 className="infoLabel">
+                            {"CSV upload status: " + this.state.csvLabel}
+                        </h3>
                         <label className="loginErrorLabel">
                             {this.state.csvError}
                         </label>
@@ -967,9 +969,6 @@ class Importer extends Component {
                                 </label>
                                 <input title="Test" type="file" id="file" className="form-control" name="file" disabled={this.state.disabled} onChange={this.onFileChange} />
                             </div>
-                            <h3 className="infoLabel">
-                                {this.state.successLabel}
-                            </h3>
                         </div>
                         
                         <div className="importFile">
@@ -1024,6 +1023,10 @@ class Importer extends Component {
                                 disabled={this.state.disabled} onClick={this.bulkUpload}>
                             Import Directories with Files to Link with Existing Metadata
                         </button>
+                        
+                        <h3 className="infoLabel green">
+                            {"Import status shown here: " + this.state.successLabel}
+                        </h3>
                     </div>
                 </div>
                 <hr />
