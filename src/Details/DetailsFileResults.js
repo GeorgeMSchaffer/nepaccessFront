@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ReactTabulator } from 'react-tabulator';
-import { reactFormatter } from "react-tabulator";
+import { reactFormatter } from 'react-tabulator';
 
 import 'react-tabulator/lib/styles.css'; // required styles
 import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
@@ -16,7 +16,11 @@ class DetailsFileResults extends React.Component {
     constructor(props) {
         super(props);
 
-        this.my_table = React.createRef();
+        this.state = {
+            headerText: this.props.headerText
+        }
+
+        this.files_table = React.createRef();
     }
 
     setupData = (results) => {
@@ -48,16 +52,17 @@ class DetailsFileResults extends React.Component {
     // For NEPAFiles
     setupColumns = () => {
             return [
-                { title: "Document ID", field: "documentId" },
-                { title: "Filename", field: "filename", width: 200, headerFilter:"input" },
-                { title: "Folder", field: "folder", width: 150, headerFilter:"input" },
+                { title: "Document ID", field: "documentId", width: 100 },
+                { title: "Filename", field: "filename", headerFilter:"input" },
+                { title: "Folder", field: "folder", width: 100, headerFilter:"input" },
                 { title: "Path", field: "relativePath", width: 200, headerFilter:"input" },
                 { title: "Version", field: "documentType", width: 114, headerFilter:"input" },
-                { title: "Delete", field: "id", formatter:
-                    function(cell, formatterParams, onRendered) {
-                            return "<span>Test</span>"
-                    }
-                }
+                { title: "Delete", field: "id", width: 200, formatter: reactFormatter(<DeleteFileLink />)}
+                // { title: "Delete", field: "id", formatter:
+                //     function(cell, formatterParams, onRendered) {
+                //             return "<span>Test</span>"
+                //     }
+                // }
             ];
     }
 
@@ -65,8 +70,8 @@ class DetailsFileResults extends React.Component {
     setupColumnsText = () => {
         return [
             { title: "ID", field: "id", width: 60 },
+            { title: "Document ID", field: "documentId", width: 200 },
             { title: "Filename", field: "filename", headerFilter:"input" },
-            { title: "Document ID", width: 200, field: "documentId" },
             // { title: "Delete", field: "id", formatter:
             //     function(cell, formatterParams, onRendered) {
             //         console.log(cell._cell.value); // id
@@ -75,6 +80,11 @@ class DetailsFileResults extends React.Component {
             // },
             { title: "Delete", field: "id", formatter: reactFormatter(<DeleteFileLink />)}
         ];
+    }
+
+    forceRedraw = () => {
+        const tbltr = this.files_table.current;
+        tbltr.table.redraw(true);
     }
 
 	render() {
@@ -101,8 +111,8 @@ class DetailsFileResults extends React.Component {
             var options = {
                 layoutColumnsOnNewData: true,
                 tooltips:false,
-                responsiveLayout:"collapse",  //collapse columns that dont fit on the table
-                responsiveLayoutCollapseUseFormatters:false,
+                // responsiveLayout:"collapse",  //collapse columns that dont fit on the table
+                // responsiveLayoutCollapseUseFormatters:false,
                 pagination:"local",       //paginate the data
                 paginationSize:10,       //allow 10 rows per page of data
                 paginationSizeSelector:[10, 25, 50],
@@ -115,10 +125,11 @@ class DetailsFileResults extends React.Component {
 
             return (
                 <div id="search-results">
-                    <h2 id="results-label">Files</h2>
-                    <div className="tabulator-holder">
+                    <h2 id="results-label">{this.state.headerText}</h2>
+                    {/* <button onClick={this.forceRedraw}>Force redraw</button> */}
+                    <div className="files-holder">
                         <ReactTabulator
-                            ref={this.my_table}
+                            ref={this.files_table}
                             data={data}
                             columns={columns}
                             options={options}
@@ -142,14 +153,16 @@ class DetailsFileResults extends React.Component {
     }
 
     componentDidMount() {
+        // console.log("File results mount event");
     }
     
     componentDidUpdate() {
+        // console.log("File results update event");
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
-        if(this.my_table && this.my_table.current){
-            const tbltr = this.my_table.current;
+        if(this.files_table && this.files_table.current){
+            const tbltr = this.files_table.current;
             setTimeout(function() {
                 tbltr.table.redraw(true);
             },0)
