@@ -56,98 +56,108 @@ export default class RecordDetailsTab extends React.Component {
 
     getNepaFileResults = () => {
         let populateUrl = Globals.currentHost + "file/nepafiles";
+        
+        // console.log("Trying to get nepafile results", this.state.detailsID);
             
-			//Send the AJAX call to the server
-			axios.get(populateUrl, {
-				params: {
-					id: this.state.detailsID
-				}
-			}).then(response => {
-				let responseOK = response && response.status === 200;
-				if (responseOK && response.data && response.data.length > 0) {
-					return response.data;
-				} else {
-					return null;
-				}
-			}).then(parsedJson => { // can be empty if nothing found
-				if(parsedJson){
-                    this.setState({
-                        nepaResults: parsedJson,
-                    }, () => {
-                        if(!this.state.nepaResults || !this.state.nepaResults[0]){
-                            this.getDocumentTextResults();
-                        }
-                    });
-                } else { // 404
-                    
-				}
-			}).catch(error => {
-                
-            });
+        //Send the AJAX call to the server
+        axios.get(populateUrl, {
+            params: {
+                id: this.state.detailsID
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data && response.data.length > 0) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { // can be empty if nothing found
+            console.log("Parsed", parsedJson);
+            if(parsedJson){
+                this.setState({
+                    nepaResults: parsedJson,
+                }, () => {
+                    if(!this.state.nepaResults || !this.state.nepaResults[0]){
+                        this.getDocumentTextResults();
+                    }
+                });
+            } else { // null/404
+                // if(!this.state.nepaResults || !this.state.nepaResults[0]){
+                //     this.getDocumentTextResults();
+                // }
+            }
+        }).catch(error => {
             
+        });
+           
+        this.getDocumentTextResults();
         
     }
     
     getDocumentTextResults = () => {
         let populateUrl = Globals.currentHost + "file/doc_texts";
+
+        // console.log("Trying to get document text results", this.state.detailsID);
             
-			//Send the AJAX call to the server
-			axios.get(populateUrl, {
-				params: {
-					id: this.state.detailsID
-				}
-			}).then(response => {
-				let responseOK = response && response.status === 200;
-				if (responseOK) {
-					return response.data;
-				} else {
-					return null;
-				}
-			}).then(parsedJson => { // can be empty if nothing found
-				if(parsedJson){
-                    this.setState({
-                        nepaResults: parsedJson,
-                    });
-                } else { // 404
-                    
-				}
-			}).catch(error => {
+        //Send the AJAX call to the server
+        axios.get(populateUrl, {
+            params: {
+                id: this.state.detailsID
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { // can be empty if nothing found
+            if(parsedJson){
+                this.setState({
+                    textResults: parsedJson,
+                });
+            } else { // 404
                 
-			});
+            }
+        }).catch(error => {
+            
+        });
     }
 
 
     populate = () => {
-            let populateUrl = Globals.currentHost + "test/get_by_id";
+        let populateUrl = Globals.currentHost + "test/get_by_id";
             
-			//Send the AJAX call to the server
-			axios.get(populateUrl, {
-				params: {
-					id: this.state.detailsID
-				}
-			}).then(response => {
-				let responseOK = response && response.status === 200;
-				if (responseOK) {
-					return response.data;
-				} else {
-					return null;
-				}
-			}).then(parsedJson => { // can be empty (no record found)
-				if(parsedJson){
-                    this.setState({
-                        details: parsedJson,
-                    });
-				} else { // 404
-					this.setState({
-                        networkError: "No record found (try a different ID)",
-                        exists: false
-					});
-				}
-			}).catch(error => {
-				this.setState({
-					networkError: 'Server is down or you may need to login again.'
-				});
-			});
+        // console.log("Trying to populate details", this.state.detailsID);
+            
+        //Send the AJAX call to the server
+        axios.get(populateUrl, {
+            params: {
+                id: this.state.detailsID
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { // can be empty (no record found)
+            if(parsedJson){
+                this.setState({
+                    details: parsedJson,
+                });
+            } else { // 404
+                this.setState({
+                    networkError: "No record found (try a different ID)",
+                    exists: false
+                });
+            }
+        }).catch(error => {
+            this.setState({
+                networkError: 'Server is down or you may need to login again.'
+            });
+        });
     }
 
     search = (searcherState) => {
@@ -398,7 +408,8 @@ export default class RecordDetailsTab extends React.Component {
     showUpdate = () => {
         return (<>
                 <DetailsUpdate record={this.state.details} />
-                <DetailsFileResults results={this.state.nepaResults} />
+                <DetailsFileResults results={this.state.nepaResults} headerText="Downloadable file records" />
+                <DetailsFileResults results={this.state.textResults} headerText="Texts" />
             </>
         );
     }

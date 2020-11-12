@@ -4,27 +4,30 @@ import axios from 'axios';
 
 import Globals from '../globals.js';
 
-// TODO: Confirmation boxes or such
-// TODO: Determine whether documenttext or nepafile by existence of plaintext/plaintext key in cell object prop
+// TODO: Confirmation box or at a minimum require two clicks
 class DeleteFileLink extends React.Component {
 
-    // constructor(props) {
-    //     super(props);
-    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+            buttonText: "Delete this now"
+        }
+    }
 
     deleteRecord = () => {
-        console.log("Apparently this is just firing");
-        // console.log(this.props.cell._cell.row.data.id); // ID
-        // console.log(!this.props.cell._cell.row.data.folder); // If no folder, have to assume documenttext
+        // console.log("ID", this.props.cell._cell.row.data.id);
+        // console.log("Folder", this.props.cell._cell.row.data.folder); // If no folder, have to assume documenttext
+        
         let deleteUrl = Globals.currentHost;
         const idToDelete = this.props.cell._cell.row.data.id;
+        
         if(!this.props.cell._cell.row.data.folder) {
-            deleteUrl += "admin/delete_text";
             // Delete DocumentText by ID
+            deleteUrl += "admin/delete_text";
             console.log("No folder: DocumentText, not NEPAFile record");
         } else {
-            deleteUrl += "admin/delete_nepa_file";
             // Delete NEPAFile by ID
+            deleteUrl += "admin/delete_nepa_file";
         }
             
 			//Send the AJAX call to the server
@@ -38,18 +41,15 @@ class DeleteFileLink extends React.Component {
 			}).then(response => {
 				let responseOK = response && response.status === 200;
 				if (responseOK) {
-					return response.data;
-				} else {
-                    console.log(response.status);
-					return null;
-				}
-			}).then(parsedJson => { // can be empty if nothing found
-				if(parsedJson){
                     this.setState({
-                        result: parsedJson
+                        buttonText: "Deleted"
                     });
-                } else { // 404?
-
+					// return response.data;
+				} else {
+                    this.setState({
+                        buttonText: "Failed to delete"
+                    });
+                    console.log(response.status);
 				}
 			}).catch(error => {
                 console.log(error);
@@ -57,9 +57,9 @@ class DeleteFileLink extends React.Component {
     }
 
     render(){
-        console.log(this.props.cell._cell.row.data);
+        // console.log("DeleteFileLink active", this.props.cell._cell.row.data);
         return(
-            <button onClick={this.deleteRecord}>Delete this</button>
+            <button className="" onClick={this.deleteRecord}>{this.state.buttonText}</button>
         );
     }
 }

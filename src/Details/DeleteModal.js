@@ -88,12 +88,13 @@ export default class DeleteFileLink extends React.Component {
 
     
     Build = () => {
+        // console.log("Build modal with ID", this.props.idToDelete);
     
         return (
             <button className='link block right' onClick={e => {
                 this.showModal();
             }}>
-                Delete EISDoc and all files/stored texts (cannot be undone)
+                Delete EISDoc and all indexed texts (cannot be undone, but source files will remain on server)
             </button>
         );
     }
