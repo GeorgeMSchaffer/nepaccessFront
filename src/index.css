@@ -464,3 +464,7 @@ span.email-text {
 #help-button {
     margin-right: 10px;
 }
+
+.green {
+    color: green;
+}
