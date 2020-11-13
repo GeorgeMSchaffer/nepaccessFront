@@ -211,7 +211,7 @@ export default class RecordDetailsTab extends React.Component {
 				} else { // 200 from server, but empty results
 					this.setState({
                         searchResults: parsedJson,
-						resultsText: "No similar titles found (try lowering the percentage?)"
+						resultsText: "No related documents could be found"
 					});
 				}
 			}).catch(error => {
