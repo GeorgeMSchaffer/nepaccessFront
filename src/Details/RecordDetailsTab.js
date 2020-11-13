@@ -160,15 +160,21 @@ export default class RecordDetailsTab extends React.Component {
         });
     }
 
+    // Match search (title alignment)
     search = (searcherState) => {
+
+        let matchUrl = new URL('test/match', Globals.currentHost);
+
+        // "advanced" match search uses additional heuristics for more probable "linked" records
+        if(searcherState.matchType && searcherState.matchType === 'advanced'){
+			matchUrl = new URL('test/match_advanced', Globals.currentHost);
+        }
 
 		this.setState({
 			searcherInputs: searcherState,
 			resultsText: "Loading results...",
 			networkError: "" // Clear network error
 		}, () => {
-			let matchUrl = new URL('test/match', Globals.currentHost);
-
 			let dataToPass = { 
 				id: this.state.searcherInputs.id,
 				matchPercent: (this.state.searcherInputs.matchPercent/100)
@@ -445,7 +451,7 @@ export default class RecordDetailsTab extends React.Component {
         // TODO: Curator check
 
         let curator = localStorage.curator;
-        let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'Title similarity search'}];
+        let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'More documents from this process'}];
         if(curator) {
             viewOptions.push({ value: 'Update', label: 'Edit' });
         }

@@ -14,7 +14,8 @@ class MatchSearcher extends React.Component {
             id: 0,
             matchPercent: 80,
             searcherClassName: '',
-            matchPercentError: ''
+            matchPercentError: '',
+            matchType: 'advanced'
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
 		// this.onKeyUp = this.onKeyUp.bind(this);
@@ -33,6 +34,18 @@ class MatchSearcher extends React.Component {
             });
         }
         return result;
+    }
+
+    checkChange = (evt) => {
+        let _type = 'basic';
+        if(evt.target.checked) {
+            _type = 'advanced';
+        }
+        this.setState({
+            matchType: _type
+        }, () => {
+            this.debouncedSearch(this.state);
+        })
     }
     
     onChange = (evt) => {
@@ -63,7 +76,15 @@ class MatchSearcher extends React.Component {
                                             </svg>
                                             <span id="tooltip2Mark" className="cursor-default no-select">?</span>
                 </Tooltip> */}
-                <label className="matchSearchLabel" htmlFor="matchSearchPercent">
+                
+                <div className="checkbox-container">
+                    <input id="matchCheckbox" className="checkbox" type="checkbox" defaultChecked="true" 
+                            onChange={this.checkChange} />
+                    <label for="matchCheckbox" className="checkbox-label">
+                        Compare state; lead agency; type; and date, for stricter results
+                    </label>
+                </div>
+                {/* <label className="matchSearchLabel" htmlFor="matchSearchPercent">
                     Title similarity tool
                 </label>
                 <input id="matchSearchPercent" type="range" min="10" max="100" step="1" value={this.state.matchPercent} 
@@ -71,7 +92,7 @@ class MatchSearcher extends React.Component {
                 {this.state.matchPercent}%
                 <div><span>
                     {similarityTooltip}
-                </span></div>
+                </span></div> */}
             </form>
         )
     }

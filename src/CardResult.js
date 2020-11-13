@@ -164,7 +164,7 @@ class CardResult extends React.Component {
                 <div className="fragment-container">
                     <div>
                         <span className="cardHeader"><span>
-                            {"Similarity: " + (this.props.cell._cell.row.data.matchPercent*100) + "%"}
+                            {"" + (this.props.cell._cell.row.data.matchPercent*100) + "% Match"}
                         </span></span>
                     </div>
                 </div>
