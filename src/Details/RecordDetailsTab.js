@@ -198,19 +198,9 @@ export default class RecordDetailsTab extends React.Component {
 			}).then(parsedJson => { // can be empty (no results)
 				// console.log('this should be json', parsedJson); 
 				if(parsedJson){
-                    let resultsText = " ";
-                    if(parsedJson.matches.length === 1){
-                        resultsText = " Result";
-                    } else {
-                        resultsText = " Results";
-                    }
-                    this.setState({
-                        searchResults: parsedJson,
-                        resultsText: parsedJson.matches.length + resultsText,
-                    });
+                    this.parseMatches(parsedJson);
 				} else { // 200 from server, but empty results
 					this.setState({
-                        searchResults: parsedJson,
 						resultsText: "No related documents could be found"
 					});
 				}
@@ -223,7 +213,64 @@ export default class RecordDetailsTab extends React.Component {
 				});
 			});
 		
-		});
+        });
+    }
+
+    parseMatches = (results) => {
+
+        console.log("Raw results",results);
+
+        let resultsText = " ";
+        let data = [];
+
+        let matches = results.matches.map((result, idx) => {
+            let newObject = {
+                matchId: result.match_id, document1: result.document1, document2: result.document2,
+                matchPercent: result.match_percent
+            };
+            return newObject;
+        });
+        let docs = results.docs.map((result, idx) =>{
+            let newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
+                registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
+                filename: result.filename, 
+                commentsFilename: result.commentsFilename,
+                id: result.id
+            };
+            return newObject;
+            });
+        // console.log('docs', docs);
+        // console.log('matches', matches);
+        docs.forEach(function(document) {
+            matches.forEach(function(match) {
+                // console.log(document);
+                // console.log(match);
+                // If corresponding elements, concatenate them
+                if(document.id === match.document1 || document.id === match.document2) {
+                    // TODO: Test live, also get and use ID dynamically, get and use match% dynamically
+                    // console.log("Match: " + document.id);
+                    document.matchPercent = match.matchPercent;
+                    data.push(document);
+                }
+            });
+        });
+
+        if(data.length > 0){
+            data.sort((a, b)  => (a.matchPercent < b.matchPercent) ? 1 : -1);
+        }
+        
+        if(data.length === 1){
+            resultsText = " Result";
+        } else {
+            resultsText = " Results";
+        }
+
+        this.setState({
+            searchResults: data,
+            resultsText: data.length + resultsText
+        }, () => {
+            console.log(this.state.searchResults);
+        });
     }
     
     

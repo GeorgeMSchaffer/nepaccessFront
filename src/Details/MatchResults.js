@@ -19,61 +19,16 @@ class MatchResults extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            data: [],
-            showContext: true
-        }
+        
         this.match_table = React.createRef();
-
-        // Table needs help to resize its cells if window is resized
-        window.addEventListener('resize', this.handleResize);
     }
 
 	render() {
-        const results = this.props.results;
         try {
-          
-            var data = [];
-            if(results && results.docs && results.matches) {
-            // console.log(' results here ', results);
-            var matches = results.matches.map((result, idx) => {
-                let newObject = {
-                    matchId: result.match_id, document1: result.document1, document2: result.document2,
-                    matchPercent: result.match_percent
-                };
-                return newObject;
-            });
-            var docs = results.docs.map((result, idx) =>{
-                let newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
-                    registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
-                    filename: result.filename, 
-                    commentsFilename: result.commentsFilename,
-                    id: result.id
-                };
-                return newObject;
-                });
-            // console.log('docs', docs);
-            // console.log('matches', matches);
-            docs.forEach(function(document) {
-                matches.forEach(function(match) {
-                    // console.log(document);
-                    // console.log(match);
-                    // If corresponding elements, concatenate them
-                    if(document.id === match.document1 || document.id === match.document2) {
-                        // TODO: Test live, also get and use ID dynamically, get and use match% dynamically
-                        // console.log("Match: " + document.id);
-                        document.matchPercent = match.matchPercent;
-                        data.push(document);
-                    }
-                });
-            });
-
-            if(data.length > 0){
-                data.sort((a, b)  => (a.matchPercent < b.matchPercent) ? 1 : -1);
-            }
-
-            // console.log(' data here ', data);
-            } else {
+            console.log("Rendering",this.props.results);
+            if(this.props.results) {
+                // proceed
+            } else { // return early
                 return (
                     <div>
                         <h2>{this.props.resultsText}</h2>
@@ -121,7 +76,7 @@ class MatchResults extends React.Component {
                     <div className="tabulator-holder">
                         <ReactTabulator
                             ref={this.match_table}
-                            data={data}
+                            data={this.props.results}
                             columns={columns}
                             options={options}
                         />
@@ -142,6 +97,7 @@ class MatchResults extends React.Component {
     }
 
     componentDidUpdate() {
+        console.log("Results updated");
         if(this.match_table && this.match_table.current){
             const tbltr = this.match_table.current;
             setTimeout(function() {

@@ -12,7 +12,7 @@ class MatchSearcher extends React.Component {
         super(props);
 		this.state = {
             id: 0,
-            matchPercent: 80,
+            matchPercent: 50,
             searcherClassName: '',
             matchPercentError: '',
             matchType: 'advanced'
@@ -80,19 +80,19 @@ class MatchSearcher extends React.Component {
                 <div className="checkbox-container">
                     <input id="matchCheckbox" className="checkbox" type="checkbox" defaultChecked="true" 
                             onChange={this.checkChange} />
-                    <label for="matchCheckbox" className="checkbox-label">
+                    <label htmlFor="matchCheckbox" className="checkbox-label">
                         Compare state; lead agency; type; and date, for stricter results
                     </label>
                 </div>
-                {/* <label className="matchSearchLabel" htmlFor="matchSearchPercent">
+                <label className="matchSearchLabel" htmlFor="matchSearchPercent">
                     Title similarity tool
                 </label>
                 <input id="matchSearchPercent" type="range" min="10" max="100" step="1" value={this.state.matchPercent} 
                         name="matchPercent" autoFocus onChange={this.onChange} />
-                {this.state.matchPercent}%
+                    {this.state.matchPercent}%
                 <div><span>
                     {similarityTooltip}
-                </span></div> */}
+                </span></div>
             </form>
         )
     }
