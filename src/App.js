@@ -226,19 +226,32 @@ class App extends React.Component {
                         }
 
                     }
-                }).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
+                }).catch(error => { // Server down or 408 (timeout)
                     console.error('Server is down or verification failed.', error);
+                    if(error.response && error.response.status === 408) {
+                        this.setState({
+                            networkError: 'Request has timed out.'
+                        });
+                        this.setState({
+                            resultsText: "Error: Request timed out"
+                        });
+                    } else {
+                        this.setState({
+                            networkError: 'Server is down or you may need to login again.'
+                        });
+                        this.setState({
+                            resultsText: "Error: Couldn't get results from server"
+                        });
+                    }
                     this.setState({
-                        networkError: 'Server is down or you may need to login again.'
+                        searching: false
                     });
-                    this.setState({
-                        resultsText: "Error: Couldn't get results from server"
-                    });
-                }).finally(x => {
-                    // this.setState({
-                    //     searching: false
-                    // });
-                });
+                })
+                // .finally(x => {
+                //     this.setState({
+                //         searching: false
+                //     });
+                // });
             });
 
             // axios({
