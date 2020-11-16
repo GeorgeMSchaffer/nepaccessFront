@@ -81,7 +81,7 @@ class Importer extends Component {
             },
             dragClass: '',
             files: [],
-            importOption: "single",
+            importOption: "csv",
             baseDirectory: ''
         };
         
