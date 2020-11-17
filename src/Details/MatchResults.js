@@ -97,7 +97,7 @@ class MatchResults extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log("Results updated");
+        // console.log("Results updated");
         if(this.match_table && this.match_table.current){
             const tbltr = this.match_table.current;
             setTimeout(function() {

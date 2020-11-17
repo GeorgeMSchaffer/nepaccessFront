@@ -198,7 +198,7 @@ export default class RecordDetailsTab extends React.Component {
 			}).then(parsedJson => { // can be empty (no results)
 				// console.log('this should be json', parsedJson); 
 				if(parsedJson){
-                    this.parseMatches(parsedJson);
+                    this.parseMatches(parsedJson, searcherState.matchType);
 				} else { // 200 from server, but empty results
 					this.setState({
 						resultsText: "No related documents could be found"
@@ -216,7 +216,7 @@ export default class RecordDetailsTab extends React.Component {
         });
     }
 
-    parseMatches = (results) => {
+    parseMatches = (results, searchType) => {
 
         console.log("Raw results",results);
 
@@ -238,17 +238,12 @@ export default class RecordDetailsTab extends React.Component {
                 id: result.id
             };
             return newObject;
-            });
-        // console.log('docs', docs);
-        // console.log('matches', matches);
+        });
+
         docs.forEach(function(document) {
             matches.forEach(function(match) {
-                // console.log(document);
-                // console.log(match);
                 // If corresponding elements, concatenate them
                 if(document.id === match.document1 || document.id === match.document2) {
-                    // TODO: Test live, also get and use ID dynamically, get and use match% dynamically
-                    // console.log("Match: " + document.id);
                     document.matchPercent = match.matchPercent;
                     data.push(document);
                 }
@@ -258,7 +253,34 @@ export default class RecordDetailsTab extends React.Component {
         if(data.length > 0){
             data.sort((a, b)  => (a.matchPercent < b.matchPercent) ? 1 : -1);
         }
-        
+        // At this point, weed out the identical types and only keep the highest, if advanced
+
+        if(searchType && searchType === "advanced") {
+            
+
+            const docsByType = {};
+
+            data.forEach(doc => {
+                const entries = docsByType[doc.documentType] || []
+                entries.push(doc)
+                docsByType[doc.documentType] = entries
+            });
+
+            const masterSet = [];
+
+            Object.keys(docsByType).forEach(documentType => {
+                const entries = docsByType[documentType]
+                // entries.sort((a, b) => {
+                // return b.score - a.score // or whatever
+                // })
+
+                const best = entries[0]
+                masterSet.push(best)
+            });
+
+            data = masterSet;
+        }
+
         if(data.length === 1){
             resultsText = " Result";
         } else {
