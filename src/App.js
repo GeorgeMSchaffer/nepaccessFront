@@ -105,24 +105,21 @@ class App extends React.Component {
             _limit = 1000000; // go to 1000000 if this is the second pass (offset of 100) or textless/title-only search
         }
 
-        this.setState({
-            snippetsDisabled: _inputs.searchOption==="C"
-        });
-
 		this.setState({
             searcherInputs: _inputs,
             isDirty: true,
+            snippetsDisabled: _inputs.searchOption==="C",
 			resultsText: "Loading results...",
 			networkError: "" // Clear network error
 		}, () => {
 
-            // supports title-only
-            let searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
+            // title-only
+            let searchUrl = new URL('text/search', Globals.currentHost);
             
             if(_inputs.searchOption && _inputs.searchOption === "A") {
                 searchUrl = new URL('text/search_title_priority', Globals.currentHost);
-            // } else if(searcherState.searchOption && searcherState.searchOption === "B") {
-            //     searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
+            } else if(searcherState.searchOption && searcherState.searchOption === "B") {
+                searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
             }
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
