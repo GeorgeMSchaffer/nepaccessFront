@@ -146,7 +146,7 @@ class DetailsFileResults extends React.Component {
             }
             return (
                 <div>
-                    <h2 id="results-label">Files</h2>
+                    <h2 id="results-label">No files/texts found</h2>
                 </div>
             )
         }
