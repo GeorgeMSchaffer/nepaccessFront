@@ -45,7 +45,7 @@ export default class RecordDetailsTab extends React.Component {
             exists: true
         };
 
-        this.debouncedSize = _.debounce(this.getFileSize, 300);
+        // this.debouncedSize = _.debounce(this.getFileSize, 300);
         this.debouncedFilenames = _.debounce(this.getFilenames, 300);
     }
 
@@ -334,37 +334,37 @@ export default class RecordDetailsTab extends React.Component {
         }
     }
 
-    getFileSize = (_filename) => {
-        if(this.state.fileSize){
-            // do nothing
-        } else {
-            let sizeUrl = Globals.currentHost + "file/file_size";
+    // getFileSize = (_filename) => {
+    //     if(this.state.fileSize){
+    //         // do nothing
+    //     } else {
+    //         let sizeUrl = Globals.currentHost + "file/file_size";
 
-            // console.log("Inputs");
-            // console.log(JSON.stringify(this.state.searcherInputs));
+    //         // console.log("Inputs");
+    //         // console.log(JSON.stringify(this.state.searcherInputs));
             
-            //Send the AJAX call to the server
-            axios.get(sizeUrl, {
-                params: {
-                    filename: _filename
-                }
-                }).then(response => {
-                    let responseOK = response && response.status === 200;
-                    if (responseOK && response.data && response.data > 0) {
-                        this.setState({
-                            fileSize: Math.round(response.data / 1024)
-                        });
-                    } else {
-                        return null;
-                    }
-                }).then(parsedJson => { // can be empty (no results)
-                    // return "Unknown";
-                }).catch(error => {
-                    // return "Unknown (server error)";
-            });
+    //         //Send the AJAX call to the server
+    //         axios.get(sizeUrl, {
+    //             params: {
+    //                 filename: _filename
+    //             }
+    //             }).then(response => {
+    //                 let responseOK = response && response.status === 200;
+    //                 if (responseOK && response.data && response.data > 0) {
+    //                     this.setState({
+    //                         fileSize: Math.round(response.data / 1024)
+    //                     });
+    //                 } else {
+    //                     return null;
+    //                 }
+    //             }).then(parsedJson => { // can be empty (no results)
+    //                 // return "Unknown";
+    //             }).catch(error => {
+    //                 // return "Unknown (server error)";
+    //         });
             
-        }
-    }
+    //     }
+    // }
     
     showView = () => {
         // One benefit of switching here instead of dynamically hiding elements is that Tabulator doesn't error out when hidden
@@ -445,8 +445,7 @@ export default class RecordDetailsTab extends React.Component {
                                     <DownloadFile downloadType="EIS" filename={cellData[key]}/>
                                 </p>
 
-                                {this.debouncedSize(cellData[key])}
-                                <p><span className='modal-title'>&nbsp;File size: </span>{this.state.fileSize} KB</p>
+                                <p><span className='modal-title'>&nbsp;File size: </span>{parseInt(cellData.size / 1024)} KB</p>
                                 <p><span className='modal-title'>&nbsp;Filename: </span>{cellData[key]}</p>
 
                                 {filenames}
