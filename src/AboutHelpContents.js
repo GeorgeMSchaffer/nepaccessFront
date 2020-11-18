@@ -35,6 +35,10 @@ export default class AboutHelpContents extends React.Component {
                         There are currently 1513 downloadable EIS archives available. Because EIS’s are often split into multiple files, the downloaded archive may contain more than one PDF.
                     </div>
 
+                    <div>
+                        Efforts to compile a complete set of documents are ongoing.
+                    </div>
+
                 </div>
             </div>
         );
