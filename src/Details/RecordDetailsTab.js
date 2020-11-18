@@ -462,7 +462,7 @@ export default class RecordDetailsTab extends React.Component {
                         return '';
                     }
                 // exclusions:
-                } else if(key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
+                } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
                     return '';
                 }
                 // else: everything else
