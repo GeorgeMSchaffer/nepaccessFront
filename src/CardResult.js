@@ -208,30 +208,29 @@ class CardResult extends React.Component {
         }
     }
 
-    getFilenames = (_id) => {
-        let filenamesUrl = Globals.currentHost + "file/filenames";
+    // getFilenames = (_id) => {
+    //     let filenamesUrl = Globals.currentHost + "file/filenames";
 
-        //Send the AJAX call to the server
-        axios.get(filenamesUrl, {
-            params: {
-                document_id: _id
-            }
-            }).then(response => {
-                let responseOK = response && response.status === 200;
-                if (responseOK && response.data && response.data.length > 0) {
-                    this.setState({
-                        filenames: response.data
-                    });
-                }
-            }).catch(error => {
-        });
-    }
+    //     //Send the AJAX call to the server
+    //     axios.get(filenamesUrl, {
+    //         params: {
+    //             document_id: _id
+    //         }
+    //         }).then(response => {
+    //             let responseOK = response && response.status === 200;
+    //             if (responseOK && response.data && response.data.length > 0) {
+    //                 this.setState({
+    //                     filenames: response.data
+    //                 });
+    //             }
+    //         }).catch(error => {
+    //     });
+    // }
     
-    // TODO: May need to ensure this actually works when we have a folder instead of a zip file
-    // TODO: Need to detect if the file actually exists before we offer it here
+    // TODO: Rework when we have folder file sizes
     showFileDownload = () => {
         // this.state.filenames is our check to see if there are actually any files to download
-        if (this.props && this.state.filenames) {
+        if (this.props) {
 			let cellData = null;
             let propFilename = null;
             let propID = null;
@@ -257,27 +256,32 @@ class CardResult extends React.Component {
                 // console.log("Filename only?: " + this.props.filename);
 				propFilename = this.props.filename;
             } 
+
+            let size = 0;
+            if(cellData.size && cellData.size > 0) {
+                size = parseInt(cellData.size / 1024);
+            }
             
-			if (propFilename) {
+			if (propFilename && size) {
                 return (
                     <div className="table-row">
                         <span className="cardHeader">EIS:
                             <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                 <span className="innerText">
-                                    {this.state.downloadText} {this.state.fileProgressValue} 
+                                    {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " KB"}
                                 </span>
                             </button>
                         </span>
                         
                     </div>
                 );
-			} else if (propID) {
+			} else if (propID && size) {
                 return (
                     <div className="table-row">
                         <span className="cardHeader">EIS:
                             <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                 <span className="innerText">
-                                    {this.state.downloadText} {this.state.fileProgressValue} 
+                                    {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " KB"}
                                 </span>
                             </button>
                         </span>
@@ -293,7 +297,7 @@ class CardResult extends React.Component {
 		}
     }
 
-    // TODO: Don't show this is the actual file is for some reason missing from the server
+    // TODO: Don't show this if the actual file is for some reason missing from the server
     showCommentsDownload = () => {
         if (this.props) {
 			let cellData = null;
@@ -360,17 +364,17 @@ class CardResult extends React.Component {
     }
     
     componentDidMount() {
-        if(
-            this.props 
-            && this.props.cell._cell.row.data.id 
-            && (this.props.cell._cell.row.data.folder || this.props.cell._cell.row.data.filename)
-        ) {
-            this.getFilenames(this.props.cell._cell.row.data.id);
+        // if(
+        //     this.props 
+        //     && this.props.cell._cell.row.data.id 
+        //     && (this.props.cell._cell.row.data.folder || this.props.cell._cell.row.data.filename)
+        // ) {
+        //     this.getFilenames(this.props.cell._cell.row.data.id);
             // if(this.props.cell._cell.row.data.filename) {
                 // This means we can run a file size query, however in the future we want to
                 // have file sizes stored in the database so we don't have to ask the file server for them
             // }
-        }
+        // }
     }
 }
 

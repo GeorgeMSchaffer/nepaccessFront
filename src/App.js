@@ -187,6 +187,7 @@ class App extends React.Component {
                                         documentType: doc.documentType, 
                                         filename: doc.filename, 
                                         commentsFilename: doc.commentsFilename,
+                                        size: doc.size,
                                         id: doc.id,
                                         folder: doc.folder,
                                         plaintext: result.highlight,
