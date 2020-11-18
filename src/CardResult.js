@@ -18,8 +18,7 @@ class CardResult extends React.Component {
             downloadClass: 'download',
             commentProgressValue: null,
             commentDownloadText: 'Download',
-            commentDownloadClass: 'download',
-            filenames: null
+            commentDownloadClass: 'download'
 		};
     }
     
@@ -125,14 +124,13 @@ class CardResult extends React.Component {
 
     
     showFilename = () => {
-        // this.state.filenames is our check to see if there are actually any files to download
-        if(this.props && this.props.cell._cell.row.data.filename && this.state.filenames){
+        if(this.props && this.props.cell._cell.row.data.filename){
             return (
                 <div><span className="cardHeader filename">Filename:
                     <span>{this.props.cell._cell.row.data.filename}</span></span>
                 </div>
             );
-        } else if(this.props && this.props.cell._cell.row.data.folder && this.state.filenames){
+        } else if(this.props && this.props.cell._cell.row.data.folder){
             return (
                 <div><span className="cardHeader filename">Filename:
                     <span>{this.props.cell._cell.row.data.folder}.zip</span></span>
@@ -229,7 +227,6 @@ class CardResult extends React.Component {
     
     // TODO: Rework when we have folder file sizes
     showFileDownload = () => {
-        // this.state.filenames is our check to see if there are actually any files to download
         if (this.props) {
 			let cellData = null;
             let propFilename = null;
