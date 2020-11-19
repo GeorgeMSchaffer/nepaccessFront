@@ -89,8 +89,6 @@ export default class RecordDetailsTab extends React.Component {
         }).catch(error => {
             
         });
-           
-        this.getDocumentTextResults();
         
     }
     
