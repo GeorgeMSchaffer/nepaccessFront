@@ -87,6 +87,27 @@ const Globals = {
         return new Date(oddity);
     },
 
+    colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
+        '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', 
+        "Red","Green","Blue","Yellow","Pink","Purple",
+        "Orange","Cyan","Magenta","Teal","DarkGray",
+        '#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
+        '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', 
+        "Red","Green","Blue","Yellow","Pink","Purple",
+        "Orange","Cyan","Magenta","Teal","DarkGray",
+        '#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
+        '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', 
+        "Red","Green","Blue","Yellow","Pink","Purple",
+        "Orange","Cyan","Magenta","Teal","DarkGray",
+        '#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
+        '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', 
+        "Red","Green","Blue","Yellow","Pink","Purple",
+        "Orange","Cyan","Magenta","Teal","DarkGray",
+        '#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
+        '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', 
+        "Red","Green","Blue","Yellow","Pink","Purple",
+        "Orange","Cyan","Magenta","Teal","DarkGray"
+    ],
     
     anEnum: Object.freeze({"test":1, "test2":2, "test3":3})
 
