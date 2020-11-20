@@ -1,6 +1,6 @@
 import React from 'react';
 import globals from './globals.js';
-import { Bar, HorizontalBar } from 'react-chartjs-2';
+import { HorizontalBar } from 'react-chartjs-2';
 // import { Line, Pie, Doughnut, Bar, Radar, Polar, Bubble, Scatter } from 'react-chartjs-2';
 export default class ChartBar extends React.Component {
     constructor(props) {
@@ -9,10 +9,12 @@ export default class ChartBar extends React.Component {
     }
 
     render() {
-        if(this.props.data && this.props.data[0] && this.props.data[1]){ // "Grouped" bar with draft and final
+        // "Grouped" bar with draft and final
+        if(this.props.data && this.props.data[0] && this.props.data[1]){ 
 
             let _labelsDraft = this.props.data[0].labelArrayDraft;
-            // let _labelsFinal = this.props.data[1].labelArrayFinal; // labels should be the same and in the same order
+            // draft/final labels should be the same, and in the same order
+            // let _labelsFinal = this.props.data[1].labelArrayFinal; 
             let _dataDraft = this.props.data[0].valueArrayDraft;
             let _dataFinal = this.props.data[1].valueArrayFinal;
 
@@ -36,6 +38,9 @@ export default class ChartBar extends React.Component {
             const options = {
                 responsive: true,
                 maintainAspectRatio: false,
+                legend: {
+                    display: true
+                },
                 title: {
                     display: false,
                     text: this.props.label
@@ -65,15 +70,16 @@ export default class ChartBar extends React.Component {
                     "onComplete": function() {
                         var chartInstance = this.chart,
                         ctx = chartInstance.ctx;
-                    //   ctx.font =
+                    //   ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
                     //   ctx.textAlign = 'center';
                     //   ctx.textBaseline = 'bottom';
-
+                        
+                        // show value to the right of the bar
                         this.data.datasets.forEach(function(dataset, i) {
                             var meta = chartInstance.controller.getDatasetMeta(i);
                             meta.data.forEach(function(bar, index) {
                                 var data = dataset.data[index];
-                                ctx.fillText(data, bar._model.x + 15, bar._model.y + 5);
+                                ctx.fillText(data, bar._model.x + 15, bar._model.y + 1);
                             });
                         });
                     }
@@ -115,8 +121,8 @@ export default class ChartBar extends React.Component {
                         // "Orange"
                         // ],
                         minBarLength: 5,
-                        backgroundColor: globals.colors
-                        // borderColor: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                        backgroundColor: globals.colors,
+                        // borderColor: globals.colors,
                         // borderWidth: 1
                     }
                 ]
@@ -137,6 +143,7 @@ export default class ChartBar extends React.Component {
                     "onComplete": function() {
                         var chartInstance = this.chart,
                         ctx = chartInstance.ctx;
+
                     //   ctx.font =
                     //   ctx.textAlign = 'center';
                     //   ctx.textBaseline = 'bottom';
@@ -166,9 +173,9 @@ export default class ChartBar extends React.Component {
 
     componentDidMount() {
         // if(this.chart_ref.chart){
-            // console.log("props",this.props.data);
-            // const { datasets } = this.chart_ref.chart.chartInstance.data
-            // console.log("Dataset 0",datasets[0].data);
+        //     console.log("props",this.props.data);
+        //     const { datasets } = this.chart_ref.chart.chartInstance.data
+        //     console.log("Dataset 0",datasets[0].data);
         // }
     }
 }
