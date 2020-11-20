@@ -1,6 +1,6 @@
 import React from 'react';
 import globals from './globals.js';
-import { HorizontalBar } from 'react-chartjs-2';
+import { Bar, HorizontalBar } from 'react-chartjs-2';
 // import { Line, Pie, Doughnut, Bar, Radar, Polar, Bubble, Scatter } from 'react-chartjs-2';
 export default class ChartBar extends React.Component {
     constructor(props) {
@@ -9,9 +9,43 @@ export default class ChartBar extends React.Component {
     }
 
     render() {
-        // console.log("props",this.props);
-        // console.log("Transformed",transformArrayOfArrays(this.props.data, "item", "count"));
-        if(this.props.data){
+        if(this.props.data && this.props.data[0] && this.props.data[1]){ // "Grouped" bar with draft and final
+
+            let _labelsDraft = this.props.data[0].labelArrayDraft;
+            // let _labelsFinal = this.props.data[1].labelArrayFinal; // labels should be the same and in the same order
+            let _dataDraft = this.props.data[0].valueArrayDraft;
+            let _dataFinal = this.props.data[1].valueArrayFinal;
+
+            const data = {
+                labels: _labelsDraft,
+                datasets: [
+                    {
+                        label: "Draft",
+                        backgroundColor: "#E66100",
+                        data: _dataDraft,
+                    }, {
+                        label: "Final",
+                        backgroundColor: "#5D3A9B",
+                        data: _dataFinal
+                    }
+                ]
+            };
+            const options = {
+                title: {
+                    display: false,
+                    text: this.props.label
+                }
+            };
+    
+            return (
+                <div className="chart-holder bar-holder">
+                    <h2>{this.props.label}</h2>
+                    <Bar ref={this.chart_ref} data={data} options={options} />
+                </div>
+            );
+
+        }
+        else if(this.props.data) {
 
             let _labels = this.props.data.labelArray;
             let _data = this.props.data.valueArray;
@@ -22,12 +56,6 @@ export default class ChartBar extends React.Component {
                 _labels = this.props.data.labelArrayDraft;
                 _data = this.props.data.valueArrayDraft;
             }
-
-            const options = { 
-                labels: {
-                    fontSize: 20
-                }
-            };
 
             const data = {
                 labels: _labels,
@@ -48,6 +76,13 @@ export default class ChartBar extends React.Component {
                         // borderWidth: 1
                     }
                 ]
+            };
+            const options = {
+                legend: {
+                    labels: {
+                        fontSize: 0
+                    }
+                }
             };
     
             return (

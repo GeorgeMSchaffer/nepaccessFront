@@ -47,7 +47,7 @@ export default class Stats extends React.Component {
         }).then(parsedJson => {
             if(parsedJson){
                 this.setState({
-                    typeCount: transformArrayOfArrays(parsedJson)
+                    typeCount: transformArrayOfArrays(parsedJson.sort())
                 });
             } else { // null/404
 
@@ -74,7 +74,7 @@ export default class Stats extends React.Component {
         }).then(parsedJson => { 
             if(parsedJson){
                 this.setState({
-                    downloadableCountByType: transformArrayOfArrays(parsedJson)
+                    downloadableCountByType: transformArrayOfArrays(parsedJson.sort())
                 });
             } else { // null/404
 
@@ -168,14 +168,18 @@ export default class Stats extends React.Component {
 
     render() {
         return (<div className="charts-holder">
-                <ChartBar data={this.state.typeCount} label={"Record count by document type"} />
-                <ChartBar data={this.state.downloadableCountByType} label={"Downloadable count by document type"} />
-                <ChartBar data={this.state.draftFinalCountByAgency[0]} label={"Draft count by agency"} />
+                <ChartBar data={this.state.typeCount} label={"Record Count by Document Type"} />
+                <ChartBar data={this.state.downloadableCountByType} label={"Downloadable Count by Document Type"} />
+                {/* <ChartBar data={this.state.draftFinalCountByAgency[0]} label={"Draft count by agency"} />
                 <ChartBar data={this.state.draftFinalCountByAgency[1]} label={"Final count by agency"} />
                 <ChartBar data={this.state.draftFinalCountByYear[0]} label={"Draft count by year"} />
                 <ChartBar data={this.state.draftFinalCountByYear[1]} label={"Final count by year"} />
                 <ChartBar data={this.state.draftFinalCountByState[0]} label={"Draft count by state"} />
-                <ChartBar data={this.state.draftFinalCountByState[1]} label={"Final count by state"} />
+                <ChartBar data={this.state.draftFinalCountByState[1]} label={"Final count by state"} /> */}
+                
+                <ChartBar data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
+                <ChartBar data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
+                <ChartBar data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} />
             </div>
         );
     }
