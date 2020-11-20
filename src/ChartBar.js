@@ -9,28 +9,6 @@ export default class ChartBar extends React.Component {
     }
 
     render() {
-        const options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            title: {
-                display: false,
-                text: this.props.label
-            },
-            scales: {
-                // offset: false,
-                yAxes: [{
-                    gridLines: {
-                        // lineWidth: 20
-                    },
-                    ticks: {
-                        autoSkip : false,
-                        // lineHeight: 20,
-                        // fontSize: 20,
-                    },
-                    // barThickness: 10
-                }],
-            }
-        };
         if(this.props.data && this.props.data[0] && this.props.data[1]){ // "Grouped" bar with draft and final
 
             let _labelsDraft = this.props.data[0].labelArrayDraft;
@@ -53,6 +31,53 @@ export default class ChartBar extends React.Component {
                         data: _dataFinal
                     }
                 ]
+            };
+            
+            const options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: false,
+                    text: this.props.label
+                },
+                scales: {
+                    // offset: false,
+                    yAxes: [{
+                        gridLines: {
+                            // lineWidth: 20
+                        },
+                        ticks: {
+                            autoSkip : false,
+                            // lineHeight: 20,
+                            // fontSize: 20,
+                        },
+                        // barThickness: 10
+                    }],
+                },
+                tooltips: {
+                    backgroundColor: 'rgba(0, 0, 0, 1.0)'
+                },
+                "hover": {
+                    "animationDuration": 0
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function() {
+                        var chartInstance = this.chart,
+                        ctx = chartInstance.ctx;
+                    //   ctx.font =
+                    //   ctx.textAlign = 'center';
+                    //   ctx.textBaseline = 'bottom';
+
+                        this.data.datasets.forEach(function(dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function(bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x + 15, bar._model.y + 5);
+                            });
+                        });
+                    }
+                },
             };
     
             return (
@@ -96,6 +121,36 @@ export default class ChartBar extends React.Component {
                     }
                 ]
             };
+
+            const options = {
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    backgroundColor: 'rgba(0, 0, 0, 1.0)'
+                },
+                "hover": {
+                    "animationDuration": 0
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function() {
+                        var chartInstance = this.chart,
+                        ctx = chartInstance.ctx;
+                    //   ctx.font =
+                    //   ctx.textAlign = 'center';
+                    //   ctx.textBaseline = 'bottom';
+
+                        this.data.datasets.forEach(function(dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function(bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x + 15, bar._model.y + 5);
+                            });
+                        });
+                    }
+                },
+            }
     
             return (
                 <div hidden={this.props.option!==this.props.label} className="chart-holder bar-holder">
