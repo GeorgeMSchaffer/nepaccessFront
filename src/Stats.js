@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Select from 'react-select';
 import Globals from './globals.js';
 
 import ChartBar from './ChartBar.js';
@@ -15,7 +16,8 @@ export default class Stats extends React.Component {
 			downloadableCountByType: [],
             draftFinalCountByYear: [],
             draftFinalCountByState: [],
-            draftFinalCountByAgency: []
+            draftFinalCountByAgency: [],
+            chartOption: {value: "Record Count by Document Type", label: "Record Count by Document Type"}
         };
         
         // time to get the stats
@@ -166,10 +168,29 @@ export default class Stats extends React.Component {
         
     }
 
+    onDropdownChange = (evt) => {
+        this.setState({
+            chartOption: evt
+        });
+    }
+
     render() {
+        const chartOptions = [{value: "Record Count by Document Type", label: "Record Count by Document Type"},
+            {value: "Downloadable Count by Document Type", label: "Downloadable Count by Document Type"},
+            {value: "Draft and Final Count by State", label: "Draft and Final Count by State"},
+            {value: "Draft and Final Count by Year", label: "Draft and Final Count by Year"},
+            {value: "Draft and Final Count by Agency", label: "Draft and Final Count by Agency"}
+        ]
         return (<div className="charts-holder">
-                <ChartBar data={this.state.typeCount} label={"Record Count by Document Type"} />
-                <ChartBar data={this.state.downloadableCountByType} label={"Downloadable Count by Document Type"} />
+                <Select id="chartPicker" classNamePrefix="react-select" name="chart" isSearchable 
+                        // styles={customStyles}
+                        options={chartOptions} 
+                        onChange={this.onDropdownChange}
+                        value={this.state.chartOption}
+                        placeholder="Type or select" 
+                        />
+                <ChartBar option={this.state.chartOption.value} data={this.state.typeCount} label={"Record Count by Document Type"} />
+                <ChartBar option={this.state.chartOption.value} data={this.state.downloadableCountByType} label={"Downloadable Count by Document Type"} />
                 {/* <ChartBar data={this.state.draftFinalCountByAgency[0]} label={"Draft count by agency"} />
                 <ChartBar data={this.state.draftFinalCountByAgency[1]} label={"Final count by agency"} />
                 <ChartBar data={this.state.draftFinalCountByYear[0]} label={"Draft count by year"} />
@@ -177,9 +198,9 @@ export default class Stats extends React.Component {
                 <ChartBar data={this.state.draftFinalCountByState[0]} label={"Draft count by state"} />
                 <ChartBar data={this.state.draftFinalCountByState[1]} label={"Final count by state"} /> */}
                 
-                <ChartBar data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
-                <ChartBar data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
-                <ChartBar data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} />
+                <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
+                <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
+                <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} />
             </div>
         );
     }

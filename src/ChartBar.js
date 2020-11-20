@@ -9,6 +9,28 @@ export default class ChartBar extends React.Component {
     }
 
     render() {
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+                display: false,
+                text: this.props.label
+            },
+            scales: {
+                // offset: false,
+                yAxes: [{
+                    gridLines: {
+                        // lineWidth: 20
+                    },
+                    ticks: {
+                        autoSkip : false,
+                        // lineHeight: 20,
+                        // fontSize: 20,
+                    },
+                    // barThickness: 10
+                }],
+            }
+        };
         if(this.props.data && this.props.data[0] && this.props.data[1]){ // "Grouped" bar with draft and final
 
             let _labelsDraft = this.props.data[0].labelArrayDraft;
@@ -22,25 +44,21 @@ export default class ChartBar extends React.Component {
                     {
                         label: "Draft",
                         backgroundColor: "#E66100",
+                        minBarLength: 5,
                         data: _dataDraft,
                     }, {
                         label: "Final",
                         backgroundColor: "#5D3A9B",
+                        minBarLength: 5,
                         data: _dataFinal
                     }
                 ]
             };
-            const options = {
-                title: {
-                    display: false,
-                    text: this.props.label
-                }
-            };
     
             return (
-                <div className="chart-holder bar-holder">
+                <div hidden={this.props.option!==this.props.label} className="chart-holder-larger bar-holder">
                     <h2>{this.props.label}</h2>
-                    <Bar ref={this.chart_ref} data={data} options={options} />
+                    <HorizontalBar ref={this.chart_ref} data={data} options={options} />
                 </div>
             );
 
@@ -71,22 +89,16 @@ export default class ChartBar extends React.Component {
                         // "Purple",
                         // "Orange"
                         // ],
+                        minBarLength: 5,
                         backgroundColor: globals.colors
                         // borderColor: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
                         // borderWidth: 1
                     }
                 ]
             };
-            const options = {
-                legend: {
-                    labels: {
-                        fontSize: 0
-                    }
-                }
-            };
     
             return (
-                <div className="chart-holder bar-holder">
+                <div hidden={this.props.option!==this.props.label} className="chart-holder bar-holder">
                     <h2>{this.props.label}</h2>
                     <HorizontalBar ref={this.chart_ref} data={data} options={options} />
                 </div>

@@ -1,3 +1,11 @@
 .charts-holder {
     margin-top: 102px;
 }
+
+.chart-holder {
+    height: 1000px;
+}
+
+.chart-holder-larger {
+    height: 2000px;
+}
