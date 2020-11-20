@@ -441,11 +441,12 @@ span.email-text {
     background-color: white;
     padding: 5px;
     border: 2px solid #C4C4C4;
+    border-top: none;
     text-decoration: none;
     color: black;
 }
-.dropdown-content a:last-child {
-    border-top: none;
+.dropdown-content a:first-child {
+    border-top: 2px solid #C4C4C4;
 }
 .dropdown-content a:hover {
     background-color: #ddd;
