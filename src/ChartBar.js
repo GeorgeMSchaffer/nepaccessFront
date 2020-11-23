@@ -88,7 +88,7 @@ export default class ChartBar extends React.Component {
     
             return (
                 <div hidden={this.props.option!==this.props.label} className="chart-holder-larger bar-holder">
-                    <h2>{this.props.label}</h2>
+                    <h2 className="chart-label">{this.props.label}</h2>
                     <HorizontalBar ref={this.chart_ref} data={data} options={options} />
                 </div>
             );
@@ -161,7 +161,7 @@ export default class ChartBar extends React.Component {
     
             return (
                 <div hidden={this.props.option!==this.props.label} className="chart-holder bar-holder">
-                    <h2>{this.props.label}</h2>
+                    <h2 className="chart-label">{this.props.label}</h2>
                     <HorizontalBar ref={this.chart_ref} data={data} options={options} />
                 </div>
             );

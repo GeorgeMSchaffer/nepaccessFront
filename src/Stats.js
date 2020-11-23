@@ -182,7 +182,7 @@ export default class Stats extends React.Component {
             {value: "Draft and Final Count by Agency", label: "Draft and Final Count by Agency"}
         ]
         return (<div className="charts-holder">
-                <Select id="chartPicker" classNamePrefix="react-select" name="chart" isSearchable 
+                <Select id="chart-picker" classNamePrefix="react-select" name="chart" isSearchable 
                         // styles={customStyles}
                         options={chartOptions} 
                         onChange={this.onDropdownChange}

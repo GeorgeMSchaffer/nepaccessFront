@@ -1,3 +1,9 @@
+#chart-picker {
+    width: 50%;
+    margin: auto;
+    padding-top: 25px;
+}
+
 .charts-holder {
     margin-top: 102px;
 }
@@ -8,4 +14,8 @@
 
 .chart-holder-larger {
     height: 2000px;
+}
+
+.chart-label {
+    margin-left: 25px;
 }
