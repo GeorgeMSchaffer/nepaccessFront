@@ -50,9 +50,9 @@ class CardResults extends React.Component {
         }
     }
 
-    resetSort = () => {
-        this.my_table.current.table.setData(this.props.results);
-    }
+    // resetSort = () => {
+    //     this.my_table.current.table.setData(this.props.results);
+    // }
 
     setupColumns = () => {
         if(this.props.results){

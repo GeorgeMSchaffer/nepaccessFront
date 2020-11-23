@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import CardResults from './CardResults.js';
-import UnifiedSearch from './UnifiedSearch.js';
+import Search from './Search.js';
 
 import './User/login.css';
 
@@ -21,15 +21,95 @@ class App extends React.Component {
             limit: 1000000,
             isDirty: false
 		},
-		searchResults: [],
+        searchResults: [],
+        outputResults: [],
 		resultsText: 'Results',
 		networkError: '',
 		verified: false,
         searching: false,
+        useSearchOptions: false,
         snippetsDisabled: false
     }
     
     _mounted = false;
+
+    matchesArray(field, val) {
+        return function (a) {
+            let returnValue = false;
+            val.forEach(item =>{
+                if (a[field] === item) {
+                    returnValue = true;
+                }
+            });
+            return returnValue;
+        };
+    }
+
+    matchesStartDate(val) {
+        return function (a) {
+            return (a["registerDate"] >= val);
+        };
+    }
+    
+    matchesEndDate(val) {
+        return function (a) {
+            return (a["registerDate"] <= val); // should this be inclusive? <= or <
+        };
+    }
+    
+    matchesType(matchFinal, matchDraft) {
+        return function (a) {
+            return (
+                (a["documentType"] === "Final" && matchFinal) || 
+                (a["documentType"] === "Draft" && matchDraft)
+            );
+        };
+    }
+
+    /** TODO: Design: Search component calls this parent method which controls
+    * the results, which gives a filtered version of results to CardResults */
+    filterResultsBy = (searcherState) => {
+        // Only filter if there are any results to filter
+        if(this.state.searchResults && this.state.searchResults.length > 0){
+            // Deep clone results
+            let isDirty = false;
+            let filteredResults = JSON.parse(JSON.stringify(this.state.searchResults));
+            console.log(filteredResults.length);
+            if(searcherState.agency && searcherState.agency.length > 0){
+                isDirty = true;
+                filteredResults = filteredResults.filter(this.matchesArray("agency", searcherState.agency));
+            }
+            if(searcherState.state && searcherState.state.length > 0){
+                isDirty = true;
+                filteredResults = filteredResults.filter(this.matchesArray("state", searcherState.state));
+            }
+            if(searcherState.startPublish){
+                isDirty = true;
+                filteredResults = filteredResults.filter(this.matchesStartDate(searcherState.startPublish));
+            }
+            if(searcherState.endPublish){
+                isDirty = true;
+                filteredResults = filteredResults.filter(this.matchesEndDate(searcherState.endPublish));
+            }
+            if(searcherState.typeFinal || searcherState.typeDraft){
+                isDirty = true;
+                filteredResults = filteredResults.filter(this.matchesType(searcherState.typeFinal, searcherState.typeDraft));
+            }
+            
+            // If there are any active filters, display as "Matches", else "Results"
+            if(isDirty){
+                this.setState({
+                    outputResults: filteredResults,
+                    resultsText: filteredResults.length + " Matches"
+                });
+            } else {
+                this.setState({
+                    outputResults: filteredResults,
+                    resultsText: filteredResults.length + " Results"
+                });
+            }
+        }
+    }
 
     // Sort search results on call from results component
     sort = (val) => {
@@ -43,7 +123,7 @@ class App extends React.Component {
     sortDataByField = (field, ascending) => {
         this.setState({
             // searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
-            searchResults: this.state.searchResults.sort((this.alphabetically(field, ascending)))
+            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending)))
         });
     }
 
@@ -128,21 +208,42 @@ class App extends React.Component {
 
 			let dataToPass = { 
 				title: this.state.searcherInputs.titleRaw, 
-				startPublish: this.state.searcherInputs.startPublish,
-				endPublish: this.state.searcherInputs.endPublish,
-				startComment: this.state.searcherInputs.startComment,
-				endComment: this.state.searcherInputs.endComment,
-				agency: this.state.searcherInputs.agency,
-				state: this.state.searcherInputs.state,
-				typeAll: this.state.searcherInputs.typeAll,
-				typeFinal: this.state.searcherInputs.typeFinal,
-				typeDraft: this.state.searcherInputs.typeDraft,
-				typeOther: this.state.searcherInputs.typeOther,
-				needsComments: this.state.searcherInputs.needsComments,
-				needsDocument: this.state.searcherInputs.needsDocument,
+				// startPublish: this.state.searcherInputs.startPublish,
+				// endPublish: this.state.searcherInputs.endPublish,
+				// startComment: this.state.searcherInputs.startComment,
+				// endComment: this.state.searcherInputs.endComment,
+				// agency: this.state.searcherInputs.agency,
+				// state: this.state.searcherInputs.state,
+				// typeAll: this.state.searcherInputs.typeAll,
+				// typeFinal: this.state.searcherInputs.typeFinal,
+				// typeDraft: this.state.searcherInputs.typeDraft,
+				// typeOther: this.state.searcherInputs.typeOther,
+				// needsComments: this.state.searcherInputs.needsComments,
+				// needsDocument: this.state.searcherInputs.needsDocument,
                 limit: _limit,
                 offset: _offset
             };
+
+            // OPTION: If we restore a way to use search options for faster searches, we'll assign here
+            if(this.state.useSearchOptions) {
+                dataToPass = { 
+                    title: this.state.searcherInputs.titleRaw, 
+                    startPublish: this.state.searcherInputs.startPublish,
+                    endPublish: this.state.searcherInputs.endPublish,
+                    startComment: this.state.searcherInputs.startComment,
+                    endComment: this.state.searcherInputs.endComment,
+                    agency: this.state.searcherInputs.agency,
+                    state: this.state.searcherInputs.state,
+                    typeAll: this.state.searcherInputs.typeAll,
+                    typeFinal: this.state.searcherInputs.typeFinal,
+                    typeDraft: this.state.searcherInputs.typeDraft,
+                    typeOther: this.state.searcherInputs.typeOther,
+                    needsComments: this.state.searcherInputs.needsComments,
+                    needsDocument: this.state.searcherInputs.needsDocument,
+                    limit: _limit,
+                    offset: _offset
+                };
+            }
 
             this.setState({
                 searching: true
@@ -201,6 +302,7 @@ class App extends React.Component {
 
                         this.setState({
                             searchResults: _data,
+                            outputResults: _data,
                             resultsText: currentResults.length + " Results",
                         });
                         
@@ -217,11 +319,15 @@ class App extends React.Component {
                                 searching: false
                             //     searchResults: currentResults,
                             //     resultsText: currentResults.length + " Results",
+                            }, () => {
+                                this.filterResultsBy(searcherState);
                             });
+                            console.log("Search done");
                         } else {
                             // offset for next run should be incremented by previous limit used
                             this.search(searcherState, _offset + _limit, currentResults);
                         }
+
 
                     }
                 }).catch(error => { // Server down or 408 (timeout)
@@ -327,13 +433,19 @@ class App extends React.Component {
 			return (
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
-					<UnifiedSearch search={this.search} searching={this.state.searching} />
-                    <CardResults sort={this.sort}
-                                results={this.state.searchResults} 
-                                resultsText={this.state.resultsText} 
-                                isDirty={this.state.isDirty} 
-                                searching={this.state.searching}
-                                snippetsDisabled={this.state.snippetsDisabled} />
+                    <Search 
+                        search={this.search} 
+                        filterResultsBy={this.filterResultsBy} 
+                        searching={this.state.searching} 
+                    />
+                    <CardResults 
+                        sort={this.sort}
+                        results={this.state.outputResults} 
+                        resultsText={this.state.resultsText} 
+                        isDirty={this.state.isDirty} 
+                        searching={this.state.searching}
+                        snippetsDisabled={this.state.snippetsDisabled} 
+                    />
 				</div>
 			)
 
