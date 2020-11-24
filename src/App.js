@@ -33,6 +33,12 @@ class App extends React.Component {
     
     _mounted = false;
 
+    optionsChanged = (val) => {
+        this.setState({
+            useSearchOptions: val
+        });
+    }
+
     matchesArray(field, val) {
         return function (a) {
             let returnValue = false;
@@ -437,6 +443,8 @@ class App extends React.Component {
                         search={this.search} 
                         filterResultsBy={this.filterResultsBy} 
                         searching={this.state.searching} 
+                        useOptions={this.state.useSearchOptions}
+                        optionsChanged={this.optionsChanged}
                     />
                     <CardResults 
                         sort={this.sort}

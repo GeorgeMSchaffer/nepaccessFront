@@ -143,6 +143,10 @@ class Search extends React.Component {
             });
         }
     }
+
+    onUseOptionsChecked = (evt) => {
+        this.props.optionsChanged(evt.target.checked);
+    }
     
     onTypeChecked = (evt) => {
         if(evt.target.name==="optionsChecked") {
@@ -369,6 +373,14 @@ class Search extends React.Component {
                             </label>
                         </div>
                     </div>
+                </div>
+
+                <div className="filter">
+                        <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
+                                checked={this.props.useOptions} onChange={this.onUseOptionsChecked} />
+                        <label className="checkbox-text" htmlFor="typeFinal">
+                            Apply filters when searching
+                        </label>
                 </div>
             </div>
             </>
