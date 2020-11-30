@@ -86,6 +86,20 @@ const Globals = {
         let oddity = sDate.replace(/-/g,'/').substr(0, 10);
         return new Date(oddity);
     },
+    
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    },
 
     colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
         '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', 

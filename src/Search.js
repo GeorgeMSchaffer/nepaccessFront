@@ -329,7 +329,7 @@ class Search extends React.Component {
                         onChange={this.onLocationChange} 
                         value={this.state.stateRaw}
                         placeholder="Type or select state" 
-                        />
+                    />
                 </div>
 
                 <div className="sidebar-hr"></div>
@@ -379,11 +379,11 @@ class Search extends React.Component {
                 </div>
 
                 <div className="filter">
-                        <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
-                                checked={this.props.useOptions} onChange={this.onUseOptionsChecked} />
-                        <label className="checkbox-text" htmlFor="typeFinal">
-                            Apply filters when searching
-                        </label>
+                    <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
+                            checked={this.props.useOptions} onChange={this.onUseOptionsChecked} />
+                    <label className="checkbox-text" htmlFor="typeFinal">
+                        Apply filters when searching
+                    </label>
                 </div>
             </div>
             </>

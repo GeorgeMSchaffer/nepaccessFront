@@ -91,11 +91,13 @@ class App extends React.Component {
             }
             if(searcherState.startPublish){
                 isDirty = true;
-                filteredResults = filteredResults.filter(this.matchesStartDate(searcherState.startPublish));
+                let formattedDate = Globals.formatDate(searcherState.startPublish);
+                filteredResults = filteredResults.filter(this.matchesStartDate(formattedDate));
             }
             if(searcherState.endPublish){
                 isDirty = true;
-                filteredResults = filteredResults.filter(this.matchesEndDate(searcherState.endPublish));
+                let formattedDate = Globals.formatDate(searcherState.endPublish);
+                filteredResults = filteredResults.filter(this.matchesEndDate(formattedDate));
             }
             if(searcherState.typeFinal || searcherState.typeDraft){
                 isDirty = true;
