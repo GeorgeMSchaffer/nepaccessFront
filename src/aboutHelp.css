@@ -8,6 +8,10 @@ table.help-table {
     border-collapse: collapse;
 }
 
+table.help-table td {
+    padding: 5px;
+}
+
 table.help-table tbody tr:first-child td {
     font-weight: bold;
     text-align: center;
@@ -26,6 +30,7 @@ table.help-table tbody tr td:first-child {
 }
 
 .color {
+    font-weight: bold;
     color: rgb(214,87,58);
 }
 
