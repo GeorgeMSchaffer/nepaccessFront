@@ -25,7 +25,7 @@ class MatchResults extends React.Component {
 
 	render() {
         try {
-            console.log("Rendering",this.props.results);
+            // console.log("Rendering",this.props.results);
             if(this.props.results) {
                 // proceed
             } else { // return early
@@ -35,16 +35,6 @@ class MatchResults extends React.Component {
                     </div>
                 )
             }
-            // const columns = [
-            //     { title: "Title", field: "title" },
-            //     { title: "Lead Agency", field: "agency", width: 150 },
-            //     { title: "Date", field: "registerDate", width: 90 },
-            //     { title: "State", field: "state", width: 80 },
-            //     { title: "Version", field: "documentType", width: 90 },
-            //     { title: "Documents", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-            //     { title: "EPA Comments", field: "commentsFilename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) },
-            //     { title: "Match", field: "matchPercent", width: 95 }
-            // ];
             
             const columns = [
                 { title: "", field: "", formatter: reactFormatter(<CardResult />)}
@@ -65,10 +55,6 @@ class MatchResults extends React.Component {
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
             };
 
-            // TODO: Rig up a filter to help narrow down the results with another search.
-            // This could be used to entirely replace the MySQL fulltext search (fulltext index must add to overhead, and the search behavior is odd)
-
-            // Could use just a bool prop to build the results text here instead of resultsText prop?
             return (
                 <div className='modal-results'>
                     {/* <h2>{results.length} Results</h2> */}

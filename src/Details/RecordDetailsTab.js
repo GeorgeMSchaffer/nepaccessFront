@@ -199,7 +199,8 @@ export default class RecordDetailsTab extends React.Component {
                     this.parseMatches(parsedJson, searcherState.matchType);
 				} else { // 200 from server, but empty results
 					this.setState({
-						resultsText: "No related documents could be found"
+                        searchResults: [],
+						resultsText: "No related documents could be found that matched " + this.state.searcherInputs.matchPercent + "% or higher"
 					});
 				}
 			}).catch(error => {
