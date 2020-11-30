@@ -200,7 +200,7 @@ export default class RecordDetailsTab extends React.Component {
 				} else { // 200 from server, but empty results
 					this.setState({
                         searchResults: [],
-						resultsText: "No related documents could be found that matched " + this.state.searcherInputs.matchPercent + "% or higher"
+						resultsText: "No related documents at " + this.state.searcherInputs.matchPercent + "% match score (or better)"
 					});
 				}
 			}).catch(error => {
