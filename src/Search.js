@@ -378,7 +378,7 @@ class Search extends React.Component {
                     </div>
                 </div>
 
-                <div className="filter" hidden="true">
+                <div className="filter" hidden={true}>
                     <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
                             checked={this.props.useOptions} onChange={this.onUseOptionsChecked} />
                     <label className="checkbox-text" htmlFor="typeFinal">
