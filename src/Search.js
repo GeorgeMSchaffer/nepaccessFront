@@ -303,7 +303,10 @@ class Search extends React.Component {
                 <div className="lds-ellipsis" hidden={!this.props.searching}><div></div><div></div><div></div><div></div></div>
             </div>
             
-            <div className="sidebar-filters" onKeyUp={this.onKeyUp}>
+            <div className="sidebar-filters" 
+                // this would launch a new search on enter key, in some child inputs
+                // onKeyUp={this.onKeyUp}
+            >
                 <span className="sidebar-header">Narrow your results</span>
                 <div className="sidebar-hr"></div>
                 <div className="filter">
