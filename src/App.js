@@ -7,6 +7,7 @@ import Search from './Search.js';
 import './User/login.css';
 
 import Globals from './globals.js';
+import persist from './persist.js';
 
 class App extends React.Component {
 
@@ -470,16 +471,34 @@ class App extends React.Component {
 				</div>
 			)
 		}
-	}
-
+    }
+    
 	// After render
 	componentDidMount() {
         this.check();
         this._mounted = true;
+
+        // Option: Rehydrate old search results and everything?
+        try {
+            const rehydrate = JSON.parse(persist.getItem('results'));
+            console.log("Old results", rehydrate);
+            this.setState(
+                rehydrate
+            );
+        }
+        catch(e) {
+            // do nothing
+        }
     }
     
     async componentWillUnmount() {
+        console.log("Unmount app");
         this._mounted = false;
+
+        // Option: Rehydrate if not interrupting a search
+        if(!this.state.searching){
+            persist.setItem('results', JSON.stringify(this.state));
+        }
     }
 	
 }
