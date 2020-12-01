@@ -316,7 +316,7 @@ class Search extends React.Component {
                         options={agencyOptions} 
                         onChange={this.onAgencyChange} 
                         value={this.state.agencyRaw}
-                        placeholder="Type or select lead agency" 
+                        placeholder="Type or select lead agencies" 
                         // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
                         // menuIsOpen={true}
                     />
@@ -328,7 +328,7 @@ class Search extends React.Component {
                         options={stateOptions} 
                         onChange={this.onLocationChange} 
                         value={this.state.stateRaw}
-                        placeholder="Type or select state" 
+                        placeholder="Type or select states" 
                     />
                 </div>
 

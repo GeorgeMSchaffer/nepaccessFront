@@ -839,7 +839,7 @@ class Importer extends Component {
                         <h3>Example: If you are going to upload NSF/NSF_00001/Final/file.pdf, then the corresponding CSV line must say Final under the Document header, and NSF_00001 for the EIS Identifier.  
                             When uploading, use bulk file import and drag the entire NSF/ base folder in.  
                             Otherwise, there will be incorrect search results and wrong/unavailable files listed for download.  
-                            Filename is optional, but if there is only one file for a record, it can help ensure data integrity to include it.</h3>
+                            </h3>
                         <h3>The system detects matches by title, register date and document type.  
                             Existing metadata with no files will be updated if it's a match.  
                             Existing metadata with an existing filename will be skipped if it's a match.  
@@ -848,8 +848,8 @@ class Importer extends Component {
                             If you're sure you want to update existing metadata with an existing filename, then use the Force Update header and put Yes.
                             Valid, non-duplicate data will become new metadata records.
                             </h3>
-                        <h3>Required headers:  Federal Register Date, Document, EIS Identifier, Title</h3>
-                        <h3>Optional headers: Agency, State, Filename, Link, Notes, Comments Filename, EPA Comment Letter Date, Force Update</h3>
+                        <h3>Required headers: Federal Register Date, Document, EIS Identifier, Title</h3>
+                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Provenance, Force Update</h3>
                         <h1>Import CSV:</h1>
                         <CSVReader
                             onDrop={this.handleOnDrop}
