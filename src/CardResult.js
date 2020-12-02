@@ -42,64 +42,64 @@ class CardResult extends React.Component {
             getRoute = Globals.currentHost + 'file/downloadFolder';
         }
 		axios.get(getRoute, {
-				params: {
-                    filename: filenameOrID,
-                    id: filenameOrID
-				},
-				responseType: 'blob',
-				onDownloadProgress: (progressEvent) => { // Show progress if available
-                    let totalLength = null;
+            params: {
+                filename: filenameOrID,
+                id: filenameOrID
+            },
+            responseType: 'blob',
+            onDownloadProgress: (progressEvent) => { // Show progress if available
+                let totalLength = null;
 
-                    if(progressEvent){
-                        totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') 
-                            || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-                    } 
+                if(progressEvent){
+                    totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') 
+                        || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+                } 
 
-                    if(isFolder && !_filename){ // multi-file case, archive filename needs to be extracted from header
-                        // filename is surrounded by "quotes" so get that and remove those
-                        let fileInfo = progressEvent.target.getResponseHeader('content-disposition');
-                        if (!fileInfo){
-                            return null; // Never mind
-                        }
-                        let fileInfoName = fileInfo.split("filename=");
-
-                        // set filename for saving from backend, sans quotes
-                        _filename = fileInfoName[1].substr(1, fileInfoName[1].length - 2);
+                if(isFolder && !_filename){ // multi-file case, archive filename needs to be extracted from header
+                    // filename is surrounded by "quotes" so get that and remove those
+                    let fileInfo = progressEvent.target.getResponseHeader('content-disposition');
+                    if (!fileInfo){
+                        return null; // Never mind
                     }
+                    let fileInfoName = fileInfo.split("filename=");
 
-					if (totalLength !== null) { // Progress as percent, if we have total
-						this.setState({
-							[progressName]: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
-						});
-                    } else if(progressEvent.loaded){ // Progress as KB
-						this.setState({
-							[progressName]: Math.round(progressEvent.loaded / 1024) + 'KB'
-						});
-                    }
-                    // else progress remains blank
-				}
-			}).then((response) => {
-
-                // Indicate download completed as file is saved/prompted save as (depending on browser settings)
-                if(response){
-                    this.setState({
-                        [downloadTextName]: 'Done'
-                    });
-                    FileDownload(response.data, _filename);
+                    // set filename for saving from backend, sans quotes
+                    _filename = fileInfoName[1].substr(1, fileInfoName[1].length - 2);
                 }
-                
-				// verified = response && response.status === 200;
-			})
-			.catch((err) => {
-				this.setState({
-					[downloadTextName]: 'Download not found',
-					[className]: 'disabled_download'
-				});
-				// console.log("Error::: ", err);
-				this.setState({
-					downloadText: 'File not found'
-				});
-			});
+
+                if (totalLength !== null) { // Progress as percent, if we have total
+                    this.setState({
+                        [progressName]: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
+                    });
+                } else if(progressEvent.loaded){ // Progress as KB
+                    this.setState({
+                        [progressName]: Math.round(progressEvent.loaded / 1024) + 'KB'
+                    });
+                }
+                // else progress remains blank
+            }
+        }).then((response) => {
+
+            // Indicate download completed as file is saved/prompted save as (depending on browser settings)
+            if(response){
+                this.setState({
+                    [downloadTextName]: 'Done'
+                });
+                FileDownload(response.data, _filename);
+            }
+            
+            // verified = response && response.status === 200;
+        })
+        .catch((err) => {
+            this.setState({
+                [downloadTextName]: 'Download not found',
+                [className]: 'disabled_download'
+            });
+            // console.log("Error::: ", err);
+            this.setState({
+                downloadText: 'File not found'
+            });
+        });
 
     }
 

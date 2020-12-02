@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Select from 'react-select';
+import ResultsHeader from './ResultsHeader.js';
 
 import CardResult from './CardResult.js';
 
@@ -11,12 +11,33 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 
 import './card.css';
 
+
+const options = {
+    // maxHeight: "100%",
+    // layoutColumnsOnNewData: true,
+    tooltips:false,
+    // responsiveLayout:"collapse",    //collapse columns that dont fit on the table
+    // responsiveLayoutCollapseUseFormatters:false,
+    pagination:"local",             //paginate the data
+    paginationSize:10,              //allow 10 rows per page of data
+    paginationSizeSelector:[10, 25, 50, 100],
+    movableColumns:false,            //don't allow column order to be changed
+    resizableRows:false,             //don't allow row order to be changed
+    resizableColumns:false,
+    layout:"fitColumns",
+    invalidOptionWarnings:false, // spams warnings without this
+    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
+};
+
+let page = 1;
+
 class CardResults extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            showContext: true
+            showContext: true,
+            page: 1
         }
         this.my_table = React.createRef();
 
@@ -30,6 +51,12 @@ class CardResults extends React.Component {
     //         width: window.innerWidth
     //     });
     // }
+    onPageLoaded = (pageNumber) => {
+        // this.setState({
+        //     page: pageNumber
+        // });
+        page = pageNumber;
+    }
 
     onClearFiltersClick = (e) => {
         if(this.my_table && this.my_table.current){
@@ -37,17 +64,11 @@ class CardResults extends React.Component {
             tbltr.table.clearFilter(true);
         }
     }
-
+    
     onCheckboxChange = (evt) => {
         this.setState({ 
-            [evt.target.name]: evt.target.checked
+            showContext: evt.target.checked
         });
-    }
-
-    onSortChange = (value_label, event) => {
-        if(event.action === "select-option"){
-            this.props.sort(value_label.value);
-        }
     }
 
     // resetSort = () => {
@@ -55,41 +76,19 @@ class CardResults extends React.Component {
     // }
 
     setupColumns = () => {
-        if(this.props.results){
-
-            let _columns = [];
-
-            if(this.props.results[0] && this.props.results[0].doc) {
-
-                _columns = [
-                    { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
-                ];
-            
-            } else if (this.props.results[0] && this.props.results[0].title) { // Metadata only
-                
-                _columns = [
-                    { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
-                ];
-
-            }
-            // else {
-            //     _columns = [
-            //         { title: "Title", field: "title", minWidth: 200, formatter: reactFormatter(<RecordDetailsLink />), headerFilter:"input" },
-            //         { title: "Lead Agency", field: "agency", width: 242, headerFilter:"input" },
-            //         { title: "Date", field: "registerDate", width: 90, headerFilter:"input" }, 
-            //         { title: "State", field: "state", width: 112, headerFilter:"input" },
-            //         { title: "Version", field: "documentType", width: 114, headerFilter:"input" },
-            //         { title: "Document", field: "filename", width: 150, formatter: reactFormatter(<DownloadFile downloadType="EIS"/>) },
-            //         { title: "EPA Comments", field: "commentsFilename", width: 157, formatter: reactFormatter(<DownloadFile downloadType="Comments"/>) }
-            //     ];
-            // }
-
-            try {
-                this.my_table.current.table.setColumns(_columns); // Very important if supporting dynamic data sets (differing column definitions)
-            } catch (e) {
-                // that's okay
-            }
-            // return _columns;
+        let _columns = [];
+        if(this.props.results && this.props.results[0]){
+            _columns = [
+                { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
+            ];
+        }
+        
+        try {
+            this.my_table.current.table.setColumns(_columns); // Very important if supporting dynamic data sets (differing column definitions)
+            this.my_table.current.table.setPage(page);
+        } catch (e) {
+            console.log("Column setup error");
+            // that's okay
         }
     }
 
@@ -123,85 +122,29 @@ class CardResults extends React.Component {
             // let data = this.setupData(results);
             // let columns = this.setupColumns();
 
-            let options = {
-                // maxHeight: "100%",
-                // layoutColumnsOnNewData: true,
-                tooltips:false,
-                // responsiveLayout:"collapse",    //collapse columns that dont fit on the table
-                // responsiveLayoutCollapseUseFormatters:false,
-                pagination:"local",             //paginate the data
-                paginationSize:100,              //allow 10 rows per page of data
-                paginationSizeSelector:[10, 25, 50, 100],
-                movableColumns:false,            //don't allow column order to be changed
-                resizableRows:false,             //don't allow row order to be changed
-                resizableColumns:false,
-                layout:"fitColumns",
-                invalidOptionWarnings:false, // spams warnings without this
-                footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
-            };
-
-            var resultsText = this.props.resultsText;
-            
-            // title: doc.title, agency: doc.agency, commentDate: doc.commentDate, 
-            // registerDate: doc.registerDate, state: doc.state, documentType: doc.documentType, 
-            // filename: doc.filename, 
-            // commentsFilename: doc.commentsFilename,
-            // id: doc.id,
-            // folder: doc.folder,
-            // plaintext: result.highlight,
-            // name: result.filename,
-            // relevance: idx
-
-            let disabledClass = "";
-            if(this.props.searching) {
-                disabledClass = " disabled";
-            }
-
-
-            const sortOptions = [ { value: 'relevance', label: 'Relevance' },
-                { value: 'title', label: 'Title'},
-                { value: 'agency', label: 'Lead Agency'},
-                { value: 'registerDate', label: 'Date'},
-                { value: 'state', label: 'State'},
-                { value: 'documentType', label: 'Type'}
+            let _columns = [
+                { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
             ];
 
             return (
                 <div className="sidebar-results">
                 <div id="search-results">
-
-                    {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}
                     <div className="tabulator-holder">
-                        <div className="results-bar">
-                            <h2 id="results-label" className="inline">
-                                {resultsText}
-                            </h2>
-                            <div className="checkbox-container inline-block">
-                                <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
-                                        checked={this.state.showContext} onChange={this.onCheckboxChange}
-                                        disabled={this.props.snippetsDisabled || this.props.searching}  />
-                                <label className="checkbox-text" htmlFor="post-results-input">
-                                    Show text snippets
-                                </label>
-                            </div>
-                            <div className="sort-container inline-block">
-                                <label className="dropdown-text" htmlFor="post-results-dropdown">
-                                    Sort by:
-                                </label>
-                                <Select id="post-results-dropdown" 
-                                    className={"multi inline-block" + disabledClass} classNamePrefix="react-select" name="sort" 
-                                    // styles={customStyles}
-                                    options={sortOptions} 
-                                    onChange={this.onSortChange}
-                                    placeholder="Relevance"
-                                />
-                            </div>
-                        </div>
+                        <ResultsHeader 
+                            sort={this.props.sort}
+                            resultsText={this.props.resultsText} 
+                            searching={this.props.searching}
+                            snippetsDisabled={this.props.snippetsDisabled} 
+                            showContext={this.state.showContext}
+                            onCheckboxChange={this.onCheckboxChange}
+                        />
+                        {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}
                         <ReactTabulator
                             ref={this.my_table}
                             data={this.props.results}
-                            columns={[]}
+                            columns={_columns}
                             options={options}
+                            pageLoaded={this.onPageLoaded}
                         />
                     </div>
                 </div></div>
@@ -223,13 +166,10 @@ class CardResults extends React.Component {
         }
     }
     
-    // TODO: Maintain or clear filter text (filters stay in play, but annoyingly, any entered text in the filter boxes disappears?)
-    // TODO: Maintain page user is on, preferably even the current scroll position, future things like checkboxes, state of downloads if possible, etc.
     componentDidUpdate() {
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
-        // console.log("Results updated itself");
         if(this.my_table && this.my_table.current){
             // console.log("Updating data and columns");
             // console.log(this.props);
@@ -237,10 +177,9 @@ class CardResults extends React.Component {
 
             // console.log("Searching: " + this.props.searching);
 
-            // card height can't figure itself out precisely without a redraw so for now we 
-            // disable this check
+            // card height can't figure itself out precisely without a redraw so for now we disable 
+            // this check: even while more results are loading, first page will redraw and look good
             // if(!this.props.searching){ 
-                // console.log("Redrawing table");
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
                     tbltr.table.redraw(true);
