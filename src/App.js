@@ -19,8 +19,7 @@ class App extends React.Component {
 			state: [],
 			needsComments: false,
 			needsDocument: false,
-            limit: 1000000,
-            isDirty: false
+            limit: 1000000
 		},
         searchResults: [],
         outputResults: [],
@@ -29,7 +28,8 @@ class App extends React.Component {
 		verified: false,
         searching: false,
         useSearchOptions: false,
-        snippetsDisabled: false
+        snippetsDisabled: false,
+        isDirty: false
     }
     
     _mounted = false;
@@ -122,10 +122,7 @@ class App extends React.Component {
 
     // Sort search results on call from results component
     sort = (val) => {
-        // switch (val) {
-        //     default:
-                this.sortDataByField(val, true);
-        // }
+        this.sortDataByField(val, true);
     }
 
     // TODO: asc/desc (> vs. <, default desc === >)
@@ -453,7 +450,6 @@ class App extends React.Component {
                         sort={this.sort}
                         results={this.state.outputResults} 
                         resultsText={this.state.resultsText} 
-                        isDirty={this.state.isDirty} 
                         searching={this.state.searching}
                         snippetsDisabled={this.state.snippetsDisabled} 
                     />
