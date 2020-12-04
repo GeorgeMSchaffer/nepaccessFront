@@ -299,7 +299,9 @@ class Search extends React.Component {
 
                 </div>
             </div>
+
             <div className="loader-holder">
+                <div className="center" hidden={!this.props.searching}>Loaded {this.props.count} results...</div>
                 <div className="lds-ellipsis" hidden={!this.props.searching}><div></div><div></div><div></div><div></div></div>
             </div>
             

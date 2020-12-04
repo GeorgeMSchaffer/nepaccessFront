@@ -23,6 +23,7 @@ class App extends React.Component {
 		},
         searchResults: [],
         outputResults: [],
+        count: 0,
 		resultsText: 'Results',
 		networkError: '',
 		verified: false,
@@ -187,7 +188,8 @@ class App extends React.Component {
         let _limit = 100; // start with 100
         if(_inputs.titleRaw.trim().length < 1 
                 || _inputs.searchOption==="C" 
-                || _offset === 100) {
+                // || _offset === 100
+                ) {
             _limit = 1000000; // go to 1000000 if this is the second pass (offset of 100) or textless/title-only search
         }
 
@@ -309,6 +311,7 @@ class App extends React.Component {
                         this.setState({
                             searchResults: _data,
                             outputResults: _data,
+                            count: currentResults.length,
                             resultsText: currentResults.length + " Results",
                         });
                         
@@ -319,8 +322,10 @@ class App extends React.Component {
 
                         // With this logic we will always run at least two searches, however the second
                         // search may instantly return with no new results so there isn't much harm
-                        // if limit is maxed we can stop
-                        if (_limit === 1000000) { 
+                        
+                        // If we got zero results specifically from this search, then we can stop.
+                        // Or if we ran a title-only search (max limit) we can stop.
+                        if (!parsedJson || !parsedJson[0] || _limit === 1000000) {
                             this.setState({
                                 searching: false
                             //     searchResults: currentResults,
@@ -328,7 +333,7 @@ class App extends React.Component {
                             }, () => {
                                 this.filterResultsBy(searcherState);
                             });
-                            console.log("Search done");
+                            // console.log("Search done");
                         } else {
                             // offset for next run should be incremented by previous limit used
                             this.search(searcherState, _offset + _limit, currentResults);
@@ -445,6 +450,7 @@ class App extends React.Component {
                         searching={this.state.searching} 
                         useOptions={this.state.useSearchOptions}
                         optionsChanged={this.optionsChanged}
+                        count={this.state.count}
                     />
                     <CardResults 
                         sort={this.sort}

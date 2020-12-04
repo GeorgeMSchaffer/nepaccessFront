@@ -469,3 +469,8 @@ span.email-text {
 .green {
     color: green;
 }
+
+.center {
+    text-align: center;
+    margin: auto;
+}

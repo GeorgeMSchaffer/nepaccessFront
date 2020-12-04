@@ -43,6 +43,21 @@ class CardResults extends React.Component {
 
         // window.addEventListener('resize', this.handleResize);
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        // console.log("Results",nextProps.results===this.props.results); 
+        // console.log("Text",nextProps.resultsText===this.props.resultsText); 
+        // console.log("searching",nextProps.searching===this.props.searching); 
+        // console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
+
+        // TODO: Experimental logic, we shouldn't need to rerender JUST because searching changed
+        if(nextProps.results===this.props.results
+                && nextProps.resultsText===this.props.resultsText
+                && nextProps.snippetsDisabled===this.props.snippetsDisabled) {
+            return false;
+        }
+        return true;
+    }
     
     // Table needs help to resize its cells if window is resized
     // handleResize = () => {
@@ -52,10 +67,14 @@ class CardResults extends React.Component {
     //     });
     // }
     onPageLoaded = (pageNumber) => {
-        // this.setState({
-        //     page: pageNumber
-        // });
-        page = pageNumber;
+        if(page !== pageNumber){
+            console.log("#",pageNumber);
+            page = pageNumber;
+            // Too laggy, would be used for showing user which # results they're viewing by page * results per page
+            // this.setState({
+            //     page: pageNumber
+            // });
+        }
     }
 
     onClearFiltersClick = (e) => {
@@ -84,7 +103,8 @@ class CardResults extends React.Component {
         }
         
         try {
-            this.my_table.current.table.setColumns(_columns); // Very important if supporting dynamic data sets (differing column definitions)
+            this.my_table.current.table.setColumns(_columns);
+            // to maintain page user is on even after rerender, we try saving page as a local variable and setting it here
             this.my_table.current.table.setPage(page);
         } catch (e) {
             console.log("Column setup error");
@@ -106,12 +126,14 @@ class CardResults extends React.Component {
             if(this.props.resultsText && this.props.resultsText!=="Results") {
                 return (
                     <div className="sidebar-results">
-                    <div id="search-results">
-                    <div className="tabulator-holder">
-                        <h2 id="results-label">
-                            {this.props.resultsText}
-                        </h2>
-                    </div></div></div>
+                        <div id="search-results">
+                            <div className="tabulator-holder">
+                                <h2 id="results-label">
+                                    {this.props.resultsText}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
                 );
             } else {
                 return "";
@@ -128,26 +150,28 @@ class CardResults extends React.Component {
 
             return (
                 <div className="sidebar-results">
-                <div id="search-results">
-                    <div className="tabulator-holder">
-                        <ResultsHeader 
-                            sort={this.props.sort}
-                            resultsText={this.props.resultsText} 
-                            searching={this.props.searching}
-                            snippetsDisabled={this.props.snippetsDisabled} 
-                            showContext={this.state.showContext}
-                            onCheckboxChange={this.onCheckboxChange}
-                        />
-                        {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}
-                        <ReactTabulator
-                            ref={this.my_table}
-                            data={this.props.results}
-                            columns={_columns}
-                            options={options}
-                            pageLoaded={this.onPageLoaded}
-                        />
+                    <div id="search-results">
+                        <div className="tabulator-holder">
+                            <ResultsHeader 
+                                sort={this.props.sort}
+                                resultsText={this.props.resultsText} 
+                                searching={this.props.searching}
+                                snippetsDisabled={this.props.snippetsDisabled} 
+                                showContext={this.state.showContext}
+                                onCheckboxChange={this.onCheckboxChange}
+                                // page={this.state.page}
+                            />
+                            {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}
+                            <ReactTabulator
+                                ref={this.my_table}
+                                data={this.props.results}
+                                columns={_columns}
+                                options={options}
+                                pageLoaded={this.onPageLoaded}
+                            />
+                        </div>
                     </div>
-                </div></div>
+                </div>
             );
         }
         catch (e) {
@@ -184,7 +208,7 @@ class CardResults extends React.Component {
                 setTimeout(function() {
                     tbltr.table.redraw(true);
                     console.log("Redraw");
-                },0)
+                },1000)
             // }
         }
     }
