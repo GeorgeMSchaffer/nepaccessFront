@@ -208,7 +208,7 @@ class CardResults extends React.Component {
                 setTimeout(function() {
                     tbltr.table.redraw(true);
                     console.log("Redraw");
-                },1000)
+                },0)
             // }
         }
     }
