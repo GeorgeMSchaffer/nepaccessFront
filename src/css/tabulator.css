@@ -7,10 +7,6 @@
     /* scroll-behavior: auto; */
 }
 
-.tabulator-row .tabulator-cell {
-    overflow-y: auto;
-}
-
 /* .tabulator { */
     /* max-height: 100%; /* With this, can't get larger than parent element, can also be added to table options as maxHeight: 100% */
     /* min-width: 1000px; */
