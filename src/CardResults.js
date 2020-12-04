@@ -203,13 +203,13 @@ class CardResults extends React.Component {
 
             // card height can't figure itself out precisely without a redraw so for now we disable 
             // this check: even while more results are loading, first page will redraw and look good
-            // if(!this.props.searching){ 
+            if(!this.props.searching){ 
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
                     tbltr.table.redraw(true);
                     console.log("Redraw");
                 },0)
-            // }
+            }
         }
     }
 }
