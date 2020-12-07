@@ -230,11 +230,17 @@ export default class RecordDetailsTab extends React.Component {
             return newObject;
         });
         let docs = results.docs.map((result, idx) =>{
-            let newObject = {title: result.title, agency: result.agency, commentDate: result.commentDate, 
-                registerDate: result.registerDate, state: result.state, documentType: result.documentType, 
+            let newObject = {title: result.title, 
+                agency: result.agency, 
+                commentDate: result.commentDate, 
+                registerDate: result.registerDate, 
+                state: result.state, 
+                documentType: result.documentType, 
                 filename: result.filename, 
                 commentsFilename: result.commentsFilename,
-                id: result.id
+                size: result.size,
+                id: result.id,
+                folder: result.folder,
             };
             return newObject;
         });
