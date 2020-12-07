@@ -36,6 +36,7 @@ class App extends React.Component {
     _mounted = false;
     _searchId = 1;
     _cancelId = -1;
+    _searcherState = null;
 
     optionsChanged = (val) => {
         this.setState({
@@ -78,8 +79,8 @@ class App extends React.Component {
 
     /** Design: Search component calls this parent method which controls
     * the results, which gives a filtered version of results to CardResults */
-    // TODO: Filter even while results are still coming in?
     filterResultsBy = (searcherState) => {
+        this._searcherState = searcherState; // for live filtering
         // Only filter if there are any results to filter
         if(this.state.searchResults && this.state.searchResults.length > 0){
             // Deep clone results
@@ -167,6 +168,7 @@ class App extends React.Component {
     }
 
     startNewSearch = (searcherState, _offset, currentResults) => {
+        this._searcherState = searcherState; // for live filtering
         // Start a brand new search.
         if(this.state.searching){
             // Already searching? Cancel running search
@@ -332,6 +334,8 @@ class App extends React.Component {
                             outputResults: _data,
                             count: currentResults.length,
                             resultsText: currentResults.length + " Results",
+                        }, () => {
+                            this.filterResultsBy(this._searcherState);
                         });
                         
                         // If we got less results than our limit allowed, this could be because of
@@ -349,8 +353,6 @@ class App extends React.Component {
                                 searching: false
                             //     searchResults: currentResults,
                             //     resultsText: currentResults.length + " Results",
-                            }, () => {
-                                this.filterResultsBy(searcherState);
                             });
                             // console.log("Search done",searchId);
                         } else {

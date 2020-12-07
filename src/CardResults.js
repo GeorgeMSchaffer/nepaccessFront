@@ -13,7 +13,7 @@ import './card.css';
 
 
 const options = {
-    // maxHeight: "100%",
+    // maxHeight: "100%",           // for limiting table height
     // layoutColumnsOnNewData: true,
     tooltips:false,
     // responsiveLayout:"collapse",    //collapse columns that dont fit on the table
@@ -22,7 +22,7 @@ const options = {
     paginationSize:10,              //allow 10 rows per page of data
     paginationSizeSelector:[10, 25, 50, 100],
     movableColumns:false,            //don't allow column order to be changed
-    resizableRows:false,             //don't allow row order to be changed
+    resizableRows:false,             
     resizableColumns:false,
     layout:"fitColumns",
     invalidOptionWarnings:false, // spams warnings without this
@@ -36,8 +36,7 @@ class CardResults extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showContext: true,
-            page: 1
+            showContext: true
         }
         this.my_table = React.createRef();
 
@@ -66,6 +65,7 @@ class CardResults extends React.Component {
     //         width: window.innerWidth
     //     });
     // }
+    
     onPageLoaded = (pageNumber) => {
         if(page !== pageNumber){
             console.log("#",pageNumber);
@@ -104,6 +104,7 @@ class CardResults extends React.Component {
         
         try {
             this.my_table.current.table.setColumns(_columns);
+            this.my_table.current.table.replaceData(this.props.results);
             // to maintain page user is on even after rerender, we try saving page as a local variable and setting it here
             this.my_table.current.table.setPage(page);
         } catch (e) {
@@ -144,9 +145,9 @@ class CardResults extends React.Component {
             // let data = this.setupData(results);
             // let columns = this.setupColumns();
 
-            let _columns = [
-                { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
-            ];
+            // let _columns = [
+            //     { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
+            // ];
 
             return (
                 <div className="sidebar-results">
@@ -164,8 +165,8 @@ class CardResults extends React.Component {
                             {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}
                             <ReactTabulator
                                 ref={this.my_table}
-                                data={this.props.results}
-                                columns={_columns}
+                                data={[]}
+                                columns={[]}
                                 options={options}
                                 pageLoaded={this.onPageLoaded}
                             />
@@ -190,7 +191,9 @@ class CardResults extends React.Component {
         }
     }
     
+    // TODO: Preserve scroll position on rerender/redraw if possible
     componentDidUpdate() {
+        // console.log("Updated");
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
@@ -207,10 +210,11 @@ class CardResults extends React.Component {
                 const tbltr = this.my_table.current;
                 setTimeout(function() {
                     tbltr.table.redraw(true);
-                    console.log("Redraw");
+                    // console.log("Redrawn");
                 },0)
             // }
         }
+
     }
 }
 
