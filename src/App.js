@@ -34,6 +34,8 @@ class App extends React.Component {
     }
     
     _mounted = false;
+    _searchId = 1;
+    _cancelId = -1;
 
     optionsChanged = (val) => {
         this.setState({
@@ -74,8 +76,9 @@ class App extends React.Component {
         };
     }
 
-    /** TODO: Design: Search component calls this parent method which controls
+    /** Design: Search component calls this parent method which controls
     * the results, which gives a filtered version of results to CardResults */
+    // TODO: Filter even while results are still coming in?
     filterResultsBy = (searcherState) => {
         // Only filter if there are any results to filter
         if(this.state.searchResults && this.state.searchResults.length > 0){
@@ -163,10 +166,26 @@ class App extends React.Component {
       
     }
 
-	search = (searcherState, _offset, currentResults) => {
-        if(!this._mounted){
+    startNewSearch = (searcherState, _offset, currentResults) => {
+        // Start a brand new search.
+        if(this.state.searching){
+            // Already searching? Cancel running search
+            this._cancelId = this._searchId;
+        }
+        this._searchId = this._searchId + 1;
+        this.search(searcherState, _offset, currentResults, this._searchId);
+    }
+
+	search = (searcherState, _offset, currentResults, searchId) => {
+        if(!this._mounted){ // User navigated away or reloaded
             return;
         }
+        if(searchId <= this._cancelId) { // Search interrupted, cancel this one
+            // console.log("Search canceled: ", searchId);
+            return;
+        }
+
+        // console.log("Search running: ", searchId);
         let _inputs = searcherState;
 
         // There is no longer an advanced search so this is no longer useful
@@ -333,10 +352,10 @@ class App extends React.Component {
                             }, () => {
                                 this.filterResultsBy(searcherState);
                             });
-                            // console.log("Search done");
+                            // console.log("Search done",searchId);
                         } else {
                             // offset for next run should be incremented by previous limit used
-                            this.search(searcherState, _offset + _limit, currentResults);
+                            this.search(searcherState, _offset + _limit, currentResults, searchId);
                         }
 
 
@@ -445,7 +464,7 @@ class App extends React.Component {
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
                     <Search 
-                        search={this.search} 
+                        search={this.startNewSearch} 
                         filterResultsBy={this.filterResultsBy} 
                         searching={this.state.searching} 
                         useOptions={this.state.useSearchOptions}
@@ -494,7 +513,7 @@ class App extends React.Component {
     }
     
     async componentWillUnmount() {
-        console.log("Unmount app");
+        // console.log("Unmount app");
         this._mounted = false;
 
         // Option: Rehydrate if not interrupting a search

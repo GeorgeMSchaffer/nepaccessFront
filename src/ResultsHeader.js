@@ -18,10 +18,6 @@ export default class ResultsHeader extends React.Component {
     }
 
     render () {
-        let disabledClass = "";
-        if(this.props.searching) {
-            disabledClass = " disabled";
-        }
 
         return (
             <div className="results-bar">
@@ -33,7 +29,7 @@ export default class ResultsHeader extends React.Component {
                         <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
                                 checked={this.props.showContext} 
                                 onChange={this.props.onCheckboxChange}
-                                disabled={this.props.snippetsDisabled || this.props.searching}  />
+                                disabled={this.props.snippetsDisabled}  />
                         <label className="checkbox-text" htmlFor="post-results-input">
                             Show text snippets
                         </label>
@@ -43,7 +39,7 @@ export default class ResultsHeader extends React.Component {
                             Sort by:
                         </label>
                         <Select id="post-results-dropdown" 
-                            className={"multi inline-block" + disabledClass} classNamePrefix="react-select" name="sort" 
+                            className={"multi inline-block"} classNamePrefix="react-select" name="sort" 
                             // styles={customStyles}
                             options={sortOptions} 
                             onChange={this.onSortChange}
