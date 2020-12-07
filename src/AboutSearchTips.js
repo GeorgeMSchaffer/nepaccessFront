@@ -11,8 +11,6 @@ export default class AboutSearchTips extends React.Component {
 
                 <div id="about-nepa-content">
 
-                    
-
                     <h1 className="about-nepa-title">
                         Search tips
                     </h1>
