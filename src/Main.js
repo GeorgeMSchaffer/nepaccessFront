@@ -18,7 +18,7 @@ import ForgotPassword from './User/ForgotPassword.js';
 
 import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess.js';
-import AboutHelp from './AboutHelp.js';
+import AboutSearchTips from './AboutSearchTips.js';
 import AboutHelpContents from './AboutHelpContents.js';
 import Stats from './Stats.js';
 
@@ -140,20 +140,21 @@ class Main extends React.Component {
                 <div id="main-menu">
                     <Link className="main-menu-link" to="/search">Search NEPAccess</Link>
                     <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
-                    <Link className="main-menu-link" to="/aboutnepaccess">About NEPAccess</Link>
-                    {this.state.menuItems}
-                    <div id="help-dropdown" className="main-menu-link dropdown">
-                        <Link className="main-menu-link drop-button" id="help-button" to="/abouthelp">
-                            Help
+                    <div id="about-dropdown" className="main-menu-link dropdown">
+                        <Link id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
+                            About NEPAccess
                         </Link>
                         <i className="fa fa-caret-down"></i>
-                        
                         <div className="dropdown-content">
+                            <Link to="/aboutnepaccess">About NEPAccess</Link>
                             <Link to="/stats">Database Statistics</Link>
                             <Link to="/abouthelpcontents">Database Contents</Link>
-                            <Link to="/abouthelp">Search Tips</Link>
                         </div>
                     </div>
+                    {this.state.menuItems}
+                    <Link className="main-menu-link" to="/abouthelp">
+                        Search Tips
+                    </Link>
                 </div>
                 
             </div>
@@ -169,7 +170,7 @@ class Main extends React.Component {
                 <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
-                <Route path="/abouthelp" component={AboutHelp}/>
+                <Route path="/abouthelp" component={AboutSearchTips}/>
                 <Route path="/abouthelpcontents" component={AboutHelpContents}/>
                 <Route path="/stats" component={Stats}/>
 

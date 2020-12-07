@@ -413,7 +413,7 @@ span.email-text {
 }
 
 /* New dropdown for help submenus */
-#help-dropdown {
+#help-dropdown, #about-dropdown {
     height: 60px;
 }
 .dropdown {
@@ -458,11 +458,11 @@ span.email-text {
     display: block;
     position: absolute;
     top: 50px;
-    left: -60px;
+    left: -25px;
     text-align: center;
 }
 
-#help-button {
+#help-button, #about-button {
     margin-right: 10px;
 }
 
