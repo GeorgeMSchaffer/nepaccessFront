@@ -286,7 +286,7 @@ class CardResult extends React.Component {
                     </div>
                 );
             } else {
-                return <div className="table-row"><span className="cardHeader">EIS File unavailable</span></div>;
+                return <div className="table-row"><span className="cardHeader">EIS File not in system</span></div>;
             }
 		}
 		else {
