@@ -7,7 +7,7 @@ import ChartBar from './ChartBar.js';
 
 import './stats.css';
 
-export default class Stats extends React.Component {
+export default class AboutStats extends React.Component {
     
 	constructor(props) {
 		super(props);

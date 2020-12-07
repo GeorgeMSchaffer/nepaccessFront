@@ -20,7 +20,7 @@ import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess.js';
 import AboutSearchTips from './AboutSearchTips.js';
 import AboutHelpContents from './AboutHelpContents.js';
-import Stats from './Stats.js';
+import AboutStats from './AboutStats.js';
 
 import Importer from './Importer.js';
 
@@ -172,7 +172,7 @@ class Main extends React.Component {
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
                 <Route path="/abouthelp" component={AboutSearchTips}/>
                 <Route path="/abouthelpcontents" component={AboutHelpContents}/>
-                <Route path="/stats" component={Stats}/>
+                <Route path="/stats" component={AboutStats}/>
 
                 <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
                 
