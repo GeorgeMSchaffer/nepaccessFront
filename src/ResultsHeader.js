@@ -11,16 +11,12 @@ const sortOptions = [ { value: 'relevance', label: 'Relevance' },
 
 export default class ResultsHeader extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     onSortChange = (value_label, event) => {
         if(event.action === "select-option"){
             this.props.sort(value_label.value);
         }
     }
-    
+
     render () {
         let disabledClass = "";
         if(this.props.searching) {
