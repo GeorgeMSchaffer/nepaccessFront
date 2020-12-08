@@ -147,8 +147,8 @@ class Main extends React.Component {
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
                             <Link to="/aboutnepaccess">About NEPAccess</Link>
-                            <Link to="/stats">Database Statistics</Link>
                             <Link to="/abouthelpcontents">Database Contents</Link>
+                            {/* <Link to="/stats">Content Statistics</Link> */}
                         </div>
                     </div>
                     {this.state.menuItems}

@@ -33,10 +33,14 @@ class App extends React.Component {
         isDirty: false
     }
     
+    // For canceling a search when component unloads
     _mounted = false;
+
+    // For canceling any running search if user starts a new search before results are done
     _searchId = 1;
-    _cancelId = -1;
-    _searcherState = null;
+
+    // For filtering results mid-search
+    _searcherState = null; 
 
     optionsChanged = (val) => {
         this.setState({
@@ -170,10 +174,10 @@ class App extends React.Component {
     startNewSearch = (searcherState, _offset, currentResults) => {
         this._searcherState = searcherState; // for live filtering
         // Start a brand new search.
-        if(this.state.searching){
-            // Already searching? Cancel running search
-            this._cancelId = this._searchId;
-        }
+        // if(this.state.searching){
+        //     // Already searching? Cancel running search
+        //     this._cancelId = this._searchId;
+        // }
         this._searchId = this._searchId + 1;
         this.search(searcherState, _offset, currentResults, this._searchId);
     }
@@ -182,7 +186,7 @@ class App extends React.Component {
         if(!this._mounted){ // User navigated away or reloaded
             return;
         }
-        if(searchId <= this._cancelId) { // Search interrupted, cancel this one
+        if(searchId < this._searchId) { // Search interrupted, cancel this one
             // console.log("Search canceled: ", searchId);
             return;
         }
@@ -327,6 +331,14 @@ class App extends React.Component {
                                     return newObject;
                                 }); 
                             }
+                        }
+                        
+                        // Verify one last time we want this before we actually commit to these results
+                        if(searchId < this._searchId) {
+                            this.setState({
+                                searching: false
+                            });
+                            return;
                         }
 
                         this.setState({
