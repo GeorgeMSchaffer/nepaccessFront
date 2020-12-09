@@ -148,7 +148,7 @@ class Main extends React.Component {
                         <div className="dropdown-content">
                             <Link to="/aboutnepaccess">About NEPAccess</Link>
                             <Link to="/abouthelpcontents">Database Contents</Link>
-                            {/* <Link to="/stats">Content Statistics</Link> */}
+                            <Link to="/stats">Content Statistics</Link>
                         </div>
                     </div>
                     {this.state.menuItems}
