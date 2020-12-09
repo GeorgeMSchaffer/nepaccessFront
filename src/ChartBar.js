@@ -2,6 +2,9 @@ import React from 'react';
 import globals from './globals.js';
 import { HorizontalBar } from 'react-chartjs-2';
 // import { Line, Pie, Doughnut, Bar, Radar, Polar, Bubble, Scatter } from 'react-chartjs-2';
+
+const chartClass = "chart-holder";
+
 export default class ChartBar extends React.Component {
     constructor(props) {
         super(props);
@@ -9,8 +12,91 @@ export default class ChartBar extends React.Component {
     }
 
     render() {
+        console.log(this.props.data);
+        // Single label source "Grouped" bar with draft and final
+        if(this.props.data && this.props.data.labels){
+            let _labels = this.props.data.labels;
+            let _dataDraft = this.props.data.valueArrayDraft;
+            let _dataFinal = this.props.data.valueArrayFinal;
+
+            const data = {
+                labels: _labels,
+                datasets: [
+                    {
+                        label: "Draft",
+                        backgroundColor: "#E66100",
+                        minBarLength: 5,
+                        data: _dataDraft,
+                    }, {
+                        label: "Final",
+                        backgroundColor: "#5D3A9B",
+                        minBarLength: 5,
+                        data: _dataFinal
+                    }
+                ]
+            };
+            
+            const options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: false,
+                    text: this.props.label
+                },
+                scales: {
+                    // offset: false,
+                    yAxes: [{
+                        gridLines: {
+                            // lineWidth: 20
+                        },
+                        ticks: {
+                            autoSkip : false,
+                            // lineHeight: 20,
+                            // fontSize: 20,
+                        },
+                        // barThickness: 10
+                    }],
+                },
+                tooltips: {
+                    backgroundColor: 'rgba(0, 0, 0, 1.0)'
+                },
+                "hover": {
+                    "animationDuration": 0
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function() {
+                        var chartInstance = this.chart,
+                        ctx = chartInstance.ctx;
+                    //   ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                    //   ctx.textAlign = 'center';
+                    //   ctx.textBaseline = 'bottom';
+                        
+                        // show value to the right of the bar
+                        this.data.datasets.forEach(function(dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function(bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x + 15, bar._model.y + 1);
+                            });
+                        });
+                    }
+                },
+            };
+    
+            return (
+                <div hidden={this.props.option!==this.props.label} className={chartClass + " " + this.props.size + " bar-holder"}>
+                    <h2 className="chart-label">{this.props.label}</h2>
+                    <HorizontalBar ref={this.chart_ref} data={data} options={options} />
+                </div>
+            );
+
+        }
         // "Grouped" bar with draft and final
-        if(this.props.data && this.props.data[0] && this.props.data[1]){ 
+        else if(this.props.data && this.props.data[0] && this.props.data[1]){ 
 
             let _labelsDraft = this.props.data[0].labelArrayDraft;
             // draft/final labels should be the same, and in the same order
@@ -87,7 +173,7 @@ export default class ChartBar extends React.Component {
             };
     
             return (
-                <div hidden={this.props.option!==this.props.label} className="chart-holder-larger bar-holder">
+                <div hidden={this.props.option!==this.props.label} className={chartClass + " " + this.props.size + " bar-holder"}>
                     <h2 className="chart-label">{this.props.label}</h2>
                     <HorizontalBar ref={this.chart_ref} data={data} options={options} />
                 </div>
@@ -160,7 +246,7 @@ export default class ChartBar extends React.Component {
             }
     
             return (
-                <div hidden={this.props.option!==this.props.label} className="chart-holder bar-holder">
+                <div hidden={this.props.option!==this.props.label} className={chartClass + " " + this.props.size + " bar-holder"}>
                     <h2 className="chart-label">{this.props.label}</h2>
                     <HorizontalBar ref={this.chart_ref} data={data} options={options} />
                 </div>

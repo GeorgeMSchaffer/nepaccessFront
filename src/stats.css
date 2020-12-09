@@ -12,8 +12,12 @@
     height: 1000px;
 }
 
-.chart-holder-larger {
+.chart-holder.larger {
     height: 2000px;
+}
+
+.chart-holder.largest {
+    height: 3000px;
 }
 
 .chart-label {

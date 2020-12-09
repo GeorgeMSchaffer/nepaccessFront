@@ -12,6 +12,7 @@ export default class AboutStats extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { 
+            agencyLabels: [],
             typeCount: [],
 			downloadableCountByType: [],
             draftFinalCountByYear: [],
@@ -141,11 +142,11 @@ export default class AboutStats extends React.Component {
         
     }
     getDraftFinalCountByAgency = () => {
-        let populateUrl = Globals.currentHost + "stats/draft_final_count_agency";
+        let labelUrl = Globals.currentHost + "stats/agencies";
         
-        axios.get(populateUrl, {
+        axios.get(labelUrl, {
             params: {
-                id: this.state.detailsID
+                
             }
         }).then(response => {
             let responseOK = response && response.status === 200;
@@ -157,7 +158,32 @@ export default class AboutStats extends React.Component {
         }).then(parsedJson => { 
             if(parsedJson){
                 this.setState({
-                    draftFinalCountByAgency: transformLongerArrayOfArrays(parsedJson)
+                    agencyLabels: parsedJson
+                });
+            } else { // null/404
+
+            }
+        }).catch(error => {
+            
+        });
+
+        let populateUrl = Globals.currentHost + "stats/draft_final_count_agency";
+        
+        axios.get(populateUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data && response.data.length > 0) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            if(parsedJson){
+                this.setState({
+                    draftFinalCountByAgency: transformAgencyArrays(parsedJson, this.state.agencyLabels)
                 });
             } else { // null/404
 
@@ -198,9 +224,9 @@ export default class AboutStats extends React.Component {
                 <ChartBar data={this.state.draftFinalCountByState[0]} label={"Draft count by state"} />
                 <ChartBar data={this.state.draftFinalCountByState[1]} label={"Final count by state"} /> */}
                 
-                <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
+                <ChartBar size="larger" option={this.state.chartOption.value} data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
                 <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
-                <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} />
+                <ChartBar size="largest" option={this.state.chartOption.value} data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} />
             </div>
         );
     }
@@ -209,6 +235,7 @@ export default class AboutStats extends React.Component {
 
 // For array of 2-length arrays
 function transformArrayOfArrays(source) {
+    console.log("Source",source);
     let labelArray = [];
     let valueArray = [];
     for(let i = 0; i < source.length; i++) {
@@ -219,8 +246,9 @@ function transformArrayOfArrays(source) {
     return {labelArray,valueArray};
 }
 
-// 3-length case (e.g. agency categorized by draft or final, with count)
+// 3-length case: agency categorized by draft or final, with count
 function transformLongerArrayOfArrays(source) {
+    console.log("Source",source);
     let labelArrayDraft = [];
     let valueArrayDraft = [];
     let labelArrayFinal = [];
@@ -243,6 +271,39 @@ function transformLongerArrayOfArrays(source) {
             valueArrayFinal.push(source[i][2]);
         }
     }
+
+    console.log("After",[ {labelArrayDraft,valueArrayDraft}, {labelArrayFinal,valueArrayFinal} ])
     
     return [ {labelArrayDraft,valueArrayDraft}, {labelArrayFinal,valueArrayFinal} ];
+}
+
+// TODO: Everything should be like this, or else a different SQL query, for robustness: 
+// To account for different label counts like we see with agency drafts vs. finals.
+function transformAgencyArrays(source, labels) {
+    
+    // Prefill with zeroes at same length as array of all possible labels for complete data
+    let valueArrayDraft = new Array(labels.length).fill(0);
+    let valueArrayFinal = new Array(labels.length).fill(0);
+    
+    // undefined states coming in first?
+    if(!source[0][1]){
+        source[0][1] = "Undefined";
+    }
+    if(!source[1][1]){
+        source[1][1] = "Undefined";
+    }
+
+    for(let n = 0; n < labels.length; n++) {
+        for(let i = 0; i < source.length; i++) {
+            if(source[i][1].match(labels[n])) {
+                if(source[i][0]==="Draft"){
+                    valueArrayDraft[n] = source[i][2];
+                } else {
+                    valueArrayFinal[n] = source[i][2];
+                }
+            }
+        }
+    }
+    
+    return {labels,valueArrayDraft,valueArrayFinal};
 }
