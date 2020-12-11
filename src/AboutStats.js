@@ -467,7 +467,7 @@ function transformDocTypeArrays(source) {
 
 function transformYearStack(source, labelArray) {
 
-    console.log("Source", source);
+    // console.log("Source", source);
     
     // Prefill with zeroes at same length as array of all possible labels for complete data
     let valueArray = new Array(labelArray.length).fill(0);

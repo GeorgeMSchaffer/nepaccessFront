@@ -12,7 +12,7 @@ export default class ChartBar extends React.Component {
     }
 
     render() {
-        console.log(this.props.data);
+        // console.log(this.props.data);
         if(this.props.stacked && this.props.meta && this.props.down){ 
 
             let _labels = this.props.meta.labelArray;
