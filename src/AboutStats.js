@@ -307,3 +307,5 @@ function transformAgencyArrays(source, labels) {
     
     return {labels,valueArrayDraft,valueArrayFinal};
 }
+
+// TODO: Will need custom document type sorting and consolidation according to new notes
