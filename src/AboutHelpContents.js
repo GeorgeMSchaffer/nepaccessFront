@@ -16,6 +16,11 @@ export default class AboutHelpContents extends React.Component {
             finalCountDownloadable: null,
             draftCountDownloadable: null
         }
+        
+        this.getDraftCount();
+        this.getFinalCount();
+        this.getDraftCountDownloadable();
+        this.getFinalCountDownloadable();
     }
     
     getFinalCount = () => {
@@ -170,9 +175,5 @@ export default class AboutHelpContents extends React.Component {
     }
 
     componentDidMount() {
-        this.getDraftCount();
-        this.getFinalCount();
-        this.getDraftCountDownloadable();
-        this.getFinalCountDownloadable();
     }
 }
