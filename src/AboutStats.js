@@ -7,6 +7,20 @@ import ChartBar from './ChartBar.js';
 
 import './stats.css';
 
+const typeLabels = ["Draft",
+    "Final",
+    "Second Draft",
+    "Second Final",
+    "Revised Draft",
+    "Revised Final",
+    "Draft Supplement",
+    "Final Supplement",
+    "Second Draft Supplemental",
+    "Second Final Supplemental",
+    "Third Draft Supplemental",
+    "Third Final Supplemental",
+    "Other"];
+
 export default class AboutStats extends React.Component {
     
 	constructor(props) {
@@ -50,7 +64,7 @@ export default class AboutStats extends React.Component {
         }).then(parsedJson => {
             if(parsedJson){
                 this.setState({
-                    typeCount: transformArrayOfArrays(parsedJson.sort())
+                    typeCount: transformDocTypeArrays(parsedJson)
                 });
             } else { // null/404
 
@@ -77,7 +91,7 @@ export default class AboutStats extends React.Component {
         }).then(parsedJson => { 
             if(parsedJson){
                 this.setState({
-                    downloadableCountByType: transformArrayOfArrays(parsedJson.sort())
+                    downloadableCountByType: transformDocTypeArrays(parsedJson)
                 });
             } else { // null/404
 
@@ -235,7 +249,7 @@ export default class AboutStats extends React.Component {
 
 // For array of 2-length arrays
 function transformArrayOfArrays(source) {
-    console.log("Source",source);
+    // console.log("Source",source);
     let labelArray = [];
     let valueArray = [];
     for(let i = 0; i < source.length; i++) {
@@ -248,7 +262,7 @@ function transformArrayOfArrays(source) {
 
 // 3-length case: agency categorized by draft or final, with count
 function transformLongerArrayOfArrays(source) {
-    console.log("Source",source);
+    // console.log("Source",source);
     let labelArrayDraft = [];
     let valueArrayDraft = [];
     let labelArrayFinal = [];
@@ -272,7 +286,7 @@ function transformLongerArrayOfArrays(source) {
         }
     }
 
-    console.log("After",[ {labelArrayDraft,valueArrayDraft}, {labelArrayFinal,valueArrayFinal} ])
+    // console.log("After",[ {labelArrayDraft,valueArrayDraft}, {labelArrayFinal,valueArrayFinal} ])
     
     return [ {labelArrayDraft,valueArrayDraft}, {labelArrayFinal,valueArrayFinal} ];
 }
@@ -284,18 +298,10 @@ function transformAgencyArrays(source, labels) {
     // Prefill with zeroes at same length as array of all possible labels for complete data
     let valueArrayDraft = new Array(labels.length).fill(0);
     let valueArrayFinal = new Array(labels.length).fill(0);
-    
-    // undefined states coming in first?
-    if(!source[0][1]){
-        source[0][1] = "Undefined";
-    }
-    if(!source[1][1]){
-        source[1][1] = "Undefined";
-    }
 
     for(let n = 0; n < labels.length; n++) {
         for(let i = 0; i < source.length; i++) {
-            if(source[i][1].match(labels[n])) {
+            if(source[i][1] === (labels[n])) {
                 if(source[i][0]==="Draft"){
                     valueArrayDraft[n] = source[i][2];
                 } else {
@@ -308,4 +314,35 @@ function transformAgencyArrays(source, labels) {
     return {labels,valueArrayDraft,valueArrayFinal};
 }
 
-// TODO: Will need custom document type sorting and consolidation according to new notes
+
+function transformDocTypeArrays(source) {
+
+    const labelArray = typeLabels;
+
+    console.log(source);
+    
+    // Prefill with zeroes at same length as array of all possible labels for complete data
+    let valueArray = new Array(labelArray.length).fill(0);
+    let consumedArray = new Array(source.length).fill(false);
+
+    // for each of our labels excl. Other (final item in array), see if a source matches
+    for(let n = 0; n < labelArray.length - 1; n++) {
+        for(let i = 0; i < source.length; i++) {
+            // if not consumed and labels are equal (source labels are in source[i][0])
+            if(!consumedArray[i] && source[i][0] === (labelArray[n])) {
+                valueArray[n] = source[i][1];
+                consumedArray[i] = true;
+            }
+        }
+    }
+
+    for(let i = 0; i < consumedArray.length; i++) {
+        // If didn't find a match: Add to "Other" which should be valueArray[valueArray.length - 1]
+        if(!consumedArray[i]){
+            // console.log("Other", source[i][0], source[i][1]);
+            valueArray[valueArray.length - 1] += source[i][1];
+        }
+    }
+    
+    return {labelArray,valueArray};
+}
