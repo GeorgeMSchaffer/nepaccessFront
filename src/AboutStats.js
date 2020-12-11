@@ -45,9 +45,10 @@ export default class AboutStats extends React.Component {
         this.getDownloadableCountByType();
         this.getDraftFinalCountByAgency();
         this.getDraftFinalCountByState();
-        this.getDraftFinalCountByYear();
-        this.getMetadataCountByYear();
-        this.getDownloadableCountByYear();
+        this.getYears();
+        // this.getDraftFinalCountByYear();
+        // this.getMetadataCountByYear();
+        // this.getDownloadableCountByYear();
     }
 
     getTypeCount = () => {
@@ -104,36 +105,39 @@ export default class AboutStats extends React.Component {
         });
         
     }
+
+    getYears = () => {
+        let labelUrl = Globals.currentHost + "stats/years";
+
+        axios.get(labelUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data && response.data.length > 0) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            if(parsedJson){
+                this.setState({
+                    yearLabels: parsedJson
+                }, () => {
+                    this.getDraftFinalCountByYear();
+                    this.getMetadataCountByYear();
+                    this.getDownloadableCountByYear();
+                });
+            } else { // null/404
+
+            }
+        }).catch(error => {
+            
+        });
+    }
     
     getMetadataCountByYear = () => {
-
-        if(this.state.yearLabels.length < 1) {
-            let labelUrl = Globals.currentHost + "stats/years";
-
-            axios.get(labelUrl, {
-                params: {
-                    
-                }
-            }).then(response => {
-                let responseOK = response && response.status === 200;
-                if (responseOK && response.data && response.data.length > 0) {
-                    return response.data;
-                } else {
-                    return null;
-                }
-            }).then(parsedJson => { 
-                if(parsedJson){
-                    this.setState({
-                        yearLabels: parsedJson
-                    });
-                } else { // null/404
-
-                }
-            }).catch(error => {
-                
-            });
-        }
-
         let populateUrl = Globals.currentHost + "stats/count_year";
         
         axios.get(populateUrl, {
@@ -161,33 +165,6 @@ export default class AboutStats extends React.Component {
         
     }
     getDownloadableCountByYear = () => {
-
-        if(this.state.yearLabels.length < 1) {
-            let labelUrl = Globals.currentHost + "stats/years";
-
-            axios.get(labelUrl, {
-                params: {
-                    
-                }
-            }).then(response => {
-                let responseOK = response && response.status === 200;
-                if (responseOK && response.data && response.data.length > 0) {
-                    return response.data;
-                } else {
-                    return null;
-                }
-            }).then(parsedJson => { 
-                if(parsedJson){
-                    this.setState({
-                        yearLabels: parsedJson
-                    });
-                } else { // null/404
-
-                }
-            }).catch(error => {
-                
-            });
-        }
 
         let populateUrl = Globals.currentHost + "stats/count_year_downloadable";
         
@@ -233,7 +210,7 @@ export default class AboutStats extends React.Component {
         }).then(parsedJson => { 
             if(parsedJson){
                 this.setState({
-                    draftFinalCountByYear: transformLongerArrayOfArrays(parsedJson)
+                    draftFinalCountByYear: transformArraysWithLabels(parsedJson, this.state.yearLabels)
                 });
             } else { // null/404
 
@@ -314,7 +291,7 @@ export default class AboutStats extends React.Component {
         }).then(parsedJson => { 
             if(parsedJson){
                 this.setState({
-                    draftFinalCountByAgency: transformAgencyArrays(parsedJson, this.state.agencyLabels)
+                    draftFinalCountByAgency: transformArraysWithLabels(parsedJson, this.state.agencyLabels)
                 });
             } else { // null/404
 
@@ -412,7 +389,7 @@ function transformLongerArrayOfArrays(source) {
 
 // TODO: Everything should be like this, or else a different SQL query, for robustness: 
 // To account for different label counts like we see with agency drafts vs. finals.
-function transformAgencyArrays(source, labels) {
+function transformArraysWithLabels(source, labels) {
     
     // Prefill with zeroes at same length as array of all possible labels for complete data
     let valueArrayDraft = new Array(labels.length).fill(0);
@@ -468,6 +445,7 @@ function transformDocTypeArrays(source) {
 function transformYearStack(source, labelArray) {
 
     // console.log("Source", source);
+    // console.log("Labels", labelArray);
     
     // Prefill with zeroes at same length as array of all possible labels for complete data
     let valueArray = new Array(labelArray.length).fill(0);
