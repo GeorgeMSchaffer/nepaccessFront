@@ -13,8 +13,108 @@ export default class ChartBar extends React.Component {
 
     render() {
         console.log(this.props.data);
+        if(this.props.stacked && this.props.meta && this.props.down){ 
+
+            let _labels = this.props.meta.labelArray;
+            let _down = this.props.down.valueArray;
+            let _meta = this.props.meta.valueArray;
+
+            // let _datasets = [];
+
+            // _dataDraft.forEach((datum) => {
+            //     _datasets.push(
+            //         {
+            //             label:this.props.label,
+            //             data: datum,
+            //             minBarLength: 5,
+            //             backgroundColor: globals.colors,
+            //             borderColor: globals.colors,
+            //             borderWidth: 1
+            //         }
+            //     )
+            // });
+
+            const data = {
+                labels: _labels,
+                datasets: [
+                    {
+                        label: "Downloadable",
+                        backgroundColor: "#E66100",
+                        minBarLength: 5,
+                        data: _down,
+                    }, {
+                        label: "Metadata",
+                        backgroundColor: "#5D3A9B",
+                        minBarLength: 5,
+                        data: _meta
+                    }
+                ]
+            };
+            
+            const options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: false,
+                    text: this.props.label
+                },
+                scales: {
+                    // offset: false,
+                    yAxes: [{
+                        gridLines: {
+                            // lineWidth: 20
+                        },
+                        ticks: {
+                            autoSkip : false,
+                            // lineHeight: 20,
+                            // fontSize: 20,
+                        },
+                        stacked: true
+                        // barThickness: 10
+                    }],
+                    xAxes: [{ stacked: false }],
+                },
+                tooltips: {
+                    backgroundColor: 'rgba(0, 0, 0, 1.0)'
+                },
+                "hover": {
+                    "animationDuration": 0
+                },
+                // "animation": {
+                //     "duration": 1,
+                //     "onComplete": function() {
+                //         var chartInstance = this.chart,
+                //         ctx = chartInstance.ctx;
+                //     //   ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                //     //   ctx.textAlign = 'center';
+                //     //   ctx.textBaseline = 'bottom';
+                        
+                //         // show value to the right of the bar
+                //         this.data.datasets.forEach(function(dataset, i) {
+                //             var meta = chartInstance.controller.getDatasetMeta(i);
+                //             meta.data.forEach(function(bar, index) {
+                //                 var data = dataset.data[index];
+                //                 ctx.fillText(data, bar._model.x + 15, bar._model.y + 1);
+                //             });
+                //         });
+                //     }
+                // },
+                
+            };
+    
+            return (
+                <div hidden={this.props.option!==this.props.label} className={chartClass + " " + this.props.size + " bar-holder"}>
+                    <h2 className="chart-label">{this.props.label}</h2>
+                    <HorizontalBar ref={this.chart_ref} data={data} options={options} />
+                </div>
+            );
+            
+        }
         // Single label source "Grouped" bar with draft and final
-        if(this.props.data && this.props.data.labels){
+        else if(this.props.data && this.props.data.labels){
             let _labels = this.props.data.labels;
             let _dataDraft = this.props.data.valueArrayDraft;
             let _dataFinal = this.props.data.valueArrayFinal;

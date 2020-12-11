@@ -27,6 +27,7 @@ export default class AboutStats extends React.Component {
 		super(props);
 		this.state = { 
             agencyLabels: [],
+            yearLabels: [],
             typeCount: [],
 			downloadableCountByType: [],
             draftFinalCountByYear: [],
@@ -45,6 +46,8 @@ export default class AboutStats extends React.Component {
         this.getDraftFinalCountByAgency();
         this.getDraftFinalCountByState();
         this.getDraftFinalCountByYear();
+        this.getMetadataCountByYear();
+        this.getDownloadableCountByYear();
     }
 
     getTypeCount = () => {
@@ -101,6 +104,118 @@ export default class AboutStats extends React.Component {
         });
         
     }
+    
+    getMetadataCountByYear = () => {
+
+        if(this.state.yearLabels.length < 1) {
+            let labelUrl = Globals.currentHost + "stats/years";
+
+            axios.get(labelUrl, {
+                params: {
+                    
+                }
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK && response.data && response.data.length > 0) {
+                    return response.data;
+                } else {
+                    return null;
+                }
+            }).then(parsedJson => { 
+                if(parsedJson){
+                    this.setState({
+                        yearLabels: parsedJson
+                    });
+                } else { // null/404
+
+                }
+            }).catch(error => {
+                
+            });
+        }
+
+        let populateUrl = Globals.currentHost + "stats/count_year";
+        
+        axios.get(populateUrl, {
+            params: {
+
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data && response.data.length > 0) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            if(parsedJson){
+                this.setState({
+                    metadataCountByYear: transformYearStack(parsedJson, this.state.yearLabels)
+                });
+            } else { // null/404
+
+            }
+        }).catch(error => {
+            
+        });
+        
+    }
+    getDownloadableCountByYear = () => {
+
+        if(this.state.yearLabels.length < 1) {
+            let labelUrl = Globals.currentHost + "stats/years";
+
+            axios.get(labelUrl, {
+                params: {
+                    
+                }
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK && response.data && response.data.length > 0) {
+                    return response.data;
+                } else {
+                    return null;
+                }
+            }).then(parsedJson => { 
+                if(parsedJson){
+                    this.setState({
+                        yearLabels: parsedJson
+                    });
+                } else { // null/404
+
+                }
+            }).catch(error => {
+                
+            });
+        }
+
+        let populateUrl = Globals.currentHost + "stats/count_year_downloadable";
+        
+        axios.get(populateUrl, {
+            params: {
+
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data && response.data.length > 0) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            if(parsedJson){
+                this.setState({
+                    downloadableCountByYear: transformYearStack(parsedJson, this.state.yearLabels)
+                });
+            } else { // null/404
+
+            }
+        }).catch(error => {
+            
+        });
+        
+    }
+
     getDraftFinalCountByYear = () => {
         let populateUrl = Globals.currentHost + "stats/draft_final_count_year";
         
@@ -128,6 +243,7 @@ export default class AboutStats extends React.Component {
         });
         
     }
+
     getDraftFinalCountByState = () => {
         let populateUrl = Globals.currentHost + "stats/draft_final_count_state";
         
@@ -155,6 +271,7 @@ export default class AboutStats extends React.Component {
         });
         
     }
+    
     getDraftFinalCountByAgency = () => {
         let labelUrl = Globals.currentHost + "stats/agencies";
         
@@ -219,6 +336,7 @@ export default class AboutStats extends React.Component {
             {value: "Downloadable Count by Document Type", label: "Downloadable Count by Document Type"},
             {value: "Draft and Final Count by State", label: "Draft and Final Count by State"},
             {value: "Draft and Final Count by Year", label: "Draft and Final Count by Year"},
+            {value: "Downloadable Ratio by Year", label: "Downloadable Ratio by Year"},
             {value: "Draft and Final Count by Agency", label: "Draft and Final Count by Agency"}
         ]
         return (<div className="charts-holder">
@@ -240,6 +358,7 @@ export default class AboutStats extends React.Component {
                 
                 <ChartBar size="larger" option={this.state.chartOption.value} data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
                 <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
+                <ChartBar stacked={true} option={this.state.chartOption.value} meta={this.state.metadataCountByYear} down={this.state.downloadableCountByYear} label={"Downloadable Ratio by Year"} />
                 <ChartBar size="largest" option={this.state.chartOption.value} data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} />
             </div>
         );
@@ -248,17 +367,17 @@ export default class AboutStats extends React.Component {
 }
 
 // For array of 2-length arrays
-function transformArrayOfArrays(source) {
-    // console.log("Source",source);
-    let labelArray = [];
-    let valueArray = [];
-    for(let i = 0; i < source.length; i++) {
-        labelArray.push(source[i][0]);
-        valueArray.push(source[i][1]);
-    }
+// function transformArrayOfArrays(source) {
+//     // console.log("Source",source);
+//     let labelArray = [];
+//     let valueArray = [];
+//     for(let i = 0; i < source.length; i++) {
+//         labelArray.push(source[i][0]);
+//         valueArray.push(source[i][1]);
+//     }
     
-    return {labelArray,valueArray};
-}
+//     return {labelArray,valueArray};
+// }
 
 // 3-length case: agency categorized by draft or final, with count
 function transformLongerArrayOfArrays(source) {
@@ -314,12 +433,11 @@ function transformAgencyArrays(source, labels) {
     return {labels,valueArrayDraft,valueArrayFinal};
 }
 
-
 function transformDocTypeArrays(source) {
 
     const labelArray = typeLabels;
 
-    console.log(source);
+    // console.log(source);
     
     // Prefill with zeroes at same length as array of all possible labels for complete data
     let valueArray = new Array(labelArray.length).fill(0);
@@ -344,5 +462,24 @@ function transformDocTypeArrays(source) {
         }
     }
     
+    return {labelArray,valueArray};
+}
+
+function transformYearStack(source, labelArray) {
+
+    console.log("Source", source);
+    
+    // Prefill with zeroes at same length as array of all possible labels for complete data
+    let valueArray = new Array(labelArray.length).fill(0);
+
+    // for each of our labels excl. Other (final item in array), see if a source matches
+    for(let n = 0; n < labelArray.length - 1; n++) {
+        for(let i = 0; i < source.length; i++) {
+            if(source[i][0] === (labelArray[n])) {
+                valueArray[n] = source[i][1];
+            }
+        }
+    }
+
     return {labelArray,valueArray};
 }
