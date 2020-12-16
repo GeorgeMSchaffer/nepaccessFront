@@ -474,3 +474,7 @@ span.email-text {
     text-align: center;
     margin: auto;
 }
+
+.warning {
+    color: red !important;
+}

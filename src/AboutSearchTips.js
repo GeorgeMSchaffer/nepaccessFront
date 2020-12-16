@@ -97,7 +97,7 @@ export default class AboutSearchTips extends React.Component {
                             </tr>
                             <tr>
                                 <td>
-                                    <span className="color">NOT</span>, or <span className="color">-</span></td>
+                                    <span className="color">NOT</span> or <span className="color">-</span></td>
                                 <td>Exclude a word or phrase.</td>
                                 <td>
                                     <span className="color">Mining -copper</span> will return all results including the term <span className="color">mining</span> but <span className="bold">not</span> the term <span className="color">copper</span>.
@@ -120,7 +120,7 @@ export default class AboutSearchTips extends React.Component {
                                 <td>Searching for <span className="color">te?t</span> would return "text" and “test, and <span className="color">tes?</span> Will return <span className="color">test</span>, and acronyms like <span className="color">TESP</span> (Threatened, Endangered, and Sensitive Plants).</td>
                             </tr>
                             <tr>
-                                <td><span className="color">OR,</span> <span className="color">|</span> or <span className="color">||</span></td>
+                                <td><span className="color">OR</span>, <span className="color">|</span>, or <span className="color">||</span></td>
                                 <td>This will return results related to either search term or to both.</td>
                                 <td className="color">highways OR viaducts, highways | viaducts,  highways || viaducts </td>
                             </tr>
@@ -130,7 +130,7 @@ export default class AboutSearchTips extends React.Component {
                                 <td>For example, to search for a <span className="color">mine</span> and <span className="color">Tribe</span> within 20 words of each other in a document use the search-term: <span className="color">"mine Tribe"~20</span></td>
                             </tr>
                             <tr>
-                                <td>Combine  multiple operations for more complex queries.</td>
+                                <td className="color">()</td>
                                 <td>Use parentheses to specify the order of operations and scope of the modifiers. </td>
                                 <td>This search-term modifier combines the AND Boolean operator with proximity search:  
                                     <div className="color">("copper mining" ~10) AND ("desert tortoise" OR "desert toad")</div>

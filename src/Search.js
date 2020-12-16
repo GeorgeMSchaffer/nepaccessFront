@@ -311,7 +311,7 @@ class Search extends React.Component {
                 <span className="sidebar-header">Narrow your results</span>
                 <div className="sidebar-hr"></div>
                 <div className="filter">
-                    <label className="sidebar-label" htmlFor="searchAgency">Lead agency</label>
+                    <label className="sidebar-label" htmlFor="searchAgency">Lead agency or agencies</label>
                     <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
                         styles={customStyles}
                         options={agencyOptions} 
@@ -323,7 +323,7 @@ class Search extends React.Component {
                     />
                 </div>
                 <div className="filter">
-                    <label className="sidebar-label" htmlFor="searchState">State</label>
+                    <label className="sidebar-label" htmlFor="searchState">State(s) or regions</label>
                     <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
                         styles={customStyles}
                         options={stateOptions} 
@@ -366,14 +366,14 @@ class Search extends React.Component {
                             <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
                                     checked={this.state.typeDraft} onChange={this.onTypeChecked} />
                             <label className="checkbox-text" htmlFor="typeDraft">
-                                Draft
+                                Draft EIS
                             </label>
                         </div>
                         <div className="checkbox-container">
                             <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
                                     checked={this.state.typeFinal} onChange={this.onTypeChecked} />
                             <label className="checkbox-text" htmlFor="typeFinal">
-                                Final
+                                Final EIS
                             </label>
                         </div>
                     </div>

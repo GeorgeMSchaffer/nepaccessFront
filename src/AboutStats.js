@@ -313,7 +313,7 @@ export default class AboutStats extends React.Component {
             {value: "Downloadable Count by Document Type", label: "Downloadable Count by Document Type"},
             {value: "Draft and Final Count by State", label: "Draft and Final Count by State"},
             {value: "Draft and Final Count by Year", label: "Draft and Final Count by Year"},
-            {value: "Downloadable Ratio by Year", label: "Downloadable Ratio by Year"},
+            {value: "Downloadable Draft or Final EIS by Year", label: "Downloadable Draft or Final EIS by Year"},
             {value: "Draft and Final Count by Agency", label: "Draft and Final Count by Agency"}
         ]
         return (<div className="charts-holder">
@@ -323,7 +323,7 @@ export default class AboutStats extends React.Component {
                         onChange={this.onDropdownChange}
                         value={this.state.chartOption}
                         placeholder="Type or select" 
-                        />
+                />
                 <ChartBar option={this.state.chartOption.value} data={this.state.typeCount} label={"Record Count by Document Type"} />
                 <ChartBar option={this.state.chartOption.value} data={this.state.downloadableCountByType} label={"Downloadable Count by Document Type"} />
                 {/* <ChartBar data={this.state.draftFinalCountByAgency[0]} label={"Draft count by agency"} />
@@ -335,7 +335,7 @@ export default class AboutStats extends React.Component {
                 
                 <ChartBar size="larger" option={this.state.chartOption.value} data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
                 <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
-                <ChartBar stacked={true} option={this.state.chartOption.value} meta={this.state.metadataCountByYear} down={this.state.downloadableCountByYear} label={"Downloadable Ratio by Year"} />
+                <ChartBar stacked={true} option={this.state.chartOption.value} meta={this.state.metadataCountByYear} down={this.state.downloadableCountByYear} label={"Downloadable Draft or Final EIS by Year"} />
                 <ChartBar size="largest" option={this.state.chartOption.value} data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} />
             </div>
         );

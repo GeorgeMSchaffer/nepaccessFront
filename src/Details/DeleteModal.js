@@ -91,7 +91,7 @@ export default class DeleteFileLink extends React.Component {
         // console.log("Build modal with ID", this.props.idToDelete);
     
         return (
-            <button className='link block right' onClick={e => {
+            <button className='link block right warning' onClick={e => {
                 this.showModal();
             }}>
                 Delete EISDoc and all indexed texts (cannot be undone, but source files will remain on server)
