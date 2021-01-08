@@ -155,10 +155,10 @@ class CardResult extends React.Component {
 
             return (
 
-                <div className="fragment-container" hidden={!this.props.show}>
+                <div hidden={!this.props.show}>
                     {combined.map(function(combo, index){
                         return (
-                            <span key={ index }>
+                            <span className="fragment-container" key={ index }>
                                 <span className="cardHeader bold filename-inner">
                                     {combo[0]}
                                 </span>

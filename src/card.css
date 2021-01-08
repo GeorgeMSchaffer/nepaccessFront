@@ -85,6 +85,7 @@ span.highlight {
 }
 
 .fragment-container {
+    display: block;
     margin: 15px 10px 0px 10px;
 }
 span.fragment {
