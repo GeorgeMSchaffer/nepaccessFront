@@ -145,10 +145,11 @@ class CardResult extends React.Component {
     }
     // End goal: Show list of filenames each with highlight(s) as highlights are populated
     showTextTest = () => {
+        console.log(this.props);
         if(this.props && this.props.cell._cell.row.data.name){
             let filenames = this.props.cell._cell.row.data.name.split(">");
-            // Note: Soon, we will use a Collection for highlights, not a delimited string.
-            let texts = this.props.cell._cell.row.data.plaintext.split(">");
+            // Note: texts should be an array already
+            let texts = this.props.cell._cell.row.data.plaintext;
             let combined = filenames.map(function (value, index){
                 return [value, texts[index]]
             });
