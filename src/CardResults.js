@@ -43,6 +43,7 @@ class CardResults extends React.Component {
         // window.addEventListener('resize', this.handleResize);
     }
 
+    // Broke sorting.
     // shouldComponentUpdate(nextProps, nextState) {
     //     // console.log("Results",nextProps.results===this.props.results); 
     //     // console.log("Text",nextProps.resultsText===this.props.resultsText); 

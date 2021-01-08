@@ -6,6 +6,9 @@ import Globals from './globals.js';
 import CardDetailsLink from './CardDetailsLink.js';
 
 // TODO: May be wise to have child components for each element that may change (i.e. download links)
+// TODO: Right now, results from initialSearch include a filename string with zero to many 
+// comma-separated filenames.  So, CardResult will have to parse that, 
+// and distribute highlights appropriately.
 
 class CardResult extends React.Component {
 
@@ -143,21 +146,22 @@ class CardResult extends React.Component {
     // End goal: Show list of filenames each with highlight(s) as highlights are populated
     showTextTest = () => {
         if(this.props && this.props.cell._cell.row.data.name){
-            let innerFilename = "";
-            if(this.props.cell._cell.row.data.name){
-                innerFilename = this.props.cell._cell.row.data.name;
+            let filenames = this.props.cell._cell.row.data.name.split(">");
+            let texts = this.props.cell._cell.row.data.plaintext.split(">");
+            
+            for(let i = 0; i < filenames.length; i++){
+                return (
+                    <div className="fragment-container">
+                        <span className="cardHeader bold filename-inner">
+                            {filenames[i]}
+                        </span>
+                        <span hidden={!this.props.show} 
+                            dangerouslySetInnerHTML={{
+                                __html: texts[i]
+                        }} />
+                    </div>
+                );
             }
-            return (
-                <div className="fragment-container">
-                    <span className="cardHeader bold filename-inner">
-                        {innerFilename}
-                    </span>
-                    <span hidden={!this.props.show} 
-                        dangerouslySetInnerHTML={{
-                            __html: this.props.cell._cell.row.data.plaintext
-                    }} />
-                </div>
-            );
         } else if(this.props && this.props.cell._cell.row.data.matchPercent) {
             return (
                 <div className="fragment-container">
