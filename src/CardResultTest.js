@@ -147,21 +147,32 @@ class CardResult extends React.Component {
     showTextTest = () => {
         if(this.props && this.props.cell._cell.row.data.name){
             let filenames = this.props.cell._cell.row.data.name.split(">");
+            // Note: Soon, we will use a Collection for highlights, not a delimited string.
             let texts = this.props.cell._cell.row.data.plaintext.split(">");
+            let combined = filenames.map(function (value, index){
+                return [value, texts[index]]
+            });
+
+            return (
+
+                <div className="fragment-container" hidden={!this.props.show}>
+                    {combined.map(function(combo, index){
+                        return (
+                            <span key={ index }>
+                                <span className="cardHeader bold filename-inner">
+                                    {combo[0]}
+                                </span>
+                                
+                                <span className="card-highlight">
+                                    {combo[1]}
+                                </span>
+                            </span>
+                        );
+                    })}
+                </div>
+            );
             
-            for(let i = 0; i < filenames.length; i++){
-                return (
-                    <div className="fragment-container">
-                        <span className="cardHeader bold filename-inner">
-                            {filenames[i]}
-                        </span>
-                        <span hidden={!this.props.show} 
-                            dangerouslySetInnerHTML={{
-                                __html: texts[i]
-                        }} />
-                    </div>
-                );
-            }
+
         } else if(this.props && this.props.cell._cell.row.data.matchPercent) {
             return (
                 <div className="fragment-container">
