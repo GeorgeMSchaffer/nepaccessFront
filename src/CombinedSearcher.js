@@ -322,12 +322,12 @@ class CombinedSearcher extends React.Component {
                 <table id="advanced-search-box" hidden={!this.state.optionsChecked}><tbody>
                     <tr>
                         <td>
-                            <label className="advanced-label" htmlFor="searchAgency">Lead agency</label>
+                            <label className="advanced-label" htmlFor="searchAgency">Lead agency or agencies</label>
                             <Select id="searchAgency" className="multi inline-block" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
-                                styles={customStyles}
+                                styles={customStyles} 
                                 options={agencyOptions} 
                                 onChange={this.onAgencyChange} 
-                                value={this.state.agencyRaw}
+                                value={this.state.agencyRaw} 
                                 placeholder="Type or select lead agency" 
                                 // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
                                 // menuIsOpen={true}
@@ -337,7 +337,7 @@ class CombinedSearcher extends React.Component {
                             </svg>
                         </td>
                         <td>
-                            <label className="advanced-label" htmlFor="searchState">State</label>
+                            <label className="advanced-label" htmlFor="searchState">State(s)</label>
                             <Select id="searchState" className="multi inline-block" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
                                 styles={customStyles}
                                 options={stateOptions} 
@@ -355,14 +355,14 @@ class CombinedSearcher extends React.Component {
                                 <label className="advanced-checkbox-label flex-center">
                                     <input type="checkbox" name="typeDraft" 
                                         checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                    <span>Draft</span>
+                                    <span>Draft EIS</span>
                                 </label>
                             </div>
                             <div>
                                 <label className="advanced-checkbox-label flex-center">
                                     <input type="checkbox" name="typeFinal" 
                                         checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                    <span>Final</span>
+                                    <span>Final EIS</span>
                                 </label>
                             </div>
                         </td>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import ResultsHeader from './ResultsHeader.js';
 
-import CardResult from './CardResult.js';
+import CardResultTest from './CardResultTest.js';
 
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
@@ -43,6 +43,8 @@ class CardResults extends React.Component {
         // window.addEventListener('resize', this.handleResize);
     }
 
+    // This logic broke sorting.  Somehow, results from both next and this.props were already sorted.
+    // So the results were identical
     // shouldComponentUpdate(nextProps, nextState) {
     //     // console.log("Results",nextProps.results===this.props.results); 
     //     // console.log("Text",nextProps.resultsText===this.props.resultsText); 
@@ -98,7 +100,7 @@ class CardResults extends React.Component {
         let _columns = [];
         if(this.props.results && this.props.results[0]){
             _columns = [
-                { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
+                { title: "", field: "", formatter: reactFormatter(<CardResultTest show={this.state.showContext} />)}
             ];
         }
         
@@ -193,7 +195,7 @@ class CardResults extends React.Component {
     
     // TODO: Preserve scroll position on rerender/redraw if possible
     componentDidUpdate() {
-        // console.log("Updated");
+        console.log("Results Updated");
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */

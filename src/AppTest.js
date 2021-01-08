@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import CardResults from './CardResults.js';
+import CardResultsTest from './CardResultsTest.js';
 import Search from './Search.js';
 
 import './User/login.css';
@@ -9,7 +9,8 @@ import './User/login.css';
 import Globals from './globals.js';
 import persist from './persist.js';
 
-class App extends React.Component {
+/** For testing redesigned, consolidated search which is in progress */
+export default class AppTest extends React.Component {
 
 	state = {
 		searcherInputs: {
@@ -171,16 +172,172 @@ class App extends React.Component {
       
     }
 
+    // Start a brand new search.
     startNewSearch = (searcherState, _offset, currentResults) => {
         this._searcherState = searcherState; // for live filtering
-        // Start a brand new search.
-        // if(this.state.searching){
-        //     // Already searching? Cancel running search
-        //     this._cancelId = this._searchId;
-        // }
-        this._searchId = this._searchId + 1;
-        this.search(searcherState, _offset, currentResults, this._searchId);
+
+        // TODO: 1: Collect contextless results
+        //          1a: Consolidate all of the filenames by metadata record into singular results
+        //              (maintaining original order by first appearance)
+        this.initialSearch(searcherState);
+        // TODO: 2: Begin collecting text fragments 100 at a time or only for current page, debounced; 
+        //             assign accordingly
+        // this._searchId = this._searchId + 1;
+        // this.search(searcherState, _offset, currentResults, this._searchId);
     }
+
+    initialSearch = (searcherState) => {
+        if(!this._mounted){ // User navigated away or reloaded
+            return;
+        }
+
+        // console.log("Search running: ", searchId);
+        let _inputs = searcherState;
+
+        // There is no longer an advanced search so this is no longer useful
+        // if(!searcherState.optionsChecked){
+        //     _inputs = Globals.convertToSimpleSearch(searcherState);
+        // }
+
+		this.setState({
+            searcherInputs: _inputs,
+            isDirty: true,
+            snippetsDisabled: _inputs.searchOption==="C",
+			resultsText: "Loading results...",
+			networkError: "" // Clear network error
+		}, () => {
+
+            // title-only
+            let searchUrl = new URL('text/search', Globals.currentHost);
+            
+            // For the new search logic, the idea is that the limit and offset are only for the text
+            // fragments.  The first search should get all of the results, without context.
+            // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
+            // properly
+            if(searcherState.searchOption && searcherState.searchOption === "A") {
+                searchUrl = new URL('text/search_no_context', Globals.currentHost);
+            } else if(searcherState.searchOption && searcherState.searchOption === "B") {
+                searchUrl = new URL('text/search_no_context', Globals.currentHost);
+            }
+
+			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
+				this.props.history.push('/login') // Prompt login if no auth token
+            }
+
+			let dataToPass = { 
+				title: this.state.searcherInputs.titleRaw
+            };
+
+            // OPTION: If we restore a way to use search options for faster searches, we'll assign here
+            if(this.state.useSearchOptions) {
+                dataToPass = { 
+                    title: this.state.searcherInputs.titleRaw, 
+                    startPublish: this.state.searcherInputs.startPublish,
+                    endPublish: this.state.searcherInputs.endPublish,
+                    startComment: this.state.searcherInputs.startComment,
+                    endComment: this.state.searcherInputs.endComment,
+                    agency: this.state.searcherInputs.agency,
+                    state: this.state.searcherInputs.state,
+                    typeAll: this.state.searcherInputs.typeAll,
+                    typeFinal: this.state.searcherInputs.typeFinal,
+                    typeDraft: this.state.searcherInputs.typeDraft,
+                    typeOther: this.state.searcherInputs.typeOther,
+                    needsComments: this.state.searcherInputs.needsComments,
+                    needsDocument: this.state.searcherInputs.needsDocument
+                };
+            }
+
+            this.setState({
+                searching: true
+            }, () => {
+                //Send the AJAX call to the server
+
+                axios({
+                    method: 'POST', // or 'PUT'
+                    url: searchUrl,
+                    data: dataToPass
+                }).then(response => {
+                    let responseOK = response && response.status === 200;
+                    if (responseOK) {
+                        return response.data;
+                    } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
+                        this.setState({
+                        resultsText: "No results: Please check use of term modifiers"
+                    })
+                    } else {
+                        return null;
+                    }
+                }).then(parsedJson => {
+                    // console.log('this should be json', parsedJson);
+                    if(parsedJson){
+
+                        let currentResults = parsedJson;
+
+                        // console.log("Setup data");
+                        let _data = [];
+                        if(currentResults){
+                            if(currentResults[0] && currentResults[0].doc) {
+                                _data = currentResults.map((result, idx) =>{
+                                    let doc = result.doc;
+                                    let newObject = {title: doc.title, 
+                                        agency: doc.agency, 
+                                        commentDate: doc.commentDate, 
+                                        registerDate: doc.registerDate, 
+                                        state: doc.state, 
+                                        documentType: doc.documentType, 
+                                        filename: doc.filename, 
+                                        commentsFilename: doc.commentsFilename,
+                                        size: doc.size,
+                                        id: doc.id,
+                                        folder: doc.folder,
+                                        plaintext: result.highlight,
+                                        name: result.filename,
+                                        relevance: idx
+                                    };
+                                    return newObject;
+                                }); 
+                            }
+                        }
+                        
+                        this.setState({
+                            searchResults: _data,
+                            outputResults: _data,
+                            count: currentResults.length,
+                            resultsText: currentResults.length + " Results",
+                        }, () => {
+                            this.filterResultsBy(this._searcherState);
+                        });
+                    }
+                }).catch(error => { // Server down or 408 (timeout)
+                    console.error('Server is down or verification failed.', error);
+                    if(error.response && error.response.status === 408) {
+                        this.setState({
+                            networkError: 'Request has timed out.'
+                        });
+                        this.setState({
+                            resultsText: "Error: Request timed out"
+                        });
+                    } else {
+                        this.setState({
+                            networkError: 'Server is down or you may need to login again.'
+                        });
+                        this.setState({
+                            resultsText: "Error: Couldn't get results from server"
+                        });
+                    }
+                    this.setState({
+                        searching: false
+                    });
+                })
+                
+            });
+		
+            this.setState({
+                searching: false
+            });
+
+        });
+	}
 
 	search = (searcherState, _offset, currentResults, searchId) => {
         if(!this._mounted){ // User navigated away or reloaded
@@ -229,10 +386,14 @@ class App extends React.Component {
             // title-only
             let searchUrl = new URL('text/search', Globals.currentHost);
             
-            if(_inputs.searchOption && _inputs.searchOption === "A") {
-                searchUrl = new URL('text/search_title_priority', Globals.currentHost);
+            // For the new search logic, the idea is that the limit and offset are only for the text
+            // fragments.  The first search should get all of the results, without context.
+            // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
+            // properly
+            if(searcherState.searchOption && searcherState.searchOption === "A") {
+                searchUrl = new URL('text/search_2', Globals.currentHost);
             } else if(searcherState.searchOption && searcherState.searchOption === "B") {
-                searchUrl = new URL('text/search_lucene_priority', Globals.currentHost);
+                searchUrl = new URL('text/search_2', Globals.currentHost);
             }
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
@@ -241,18 +402,6 @@ class App extends React.Component {
 
 			let dataToPass = { 
 				title: this.state.searcherInputs.titleRaw, 
-				// startPublish: this.state.searcherInputs.startPublish,
-				// endPublish: this.state.searcherInputs.endPublish,
-				// startComment: this.state.searcherInputs.startComment,
-				// endComment: this.state.searcherInputs.endComment,
-				// agency: this.state.searcherInputs.agency,
-				// state: this.state.searcherInputs.state,
-				// typeAll: this.state.searcherInputs.typeAll,
-				// typeFinal: this.state.searcherInputs.typeFinal,
-				// typeDraft: this.state.searcherInputs.typeDraft,
-				// typeOther: this.state.searcherInputs.typeOther,
-				// needsComments: this.state.searcherInputs.needsComments,
-				// needsDocument: this.state.searcherInputs.needsDocument,
                 limit: _limit,
                 offset: _offset
             };
@@ -288,7 +437,6 @@ class App extends React.Component {
                 axios({
                     method: 'POST', // or 'PUT'
                     url: searchUrl,
-                    // data: this.state.searcherInputs // data can be `string` or {object}
                     data: dataToPass
                 }).then(response => {
                     let responseOK = response && response.status === 200;
@@ -296,7 +444,7 @@ class App extends React.Component {
                         return response.data;
                     } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
                         this.setState({
-                        resultsText: "No results: Please check use of * and \" characters"
+                        resultsText: "No results: Please check use of term modifiers"
                     })
                     } else {
                         return null;
@@ -486,7 +634,7 @@ class App extends React.Component {
                         optionsChanged={this.optionsChanged}
                         count={this.state.count}
                     />
-                    <CardResults 
+                    <CardResultsTest 
                         sort={this.sort}
                         results={this.state.outputResults} 
                         resultsText={this.state.resultsText} 
@@ -538,5 +686,3 @@ class App extends React.Component {
     }
 	
 }
-
-export default App;
