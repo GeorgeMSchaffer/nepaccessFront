@@ -179,6 +179,9 @@ export default class AppTest extends React.Component {
         // TODO: 1: Collect contextless results
         //          1a: Consolidate all of the filenames by metadata record into singular results
         //              (maintaining original order by first appearance)
+        // Right now, results from initialSearch include a filename string with zero to many 
+        // >-separated filenames.  So, CardResult will have to parse that, 
+        // and distribute highlights appropriately.  Highlights will come in as an array when coded
         this.initialSearch(searcherState);
         // TODO: 2: Begin collecting text fragments 100 at a time or only for current page, debounced; 
         //             assign accordingly
@@ -290,8 +293,8 @@ export default class AppTest extends React.Component {
                                         size: doc.size,
                                         id: doc.id,
                                         folder: doc.folder,
-                                        plaintext: result.highlight,
-                                        name: result.filename,
+                                        plaintext: result.highlights,
+                                        name: result.filenames,
                                         relevance: idx
                                     };
                                     return newObject;
