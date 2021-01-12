@@ -173,20 +173,17 @@ export default class AppTest extends React.Component {
     }
 
     // Start a brand new search.
-    startNewSearch = (searcherState, _offset, currentResults) => {
+    startNewSearch = (searcherState) => {
         this._searcherState = searcherState; // for live filtering
 
-        // TODO: 1: Collect contextless results
-        //          1a: Consolidate all of the filenames by metadata record into singular results
-        //              (maintaining original order by first appearance)
-        // Right now, results from initialSearch include a filename string with zero to many 
-        // >-separated filenames.  So, CardResult will have to parse that, 
-        // and distribute highlights appropriately.  Highlights will come in as an array when coded
+        // 1: Collect contextless results
+        //        - Consolidate all of the filenames by metadata record into singular results
+        //          (maintaining original order by first appearance)
         this.initialSearch(searcherState);
-        // TODO: 2: Begin collecting text fragments 100 at a time or only for current page, debounced; 
-        //             assign accordingly
-        // this._searchId = this._searchId + 1;
-        // this.search(searcherState, _offset, currentResults, this._searchId);
+        // TODO: 2: Begin collecting text fragments 10-100 at a time or all for current page,  
+        //          assign accordingly, in a cancelable recursive function
+        //          IF TITLE ONLY SEARCH: We can stop here.
+
     }
 
     initialSearch = (searcherState) => {
@@ -194,18 +191,10 @@ export default class AppTest extends React.Component {
             return;
         }
 
-        // console.log("Search running: ", searchId);
-        let _inputs = searcherState;
-
-        // There is no longer an advanced search so this is no longer useful
-        // if(!searcherState.optionsChecked){
-        //     _inputs = Globals.convertToSimpleSearch(searcherState);
-        // }
-
 		this.setState({
-            searcherInputs: _inputs,
+            searcherInputs: searcherState,
             isDirty: true,
-            snippetsDisabled: _inputs.searchOption==="C",
+            snippetsDisabled: searcherState.searchOption==="C",
 			resultsText: "Loading results...",
 			networkError: "" // Clear network error
 		}, () => {
@@ -265,43 +254,35 @@ export default class AppTest extends React.Component {
                         return response.data;
                     } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
                         this.setState({
-                        resultsText: "No results: Please check use of term modifiers"
-                    })
+                            resultsText: "No results: Please check use of term modifiers"
+                        });
+                        return null;
                     } else {
                         return null;
                     }
-                }).then(parsedJson => {
-                    // console.log('this should be json', parsedJson);
-                    if(parsedJson){
-
-                        let currentResults = parsedJson;
-
-                        // console.log("Setup data");
-                        let _data = [];
-                        if(currentResults){
-                            if(currentResults[0] && currentResults[0].doc) {
-                                _data = currentResults.map((result, idx) =>{
-                                    let doc = result.doc;
-                                    let newObject = {title: doc.title, 
-                                        agency: doc.agency, 
-                                        commentDate: doc.commentDate, 
-                                        registerDate: doc.registerDate, 
-                                        state: doc.state, 
-                                        documentType: doc.documentType, 
-                                        filename: doc.filename, 
-                                        commentsFilename: doc.commentsFilename,
-                                        size: doc.size,
-                                        id: doc.id,
-                                        folder: doc.folder,
-                                        plaintext: result.highlights,
-                                        name: result.filenames,
-                                        relevance: idx
-                                    };
-                                    return newObject;
-                                }); 
-                            }
-                        }
-                        
+                }).then(currentResults => {
+                    // console.log('this should be json', currentResults);
+                    let _data = [];
+                    if(currentResults && currentResults[0] && currentResults[0].doc){
+                        _data = currentResults.map((result, idx) =>{
+                            let doc = result.doc;
+                            let newObject = {title: doc.title, 
+                                agency: doc.agency, 
+                                commentDate: doc.commentDate, 
+                                registerDate: doc.registerDate, 
+                                state: doc.state, 
+                                documentType: doc.documentType, 
+                                filename: doc.filename, 
+                                commentsFilename: doc.commentsFilename,
+                                size: doc.size,
+                                id: doc.id,
+                                folder: doc.folder,
+                                plaintext: result.highlights,
+                                name: result.filenames,
+                                relevance: idx
+                            };
+                            return newObject;
+                        }); 
                         this.setState({
                             searchResults: _data,
                             outputResults: _data,
@@ -310,6 +291,17 @@ export default class AppTest extends React.Component {
                         }, () => {
                             this.filterResultsBy(this._searcherState);
                         });
+                        
+                        // title-only (or blank search===no text search at all): return
+                        if(Globals.isEmptyOrSpaces(searcherState.titleRaw) || 
+                                (searcherState.searchOption && searcherState.searchOption === "C")){
+                            this.setState({
+                                searching: false
+                            });
+                        } else {
+                            this._searchId = this._searchId + 1;
+                            this.gatherHighlights(this._searchId, 0, searcherState, _data);
+                        }
                     }
                 }).catch(error => { // Server down or 408 (timeout)
                     console.error('Server is down or verification failed.', error);
@@ -335,12 +327,161 @@ export default class AppTest extends React.Component {
                 
             });
 		
-            this.setState({
-                searching: false
-            });
-
         });
-	}
+    }
+    
+    // TODO
+    gatherHighlights = (searchId, _offset, _inputs, currentResults) => {
+        if(!this._mounted){ // User navigated away or reloaded
+            return; // cancel search
+        }
+        if(searchId < this._searchId) { // Search interrupted
+            return; // cancel search
+        }
+        if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
+            this.props.history.push('/login'); // Prompt login if no auth token
+        }
+        if (typeof _offset === 'undefined') {
+            _offset = 0;
+        }
+        if (typeof currentResults === 'undefined') {
+            currentResults = [];
+        }
+
+        let _limit = 100; // start with 100
+
+        this.setState({
+            isDirty: true,
+            snippetsDisabled: false,
+			resultsText: "Loading results...",
+            networkError: "", // Clear network error
+            // Let's try setting this earlier:
+            searching: true
+		}, () => {
+            
+            // For the new search logic, the idea is that the limit and offset are only for the text
+            // fragments.  The first search should get all of the results, without context.
+            // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
+            // properly
+            let searchUrl = new URL('text/get_highlights', Globals.currentHost);
+
+            // TODO: Gather limit # IDs and filenames starting at offset # from current results,
+            // feed as data.  Because we're deciding what we want from the backend, offset is handled
+            // locally.
+            let _unhighlighted = [];
+            for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++){
+                // Push EISDoc ID and comma-delimited list of filenames
+                if(!Globals.isEmptyOrSpaces(currentResults[i].name)){
+                    _unhighlighted.push({id: currentResults[i].id, filename: currentResults[i].name});
+                }
+            }
+
+			let dataToPass = { 
+				unhighlighted: _unhighlighted,
+                terms: _inputs.titleRaw,
+            };
+
+            //Send the AJAX call to the server
+            axios({
+                method: 'POST', // or 'PUT'
+                url: searchUrl,
+                data: dataToPass
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK) {
+                    return response.data;
+                } else {
+                    return null;
+                }
+            }).then(parsedJson => {
+                // console.log('this should be json', parsedJson);
+                if(parsedJson){
+
+                    console.log("ParsedJson",parsedJson);
+                    let updatedResults = this.state.searchResults;
+
+                    // Fill highlights here; update state
+                    // TODO: Because each result can represent many highlights, CardResult expects
+                    // array of highlights.
+                    // Presumably comes back in order it was sent out, so we could just do this?:
+                    let j = 0;
+                    for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++) {
+                        if(!Globals.isEmptyOrSpaces(currentResults[i].name)){
+                            updatedResults[i].plaintext = parsedJson[j];
+                            j++;
+                        }
+                    }
+                    
+                    // Verify one last time we want this before we actually commit to these results
+                    // (new search could have started while getting them)
+                    if(searchId < this._searchId) {
+                        this.setState({
+                            searching: false
+                        });
+                    } else {
+                        this.setState({
+                            searchResults: updatedResults,
+                            outputResults: updatedResults,
+                            count: currentResults.length,
+                            resultsText: currentResults.length + " Results",
+                        }, () => {
+                            this.filterResultsBy(this._searcherState);
+                        });
+                        
+                        // If we got less results than our limit allowed, this could be because of
+                        // the new results condensing.  Therefore we need a new way to know if we
+                        // actually ran out of results.
+                        // if (parsedJson.length < this.state.searcherInputs.limit) {
+    
+                        // With this logic we will always run at least two searches, however the second
+                        // search may instantly return with no new results so there isn't much harm
+                        
+                        // If we got zero results specifically from this search, then we can stop.
+                        if (!parsedJson || !parsedJson[0]) {
+                            this.setState({
+                                searching: false
+                            });
+                            // console.log("Search done",searchId);
+                        } else {
+                            // offset for next run should be incremented by previous limit used
+                            this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
+                        }
+                    }
+                }
+            }).catch(error => { // Server down or 408 (timeout)
+                console.error('Server is down or verification failed.', error);
+                if(error.response && error.response.status === 408) {
+                    this.setState({
+                        networkError: 'Request has timed out.',
+                        resultsText: 'Timed out',
+                        searching: false
+                    });
+                } else {
+                    this.setState({
+                        networkError: 'Server is down or you may need to login again.',
+                        resultsText: 'Server unresponsive',
+                        searching: false
+                    });
+                }
+            });
+        });
+
+        // Possible logic: 
+        // 1. Send list of objects with filename + EISDoc ID.
+        // Offset determines how many objects to send at a time.
+        // They have to match the order that the frontend displays the filenames in, per card.
+        // Getting highlights for page user is on, debounced, would be cool, but could be difficult.
+        // Adding spinner as placeholder for highlights would also be cool.
+        // 2. Backend gets text by matching on given list of data, and gets highlights from texts.
+        // 3. Backend sends list of objects containing filename, EISDoc ID, highlight.
+        // 4. Frontend receives, matches, updates highlights.
+
+        // There shouldn't be any cause for giving the entire result set back to the backend.
+        // Other logic would be to expect only highlights back in a particular order.  However sorting
+        // would complicate this in several ways.
+
+        
+    }
 
 	search = (searcherState, _offset, currentResults, searchId) => {
         if(!this._mounted){ // User navigated away or reloaded
@@ -389,10 +530,6 @@ export default class AppTest extends React.Component {
             // title-only
             let searchUrl = new URL('text/search', Globals.currentHost);
             
-            // For the new search logic, the idea is that the limit and offset are only for the text
-            // fragments.  The first search should get all of the results, without context.
-            // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
-            // properly
             if(searcherState.searchOption && searcherState.searchOption === "A") {
                 searchUrl = new URL('text/search_2', Globals.currentHost);
             } else if(searcherState.searchOption && searcherState.searchOption === "B") {
