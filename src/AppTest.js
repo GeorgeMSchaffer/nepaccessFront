@@ -94,7 +94,7 @@ export default class AppTest extends React.Component {
             // Deep clone results
             let isDirty = false;
             let filteredResults = JSON.parse(JSON.stringify(this.state.searchResults));
-            console.log("Filtered length",filteredResults.length);
+            
             if(searcherState.agency && searcherState.agency.length > 0){
                 isDirty = true;
                 filteredResults = filteredResults.filter(this.matchesArray("agency", searcherState.agency));
@@ -195,6 +195,8 @@ export default class AppTest extends React.Component {
         }
 
 		this.setState({
+            // Fresh search, fresh results
+            outputResults: [],
             searcherInputs: searcherState,
             isDirty: true,
             snippetsDisabled: searcherState.searchOption==="C",
@@ -265,7 +267,6 @@ export default class AppTest extends React.Component {
                     return null;
                 }
             }).then(currentResults => {
-                console.log('this should be json', currentResults);
                 let _data = [];
                 if(currentResults && currentResults[0] && currentResults[0].doc) {
                     _data = currentResults.map((result, idx) =>{
@@ -407,8 +408,6 @@ export default class AppTest extends React.Component {
             }).then(parsedJson => {
                 // console.log('this should be json', parsedJson);
                 if(parsedJson){
-
-                    console.log("ParsedJson",parsedJson);
                     let updatedResults = this.state.searchResults;
 
                     // Fill highlights here; update state
