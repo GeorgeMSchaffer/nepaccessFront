@@ -43,6 +43,9 @@ export default class AppTest extends React.Component {
     // For filtering results mid-search
     _searcherState = null; 
 
+    // For display
+    _searchTerms = "";
+
     optionsChanged = (val) => {
         this.setState({
             useSearchOptions: val
@@ -91,7 +94,7 @@ export default class AppTest extends React.Component {
             // Deep clone results
             let isDirty = false;
             let filteredResults = JSON.parse(JSON.stringify(this.state.searchResults));
-            console.log(filteredResults.length);
+            console.log("Filtered length",filteredResults.length);
             if(searcherState.agency && searcherState.agency.length > 0){
                 isDirty = true;
                 filteredResults = filteredResults.filter(this.matchesArray("agency", searcherState.agency));
@@ -216,6 +219,8 @@ export default class AppTest extends React.Component {
 				this.props.history.push('/login') // Prompt login if no auth token
             }
 
+            this._searchTerms = this.state.searcherInputs.titleRaw;
+
 			let dataToPass = { 
 				title: this.state.searcherInputs.titleRaw
             };
@@ -244,6 +249,7 @@ export default class AppTest extends React.Component {
             }, () => {
                 //Send the AJAX call to the server
 
+                console.log("Search init");
                 axios({
                     method: 'POST', // or 'PUT'
                     url: searchUrl,
@@ -258,12 +264,13 @@ export default class AppTest extends React.Component {
                         });
                         return null;
                     } else {
+                        console.log(response.status);
                         return null;
                     }
                 }).then(currentResults => {
-                    // console.log('this should be json', currentResults);
+                    console.log('this should be json', currentResults);
                     let _data = [];
-                    if(currentResults && currentResults[0] && currentResults[0].doc){
+                    if(currentResults && currentResults[0] && currentResults[0].doc) {
                         _data = currentResults.map((result, idx) =>{
                             let doc = result.doc;
                             let newObject = {title: doc.title, 
@@ -290,18 +297,28 @@ export default class AppTest extends React.Component {
                             resultsText: currentResults.length + " Results",
                         }, () => {
                             this.filterResultsBy(this._searcherState);
-                        });
                         
-                        // title-only (or blank search===no text search at all): return
-                        if(Globals.isEmptyOrSpaces(searcherState.titleRaw) || 
-                                (searcherState.searchOption && searcherState.searchOption === "C")){
-                            this.setState({
-                                searching: false
-                            });
-                        } else {
-                            this._searchId = this._searchId + 1;
-                            this.gatherHighlights(this._searchId, 0, searcherState, _data);
-                        }
+                            // title-only (or blank search===no text search at all): return
+                            if(Globals.isEmptyOrSpaces(searcherState.titleRaw) || 
+                                    (searcherState.searchOption && searcherState.searchOption === "C"))
+                            {
+                                this.setState({
+                                    searching: false
+                                });
+                            } else {
+                                this._searchId = this._searchId + 1;
+                                console.log("Launching fragment search ",this._searchId);
+                                this.gatherHighlights(this._searchId, 0, searcherState, _data);
+                            }
+                        });
+                    } else {
+                        // Found nothing
+                        console.log("No results");
+                        this.setState({
+                            searching: false,
+                            resultsText: "No results found"
+                        });
+                        return;
                     }
                 }).catch(error => { // Server down or 408 (timeout)
                     console.error('Server is down or verification failed.', error);
@@ -355,8 +372,6 @@ export default class AppTest extends React.Component {
             snippetsDisabled: false,
 			resultsText: "Loading results...",
             networkError: "", // Clear network error
-            // Let's try setting this earlier:
-            searching: true
 		}, () => {
             
             // For the new search logic, the idea is that the limit and offset are only for the text
@@ -380,6 +395,7 @@ export default class AppTest extends React.Component {
 				unhighlighted: _unhighlighted,
                 terms: _inputs.titleRaw,
             };
+            console.log("Filenames sent out: ",_unhighlighted);
 
             //Send the AJAX call to the server
             axios({
@@ -418,6 +434,7 @@ export default class AppTest extends React.Component {
                         this.setState({
                             searching: false
                         });
+                        return;
                     } else {
                         this.setState({
                             searchResults: updatedResults,
@@ -437,11 +454,12 @@ export default class AppTest extends React.Component {
                         // search may instantly return with no new results so there isn't much harm
                         
                         // If we got zero results specifically from this search, then we can stop.
-                        if (!parsedJson || !parsedJson[0]) {
+                        if (!parsedJson || !parsedJson[0] || parsedJson[0].length<1) {
+                            console.log("Got no more results");
                             this.setState({
                                 searching: false
                             });
-                            // console.log("Search done",searchId);
+                            console.log("Search done #",searchId);
                         } else {
                             // offset for next run should be incremented by previous limit used
                             this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
@@ -774,6 +792,7 @@ export default class AppTest extends React.Component {
                         optionsChanged={this.optionsChanged}
                         count={this.state.count}
                     />
+					<label className="searchLabel" hidden={!this.state.searching}>Search terms: {this._searchTerms}</label>
                     <CardResultsTest 
                         sort={this.sort}
                         results={this.state.outputResults} 
