@@ -199,7 +199,8 @@ export default class AppTest extends React.Component {
             isDirty: true,
             snippetsDisabled: searcherState.searchOption==="C",
 			resultsText: "Loading results...",
-			networkError: "" // Clear network error
+            networkError: "", // Clear network error
+            searching: true
 		}, () => {
 
             // title-only
@@ -243,107 +244,101 @@ export default class AppTest extends React.Component {
                     needsDocument: this.state.searcherInputs.needsDocument
                 };
             }
+            //Send the AJAX call to the server
 
-            this.setState({
-                searching: true
-            }, () => {
-                //Send the AJAX call to the server
-
-                console.log("Search init");
-                axios({
-                    method: 'POST', // or 'PUT'
-                    url: searchUrl,
-                    data: dataToPass
-                }).then(response => {
-                    let responseOK = response && response.status === 200;
-                    if (responseOK) {
-                        return response.data;
-                    } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
-                        this.setState({
-                            resultsText: "No results: Please check use of term modifiers"
-                        });
-                        return null;
-                    } else {
-                        console.log(response.status);
-                        return null;
-                    }
-                }).then(currentResults => {
-                    console.log('this should be json', currentResults);
-                    let _data = [];
-                    if(currentResults && currentResults[0] && currentResults[0].doc) {
-                        _data = currentResults.map((result, idx) =>{
-                            let doc = result.doc;
-                            let newObject = {title: doc.title, 
-                                agency: doc.agency, 
-                                commentDate: doc.commentDate, 
-                                registerDate: doc.registerDate, 
-                                state: doc.state, 
-                                documentType: doc.documentType, 
-                                filename: doc.filename, 
-                                commentsFilename: doc.commentsFilename,
-                                size: doc.size,
-                                id: doc.id,
-                                folder: doc.folder,
-                                plaintext: result.highlights,
-                                name: result.filenames,
-                                relevance: idx
-                            };
-                            return newObject;
-                        }); 
-                        this.setState({
-                            searchResults: _data,
-                            outputResults: _data,
-                            count: currentResults.length,
-                            resultsText: currentResults.length + " Results",
-                        }, () => {
-                            this.filterResultsBy(this._searcherState);
-                        
-                            // title-only (or blank search===no text search at all): return
-                            if(Globals.isEmptyOrSpaces(searcherState.titleRaw) || 
-                                    (searcherState.searchOption && searcherState.searchOption === "C"))
-                            {
-                                this.setState({
-                                    searching: false
-                                });
-                            } else {
-                                this._searchId = this._searchId + 1;
-                                console.log("Launching fragment search ",this._searchId);
-                                this.gatherHighlights(this._searchId, 0, searcherState, _data);
-                            }
-                        });
-                    } else {
-                        // Found nothing
-                        console.log("No results");
-                        this.setState({
-                            searching: false,
-                            resultsText: "No results found"
-                        });
-                        return;
-                    }
-                }).catch(error => { // Server down or 408 (timeout)
-                    console.error('Server is down or verification failed.', error);
-                    if(error.response && error.response.status === 408) {
-                        this.setState({
-                            networkError: 'Request has timed out.'
-                        });
-                        this.setState({
-                            resultsText: "Error: Request timed out"
-                        });
-                    } else {
-                        this.setState({
-                            networkError: 'Server is down or you may need to login again.'
-                        });
-                        this.setState({
-                            resultsText: "Error: Couldn't get results from server"
-                        });
-                    }
+            console.log("Search init");
+            axios({
+                method: 'POST', // or 'PUT'
+                url: searchUrl,
+                data: dataToPass
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK) {
+                    return response.data;
+                } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
                     this.setState({
-                        searching: false
+                        resultsText: "No results: Please check use of term modifiers"
                     });
-                })
-                
-            });
-		
+                    return null;
+                } else {
+                    console.log(response.status);
+                    return null;
+                }
+            }).then(currentResults => {
+                console.log('this should be json', currentResults);
+                let _data = [];
+                if(currentResults && currentResults[0] && currentResults[0].doc) {
+                    _data = currentResults.map((result, idx) =>{
+                        let doc = result.doc;
+                        let newObject = {title: doc.title, 
+                            agency: doc.agency, 
+                            commentDate: doc.commentDate, 
+                            registerDate: doc.registerDate, 
+                            state: doc.state, 
+                            documentType: doc.documentType, 
+                            filename: doc.filename, 
+                            commentsFilename: doc.commentsFilename,
+                            size: doc.size,
+                            id: doc.id,
+                            folder: doc.folder,
+                            plaintext: result.highlights,
+                            name: result.filenames,
+                            relevance: idx
+                        };
+                        return newObject;
+                    }); 
+                    this.setState({
+                        searchResults: _data,
+                        outputResults: _data,
+                        count: currentResults.length,
+                        resultsText: currentResults.length + " Results",
+                    }, () => {
+                        this.filterResultsBy(this._searcherState);
+                    
+                        // title-only (or blank search===no text search at all): return
+                        if(Globals.isEmptyOrSpaces(searcherState.titleRaw) || 
+                                (searcherState.searchOption && searcherState.searchOption === "C"))
+                        {
+                            this.setState({
+                                searching: false
+                            });
+                        } else {
+                            this._searchId = this._searchId + 1;
+                            console.log("Launching fragment search ",this._searchId);
+                            this.gatherHighlights(this._searchId, 0, searcherState, _data);
+                        }
+                    });
+                } else {
+                    // Found nothing
+                    console.log("No results");
+                    this.setState({
+                        searching: false,
+                        resultsText: "No results found"
+                    });
+                    return;
+                }
+            }).catch(error => { // Server down or 408 (timeout)
+                console.error('Server is down or verification failed.', error);
+                if(error.response && error.response.status === 408) {
+                    this.setState({
+                        networkError: 'Request has timed out.'
+                    });
+                    this.setState({
+                        resultsText: "Error: Request timed out"
+                    });
+                } else {
+                    this.setState({
+                        networkError: 'Server is down or you may need to login again.'
+                    });
+                    this.setState({
+                        resultsText: "Error: Couldn't get results from server"
+                    });
+                }
+                this.setState({
+                    searching: false
+                });
+            })
+    
         });
     }
     
@@ -792,7 +787,6 @@ export default class AppTest extends React.Component {
                         optionsChanged={this.optionsChanged}
                         count={this.state.count}
                     />
-					<label className="searchLabel" hidden={!this.state.searching}>Search terms: {this._searchTerms}</label>
                     <CardResultsTest 
                         sort={this.sort}
                         results={this.state.outputResults} 

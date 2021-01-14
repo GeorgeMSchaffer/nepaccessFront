@@ -117,31 +117,31 @@ class CardResults extends React.Component {
 
 	render() {
         if(this.props.results && this.props.results.length > 0) {
-            return "";
+
         }
-        // else {
-        //     /** Show nothing, until we are loading results.
-        //      * props.resultsText will just be "Results" before any search.
-        //      * During a search, it will be "Loading results..." and if 100+ async results we may
-        //      * simultaneously have 100 props.results
-        //      * After a search we won't hit this logic because we'll have props.results
-        //      */
-        //     if(this.props.resultsText && this.props.resultsText!=="Results") {
-        //         return (
-        //             <div className="sidebar-results">
-        //                 <div id="search-results">
-        //                     <div className="tabulator-holder">
-        //                         <h2 id="results-label">
-        //                             {this.props.resultsText}
-        //                         </h2>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         );
-        //     } else {
-        //         return "";
-        //     }
-        // }
+        else {
+            /** Show nothing, until we are loading results.
+             * props.resultsText will just be "Results" before any search.
+             * During a search, it will be "Loading results..." and if 100+ async results we may
+             * simultaneously have 100 props.results
+             * After a search we won't hit this logic because we'll have props.results
+             */
+            if(this.props.resultsText && this.props.resultsText!=="Results") {
+                return (
+                    <div className="sidebar-results">
+                        <div id="search-results">
+                            <div className="tabulator-holder">
+                                <h2 id="results-label">
+                                    {this.props.resultsText}
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                );
+            } else {
+                return "";
+            }
+        }
         
         try {
             // let data = this.setupData(results);
