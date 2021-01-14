@@ -148,7 +148,7 @@ class CardResult extends React.Component {
         // console.log("Test props",this.props);
         if(this.props && this.props.cell._cell.row.data.name){
             let filenames = this.props.cell._cell.row.data.name.split(">");
-            console.log("Filenames",filenames);
+            // console.log("Filenames",filenames);
             // Note: texts should be an array already
             let texts = this.props.cell._cell.row.data.plaintext;
             let combined = filenames.map(function (value, index){
