@@ -213,9 +213,9 @@ export default class AppTest extends React.Component {
             // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
             // properly
             if(searcherState.searchOption && searcherState.searchOption === "A") {
-                searchUrl = new URL('text/search_no_context', Globals.currentHost);
+                searchUrl = new URL('text/get_scored', Globals.currentHost);
             } else if(searcherState.searchOption && searcherState.searchOption === "B") {
-                searchUrl = new URL('text/search_no_context', Globals.currentHost);
+                searchUrl = new URL('text/get_scored', Globals.currentHost);
             }
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
