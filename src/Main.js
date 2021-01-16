@@ -5,7 +5,6 @@ import './index.css';
 
 import Landing from './Landing.js';
 import App from './App';
-import AppTest from './AppTest';
 import CombinedAB from './CombinedAB.js';
 
 import RecordDetailsTab from './Details/RecordDetailsTab.js';
@@ -169,7 +168,6 @@ class Main extends React.Component {
                 <Route path="/test" component={CombinedAB}/>
                 <Route path="/unified" component={App}/>
                 <Route path="/search" component={App}/>
-                <Route path="/searchtest" component={AppTest}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
                 <Route path="/abouthelp" component={AboutSearchTips}/>
