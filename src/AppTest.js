@@ -248,7 +248,7 @@ export default class AppTest extends React.Component {
             }
             //Send the AJAX call to the server
 
-            console.log("Search init");
+            // console.log("Search init");
             axios({
                 method: 'POST', // or 'PUT'
                 url: searchUrl,
@@ -291,7 +291,7 @@ export default class AppTest extends React.Component {
                     this.setState({
                         searchResults: _data,
                         outputResults: _data,
-                        count: currentResults.length,
+                        count: this.state.outputResults.length,
                         resultsText: currentResults.length + " Results",
                     }, () => {
                         this.filterResultsBy(this._searcherState);
@@ -305,18 +305,17 @@ export default class AppTest extends React.Component {
                             });
                         } else {
                             this._searchId = this._searchId + 1;
-                            console.log("Launching fragment search ",this._searchId);
+                            // console.log("Launching fragment search ",this._searchId);
                             this.gatherHighlights(this._searchId, 0, searcherState, _data);
                         }
                     });
                 } else {
                     // Found nothing
-                    console.log("No results");
+                    // console.log("No results");
                     this.setState({
                         searching: false,
                         resultsText: "No results found"
                     });
-                    return;
                 }
             }).catch(error => { // Server down or 408 (timeout)
                 console.error('Server is down or verification failed.', error);
@@ -366,7 +365,7 @@ export default class AppTest extends React.Component {
         this.setState({
             isDirty: true,
             snippetsDisabled: false,
-			resultsText: "Loading results...",
+			resultsText: "Searching file texts...",
             networkError: "", // Clear network error
 		}, () => {
             
@@ -386,12 +385,21 @@ export default class AppTest extends React.Component {
                     _unhighlighted.push({id: currentResults[i].id, filename: currentResults[i].name});
                 }
             }
+            // If everything is highlighted already, don't bother
+            if(_unhighlighted.length === 0) {
+                this.setState({
+                    searching: false
+                });
+                return;
+            }
 
 			let dataToPass = { 
 				unhighlighted: _unhighlighted,
                 terms: _inputs.titleRaw,
             };
-            console.log("Filenames sent out: ",_unhighlighted);
+            // console.log("Filenames sent out: ",_unhighlighted);
+
+
 
             //Send the AJAX call to the server
             axios({
@@ -433,27 +441,20 @@ export default class AppTest extends React.Component {
                         this.setState({
                             searchResults: updatedResults,
                             outputResults: updatedResults,
-                            count: currentResults.length,
+                            count: this.state.outputResults.length,
                             resultsText: currentResults.length + " Results",
                         }, () => {
                             this.filterResultsBy(this._searcherState);
                         });
                         
-                        // If we got less results than our limit allowed, this could be because of
-                        // the new results condensing.  Therefore we need a new way to know if we
-                        // actually ran out of results.
-                        // if (parsedJson.length < this.state.searcherInputs.limit) {
-    
-                        // With this logic we will always run at least two searches, however the second
-                        // search may instantly return with no new results so there isn't much harm
-                        
                         // If we got zero results specifically from this search, then we can stop.
+                        // With current logic, this shouldn't happen - should've returned already.
                         if (!parsedJson || !parsedJson[0] || parsedJson[0].length<1) {
                             console.log("Got no more results");
                             this.setState({
                                 searching: false
                             });
-                            console.log("Search done #",searchId);
+                            // console.log("Search done #",searchId);
                         } else {
                             // offset for next run should be incremented by previous limit used
                             this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
@@ -645,7 +646,7 @@ export default class AppTest extends React.Component {
                         this.setState({
                             searchResults: _data,
                             outputResults: _data,
-                            count: currentResults.length,
+                            count: this.state.outputResults.length,
                             resultsText: currentResults.length + " Results",
                         }, () => {
                             this.filterResultsBy(this._searcherState);
@@ -817,7 +818,7 @@ export default class AppTest extends React.Component {
         // Option: Rehydrate old search results and everything?
         try {
             const rehydrate = JSON.parse(persist.getItem('results'));
-            console.log("Old results", rehydrate);
+            // console.log("Old results", rehydrate);
             this.setState(
                 rehydrate
             );
