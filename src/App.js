@@ -46,6 +46,9 @@ export default class App extends React.Component {
     // For display
     _searchTerms = "";
 
+    // For sorting mid-search
+    _sortVal = null;
+
     optionsChanged = (val) => {
         this.setState({
             useSearchOptions: val
@@ -135,6 +138,7 @@ export default class App extends React.Component {
 
     // Sort search results on call from results component
     sort = (val) => {
+        this._sortVal = val;
         this.sortDataByField(val, true);
     }
 
@@ -444,6 +448,9 @@ export default class App extends React.Component {
                             count: this.state.outputResults.length,
                             resultsText: currentResults.length + " Results",
                         }, () => {
+                            if(this._sortVal) {
+                                this.sortDataByField(this._sortVal, true);
+                            }
                             this.filterResultsBy(this._searcherState);
                         });
                         
