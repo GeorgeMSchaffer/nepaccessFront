@@ -124,8 +124,6 @@ class Generate extends React.Component {
                 <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
                 <br /><br /><br />
-                <button className="button" onClick={() => this.testBulkImportSmart()}>Test smart bulk import</button>
-                <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkIndex()}>Test bulk index</button>
                 <br /><br /><br />
                 <DocumentText />
@@ -143,24 +141,6 @@ class Generate extends React.Component {
       })
       .then((response) => {
         console.log("Activating bulk import");
-        console.log(response);
-        // verified = response && response.status === 200;
-      })
-      .catch((err) => { // This will show exceptions, will also fire if server down
-        console.log(err);
-      });
-      
-    }
-    
-
-    testBulkImportSmart() {
-      console.log("Activating bulk2 test for " + Globals.currentHost);
-
-      axios.get((Globals.currentHost + 'file/bulk2'),{
-        responseType: 'blob'
-      })
-      .then((response) => {
-        console.log("Activating smart bulk import");
         console.log(response);
         // verified = response && response.status === 200;
       })
