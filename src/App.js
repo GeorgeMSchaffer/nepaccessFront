@@ -420,11 +420,10 @@ export default class App extends React.Component {
                     let updatedResults = this.state.searchResults;
 
                     // Fill highlights here; update state
-                    // TODO: Because each result can represent many highlights, CardResult expects
-                    // array of highlights.
                     // Presumably comes back in order it was sent out, so we could just do this?:
                     let j = 0;
                     for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++) {
+                        // If search is interrupted, updatedResults[i] may be undefined (TypeError)
                         if(!Globals.isEmptyOrSpaces(currentResults[i].name)){
                             updatedResults[i].plaintext = parsedJson[j];
                             j++;
@@ -462,20 +461,24 @@ export default class App extends React.Component {
                         }
                     }
                 }
-            }).catch(error => { // Server down or 408 (timeout)
-                console.error('Server is down or verification failed.', error);
-                if(error.response && error.response.status === 408) {
-                    this.setState({
-                        networkError: 'Request has timed out.',
-                        resultsText: 'Timed out',
-                        searching: false
-                    });
-                } else {
-                    this.setState({
-                        networkError: 'Server is down or you may need to login again.',
-                        resultsText: 'Server unresponsive',
-                        searching: false
-                    });
+            }).catch(error => { 
+                if(error.name === 'TypeError') {
+                    console.error(error);
+                } else { // Server down or 408 (timeout)
+                    console.error('Server is down or verification failed.', error);
+                    if(error.response && error.response.status === 408) {
+                        this.setState({
+                            networkError: 'Request has timed out.',
+                            resultsText: 'Timed out',
+                            searching: false
+                        });
+                    } else {
+                        this.setState({
+                            networkError: 'Server is down or you may need to login again.',
+                            resultsText: 'Server unresponsive',
+                            searching: false
+                        });
+                    }
                 }
             });
         });
