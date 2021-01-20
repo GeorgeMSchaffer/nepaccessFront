@@ -40,7 +40,13 @@ class CardResults extends React.Component {
         }
         this.my_table = React.createRef();
 
+        this.endRef = React.createRef();
+
         // window.addEventListener('resize', this.handleResize);
+    }
+
+    scrollToBottom = () => {
+        this.endRef.current.scrollIntoView({ behavior: 'smooth' })
     }
 
     // This logic broke sorting.  Somehow, results from both next and this.props were already sorted.
@@ -72,6 +78,14 @@ class CardResults extends React.Component {
         if(page !== pageNumber){
             console.log("#",pageNumber);
             page = pageNumber;
+            
+            // Scrolling is done by footer at the bottom, so when scrolling pages (of variable height)
+            // this will keep the user at the bottom of the page, using a referenced div
+            const scroll = this.scrollToBottom;
+            setTimeout(function () {
+                scroll()
+            },50);
+            
             // Too laggy, would be used for showing user which # results they're viewing by page * results per page
             // this.setState({
             //     page: pageNumber
@@ -136,10 +150,13 @@ class CardResults extends React.Component {
                                 </h2>
                             </div>
                         </div>
+                        <div ref={this.endRef} />
                     </div>
                 );
             } else {
-                return "";
+                return (
+                    <div ref={this.endRef}></div>
+                );
             }
         }
         
@@ -174,6 +191,7 @@ class CardResults extends React.Component {
                             />
                         </div>
                     </div>
+                    <div ref={this.endRef} />
                 </div>
             );
         }
@@ -188,6 +206,7 @@ class CardResults extends React.Component {
             return (
                 <div className="sidebar-results">
                     <h2 id="results-label">{this.props.resultsText}</h2>
+                    <div ref={this.endRef} />
                 </div>
             )
         }
