@@ -123,9 +123,13 @@ export default class App extends React.Component {
             
             // If there are any active filters, display as "Matches", else "Results"
             if(isDirty){
+                let textToUse = filteredResults.length + " Matches";
+                if(filteredResults.length === 0) {
+                    textToUse = filteredResults.length + " Matches (try removing or relaxing filters?)";
+                }
                 this.setState({
                     outputResults: filteredResults,
-                    resultsText: filteredResults.length + " Matches"
+                    resultsText: textToUse
                 });
             } else {
                 this.setState({
