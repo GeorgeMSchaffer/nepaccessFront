@@ -40,10 +40,17 @@ class CardResults extends React.Component {
         }
         this.my_table = React.createRef();
 
+        this.endRef = React.createRef();
+
         // window.addEventListener('resize', this.handleResize);
     }
 
-    // Broke sorting.
+    scrollToBottom = () => {
+        this.endRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    // This logic broke sorting.  Somehow, results from both next and this.props were already sorted.
+    // So the results were identical
     // shouldComponentUpdate(nextProps, nextState) {
     //     // console.log("Results",nextProps.results===this.props.results); 
     //     // console.log("Text",nextProps.resultsText===this.props.resultsText); 
@@ -69,8 +76,16 @@ class CardResults extends React.Component {
     
     onPageLoaded = (pageNumber) => {
         if(page !== pageNumber){
-            console.log("#",pageNumber);
+            // console.log("#",pageNumber);
             page = pageNumber;
+            
+            // Scrolling is done by footer at the bottom, so when scrolling pages (of variable height)
+            // this will keep the user at the bottom of the page, using a referenced div
+            const scroll = this.scrollToBottom;
+            setTimeout(function () {
+                scroll()
+            },100);
+
             // Too laggy, would be used for showing user which # results they're viewing by page * results per page
             // this.setState({
             //     page: pageNumber
@@ -135,10 +150,13 @@ class CardResults extends React.Component {
                                 </h2>
                             </div>
                         </div>
+                        <div ref={this.endRef} />
                     </div>
                 );
             } else {
-                return "";
+                return (
+                    <div ref={this.endRef}></div>
+                );
             }
         }
         
@@ -173,6 +191,7 @@ class CardResults extends React.Component {
                             />
                         </div>
                     </div>
+                    <div ref={this.endRef} />
                 </div>
             );
         }
@@ -187,6 +206,7 @@ class CardResults extends React.Component {
             return (
                 <div className="sidebar-results">
                     <h2 id="results-label">{this.props.resultsText}</h2>
+                    <div ref={this.endRef} />
                 </div>
             )
         }
@@ -194,7 +214,7 @@ class CardResults extends React.Component {
     
     // TODO: Preserve scroll position on rerender/redraw if possible
     componentDidUpdate() {
-        // console.log("Updated");
+        // console.log("Results Updated");
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */
