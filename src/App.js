@@ -306,7 +306,6 @@ export default class App extends React.Component {
                     this.setState({
                         searchResults: _data,
                         outputResults: _data,
-                        count: this.state.outputResults.length,
                         resultsText: currentResults.length + " Results",
                     }, () => {
                         this.filterResultsBy(this._searcherState);
@@ -457,7 +456,7 @@ export default class App extends React.Component {
                         this.setState({
                             searchResults: updatedResults,
                             outputResults: updatedResults,
-                            count: this.state.outputResults.length,
+                            count: _offset,
                             resultsText: currentResults.length + " Results",
                         }, () => {
                             if(this._sortVal) {
