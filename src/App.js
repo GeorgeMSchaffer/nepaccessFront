@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import CardResultsTest from './CardResultsTest.js';
+import CardResults from './CardResults.js';
 import Search from './Search.js';
 
 import './User/login.css';
@@ -803,7 +803,7 @@ export default class App extends React.Component {
                         optionsChanged={this.optionsChanged}
                         count={this.state.count}
                     />
-                    <CardResultsTest 
+                    <CardResults 
                         sort={this.sort}
                         results={this.state.outputResults} 
                         resultsText={this.state.resultsText} 

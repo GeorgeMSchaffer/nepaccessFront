@@ -6,6 +6,9 @@ import Globals from './globals.js';
 import CardDetailsLink from './CardDetailsLink.js';
 
 // TODO: May be wise to have child components for each element that may change (i.e. download links)
+// TODO: Right now, results from initialSearch include a filename string with zero to many 
+// comma-separated filenames.  So, CardResult will have to parse that, 
+// and distribute highlights appropriately.
 
 class CardResult extends React.Component {
 
@@ -138,6 +141,52 @@ class CardResult extends React.Component {
             );
         } else {
             return <div><span className="cardHeader"></span></div>
+        }
+    }
+    // End goal: Show list of filenames each with highlight(s) as highlights are populated
+    showTextTest = () => {
+        // console.log("Test props",this.props);
+        if(this.props && this.props.cell._cell.row.data.name){
+            let filenames = this.props.cell._cell.row.data.name.split(">");
+            // console.log("Filenames",filenames);
+            // Note: texts should be an array already
+            let texts = this.props.cell._cell.row.data.plaintext;
+            let combined = filenames.map(function (value, index){
+                return [value, texts[index]]
+            });
+
+            return (
+
+                <div hidden={!this.props.show}>
+                    {combined.map(function(combo, index){
+                        return (
+                            <span className="fragment-container" key={ index }>
+                                <span className="cardHeader bold filename-inner">
+                                    {combo[0]}
+                                </span>
+                                
+                                <span className="card-highlight"
+                                    dangerouslySetInnerHTML={{
+                                        __html:combo[1]
+                                    }}>
+                                </span>
+                            </span>
+                        );
+                    })}
+                </div>
+            );
+            
+
+        } else if(this.props && this.props.cell._cell.row.data.matchPercent) {
+            return (
+                <div className="fragment-container">
+                    <div>
+                        <span className="cardHeader"><span>
+                            {"" + (this.props.cell._cell.row.data.matchPercent*100) + "% Match"}
+                        </span></span>
+                    </div>
+                </div>
+            );
         }
     }
     showText = () => {
@@ -354,7 +403,7 @@ class CardResult extends React.Component {
                         {this.showCommentsDownload()}
                     </div>
                 </div>
-                {this.showText()}
+                {this.showTextTest()}
             </div>
             
         </>);
