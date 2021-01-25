@@ -31,8 +31,7 @@ export default class App extends React.Component {
 		verified: false,
         searching: false,
         useSearchOptions: false,
-        snippetsDisabled: false,
-        isDirty: false
+        snippetsDisabled: false
     }
     
     constructor(props){
@@ -101,48 +100,44 @@ export default class App extends React.Component {
         // Only filter if there are any results to filter
         if(this.state.searchResults && this.state.searchResults.length > 0){
             // Deep clone results
-            let isDirty = false;
+            let isFiltered = false;
             let filteredResults = JSON.parse(JSON.stringify(this.state.searchResults));
             
             if(searcherState.agency && searcherState.agency.length > 0){
-                isDirty = true;
+                isFiltered = true;
                 filteredResults = filteredResults.filter(this.matchesArray("agency", searcherState.agency));
             }
             if(searcherState.state && searcherState.state.length > 0){
-                isDirty = true;
+                isFiltered = true;
                 filteredResults = filteredResults.filter(this.matchesArray("state", searcherState.state));
             }
             if(searcherState.startPublish){
-                isDirty = true;
+                isFiltered = true;
                 let formattedDate = Globals.formatDate(searcherState.startPublish);
                 filteredResults = filteredResults.filter(this.matchesStartDate(formattedDate));
             }
             if(searcherState.endPublish){
-                isDirty = true;
+                isFiltered = true;
                 let formattedDate = Globals.formatDate(searcherState.endPublish);
                 filteredResults = filteredResults.filter(this.matchesEndDate(formattedDate));
             }
             if(searcherState.typeFinal || searcherState.typeDraft){
-                isDirty = true;
+                isFiltered = true;
                 filteredResults = filteredResults.filter(this.matchesType(searcherState.typeFinal, searcherState.typeDraft));
             }
             
-            // If there are any active filters, display as "Matches", else "Results"
-            if(isDirty){
-                let textToUse = filteredResults.length + " Matches";
+            let textToUse = filteredResults.length + " Results"; // unfiltered: "Results"
+            if(isFiltered) { // filtered: "Matches"
+                textToUse = filteredResults.length + " Matches";
                 if(filteredResults.length === 0) {
                     textToUse = filteredResults.length + " Matches (try removing or relaxing filters?)";
                 }
-                this.setState({
-                    outputResults: filteredResults,
-                    resultsText: textToUse
-                });
-            } else {
-                this.setState({
-                    outputResults: filteredResults,
-                    resultsText: filteredResults.length + " Results"
-                });
             }
+            
+            this.setState({
+                outputResults: filteredResults,
+                resultsText: textToUse
+            });
         }
     }
 
@@ -197,7 +192,7 @@ export default class App extends React.Component {
         //        - Consolidate all of the filenames by metadata record into singular results
         //          (maintaining original order by first appearance)
         this.initialSearch(searcherState);
-        // TODO: 2: Begin collecting text fragments 10-100 at a time or all for current page,  
+        // 2: Begin collecting text fragments 10-100 at a time or all for current page,  
         //          assign accordingly, in a cancelable recursive function
         //          IF TITLE ONLY SEARCH: We can stop here.
 
@@ -213,7 +208,6 @@ export default class App extends React.Component {
             outputResults: [],
             count: 0,
             searcherInputs: searcherState,
-            isDirty: true,
             snippetsDisabled: searcherState.searchOption==="C",
 			resultsText: "Loading results...",
             networkError: "", // Clear network error
@@ -315,11 +309,12 @@ export default class App extends React.Component {
                                 (searcherState.searchOption && searcherState.searchOption === "C"))
                         {
                             this.setState({
-                                searching: false
+                                searching: false,
+                                snippetsDisabled: true
                             });
                         } else {
                             this._searchId = this._searchId + 1;
-                            // console.log("Launching fragment search ",this._searchId);
+                            console.log("Launching fragment search ",this._searchId);
                             this.gatherHighlights(this._searchId, 0, searcherState, _data);
                         }
                     });
@@ -373,6 +368,14 @@ export default class App extends React.Component {
             currentResults = [];
         }
 
+        if(_offset > currentResults.length) {
+            console.log("Nothing left to highlight");
+            this.setState({
+                searching: false
+            });
+            return;
+        }
+
         let _limit = 100; // normally get 100
         if(_offset === 0) {
             _limit = 10; // start with 10
@@ -381,9 +384,8 @@ export default class App extends React.Component {
         }
 
         this.setState({
-            isDirty: true,
             snippetsDisabled: false,
-			resultsText: "Searching file texts...",
+			resultsText: currentResults.length + " Results.  Getting Texts...",
             networkError: "", // Clear network error
 		}, () => {
             
@@ -403,12 +405,14 @@ export default class App extends React.Component {
                     _unhighlighted.push({id: currentResults[i].id, filename: currentResults[i].name});
                 }
             }
-            // If everything is highlighted already, don't bother
+
+            // If nothing to highlight in this batch, skip to next run
             if(_unhighlighted.length === 0) {
-                this.setState({
-                    searching: false
-                });
-                this.filterResultsBy(this._searcherState);
+                if(searchId < this._searchId) {
+                    return;
+                } else {
+                    this.gatherHighlights(searchId, _offset + _limit, _inputs, currentResults);
+                }
                 return;
             }
 
@@ -416,9 +420,6 @@ export default class App extends React.Component {
 				unhighlighted: _unhighlighted,
                 terms: _inputs.titleRaw,
             };
-            // console.log("Filenames sent out: ",_unhighlighted);
-
-
 
             //Send the AJAX call to the server
             axios({
@@ -433,8 +434,8 @@ export default class App extends React.Component {
                     return null;
                 }
             }).then(parsedJson => {
-                // console.log('this should be json', parsedJson);
                 if(parsedJson){
+                    console.log("Processing results", parsedJson.length);
                     let updatedResults = this.state.searchResults;
 
                     // Fill highlights here; update state
@@ -465,18 +466,8 @@ export default class App extends React.Component {
                             this.filterResultsBy(this._searcherState);
                         });
                         
-                        // If we got zero results specifically from this search, then we can stop.
-                        // With current logic, this shouldn't happen - should've returned already.
-                        if (!parsedJson || !parsedJson[0] || parsedJson[0].length<1) {
-                            console.log("Got no more results");
-                            this.setState({
-                                searching: false
-                            });
-                            // console.log("Search done #",searchId);
-                        } else {
-                            // offset for next run should be incremented by previous limit used
-                            this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
-                        }
+                        // offset for next run incremented by limit used
+                        this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
                     }
                 }
             }).catch(error => { 
@@ -518,255 +509,6 @@ export default class App extends React.Component {
         
     }
 
-	search = (searcherState, _offset, currentResults, searchId) => {
-        if(!this._mounted){ // User navigated away or reloaded
-            return;
-        }
-        if(searchId < this._searchId) { // Search interrupted, cancel this one
-            // console.log("Search canceled: ", searchId);
-            return;
-        }
-
-        // console.log("Search running: ", searchId);
-        let _inputs = searcherState;
-
-        // There is no longer an advanced search so this is no longer useful
-        // if(!searcherState.optionsChecked){
-        //     _inputs = Globals.convertToSimpleSearch(searcherState);
-        // }
-        
-        if (typeof _offset === 'undefined') {
-            // console.log("Offset undefined, using " + searcherState.offset);
-            _offset = _inputs.offset;
-        }
-        if (typeof currentResults === 'undefined') {
-            // console.log("Resetting results");
-            currentResults = [];
-        }
-        
-        // For now, first do a run of limit 100 with 0 offset, then a run of limit 1000000 and 100 offset
-        
-        let _limit = 100; // start with 100
-        if(_inputs.titleRaw.trim().length < 1 
-                || _inputs.searchOption==="C" 
-                // || _offset === 100
-                ) {
-            _limit = 1000000; // go to 1000000 if this is the second pass (offset of 100) or textless/title-only search
-        }
-
-		this.setState({
-            searcherInputs: _inputs,
-            isDirty: true,
-            snippetsDisabled: _inputs.searchOption==="C",
-			resultsText: "Loading results...",
-			networkError: "" // Clear network error
-		}, () => {
-
-            // title-only
-            let searchUrl = new URL('text/search', Globals.currentHost);
-            
-            if(searcherState.searchOption && searcherState.searchOption === "A") {
-                searchUrl = new URL('text/search_2', Globals.currentHost);
-            } else if(searcherState.searchOption && searcherState.searchOption === "B") {
-                searchUrl = new URL('text/search_2', Globals.currentHost);
-            }
-
-			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
-				this.props.history.push('/login') // Prompt login if no auth token
-            }
-
-			let dataToPass = { 
-				title: this.state.searcherInputs.titleRaw, 
-                limit: _limit,
-                offset: _offset
-            };
-
-            // OPTION: If we restore a way to use search options for faster searches, we'll assign here
-            if(this.state.useSearchOptions) {
-                dataToPass = { 
-                    title: this.state.searcherInputs.titleRaw, 
-                    startPublish: this.state.searcherInputs.startPublish,
-                    endPublish: this.state.searcherInputs.endPublish,
-                    startComment: this.state.searcherInputs.startComment,
-                    endComment: this.state.searcherInputs.endComment,
-                    agency: this.state.searcherInputs.agency,
-                    state: this.state.searcherInputs.state,
-                    typeAll: this.state.searcherInputs.typeAll,
-                    typeFinal: this.state.searcherInputs.typeFinal,
-                    typeDraft: this.state.searcherInputs.typeDraft,
-                    typeOther: this.state.searcherInputs.typeOther,
-                    needsComments: this.state.searcherInputs.needsComments,
-                    needsDocument: this.state.searcherInputs.needsDocument,
-                    limit: _limit,
-                    offset: _offset
-                };
-            }
-
-            this.setState({
-                searching: true
-            }, () => {
-                //Send the AJAX call to the server
-                // console.log("Running with offset: " + _offset + " and limit: " + this.state.searcherInputs.limit + " and searching state: " + this.state.searching);
-
-
-                axios({
-                    method: 'POST', // or 'PUT'
-                    url: searchUrl,
-                    data: dataToPass
-                }).then(response => {
-                    let responseOK = response && response.status === 200;
-                    if (responseOK) {
-                        return response.data;
-                    } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
-                        this.setState({
-                        resultsText: "No results: Please check use of term modifiers"
-                    })
-                    } else {
-                        return null;
-                    }
-                }).then(parsedJson => {
-                    // console.log('this should be json', parsedJson);
-                    if(parsedJson){
-
-                        currentResults = currentResults.concat(parsedJson);
-
-                        // console.log("Setup data");
-                        let _data = [];
-                        if(currentResults){
-                            if(currentResults[0] && currentResults[0].doc) {
-                                _data = currentResults.map((result, idx) =>{
-                                    let doc = result.doc;
-                                    let newObject = {title: doc.title, 
-                                        agency: doc.agency, 
-                                        commentDate: doc.commentDate, 
-                                        registerDate: doc.registerDate, 
-                                        state: doc.state, 
-                                        documentType: doc.documentType, 
-                                        filename: doc.filename, 
-                                        commentsFilename: doc.commentsFilename,
-                                        size: doc.size,
-                                        id: doc.id,
-                                        folder: doc.folder,
-                                        plaintext: result.highlight,
-                                        name: result.filename,
-                                        relevance: idx
-                                    };
-                                    return newObject;
-                                }); 
-                            }
-                        }
-                        
-                        // Verify one last time we want this before we actually commit to these results
-                        // (new search could have started while getting them)
-                        if(searchId < this._searchId) {
-                            this.setState({
-                                searching: false
-                            });
-                            return;
-                        }
-
-                        this.setState({
-                            searchResults: _data,
-                            outputResults: _data,
-                            count: this.state.outputResults.length,
-                            resultsText: currentResults.length + " Results",
-                        }, () => {
-                            this.filterResultsBy(this._searcherState);
-                        });
-                        
-                        // If we got less results than our limit allowed, this could be because of
-                        // the new results condensing.  Therefore we need a new way to know if we
-                        // actually ran out of results.
-                        // if (parsedJson.length < this.state.searcherInputs.limit) {
-
-                        // With this logic we will always run at least two searches, however the second
-                        // search may instantly return with no new results so there isn't much harm
-                        
-                        // If we got zero results specifically from this search, then we can stop.
-                        // Or if we ran a title-only search (max limit) we can stop.
-                        if (!parsedJson || !parsedJson[0] || _limit === 1000000) {
-                            this.setState({
-                                searching: false
-                            //     searchResults: currentResults,
-                            //     resultsText: currentResults.length + " Results",
-                            });
-                            // console.log("Search done",searchId);
-                        } else {
-                            // offset for next run should be incremented by previous limit used
-                            this.search(searcherState, _offset + _limit, currentResults, searchId);
-                        }
-
-
-                    }
-                }).catch(error => { // Server down or 408 (timeout)
-                    console.error('Server is down or verification failed.', error);
-                    if(error.response && error.response.status === 408) {
-                        this.setState({
-                            networkError: 'Request has timed out.'
-                        });
-                        this.setState({
-                            resultsText: "Error: Request timed out"
-                        });
-                    } else {
-                        this.setState({
-                            networkError: 'Server is down or you may need to login again.'
-                        });
-                        this.setState({
-                            resultsText: "Error: Couldn't get results from server"
-                        });
-                    }
-                    this.setState({
-                        searching: false
-                    });
-                })
-                // .finally(x => {
-                //     this.setState({
-                //         searching: false
-                //     });
-                // });
-            });
-
-            // axios({
-            //     method: 'POST', // or 'PUT'
-            //     url: searchUrl,
-            //     // data: this.state.searcherInputs // data can be `string` or {object}
-            //     data: dataToPass
-            // }).then(response => {
-            //     let responseOK = response && response.status === 200;
-            //     if (responseOK) {
-            //         return response.data;
-            //         } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
-            //         this.setState({
-            //             resultsText: "No results: Please check use of * and \" characters"
-            //         })
-            //     } else {
-            //         return null;
-            //     }
-            // }).then(parsedJson => {
-            //     // console.log('this should be json', parsedJson);
-            //     if(parsedJson){
-            //         this.setState({
-            //             searchResults: parsedJson,
-            //             resultsText: parsedJson.length + " Results",
-            //         });
-            //     }
-            // }).catch(error => { // If verification failed, it'll be a 403 error (includes expired tokens) or server down
-            //     console.error('Server is down or verification failed.', error);
-            //     this.setState({
-            //         networkError: 'Server is down or you may need to login again.'
-            //     });
-            //     this.setState({
-            //         resultsText: "Error: Couldn't get results from server"
-            //     });
-            // }).finally(x => {
-            //     this.setState({
-            //         searching: false
-            //     });
-            // });
-		
-        });
-	}
-	
 
 	check = () => { // check if JWT is expired/invalid
 		
@@ -797,10 +539,9 @@ export default class App extends React.Component {
     
     scrollToBottom = () => {
         try {
-            this.endRef.current.scrollIntoView();
-            // this.endRef.current.scrollIntoView({ behavior: 'smooth' })
+            this.endRef.current.scrollIntoView({ behavior: 'smooth' })
         } catch(e) {
-            // console.log(e);
+            console.log("Scroll error", e);
         }
     }
 	

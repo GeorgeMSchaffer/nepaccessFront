@@ -25,15 +25,7 @@ export default class ResultsHeader extends React.Component {
                         {/* {((this.props.page*10) - 9) + " - " + this.props.page*10 + " of " + this.props.resultsText} */}
                         {this.props.resultsText}
                     </h2>
-                    <div className="checkbox-container inline-block">
-                        <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
-                                checked={this.props.showContext} 
-                                onChange={this.props.onCheckboxChange}
-                                disabled={this.props.snippetsDisabled}  />
-                        <label className="checkbox-text" htmlFor="post-results-input">
-                            Show text snippets
-                        </label>
-                    </div>
+                    
                     <div className="sort-container inline-block">
                         <label className="dropdown-text" htmlFor="post-results-dropdown">
                             Sort by:
@@ -46,6 +38,17 @@ export default class ResultsHeader extends React.Component {
                             placeholder="Relevance"
                         />
                     </div>
+                    
+                    <div  id="results-bar-checkbox" className="checkbox-container inline-block">
+                        <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
+                                checked={this.props.showContext} 
+                                onChange={this.props.onCheckboxChange}
+                                disabled={this.props.snippetsDisabled}  />
+                        <label className="checkbox-text" htmlFor="post-results-input">
+                            Show text snippets
+                        </label>
+                    </div>
+
                 </div>
         )
     }

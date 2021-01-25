@@ -453,10 +453,6 @@ a.link {
     text-decoration: none;
 }
 
-#results-label {
-  margin-left: 5px;
-}
-
 #search-results {
   min-width: 950px;
 }

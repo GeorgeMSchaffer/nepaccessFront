@@ -170,9 +170,9 @@ span.filename>* {
     /* visibility: hidden; */
 }
 
-#post-results-input {
-    margin-left: 50px;
-}
+/* #post-results-input {
+    margin-left: 15px;
+} */
 
 .fragment:nth-of-type(2n) {
     background: white;
