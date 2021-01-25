@@ -34,6 +34,11 @@ export default class App extends React.Component {
         isDirty: false
     }
     
+    constructor(props){
+        super(props);
+        this.endRef = React.createRef();
+    }
+    
     // For canceling a search when component unloads
     _mounted = false;
 
@@ -793,6 +798,7 @@ export default class App extends React.Component {
 		if(this.state.verified){
 
 			return (
+                <>
 				<div id="app-content">
 					<label className="errorLabel">{this.state.networkError}</label>
                     <Search 
@@ -809,8 +815,11 @@ export default class App extends React.Component {
                         resultsText={this.state.resultsText} 
                         searching={this.state.searching}
                         snippetsDisabled={this.state.snippetsDisabled} 
+                        endRef={this.endRef}
                     />
 				</div>
+                <div ref={this.endRef} />
+                </>
 			)
 
 		}

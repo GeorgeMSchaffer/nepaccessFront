@@ -29,7 +29,6 @@ const options = {
     footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
 };
 
-let page = 1;
 
 class CardResults extends React.Component {
 
@@ -40,13 +39,20 @@ class CardResults extends React.Component {
         }
         this.my_table = React.createRef();
 
-        this.endRef = React.createRef();
+        this.endRef = this.props.endRef;
+        
 
         // window.addEventListener('resize', this.handleResize);
     }
+    
+    page = 1;
 
     scrollToBottom = () => {
-        this.endRef.current.scrollIntoView({ behavior: 'smooth' })
+        try {
+            this.endRef.current.scrollIntoView({ behavior: 'smooth' })
+        } catch(e) {
+
+        }
     }
 
     // This logic broke sorting.  Somehow, results from both next and this.props were already sorted.
@@ -75,9 +81,9 @@ class CardResults extends React.Component {
     // }
     
     onPageLoaded = (pageNumber) => {
-        if(page !== pageNumber){
+        if(this.page !== pageNumber){
             // console.log("#",pageNumber);
-            page = pageNumber;
+            this.page = pageNumber;
             
             // Scrolling is done by footer at the bottom, so when scrolling pages (of variable height)
             // this will keep the user at the bottom of the page, using a referenced div
@@ -122,7 +128,7 @@ class CardResults extends React.Component {
             this.my_table.current.table.setColumns(_columns);
             this.my_table.current.table.replaceData(this.props.results);
             // to maintain page user is on even after rerender, we try saving page as a local variable and setting it here
-            this.my_table.current.table.setPage(page);
+            this.my_table.current.table.setPage(this.page);
         } catch (e) {
             console.log("Column setup error");
             // that's okay
@@ -150,12 +156,11 @@ class CardResults extends React.Component {
                                 </h2>
                             </div>
                         </div>
-                        <div ref={this.endRef} />
                     </div>
                 );
             } else {
                 return (
-                    <div ref={this.endRef}></div>
+                    <></>
                 );
             }
         }
@@ -191,7 +196,6 @@ class CardResults extends React.Component {
                             />
                         </div>
                     </div>
-                    <div ref={this.endRef} />
                 </div>
             );
         }
@@ -206,7 +210,6 @@ class CardResults extends React.Component {
             return (
                 <div className="sidebar-results">
                     <h2 id="results-label">{this.props.resultsText}</h2>
-                    <div ref={this.endRef} />
                 </div>
             )
         }
