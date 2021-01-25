@@ -38,22 +38,10 @@ class CardResults extends React.Component {
             showContext: true
         }
         this.my_table = React.createRef();
-
-        this.endRef = this.props.endRef;
-        
-
         // window.addEventListener('resize', this.handleResize);
     }
     
     page = 1;
-
-    scrollToBottom = () => {
-        try {
-            this.endRef.current.scrollIntoView({ behavior: 'smooth' })
-        } catch(e) {
-
-        }
-    }
 
     // This logic broke sorting.  Somehow, results from both next and this.props were already sorted.
     // So the results were identical
@@ -87,7 +75,7 @@ class CardResults extends React.Component {
             
             // Scrolling is done by footer at the bottom, so when scrolling pages (of variable height)
             // this will keep the user at the bottom of the page, using a referenced div
-            const scroll = this.scrollToBottom;
+            const scroll = this.props.scrollToBottom;
             setTimeout(function () {
                 scroll()
             },100);

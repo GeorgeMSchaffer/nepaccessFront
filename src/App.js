@@ -1,4 +1,5 @@
 import React from 'react';
+
 import axios from 'axios';
 
 import CardResults from './CardResults.js';
@@ -791,7 +792,17 @@ export default class App extends React.Component {
 			// console.log("Returning... " + result);
 		});
 		// console.log("App check");
-	}
+    }
+    
+    
+    scrollToBottom = () => {
+        try {
+            this.endRef.current.scrollIntoView();
+            // this.endRef.current.scrollIntoView({ behavior: 'smooth' })
+        } catch(e) {
+            // console.log(e);
+        }
+    }
 	
 
 	render() {
@@ -815,7 +826,7 @@ export default class App extends React.Component {
                         resultsText={this.state.resultsText} 
                         searching={this.state.searching}
                         snippetsDisabled={this.state.snippetsDisabled} 
-                        endRef={this.endRef}
+                        scrollToBottom={this.scrollToBottom}
                     />
 				</div>
                 <div ref={this.endRef} />
