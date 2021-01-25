@@ -350,7 +350,6 @@ export default class App extends React.Component {
         });
     }
     
-    // TODO
     gatherHighlights = (searchId, _offset, _inputs, currentResults) => {
         if(!this._mounted){ // User navigated away or reloaded
             return; // cancel search
@@ -368,7 +367,12 @@ export default class App extends React.Component {
             currentResults = [];
         }
 
-        let _limit = 100; // start with 100
+        let _limit = 100; // normally get 100
+        if(_offset === 0) {
+            _limit = 10; // start with 10
+        } else if(_offset === 10) {
+            _limit = 90;
+        }
 
         this.setState({
             isDirty: true,
@@ -441,9 +445,6 @@ export default class App extends React.Component {
                     // Verify one last time we want this before we actually commit to these results
                     // (new search could have started while getting them)
                     if(searchId < this._searchId) {
-                        this.setState({
-                            searching: false
-                        });
                         return;
                     } else {
                         this.setState({
