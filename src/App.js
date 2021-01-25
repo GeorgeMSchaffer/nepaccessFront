@@ -211,6 +211,7 @@ export default class App extends React.Component {
 		this.setState({
             // Fresh search, fresh results
             outputResults: [],
+            count: 0,
             searcherInputs: searcherState,
             isDirty: true,
             snippetsDisabled: searcherState.searchOption==="C",
