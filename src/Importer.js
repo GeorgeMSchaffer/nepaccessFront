@@ -240,7 +240,7 @@ class Importer extends Component {
         let result = false;
         if(csv[0]){
             let headers = csv[0];
-            // console.log("Headers", headers);
+            console.log("Headers", headers);
             // headers.forEach(header => console.log(header));
     
             // Check headers:
@@ -249,11 +249,11 @@ class Importer extends Component {
             //     && headers.includes('document') 
             //     && headers.includes('filename')
             // );
-            result = ('title' in headers && 'agency' in headers && 'federal_register_date' in headers && 'state' in headers && 'document' in headers && 'filename' in headers);
+            result = ('title' in headers && 'agency' in headers && 'federal_register_date' in headers && 'state' in headers && 'document' in headers && ('filename' in headers || 'EIS Identifier' in headers));
     
             if(!result){
                 this.setState({
-                    csvError: "Missing one or more CSV headers (title, federal register date, agency, state, document)"
+                    csvError: "Missing one or more headers (title, federal register date, agency, state, document, filename/EIS Identifier)"
                 });
             }
         } else {
@@ -427,7 +427,13 @@ class Importer extends Component {
 
     // TODO: Expect these headers:
     // Title, Document, EPA Comment Letter Date, Federal Register Date, Agency, State, EIS Identifier, Filename, Link
+    // Latest .tsv (has to be converted manually) missing EIS Identifier and also includes:
+    // Cooperating agencies, Edited by, Edited on
+    // Also has "File name" instead of filename which includes up to two archives, one for EIS and
+    // one for EPA comments, separated by ;
+    // So this has to be programmatically moved to the comment filename column
     // Translate these into a standard before sending it on?
+    // This should also work with .tsv
     importCSV = () => {
         let newCSV = [];
         for(let i = 0; i < this.state.csv.length; i++){
@@ -435,10 +441,41 @@ class Importer extends Component {
             let n = keys.length;
             let newObj={};
             while (n--) {
-                key = keys[n];
+                // Handle abnormal headers here (just one so far)
+                if(keys[n]==="File name"){
+                    key = "filename";
+                } else {
+                    key = keys[n];
+                }
+
+                // Spaces to underscores
                 newObj[key.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
+
+                // Try to separate by ;, move appropriate value to new comments_filename column
+                if(key==="filename" && this.state.csv[i]["filename"]) {
+                    try {
+                        let files = this.state.csv[i][key].split(';');
+                        if(files && files.length > 0) {
+                            files.forEach(filename => {
+                                // If comment, send to comments_filename column
+                                if(filename.includes("CommentLetters")) {
+                                    newObj["comments_filename"] = filename;
+                                }
+                                // If EIS, replace with only EIS filename in filename column
+                                else if(filename.includes("EisDocuments")) {
+                                    newObj["filename"] = filename;
+                                }
+                            });
+                        }
+                    } catch(e) {
+                        console.log("Filename parsing error",e);
+                    }
+                }
             }
+
+            // Normalize title spacing (lots of incoming data has this irregularity)
             newObj["title"] = newObj["title"].replace(/\s{2,}/g, ' ');
+
             newCSV[i] = newObj;
         }
 
@@ -448,7 +485,7 @@ class Importer extends Component {
         
         document.body.style.cursor = 'wait';
         this.setState({ 
-            csvLabel: '',
+            csvLabel: 'In progress...',
             csvError: '',
             disabled: true 
         });
@@ -520,7 +557,7 @@ class Importer extends Component {
             document.body.style.cursor = 'default'; 
         });
     }
-    // TODO: Map array into new array of just data, without the name data
+    // TODO: Map array into new array of just data, without the name data?
     handleOnDrop = (evt) => {
         // console.log("Data:");
         // console.log(evt);
@@ -848,8 +885,9 @@ class Importer extends Component {
                             If you're sure you want to update existing metadata with an existing filename, then use the Force Update header and put Yes.
                             Valid, non-duplicate data will become new metadata records.
                             </h3>
-                        <h3>Required headers: Federal Register Date, Document, EIS Identifier, Title</h3>
+                        <h3>Required headers: Federal Register Date, Document, EIS Identifier (or: Filename), Title</h3>
                         <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Provenance, Force Update</h3>
+                        <h4>(any reasonable delimiter should work, i.e. tabs/.tsv, whenever this page says "CSV")</h4>
                         <h1>Import CSV:</h1>
                         <CSVReader
                             onDrop={this.handleOnDrop}
