@@ -441,18 +441,20 @@ class Importer extends Component {
             let n = keys.length;
             let newObj={};
             while (n--) {
+                let newKey = keys[n];
+                key = keys[n];
                 // Handle abnormal headers here (just one so far)
                 if(keys[n]==="File name"){
-                    key = "filename";
-                } else {
-                    key = keys[n];
+                    newKey = "filename";
                 }
 
                 // Spaces to underscores
-                newObj[key.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
+                newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
 
                 // Try to separate by ;, move appropriate value to new comments_filename column
-                if(key==="filename" && this.state.csv[i]["filename"]) {
+                if(newKey==="filename" && this.state.csv[i][key]) {
+                    // "Filename" could be only comments, so reset it first
+                    newObj["filename"] = "";
                     try {
                         let files = this.state.csv[i][key].split(';');
                         if(files && files.length > 0) {
