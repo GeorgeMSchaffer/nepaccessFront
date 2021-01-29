@@ -452,7 +452,7 @@ class Importer extends Component {
                 newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
 
                 // Try to separate by ;, move appropriate value to new comments_filename column
-                if(newKey==="filename" && this.state.csv[i][key]) {
+                if(newKey.toLowerCase()==="filename" && this.state.csv[i][key]) {
                     // "Filename" could be only comments, so reset it first
                     newObj["filename"] = "";
                     try {
