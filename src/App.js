@@ -371,7 +371,8 @@ export default class App extends React.Component {
         if(_offset > currentResults.length) {
             console.log("Nothing left to highlight");
             this.setState({
-                searching: false
+                searching: false,
+                resultsText: currentResults.length + " Results"
             });
             return;
         }
