@@ -443,9 +443,15 @@ class Importer extends Component {
             while (n--) {
                 let newKey = keys[n];
                 key = keys[n];
-                // Handle abnormal headers here (just one so far)
-                if(keys[n]==="File name"){
+                // Handle abnormal headers here
+                if(key==="File name"){
                     newKey = "filename";
+                }
+                if(key==="register_date"){
+                    newKey = "federal_register_date";
+                }
+                if(key==="comment_date"){
+                    newKey = "epa_comment_letter_date";
                 }
 
                 // Spaces to underscores
