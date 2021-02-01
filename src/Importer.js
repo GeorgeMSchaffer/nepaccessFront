@@ -456,6 +456,9 @@ class Importer extends Component {
                 if(key==="folder"){
                     newKey = "eis_identifier";
                 }
+                if(key==="web_link"){
+                    newKey = "link";
+                }
 
                 // Spaces to underscores
                 newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
