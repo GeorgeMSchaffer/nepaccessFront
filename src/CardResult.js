@@ -74,9 +74,9 @@ class CardResult extends React.Component {
                     this.setState({
                         [progressName]: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
                     });
-                } else if(progressEvent.loaded){ // Progress as KB
+                } else if(progressEvent.loaded){ // Progress as MB
                     this.setState({
-                        [progressName]: Math.round(progressEvent.loaded / 1024) + 'KB'
+                        [progressName]: Math.round(progressEvent.loaded / 1024 / 1024) + 'MB'
                     });
                 }
                 // else progress remains blank
@@ -136,7 +136,7 @@ class CardResult extends React.Component {
         } else if(this.props && this.props.cell._cell.row.data.folder){
             return (
                 <div><span className="cardHeader filename">Filename:
-                    <span>{this.props.cell._cell.row.data.folder}.zip</span></span>
+                    <span>{this.props.cell._cell.row.data.folder + "_" + this.props.cell._cell.row.data.documentType}.zip</span></span>
                 </div>
             );
         } else {
@@ -305,7 +305,7 @@ class CardResult extends React.Component {
 
             let size = 0;
             if(cellData.size && cellData.size > 0) {
-                size = parseInt(cellData.size / 1024);
+                size = parseInt(cellData.size / 1024 / 1024);
             }
             
 			if (propFilename && size) {
@@ -314,7 +314,7 @@ class CardResult extends React.Component {
                         <span className="cardHeader">EIS:
                             <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                 <span className="innerText">
-                                    {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " KB"}
+                                    {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
                                 </span>
                             </button>
                         </span>
@@ -327,7 +327,7 @@ class CardResult extends React.Component {
                         <span className="cardHeader">EIS:
                             <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                 <span className="innerText">
-                                    {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " KB"}
+                                    {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
                                 </span>
                             </button>
                         </span>
