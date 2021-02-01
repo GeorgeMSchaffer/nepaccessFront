@@ -63,9 +63,9 @@ class DownloadFile extends React.Component {
 						this.setState({
 							progressValue: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
 						});
-                    } else if(progressEvent.loaded){ // Progress as KB
+                    } else if(progressEvent.loaded){ // Progress as MB
 						this.setState({
-							progressValue: Math.round(progressEvent.loaded / 1024) + 'KB'
+							progressValue: Math.round(progressEvent.loaded / 1024 / 1024) + 'MB'
 						});
                     }
                     // else progress remains blank
