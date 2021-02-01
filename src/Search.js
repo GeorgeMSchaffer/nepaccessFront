@@ -49,20 +49,27 @@ class Search extends React.Component {
             limit: 100,
             offset: 0,
             searchOption: "B",
-            test: globals.anEnum.options
+            test: globals.anEnum.options,
+            cancelButtonActive: true
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
+        this.stop = this.props.stop;
         // this.filterBy = _.debounce(this.props.filterResultsBy, 200);
 
         this.myRef = React.createRef();
     }
-    
+
     /**
      * Event handlers
      */  
+    onStopClick = (evt) => {
+        this.stop();
+        this.setState({cancelButtonActive: false});
+    }
 
     onIconClick = (evt) => {
+        this.setState({cancelButtonActive: true});
         this.debouncedSearch(this.state);
     }
     onClearClick = (evt) => {
@@ -78,6 +85,7 @@ class Search extends React.Component {
     onKeyUp = (evt) => {        
         if(evt.keyCode === 13){
             evt.preventDefault();
+            this.setState({cancelButtonActive: true});
             this.debouncedSearch(this.state);
         }
     }
@@ -300,6 +308,9 @@ class Search extends React.Component {
             </div>
 
             <div className="loader-holder">
+                <div className="center" hidden={!this.props.searching}>
+                    <button disabled={!this.state.cancelButtonActive} onClick={this.onStopClick}>Stop search (cancel further snippet gathering)</button>
+                </div>
                 {/* <div className="center" hidden={!this.props.searching}>Loaded text snippets for {this.props.count} results...</div> */}
                 <div className="lds-ellipsis" hidden={!this.props.searching}><div></div><div></div><div></div><div></div></div>
             </div>
@@ -417,7 +428,8 @@ class Search extends React.Component {
         var queryString = globals.getParameterByName("q");
         if(queryString){
             this.setState({
-                titleRaw: queryString
+                titleRaw: queryString,
+                cancelButtonActive: true
             }, () => {
                 if(this.state.titleRaw){
                     this.debouncedSearch(this.state);

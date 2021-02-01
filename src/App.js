@@ -42,6 +42,9 @@ export default class App extends React.Component {
     // For canceling a search when component unloads
     _mounted = false;
 
+    // For canceling a search on demand
+    _canceled = false;
+
     // For canceling any running search if user starts a new search before results are done
     _searchId = 1;
 
@@ -184,8 +187,21 @@ export default class App extends React.Component {
       
     }
 
+    // TODO: Can't set state here, state update logic needs to happen elsewhere?
+    stopSearch = () => {
+        this._canceled = true;
+        // this.filterResultsBy(searcherState);
+        // this.setState({searching:false})
+        // this.setState({
+        //     searching: false
+        // }, () => {
+        //     this.filterResultsBy(this._searcherState);
+        // });
+    }
+
     // Start a brand new search.
     startNewSearch = (searcherState) => {
+        this._canceled = false;
         this._searcherState = searcherState; // for live filtering
 
         // 1: Collect contextless results
@@ -368,11 +384,15 @@ export default class App extends React.Component {
             currentResults = [];
         }
 
-        if(_offset > currentResults.length) {
+        if(_offset > currentResults.length || this._canceled) {
+            let resultsText = currentResults.length + " Results";
+            if(this._canceled) {
+                resultsText += " (stopped)";
+            }
             console.log("Nothing left to highlight");
             this.setState({
                 searching: false,
-                resultsText: currentResults.length + " Results"
+                resultsText: resultsText
             });
             return;
         }
@@ -556,6 +576,7 @@ export default class App extends React.Component {
 					<label className="errorLabel">{this.state.networkError}</label>
                     <Search 
                         search={this.startNewSearch} 
+                        stop={this.stopSearch}
                         filterResultsBy={this.filterResultsBy} 
                         searching={this.state.searching} 
                         useOptions={this.state.useSearchOptions}
