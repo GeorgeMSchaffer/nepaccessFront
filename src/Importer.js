@@ -453,6 +453,9 @@ class Importer extends Component {
                 if(key==="comment_date"){
                     newKey = "epa_comment_letter_date";
                 }
+                if(key==="folder"){
+                    newKey = "eis_identifier";
+                }
 
                 // Spaces to underscores
                 newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
