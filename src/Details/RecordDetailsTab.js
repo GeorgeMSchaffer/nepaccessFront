@@ -450,7 +450,7 @@ export default class RecordDetailsTab extends React.Component {
                                     <DownloadFile downloadType="EIS" filename={cellData[key]}/>
                                 </p>
 
-                                <p><span className='modal-title'>&nbsp;File size: </span>{parseInt(cellData.size / 1024)} KB</p>
+                                <p><span className='modal-title'>&nbsp;File size: </span>{parseInt(cellData.size / 1024 / 1024)} MB</p>
                                 <p><span className='modal-title'>&nbsp;Filename: </span>{cellData[key]}</p>
 
                                 {filenames}
