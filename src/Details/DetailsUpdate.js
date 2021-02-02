@@ -131,6 +131,21 @@ class DetailsUpdate extends React.Component {
         return valid;
     }
     
+    
+    onCommentDateChange = (evt) => {
+        console.log("Old date", this.state.record.epa_comment_letter_date);
+        this.setState(prevState => {
+            let record = { ...prevState.record };  // shallow copy of state variable
+            record.epa_comment_letter_date = evt;                     // update the name property, assign a new value                 
+            return { record };                                 // return new state object
+        }, () =>{
+            this.setState({
+                isDirty: true
+            });
+            console.log("Date changed", this.state.record.epa_comment_letter_date);
+        });
+    }
+    
     onDateChange = (evt) => {
         console.log("Old date", this.state.record.federal_register_date);
         this.setState(prevState => {
@@ -151,14 +166,17 @@ class DetailsUpdate extends React.Component {
             // console.log("props", this.props.record);
             // let startState = { ...this.props.record}; /// shallow clone, would be fine today but maybe not tomorrow
             let startState = JSON.parse(JSON.stringify(this.props.record)); // Deep clone (new array/object properties cloned from props object are fully disconnected)
-            
+
             // Handle date, standardize input names
             if(typeof(startState.registerDate) === "string"){
                 startState.federal_register_date = Globals.getCorrectDate(startState.registerDate);
                 startState.registerDate = null;
             }
+            if(typeof(startState.commentDate) === "string"){
+                startState.epa_comment_letter_date = Globals.getCorrectDate(startState.commentDate);
+                startState.commentDate = null;
+            }
             startState.document = startState.documentType;
-            startState.epa_comment_letter_date = startState.commentDate;
             startState.comments_filename = startState.commentsFilename;
             startState.eis_identifier = startState.folder;
 
@@ -201,7 +219,16 @@ class DetailsUpdate extends React.Component {
                     />
                     <label className="update">Agency</label>
                     <input type="text" name="agency" value={"" + this.state.record.agency} onInput={this.onInput} onChange={this.onChange}></input>
-                    {/* <input type="text" value={"" + this.state.record.commentDate} onInput={this.onInput} onChange={this.onChange}></input> */}
+                    <label className="update">EPA Comment Letter Date</label>
+                    <label className="loginErrorLabel">
+                        {this.state.dateError}
+                    </label>
+                    <DatePicker
+                        selected={this.state.record.epa_comment_letter_date} 
+                        onChange={this.onCommentDateChange} 
+                        dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
+                        className="date block" 
+                    />
                     <label className="update">Comments filename</label>
                     <input type="text" name="comments_filename" value={"" + this.state.record.comments_filename} onInput={this.onInput} onChange={this.onChange}></input>
                     <label className="update">Document type</label>
