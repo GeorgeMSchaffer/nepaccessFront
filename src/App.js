@@ -133,7 +133,7 @@ export default class App extends React.Component {
             if(isFiltered) { // filtered: "Matches"
                 textToUse = filteredResults.length + " Matches";
                 if(filteredResults.length === 0) {
-                    textToUse = filteredResults.length + " Matches (try removing or relaxing filters?)";
+                    textToUse = filteredResults.length + " Matches (try relaxing filters?)";
                 }
             }
             
