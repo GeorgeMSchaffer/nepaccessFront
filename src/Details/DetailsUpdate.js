@@ -151,7 +151,7 @@ class DetailsUpdate extends React.Component {
             // console.log("props", this.props.record);
             // let startState = { ...this.props.record}; /// shallow clone, would be fine today but maybe not tomorrow
             let startState = JSON.parse(JSON.stringify(this.props.record)); // Deep clone (new array/object properties cloned from props object are fully disconnected)
-
+            
             // Handle date, standardize input names
             if(typeof(startState.registerDate) === "string"){
                 startState.federal_register_date = Globals.getCorrectDate(startState.registerDate);
@@ -159,6 +159,7 @@ class DetailsUpdate extends React.Component {
             }
             startState.document = startState.documentType;
             startState.epa_comment_letter_date = startState.commentDate;
+            startState.comments_filename = startState.commentsFilename;
             startState.eis_identifier = startState.folder;
 
 			// prefer empty string to null
@@ -202,7 +203,7 @@ class DetailsUpdate extends React.Component {
                     <input type="text" name="agency" value={"" + this.state.record.agency} onInput={this.onInput} onChange={this.onChange}></input>
                     {/* <input type="text" value={"" + this.state.record.commentDate} onInput={this.onInput} onChange={this.onChange}></input> */}
                     <label className="update">Comments filename</label>
-                    <input type="text" name="commentsFilename" value={"" + this.state.record.commentsFilename} onInput={this.onInput} onChange={this.onChange}></input>
+                    <input type="text" name="comments_filename" value={"" + this.state.record.comments_filename} onInput={this.onInput} onChange={this.onChange}></input>
                     <label className="update">Document type</label>
                     <label className="loginErrorLabel">
                         {this.state.typeError}
