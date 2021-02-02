@@ -221,9 +221,10 @@ label.checkbox-text {
 
 .search-bar {
     display: inline-block;
-    width: 76%;
+    width: 70%;
     height: 54px;
     margin: 0;
+    padding-right: 110px; /* for custom clear icon and magnifying glass icon */
     
     /* background: #FFFFFF; */
     /* Background space for magnifying glass icon: 100% minus its width */
