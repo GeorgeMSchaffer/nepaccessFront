@@ -5,9 +5,11 @@ export default class Media extends React.Component {
     render() {
         return (
             <div id="media">
+
                 <h1>
                     Media
                 </h1>
+                
                 <h3 className="intro">
                     The work of University of Arizona undergraduate students has been been critical to the NEPAccess project. Besides the time-consuming tasks of finding and cataloging EIS documents as we build our database, they are helping to develop the machine learning tools used to analyze NEPA documents. In order to train the algorithms, students are categorizing and labelling documents manually. 
                 </h3>
@@ -18,8 +20,8 @@ export default class Media extends React.Component {
                         What is NEPaccess? (2:42)
                     </h2>
 
-                    <iframe className="video" src="https://player.vimeo.com/video/508049098" 
-                        frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
+                    <iframe title="What is NEPaccess? (2:42)" className="video" src="https://player.vimeo.com/video/508049098" 
+                        frameBorder="0" allow="autoplay" allowFullScreen>
                     </iframe>
                 </div>
                 <div className="caption">
@@ -31,8 +33,8 @@ export default class Media extends React.Component {
                         Being on the NEPAccess team (3:02)
                     </h2>
                     
-                    <iframe className="video" src="https://player.vimeo.com/video/508048710" 
-                        frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
+                    <iframe title="Being on the NEPAccess team (3:02)" className="video" src="https://player.vimeo.com/video/508048710" 
+                        frameBorder="0" allow="autoplay" allowFullScreen>
                     </iframe>
                 </div>
                 <div className="caption">
