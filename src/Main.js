@@ -22,6 +22,8 @@ import AboutSearchTips from './AboutSearchTips.js';
 import AboutHelpContents from './AboutHelpContents.js';
 import AboutStats from './AboutStats.js';
 
+import Media from './Media.js';
+
 import Importer from './Importer.js';
 
 import Generate from './Generate.js';
@@ -138,8 +140,12 @@ class Main extends React.Component {
                 </div>
 
                 <div id="main-menu">
-                    <Link className="main-menu-link" to="/search">Search NEPAccess</Link>
-                    <Link className="main-menu-link" to="/aboutnepa">About NEPA</Link>
+                    <Link className="main-menu-link" to="/search">
+                        Search
+                    </Link>
+                    <Link className="main-menu-link" to="/aboutnepa">
+                        About NEPA
+                    </Link>
                     <div id="about-dropdown" className="main-menu-link dropdown">
                         <Link id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
                             About NEPAccess
@@ -151,10 +157,14 @@ class Main extends React.Component {
                             <Link to="/stats">Content Statistics</Link>
                         </div>
                     </div>
-                    {this.state.menuItems}
                     <Link className="main-menu-link" to="/abouthelp">
                         Search Tips
                     </Link>
+                    <Link className="main-menu-link" to="/media">
+                        Media
+                    </Link>
+
+                    {this.state.menuItems}
                 </div>
                 
             </div>
@@ -173,6 +183,7 @@ class Main extends React.Component {
                 <Route path="/abouthelp" component={AboutSearchTips}/>
                 <Route path="/abouthelpcontents" component={AboutHelpContents}/>
                 <Route path="/stats" component={AboutStats}/>
+                <Route path="/media" component={Media}/>
 
                 <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
                 

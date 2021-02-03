@@ -1,0 +1,39 @@
+#media {
+    margin: auto;
+    margin-top: 110px;
+    width: 80%;
+
+    /* text-align: center; */
+}
+#media h1 {
+    text-align: center;
+}
+
+.intro {
+}
+
+.video-container {
+    text-align: center;
+    margin: auto;
+}
+.video-container h2 {
+    margin-top: 50px;
+}
+
+.video {
+    display: block;
+    margin: auto;
+    /* 16:9 */
+    width: 640px;
+    height: 360px;
+}
+
+.caption {
+    font-weight: bold;
+    width: 640px;
+    margin: auto;
+}
+
+.spacer {
+    height: 200px;
+}
