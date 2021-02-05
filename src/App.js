@@ -309,7 +309,7 @@ export default class App extends React.Component {
                             folder: doc.folder,
                             plaintext: result.highlights,
                             name: result.filenames,
-                            relevance: idx
+                            relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                         };
                         return newObject;
                     }); 
