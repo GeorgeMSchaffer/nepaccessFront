@@ -17,7 +17,7 @@ export default class Media extends React.Component {
 
                 <div className="video-container">
                     <h2>
-                        What is NEPaccess?
+                        What is NEPAccess?
                     </h2>
 
                     <iframe className="video" title="What is NEPaccess?"
