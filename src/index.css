@@ -184,8 +184,8 @@ body {
   position: relative;
   left: 360px;
   margin-right: 400px; /** offset left: 400px */
-  min-width: 520px;
-  height: 32px;
+  min-width: 480px;
+  height: 52px;
   top: 50px;
 }
 
@@ -414,7 +414,7 @@ span.email-text {
 
 /* New dropdown for help submenus */
 #help-dropdown, #about-dropdown {
-    height: 60px;
+    /* height: 60px; */
 }
 .dropdown {
     display: block;
@@ -433,6 +433,7 @@ span.email-text {
 }
 .dropdown-content {
     display: none;
+    z-index: 2;
 }
 .dropdown-content a {
     display: block;
@@ -457,7 +458,7 @@ span.email-text {
 .dropdown:hover > .dropdown-content {
     display: block;
     position: absolute;
-    top: 50px;
+    /* top: 50px; */
     left: -31px;
     text-align: center;
 }
