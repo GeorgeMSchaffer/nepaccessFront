@@ -7,8 +7,10 @@ import CardDetailsLink from './CardDetailsLink.js';
 
 // TODO: May be wise to have child components for each element that may change (i.e. download links)
 // TODO: Right now, results from initialSearch include a filename string with zero to many 
-// comma-separated filenames.  So, CardResult will have to parse that, 
+// >-separated filenames.  So, CardResult will have to parse that, 
 // and distribute highlights appropriately.
+// To track whether something was downloaded this session, parent (CardResults) keeps a list.
+// Filtering results for example rerenders and loses track of downloads otherwise
 
 class CardResult extends React.Component {
 
@@ -22,12 +24,13 @@ class CardResult extends React.Component {
             commentProgressValue: null,
             commentDownloadText: 'Download',
             commentDownloadClass: 'download'
-		};
+        };
+
     }
     
 	download = (filenameOrID, isFolder, downloadTextName, className, progressName) => {
-        // console.log("Downloading with filename; folder; dtn; class; progress",filenameOrID,isFolder,downloadTextName,className,progressName);
-		const FileDownload = require('js-file-download');
+        
+        const FileDownload = require('js-file-download');
 
 		// Indicate download
 		this.setState({
@@ -86,9 +89,11 @@ class CardResult extends React.Component {
             // Indicate download completed as file is saved/prompted save as (depending on browser settings)
             if(response){
                 this.setState({
-                    [downloadTextName]: 'Done'
+                    [downloadTextName]: 'Done',
+                    [progressName]: ''
                 });
                 FileDownload(response.data, _filename);
+                this.props.saveDownloaded(filenameOrID);
             }
             
             // verified = response && response.status === 200;
@@ -307,33 +312,65 @@ class CardResult extends React.Component {
             if(cellData.size && cellData.size > 0) {
                 size = parseInt(cellData.size / 1024 / 1024);
             }
+
             
 			if (propFilename && size) {
-                return (
-                    <div className="table-row">
-                        <span className="cardHeader">EIS:
-                            <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
-                                <span className="innerText">
-                                    {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
-                                </span>
-                            </button>
-                        </span>
-                        
-                    </div>
-                );
+                if(this.props.checkDownloaded(propFilename)) {
+                    
+                    return (
+                        <div className="table-row">
+                            <span className="cardHeader">EIS:
+                                <button className = {"disabled_download" + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                    <span className="innerText">
+                                        Done
+                                    </span>
+                                </button>
+                            </span>
+                            
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div className="table-row">
+                            <span className="cardHeader">EIS:
+                                <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                    <span className="innerText">
+                                        {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
+                                    </span>
+                                </button>
+                            </span>
+                            
+                        </div>
+                    );
+                }
 			} else if (propID && size) {
-                return (
-                    <div className="table-row">
-                        <span className="cardHeader">EIS:
-                            <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
-                                <span className="innerText">
-                                    {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
-                                </span>
-                            </button>
-                        </span>
-                        
-                    </div>
-                );
+                if(this.props.checkDownloaded(propID)) {
+                    return (
+                        <div className="table-row">
+                            <span className="cardHeader">EIS:
+                                <button className = {"disabled_download" + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                    <span className="innerText">
+                                        Done
+                                    </span>
+                                </button>
+                            </span>
+                            
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div className="table-row">
+                            <span className="cardHeader">EIS:
+                                <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                    <span className="innerText">
+                                        {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
+                                    </span>
+                                </button>
+                            </span>
+                            
+                        </div>
+                    );
+                }
             } else {
                 return <div className="table-row"><span className="cardHeader">EIS File not in system</span></div>;
             }

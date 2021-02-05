@@ -32,6 +32,8 @@ const options = {
 
 class CardResults extends React.Component {
 
+    downloaded = {};
+
     constructor(props) {
         super(props);
         this.state = {
@@ -108,7 +110,12 @@ class CardResults extends React.Component {
         let _columns = [];
         if(this.props.results && this.props.results[0]){
             _columns = [
-                { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
+                { title: "", field: "", formatter: reactFormatter(
+                        <CardResult show={this.state.showContext}
+                                    saveDownloaded={this.saveDownloaded}
+                                    checkDownloaded={this.checkDownloaded} />
+                    )
+                }
             ];
         }
         
@@ -121,6 +128,14 @@ class CardResults extends React.Component {
             console.log("Column setup error");
             // that's okay
         }
+    }
+
+    saveDownloaded = (_name) => {
+        this.downloaded[_name] = true;
+    }
+
+    checkDownloaded = (_name) => {
+        return this.downloaded[_name];
     }
 
 	render() {
