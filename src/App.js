@@ -393,6 +393,8 @@ export default class App extends React.Component {
             this.setState({
                 searching: false,
                 resultsText: resultsText
+            }, () => {
+                this.filterResultsBy(this._searcherState);
             });
             return;
         }
