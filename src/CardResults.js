@@ -15,6 +15,7 @@ import './card.css';
 const options = {
     // maxHeight: "100%",           // for limiting table height
     // layoutColumnsOnNewData: true,
+    selectable:false,
     tooltips:false,
     // responsiveLayout:"collapse",    //collapse columns that dont fit on the table
     // responsiveLayoutCollapseUseFormatters:false,
