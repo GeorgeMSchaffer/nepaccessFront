@@ -17,11 +17,13 @@ export default class Media extends React.Component {
 
                 <div className="video-container">
                     <h2>
-                        What is NEPaccess? (2:42)
+                        What is NEPaccess?
                     </h2>
 
-                    <iframe title="What is NEPaccess? (2:42)" className="video" src="https://player.vimeo.com/video/508049098" 
-                        frameBorder="0" allow="autoplay" allowFullScreen>
+                    <iframe className="video" title="What is NEPaccess?"
+                        src="https://player.vimeo.com/video/508049098?  color&amp;autopause=0&amp;loop=0&amp;muted=0&amp;title=0&amp;portrait=0&amp;byline=0#t=" 
+                        width="640" height="360" allowFullScreen="allowfullscreen">
+
                     </iframe>
                 </div>
                 <div className="caption">
@@ -30,11 +32,12 @@ export default class Media extends React.Component {
 
                 <div className="video-container">
                     <h2>
-                        Being on the NEPAccess team (3:02)
+                        The NEPAccess Undergrad Student Team
                     </h2>
-                    
-                    <iframe title="Being on the NEPAccess team (3:02)" className="video" src="https://player.vimeo.com/video/508048710" 
-                        frameBorder="0" allow="autoplay" allowFullScreen>
+                    <iframe className="video" title="The NEPAccess Undergrad Student Team"
+                        src="https://player.vimeo.com/video/508048710?  color&amp;autopause=0&amp;loop=0&amp;muted=0&amp;title=0&amp;portrait=0&amp;byline=0#t=" 
+                        width="640" height="360" allowFullScreen="allowfullscreen">
+
                     </iframe>
                 </div>
                 <div className="caption">

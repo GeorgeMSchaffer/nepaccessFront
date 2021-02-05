@@ -1,12 +1,27 @@
 #media {
     margin: auto;
     margin-top: 110px;
-    width: 80%;
+    width: 40%;
+    min-width: 640px;
 
     /* text-align: center; */
 }
 #media h1 {
     text-align: center;
+    
+    display: block;
+
+    font-family: "Open Sans Condensed";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 49px;
+    
+    margin-top: 0;
+    margin-bottom: 49px;
+
+    color: #8FBC3F;
+
 }
 
 .intro {
@@ -18,6 +33,7 @@
 }
 .video-container h2 {
     margin-top: 50px;
+    font-weight: normal;
 }
 
 .video {
@@ -29,7 +45,6 @@
 }
 
 .caption {
-    font-weight: bold;
     width: 640px;
     margin: auto;
 }
