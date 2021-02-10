@@ -320,7 +320,7 @@ class CardResult extends React.Component {
                     return (
                         <div className="table-row">
                             <span className="cardHeader">EIS:
-                                <button className = {"disabled_download" + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                <button className = {"disabled_download document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                     <span className="innerText">
                                         Done
                                     </span>
@@ -348,7 +348,7 @@ class CardResult extends React.Component {
                     return (
                         <div className="table-row">
                             <span className="cardHeader">EIS:
-                                <button className = {"disabled_download" + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                <button className = {"disabled_download document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                     <span className="innerText">
                                         Done
                                     </span>
