@@ -1199,7 +1199,7 @@ class Importer extends Component {
                             Import CSV from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
                         </button>
                         <button type="button" className="button" id="submitCSV" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
-                            Import CSV
+                            Import CSV/TSV
                         </button>
 
                         <h3 className="infoLabel">
