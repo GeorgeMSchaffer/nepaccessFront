@@ -468,6 +468,9 @@ export default class RecordDetailsTab extends React.Component {
                 // exclusions:
                 } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
                     return '';
+                // hide blank fields
+                } else if(!cellData[key] || cellData[key].length === 0) {
+                    return '';
                 }
                 // else: everything else
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p>);
@@ -521,10 +524,11 @@ export default class RecordDetailsTab extends React.Component {
             })
         }
 
-        // TODO: Curator check
+        // TODO?: Real curator check (backend does check, so it doesn't really matter...)
 
         let curator = localStorage.curator;
-        let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'More documents from this process'}];
+        // let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'More documents from this process'}];
+        let viewOptions = [ { value: 'Details', label: 'Details' } ];
         if(curator) {
             viewOptions.push({ value: 'Update', label: 'Edit' });
         }
