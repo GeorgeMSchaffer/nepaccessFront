@@ -471,6 +471,8 @@ export default class RecordDetailsTab extends React.Component {
                 // hide blank fields
                 } else if(!cellData[key] || cellData[key].length === 0) {
                     return '';
+                } else if(key==='summaryText') {
+                    return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);
                 }
                 // else: everything else
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p>);
