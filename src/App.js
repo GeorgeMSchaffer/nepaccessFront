@@ -201,6 +201,7 @@ export default class App extends React.Component {
 
     // Start a brand new search.
     startNewSearch = (searcherState) => {
+        this._sortVal = "relevance"; // reset sort
         this._canceled = false;
         this._searcherState = searcherState; // for live filtering
 
@@ -294,7 +295,14 @@ export default class App extends React.Component {
             }).then(currentResults => {
                 let _data = [];
                 if(currentResults && currentResults[0] && currentResults[0].doc) {
-                    _data = currentResults.map((result, idx) =>{
+                    
+                    // TODO: Probably don't want filter permanently, but it was requested for now
+                    _data = currentResults
+                    .filter((result) => { // Soft rollout logic added to filter out anything without docs.
+                        // return result.doc.size > 0; // filter out if no files
+                        return true;
+                    })
+                    .map((result, idx) =>{
                         let doc = result.doc;
                         let newObject = {title: doc.title, 
                             agency: doc.agency, 
@@ -316,7 +324,7 @@ export default class App extends React.Component {
                     this.setState({
                         searchResults: _data,
                         outputResults: _data,
-                        resultsText: currentResults.length + " Results",
+                        resultsText: _data.length + " Results",
                     }, () => {
                         this.filterResultsBy(this._searcherState);
                     
@@ -351,7 +359,10 @@ export default class App extends React.Component {
                     this.setState({
                         resultsText: "Error: Request timed out"
                     });
-                } else {
+                } else if (error.response && error.response.status === 403) {
+                    this.props.history.push('/login');
+                }
+                else {
                     this.setState({
                         networkError: 'Server is down or you may need to login again.'
                     });
@@ -549,8 +560,10 @@ export default class App extends React.Component {
 				this.setState({
 					networkError: "Server may be down, please try again later."
 				});
-			} else { // 403
-				// this.props.history.push('/login');
+			} else { // 403?
+                if(err.response && err.response.status===403) {
+                    this.props.history.push('/login');
+                }
 			}
 		})
 		.finally(() => {
