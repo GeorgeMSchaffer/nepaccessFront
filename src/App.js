@@ -74,6 +74,25 @@ export default class App extends React.Component {
             return returnValue;
         };
     }
+    
+    /** Special logic for ;-delimited states or cooperating agencies newly from Buomsoo */
+    arrayMatchesArray(field, val) {
+        return function (a) {
+            // console.log(a);
+            let returnValue = false;
+            val.forEach(item =>{
+                if(a[field]){
+                    let _vals = a[field].split(";"); // e.g. AK;AL;...
+                    for(let i = 0; i < _vals.length; i++) {
+                        if (_vals[i] === item) {
+                            returnValue = true; // if we hit ANY of them, then true
+                        }
+                    }
+                }
+            });
+            return returnValue;
+        };
+    }
 
     matchesStartDate(val) {
         return function (a) {
@@ -110,9 +129,13 @@ export default class App extends React.Component {
                 isFiltered = true;
                 filteredResults = filteredResults.filter(this.matchesArray("agency", searcherState.agency));
             }
+            if(searcherState.cooperatingAgency && searcherState.cooperatingAgency.length > 0){
+                isFiltered = true;
+                filteredResults = filteredResults.filter(this.arrayMatchesArray("cooperatingAgency", searcherState.cooperatingAgency));
+            }
             if(searcherState.state && searcherState.state.length > 0){
                 isFiltered = true;
-                filteredResults = filteredResults.filter(this.matchesArray("state", searcherState.state));
+                filteredResults = filteredResults.filter(this.arrayMatchesArray("state", searcherState.state));
             }
             if(searcherState.startPublish){
                 isFiltered = true;
@@ -296,6 +319,7 @@ export default class App extends React.Component {
                 let _data = [];
                 if(currentResults && currentResults[0] && currentResults[0].doc) {
                     
+                    console.log(currentResults);
                     // TODO: Probably don't want filter permanently, but it was requested for now
                     _data = currentResults
                     .filter((result) => { // Soft rollout logic added to filter out anything without docs.
@@ -306,6 +330,7 @@ export default class App extends React.Component {
                         let doc = result.doc;
                         let newObject = {title: doc.title, 
                             agency: doc.agency, 
+                            cooperatingAgency: doc.cooperatingAgency,
                             commentDate: doc.commentDate, 
                             registerDate: doc.registerDate, 
                             state: doc.state, 

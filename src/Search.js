@@ -37,6 +37,7 @@ class Search extends React.Component {
             startComment: null,
             endComment: null,
             agency: [],
+            cooperatingAgency: [],
             state: [],
             typeAll: true,
             typeFinal: false,
@@ -122,6 +123,19 @@ class Search extends React.Component {
 		{ 
             agency: agencyLabels,
             agencyRaw: evt
+		}, () => { 
+			this.filterBy(this.state);
+		});
+    }
+	onCooperatingAgencyChange = (evt) => {
+		var agencyLabels = [];
+		for(var i = 0; i < evt.length; i++){
+			agencyLabels.push(evt[i].label.replace(/ \([A-Z]*\)/gi,""));
+        }
+        this.setState( 
+		{ 
+            cooperatingAgency: agencyLabels,
+            cooperatingAgencyRaw: evt
 		}, () => { 
 			this.filterBy(this.state);
 		});
@@ -336,6 +350,18 @@ class Search extends React.Component {
                         onChange={this.onAgencyChange} 
                         value={this.state.agencyRaw}
                         placeholder="Type or select lead agencies" 
+                        // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                        // menuIsOpen={true}
+                    />
+                </div>
+                <div className="filter">
+                    <label className="sidebar-label" htmlFor="searchAgency">Cooperating agencies</label>
+                    <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="cooperatingAgency" isSearchable isClearable 
+                        styles={customStyles}
+                        options={agencyOptions} 
+                        onChange={this.onCooperatingAgencyChange} 
+                        value={this.state.cooperatingAgencyRaw}
+                        placeholder="Type or select agencies" 
                         // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
                         // menuIsOpen={true}
                     />

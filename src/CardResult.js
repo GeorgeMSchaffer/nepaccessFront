@@ -236,7 +236,7 @@ class CardResult extends React.Component {
         if(this.props && this.props.cell._cell.row.data.state){
             return (
                 <div><span className="cardHeader">State:
-                    <span>{this.props.cell._cell.row.data.state}</span></span>
+                    <span>{this.props.cell._cell.row.data.state.replaceAll(";","; ")}</span></span>
                 </div>
             );
         } else {
