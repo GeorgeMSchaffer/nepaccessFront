@@ -21,6 +21,7 @@ const typeLabels = ["Draft",
     "Third Final Supplemental",
     "Other"];
 
+
 export default class AboutStats extends React.Component {
     
 	constructor(props) {
@@ -35,7 +36,7 @@ export default class AboutStats extends React.Component {
             draftFinalCountByAgency: [],
             chartOption: {value: "Record Count by Document Type", label: "Record Count by Document Type"}
         };
-        
+
         // time to get the stats
         this.getStats();
     }
@@ -307,6 +308,34 @@ export default class AboutStats extends React.Component {
             chartOption: evt
         });
     }
+    
+	check = () => { // check if JWT is expired/invalid
+		
+		let checkURL = new URL('test/check', Globals.currentHost);
+		let result = false;
+		axios.post(checkURL)
+		.then(response => {
+			result = response && response.status === 200;
+			this.setState({
+				verified: result
+			})
+		})
+		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
+			if(!err.response){ // Probably no need to redirect to login if server isn't responding
+				this.setState({
+					networkError: "Server may be down, please try again later."
+				});
+			} else { // 403?
+                if(err.response.status===403) {
+                    this.props.history.push('/login');
+                }
+			}
+		})
+		.finally(() => {
+			// console.log("Returning... " + result);
+		});
+		// console.log("App check");
+    }
 
     render() {
         const chartOptions = [{value: "Record Count by Document Type", label: "Record Count by Document Type"},
@@ -341,6 +370,9 @@ export default class AboutStats extends React.Component {
         );
     }
 
+	componentDidMount() {
+        this.check();
+    }
 }
 
 // For array of 2-length arrays
