@@ -35,7 +35,7 @@ class DownloadFile extends React.Component {
         }
 
         let getRoute = Globals.currentHost + 'file/downloadFile';
-        if(isFolder){
+        if(isFolder) {
             getRoute = Globals.currentHost + 'file/downloadFolder';
         }
 		axios.get(getRoute, {
@@ -47,7 +47,7 @@ class DownloadFile extends React.Component {
 				onDownloadProgress: (progressEvent) => { // Show progress if available
 					const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
                     
-                    if(isFolder && !_filename){ // multi-file case, archive filename needs to be extracted from header
+                    if(isFolder && !_filename) { // multi-file case, archive filename needs to be extracted from header
                         // filename is surrounded by "quotes" so get that and remove those
                         let fileInfo = progressEvent.target.getResponseHeader('content-disposition');
                         if (!fileInfo){
@@ -63,7 +63,7 @@ class DownloadFile extends React.Component {
 						this.setState({
 							progressValue: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
 						});
-                    } else if(progressEvent.loaded){ // Progress as MB
+                    } else if(progressEvent.loaded) { // Progress as MB
 						this.setState({
 							progressValue: Math.round(progressEvent.loaded / 1024 / 1024) + 'MB'
 						});
@@ -73,7 +73,7 @@ class DownloadFile extends React.Component {
 			}).then((response) => {
 
                 // Indicate download completed as file is saved/prompted save as (depending on browser settings)
-                if(response){
+                if(response) {
                     this.setState({
                         downloadText: 'Done'
                     });
