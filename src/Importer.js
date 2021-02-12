@@ -1170,8 +1170,8 @@ class Importer extends Component {
                             </h3>
                         <h3>Required headers: Federal Register Date, Document, EIS Identifier (or: Filename), Title</h3>
                         <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Provenance, Force Update</h3>
-                        <h1>Import CSV:</h1>
-                        <label className="block advanced-label">Delimiter</label>
+                        <h1>Import CSV/TSV:</h1>
+                        <label className="advanced-label">Delimiter to use (default auto-detect) </label>
                         <Creatable id="delimiter" className="multi inline-block" classNamePrefix="react-select" name="delimiter" isSearchable isClearable 
                                         styles={customStyles}
                                         options={delimiterOptions}
