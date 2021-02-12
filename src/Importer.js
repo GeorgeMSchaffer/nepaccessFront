@@ -1196,7 +1196,7 @@ class Importer extends Component {
                             Test Import (Would-be results are returned, but nothing is added to database)
                         </button>
                         <button type="button" className="button" id="submitCSVTitles" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSVTitles}>
-                            Import CSV from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
+                            (Only works for admin) Import from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
                         </button>
                         <button type="button" className="button" id="submitCSV" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
                             Import CSV/TSV
