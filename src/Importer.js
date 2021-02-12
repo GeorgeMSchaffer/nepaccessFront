@@ -80,6 +80,7 @@ class Importer extends Component {
                 filename: '',
             },
             dragClass: '',
+            delimiter: {value:"", label:"auto-detect"}, // auto-detect
             files: [],
             importOption: "csv",
             baseDirectory: ''
@@ -108,6 +109,16 @@ class Importer extends Component {
             baseFolder = pathSegments[1];
         }
         return baseFolder;
+    }
+
+    onDelimiterChange = (val, act) => {
+        if(!val || !act){
+            return;
+        }
+        
+        this.setState({
+            delimiter: val
+        });
     }
 
     onSelect = (val, act) => {
@@ -483,9 +494,11 @@ class Importer extends Component {
                     }
                 }
             }
+            // console.log("object",newObj);
             if(!this.state.csv[i][key]) {
                 // EOF?
             } else {
+                // console.log("Key",this.state.csv[i][key]);
                 // Normalize title spacing (lots of incoming data has this irregularity)
                 newObj["title"] = newObj["title"].replace(/\s{2,}/g, ' ');
     
@@ -532,6 +545,102 @@ class Importer extends Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             // console.log(response);
+
+            let responseArray = response.data;
+            responseArray.forEach(element => {
+                resultString += element + "\n";
+            });
+            
+            if (responseOK) {
+                return true;
+            } else { 
+                return false;
+            }
+        }).then(success => {
+            if(success){
+                successString = "Success.";
+            } else {
+                successString = "Failed to import."; // Server down?
+            }
+        }).catch(error => {
+            if(error.response) {
+                if (error.response.status === 500) {
+                    networkString = "Internal server error.";
+                } else if (error.response.status === 404) {
+                    networkString = "Not found.";
+                } 
+            } else {
+                networkString = "Server may be down (no response), please try again later.";
+            }
+            successString = "Couldn't import.";
+            console.error('error message ', error);
+        }).finally(e => {
+            this.setState({
+                csvError: networkString,
+                csvLabel: successString,
+                disabled: false,
+                results : resultString
+            });
+    
+            document.body.style.cursor = 'default'; 
+        });
+    }
+
+    importCSVTitles = () => {
+        let newCSV = [];
+        for(let i = 0; i < this.state.csv.length; i++){
+            let key, keys = Object.keys(this.state.csv[i]);
+            let n = keys.length;
+            let newObj={};
+            while (n--) {
+                let newKey = keys[n];
+                key = keys[n];
+
+                // Spaces to underscores
+                newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
+            }
+            if(!this.state.csv[i][key]) {
+                // EOF?
+            } else {
+                newObj["title"] = newObj["title"].replace(/\s{2,}/g, ' ');
+    
+                newCSV[i] = newObj;
+            }
+
+        }
+        
+        console.log("Headers", newCSV[0]);
+        if(newCSV[0] && 'title' in newCSV[0]){
+            // All good
+        } else {
+            return;
+        }
+
+        document.body.style.cursor = 'wait';
+        this.setState({ 
+            csvLabel: 'In progress...',
+            csvError: '',
+            disabled: true 
+        });
+        
+        let importUrl = new URL('file/uploadCSV_titles', Globals.currentHost);
+
+        let uploadFile = new FormData();
+        uploadFile.append("csv", JSON.stringify(newCSV));
+
+        let networkString = '';
+        let successString = '';
+        let resultString = "";
+
+        axios({ 
+            method: 'POST',
+            url: importUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: uploadFile
+        }).then(response => {
+            let responseOK = response && response.status === 200;
 
             let responseArray = response.data;
             responseArray.forEach(element => {
@@ -638,6 +747,7 @@ class Importer extends Component {
                     }
                 }
             }
+
             if(!this.state.csv[i][key]) {
                 // EOF?
             } else {
@@ -980,6 +1090,9 @@ class Importer extends Component {
         const typeOptions = [ { value: 'Final', label: 'Final' },{value: 'Draft', label: 'Draft'} 
         ];
 
+        const delimiterOptions = [{value:"", label:"auto-detect"}, {value:",", label:","}, {value:"\t", label:"tab"}
+        ];
+
         const customStyles = {
             option: (styles, state) => ({
                  ...styles,
@@ -1057,14 +1170,22 @@ class Importer extends Component {
                             </h3>
                         <h3>Required headers: Federal Register Date, Document, EIS Identifier (or: Filename), Title</h3>
                         <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Provenance, Force Update</h3>
-                        <h4>(any reasonable delimiter should work, i.e. tabs/.tsv, whenever this page says "CSV")</h4>
                         <h1>Import CSV:</h1>
+                        <label className="block advanced-label">Delimiter</label>
+                        <Creatable id="delimiter" className="multi inline-block" classNamePrefix="react-select" name="delimiter" isSearchable isClearable 
+                                        styles={customStyles}
+                                        options={delimiterOptions}
+                                        selected={this.state.delimiter}
+                                        onChange={this.onDelimiterChange} 
+                                        placeholder="Type or select delimiter" 
+                                    />
                         <CSVReader
                             onDrop={this.handleOnDrop}
                             onError={this.handleOnError}
                             style={{}}
                             config={{
-                                header:true
+                                header:true,
+                                delimiter: this.state.delimiter.value
                             }}
                             addRemoveButton
                             onRemoveFile={this.handleOnRemoveFile}
@@ -1073,6 +1194,9 @@ class Importer extends Component {
                         </CSVReader>
                         <button type="button" className="button" id="submitCSVDummy" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSVDummy}>
                             Test Import (Would-be results are returned, but nothing is added to database)
+                        </button>
+                        <button type="button" className="button" id="submitCSVTitles" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSVTitles}>
+                            Import CSV from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
                         </button>
                         <button type="button" className="button" id="submitCSV" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
                             Import CSV
