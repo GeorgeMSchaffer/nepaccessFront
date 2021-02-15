@@ -23,14 +23,14 @@ export default class Media extends React.Component {
 
                     <iframe className="video"
                         src="https://player.vimeo.com/video/510886460?  color&amp;autopause=0&amp;loop=0&amp;muted=0&amp;title=0&amp;portrait=0&amp;byline=0#t=" 
-                        width="640" height="360" allowfullscreen="allowfullscreen">
+                        width="640" height="360" allowFullScreen="allowfullscreen">
                     </iframe>
                     <div className="caption">
                         This 2-minute animated video begins in January 1970 with President Nixon signing NEPA, the National Environmental Policy Act, into law. Since then over 37,000 environmental impact statements have been created under NEPA. Yet, this game-changing law did not specify where these expensive and valuable documents would be stored, nor how to find them. Fifty years of data have been effectively lost until now. The NEPAccess project harnesses the power of computing and data science to provide a free and public search, knowledge, and engagement platform for this trove of environmental data, all in one place.
                     </div>
 
                     <h2>
-                        
+
                     </h2>
 
                     <iframe className="video" title="What is NEPaccess?"
