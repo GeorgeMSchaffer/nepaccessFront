@@ -1,0 +1,12 @@
+#admin-files-content {
+    margin: 0 10px;
+}
+
+#fileList {
+    min-height: 1000px;
+    width: 90%;
+}
+
+.networkLabel {
+    color: green;
+}
