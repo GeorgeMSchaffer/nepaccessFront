@@ -17,6 +17,7 @@ class Generate extends React.Component {
         this.csvChange = this.csvChange.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.test = this.test.bind(this);
+        this.fixAbbrev = this.fixAbbrev.bind(this);
 
         // If there's no reason for user to be here, redirect them
         let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
@@ -120,6 +121,9 @@ class Generate extends React.Component {
                 <button className="button" onClick={this.generate}>Generate accounts</button>
                 
                 <br /><br /><br />
+                <button className="button" onClick={() => this.fixAbbrev()}>Fix agency abbreviations</button>
+                
+                <br /><br /><br />
                 <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
                 <br /><br /><br />
                 <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
@@ -132,6 +136,21 @@ class Generate extends React.Component {
         // }
     }
     
+    fixAbbrev() {
+        let fixUrl = new URL('test/fix_abbrev', Globals.currentHost);
+        axios({
+            url: fixUrl,
+            method: 'POST'
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            console.log("OK?",responseOK);
+            if(response){
+                console.log("Response",response.data);
+            }
+        }).catch(error => {
+            console.error(error);
+        })
+    }
 
     testBulkImport() {
       console.log("Activating bulk test for " + Globals.currentHost);
