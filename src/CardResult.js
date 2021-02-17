@@ -79,7 +79,7 @@ class CardResult extends React.Component {
                     });
                 } else if(progressEvent.loaded){ // Progress as MB
                     this.setState({
-                        [progressName]: Math.round(progressEvent.loaded / 1024 / 1024) + 'MB'
+                        [progressName]: Math.ceil(progressEvent.loaded / 1024 / 1024) + 'MB'
                     });
                 }
                 // else progress remains blank
@@ -287,7 +287,6 @@ class CardResult extends React.Component {
             let propID = null;
 			if (this.props.cell) { // filename/cell data from React-Tabulator props
                 cellData = this.props.cell._cell.row.data;
-                // console.log(cellData);
 				if (this.props.downloadType === "Comments") {
 					propFilename = cellData.commentsFilename;
                 }
@@ -310,10 +309,10 @@ class CardResult extends React.Component {
 
             let size = 0;
             if(cellData.size && cellData.size > 0) {
-                size = parseInt(cellData.size / 1024 / 1024);
+                size = Math.ceil((cellData.size / 1024) / 1024);
             }
 
-            
+            console.log("Do we have this?",propFilename);
 			if (propFilename && size) {
                 if(this.props.checkDownloaded(propFilename)) {
                     
@@ -372,6 +371,7 @@ class CardResult extends React.Component {
                     );
                 }
             } else {
+                console.log("Can only get here without propID and size",propID,size);
                 return <div className="table-row"><span className="cardHeader">EIS File not in system</span></div>;
             }
 		}
@@ -388,6 +388,7 @@ class CardResult extends React.Component {
             
 			if (this.props.cell) { // filename/cell data from React-Tabulator props
                 cellData = this.props.cell._cell.row.data;
+                console.log(cellData);
 				if (cellData.commentsFilename) {
 					propFilename = cellData.commentsFilename;
                 }
