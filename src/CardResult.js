@@ -312,8 +312,7 @@ class CardResult extends React.Component {
                 size = Math.ceil((cellData.size / 1024) / 1024);
             }
 
-            console.log("Do we have this?",propFilename);
-			if (propFilename && size) {
+			if (propFilename && size && size > 200) {
                 if(this.props.checkDownloaded(propFilename)) {
                     
                     return (
@@ -342,7 +341,7 @@ class CardResult extends React.Component {
                         </div>
                     );
                 }
-			} else if (propID && size) {
+			} else if (propID && size && size > 200) {
                 if(this.props.checkDownloaded(propID)) {
                     return (
                         <div className="table-row">
