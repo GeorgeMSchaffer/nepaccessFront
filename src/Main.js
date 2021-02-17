@@ -14,7 +14,7 @@ import Logout from './User/Logout.js';
 import Reset from './User/Reset.js';
 import UserDetails from './User/UserDetails.js';
 import ForgotPassword from './User/ForgotPassword.js';
-// import Register from './User/Register.js';
+import Register from './User/Register.js';
 
 import AboutNepa from './AboutNepa.js';
 import AboutNepaccess from './AboutNepaccess.js';
@@ -25,6 +25,7 @@ import AboutStats from './AboutStats.js';
 import Media from './Media.js';
 
 import Importer from './Importer.js';
+import AdminFiles from './AdminFiles.js';
 
 import Generate from './Generate.js';
 
@@ -134,6 +135,12 @@ class Main extends React.Component {
                     <span className={this.state.loggedOutDisplay + " logged-out"}>
                         <Link className="top-menu-link" to="/login">Log in</Link>
                     </span>
+                    {/* <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
+                        |
+                    </span>
+                    <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
+                        <Link className="top-menu-link" to="/register">Register</Link>
+                    </span> */}
                     <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                         <Link className="top-menu-link" to="/logout">Log out</Link>
                     </span>
@@ -154,7 +161,7 @@ class Main extends React.Component {
                         <div className="dropdown-content">
                             <Link to="/aboutnepaccess">About NEPAccess</Link>
                             <Link to="/abouthelpcontents">Database Contents</Link>
-                            <Link to="/stats">Content Statistics</Link>
+                            {/* <Link to="/stats">Content Statistics</Link> */}
                         </div>
                     </div>
                     <Link className="main-menu-link" to="/abouthelp">
@@ -171,6 +178,7 @@ class Main extends React.Component {
             <Switch>
                 <Route path="/details" component={UserDetails}/>
                 <Route path="/login" component={Login}/>
+                <Route path="/register" component={Register}/>
                 <Route path="/forgotPassword" component={ForgotPassword}/>
                 <Route path="/reset" component={Reset}/>
                 <Route path="/logout" component={Logout}/>
@@ -188,6 +196,7 @@ class Main extends React.Component {
                 <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
                 
                 <Route path="/importer" component={Importer}/>
+                <Route path="/adminFiles" component={AdminFiles}/>
                 <Route path="/generate" component={Generate}/>
 
                 <Route path="/" component={Landing}/>
@@ -234,9 +243,17 @@ class Main extends React.Component {
             localStorage.curator = true;
             this.setState({
                 menuItems: 
-                <>
-                    <Link className="main-menu-link" to="/importer">Import New Documents</Link>
-                </>
+                
+                <div id="admin-dropdown" className="main-menu-link dropdown">
+                    <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
+                        Admin
+                    </Link>
+                    <i className="fa fa-caret-down"></i>
+                    <div className="dropdown-content">
+                        <Link to="/importer">Import New Documents</Link>
+                        <Link to="/adminFiles">Find Missing Files</Link>
+                    </div>
+                </div>
             })
         } else {
             this.setState({
