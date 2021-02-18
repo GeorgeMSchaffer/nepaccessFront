@@ -319,12 +319,22 @@ input:checked + .checkbox-text {
     /* or 20px */
   
     color: #000000;
-  }
-  
-  #tooltip3 {
+}
+#tooltip3 {
     display: block;
     position: relative;
     
     margin: auto;
     margin-top: 16px;
-  }
+}
+#tooltip4 {
+    text-decoration: underline;
+    font-weight: 600;
+    color: aqua;
+    display: block;
+    position: relative;
+    width: 100%;
+    margin: auto;
+    text-align:center;
+    line-height: 64px;
+}
