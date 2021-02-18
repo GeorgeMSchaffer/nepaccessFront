@@ -148,8 +148,8 @@ class CardResult extends React.Component {
             return <div><span className="cardHeader"></span></div>
         }
     }
-    // End goal: Show list of filenames each with highlight(s) as highlights are populated
-    showTextTest = () => {
+    // Show list of filenames each with highlight(s) as highlights are populated
+    showText = () => {
         // console.log("Test props",this.props);
         if(this.props && this.props.cell._cell.row.data.name){
             let filenames = this.props.cell._cell.row.data.name.split(">");
@@ -194,35 +194,35 @@ class CardResult extends React.Component {
             );
         }
     }
-    showText = () => {
-        if(this.props && this.props.cell._cell.row.data.plaintext){
-            let innerFilename = "";
-            if(this.props.cell._cell.row.data.name){
-                innerFilename = this.props.cell._cell.row.data.name;
-            }
-            return (
-                <div className="fragment-container">
-                    <span className="cardHeader bold filename-inner">
-                        {innerFilename}
-                    </span>
-                    <span hidden={!this.props.show} 
-                        dangerouslySetInnerHTML={{
-                            __html: this.props.cell._cell.row.data.plaintext
-                    }} />
-                </div>
-            );
-        } else if(this.props && this.props.cell._cell.row.data.matchPercent) {
-            return (
-                <div className="fragment-container">
-                    <div>
-                        <span className="cardHeader"><span>
-                            {"" + (this.props.cell._cell.row.data.matchPercent*100) + "% Match"}
-                        </span></span>
-                    </div>
-                </div>
-            );
-        }
-    }
+    // showTextOld = () => {
+    //     if(this.props && this.props.cell._cell.row.data.plaintext){
+    //         let innerFilename = "";
+    //         if(this.props.cell._cell.row.data.name){
+    //             innerFilename = this.props.cell._cell.row.data.name;
+    //         }
+    //         return (
+    //             <div className="fragment-container">
+    //                 <span className="cardHeader bold filename-inner">
+    //                     {innerFilename}
+    //                 </span>
+    //                 <span hidden={!this.props.show} 
+    //                     dangerouslySetInnerHTML={{
+    //                         __html: this.props.cell._cell.row.data.plaintext
+    //                 }} />
+    //             </div>
+    //         );
+    //     } else if(this.props && this.props.cell._cell.row.data.matchPercent) {
+    //         return (
+    //             <div className="fragment-container">
+    //                 <div>
+    //                     <span className="cardHeader"><span>
+    //                         {"" + (this.props.cell._cell.row.data.matchPercent*100) + "% Match"}
+    //                     </span></span>
+    //                 </div>
+    //             </div>
+    //         );
+    //     }
+    // }
     showDate = () => {
         if(this.props && this.props.cell._cell.row.data.registerDate){
             return (
@@ -279,7 +279,7 @@ class CardResult extends React.Component {
     //     });
     // }
     
-    // TODO: Rework when we have folder file sizes
+    // Show download availability, filename, size, and download progress if downloading/downloaded
     showFileDownload = () => {
         if (this.props) {
 			let cellData = null;
@@ -370,7 +370,7 @@ class CardResult extends React.Component {
                     );
                 }
             } else {
-                console.log("Can only get here without propID and size",propID,size);
+                // console.log("Can only get here without propID and size",propID,size);
                 return <div className="table-row"><span className="cardHeader">EIS File not in system</span></div>;
             }
 		}
@@ -440,7 +440,7 @@ class CardResult extends React.Component {
                         {this.showCommentsDownload()}
                     </div>
                 </div>
-                {this.showTextTest()}
+                {this.showText()}
             </div>
             
         </>);

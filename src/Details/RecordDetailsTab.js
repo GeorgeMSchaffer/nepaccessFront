@@ -532,6 +532,7 @@ export default class RecordDetailsTab extends React.Component {
         // let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'More documents from this process'}];
         let viewOptions = [ { value: 'Details', label: 'Details' } ];
         if(curator) {
+            viewOptions.push({ value: 'Match', label: 'Title alignment' });
             viewOptions.push({ value: 'Update', label: 'Edit' });
         }
         

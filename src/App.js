@@ -56,6 +56,7 @@ export default class App extends React.Component {
 
     // For sorting mid-search
     _sortVal = null;
+    _ascVal = true;
 
     optionsChanged = (val) => {
         this.setState({
@@ -184,9 +185,10 @@ export default class App extends React.Component {
     }
 
     // Sort search results on call from results component
-    sort = (val) => {
+    sort = (val, asc) => {
         this._sortVal = val;
-        this.sortDataByField(val, true);
+        this._ascVal = asc;
+        this.sortDataByField(val, asc);
     }
 
     // TODO: asc/desc (> vs. <, default desc === >)
@@ -240,7 +242,10 @@ export default class App extends React.Component {
 
     // Start a brand new search.
     startNewSearch = (searcherState) => {
-        this._sortVal = "relevance"; // reset sort
+        // reset sort
+        this._sortVal = "relevance"; 
+        this._ascVal = true;
+
         this._canceled = false;
         this._searcherState = searcherState; // for live filtering
 
@@ -536,7 +541,7 @@ export default class App extends React.Component {
                             resultsText: currentResults.length + " Results",
                         }, () => {
                             if(this._sortVal) {
-                                this.sortDataByField(this._sortVal, true);
+                                this.sortDataByField(this._sortVal, this._ascVal);
                             }
                             this.filterResultsBy(this._searcherState);
                         });

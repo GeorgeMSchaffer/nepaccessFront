@@ -9,11 +9,37 @@ const sortOptions = [ { value: 'relevance', label: 'Relevance' },
     { value: 'documentType', label: 'Type'}
 ];
 
+const sortOrderOptions = [ { value: true, label: 'Asc'},
+    { value: false, label: 'Desc' }
+];
+
 export default class ResultsHeader extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            sort: { value: 'relevance', label: 'Relevance' },
+            order: { value: true, label: 'Asc'}
+        }
+    }
 
     onSortChange = (value_label, event) => {
         if(event.action === "select-option"){
-            this.props.sort(value_label.value);
+            this.setState({
+                sort: value_label
+            }, () => {
+                this.props.sort(this.state.sort.value, this.state.order.value);
+            });
+        }
+    }
+    
+    onSortOrderChange = (value_label, event) => {
+        if(event.action === "select-option"){
+            this.setState({
+                order: value_label
+            },() => {
+                this.props.sort(this.state.sort.value, this.state.order.value);
+            });
         }
     }
 
@@ -35,7 +61,16 @@ export default class ResultsHeader extends React.Component {
                             // styles={customStyles}
                             options={sortOptions} 
                             onChange={this.onSortChange}
+                            selected={this.state.sort}
                             placeholder="Relevance"
+                        />
+                        <Select id="post-results-dropdown-order" 
+                            className={"multi inline-block"} classNamePrefix="react-select" name="sortOrder" 
+                            // styles={customStyles}
+                            options={sortOrderOptions} 
+                            onChange={this.onSortOrderChange}
+                            selected={this.state.order}
+                            placeholder="Asc"
                         />
                     </div>
                     

@@ -494,7 +494,11 @@ a.link {
 
 #post-results-dropdown {
     line-height: 20px;
-    width: 250px;
+    width: 150px;
+}
+#post-results-dropdown-order {
+    line-height: 20px;
+    width: 100px;
 }
 
 /* CSS spinner */
