@@ -83,7 +83,8 @@ export default class App extends React.Component {
             let returnValue = false;
             val.forEach(item =>{
                 if(a[field]){
-                    let _vals = a[field].split(";"); // e.g. AK;AL;...
+                    // let _vals = a[field].split(";"); // e.g. AK;AL;...
+                    let _vals = a[field].split(/[; ]+/); // e.g. AK;AL or AK AL or AK; AL
                     for(let i = 0; i < _vals.length; i++) {
                         if (_vals[i] === item) {
                             returnValue = true; // if we hit ANY of them, then true
