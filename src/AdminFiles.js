@@ -104,11 +104,11 @@ export default class AdminFiles extends React.Component {
 
                 <div>
                     <label className="block">
-                        Use button if you believe the automated system missed existing files:
+                        Click button if the automated system missed files:
                     </label>
                     <button disabled={this.state.networkStatus==="Checking for new files..."}
                             onClick={this.reCheck}>
-                        Re-check missing files manually (takes longer the more files are missing)
+                        Re-check missing files manually
                     </button>
                 </div>
 
