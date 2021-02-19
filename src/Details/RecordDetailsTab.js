@@ -434,6 +434,7 @@ export default class RecordDetailsTab extends React.Component {
                     if(filenames){
                         return (<div key={i}>
                             <p className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="Folder" id={cellData["id"]}/> {cellData[key]}</p>
+                            <p><span className='modal-title'>&nbsp;Archive size: </span>{Math.ceil(cellData.size / 1024 / 1024)} MB</p>
                             {filenames}
                         </div>);
                     }
