@@ -48,7 +48,7 @@ export default class Media extends React.Component {
                         The NEPAccess Undergrad Student Team
                     </h2>
                     <iframe className="video" title="The NEPAccess Undergrad Student Team"
-                        src="https://player.vimeo.com/video/508048710?  color&amp;autopause=0&amp;loop=0&amp;muted=0&amp;title=0&amp;portrait=0&amp;byline=0#t=" 
+                        src="https://player.vimeo.com/video/514047784?  color&amp;autopause=0&amp;loop=0&amp;muted=0&amp;title=0&amp;portrait=0&amp;byline=0#t=" 
                         width="640" height="360" allowFullScreen="allowfullscreen">
 
                     </iframe>
