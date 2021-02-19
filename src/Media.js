@@ -21,7 +21,7 @@ export default class Media extends React.Component {
                     </h2>
                     
 
-                    <iframe className="video"
+                    <iframe className="video" title="Animated video"
                         src="https://player.vimeo.com/video/510886460?  color&amp;autopause=0&amp;loop=0&amp;muted=0&amp;title=0&amp;portrait=0&amp;byline=0#t=" 
                         width="640" height="360" allowFullScreen="allowfullscreen">
                     </iframe>
