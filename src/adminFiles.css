@@ -1,13 +1,40 @@
 #admin-files-content {
     margin: 0 10px;
-    margin-top: 102px;
+}
+
+#admin-files-button-label{
+    font-weight: 600;
+    font-size: 20px;
+}
+#admin-files-button {
+    font-size: 25px;
+    margin: 10px;
+}
+#admin-files-section1{
+    display: inline-flex;
+    flex-flow: row nowrap; /* default */
+    justify-content: space-between;
+
+    height: 40px;
+    width: 800px;
+
+    border-width: 1px;
+    padding: 5px;
+}
+#admin-files-copy {
+    margin-top: 0px;
+    font-size: 20px;
 }
 
 #fileList {
-    min-height: 1000px;
-    width: 90%;
+    margin-top: 5px;
+    height: 500px;
+    width: 800px;
 }
 
 .networkLabel {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 40px;
     color: green;
 }

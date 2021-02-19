@@ -30,6 +30,9 @@ export default class AdminFiles extends React.Component {
         })
     }
 
+
+
+
     reCheck = () => {
         this.setState({
             networkStatus: "Checking for new files..."
@@ -78,8 +81,8 @@ export default class AdminFiles extends React.Component {
             } else {
                 this.setState({
                     networkError: "",
-                    networkStatus: "OK: File list returned",
-                    files: response.data.map(parseResult)
+                    networkStatus: "OK: File list returned; ~" + response.data.length + " files missing.",
+                    files: response.data.join('\n')
                 });
             }
         }).catch(error => { 
@@ -90,44 +93,71 @@ export default class AdminFiles extends React.Component {
         })
     }
 
+    copyResults = () => {
+        const el = this.textArea
+        el.select()
+        document.execCommand("copy")
+    }
+
+
+
+    onChange = () => {
+        // do nothing
+    }
+
+
+
+
     render() {
         return (<>
-            <div id="admin-files-content">
-                
+            <div className="content">
                 <div className="note">
                     <p>Missing Files</p>
                 </div>
-                
-                <label className="networkErrorLabel">
-                    {this.state.networkError}
-                </label>
-
-                <div>
-                    <label className="block">
-                        Click button if the automated system missed files:
+                <div id="admin-files-content">
+                    
+                    
+                    <label className="networkErrorLabel">
+                        {this.state.networkError}
                     </label>
-                    <button disabled={this.state.networkStatus==="Checking for new files..."}
-                            onClick={this.reCheck}>
-                        Re-check missing files manually
-                    </button>
-                </div>
 
-                <label className="networkLabel">
-                    {this.state.networkStatus}
-                </label>
-                
-                <div>
-                    <textarea id="fileList" value={this.state.files} />
+                    <div>
+                        <label id="admin-files-button-label" className="block">
+                            Click button if the automated system missed files:
+                        </label>
+                        <button id="admin-files-button"
+                                className="button"
+                                disabled={this.state.networkStatus==="Checking for new files..."}
+                                onClick={this.reCheck}>
+                            Re-check missing files manually
+                        </button>
+                    </div>
+
+                    <div id="admin-files-section1">
+                        
+                        <label className="networkLabel">
+                            {this.state.networkStatus}
+                        </label>
+
+                        <button id="admin-files-copy" className="button"
+                                onClick={this.copyResults}>Copy results to clipboard</button>
+                        
+                    </div>
+                    <div>
+                        <label className="block" for="fileList">Files: Filename,folder,type</label>
+                        <textarea 
+                                ref={(textarea) => this.textArea = textarea}
+                                id="fileList" value={this.state.files} onChange={this.onChange} />
+                    </div>
                 </div>
             </div>
         </>);
     }
 
+
+
+
     componentDidMount() {
         this.getMissingFiles();
     }
-}
-
-function parseResult(value) {
-    return value + "\n";
 }
