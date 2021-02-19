@@ -1144,7 +1144,7 @@ class Importer extends Component {
                         <label className="flex-center no-select cursor-pointer">
                             <input type="radio" className="cursor-pointer" name="importOption" value="single" onChange={this.onRadioChange} 
                             />
-                            Single document (deprecated)
+                            Single document
                         </label>
                     </span>
 
