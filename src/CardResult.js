@@ -312,7 +312,7 @@ class CardResult extends React.Component {
                 size = Math.ceil((cellData.size / 1024) / 1024);
             }
 
-			if (propFilename && size && size > 200) {
+			if (propFilename && cellData.size && cellData.size > 200) {
                 if(this.props.checkDownloaded(propFilename)) {
                     
                     return (
@@ -341,7 +341,7 @@ class CardResult extends React.Component {
                         </div>
                     );
                 }
-			} else if (propID && size && size > 200) {
+			} else if (propID && cellData.size && cellData.size > 200) {
                 if(this.props.checkDownloaded(propID)) {
                     return (
                         <div className="table-row">
@@ -370,7 +370,7 @@ class CardResult extends React.Component {
                     );
                 }
             } else {
-                // console.log("Can only get here without propID and size",propID,size);
+                console.log("Can only get here without propID and size",propFilename,propID,size);
                 return <div className="table-row"><span className="cardHeader">EIS File not in system</span></div>;
             }
 		}
