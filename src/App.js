@@ -345,7 +345,7 @@ export default class App extends React.Component {
                     // TODO: Probably don't want filter permanently, but it was requested for now
                     _data = currentResults
                     .filter((result) => { // Soft rollout logic added to filter out anything without docs.
-                        // return result.doc.size > 0; // filter out if no files
+                        // return result.doc.size > 200; // filter out if no files (200 bytes or less)
                         return true;
                     })
                     .map((result, idx) =>{
