@@ -1318,8 +1318,8 @@ class Importer extends Component {
                     <div className="importFile" hidden={this.state.importOption==="csv"}>
                         <div hidden={this.state.importOption !=="bulk"}>
                             <h2>Instructions:</h2>
-                            <h3>This functionality has only been tested so far on Chrome, in Windows.  Results on other OSes/browsers is unpredictable.  </h3>
-                            <h3>Import one or more directories.  
+                            <h3>This functionality has been tested on Chrome and Edge, in Windows.  Results on other OSes/browsers is unpredictable.  Size cap unknown (2GB?  8GB?)</h3>
+                            <h3>Import one or more directories, or just loose archives as appropriate.  
                                 If you have a structure like NSF/NSF_00001/..., you can drag the entire NSF folder in, or you can drag one or more identifying folders in (e.g. NSF_00001, NSF_00002, ...).  
                                 If you're dragging the identifying folders in and not their base agency folder, then the folder must start with the base folder name followed by an underscore.  
                                 So if you drag in EPA_5555, the system will still put the files in EPA/EPA_5555/.  </h3>
@@ -1328,7 +1328,7 @@ class Importer extends Component {
                                 If there is no association found between the folder name and an existing EIS Identifier in the metadata, it's skipped.  
                                 If there is a subfolder for document type like with EPA_5000/Final/..., the system will try to match the files with a metadata record with EIS Identifier EPA_5000 and document type Final.  
                                 The more new files being uploaded, the longer it will take.</h3>
-                            <h1>Bulk directory import:</h1>
+                            <h1>Bulk import:</h1>
                         </div>
                         <h2 hidden={this.state.importOption !== "single"}>Option 2: Import with multiple files</h2> 
                         
