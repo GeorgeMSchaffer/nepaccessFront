@@ -354,7 +354,7 @@ input:checked + .checkbox-text {
     margin-top: 16px;
 }
 #tooltip4 {
-    /* text-decoration: underline; */
+    text-decoration: underline;
     font-weight: 600;
     color: #64D6FA;
     display: block;
@@ -363,6 +363,8 @@ input:checked + .checkbox-text {
     margin: auto;
     text-align:center;
     line-height: 64px;
+
+    cursor: pointer !important;
 }
 
 #check1:hover {

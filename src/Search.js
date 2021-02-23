@@ -51,7 +51,8 @@ class Search extends React.Component {
             offset: 0,
             searchOption: "B",
             test: globals.anEnum.options,
-            cancelButtonActive: true
+            cancelButtonActive: true,
+            tooltipOpen: undefined
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
@@ -224,6 +225,17 @@ class Search extends React.Component {
             // this.debouncedSearch(this.state); 
         }); 
     }
+    tooltipTrigger = (evt) => {
+        if(this.state.tooltipOpen){
+            this.setState({
+                tooltipOpen: false
+            })
+        } else {
+            this.setState({
+                tooltipOpen: true
+            })
+        }
+    }
 
     render () {
         // const { history } = this.props;
@@ -282,20 +294,24 @@ class Search extends React.Component {
 
                         <div className="pre-input-bar">
                             <Tooltip 
-                                trigger="click mouseenter"
+                                trigger="mouseenter manual" // default mouseenter focus
                                 // className="cursor-default"
                                 position="bottom"
                                 // arrow="true"
                                 size="small"
                                 // distance="80"
                                 // offset="80"
-                                open={this.state.tooltipOpen}
+                                // useContext={true}
                                 title={tooltipTitle}
-                                onTrigger={this.toggleTooltip}
-                                interactive={true}
-                                // hideOnClick={true}
+                                open={this.state.tooltipOpen}
+                                // onShow={this.tooltipTrigger}
+                                // interactive={true} // allow clicking of tooltip without hiding it
+                                // hideOnClick="toggle" // only close when tooltip link is clicked
+                                interactive={false}
+                                hideOnClick={true}
                             >
-                                {<span id="tooltip4" className="cursor-default no-select">Search tips</span>}
+                                {<span id="tooltip4" onClick={this.tooltipTrigger}
+                                className="cursor-default no-select">Search tips</span>}
                                 {/* <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
                                     <text className="bold" x="13" y="22" text-align="center" fill="black">?</text>

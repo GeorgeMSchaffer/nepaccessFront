@@ -368,6 +368,10 @@ span.email-text {
     color: #8FBC3F;
 }
 
+/* allow <a> to be links inside tooltips */
+.tippy-popper a { 
+    pointer-events: all;
+}
 .tippy-popper>.tippy-tooltip--small [x-circle] {
     background: none;
 }
