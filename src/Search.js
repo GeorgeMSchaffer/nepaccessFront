@@ -267,7 +267,8 @@ class Search extends React.Component {
         + "<p class=&quot;tooltip-line&quot;>&bull; <span class=bold>All</span> words you enter must be found together to return a result.</p>"
         + "<p class=&quot;tooltip-line&quot;>&bull; Type OR (all caps) to search for <span class=bold>any</span> of those words.</p>"
         + "<p class=&quot;tooltip-line&quot;>&bull; Type NOT (all caps) to <span class=bold>exclude</span> a word or phrase.</p>"
-        + "<p class=&quot;tooltip-line&quot;>&bull; Surround words with quotes(&quot; &quot;) to search for an <span class=bold>exact phrase.</span></p>";
+        + "<p class=&quot;tooltip-line&quot;>&bull; Surround words with quotes(&quot; &quot;) to search for an <span class=bold>exact phrase.</span></p>"
+        + "<p class=&quot;tooltip-line&quot;>&bull; <a href=abouthelp>More search tips.</a></p>";
 
         return (
             <>
@@ -281,14 +282,18 @@ class Search extends React.Component {
 
                         <div className="pre-input-bar">
                             <Tooltip 
-                                className="cursor-default no-select"
+                                trigger="click mouseenter"
+                                // className="cursor-default"
                                 position="bottom"
                                 // arrow="true"
                                 size="small"
                                 // distance="80"
                                 // offset="80"
-                                // open="true"
+                                open={this.state.tooltipOpen}
                                 title={tooltipTitle}
+                                onTrigger={this.toggleTooltip}
+                                interactive={true}
+                                // hideOnClick={true}
                             >
                                 {<span id="tooltip4" className="cursor-default no-select">Search tips</span>}
                                 {/* <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
