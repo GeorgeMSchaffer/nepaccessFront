@@ -245,7 +245,7 @@ label.checkbox-text {
 
 .search-bar {
     display: inline-block;
-    width: 72%;
+    width: calc(72% - 140px); /* Account for self padding */
     height: 54px;
     margin: 0;
     
@@ -264,6 +264,7 @@ label.checkbox-text {
     letter-spacing: 0em;
     text-align: left;
     padding-left: 30px;
+    padding-right: 110px; /* space for icons */
 
 }
 
