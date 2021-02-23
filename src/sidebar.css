@@ -168,17 +168,29 @@ label.checkbox-text {
     line-height: 36px;
     letter-spacing: 0em;
     text-align: left;
+}
+.search-header-2 {
+    color: white;
+
+    font-family: "Open Sans";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 36px;
+    letter-spacing: 0em;
+    text-align: left;
     
+    margin-left: 14%;
 }
 .search-holder {
     display: block;
 
-    height: 176px;
+    height: 200px;
     min-width: 860px;
-    width: 84%;
+    /* width: 84%;
 
     margin-left: 8%;
-    margin-right: 8%;
+    margin-right: 8%; */
 
     background: rgba(115, 114, 114, 1);
 }
@@ -202,7 +214,7 @@ label.checkbox-text {
 }
 .pre-input-bar, .post-input-bar {
     display: inline-block;
-    width: 10%;
+    width: 14%;
     height: 64px;
     margin: 0 auto;
     padding: 0;
@@ -219,12 +231,23 @@ label.checkbox-text {
     vertical-align: middle;
 }
 
+
+.input-bar-2 {
+    display: flex;
+    justify-content: space-between;
+    width: 72%;
+    height: 30px;
+    line-height: 30px;
+    margin: auto;
+    margin-top: 10px;
+    padding: 0;
+}
+
 .search-bar {
     display: inline-block;
-    width: 70%;
+    width: 72%;
     height: 54px;
     margin: 0;
-    padding-right: 110px; /* for custom clear icon and magnifying glass icon */
     
     /* background: #FFFFFF; */
     /* Background space for magnifying glass icon: 100% minus its width */
@@ -271,7 +294,8 @@ label.checkbox-text {
   }
 
 #post-search-box-text {
-    margin-left: 10%;
+    margin-right: -38px;
+    display: inline-flex;
 }
 
 .sidebar-check-label {
@@ -282,6 +306,8 @@ label.checkbox-text {
     line-height: 32px;
     letter-spacing: 0em;
     text-align: left;
+
+    cursor: pointer;
 
     color: white;
 }
@@ -328,13 +354,25 @@ input:checked + .checkbox-text {
     margin-top: 16px;
 }
 #tooltip4 {
-    text-decoration: underline;
+    /* text-decoration: underline; */
     font-weight: 600;
-    color: aqua;
+    color: #64D6FA;
     display: block;
     position: relative;
     width: 100%;
     margin: auto;
     text-align:center;
     line-height: 64px;
+}
+
+#check1:hover {
+    cursor: pointer;
+
+    border: solid 2px #CCC;
+    -moz-box-shadow: 1px 1px 5px #999;
+    -webkit-box-shadow: 1px 1px 5px #999;
+        box-shadow: 1px 1px 5px #999;
+}
+.input-bar-left {
+    cursor: pointer;
 }

@@ -272,21 +272,12 @@ class Search extends React.Component {
         return (
             <>
             <div className="content" onSubmit={this.submitHandler}>
-                <h1 className="search-header">Search for NEPA documents</h1>
+                {/* <h1 className="search-header">Search for NEPA documents</h1> */}
                 <div className="search-holder" >
 
-                    <div className="pre-checkbox-bar"></div>
-                    <div className="input-bar">
-                        <input id="check1" className="pre-search-input" type="checkbox" 
-                                checked={this.state.searchOption==="C"}
-                                onChange={this.onTitleOnlyChecked}
-                        />
-                        <label className="sidebar-check-label" htmlFor="check1">
-                            Search only within titles
-                        </label>
-                    </div>
                     
                     <div className="search-bar-holder">
+                        <h1 className="search-header-2">Search full text of NEPA documents</h1>
 
                         <div className="pre-input-bar">
                             <Tooltip 
@@ -324,8 +315,20 @@ class Search extends React.Component {
                             <path d="M17.4289 19.0834C16.9609 19.5514 16.2049 19.5514 15.7369 19.0834L12.2689 15.6154L8.80089 19.0834C8.33289 19.5514 7.57689 19.5514 7.10889 19.0834C6.88418 18.8592 6.7579 18.5548 6.7579 18.2374C6.7579 17.9199 6.88418 17.6155 7.10889 17.3914L10.5769 13.9234L7.10889 10.4554C6.88418 10.2312 6.7579 9.92677 6.7579 9.60935C6.7579 9.29193 6.88418 8.98755 7.10889 8.76335C7.57689 8.29535 8.33289 8.29535 8.80089 8.76335L12.2689 12.2314L15.7369 8.76335C16.2049 8.29535 16.9609 8.29535 17.4289 8.76335C17.8969 9.23135 17.8969 9.98735 17.4289 10.4554L13.9609 13.9234L17.4289 17.3914C17.8849 17.8474 17.8849 18.6154 17.4289 19.0834Z" fill="#737272"/>
                         </svg>
 
-                        <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
-
+                        {/* <div className="pre-checkbox-bar"></div> */}
+                        <div className="input-bar-2">
+                            <div className="input-bar-left">
+                                <input id="check1" className="pre-search-input" type="checkbox" 
+                                        checked={this.state.searchOption==="C"}
+                                        onChange={this.onTitleOnlyChecked}
+                                />
+                                <label className="sidebar-check-label no-select" htmlFor="check1">
+                                    Search only within titles
+                                </label>
+                            </div>
+                            <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
+                        </div>
+                        
                     </div>
 
                 </div>
