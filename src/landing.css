@@ -70,7 +70,7 @@
 
 #landing-images {
   min-height: 600px;
-  height: 100%;
+  height: calc(100% - 102px);
 }
 
 #image-1 {
@@ -117,7 +117,7 @@
   width: 850px;
   height: 90px;
 
-  top: 70%;
+  top: 60%;
   /* Center horizontally using left 50% and -half of width */
   left: 50%;
   margin-left: -425px;

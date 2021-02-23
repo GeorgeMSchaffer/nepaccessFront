@@ -60,11 +60,19 @@
     color: #555;
 }
 .import-meta .button:hover {
-    background: wheat;
+    color: black;
+    background-color: lightgreen;
+    
+    cursor: pointer;
+
+    border: solid 2px #CCC;
+    -moz-box-shadow: 1px 1px 5px #999;
+    -webkit-box-shadow: 1px 1px 5px #999;
+        box-shadow: 1px 1px 5px #999;
 }
 
 .import-meta .button:disabled {
-    color: #888;
+    color: #888 !important;
 }
 
 .import-meta {

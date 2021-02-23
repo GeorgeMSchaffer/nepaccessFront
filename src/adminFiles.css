@@ -1,6 +1,17 @@
 #admin-files-content {
     margin: 0 10px;
 }
+#admin-files-content button:hover {
+    color: black;
+    background-color: lightgreen;
+    
+    cursor: pointer;
+
+    border: solid 2px #CCC;
+    -moz-box-shadow: 1px 1px 5px #999;
+    -webkit-box-shadow: 1px 1px 5px #999;
+        box-shadow: 1px 1px 5px #999;
+}
 
 #admin-files-button-label{
     font-weight: 600;
