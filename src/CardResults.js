@@ -41,7 +41,7 @@ class CardResults extends React.Component {
             showContext: true
         }
         this.my_table = React.createRef();
-        // window.addEventListener('resize', this.handleResize);
+        window.addEventListener('resize', this.handleResize);
     }
     
     page = 1;
@@ -64,12 +64,12 @@ class CardResults extends React.Component {
     // }
     
     // Table needs help to resize its cells if window is resized
-    // handleResize = () => {
-    //     this.setState({
-    //         height: window.innerHeight,
-    //         width: window.innerWidth
-    //     });
-    // }
+    handleResize = () => {
+        this.setState({
+            height: window.innerHeight,
+            width: window.innerWidth
+        });
+    }
     
     onPageLoaded = (pageNumber) => {
         if(this.page !== pageNumber){
