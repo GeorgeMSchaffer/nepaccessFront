@@ -27,6 +27,7 @@ import Importer from './Importer.js';
 import AdminFiles from './AdminFiles.js';
 
 import Generate from './Generate.js';
+import Iframes from './Iframes.js';
 
 import Globals from './globals.js';
 
@@ -197,6 +198,8 @@ class Main extends React.Component {
                 <Route path="/importer" component={Importer}/>
                 <Route path="/adminFiles" component={AdminFiles}/>
                 <Route path="/generate" component={Generate}/>
+
+                <Route path="/iframes" component={Iframes} />
 
                 <Route path="/" component={Landing}/>
             </Switch>
