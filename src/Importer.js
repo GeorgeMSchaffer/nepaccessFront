@@ -151,6 +151,10 @@ class Importer extends Component {
 
     }
 
+    onChangeDummy = () => {
+
+    }
+
     onChange = (evt) => {
         if(evt && evt.target){
             // console.log(evt);
@@ -898,8 +902,12 @@ class Importer extends Component {
             },
             data: uploadFiles
         }).then(response => {
+            console.log("Import response",response);
             let responseOK = response && response.status === 200;
             if (responseOK) {
+                
+                this.setState({importResults: response.data});
+
                 return true;
             } else { 
                 return false;
@@ -1364,6 +1372,10 @@ class Importer extends Component {
                         <h3 className="infoLabel green">
                             {"Import status shown here: " + this.state.successLabel}
                         </h3>
+
+                        <textarea hidden={this.state.importOption !== "bulk"}
+                            value={this.state.importResults} onChange={this.onChangeDummy}>
+                        </textarea>
                     </div>
                 </div>
                 <hr />
