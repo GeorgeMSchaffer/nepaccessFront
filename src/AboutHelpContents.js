@@ -148,7 +148,7 @@ export default class AboutHelpContents extends React.Component {
                     </h2>
                     
                     <div>
-                        NEPAccess contains all records from environmental impact statements (EIS) created between  1987-2018. There are downloadable PDF files for EIS’s from 2001-2018. 
+                        NEPAccess contains all records from environmental impact statements (EIS) created between  1987-2020. There are downloadable PDF files for EIS’s from 2001-2020. 
                     </div>
                     
                     <div><p>
