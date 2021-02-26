@@ -35,6 +35,7 @@ import { Link, Switch, Route, withRouter } from 'react-router-dom';
 
 import PropTypes from "prop-types";
 
+
 class Main extends React.Component {
     
     static propTypes = {
@@ -119,14 +120,16 @@ class Main extends React.Component {
 
 
     componentDidUpdate(prevProps) {
-        console.log("Main update");
+        // console.log("Main update");
         if (this.props.location !== prevProps.location) {
             this.onRouteChanged();
         }
     }
     onRouteChanged() {
-        console.log("ROUTE CHANGED",this.props.location.pathname);
-        this.setState({currentPage: this.props.location.pathname});
+        // console.log("Route changed",this.props.location.pathname);
+        this.setState({
+            currentPage: this.props.location.pathname
+        });
     }
 
 
@@ -264,25 +267,24 @@ class Main extends React.Component {
     getCuratorMenuItems = () => {
         if(this.state.curator === true) {
             localStorage.curator = true;
+
             this.setState({
                 menuItems: 
-                
-                <div id="admin-dropdown" className="main-menu-link dropdown">
-                    <Link id="admin-button" className="main-menu-link drop-button" to="/importer"
-                                currentpage={(this.state.currentPage==="/importer" || this.state.currentPage==="/adminFiles").toString()}>
-                        Admin
-                    </Link>
-                    <i className="fa fa-caret-down"></i>
-                    <div className="dropdown-content">
-                        <Link to="/importer">Import New Documents</Link>
-                        <Link to="/adminFiles">Find Missing Files</Link>
+                    <div id="admin-dropdown" className="main-menu-link dropdown">
+                        <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
+                            Admin
+                        </Link>
+                        <i className="fa fa-caret-down"></i>
+                        <div className="dropdown-content">
+                            <Link to="/importer">Import New Documents</Link>
+                            <Link to="/adminFiles">Find Missing Files</Link>
+                        </div>
                     </div>
-                </div>
-            })
+            });
         } else {
             this.setState({
                 menuItems: <></>
-            })
+            });
         }
     }
 
