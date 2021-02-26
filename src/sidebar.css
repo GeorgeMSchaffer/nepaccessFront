@@ -6,11 +6,16 @@
     would need to move up and shrink the main search bar and then have overflow-y: scroll and a smart max height */
     vertical-align: top;
 
-    width: 22%;
-    padding: 1% 2%;
+    /* width: 22%; */
+    width: calc((9.5vw) - 44px);
+    min-width: calc(300px - 44px);
+    max-width: calc(390px - 44px);
+    /* padding: 1% 2%; */
+    padding: 10px 20px;
     /* margin-top: 5%; */
     margin-bottom: 50px;
-    margin-left: 2%;
+    /* margin-left: 2%; */
+    margin-left: 15px;
 
     border: 2px solid rgba(218, 218, 218, 1);
     background: rgba(240, 239, 237, 1);

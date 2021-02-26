@@ -368,13 +368,20 @@ input[type=checkbox] {
 }
 
 .tippy-tooltip--small {
-  border: 1px solid #737272;
+  /* border: 1px solid #737272; */
+    width: 260px;
+    /* height: 393px; */
+
+    background: #FFFFFF;
+    border: 2px solid #C4C4C4;
+    box-sizing: border-box;
+    box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.15);
 }
 
 .tippy-tooltip--small, .tippy-tooltip--small .tippy-tooltip-content {
-  width: 148px;
+  /* width: 148px; */
 
-  font-family: Open Sans;
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   line-height: 111%;
@@ -394,6 +401,19 @@ input[type=checkbox] {
 .tippy-tooltip p {
   font-size: 11px;
   margin: 10px 10px;
+}
+
+.tooltip-connector {
+    display: inline-block;
+    
+    width: 55px;
+
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
 }
 
 /** Tooltip right-facing arrow - replaces all tooltip arrows */

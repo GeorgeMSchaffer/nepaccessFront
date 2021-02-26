@@ -47,7 +47,7 @@ export default class AboutSearchTips extends React.Component {
                     <br></br>
 
                     <span className="bold">
-                        Search-Term Modifiers
+                        Search-Term Modifiers/Connectors
                     </span>
 
                     <table className="help-table">

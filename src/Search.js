@@ -274,14 +274,49 @@ class Search extends React.Component {
     ];
         const stateOptions = [ { value: 'AK', label: 'Alaska' },{ value: 'AL', label: 'Alabama' },{ value: 'AQ', label: 'Antarctica' },{ value: 'AR', label: 'Arkansas' },{ value: 'AS', label: 'American Samoa' },{ value: 'AZ', label: 'Arizona' },{ value: 'CA', label: 'California' },{ value: 'CO', label: 'Colorado' },{ value: 'CT', label: 'Connecticut' },{ value: 'DC', label: 'District of Columbia' },{ value: 'DE', label: 'Delaware' },{ value: 'FL', label: 'Florida' },{ value: 'GA', label: 'Georgia' },{ value: 'GU', label: 'Guam' },{ value: 'HI', label: 'Hawaii' },{ value: 'IA', label: 'Iowa' },{ value: 'ID', label: 'Idaho' },{ value: 'IL', label: 'Illinois' },{ value: 'IN', label: 'Indiana' },{ value: 'KS', label: 'Kansas' },{ value: 'KY', label: 'Kentucky' },{ value: 'LA', label: 'Louisiana' },{ value: 'MA', label: 'Massachusetts' },{ value: 'MD', label: 'Maryland' },{ value: 'ME', label: 'Maine' },{ value: 'MI', label: 'Michigan' },{ value: 'MN', label: 'Minnesota' },{ value: 'MO', label: 'Missouri' },{ value: 'MS', label: 'Mississippi' },{ value: 'MT', label: 'Montana' },{ value: 'Multi', label: 'Multiple' },{ value: 'NAT', label: 'National' },{ value: 'NC', label: 'North Carolina' },{ value: 'ND', label: 'North Dakota' },{ value: 'NE', label: 'Nebraska' },{ value: 'NH', label: 'New Hampshire' },{ value: 'NJ', label: 'New Jersey' },{ value: 'NM', label: 'New Mexico' },{ value: 'NV', label: 'Nevada' },{ value: 'NY', label: 'New York' },{ value: 'OH', label: 'Ohio' },{ value: 'OK', label: 'Oklahoma' },{ value: 'OR', label: 'Oregon' },{ value: 'PA', label: 'Pennsylvania' },{ value: 'PRO', label: 'Programmatic' },{ value: 'PR', label: 'Puerto Rico' },{ value: 'RI', label: 'Rhode Island' },{ value: 'SC', label: 'South Carolina' },{ value: 'SD', label: 'South Dakota' },{ value: 'TN', label: 'Tennessee' },{ value: 'TT', label: 'Trust Territory of the Pacific Islands' },{ value: 'TX', label: 'Texas' },{ value: 'UT', label: 'Utah' },{ value: 'VA', label: 'Virginia' },{ value: 'VI', label: 'Virgin Islands' },{ value: 'VT', label: 'Vermont' },{ value: 'WA', label: 'Washington' },{ value: 'WI', label: 'Wisconsin' },{ value: 'WV', label: 'West Virginia' },{ value: 'WY', label: 'Wyoming' }
         ];
-        const tooltipTitle = "<p class=tooltip-line><span class=bold>Search Tips</span></p>"
-        + "<p class=&quot;tooltip-line&quot;>&bull; Search for words in the title and document text.</p>"
-        + "<p class=&quot;tooltip-line&quot;>&bull; <span class=bold>All</span> words you enter must be found together to return a result.</p>"
-        + "<p class=&quot;tooltip-line&quot;>&bull; Type OR (all caps) to search for <span class=bold>any</span> of those words.</p>"
-        + "<p class=&quot;tooltip-line&quot;>&bull; Type NOT (all caps) to <span class=bold>exclude</span> a word or phrase.</p>"
-        + "<p class=&quot;tooltip-line&quot;>&bull; Surround words with quotes(&quot; &quot;) to search for an <span class=bold>exact phrase.</span></p>"
-        + "<p class=&quot;tooltip-line&quot;>&bull; <a href=abouthelp>More search tips.</a></p>";
+        // const tooltipTitle = "<p class=tooltip-line><span class=bold>Search word connectors</span></p>"
+        // + "<p class=tooltip-line><span class=tooltip-connector>AND</span>This is the default. <span class=bold>All</span> words you enter must be found together to return a result.</p>"
+        // + "<p class=tooltip-line><span class=tooltip-connector>OR</span> (all caps) to search for <span class=bold>any</span> of those words.</p>"
+        // + "<p class=tooltip-line><span class=tooltip-connector>NOT</span> (all caps) to <span class=bold>exclude</span> a word or phrase.</p>"
+        // + "<p class=tooltip-line><span class=tooltip-connector>&quot; &quot;</span> Surround words with quotes (&quot; &quot;) to search for an <span class=bold>exact phrase.</span></p>"
+        // + "<p class=tooltip-line><span class=tooltip-connector></span> <a href=abouthelp>More search tips.</a></p>";
 
+        const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
+        + "<table class=tooltip-table><tbody>"
+            + "<tr class=tooltip-line>"
+                + "<td>&nbsp;</td><td>&nbsp;</td>"
+            + "</tr>"
+            + "<tr class=tooltip-line><td class=tooltip-connector>AND</td>"
+                + "<td>This is the default. <span class=bold>All</span> words you enter must be found together to return a result.</td>"
+            + "</tr>"
+            + "<tr class=tooltip-line>"
+                + "<td>&nbsp;</td><td>&nbsp;</td>"
+            + "</tr>"
+            + "<tr class=tooltip-line><td class=tooltip-connector>OR</td>"
+                + "<td>(all caps) to search for <span class=bold>any</span> of those words.</td>" 
+            + "</tr>"
+            + "<tr class=tooltip-line>"
+                + "<td>&nbsp;</td><td>&nbsp;</td>"
+            + "</tr>"
+            + "<tr class=tooltip-line><td class=tooltip-connector>NOT</td>"
+                + "<td>(all caps) to <span class=bold>exclude</span> a word or phrase.</td>" 
+            + "</tr>"
+            + "<tr class=tooltip-line>"
+                + "<td>&nbsp;</td><td>&nbsp;</td>"
+            + "</tr>"
+            + "<tr class=tooltip-line><td class=tooltip-connector>&quot; &quot;</td>"
+                + "<td>Surround words with quotes (&quot; &quot;) to search for an <span class=bold>exact phrase.</td>" 
+            + "</tr>"
+            + "<tr class=tooltip-line>"
+                + "<td>&nbsp;</td><td>&nbsp;</td>"
+            + "</tr>"
+            + "<tr class=tooltip-line><td class=tooltip-connector></td>"
+                + "<td><a href=abouthelp>More search tips.</a></td>" 
+            + "</tr>"
+        + "</tbody></table>";
+
+
+        
         return (
             <>
             <div className="content" onSubmit={this.submitHandler}>
