@@ -31,9 +31,15 @@ import Iframes from './Iframes.js';
 
 import Globals from './globals.js';
 
-import { Link, Switch, Route } from 'react-router-dom';
+import { Link, Switch, Route, withRouter } from 'react-router-dom';
+
+import PropTypes from "prop-types";
 
 class Main extends React.Component {
+    
+    static propTypes = {
+        location: PropTypes.object.isRequired
+    }
 
     constructor(props){
         super(props);
@@ -43,11 +49,13 @@ class Main extends React.Component {
             loggedInDisplay: 'display-none',
             loggedOutDisplay: '',
             loaderClass: 'loadDefault',
-            curator: false
+            curator: false,
+            currentPage: ""
         };
         this.refresh = this.refresh.bind(this);
         this.refreshNav = this.refreshNav.bind(this);
         Globals.setUp();
+
     }
 
 
@@ -109,6 +117,19 @@ class Main extends React.Component {
         }
     }
 
+
+    componentDidUpdate(prevProps) {
+        console.log("Main update");
+        if (this.props.location !== prevProps.location) {
+            this.onRouteChanged();
+        }
+    }
+    onRouteChanged() {
+        console.log("ROUTE CHANGED",this.props.location.pathname);
+        this.setState({currentPage: this.props.location.pathname});
+    }
+
+
     render(){
         return (
         <div id="home-page">
@@ -147,14 +168,14 @@ class Main extends React.Component {
                 </div>
 
                 <div id="main-menu">
-                    <Link className="main-menu-link" to="/search">
+                    <Link currentpage={(this.state.currentPage==="/search").toString()} className="main-menu-link" to="/search">
                         Search
                     </Link>
-                    <Link className="main-menu-link" to="/aboutnepa">
+                    <Link currentpage={(this.state.currentPage==="/aboutnepa").toString()} className="main-menu-link" to="/aboutnepa">
                         About NEPA
                     </Link>
                     <div id="about-dropdown" className="main-menu-link dropdown">
-                        <Link id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
+                        <Link currentpage={(this.state.currentPage==="/aboutnepaccess" || this.state.currentPage==="/abouthelpcontents").toString()} id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
                             About NEPAccess
                         </Link>
                         <i className="fa fa-caret-down"></i>
@@ -164,10 +185,10 @@ class Main extends React.Component {
                             {/* <Link to="/stats">Content Statistics</Link> */}
                         </div>
                     </div>
-                    <Link className="main-menu-link" to="/abouthelp">
+                    <Link currentpage={(this.state.currentPage==="/abouthelp").toString()} className="main-menu-link" to="/abouthelp">
                         Search Tips
                     </Link>
-                    <Link className="main-menu-link" to="/media">
+                    <Link currentpage={(this.state.currentPage==="/media").toString()} className="main-menu-link" to="/media">
                         Media
                     </Link>
 
@@ -247,7 +268,8 @@ class Main extends React.Component {
                 menuItems: 
                 
                 <div id="admin-dropdown" className="main-menu-link dropdown">
-                    <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
+                    <Link id="admin-button" className="main-menu-link drop-button" to="/importer"
+                                currentpage={(this.state.currentPage==="/importer" || this.state.currentPage==="/adminFiles").toString()}>
                         Admin
                     </Link>
                     <i className="fa fa-caret-down"></i>
@@ -272,4 +294,4 @@ class Main extends React.Component {
     }
 }
 
-export default Main;
+export default withRouter(Main);

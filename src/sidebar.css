@@ -59,7 +59,10 @@
 .sidebar-results {
     display: inline-block;
     /* margin-top: 5%; */
-    width: 71%;
+    /* width: 71%; */
+    width: calc(100% - (9.5vw + 59px));
+    min-width: calc(100% - (300px + 59px));
+    max-width: calc(100% - (390px + 59px));
 
     /* For fixed sidebar */
     /* width: 60%;
@@ -307,7 +310,7 @@ label.checkbox-text {
 }
 
 #post-search-box-text {
-    margin-right: -38px;
+    margin-right: -10px;
     display: inline-flex;
 }
 

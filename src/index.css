@@ -218,28 +218,35 @@ body {
 
 /* Main page should have a margin equal to the header size: */
 .content {
-  
-  position: relative;
-  margin: auto;
-  margin-top: 102px;
-  
-  min-width: 900px;
+    position: relative;
+    margin: auto;
+    margin-top: 102px;
 
-  background: #FBF7EF;
+    min-width: 900px;
+
+    background: #FBF7EF;
 }
 
 .spacer {
     margin-top: 102px;
 }
 
+#app-content {
+    min-width: 1300px;
+}
+
 /* Special tags */
 
 *[hidden] { 
-  display: none !important; 
+    display: none !important; 
+}
+*[currentpage="true"] { 
+    font-weight: bold !important;
+    color: white !important;
 }
 
 .display-none {
-  display: none;
+    display: none;
 }
 
 .inline {
