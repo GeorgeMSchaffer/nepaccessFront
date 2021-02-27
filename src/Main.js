@@ -291,6 +291,9 @@ class Main extends React.Component {
     
     componentDidMount() {
         Globals.registerListener('refresh', this.refresh);
+        this.setState({
+            currentPage: window.location.pathname
+        });
         this.check();
         this.checkCurator();
     }

@@ -7,9 +7,9 @@
     vertical-align: top;
 
     /* width: 22%; */
-    width: calc((9.5vw) - 44px);
+    width: calc((25vw) - 44px);
     min-width: calc(300px - 44px);
-    max-width: calc(390px - 44px);
+    max-width: calc(375px - 44px);
     /* padding: 1% 2%; */
     padding: 10px 20px;
     /* margin-top: 5%; */
@@ -60,9 +60,9 @@
     display: inline-block;
     /* margin-top: 5%; */
     /* width: 71%; */
-    width: calc(100% - (9.5vw + 59px));
-    min-width: calc(100% - (300px + 59px));
-    max-width: calc(100% - (390px + 59px));
+    width: calc(100% - (25vw + 109px));
+    min-width: calc(100% - (300px + 109px));
+    max-width: calc(100% - (400px + 109px));
 
     /* For fixed sidebar */
     /* width: 60%;

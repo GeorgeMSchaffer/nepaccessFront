@@ -474,9 +474,7 @@ a.link {
 }
 
 #search-results {
-    
-    min-width: calc(100% - (300px + 59px));
-  /* min-width: 950px; */
+    min-width: 950px; 
 }
 
 .modal-results {
