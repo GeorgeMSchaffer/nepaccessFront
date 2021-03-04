@@ -104,9 +104,6 @@ class CardResult extends React.Component {
                 [className]: 'disabled_download'
             });
             // console.log("Error::: ", err);
-            this.setState({
-                downloadText: 'File not found'
-            });
         });
 
     }
