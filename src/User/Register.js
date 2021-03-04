@@ -1,26 +1,30 @@
 import React from 'react';
+import Select from 'react-select';
 
 import axios from 'axios';
+import globals from '../globals.js';
 
 import './login.css';
+import './register.css';
 
 const _ = require('lodash');
+const affiliations = [
+    {value:"Federal government", label:"Federal government"}, 
+    {value:"Tribal government", label:"Tribal government"}, 
+    {value:"State/local government", label:"State/local government"}, 
+    {value:"NEPA consultant/preparer", label:"NEPA consultant/preparer"}, 
+    {value:"Private industry", label:"Private industry"}, 
+    {value:"NGO", label:"NGO"}, 
+    {value:"Lawyer", label:"Lawyer"}, 
+    {value:"Academic research", label:"Academic research"}, 
+    {value:"General public", label:"General public"}, 
+    {value:"Other", label:"Other"}
+];
 //<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
 // TODO: Send email for validation before actually registering user
 // TODO: certs and then HTTPS app-wide, probably
 class Register extends React.Component {
-
-    state = {
-        username: '',
-        password: '',
-        email: '',
-        disabled: false,
-        passwordType: "password",
-        usernameError: '',
-        emailError: '',
-        passwordError: ''
-    }
 
     constructor(props) {
         super(props);
@@ -30,10 +34,23 @@ class Register extends React.Component {
             email: '',
             disabled: false,
             passwordType: "password",
+
             usernameError: '',
             emailError: '',
-            passwordError: ''
+            passwordError: '',
+            firstNameError: '',
+            lastNameError: '',
+            affiliationError: '',
+            affiliationOtherError: '',
+
+            firstName: '',
+            lastName: '',
+            affiliation: '', // "Field"
+            affiliationOther: '', 
+            jobTitle: '', // optional
+            organization: '', // optional
         };
+
         this.checkUsername = _.debounce(this.checkUsername, 300);
         document.body.style.cursor = 'default';
     }
@@ -46,8 +63,14 @@ class Register extends React.Component {
         let test1 = this.invalidEmail();
         let test2 = this.checkUsername();
         let test3 = this.invalidPassword();
-        this.setState({ disabled: test1 || test2 || test3 });
-        return (test1 || test2 || test3);
+        let test4 = this.invalidFirst();
+        let test5 = this.invalidLast();
+        let test6 = this.invalidAffiliation();
+        let test7 = this.invalidAffiliationOther();
+
+        this.setState({ disabled: test1 || test2 || test3 || test4 || test5 || test6 || test7 });
+        
+        return (test1 || test2 || test3 || test4 || test5 || test6 || test7 );
     }
     invalidUsername = () => {
         let usernamePattern = /[ -~]/;
@@ -60,6 +83,28 @@ class Register extends React.Component {
         this.setState({ disabled: invalid });
         return invalid;
     }
+    invalidFirst = () => {
+        let usernamePattern = /[ -~]/;
+        let invalid = !(usernamePattern.test(this.state.firstName));
+        let message = "";
+        if(invalid){
+            message = "Name invalid. Cannot be empty, must be printable characters.";
+        }
+        this.setState({ firstNameError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
+    invalidLast = () => {
+        let usernamePattern = /[ -~]/;
+        let invalid = !(usernamePattern.test(this.state.lastName));
+        let message = "";
+        if(invalid){
+            message = "Name invalid. Cannot be empty, must be printable characters.";
+        }
+        this.setState({ lastNameError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
     invalidEmail(){
         let emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let invalid = !(emailPattern.test(this.state.email));
@@ -68,6 +113,29 @@ class Register extends React.Component {
             message = "Email address invalid.";
         }
         this.setState({ emailError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
+    invalidAffiliation(){
+        let usernamePattern = /[ -~]/;
+        let invalid = !(usernamePattern.test(this.state.affiliation));
+        let message = "";
+        if(invalid){
+            message = "Please select a field.  If other, select \"Other\" and then type field below.";
+        }
+        this.setState({ affiliationError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
+    
+    invalidAffiliationOther(){
+        let usernamePattern = /[ -~]/;
+        let invalid = !(usernamePattern.test(this.state.affiliationOther)) && this.state.affiliation==="Other";
+        let message = "";
+        if(invalid){
+            message = "Required field when selecting \"Other\"";
+        }
+        this.setState({ affiliationOtherError: message });
         this.setState({ disabled: invalid });
         return invalid;
     }
@@ -93,10 +161,9 @@ class Register extends React.Component {
         } else {
             this.setState({ disabled: false });
         }
-        let nameUrl = new URL('http://localhost:8080/user/exists');
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-            nameUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/user/exists');
-        }
+
+        let nameUrl = new URL('user/exists', globals.currentHost);
+        
         fetch(nameUrl, { 
             method: 'POST',
             body: this.state.username,
@@ -120,31 +187,45 @@ class Register extends React.Component {
         });
     }
 
-
-
-    // onKeyUp events (KeyUp to capture keyCodes)
 	onUsernameChange = (evt) => {
-        if(evt.keyCode ===13){
-            evt.preventDefault();
-            this.register();
-        }
         this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkUsername(); });
     }
 
 	onPasswordChange = (evt) => {
-        if(evt.keyCode ===13){
-            evt.preventDefault();
-            this.register();
-        }
         this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidPassword(); });
     }
     
 	onEmailChange = (evt) => {
-        if(evt.keyCode ===13){
-            evt.preventDefault();
-            this.register();
-        }
         this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidEmail(); });
+    }
+
+    onChangeHandler = (evt) => {
+		// evt.target.name defined by name= in input
+		this.setState( 
+		{ 
+            [evt.target.name]: evt.target.value,
+        }, () => { 
+            // check for invalids (also disables register button if invalid)
+            this.invalidFields();
+        });
+    }
+
+    onSelectHandler = (val, act) => {
+        console.log("Val/act",val,act);
+        if(!val || !act){
+            return;
+        }
+
+        // if(act.action === ""){
+        // }
+
+        this.setState(
+        { 
+            affiliation: val.value
+        }, () => {
+            this.invalidFields();
+        });
+
     }
 
 
@@ -157,10 +238,7 @@ class Register extends React.Component {
         document.body.style.cursor = 'wait';
         this.setState({ disabled: true });
         
-        let registerUrl = new URL('http://localhost:8080/user/register');
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-            registerUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/user/register');
-        }
+        let registerUrl = new URL('user/register', globals.currentHost);
 
         let dataToPass = { username: this.state.username, password: this.state.password, email: this.state.email};
 
@@ -183,10 +261,8 @@ class Register extends React.Component {
             if(ok){
                 // if HTTP 200 (ok), clear fields and login user
                 console.log("Registered");
-                let loginUrl = new URL('http://localhost:8080/login');
-                if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
-                    loginUrl = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/login');
-                }
+                
+                let loginUrl = new URL('login', globals.currentHost);
                 var user = {
                     username: this.state.username,
                     password: this.state.password
@@ -230,7 +306,7 @@ class Register extends React.Component {
         document.body.style.cursor = 'default';
     }
     
-    showPassword() {
+    showPassword = () => {
         let value = "password";
         if(this.state.passwordType === value){
             value = "text";
@@ -239,10 +315,14 @@ class Register extends React.Component {
             passwordType: value
         });
     } 
+
+    componentDidUpdate() {
+        console.log("Updated.",this.state.affiliation);
+    }
     
     render() {
         return (
-            <div className="container register-form">
+            <div className="container content register-form">
                 <div className="form">
                     <div className="note">
                         <p>Register</p>
@@ -252,17 +332,49 @@ class Register extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type="text" className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
+                                    <span>Username</span><input type="text" className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
                                     <label className="errorLabel">{this.state.usernameError}</label>
                                 </div>
                                 <div className="form-group">
-                                    <input type="text" className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
+                                    <span>First name</span><input type="text" className="form-control" id="firstName" name="firstName" placeholder="First name *" onChange={this.onChangeHandler}/>
+                                    <label className="errorLabel">{this.state.firstNameError}</label>
+                                </div>
+                                <div className="form-group">
+                                    <span>Last name</span><input type="text" className="form-control" id="lastName" name="lastName" placeholder="Last name *" onChange={this.onChangeHandler}/>
+                                    <label className="errorLabel">{this.state.lastNameError}</label>
+                                </div>
+                                <div className="form-group">
+                                    <span>Email</span><input type="text" className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
                                     <label className="errorLabel">{this.state.emailError}</label>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type={this.state.passwordType} id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
+                                <span>Field</span><Select id="affiliation" 
+                                        className="form-control inline-block" 
+                                        options={affiliations}
+                                        name="affiliation" 
+                                        placeholder="Select Field *" 
+                                        onChange={this.onSelectHandler}/>
+                                    <label className="errorLabel">{this.state.affiliationError}</label>
+                                </div>
+                                <div className="form-group">
+                                <span></span><input disabled={this.state.affiliation !== "Other"} type="text" className="form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onChange={this.onChangeHandler}/>
+                                    <label  className="errorLabel">{this.state.affiliationOtherError}</label>
+                                </div>
+                            </div>
+                            
+                            <div className="col-md-6">
+                                <div className="form-group">
+                                    <span>Name of organization</span><input type="text" className="form-control" id="organization" name="organization" placeholder="Organization name" onKeyUp={this.onChangeHandler}/>
+                                </div>
+                                <div className="form-group">
+                                    <span>Job title</span><input type="text" className="form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onChange={this.onChangeHandler}/>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="form-group">
+                                    <span>Password</span><input type={this.state.passwordType} id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
                                     <label className="errorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
