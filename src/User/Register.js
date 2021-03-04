@@ -324,10 +324,6 @@ class Register extends React.Component {
             passwordType: value
         });
     } 
-
-    componentDidUpdate() {
-        console.log("Updated.",this.state.affiliation);
-    }
     
     render() {
         return (
