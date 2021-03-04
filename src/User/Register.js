@@ -240,7 +240,16 @@ class Register extends React.Component {
         
         let registerUrl = new URL('user/register', globals.currentHost);
 
-        let dataToPass = { username: this.state.username, password: this.state.password, email: this.state.email};
+        let dataToPass = { 
+            username: this.state.username, 
+            password: this.state.password, 
+            email: this.state.email,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            affiliation: this.state.affiliation,
+            organization: this.state.organization,
+            jobTitle: this.state.jobTitle
+        };
 
         axios({ 
             method: 'POST',
