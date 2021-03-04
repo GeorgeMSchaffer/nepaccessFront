@@ -453,13 +453,15 @@ span.email-text {
 .dropdown-content a {
     display: block;
     float: none;
-    width: 200px;
-    background-color: white;
-    padding: 5px;
-    border: 2px solid #C4C4C4;
-    border-top: none;
+    width: 182px;
+    
     text-decoration: none;
     color: black;
+    background-color: white;
+    
+    padding: 5px;
+
+    border: 2px solid #C4C4C4;
 }
 .dropdown-content a:first-child {
     border-top: 2px solid #C4C4C4;
