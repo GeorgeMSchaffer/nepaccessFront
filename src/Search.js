@@ -311,7 +311,7 @@ class Search extends React.Component {
                 + "<td>&nbsp;</td><td>&nbsp;</td>"
             + "</tr>"
             + "<tr class=tooltip-line><td class=tooltip-connector></td>"
-                + "<td><a href=abouthelp>More search tips.</a></td>" 
+                + "<td><a href=abouthelp target=_blank rel=noopener noreferrer>More search tips.</a></td>" 
             + "</tr>"
         + "</tbody></table>";
 
