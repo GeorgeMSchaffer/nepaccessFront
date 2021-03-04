@@ -184,7 +184,7 @@ body {
     height: 52px;
     top: 50px;
 }
-.main-menu-link:first-child{
+#main-menu>.main-menu-link:first-child{
     margin-left: 25px;
 }
 
