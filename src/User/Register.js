@@ -333,7 +333,7 @@ class Register extends React.Component {
                         <p>Register</p>
                     </div>
 
-                    <div className="form-content">
+                    <div id="register-form" className="form-content">
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
