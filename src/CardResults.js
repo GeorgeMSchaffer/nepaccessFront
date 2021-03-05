@@ -49,20 +49,22 @@ class CardResults extends React.Component {
     // This logic broke sorting.  Somehow, results from both next and this.props were already sorted.
     // So the results were identical
     shouldComponentUpdate(nextProps, nextState) {
-        console.log("Results",nextProps.results===this.props.results); 
-        console.log("Text",nextProps.resultsText===this.props.resultsText,this.props.resultsText,nextProps.resultsText); 
-        console.log("searching",nextProps.searching===this.props.searching); 
-        console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
+        // console.log("Results",nextProps.results===this.props.results); 
+        // console.log("Text",nextProps.resultsText===this.props.resultsText,this.props.resultsText,nextProps.resultsText); 
+        // console.log("searching",nextProps.searching===this.props.searching); 
+        // console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
 
         // TODO: Experimental logic, we shouldn't update JUST because results text changed
-        if(
-            nextProps.results===this.props.results
-            && !nextProps.resultsText===this.props.resultsText 
-            && nextProps.searching===this.props.searching 
-            && nextProps.snippetsDisabled===this.props.snippetsDisabled ) {
-                return false;
+        if(     nextProps.results===this.props.results
+                && nextProps.resultsText===this.props.resultsText 
+                && nextProps.searching===this.props.searching 
+                && nextProps.snippetsDisabled===this.props.snippetsDisabled)
+        {
+            return false;
+        } else {
+            console.log("Component should update");
+            return true;
         }
-        return true;
     }
     
     // Table needs help to resize its cells if window is resized
