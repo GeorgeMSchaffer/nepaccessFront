@@ -230,7 +230,7 @@ class CardResults extends React.Component {
     
     // TODO: Preserve scroll position on rerender/redraw if possible
     componentDidUpdate() {
-        // console.log("Results Updated");
+        console.log("Results Updated");
         /** setTimeout with 0ms activates at the end of the Event Loop, redrawing the table and thus fixing the text wrapping.
          * Does not work when simply fired on componentDidUpdate().
          */

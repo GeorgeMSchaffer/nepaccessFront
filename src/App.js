@@ -177,7 +177,9 @@ export default class App extends React.Component {
                 if(filteredResults.length === 0) {
                     textToUse = filteredResults.length + " Matches (try relaxing filters?)";
                 }
-                
+
+                console.log("Filtering");
+
                 this.setState({
                     outputResults: filteredResults,
                     resultsText: textToUse
