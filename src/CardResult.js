@@ -367,7 +367,7 @@ class CardResult extends React.Component {
                     );
                 }
             } else {
-                console.log("Can only get here without propID and size",propFilename,propID,size);
+                // console.log("Can only get here without propID and size",propFilename,propID,size);
                 return <div className="table-row"><span className="cardHeader">EIS File not in system</span></div>;
             }
 		}
@@ -384,7 +384,6 @@ class CardResult extends React.Component {
             
 			if (this.props.cell) { // filename/cell data from React-Tabulator props
                 cellData = this.props.cell._cell.row.data;
-                console.log(cellData);
 				if (cellData.commentsFilename) {
 					propFilename = cellData.commentsFilename;
                 }
