@@ -183,8 +183,7 @@ export default class App extends React.Component {
 
                 this.setState({
                     outputResults: filteredResults,
-                    resultsText: textToUse,
-                    shouldUpdate: true
+                    resultsText: textToUse
                 });
             }
             
@@ -459,7 +458,8 @@ export default class App extends React.Component {
             console.log("Nothing left to highlight");
             this.setState({
                 searching: false,
-                resultsText: resultsText
+                resultsText: resultsText,
+                shouldUpdate: true
             }, () => {
                 this.filterResultsBy(this._searcherState);
             });
