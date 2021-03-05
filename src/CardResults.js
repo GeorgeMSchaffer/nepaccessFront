@@ -57,7 +57,7 @@ class CardResults extends React.Component {
         // console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
 
         // TODO: Experimental logic, we shouldn't update JUST because results text changed
-        if(     nextProps.results===this.props.results
+        if(     JSON.stringify(nextProps.results)===JSON.stringify(this.props.results) // can be expensive
                 && nextProps.resultsText===this.props.resultsText 
                 && nextProps.searching===this.props.searching 
                 && nextProps.snippetsDisabled===this.props.snippetsDisabled)
