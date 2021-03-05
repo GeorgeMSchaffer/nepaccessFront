@@ -200,6 +200,7 @@ export default class App extends React.Component {
 
     // TODO: asc/desc (> vs. <, default desc === >)
     sortDataByField = (field, ascending) => {
+        console.log("Sorting");
         this.setState({
             // searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
             outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending))),
@@ -652,7 +653,7 @@ export default class App extends React.Component {
     /** Scroll to bottom on page change and populate full table with latest results */
     scrollToBottom = (_rows) => {
         try {
-            // console.log("Paged");
+            console.log("Page update");
             // console.log("Rows", _rows);
             // for(let i = 0; i < _rows.length; i++) {
             //     console.log(_rows[i].data);
