@@ -54,12 +54,14 @@ class CardResults extends React.Component {
         console.log("searching",nextProps.searching===this.props.searching); 
         console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
 
-        // TODO: Experimental logic, we shouldn't need to rerender JUST because searching changed
-        // if(nextProps.results===this.props.results
-        //         && nextProps.resultsText===this.props.resultsText
-        //         && nextProps.snippetsDisabled===this.props.snippetsDisabled) {
-        //     return false;
-        // }
+        // TODO: Experimental logic, we shouldn't rerender JUST because results text changed
+        if(
+            nextProps.results===this.props.results
+            && !nextProps.resultsText===this.props.resultsText 
+            && nextProps.searching===this.props.searching 
+            && nextProps.snippetsDisabled===this.props.snippetsDisabled ) {
+                return false;
+        }
         return true;
     }
     
