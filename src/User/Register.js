@@ -352,19 +352,23 @@ class Register extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <span>Username</span><input type="text" className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
+                                    <span>Username</span><input type="text" maxLength="191"
+                                        className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
                                     <label className="errorLabel">{this.state.usernameError}</label>
                                 </div>
                                 <div className="form-group">
-                                    <span>First name</span><input type="text" className="form-control" id="firstName" name="firstName" placeholder="First name *" onChange={this.onChangeHandler}/>
+                                    <span>First name</span><input type="text" maxLength="191"
+                                        className="form-control" id="firstName" name="firstName" placeholder="First name *" onChange={this.onChangeHandler}/>
                                     <label className="errorLabel">{this.state.firstNameError}</label>
                                 </div>
                                 <div className="form-group">
-                                    <span>Last name</span><input type="text" className="form-control" id="lastName" name="lastName" placeholder="Last name *" onChange={this.onChangeHandler}/>
+                                    <span>Last name</span><input type="text" maxLength="191"
+                                        className="form-control" id="lastName" name="lastName" placeholder="Last name *" onChange={this.onChangeHandler}/>
                                     <label className="errorLabel">{this.state.lastNameError}</label>
                                 </div>
                                 <div className="form-group">
-                                    <span>Email</span><input type="text" className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
+                                    <span>Email</span><input type="text" maxLength="191"
+                                        className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
                                     <label className="errorLabel">{this.state.emailError}</label>
                                 </div>
                             </div>
@@ -379,22 +383,24 @@ class Register extends React.Component {
                                     <label className="errorLabel">{this.state.affiliationError}</label>
                                 </div>
                                 <div className="form-group">
-                                <span></span><input disabled={this.state.affiliation !== "Other"} type="text" className="form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onChange={this.onChangeHandler}/>
+                                <span></span><input disabled={this.state.affiliation !== "Other"} type="text" maxLength="1000"
+                                        className="form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onChange={this.onChangeHandler}/>
                                     <label  className="errorLabel">{this.state.affiliationOtherError}</label>
                                 </div>
                             </div>
                             
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <span>Name of organization</span><input type="text" className="form-control" id="organization" name="organization" placeholder="Organization name" onKeyUp={this.onChangeHandler}/>
+                                    <span>Name of organization</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="Organization name" onKeyUp={this.onChangeHandler}/>
                                 </div>
                                 <div className="form-group">
-                                    <span>Job title</span><input type="text" className="form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onChange={this.onChangeHandler}/>
+                                    <span>Job title</span><input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onChange={this.onChangeHandler}/>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <span>Password</span><input type={this.state.passwordType} id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
+                                    <span>Password</span><input type={this.state.passwordType} maxLength="191" 
+                                        id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
                                     <label className="errorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
