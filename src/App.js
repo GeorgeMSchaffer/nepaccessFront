@@ -183,7 +183,8 @@ export default class App extends React.Component {
 
                 this.setState({
                     outputResults: filteredResults,
-                    resultsText: textToUse
+                    resultsText: textToUse,
+                    shouldUpdate: true
                 });
             }
             
@@ -202,7 +203,8 @@ export default class App extends React.Component {
         console.log("Sorting");
         this.setState({
             // searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
-            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending)))
+            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending))),
+            shouldUpdate: true
         });
     }
 

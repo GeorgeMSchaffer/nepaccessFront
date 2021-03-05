@@ -33,9 +33,11 @@ const options = {
 };
 
 
+
 class CardResults extends React.Component {
 
     downloaded = {};
+    _columns = [];
 
     constructor(props) {
         super(props);
@@ -44,26 +46,39 @@ class CardResults extends React.Component {
         }
         this.my_table = React.createRef();
         window.addEventListener('resize', this.handleResize);
+        
+        this._columns = [
+            { title: "", field: "", formatter: reactFormatter(
+                    <CardResult show={this.state.showContext}
+                                saveDownloaded={this.saveDownloaded}
+                                checkDownloaded={this.checkDownloaded} />
+                )
+            }
+        ];
     }
     
     page = 1;
 
-    shouldComponentUpdate(nextProps, nextState) {
-        // console.log("Next state",nextState);
-        // console.log("Inc props",nextProps);
-        // console.log("Results",nextProps.results===this.props.results); 
-        // console.log("Text",nextProps.resultsText===this.props.resultsText,this.props.resultsText,nextProps.resultsText); 
-        // console.log("searching",nextProps.searching===this.props.searching); 
-        // console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
+    /**Giving up on this again for now.  A ton of work would be required to have this AND:
+    * automatic result population 
+    * mid-search filtering
+    * mid-search sorting*/ 
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     // console.log("Next state",nextState);
+    //     // console.log("Inc props",nextProps);
+    //     // console.log("Results",nextProps.results===this.props.results); 
+    //     // console.log("Text",nextProps.resultsText===this.props.resultsText,this.props.resultsText,nextProps.resultsText); 
+    //     // console.log("searching",nextProps.searching===this.props.searching); 
+    //     // console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
 
-        if(nextProps.shouldUpdate)
-        {
-            console.log("Component should update");
-            return true;
-        } else {
-            return false;
-        }
-    }
+    //     if(nextProps.shouldUpdate)
+    //     {
+    //         console.log("Component should update");
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
     
     // Table needs help to resize its cells if window is resized
     handleResize = () => {
@@ -118,21 +133,8 @@ class CardResults extends React.Component {
     //     this.my_table.current.table.setData(this.props.results);
     // }
 
-    setupColumns = () => {
-        let _columns = [];
-        if(this.props.results && this.props.results[0]){
-            _columns = [
-                { title: "", field: "", formatter: reactFormatter(
-                        <CardResult show={this.state.showContext}
-                                    saveDownloaded={this.saveDownloaded}
-                                    checkDownloaded={this.checkDownloaded} />
-                    )
-                }
-            ];
-        }
-        
+    updateTable = () => {
         try {
-            this.my_table.current.table.setColumns(_columns);
             this.my_table.current.table.replaceData(this.props.results);
             // to maintain page user is on even after rerender, we try saving page as a local variable and setting it here
             this.my_table.current.table.setPage(this.page);
@@ -205,7 +207,7 @@ class CardResults extends React.Component {
                             <ReactTabulator
                                 ref={this.my_table}
                                 data={[]}
-                                columns={[]}
+                                columns={this._columns}
                                 options={options}
                                 pageLoaded={this.onPageLoaded}
                             />
@@ -239,7 +241,7 @@ class CardResults extends React.Component {
         if(this.my_table && this.my_table.current){
             // console.log("Updating data and columns");
             // console.log(this.props);
-            this.setupColumns();
+            this.updateTable();
 
             // console.log("Searching: " + this.props.searching);
 
@@ -250,7 +252,7 @@ class CardResults extends React.Component {
                 setTimeout(function() {
                     tbltr.table.redraw(true);
                     // console.log("Redrawn");
-                },0)
+                },1000)
             // }
         }
 
