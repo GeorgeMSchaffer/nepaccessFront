@@ -48,8 +48,6 @@ class CardResults extends React.Component {
     
     page = 1;
 
-    // This logic broke sorting.  Somehow, results from both next and this.props were already sorted.
-    // So the results were identical
     shouldComponentUpdate(nextProps, nextState) {
         // console.log("Next state",nextState);
         console.log("Inc props",nextProps);

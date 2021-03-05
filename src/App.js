@@ -203,8 +203,7 @@ export default class App extends React.Component {
         console.log("Sorting");
         this.setState({
             // searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
-            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending))),
-            shouldUpdate: true
+            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending)))
         });
     }
 
