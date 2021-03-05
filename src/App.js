@@ -179,15 +179,16 @@ export default class App extends React.Component {
                     textToUse = filteredResults.length + " Matches (try relaxing filters?)";
                 }
 
-                console.log("Filtering");
-
-                this.setState({
-                    outputResults: filteredResults,
-                    resultsText: textToUse,
-                    shouldUpdate: true
-                });
             }
             
+            // console.log("Filtering");
+            // Even if there are no filters active we still need to update to reflect this,
+            // because if there are no filters the results must be updated to the full unfiltered set
+            this.setState({
+                outputResults: filteredResults,
+                resultsText: textToUse,
+                shouldUpdate: true
+            });
         }
     }
 
@@ -567,7 +568,7 @@ export default class App extends React.Component {
                                 searchResults: updatedResults,
                                 outputResults: updatedResults,
                                 count: _offset,
-                                shouldUpdate: false
+                                // shouldUpdate: false
                             }, () => {
                                 if(this._sortVal) {
                                     this.sortDataByField(this._sortVal, this._ascVal);
