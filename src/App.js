@@ -177,12 +177,13 @@ export default class App extends React.Component {
                 if(filteredResults.length === 0) {
                     textToUse = filteredResults.length + " Matches (try relaxing filters?)";
                 }
+                
+                this.setState({
+                    outputResults: filteredResults,
+                    resultsText: textToUse
+                });
             }
             
-            this.setState({
-                outputResults: filteredResults,
-                resultsText: textToUse
-            });
         }
     }
 
@@ -668,7 +669,7 @@ export default class App extends React.Component {
         for(let i = 0; i < this.state.displayRows.length; i++) {
             // console.log(this.state.displayRows[i].data);
             if(this.state.displayRows[i].data.plaintext.length === 0){
-                // console.log("No text.  Should populate.");
+                console.log("No text.  Should populate.");
                 return true;
             }
         }
