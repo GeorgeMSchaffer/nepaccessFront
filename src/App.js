@@ -544,7 +544,6 @@ export default class App extends React.Component {
                                 searchResults: updatedResults,
                                 outputResults: updatedResults,
                                 count: _offset,
-                                resultsText: currentResults.length + " Results",
                             }, () => {
                                 if(this._sortVal) {
                                     this.sortDataByField(this._sortVal, this._ascVal);
@@ -558,7 +557,6 @@ export default class App extends React.Component {
                             this.setState({
                                 searchResults: updatedResults,
                                 count: _offset,
-                                resultsText: currentResults.length + " Results",
                             }, () => {
                                 if(this._sortVal) {
                                     this.sortDataByField(this._sortVal, this._ascVal);
