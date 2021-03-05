@@ -546,25 +546,26 @@ export default class App extends React.Component {
                     if(searchId < this._searchId) {
                         return;
                     } else {
-                        if(_limit===10 || this.displayedRowsUnpopulated()) { // Always populate first ten immediately, also populate if user already is looking at unpopulated records
-                            console.log("Updating with full results");
+                        // if(_limit===10 || this.displayedRowsUnpopulated()) { // Always populate first ten immediately, also populate if user already is looking at unpopulated records
+                        //     // console.log("Updating with full results");
+                        //     this.setState({
+                        //         searchResults: updatedResults,
+                        //         outputResults: updatedResults,
+                        //         count: _offset,
+                        //         shouldUpdate: true
+                        //     }, () => {
+                        //         if(this._sortVal) {
+                        //             this.sortDataByField(this._sortVal, this._ascVal);
+                        //         }
+                        //         this.filterResultsBy(this._searcherState);
+                        //     });
+                            
+                        //     // offset for next run incremented by limit used
+                        //     this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
+                        // } else { // Save data but wait to populate it
                             this.setState({
                                 searchResults: updatedResults,
                                 outputResults: updatedResults,
-                                count: _offset,
-                                shouldUpdate: true
-                            }, () => {
-                                if(this._sortVal) {
-                                    this.sortDataByField(this._sortVal, this._ascVal);
-                                }
-                                this.filterResultsBy(this._searcherState);
-                            });
-                            
-                            // offset for next run incremented by limit used
-                            this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
-                        } else { // Save data but wait to populate it
-                            this.setState({
-                                searchResults: updatedResults,
                                 count: _offset,
                                 shouldUpdate: false
                             }, () => {
@@ -576,7 +577,7 @@ export default class App extends React.Component {
                             
                             // offset for next run incremented by limit used
                             this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
-                        }
+                        // }
                     }
                 }
             }).catch(error => { 
