@@ -50,7 +50,7 @@ class CardResults extends React.Component {
     // So the results were identical
     shouldComponentUpdate(nextProps, nextState) {
         console.log("Results",nextProps.results===this.props.results); 
-        console.log("Text",nextProps.resultsText===this.props.resultsText); 
+        console.log("Text",nextProps.resultsText===this.props.resultsText,this.props.resultsText,nextProps.resultsText); 
         console.log("searching",nextProps.searching===this.props.searching); 
         console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
 
