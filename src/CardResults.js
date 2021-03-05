@@ -21,7 +21,7 @@ const options = {
     // responsiveLayoutCollapseUseFormatters:false,
     pagination:"local",             //paginate the data
     paginationSize:10,              //allow 10 rows per page of data
-    paginationSizeSelector:[10, 25, 50, 100],
+    paginationSizeSelector:[10, 25, 50], // with all the text, even 50 is a lot.
     movableColumns:false,            //don't allow column order to be changed
     resizableRows:false,             
     resizableColumns:false,
@@ -78,10 +78,19 @@ class CardResults extends React.Component {
             
             // Scrolling is done by footer at the bottom, so when scrolling pages (of variable height)
             // this will keep the user at the bottom of the page, using a referenced div
-            const scroll = this.props.scrollToBottom;
-            setTimeout(function () {
-                scroll()
-            },100);
+            // const pageChanged = this.props.pageChanged;
+            try {
+                // Probably need to deep clone this but circular structure refuses
+                // const currentPageRows = JSON.parse(JSON.stringify(this.my_table.current.table.rowManager.displayRows[1]));
+                const currentPageRows = this.my_table.current.table.rowManager.displayRows[1];
+
+
+                const scroll = this.props.scrollToBottom;
+                scroll(currentPageRows);
+            } catch(e) {
+                console.error(e);
+                // do nothing
+            }
 
             // Too laggy, would be used for showing user which # results they're viewing by page * results per page
             // this.setState({

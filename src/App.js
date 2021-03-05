@@ -25,6 +25,7 @@ export default class App extends React.Component {
 		},
         searchResults: [],
         outputResults: [],
+        displayRows: [],
         count: 0,
 		resultsText: 'Results',
 		networkError: '',
@@ -341,7 +342,7 @@ export default class App extends React.Component {
                 let _data = [];
                 if(currentResults && currentResults[0] && currentResults[0].doc) {
                     
-                    console.log(currentResults);
+                    // console.log(currentResults);
                     // TODO: Probably don't want filter permanently, but it was requested for now
                     _data = currentResults
                     .filter((result) => { // Soft rollout logic added to filter out anything without docs.
@@ -516,7 +517,7 @@ export default class App extends React.Component {
                 }
             }).then(parsedJson => {
                 if(parsedJson){
-                    console.log("Processing results", parsedJson.length);
+                    // console.log("Processing results", parsedJson.length);
                     let updatedResults = this.state.searchResults;
 
                     // Fill highlights here; update state
@@ -535,20 +536,36 @@ export default class App extends React.Component {
                     if(searchId < this._searchId) {
                         return;
                     } else {
-                        this.setState({
-                            searchResults: updatedResults,
-                            outputResults: updatedResults,
-                            count: _offset,
-                            resultsText: currentResults.length + " Results",
-                        }, () => {
-                            if(this._sortVal) {
-                                this.sortDataByField(this._sortVal, this._ascVal);
-                            }
-                            this.filterResultsBy(this._searcherState);
-                        });
-                        
-                        // offset for next run incremented by limit used
-                        this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
+                        if(_limit===10 || this.displayedRowsUnpopulated()) { // Always populate first ten immediately, also populate if user already is looking at unpopulated records
+                            this.setState({
+                                searchResults: updatedResults,
+                                outputResults: updatedResults,
+                                count: _offset,
+                                resultsText: currentResults.length + " Results",
+                            }, () => {
+                                if(this._sortVal) {
+                                    this.sortDataByField(this._sortVal, this._ascVal);
+                                }
+                                this.filterResultsBy(this._searcherState);
+                            });
+                            
+                            // offset for next run incremented by limit used
+                            this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
+                        } else { // Save data but wait to populate it
+                            this.setState({
+                                searchResults: updatedResults,
+                                count: _offset,
+                                resultsText: currentResults.length + " Results",
+                            }, () => {
+                                if(this._sortVal) {
+                                    this.sortDataByField(this._sortVal, this._ascVal);
+                                }
+                                this.filterResultsBy(this._searcherState);
+                            });
+                            
+                            // offset for next run incremented by limit used
+                            this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
+                        }
                     }
                 }
             }).catch(error => { 
@@ -591,6 +608,7 @@ export default class App extends React.Component {
     }
 
 
+
 	check = () => { // check if JWT is expired/invalid
 		
 		let checkURL = new URL('test/check', Globals.currentHost);
@@ -619,13 +637,43 @@ export default class App extends React.Component {
 		// console.log("App check");
     }
     
-    
-    scrollToBottom = () => {
+    /** Scroll to bottom on page change and populate full table with latest results */
+    scrollToBottom = (_rows) => {
         try {
-            this.endRef.current.scrollIntoView({ behavior: 'smooth' })
+            // console.log("Paged");
+            // console.log("Rows", _rows);
+            // for(let i = 0; i < _rows.length; i++) {
+            //     console.log(_rows[i].data);
+            //     if(_rows[i].data.plaintext.length === 0){
+            //         console.log("No text.  Should populate.");
+            //         i = _rows.length;
+            //     }
+            // }
+            this.setState({
+                outputResults: this.state.searchResults,
+                displayRows: _rows
+            }, () => {
+                setTimeout(() => {
+                    this.endRef.current.scrollIntoView({ behavior: 'smooth' })
+                }, 100);
+            });
         } catch(e) {
             console.log("Scroll error", e);
         }
+    }
+
+
+    displayedRowsUnpopulated = () => {
+        // console.log("Checking displayed rows...");
+        for(let i = 0; i < this.state.displayRows.length; i++) {
+            // console.log(this.state.displayRows[i].data);
+            if(this.state.displayRows[i].data.plaintext.length === 0){
+                // console.log("No text.  Should populate.");
+                return true;
+            }
+        }
+
+        return false;
     }
 	
 
