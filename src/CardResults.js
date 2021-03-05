@@ -52,17 +52,14 @@ class CardResults extends React.Component {
     // So the results were identical
     shouldComponentUpdate(nextProps, nextState) {
         // console.log("Next state",nextState);
-        console.log("Inc props",nextProps);
+        // console.log("Inc props",nextProps);
         // console.log("Results",nextProps.results===this.props.results); 
         // console.log("Text",nextProps.resultsText===this.props.resultsText,this.props.resultsText,nextProps.resultsText); 
         // console.log("searching",nextProps.searching===this.props.searching); 
         // console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
 
         // TODO: Experimental logic, we shouldn't update JUST because results text changed
-        if(     _.isEqual(nextProps.results, this.props.results) // can be expensive
-                && nextProps.resultsText===this.props.resultsText 
-                && nextProps.searching===this.props.searching 
-                && nextProps.snippetsDisabled===this.props.snippetsDisabled)
+        if(!nextProps.shouldUpdate)
         {
             return false;
         } else {

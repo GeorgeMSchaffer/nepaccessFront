@@ -32,7 +32,8 @@ export default class App extends React.Component {
 		verified: false,
         searching: false,
         useSearchOptions: false,
-        snippetsDisabled: false
+        snippetsDisabled: false,
+        shouldUpdate: false,
     }
     
     constructor(props){
@@ -182,7 +183,8 @@ export default class App extends React.Component {
 
                 this.setState({
                     outputResults: filteredResults,
-                    resultsText: textToUse
+                    resultsText: textToUse,
+                    shouldUpdate: true
                 });
             }
             
@@ -200,7 +202,8 @@ export default class App extends React.Component {
     sortDataByField = (field, ascending) => {
         this.setState({
             // searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
-            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending)))
+            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending))),
+            shouldUpdate: true
         });
     }
 
@@ -277,7 +280,8 @@ export default class App extends React.Component {
             snippetsDisabled: searcherState.searchOption==="C",
 			resultsText: "Loading results...",
             networkError: "", // Clear network error
-            searching: true
+            searching: true,
+            shouldUpdate: true
 		}, () => {
 
             // title-only
@@ -385,7 +389,8 @@ export default class App extends React.Component {
                         {
                             this.setState({
                                 searching: false,
-                                snippetsDisabled: true
+                                snippetsDisabled: true,
+                                shouldUpdate: true
                             });
                         } else {
                             this._searchId = this._searchId + 1;
@@ -545,6 +550,7 @@ export default class App extends React.Component {
                                 searchResults: updatedResults,
                                 outputResults: updatedResults,
                                 count: _offset,
+                                shouldUpdate: true
                             }, () => {
                                 if(this._sortVal) {
                                     this.sortDataByField(this._sortVal, this._ascVal);
@@ -558,6 +564,7 @@ export default class App extends React.Component {
                             this.setState({
                                 searchResults: updatedResults,
                                 count: _offset,
+                                shouldUpdate: false
                             }, () => {
                                 if(this._sortVal) {
                                     this.sortDataByField(this._sortVal, this._ascVal);
@@ -579,13 +586,15 @@ export default class App extends React.Component {
                         this.setState({
                             networkError: 'Request has timed out.',
                             resultsText: 'Timed out',
-                            searching: false
+                            searching: false,
+                            shouldUpdate: true
                         });
                     } else {
                         this.setState({
                             networkError: 'Server is down or you may need to login again.',
                             resultsText: 'Server unresponsive',
-                            searching: false
+                            searching: false,
+                            shouldUpdate: true
                         });
                     }
                 }
@@ -625,7 +634,8 @@ export default class App extends React.Component {
 		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
 			if(!err.response){ // Probably no need to redirect to login if server isn't responding
 				this.setState({
-					networkError: "Server may be down, please try again later."
+					networkError: "Server may be down, please try again later.",
+                    shouldUpdate: true
 				});
 			} else { // 403?
                 if(err.response && err.response.status===403) {
@@ -653,7 +663,8 @@ export default class App extends React.Component {
             // }
             this.setState({
                 outputResults: this.state.searchResults,
-                displayRows: _rows
+                displayRows: _rows,
+                shouldUpdate: true
             }, () => {
                 setTimeout(() => {
                     this.endRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -702,6 +713,7 @@ export default class App extends React.Component {
                         searching={this.state.searching}
                         snippetsDisabled={this.state.snippetsDisabled} 
                         scrollToBottom={this.scrollToBottom}
+                        shouldUpdate={this.state.shouldUpdate}
                     />
 				</div>
                 <div ref={this.endRef} />
