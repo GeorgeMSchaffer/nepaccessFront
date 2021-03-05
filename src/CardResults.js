@@ -135,6 +135,7 @@ class CardResults extends React.Component {
 
     updateTable = () => {
         try {
+            this.my_table.current.table.blockRedraw();
             this.my_table.current.table.replaceData(this.props.results);
             // to maintain page user is on even after rerender, we try saving page as a local variable and setting it here
             this.my_table.current.table.setPage(this.page);
@@ -252,8 +253,10 @@ class CardResults extends React.Component {
                 setTimeout(function() {
                     tbltr.table.redraw(true);
                     // console.log("Redrawn");
-                },1000)
+                },0)
             // }
+
+            tbltr.table.restoreRedraw();
         }
 
     }
