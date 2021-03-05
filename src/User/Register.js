@@ -73,33 +73,33 @@ class Register extends React.Component {
         return (test1 || test2 || test3 || test4 || test5 || test6 || test7 );
     }
     invalidUsername = () => {
-        let usernamePattern = /[ -~]/;
+        let usernamePattern = /[a-zA-Z0-9]/;
         let invalid = !(usernamePattern.test(this.state.username));
         let message = "";
         if(invalid){
-            message = "Username invalid. Cannot be empty, must be printable characters.";
+            message = "Username invalid. Cannot be empty, alphanumeric only.";
         }
         this.setState({ usernameError: message });
         this.setState({ disabled: invalid });
         return invalid;
     }
     invalidFirst = () => {
-        let usernamePattern = /[ -~]/;
-        let invalid = !(usernamePattern.test(this.state.firstName));
+        let usernamePattern = /[a-zA-Z\s]/;
+        let invalid = !(usernamePattern.test(this.state.firstName.trim()));
         let message = "";
         if(invalid){
-            message = "Name invalid. Cannot be empty, must be printable characters.";
+            message = "Name invalid. Cannot be empty, alphabetical characters only.";
         }
         this.setState({ firstNameError: message });
         this.setState({ disabled: invalid });
         return invalid;
     }
     invalidLast = () => {
-        let usernamePattern = /[ -~]/;
-        let invalid = !(usernamePattern.test(this.state.lastName));
+        let usernamePattern = /[a-zA-Z\s]/;
+        let invalid = !(usernamePattern.test(this.state.lastName.trim()));
         let message = "";
         if(invalid){
-            message = "Name invalid. Cannot be empty, must be printable characters.";
+            message = "Name invalid. Cannot be empty, alphabetical characters only.";
         }
         this.setState({ lastNameError: message });
         this.setState({ disabled: invalid });
