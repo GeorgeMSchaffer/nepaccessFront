@@ -201,12 +201,27 @@ class Register extends React.Component {
 
     onChangeHandler = (evt) => {
 		// evt.target.name defined by name= in input
+        const name = evt.target.name;
 		this.setState( 
 		{ 
-            [evt.target.name]: evt.target.value,
+            [name]: evt.target.value,
         }, () => { 
-            // check for invalids (also disables register button if invalid)
-            this.invalidFields();
+            // validate (also disables register button if invalid)
+            
+            switch (name) {
+                case 'affiliation':
+                    this.invalidAffiliation();
+                    break;
+                case 'firstName':
+                    this.invalidFirst();
+                    break;
+                case 'lastName':
+                    this.invalidLast();
+                    break;
+                default:
+                    this.invalidFields(); // org selection/other org name handles itself from here
+            }
+
         });
     }
 
