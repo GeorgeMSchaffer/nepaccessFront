@@ -540,6 +540,7 @@ export default class App extends React.Component {
                         return;
                     } else {
                         if(_limit===10 || this.displayedRowsUnpopulated()) { // Always populate first ten immediately, also populate if user already is looking at unpopulated records
+                            console.log("Updating with full results");
                             this.setState({
                                 searchResults: updatedResults,
                                 outputResults: updatedResults,
