@@ -48,20 +48,20 @@ class CardResults extends React.Component {
 
     // This logic broke sorting.  Somehow, results from both next and this.props were already sorted.
     // So the results were identical
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     // console.log("Results",nextProps.results===this.props.results); 
-    //     // console.log("Text",nextProps.resultsText===this.props.resultsText); 
-    //     // console.log("searching",nextProps.searching===this.props.searching); 
-    //     // console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log("Results",nextProps.results===this.props.results); 
+        console.log("Text",nextProps.resultsText===this.props.resultsText); 
+        console.log("searching",nextProps.searching===this.props.searching); 
+        console.log("snippets",nextProps.snippetsDisabled===this.props.snippetsDisabled); 
 
-    //     // TODO: Experimental logic, we shouldn't need to rerender JUST because searching changed
-    //     if(nextProps.results===this.props.results
-    //             && nextProps.resultsText===this.props.resultsText
-    //             && nextProps.snippetsDisabled===this.props.snippetsDisabled) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
+        // TODO: Experimental logic, we shouldn't need to rerender JUST because searching changed
+        // if(nextProps.results===this.props.results
+        //         && nextProps.resultsText===this.props.resultsText
+        //         && nextProps.snippetsDisabled===this.props.snippetsDisabled) {
+        //     return false;
+        // }
+        return true;
+    }
     
     // Table needs help to resize its cells if window is resized
     handleResize = () => {
