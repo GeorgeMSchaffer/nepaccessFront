@@ -46,6 +46,6 @@ div.update .react-datepicker__input-container>input {
     margin-left: 5em;
 }
 
-.files-holder .tabulator-header {
+#files-holder .tabulator-header {
     display: block;
 }

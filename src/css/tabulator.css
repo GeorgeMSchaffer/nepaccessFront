@@ -1,6 +1,6 @@
 /* Custom tabulator styling */
 
-.tabulator-holder {
+#search-results .tabulator-holder {
     margin: 0 25px;
     height: 800px; /* Need this as parent element to control max-height of .tabulator and to prevent scroll to top on update */
     /* overflow: hidden; */
@@ -48,12 +48,12 @@
     white-space: normal;
 } */
 
-.tabulator-row, .tabulator-cell {
+#search-results .tabulator-row,#search-results  .tabulator-cell {
     cursor: default;
 }
 
 /* Row auto adjusts to accommodate cell size */
-.tabulator-row .tabulator-cell {
+#search-results .tabulator-row .tabulator-cell {
     /* min-height: 44px; */
     /* Assuming 6px included padding (default), line-height of height minus padding vertically centers line of text */
     /* line-height: 32px; */
@@ -63,11 +63,11 @@
     border-color: black;
 }
 
-.tabulator-row.tabulator-row-even {
+#search-results .tabulator-row.tabulator-row-even {
     background-color: #F0EFED;
 }
 
-.tabulator-col-content {
+#search-results .tabulator-col-content {
     font-family: Open Sans;
     font-style: normal;
     font-weight: 600;
@@ -83,23 +83,23 @@
     background: #737272;
 }
 
-.tabulator .tabulator-header .tabulator-col {
+#search-results .tabulator .tabulator-header .tabulator-col {
     background: #737272;
 }
 
-.tabulator .tabulator-header {
+#search-results .tabulator .tabulator-header {
     border-bottom: 0px;
 }
 
-.tabulator .tabulator-footer .tabulator-paginator label {
+#search-results .tabulator .tabulator-footer .tabulator-paginator label {
     display: none;
 }
 
-.tabulator .tabulator-footer .tabulator-paginator-replacer label {
+#search-results .tabulator .tabulator-footer .tabulator-paginator-replacer label {
     color: #fff;
 }
 
-.tabulator .tabulator-header .tabulator-col .tabulator-header-filter {
+#search-results .tabulator .tabulator-header .tabulator-col .tabulator-header-filter {
     display: block;
     position: relative;
     box-sizing: border-box;
@@ -116,6 +116,6 @@
     word-break: break-all;
 } */
 
-.tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+#search-results .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
     padding-right: 12px;
 }

@@ -127,7 +127,7 @@ class DetailsFileResults extends React.Component {
                 <div id="search-results">
                     <h2 id="results-label">{this.state.headerText}</h2>
                     {/* <button onClick={this.forceRedraw}>Force redraw</button> */}
-                    <div className="files-holder">
+                    <div id="files-holder">
                         <ReactTabulator
                             ref={this.files_table}
                             data={data}

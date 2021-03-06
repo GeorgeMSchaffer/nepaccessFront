@@ -11,8 +11,7 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 
 import './card.css';
 
-const _ = require('lodash');
-
+// const _ = require('lodash');
 
 const options = {
     // maxHeight: "100%",           // for limiting table height
