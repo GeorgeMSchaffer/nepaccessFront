@@ -342,39 +342,38 @@ class Register extends React.Component {
     
     render() {
         return (
-            <div className="container content register-form">
-                <div className="form">
+            <div id="register-form" className="content">
                     <div className="note">
                         <p>Register</p>
                     </div>
 
-                    <div id="register-form" className="form-content">
+                    <div className="form-content">
                         <div className="row">
-                            <div className="col-md-6">
+                            <div className="register-form-input-group">
                                 <div className="form-group">
-                                    <span>Username</span><input type="text" maxLength="191"
-                                        className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
-                                    <label className="errorLabel">{this.state.usernameError}</label>
-                                </div>
-                                <div className="form-group">
-                                    <span>First name</span><input type="text" maxLength="191"
+                                    <span className="register-leading-text">First name</span><input type="text" maxLength="191"
                                         className="form-control" id="firstName" name="firstName" placeholder="First name *" onChange={this.onChangeHandler}/>
                                     <label className="errorLabel">{this.state.firstNameError}</label>
                                 </div>
                                 <div className="form-group">
-                                    <span>Last name</span><input type="text" maxLength="191"
+                                    <span className="register-leading-text">Last name</span><input type="text" maxLength="191"
                                         className="form-control" id="lastName" name="lastName" placeholder="Last name *" onChange={this.onChangeHandler}/>
                                     <label className="errorLabel">{this.state.lastNameError}</label>
                                 </div>
                                 <div className="form-group">
-                                    <span>Email</span><input type="text" maxLength="191"
+                                    <span className="register-leading-text">Email</span><input type="text" maxLength="191"
                                         className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
                                     <label className="errorLabel">{this.state.emailError}</label>
                                 </div>
-                            </div>
-                            <div className="col-md-6">
                                 <div className="form-group">
-                                <span>Field</span><Select id="affiliation" 
+                                    <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
+                                        className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
+                                    <label className="errorLabel">{this.state.usernameError}</label>
+                                </div>
+                            </div>
+                            <div className="register-form-input-group">
+                                <div className="form-group">
+                                <span className="register-leading-text">Field</span><Select id="affiliation" 
                                         className="form-control inline-block" 
                                         options={affiliations}
                                         name="affiliation" 
@@ -389,28 +388,33 @@ class Register extends React.Component {
                                 </div>
                             </div>
                             
-                            <div className="col-md-6">
+                            <div className="register-form-input-group">
                                 <div className="form-group">
-                                    <span>Name of organization</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="Organization name" onKeyUp={this.onChangeHandler}/>
+                                    <span className="register-leading-text">Name of organization</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="Organization name" onKeyUp={this.onChangeHandler}/>
                                 </div>
                                 <div className="form-group">
-                                    <span>Job title</span><input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onChange={this.onChangeHandler}/>
+                                    <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onChange={this.onChangeHandler}/>
                                 </div>
-                            </div>
-                            <div className="col-md-6">
                                 <div className="form-group">
-                                    <span>Password</span><input type={this.state.passwordType} maxLength="191" 
+                                    <span className="register-leading-text">Password</span><input type={this.state.passwordType} maxLength="191" 
                                         id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
                                     <label className="errorLabel">{this.state.passwordError}</label>
-                                    <br />
+                                </div>
+                                <div className="form-group">
+                                    <span></span>
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
                                     <label className="inline noSelect">Show password</label>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
-                    </div>
-                </div>
+                        
+                        <div className="register-form-input-group">
+                                <div className="form-group">
+                                    <span></span>
+                                    <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
+                                </div>
+                            </div>
+                       </div>
             </div>
         )
     }

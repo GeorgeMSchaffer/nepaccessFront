@@ -1,3 +1,7 @@
+#register-form {
+    min-width: 600px;
+}
+
 #register-form #affiliation {
     width: 300px;
     padding: 0px;
@@ -27,3 +31,11 @@
     -webkit-box-shadow: 1px 1px 5px #999;
         box-shadow: 1px 1px 5px #999;
 }
+
+#register-form span.register-leading-text {
+    text-align: right;
+}
+
+/* .register-form-input-group {
+
+} */
