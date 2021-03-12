@@ -49,6 +49,9 @@ class Register extends React.Component {
             affiliationOther: '', 
             jobTitle: '', // optional
             organization: '', // optional
+
+            statusLabel: '(Status will update here)',
+            statusClass: ''
         };
 
         this.checkUsername = _.debounce(this.checkUsername, 300);
@@ -251,7 +254,10 @@ class Register extends React.Component {
             return;
         }
         document.body.style.cursor = 'wait';
-        this.setState({ disabled: true });
+        this.setState({ 
+            disabled: true,
+            statusLabel: ''
+         });
         
         let registerUrl = new URL('user/register', globals.currentHost);
 
@@ -275,55 +281,23 @@ class Register extends React.Component {
             }
         }).then(response => {
             let responseOK = response && response.status === 200;
-            if (responseOK) {
-                console.log("OK");
-                return true;
-            } else { // 403
-                return false;
-            }
-        }).then(ok => {
-            if(ok){
-                // if HTTP 200 (ok), clear fields and login user
-                console.log("Registered");
-                
-                let loginUrl = new URL('login', globals.currentHost);
-                var user = {
-                    username: this.state.username,
-                    password: this.state.password
-                }
-                fetch(loginUrl, {
-                    method: 'POST',
-                    body: JSON.stringify(user),
-                    headers:{
-                        'Content-Type': 'application/json; charset=utf-8'
-                    }
-                }).then(response => {
-                    if(response.ok){ // 200
-                        return response.json();
-                    } else { // 403
-                        return null;
-                    }
-                }).then(jsonResponse => {
-                    if(jsonResponse){
-                        localStorage.JWT = jsonResponse.Authorization;
-                        localStorage.username = this.state.username;
-                        // let fields = document.getElementsByClassName("form-control");
-                        // let i;
-                        // for (i = 0; i < fields.length; i++) {
-                        //     fields[i].value = '';
-                        // }
-                        this.props.history.push('/')
-                        console.log("Logged in");
-                    } else {
-                        // TODO
-                        console.log("403");
-                    }
+        
+            if(responseOK){ // 200
+                this.setState({
+                    statusClass: 'successLabel',
+                    statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.'
                 });
-            } else {
-                // TODO
+            } else { // 500 or 503, or server down
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, an error has occurred. Server responded with ' + response.status
+                });
             }
         }).catch(error => {
-            console.error('error message', error);
+            this.setState({
+                statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+            });
+            console.error(error);
         });
 
         this.setState({ disabled: false });
@@ -343,78 +317,81 @@ class Register extends React.Component {
     render() {
         return (
             <div id="register-form" className="content">
-                    <div className="note">
-                        <p>Register</p>
-                    </div>
+                <div className="note">
+                    <p>Register</p>
+                </div>
 
-                    <div className="form-content">
-                        <div className="row">
-                            <div className="register-form-input-group">
-                                <div className="form-group">
-                                    <span className="register-leading-text">First name</span><input type="text" maxLength="191"
-                                        className="form-control" id="firstName" name="firstName" placeholder="First name *" onChange={this.onChangeHandler}/>
-                                    <label className="errorLabel">{this.state.firstNameError}</label>
-                                </div>
-                                <div className="form-group">
-                                    <span className="register-leading-text">Last name</span><input type="text" maxLength="191"
-                                        className="form-control" id="lastName" name="lastName" placeholder="Last name *" onChange={this.onChangeHandler}/>
-                                    <label className="errorLabel">{this.state.lastNameError}</label>
-                                </div>
-                                <div className="form-group">
-                                    <span className="register-leading-text">Email</span><input type="text" maxLength="191"
-                                        className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
-                                    <label className="errorLabel">{this.state.emailError}</label>
-                                </div>
-                                <div className="form-group">
-                                    <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
-                                        className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
-                                    <label className="errorLabel">{this.state.usernameError}</label>
-                                </div>
+                <div className="form-content">
+                    <div className="row">
+                        
+                        <div className="register-form-input-group">
+                            <div className="form-group">
+                                <span className="register-leading-text">First name</span><input type="text" maxLength="191"
+                                    className="form-control" id="firstName" name="firstName" placeholder="First name *" onChange={this.onChangeHandler}/>
+                                <label className="errorLabel">{this.state.firstNameError}</label>
                             </div>
-                            <div className="register-form-input-group">
-                                <div className="form-group">
-                                <span className="register-leading-text">Field</span><Select id="affiliation" 
-                                        className="form-control inline-block" 
-                                        options={affiliations}
-                                        name="affiliation" 
-                                        placeholder="Select Field *" 
-                                        onChange={this.onSelectHandler}/>
-                                    <label className="errorLabel">{this.state.affiliationError}</label>
-                                </div>
-                                <div className="form-group">
-                                <span></span><input disabled={this.state.affiliation !== "Other"} type="text" maxLength="1000"
-                                        className="form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onChange={this.onChangeHandler}/>
-                                    <label  className="errorLabel">{this.state.affiliationOtherError}</label>
-                                </div>
+                            <div className="form-group">
+                                <span className="register-leading-text">Last name</span><input type="text" maxLength="191"
+                                    className="form-control" id="lastName" name="lastName" placeholder="Last name *" onChange={this.onChangeHandler}/>
+                                <label className="errorLabel">{this.state.lastNameError}</label>
                             </div>
-                            
-                            <div className="register-form-input-group">
-                                <div className="form-group">
-                                    <span className="register-leading-text">Name of organization</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="Organization name" onKeyUp={this.onChangeHandler}/>
-                                </div>
-                                <div className="form-group">
-                                    <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onChange={this.onChangeHandler}/>
-                                </div>
-                                <div className="form-group">
-                                    <span className="register-leading-text">Password</span><input type={this.state.passwordType} maxLength="191" 
-                                        id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
-                                    <label className="errorLabel">{this.state.passwordError}</label>
-                                </div>
-                                <div className="form-group">
-                                    <span></span>
-                                    <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
-                                    <label className="inline noSelect">Show password</label>
-                                </div>
+                            <div className="form-group">
+                                <span className="register-leading-text">Email</span><input type="text" maxLength="191"
+                                    className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
+                                <label className="errorLabel">{this.state.emailError}</label>
+                            </div>
+                            <div className="form-group">
+                                <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
+                                    className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
+                                <label className="errorLabel">{this.state.usernameError}</label>
+                            </div>
+                        </div>
+                        <div className="register-form-input-group">
+                            <div className="form-group">
+                            <span className="register-leading-text">Field</span><Select id="affiliation" 
+                                    className="form-control inline-block" 
+                                    options={affiliations}
+                                    name="affiliation" 
+                                    placeholder="Select Field *" 
+                                    onChange={this.onSelectHandler}/>
+                                <label className="errorLabel">{this.state.affiliationError}</label>
+                            </div>
+                            <div className="form-group">
+                            <span></span><input disabled={this.state.affiliation !== "Other"} type="text" maxLength="1000"
+                                    className="form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onChange={this.onChangeHandler}/>
+                                <label  className="errorLabel">{this.state.affiliationOtherError}</label>
                             </div>
                         </div>
                         
                         <div className="register-form-input-group">
-                                <div className="form-group">
-                                    <span></span>
-                                    <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
-                                </div>
+                            <div className="form-group">
+                                <span className="register-leading-text">Name of organization</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="Organization name" onKeyUp={this.onChangeHandler}/>
                             </div>
-                       </div>
+                            <div className="form-group">
+                                <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onChange={this.onChangeHandler}/>
+                            </div>
+                            <div className="form-group">
+                                <span className="register-leading-text">Password</span><input type={this.state.passwordType} maxLength="191" 
+                                    id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
+                                <label className="errorLabel">{this.state.passwordError}</label>
+                            </div>
+                            <div className="form-group">
+                                <span></span>
+                                <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                                <label className="inline noSelect">Show password</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="register-form-input-group">
+                            <div className="form-group">
+                                <span></span>
+                                <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
+                            </div>
+                            <label className={this.state.statusClass}>{this.state.statusLabel}</label>
+                    </div>
+
+                </div>
             </div>
         )
     }
