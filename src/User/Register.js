@@ -50,7 +50,7 @@ class Register extends React.Component {
             jobTitle: '', // optional
             organization: '', // optional
 
-            statusLabel: '(Status will update here)',
+            statusLabel: '',
             statusClass: ''
         };
 
@@ -323,7 +323,7 @@ class Register extends React.Component {
 
                 <div className="form-content">
                     <div className="row">
-                        
+
                         <div className="register-form-input-group">
                             <div className="form-group">
                                 <span className="register-leading-text">First name</span><input type="text" maxLength="191"

@@ -166,12 +166,12 @@ class Main extends React.Component {
                     <span className={this.state.loggedOutDisplay + " logged-out"}>
                         <Link className="top-menu-link" to="/login">Log in</Link>
                     </span>
-                    {/* <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
+                    <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
                         |
                     </span>
                     <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
                         <Link className="top-menu-link" to="/register">Register</Link>
-                    </span> */}
+                    </span>
                     <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                         <Link className="top-menu-link" to="/logout">Log out</Link>
                     </span>
