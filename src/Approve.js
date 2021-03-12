@@ -37,11 +37,6 @@ const columns = [
     { title: "Last name", field: "last", width: 140, headerFilter:"input"  },
 ];
 
-// TODO: Get rid of most universal tabulator css and limit it to pages like record details and search.
-// Then use it to select rows and setApprove() 
-// (probably don't bother with editable table, just have external button)
-// supporting one or multiple rows selected
-
 export default class Approve extends React.Component {
     resp = "";
 

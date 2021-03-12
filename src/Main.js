@@ -34,6 +34,7 @@ import AdminFiles from './AdminFiles.js';
 import Generate from './Generate.js';
 import Iframes from './iframes/Iframes.js';
 import Approve from './Approve.js';
+import Admin from './Admin.js';
 
 import Globals from './globals.js';
 
@@ -243,6 +244,7 @@ class Main extends React.Component {
                 <Route path="/iframes" component={Iframes} />
                 <Route path="/verify" component={Verify} />
                 <Route path="/approve" component={Approve} />
+                <Route path="/admin" component={Admin} />
 
                 <Route path="/" component={Landing}/>
             </Switch>
