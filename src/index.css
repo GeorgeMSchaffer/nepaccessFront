@@ -301,6 +301,10 @@ button {
   position: absolute;
   /* top: -20px; */
 }
+.successLabel {
+  color: green;
+  font-style: italic;
+}
 
 #app-content>.errorLabel {
     top: -20px;
@@ -428,9 +432,19 @@ span.email-text {
 }
 
 /* New dropdown for help submenus */
-#help-dropdown, #about-dropdown {
+/* #help-dropdown, #about-dropdown { */
     /* height: 60px; */
-}
+/* } */
+#about-dropdown-2:hover > .dropdown-content {
+    display: block;
+    position: absolute;
+    left: -54px;
+    color: purple;
+    background-color: purple;
+    text-align: center;
+} 
+
+
 .dropdown {
     display: block;
     float: left;
@@ -480,7 +494,7 @@ span.email-text {
     text-align: center;
 }
 
-#help-button, #about-button, #admin-button {
+#help-button, #about-button, #admin-button, #about-button-2 {
     margin-right: 10px;
 }
 

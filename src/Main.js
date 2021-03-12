@@ -14,20 +14,25 @@ import Reset from './User/Reset.js';
 import UserDetails from './User/UserDetails.js';
 import ForgotPassword from './User/ForgotPassword.js';
 import Register from './User/Register.js';
+import Verify from './User/Verify.js';
 
-import AboutNepa from './AboutNepa.js';
-import AboutNepaccess from './AboutNepaccess.js';
-import AboutSearchTips from './AboutSearchTips.js';
+
+import AboutNepa from './iframes/AboutNepa.js';
+import AboutNepaccess from './iframes/AboutNepaccess.js';
+import People from './iframes/People.js';
+import AboutSearchTips from './iframes/AboutSearchTips.js';
+import AboutSearchTips2 from './iframes/AboutSearchTips2.js';
+import Media from './iframes/Media.js';
+
 import AboutHelpContents from './AboutHelpContents.js';
 import AboutStats from './AboutStats.js';
 
-import Media from './Media.js';
 
 import Importer from './Importer.js';
 import AdminFiles from './AdminFiles.js';
 
 import Generate from './Generate.js';
-import Iframes from './Iframes.js';
+import Iframes from './iframes/Iframes.js';
 import Approve from './Approve.js';
 
 import Globals from './globals.js';
@@ -185,13 +190,22 @@ class Main extends React.Component {
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
                             <Link to="/aboutnepaccess">About NEPAccess</Link>
+                            <Link to="/people">People</Link>
                             <Link to="/abouthelpcontents">Database Contents</Link>
                             {/* <Link to="/stats">Content Statistics</Link> */}
                         </div>
                     </div>
-                    <Link currentpage={(this.state.currentPage==="/abouthelp").toString()} className="main-menu-link" to="/abouthelp">
-                        Search Tips
-                    </Link>
+                    
+                    <div id="about-dropdown-2" className="main-menu-link dropdown">
+                        <Link currentpage={(this.state.currentPage==="/abouthelp" || this.state.currentPage==="/abouthelp2").toString()} id="about-button-2" className="main-menu-link drop-button" to="/abouthelp">
+                            Search Tips
+                        </Link>
+                        <i className="fa fa-caret-down"></i>
+                        <div className="dropdown-content">
+                            <Link to="/abouthelp">Search Tips</Link>
+                            <Link to="/abouthelp2">What Can I Search For?</Link>
+                        </div>
+                    </div>
                     <Link currentpage={(this.state.currentPage==="/media").toString()} className="main-menu-link" to="/media">
                         Media
                     </Link>
@@ -213,7 +227,9 @@ class Main extends React.Component {
                 <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
+                <Route path="/people" component={People}/>
                 <Route path="/abouthelp" component={AboutSearchTips}/>
+                <Route path="/abouthelp2" component={AboutSearchTips2}/>
                 <Route path="/abouthelpcontents" component={AboutHelpContents}/>
                 <Route path="/stats" component={AboutStats}/>
                 <Route path="/media" component={Media}/>
@@ -225,6 +241,7 @@ class Main extends React.Component {
                 <Route path="/generate" component={Generate}/>
 
                 <Route path="/iframes" component={Iframes} />
+                <Route path="/verify" component={Verify} />
                 <Route path="/approve" component={Approve} />
 
                 <Route path="/" component={Landing}/>
