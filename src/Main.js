@@ -185,7 +185,7 @@ class Main extends React.Component {
                         About NEPA
                     </Link>
                     <div id="about-dropdown" className="main-menu-link dropdown">
-                        <Link currentpage={(this.state.currentPage==="/aboutnepaccess" || this.state.currentPage==="/abouthelpcontents").toString()} id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
+                        <Link currentpage={(this.state.currentPage==="/aboutnepaccess" || this.state.currentPage==="/people").toString()} id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
                             About NEPAccess
                         </Link>
                         <i className="fa fa-caret-down"></i>
