@@ -12,3 +12,7 @@
     border: 1px red solid;
     padding: 5px;
 }
+
+#approve .tabulator {
+    min-height: 420px;
+}

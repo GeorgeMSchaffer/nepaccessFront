@@ -236,8 +236,10 @@ export default class Admin extends React.Component {
         if(this.state.admin) {
             return (
                 <div id="approve">
-                    <div><span className="bold">
-                        Hold shift and drag to select multiple users, or click to select/deselect.
+                    <div className="instructions"><span className="bold">
+                        Instructions: 
+                        Hold shift and drag rows to select/deselect multiple users, or click row to select/deselect.
+                        Table will update after clicking approve or deactivate button.
                     </span></div>
                     <br />
                     <br />
