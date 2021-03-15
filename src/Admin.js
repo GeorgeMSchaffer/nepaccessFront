@@ -241,8 +241,7 @@ export default class Admin extends React.Component {
                         Hold shift and drag rows to select/deselect multiple users, or click row to select/deselect.
                         Table will update after clicking approve or deactivate button.
                     </span></div>
-                    <br />
-                    <br />
+                    
                     <ReactTabulator
                         ref={this.my_table}
                         data={this.state.users}
