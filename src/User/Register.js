@@ -372,21 +372,21 @@ class Register extends React.Component {
                             <div className="register-form-group">
                                 <span className="register-leading-text"></span>
                                 <input disabled={this.state.affiliation !== "Other"} type="text" maxLength="1000"
-                                    className="register-form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onBlur={this.onChangeHandler}/>
+                                    className="register-form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onBlur={this.onChangeHandler} />
                                 <label className="errorLabel">{this.state.affiliationOtherError}</label>
                             </div>
                         </div>
                         
                         <div className="register-form-input-group">
                             <div className="register-form-group">
-                                <span className="register-leading-text">Name of organization</span><input type="text" maxLength="1000" className="register-form-control" id="organization" name="organization" placeholder="Organization name" onBlur={this.onChangeHandler}/>
+                                <span className="register-leading-text">Name of organization</span><input type="text" maxLength="1000" className="register-form-control" id="organization" name="organization" placeholder="Organization name" />
                             </div>
                             <div className="register-form-group">
-                                <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="register-form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onBlur={this.onChangeHandler}/>
+                                <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="register-form-control" id="jobTitle" name="jobTitle" placeholder="Job title" />
                             </div>
                             <div className="register-form-group">
                                 <span className="register-leading-text">Password</span><input type={this.state.passwordType} maxLength="191" 
-                                    id="password" className="register-form-control password-field" name="password" placeholder="My Password *" onBlur={this.onPasswordChange}/>
+                                    id="password" className="register-form-control password-field" name="password" placeholder="My Password *" onBlur={this.onPasswordChange} />
                                 <label className="errorLabel">{this.state.passwordError}</label>
                             </div>
                             <div className="register-form-group">
