@@ -42,6 +42,7 @@ export default class Approve extends React.Component {
 
     state = {
         users: [],
+        approver: false,
         response: ""
     }
 
@@ -49,6 +50,27 @@ export default class Approve extends React.Component {
         super(props);
 
         this.my_table = React.createRef();
+    }
+    
+    checkApprover = () => {
+        let checkUrl = new URL('user/checkApprover', Globals.currentHost);
+        axios({
+            url: checkUrl,
+            method: 'POST'
+        }).then(response => {
+            console.log("Response", response);
+            console.log("Status", response.status);
+            let responseOK = response.data && response.status === 200;
+            if (responseOK) {
+                this.setState({
+                    approver: true
+                });
+            } else {
+                console.log("Else");
+            }
+        }).catch(error => {
+            //
+        })
     }
 
     getUsers = () => {
@@ -155,46 +177,50 @@ export default class Approve extends React.Component {
     
     render() {
 
-        return (
-            <div id="approve">
-                <div className="instructions"><span className="bold">
-                    Instructions: 
-                    Hold shift and drag rows to select/deselect multiple users, or click row to select/deselect.
-                    Table will update after clicking approve or deactivate button.
-                </span></div>
-                <br />
-                <br />
-                <ReactTabulator
-                    ref={this.my_table}
-                    // data={this.state.users}
-                    data={this.state.users}
-                    columns={columns}
-                    options={options}
-                    pageLoaded={this.onPageLoaded}
-                />
-                <br />
+        if(this.state.approver) {
+            return (
+                <div id="approve">
+                    <div className="instructions"><span className="bold">
+                        Instructions: 
+                        Hold shift and drag rows to select/deselect multiple users, or click row to select/deselect.
+                        Table will update after clicking approve or deactivate button.
+                    </span></div>
 
-                <div>
-                    <button type="button" className="button" onClick={() => this.approve(true)}>
-                        Approve (activate) user(s)
-                    </button>
+                    <ReactTabulator
+                        ref={this.my_table}
+                        // data={this.state.users}
+                        data={this.state.users}
+                        columns={columns}
+                        options={options}
+                        pageLoaded={this.onPageLoaded}
+                    />
+                    <br />
 
-                    <button type="button" className="button"onClick={() => this.approve(false)}>
-                        Deactivate user(s)
-                    </button>
+                    <div>
+                        <button type="button" className="button" onClick={() => this.approve(true)}>
+                            Approve (activate) user(s)
+                        </button>
+
+                        <button type="button" className="button"onClick={() => this.approve(false)}>
+                            Deactivate user(s)
+                        </button>
+                    </div>
+
+                    <br />
+                    <div><span>
+                        Server response
+                    </span></div>
+                    <textarea readOnly value={this.state.response}></textarea>
                 </div>
-
-                <br />
-                <div><span>
-                    Server response
-                </span></div>
-                <textarea readOnly value={this.state.response}></textarea>
-            </div>
-        );
+            );
+        } else {
+            return <div id="approve">401</div>
+        }
     }
 
     componentDidMount = () => {
         try {
+            this.checkApprover();
             this.getUsers();
         } catch(e) {
             console.error(e);
