@@ -280,11 +280,12 @@ class Register extends React.Component {
             }
         }).then(response => {
             let responseOK = response && response.status === 200;
+            console.log(response.status);
         
             if(responseOK){ // 200
                 this.setState({
                     statusClass: 'successLabel',
-                    statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.'
+                    statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.  (Expect to see "Username taken" pop up above; this means that you successfully claimed that username.)'
                 });
             } else { // 500 or 503, or server down
                 this.setState({
@@ -293,9 +294,17 @@ class Register extends React.Component {
                 });
             }
         }).catch(error => {
-            this.setState({
-                statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
-            });
+            if(error.response.status===418) {
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, that username is taken.'
+                });
+            } else {
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+                });
+            }
             console.error(error);
         });
 
