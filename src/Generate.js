@@ -8,7 +8,8 @@ import DocumentText from './DocumentText.js';
 class Generate extends React.Component {
     state = {
         users: [], // Naming should mirror Generate POJO on backend
-        shouldSend: false
+        shouldSend: false,
+        admin: false
     }
 
     constructor(props){
@@ -18,21 +19,27 @@ class Generate extends React.Component {
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.test = this.test.bind(this);
         this.fixAbbrev = this.fixAbbrev.bind(this);
+    }
 
-        // If there's no reason for user to be here, redirect them
+    checkAdmin = () => {
         let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
         axios({
             url: checkUrl,
             method: 'POST'
-          }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (!responseOK) { // this probably isn't possible with current backend design
-                this.props.history.push('/');
+        }).then(response => {
+            console.log("Response", response);
+            console.log("Status", response.status);
+            let responseOK = response.data && response.status === 200;
+            if (responseOK) {
+                this.setState({
+                    admin: true
+                });
+            } else {
+                console.log("Else");
             }
-          }).catch(error => { // redirect
-            this.props.history.push('/');
-          })
-
+        }).catch(error => {
+            //
+        })
     }
 
     csvChange(event){
@@ -45,15 +52,15 @@ class Generate extends React.Component {
     }
 
     handleRadioChange(event){
-      let sendStatus = false;
-      if(event.target.value === "send" && event.target.checked){
-        sendStatus = true;
-      }
-      this.setState({
-        shouldSend: sendStatus
-      }, () =>{
-        console.log(this.state.shouldSend);
-      });
+        let sendStatus = false;
+        if(event.target.value === "send" && event.target.checked){
+            sendStatus = true;
+        }
+        this.setState({
+            shouldSend: sendStatus
+        }, () =>{
+            console.log(this.state.shouldSend);
+        });
     }
 
     generate(){
@@ -71,69 +78,50 @@ class Generate extends React.Component {
           })
     }
 
-    render(){
-      // If there's no reason for user to be here, redirect them
-      // let flag = false;
-      // let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
-      // axios({
-      //     url: checkUrl,
-      //     method: 'POST'
-      //   }).then(response => {
-      //     console.log("Response", response);
-      //     console.log("Status", response.status);
-      //     let responseOK = response.data && response.status === 200;
-      //     if (responseOK) {
-      //       flag = true;
-      //     } else {
-      //       console.log("Else");
-      //       return "";
-      //     }
-      //   }).catch(error => {
-      //     return "";
-      //   })
-      //   if(!flag){
-      //     return "";
-      //   } else {
-          return (
-            <div id="main">
-                <textarea cols='60' rows='20' name="csvText" onChange={this.csvChange} />
-                <ul>
-                  <li>
-                    <label>
-                      <input type="radio"
-                      value="send"
-                      checked={this.state.shouldSend}
-                      onChange={this.handleRadioChange}></input>
-                      Send an email to each user with credentials
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <input type="radio"
-                      value="noSend"
-                      checked={!this.state.shouldSend}
-                      onChange={this.handleRadioChange}></input>
-                      Do not send an email to each user with credentials
-                    </label>
-                  </li>
-                </ul>
-                <br /><br />
-                <button className="button" onClick={this.generate}>Generate accounts</button>
-                
-                <br /><br /><br />
-                <button className="button" onClick={() => this.fixAbbrev()}>Fix agency abbreviations</button>
-                
-                <br /><br /><br />
-                <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
-                <br /><br /><br />
-                <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
-                <br /><br /><br />
-                <button className="button" onClick={() => this.testBulkIndex()}>Test bulk index</button>
-                <br /><br /><br />
-                <DocumentText />
-            </div>
-          )
-        // }
+    render() {
+        if(this.state.admin) {
+            return (
+                <div id="main">
+                    <textarea cols='60' rows='20' name="csvText" onChange={this.csvChange} />
+                    <ul>
+                    <li>
+                        <label>
+                            <input type="radio"
+                            value="send"
+                            checked={this.state.shouldSend}
+                            onChange={this.handleRadioChange}></input>
+                            Send an email to each user with credentials
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                        <input type="radio"
+                        value="noSend"
+                        checked={!this.state.shouldSend}
+                        onChange={this.handleRadioChange}></input>
+                        Do not send an email to each user with credentials
+                        </label>
+                    </li>
+                    </ul>
+                    <br /><br />
+                    <button className="button" onClick={this.generate}>Generate accounts</button>
+                    
+                    <br /><br /><br />
+                    <button className="button" onClick={() => this.fixAbbrev()}>Fix agency abbreviations</button>
+                    
+                    <br /><br /><br />
+                    <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
+                    <br /><br /><br />
+                    <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
+                    <br /><br /><br />
+                    <button className="button" onClick={() => this.testBulkIndex()}>Test bulk index</button>
+                    <br /><br /><br />
+                    <DocumentText />
+                </div>
+            )
+        } else {
+            return <div id="main">401</div>
+        }
     }
     
     fixAbbrev() {
@@ -207,6 +195,14 @@ class Generate extends React.Component {
         console.log(err);
       });
       
+    }
+
+    componentDidMount = () => {
+        try {
+            this.checkAdmin();
+        } catch(e) {
+            console.error(e);
+        }
     }
 
 }
