@@ -51,7 +51,8 @@ class Register extends React.Component {
             organization: '', // optional
 
             statusLabel: '',
-            statusClass: ''
+            statusClass: '',
+            registered: false
         };
 
         this.checkUsername = _.debounce(this.checkUsername, 300);
@@ -62,6 +63,9 @@ class Register extends React.Component {
 
     // Validation
     invalidFields = () => {
+        if(this.state.registered) {
+            return true;
+        }
         // Run everything and all appropriate errors will show at once.
         let test1 = this.invalidEmail();
         let test2 = this.checkUsername();
@@ -158,7 +162,7 @@ class Register extends React.Component {
 
     // Check if username is taken to prevent submission of duplicates
     checkUsername = () => {
-        if(this.invalidUsername()){
+        if(this.invalidUsername() || this.state.registered){
             this.setState({ disabled: true });
             return;
         } else {
@@ -285,7 +289,8 @@ class Register extends React.Component {
             if(responseOK){ // 200
                 this.setState({
                     statusClass: 'successLabel',
-                    statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.  (Expect to see "Username taken" pop up above; this means that you successfully claimed that username.)'
+                    statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.',
+                    registered: true
                 });
             } else { // 500 or 503, or server down
                 this.setState({
