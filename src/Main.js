@@ -58,6 +58,7 @@ class Main extends React.Component {
             loggedOutDisplay: '',
             loaderClass: 'loadDefault',
             curator: false,
+            approver: false,
             currentPage: ""
         };
         this.refresh = this.refresh.bind(this);
@@ -282,6 +283,34 @@ class Main extends React.Component {
             });
         }
 
+        if(this.state.loggedIn === false) { // No need for axios call
+            this.setState({
+                approver: false
+            }, () =>{
+                this.getCuratorMenuItems();
+            })
+        } else {
+            let checkUrl = new URL('user/checkApprover', Globals.currentHost);
+            let result = false;
+            axios({
+                url: checkUrl,
+                method: 'POST'
+            }).then(response => {
+                result = response && response.status === 200;
+                this.setState({
+                    approver: result
+                }, () => {
+                    this.getCuratorMenuItems();
+                });
+            }).catch(error => { // 401/403
+                this.setState({
+                    approver: false
+                }, () => {
+                    this.getCuratorMenuItems();
+                });
+            });
+        }
+
 
     }
 
@@ -299,6 +328,23 @@ class Main extends React.Component {
                         <div className="dropdown-content">
                             <Link to="/importer">Import New Documents</Link>
                             <Link to="/adminFiles">Find Missing Files</Link>
+                            <Link to="/approve">Approve Users</Link>
+                        </div>
+                    </div>
+            });
+        } else if(this.state.approver === true) {
+            
+            localStorage.approver = true;
+
+            this.setState({
+                menuItems: 
+                    <div id="admin-dropdown" className="main-menu-link dropdown">
+                        <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
+                            Admin
+                        </Link>
+                        <i className="fa fa-caret-down"></i>
+                        <div className="dropdown-content">
+                            <Link to="/approve">Approve Users</Link>
                         </div>
                     </div>
             });

@@ -236,7 +236,7 @@ export default class Admin extends React.Component {
         if(this.state.admin) {
             return (
                 <div id="approve">
-                    <div><span>
+                    <div><span className="bold">
                         Hold shift and drag to select multiple users, or click to select/deselect.
                     </span></div>
                     <br />

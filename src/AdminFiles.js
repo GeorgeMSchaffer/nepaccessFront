@@ -144,7 +144,7 @@ export default class AdminFiles extends React.Component {
                         
                     </div>
                     <div>
-                        <label className="block" htmlFor="fileList">Files: Filename,folder,type</label>
+                        <label className="block bold" htmlFor="fileList">Files: Filename,folder,type</label>
                         <textarea 
                                 ref={(textarea) => this.textArea = textarea}
                                 id="fileList" value={this.state.files} onChange={this.onChange} />

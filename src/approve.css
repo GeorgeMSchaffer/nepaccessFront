@@ -6,3 +6,9 @@
 #approve .tabulator-header {
     display: block;
 }
+
+#approve .instructions {
+    background: white;
+    border: 1px red solid;
+    padding: 5px;
+}
