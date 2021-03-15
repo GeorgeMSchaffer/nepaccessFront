@@ -241,12 +241,11 @@ class Register extends React.Component {
         { 
             affiliation: val.value
         }, () => {
-            this.invalidFields();
+            // this.invalidFields();
+            this.invalidAffiliation();
         });
 
     }
-
-
 
     // Register
     register = () => {
@@ -325,58 +324,59 @@ class Register extends React.Component {
                     <div className="row">
 
                         <div className="register-form-input-group">
-                            <div className="form-group">
+                            <div className="register-form-group">
                                 <span className="register-leading-text">First name</span><input type="text" maxLength="191"
-                                    className="form-control" id="firstName" name="firstName" placeholder="First name *" onChange={this.onChangeHandler}/>
+                                    className="register-form-control" id="firstName" name="firstName" placeholder="First name *" onBlur={this.onChangeHandler}/>
                                 <label className="errorLabel">{this.state.firstNameError}</label>
                             </div>
-                            <div className="form-group">
+                            <div className="register-form-group">
                                 <span className="register-leading-text">Last name</span><input type="text" maxLength="191"
-                                    className="form-control" id="lastName" name="lastName" placeholder="Last name *" onChange={this.onChangeHandler}/>
+                                    className="register-form-control" id="lastName" name="lastName" placeholder="Last name *" onBlur={this.onChangeHandler}/>
                                 <label className="errorLabel">{this.state.lastNameError}</label>
                             </div>
-                            <div className="form-group">
+                            <div className="register-form-group">
                                 <span className="register-leading-text">Email</span><input type="text" maxLength="191"
-                                    className="form-control" id="email" name="email" placeholder="Email Address *" onKeyUp={this.onEmailChange}/>
+                                    className="register-form-control" id="email" name="email" placeholder="Email Address *" onBlur={this.onEmailChange}/>
                                 <label className="errorLabel">{this.state.emailError}</label>
                             </div>
-                            <div className="form-group">
+                            <div className="register-form-group">
                                 <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
-                                    className="form-control" id="username" name="username" placeholder="My Username *" autoFocus onKeyUp={this.onUsernameChange}/>
+                                    className="register-form-control" id="username" name="username" placeholder="My Username *" autoFocus onBlur={this.onUsernameChange}/>
                                 <label className="errorLabel">{this.state.usernameError}</label>
                             </div>
                         </div>
                         <div className="register-form-input-group">
-                            <div className="form-group">
+                            <div className="register-form-group">
                             <span className="register-leading-text">Field</span><Select id="affiliation" 
-                                    className="form-control inline-block" 
+                                    className="register-form-control inline-block" 
                                     options={affiliations}
                                     name="affiliation" 
                                     placeholder="Select Field *" 
                                     onChange={this.onSelectHandler}/>
                                 <label className="errorLabel">{this.state.affiliationError}</label>
                             </div>
-                            <div className="form-group">
-                            <span></span><input disabled={this.state.affiliation !== "Other"} type="text" maxLength="1000"
-                                    className="form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onChange={this.onChangeHandler}/>
-                                <label  className="errorLabel">{this.state.affiliationOtherError}</label>
+                            <div className="register-form-group">
+                                <span className="register-leading-text"></span>
+                                <input disabled={this.state.affiliation !== "Other"} type="text" maxLength="1000"
+                                    className="register-form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onBlur={this.onChangeHandler}/>
+                                <label className="errorLabel">{this.state.affiliationOtherError}</label>
                             </div>
                         </div>
                         
                         <div className="register-form-input-group">
-                            <div className="form-group">
-                                <span className="register-leading-text">Name of organization</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="Organization name" onKeyUp={this.onChangeHandler}/>
+                            <div className="register-form-group">
+                                <span className="register-leading-text">Name of organization</span><input type="text" maxLength="1000" className="register-form-control" id="organization" name="organization" placeholder="Organization name" onBlur={this.onChangeHandler}/>
                             </div>
-                            <div className="form-group">
-                                <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onChange={this.onChangeHandler}/>
+                            <div className="register-form-group">
+                                <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="register-form-control" id="jobTitle" name="jobTitle" placeholder="Job title" onBlur={this.onChangeHandler}/>
                             </div>
-                            <div className="form-group">
+                            <div className="register-form-group">
                                 <span className="register-leading-text">Password</span><input type={this.state.passwordType} maxLength="191" 
-                                    id="password" className="form-control password-field" name="password" placeholder="My Password *" onKeyUp={this.onPasswordChange}/>
+                                    id="password" className="register-form-control password-field" name="password" placeholder="My Password *" onBlur={this.onPasswordChange}/>
                                 <label className="errorLabel">{this.state.passwordError}</label>
                             </div>
-                            <div className="form-group">
-                                <span></span>
+                            <div className="register-form-group">
+                                <span className="register-leading-text"></span>
                                 <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
                                 <label className="inline noSelect">Show password</label>
                             </div>
@@ -384,9 +384,9 @@ class Register extends React.Component {
                     </div>
                     
                     <div className="register-form-input-group">
-                            <div className="form-group">
-                                <span></span>
-                                <button type="button" className="button" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
+                            <div className="register-form-group">
+                                <span className="register-leading-text"></span>
+                                <button type="button" className="button inline-block" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
                             </div>
                             <label className={this.state.statusClass}>{this.state.statusLabel}</label>
                     </div>

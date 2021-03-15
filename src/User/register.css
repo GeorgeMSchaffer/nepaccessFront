@@ -1,5 +1,6 @@
 #register-form {
     min-width: 600px;
+    overflow: hidden;
 }
 
 #register-form #affiliation {
@@ -13,15 +14,6 @@
     width: 286px;
 }
 
-#register-form .form-group>:first-child {
-    float: left;
-
-    line-height: 29px;
-
-    padding: 5px; /* same as inputs */
-    width: 195px;
-}
-
 #register-form input:enabled:hover {
     color: black;
     background-color: rgb(230,255,230);
@@ -33,13 +25,19 @@
 }
 
 #register-form span.register-leading-text {
+    display: inline-block;
+
+    line-height: 29px;
+
+    width: 195px;
     text-align: right;
+}
+
+#register-form .register-form-control {
+    padding: 5px;
+    margin: 5px;
 }
 
 #verifyEmailContent {
     padding: 20px;
 }
-
-/* .register-form-input-group {
-
-} */
