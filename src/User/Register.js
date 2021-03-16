@@ -329,9 +329,9 @@ class Register extends React.Component {
     
     render() {
         return (
-            <div id="register-form" className="content">
+            <div id="register-form">
                 <div className="note">
-                    <p>Register</p>
+                    Register
                 </div>
 
                 <div className="form-content">

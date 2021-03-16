@@ -15,7 +15,7 @@ html {
 }
 
 body {
-  background: #FBF7EF;
+  background: #FBFBF6;
   margin: 0;
 }
 
@@ -24,7 +24,7 @@ body {
   position: relative;
   margin: auto;
 
-  background: #FBF7EF;
+  background: #FBFBF6;
 }
 
 #header {
@@ -227,7 +227,7 @@ body {
 
     min-width: 900px;
 
-    background: #FBF7EF;
+    background: #FBFBF6;
 }
 
 .spacer {
