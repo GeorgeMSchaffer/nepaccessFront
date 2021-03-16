@@ -24,17 +24,19 @@ import AboutSearchTips from './iframes/AboutSearchTips.js';
 import AboutSearchTips2 from './iframes/AboutSearchTips2.js';
 import Media from './iframes/Media.js';
 
+import Contact from './Contact.js';
+
 import AboutHelpContents from './AboutHelpContents.js';
 import AboutStats from './AboutStats.js';
 
 
 import Importer from './Importer.js';
 import AdminFiles from './AdminFiles.js';
-
 import Generate from './Generate.js';
 import Iframes from './iframes/Iframes.js';
 import Approve from './Approve.js';
 import Admin from './Admin.js';
+
 
 import Globals from './globals.js';
 
@@ -211,6 +213,9 @@ class Main extends React.Component {
                     <Link currentpage={(this.state.currentPage==="/media").toString()} className="main-menu-link" to="/media">
                         Media
                     </Link>
+                    <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
+                        Contact
+                    </Link>
 
                     {this.state.menuItems}
                 </div>
@@ -235,6 +240,8 @@ class Main extends React.Component {
                 <Route path="/abouthelpcontents" component={AboutHelpContents}/>
                 <Route path="/stats" component={AboutStats}/>
                 <Route path="/media" component={Media}/>
+                
+                <Route path="/contact" component={Contact}/>
 
                 <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
                 
