@@ -8,7 +8,7 @@ export default class Iframes extends React.Component {
                 {/* style={{overflow: 'hidden', marginTop: '0px'}}>* /}
                 {/* <iframe src="https://techpatterns.com/web_design/frames_iframes/iframes.php" */}
                 <iframe src="https://about.nepaccess.org/about-nepa/" title="Title"
-                    scrolling="yes" frameborder="0" width="100%" height="100%" name="ContentCenter">
+                    scrolling="yes" frameBorder="0" width="100%" height="100%" name="ContentCenter">
                         <p>
                             This should only display if your browser doesn't support iframes 
                             or if you have iframe support turned off.
