@@ -158,7 +158,7 @@ span.filename>* {
 }
 #search-results .tabulator-table .tabulator-row,
 #search-results .tabulator>.tabulator-footer {
-    border-top: 10px solid #FBF7EF;
+    border-top: 10px solid #FBFBF6;
 }
 #search-results .tabulator-row>.tabulator-cell,
 #search-results .tabulator[tabulator-layout=fitColumns] .tabulator-row .tabulator-cell:last-of-type {
