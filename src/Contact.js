@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'react-select';
+// import Select from 'react-select';
 import Creatable from 'react-select/lib/Creatable';
 
 import axios from 'axios';
