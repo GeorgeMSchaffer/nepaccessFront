@@ -184,12 +184,16 @@ class Register extends React.Component {
                 return null;
             }
         }).then(jsonResponse => {
-            if(jsonResponse === true){
+            if(jsonResponse && jsonResponse === true){
                 this.setState({ usernameError: "Username taken." });
-            } else {
+            } else if(jsonResponse === false) {
                 this.setState({ usernameError: "" });
             }
         }).catch(error => {
+            this.setState({
+                statusClass: 'errorLabel',
+                statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+            });
             console.error('Server probably down.', error);
         });
     }

@@ -5,6 +5,8 @@ import './landing.css';
 import SearcherLanding from './SearcherLanding.js';
 import './User/login.css';
 
+import IframeResizer from 'iframe-resizer-react';
+
 class Landing extends React.Component {
 
     constructor(props) {
@@ -18,12 +20,7 @@ class Landing extends React.Component {
     }
 
     handleChange(inputId, inputValue){
-      this.setState({ [inputId]: inputValue }, () =>
-      {
-        // this.props.handleChange(inputId, inputValue);
-        console.log(this.state.render);
-        console.log(this.state.rawInput);
-      });
+        this.setState({ [inputId]: inputValue });
     }
 
     handleClick(id, val){
@@ -31,8 +28,6 @@ class Landing extends React.Component {
         {
           this.props.history.push('search?q='+this.state.rawInput);
         });
-
-      
     }
 
     render(){
@@ -56,17 +51,24 @@ class Landing extends React.Component {
               </h2>
             </div>
           </div>
-          <div>
+          {/* <div>
             <span id="post-text">
-              {/* <span>Whether you are a:</span>
+              <span>Whether you are a:</span>
               <span className="post-text-bullet">  • community stakeholder,</span>
               <span className="post-text-bullet">  • NEPA project manager or engineer, </span>
               <span className="post-text-bullet">  • researcher or student, </span>
-              <span className="post-text-bullet">  • environmental advocate, librarian, or member of the public, </span> */}
+              <span className="post-text-bullet">  • environmental advocate, librarian, or member of the public, </span>
               <span>NEPAccess is a portal to decades of applied science, and information about public participation in environment decision making.</span>
             </span>
             <br />
-          </div>
+          </div> */}
+
+            <IframeResizer
+                log
+                id="iframe-landing-container"
+                src="https://about.nepaccess.org/"
+                style={{ width: '1px', minWidth: '100%'}}
+            />
 
           
           <div id="search-container">
