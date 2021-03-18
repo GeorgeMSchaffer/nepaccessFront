@@ -166,13 +166,19 @@ body {
   color: #000000;
 }
 
-.right-nav-item:first-child {
+/* .right-nav-item:first-child {
+    margin: 0;
+    padding-right: 10px;
+    border-right: 2px black solid;
+} */
+#admin-span, #profile-span, #login-span {
     margin: 0;
     padding-right: 10px;
     border-right: 2px black solid;
 }
   
-.right-nav-item {
+.right-nav-item,
+#profile-span {
     margin-left: 10px;
 }
 

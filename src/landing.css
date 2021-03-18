@@ -1,32 +1,47 @@
 /* Landing */
 
 #landing {
-  position: relative;
-  margin: auto;
-  margin-top: 102px;
-  /** The search box now has a percentage-based position, which means the overall page
-   needs a minimum height that does not clip into the header texts. This needs to change if the landing text changes. */
-  min-height: 750px;
-  height: 100%;
-  width: 100%;
-  min-width: 800px;
+    position: relative;
+    margin: auto;
+    margin-top: 102px;
+    /** The search box now has a percentage-based position, which means the overall page
+    needs a minimum height that does not clip into the header texts. This needs to change if the landing text changes. */
+    min-height: 550px;
+    height: 100%;
+    width: 100%;
+    min-width: 800px;
 }
 
  #headline {
-  font-weight: bold;
-  line-height: 140%;
+    position: absolute;
+
+    top: 200px;
+
+    font-weight: bold;
+    line-height: 140%;
+
+    width: 100%;
+    text-align: center;
+    align-content: center;
+    margin: 0;
+}
+
+#sub-headline {
+    font-weight: 500;
+    font-size: 20px;
 }
 
 #subhead {
   font-weight: 600;
   line-height: 160%;
+  display: block;
+  padding: 10% 10%;
+  margin: 0;
 }
 
 #headline, #subhead {
   display: block;
-  padding: 10% 10%;
   margin: 0;
-  text-align: left;
 
   font-family: "Open Sans";
   font-style: normal;
@@ -70,8 +85,8 @@
 }
 
 #landing-images {
-  min-height: 600px;
-  height: calc(100% - 102px);
+  min-height: 680px;
+  height: 80%;
 }
 
 #image-1 {
@@ -121,6 +136,7 @@
   top: 60%;
   /* Center horizontally using left 50% and -half of width */
   left: 50%;
+  margin-right: 100px;
   margin-left: -425px;
   
   background: rgba(0,0,0,0.5);

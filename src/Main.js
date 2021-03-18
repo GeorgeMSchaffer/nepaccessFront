@@ -163,14 +163,16 @@ class Main extends React.Component {
                 </div>
 
                 <div id="top-menu" className="no-select">
-                    <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                    
+                <span id="admin-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                    {this.state.menuItems}
+                </span>
+
+                    <span id="profile-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                         <Link className="top-menu-link" to="/details">Profile</Link>
                     </span>
-                    <span className={this.state.loggedOutDisplay + " logged-out"}>
+                    <span id="login-span" className={this.state.loggedOutDisplay + " logged-out"}>
                         <Link className="top-menu-link" to="/login">Log in</Link>
-                    </span>
-                    <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
-                        |
                     </span>
                     <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
                         <Link className="top-menu-link" to="/register">Register</Link>
@@ -188,12 +190,15 @@ class Main extends React.Component {
                         About NEPA
                     </Link>
                     <div id="about-dropdown" className="main-menu-link dropdown">
-                        <Link currentpage={(this.state.currentPage==="/aboutnepaccess" || this.state.currentPage==="/people").toString()} id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
+                        <Link currentpage={(this.state.currentPage==="/aboutnepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/media").toString()} id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
                             About NEPAccess
                         </Link>
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
                             <Link to="/aboutnepaccess">About NEPAccess</Link>
+                            <Link to="/media">
+                                Videos
+                            </Link>
                             <Link to="/people">People</Link>
                             {/* <Link to="/abouthelpcontents">Database Contents</Link> */}
                             {/* <Link to="/stats">Content Statistics</Link> */}
@@ -210,14 +215,10 @@ class Main extends React.Component {
                             <Link to="/abouthelp2">What Can I Search For?</Link>
                         </div>
                     </div>
-                    <Link currentpage={(this.state.currentPage==="/media").toString()} className="main-menu-link" to="/media">
-                        Media
-                    </Link>
                     <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
                         Contact
                     </Link>
 
-                    {this.state.menuItems}
                 </div>
                 
             </div>
@@ -240,7 +241,7 @@ class Main extends React.Component {
                 <Route path="/abouthelpcontents" component={AboutHelpContents}/>
                 <Route path="/stats" component={AboutStats}/>
                 <Route path="/media" component={Media}/>
-                
+
                 <Route path="/contact" component={Contact}/>
 
                 <Route path="/recordDetailsTab" component={RecordDetailsTab}/>

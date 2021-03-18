@@ -33,7 +33,7 @@ class Landing extends React.Component {
     render(){
       return (
         <div id="landing">
-          <div id="landing-images">
+          {/* <div id="landing-images">
             <div id="image-1">
               <h1 id="headline" className="no-select cursor-default">
                 <p className="size">The National Environmental Policy Act of 1969 (NEPA) requires review of the potential impacts of all major Federal actions on the natural and human environment.
@@ -50,6 +50,20 @@ class Landing extends React.Component {
                 </p>
               </h2>
             </div>
+          </div> */}
+          <div id="landing-images">
+                <h1 id="headline" className="no-select cursor-default">
+                    <p className="size">
+                        Explore Thousands of Environmental Impact Statements.
+                    </p>
+                    <p id="sub-headline" className="size">
+                        Bringing NEPA into the 21st Century
+                    </p>
+                </h1>
+                <div id="image-1">
+                </div>
+                <div id="image-2">
+                </div>
           </div>
           {/* <div>
             <span id="post-text">

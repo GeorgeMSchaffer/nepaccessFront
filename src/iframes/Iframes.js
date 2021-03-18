@@ -48,7 +48,6 @@ export default class Iframes extends React.Component {
                 log
                 id="iframe-landing-container"
                 src="https://about.nepaccess.org/about-nepa/"
-                scrolling="auto"
                 style={{ width: '1px', minWidth: '100%'}}
             />
   
