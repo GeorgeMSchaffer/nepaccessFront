@@ -221,8 +221,8 @@ class Login extends React.Component {
                             </div>
                         </div>
                         <button type="button" className="button" id="submit" onClick={this.login} >Submit</button>
-                        <br />
-                        <div classNamw="login-row">
+                        
+                        <div className="login-row">
                             <Link to="/forgotPassword">Forgot password?</Link>
                         </div>
                     </div>

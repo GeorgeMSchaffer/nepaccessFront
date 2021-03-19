@@ -44,6 +44,7 @@ span.highlight {
 }
 
 .login-row {
+    display: block;
     margin-top: 20px;
     padding-bottom: 20px;
 }
