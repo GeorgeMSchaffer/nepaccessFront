@@ -199,7 +199,7 @@ class Login extends React.Component {
 
                     <div className="form-content">
                         <div className="login-row">
-                            Please login or quickly <Link to="/register">crete an account here.</Link>
+                            Please login or quickly <Link to="/register">create an account here.</Link>
                         </div>
                         <div className="row">
                             <div className="col-md-6">
