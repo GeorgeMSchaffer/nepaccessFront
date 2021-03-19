@@ -193,6 +193,17 @@ body {
 #main-menu>.main-menu-link:first-child{
     margin-left: 25px;
 }
+/* #main-menu>.main-menu-link,
+#main-menu .drop-button
+ {
+    margin-left: clamp(10px, 2%, 40px); 
+    font-size: calc(20% + 1vw);
+}
+#main-menu i
+ {
+    display: inline;
+    margin-left: 0px;
+} */
 
 .main-menu-link {
   position: relative;
@@ -445,8 +456,6 @@ span.email-text {
     display: block;
     position: absolute;
     left: -54px;
-    color: purple;
-    background-color: purple;
     text-align: center;
 } 
 
@@ -454,7 +463,6 @@ span.email-text {
 .dropdown {
     display: block;
     float: left;
-    width: relative;
 }
 .drop-button {
     display: block;
