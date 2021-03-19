@@ -14,18 +14,16 @@
 
 #landing-search-holder {
     margin: 0 auto;
-    margin-top: 100px;
-    width: 72%;
-    min-width: 500px;
+    margin-top: 90px;
+    width: clamp(500px, 72%, 1200px);
     
-    padding-right: 57px;
+    padding-right: 77px;
     height: 160px;
 
     background: rgba(0,0,0,0.5);
 }
 #landing-search-bar-holder {
-    margin-top: 15px;
-    margin-right: 57px;
+    margin: 0px;
 }
 #landing-search-bar {
     width: 90%;
