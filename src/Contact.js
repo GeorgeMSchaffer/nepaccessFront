@@ -206,7 +206,7 @@ export default class Contact extends React.Component {
             name: this.state.name, 
             email: this.state.email,
             subject: this.state.subject,
-            message: this.state.message
+            body: this.state.message
         };
 
         axios({ 
