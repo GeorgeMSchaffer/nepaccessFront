@@ -42,3 +42,8 @@ span.highlight {
 .login-form {
     margin-top: 102px;
 }
+
+.login-row {
+    margin-top: 20px;
+    padding-bottom: 20px;
+}

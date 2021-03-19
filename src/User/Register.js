@@ -84,7 +84,7 @@ class Register extends React.Component {
         let invalid = !(usernamePattern.test(this.state.username));
         let message = "";
         if(invalid){
-            message = "Username invalid. Cannot be empty, alphanumeric only.";
+            message = "Cannot be empty, alphanumeric only.";
         }
         this.setState({ usernameError: message });
         this.setState({ disabled: invalid });
@@ -185,7 +185,7 @@ class Register extends React.Component {
             }
         }).then(jsonResponse => {
             if(jsonResponse && jsonResponse === true){
-                this.setState({ usernameError: "Username taken." });
+                this.setState({ usernameError: "Username taken.  Please try another username." });
             } else if(jsonResponse === false) {
                 this.setState({ usernameError: "" });
             }
@@ -344,7 +344,7 @@ class Register extends React.Component {
                         <div className="register-form-input-group">
                             <div className="register-form-group">
                                 <span className="register-leading-text">First name</span><input type="text" maxLength="191"
-                                    className="register-form-control" id="firstName" name="firstName" placeholder="First name *" onBlur={this.onChangeHandler}/>
+                                    className="register-form-control" id="firstName" name="firstName" placeholder="First name *" autoFocus onBlur={this.onChangeHandler}/>
                                 <label className="errorLabel">{this.state.firstNameError}</label>
                             </div>
                             <div className="register-form-group">
@@ -359,7 +359,7 @@ class Register extends React.Component {
                             </div>
                             <div className="register-form-group">
                                 <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
-                                    className="register-form-control" id="username" name="username" placeholder="My Username *" autoFocus onBlur={this.onUsernameChange}/>
+                                    className="register-form-control" id="username" name="username" placeholder="My Username *" onBlur={this.onUsernameChange}/>
                                 <label className="errorLabel">{this.state.usernameError}</label>
                             </div>
                         </div>

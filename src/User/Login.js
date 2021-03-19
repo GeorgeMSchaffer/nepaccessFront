@@ -198,6 +198,9 @@ class Login extends React.Component {
                     <label className="loginErrorLabel">{this.state.networkError}</label>
 
                     <div className="form-content">
+                        <div className="login-row">
+                            Please login or quickly <Link to="/register">crete an account here.</Link>
+                        </div>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
@@ -218,10 +221,11 @@ class Login extends React.Component {
                             </div>
                         </div>
                         <button type="button" className="button" id="submit" onClick={this.login} >Submit</button>
+                        <br />
+                        <div classNamw="login-row">
+                            <Link to="/forgotPassword">Forgot password?</Link>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <Link to="/forgotPassword">Forgot password?</Link>
                 </div>
             </div>
             
