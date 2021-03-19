@@ -9,13 +9,14 @@
     min-height: 550px;
     height: 100%;
     width: 100%;
-    min-width: 500px;
+    min-width: 700px;
 }
 
 #landing-search-holder {
     margin: 0 auto;
     margin-top: 100px;
     width: 72%;
+    min-width: 500px;
     
     padding-right: 57px;
     height: 160px;
@@ -66,7 +67,6 @@
 
   font-family: "Open Sans";
   font-style: normal;
-  font-size: 24px;
   
   /* font-size: calc(24px + 0.5vw); */
 
