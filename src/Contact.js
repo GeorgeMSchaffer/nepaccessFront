@@ -56,14 +56,13 @@ export default class Contact extends React.Component {
                 'Content-Type': 'application/json; charset=utf-8'
             }
         }).then(response => {
-            console.log(response);
+            // console.log(response);
 
             let responseOK = response && response.status === 200;
             if(responseOK) {
-                // TODO: Set state with response fields
                 this.setState({
-                    name: 'Test Test',
-                    email: 'Test',
+                    name: response.data.name,
+                    email: response.data.email,
                 });
                 
             }
@@ -135,7 +134,7 @@ export default class Contact extends React.Component {
         let invalid = !(emailPattern.test(this.state.email));
         let message = "";
         if(invalid){
-            message = "Email address invalid.";
+            message = "Please enter your email address.";
         }
         this.setState({ emailError: message });
         return invalid;
@@ -181,9 +180,13 @@ export default class Contact extends React.Component {
             subject: val.value
         }, () => {
             this.invalidSubject();
-            console.log("Subject", this.state.subject);
+            // console.log("Subject", this.state.subject);
         });
 
+    }
+    
+    onChangeDummy = () => {
+        // do nothing: can't change name, email
     }
 
 
@@ -258,7 +261,12 @@ export default class Contact extends React.Component {
                                 <span className="contact-leading-text">Name:</span>
                                 <label className="errorLabel inline-block">{this.state.nameError}</label>
                                 <input type="text" maxLength="191"
-                                    className="contact-form-control" id="name" name="name" placeholder="Your full name *" onBlur={this.onNameChange}/>
+                                    className="contact-form-control" id="name" name="name" 
+                                    placeholder="Your full name *" 
+                                    value={this.state.name}
+                                    onBlur={this.onNameChange}
+                                    onChange={this.onChangeDummy}
+                                />
                                 
                             </div>
                             <div className="contact-form-group">
@@ -269,7 +277,9 @@ export default class Contact extends React.Component {
                                     id="email" 
                                     name="email" 
                                     placeholder="Your email address *" 
+                                    value={this.state.email}
                                     onBlur={this.onEmailChange}
+                                    onChange={this.onChangeDummy}
                                 />
                             </div>
                             <div className="contact-form-group">
@@ -280,7 +290,7 @@ export default class Contact extends React.Component {
                                     options={subjects}
                                     name="subject" 
                                     placeholder="Please choose or type a subject *" 
-                                    onChange={this.onSelectHandler}
+                                    onChange={this.onChangeDummy}
                                 />
                             </div>
                         </div>
@@ -301,7 +311,11 @@ export default class Contact extends React.Component {
 
                         <div className="contact-form-input-group">
                             <div className="contact-form-group">
-                                <button type="button" className="button inline-block" id="contact-submit" disabled={this.state.disabled} onClick={this.contact}>Send</button>
+                                <button type="button" className="button inline-block" id="contact-submit" 
+                                        disabled={this.state.disabled} 
+                                        onClick={this.contact}>
+                                    Send
+                                </button>
                             </div>
                             <label className={this.state.statusClass}>{this.state.statusLabel}</label>
                         </div>
