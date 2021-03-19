@@ -95,7 +95,7 @@ class Register extends React.Component {
         let invalid = !(usernamePattern.test(this.state.firstName.trim()));
         let message = "";
         if(invalid){
-            message = "Name invalid. Cannot be empty, alphabetical characters only.";
+            message = "Cannot be empty, alphabetical characters only.";
         }
         this.setState({ firstNameError: message });
         this.setState({ disabled: invalid });
@@ -106,7 +106,7 @@ class Register extends React.Component {
         let invalid = !(usernamePattern.test(this.state.lastName.trim()));
         let message = "";
         if(invalid){
-            message = "Name invalid. Cannot be empty, alphabetical characters only.";
+            message = "Cannot be empty, alphabetical characters only.";
         }
         this.setState({ lastNameError: message });
         this.setState({ disabled: invalid });
@@ -117,7 +117,7 @@ class Register extends React.Component {
         let invalid = !(emailPattern.test(this.state.email));
         let message = "";
         if(invalid){
-            message = "Email address invalid.";
+            message = "Please enter a valid email address.";
         }
         this.setState({ emailError: message });
         this.setState({ disabled: invalid });
@@ -151,7 +151,7 @@ class Register extends React.Component {
         let invalid = !(passwordPattern.test(this.state.password));
         let message = "";
         if(invalid){
-            message = "Password invalid. Cannot be empty, must be printable characters.";
+            message = "Cannot be empty, must be printable characters.";
         }
         this.setState({ passwordError: message });
         this.setState({ disabled: invalid });
