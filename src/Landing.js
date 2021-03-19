@@ -52,7 +52,7 @@ class Landing extends React.Component {
             </div>
           </div> */}
           <div id="landing-images">
-                <h1 id="headline" className="no-select cursor-default">
+                <div id="headline" className="no-select cursor-default">
                     <span>
                         Explore Thousands of Environmental Impact Statements.
                     </span>
@@ -66,7 +66,7 @@ class Landing extends React.Component {
                         onClick={this.handleClick}
                         value={this.state.rawInput}
                     />
-                </h1>
+                </div>
                 <div id="image-1">
                 </div>
                 <div id="image-2">

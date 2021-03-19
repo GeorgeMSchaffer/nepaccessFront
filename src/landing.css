@@ -149,6 +149,8 @@
 }
 #landing-search-box-container {
     /* position: absolute; */
+    margin: 0 auto;
+    width: clamp(557px, 72%, 1200px);
     height: 100px;
 }
 
@@ -156,7 +158,6 @@
 #landing-search-holder {
     margin: 0 auto;
     margin-top: 90px;
-    width: clamp(480px, 72%, 1200px);
     min-width: 480px;
     
     padding-right: 77px;
