@@ -199,28 +199,41 @@ class Login extends React.Component {
 
                     <div className="form-content">
                         <div className="login-row">
-                            Please login or quickly <Link to="/register">create an account here.</Link>
+                            Please login, or <Link to="/register">create an account.</Link>
                         </div>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type="text" id="username" className="form-control" name="username" 
-                                    placeholder="Username" value={this.state.username} autoFocus onChange={this.onChange} onKeyUp={this.onKeyUp}/>
+                                    <input type="text" id="username" className="form-control" 
+                                        name="username" 
+                                        placeholder="Username" 
+                                        value={this.state.username} 
+                                        autoFocus 
+                                        onChange={this.onChange} 
+                                        onKeyUp={this.onKeyUp}/>
                                     <label className="loginErrorLabel">{this.state.usernameError}</label>
                                 </div>
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type={this.state.passwordType} id="password" className="form-control" name="password" 
-                                    placeholder="Password"  value={this.state.password} onChange={this.onChange} onKeyUp={this.onKeyUp}/>
+                                    <input type={this.state.passwordType} id="password" className="form-control" 
+                                        name="password" 
+                                        placeholder="Password" 
+                                        value={this.state.password} 
+                                        onChange={this.onChange} 
+                                        onKeyUp={this.onKeyUp}/>
                                     <label className="loginErrorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
-                                    <label className="inline noSelect">Show password</label>
+                                    <label className="inline noSelect">
+                                        Show password
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" className="button" id="submit" onClick={this.login} >Submit</button>
+                        <button type="button" className="button" id="submit" onClick={this.login} >
+                            Submit
+                        </button>
                         
                         <div className="login-row">
                             <Link to="/forgotPassword">Forgot password?</Link>
