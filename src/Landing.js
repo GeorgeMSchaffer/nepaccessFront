@@ -59,6 +59,13 @@ class Landing extends React.Component {
                     <p id="sub-headline" className="size">
                         Bringing NEPA into the 21st Century
                     </p>
+          
+                    <SearcherLanding 
+                        id="rawInput"
+                        onChange={this.handleChange}
+                        onClick={this.handleClick}
+                        value={this.state.rawInput}
+                    />
                 </h1>
                 <div id="image-1">
                 </div>
@@ -84,18 +91,17 @@ class Landing extends React.Component {
                 style={{ width: '1px', minWidth: '100%'}}
             />
 
-          
-          <div id="search-container">
+          {/* <div id="search-container">
             <div id="landing-container-text">
               Begin with a simple keyword search:
             </div>
-            <SearcherLanding 
-              id="rawInput"
-              onChange={this.handleChange}
-              onClick={this.handleClick}
-              value={this.state.rawInput}
-            />
-          </div>
+                <SearcherLanding 
+                id="rawInput"
+                onChange={this.handleChange}
+                onClick={this.handleClick}
+                value={this.state.rawInput}
+                />
+            </div>*/}
         </div>
       )
       
