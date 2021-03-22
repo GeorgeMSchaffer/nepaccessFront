@@ -5,14 +5,14 @@
 }
 
 #register-form #affiliation {
-    width: 300px;
+    width: 284px;
     padding: 0px;
 }
 #register-form #affiliation:hover>:first-child, #affiliation:hover>:nth-child(2) {
     background-color: rgb(230,255,230);
 }
 #register-form #affiliationOther {
-    width: 286px;
+    width: 250px;
 }
 
 #register-form input:enabled:hover {
@@ -37,8 +37,23 @@
 #register-form .register-form-control {
     padding: 5px;
     margin: 5px;
+    
+    width: 250px;
+    height: 24px;
+    margin-bottom: 15px;
+    padding: 2px 15px;
 }
 
 #verifyEmailContent {
     padding: 20px;
+}
+
+#register-submit {
+    width: 284px;
+    height: 32px;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 2px 15px;
+    border-radius: 4px;
+    margin-left: 5px;
 }

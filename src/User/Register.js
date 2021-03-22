@@ -404,7 +404,7 @@ class Register extends React.Component {
                     <div className="register-form-input-group">
                             <div className="register-form-group">
                                 <span className="register-leading-text"></span>
-                                <button type="button" className="button inline-block" id="submit" disabled={this.state.disabled} onClick={this.register}>Submit</button>
+                                <button type="button" className="button inline-block" id="register-submit" disabled={this.state.disabled} onClick={this.register}>Register</button>
                             </div>
                             <label className={this.state.statusClass}>{this.state.statusLabel}</label>
                     </div>
