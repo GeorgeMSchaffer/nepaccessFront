@@ -52,7 +52,7 @@ export default class Contact extends React.Component {
         axios({ 
             method: 'GET',
             url: _url,
-            headers:{
+            headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             }
         }).then(response => {
@@ -67,7 +67,6 @@ export default class Contact extends React.Component {
                     name: response.data.name,
                     email: response.data.email,
                 });
-                
             }
         }).catch(error => {
             console.error(error);
@@ -190,7 +189,7 @@ export default class Contact extends React.Component {
         this.setState({ [evt.target.name]: evt.target.value });
     }
     onChangeDummy = () => {
-        // do nothing: can't change email
+        // do nothing: can't change
     }
 
 
@@ -282,7 +281,7 @@ export default class Contact extends React.Component {
                                     placeholder="Your email address *" 
                                     value={this.state.email}
                                     onBlur={this.onEmailChange}
-                                    onChange={this.onChangeDummy}
+                                    onChange={this.onChange}
                                 />
                             </div>
                             <div className="contact-form-group">

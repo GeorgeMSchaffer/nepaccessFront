@@ -30,9 +30,12 @@ const Globals = {
     },
     
     // Set up globals like axios default headers and base URL
+    // TODO: SSL: set to https here and elsewhere
     setUp() {
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
             this.currentHost = new URL('http://mis-jvinalappl1.microagelab.arizona.edu:8080/');
+        } else if(window.location.hostname) {
+            this.currentHost = new URL('http://' + window.location.hostname + ':8080/');
         }
         
         axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';

@@ -164,9 +164,7 @@ class Main extends React.Component {
 
                 <div id="top-menu" className="no-select">
                     
-                <span id="admin-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                     {this.state.menuItems}
-                </span>
 
                     <span id="profile-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                         <Link className="top-menu-link" to="/details">Profile</Link>
@@ -328,6 +326,8 @@ class Main extends React.Component {
 
             this.setState({
                 menuItems: 
+                <span id="admin-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                    
                     <div id="admin-dropdown" className="main-menu-link dropdown">
                         <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
                             Admin
@@ -339,6 +339,7 @@ class Main extends React.Component {
                             <Link to="/approve">Approve Users</Link>
                         </div>
                     </div>
+                </span>
             });
         } else if(this.state.approver === true) {
             
@@ -346,6 +347,8 @@ class Main extends React.Component {
 
             this.setState({
                 menuItems: 
+                <span id="admin-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                    
                     <div id="admin-dropdown" className="main-menu-link dropdown">
                         <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
                             Admin
@@ -355,6 +358,7 @@ class Main extends React.Component {
                             <Link to="/approve">Approve Users</Link>
                         </div>
                     </div>
+                </span>
             });
         } else {
             this.setState({

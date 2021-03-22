@@ -48,3 +48,24 @@ span.highlight {
     margin-top: 20px;
     padding-bottom: 20px;
 }
+
+.login-form-control {
+    width: 250px;
+    height: 24px;
+    margin-bottom: 15px;
+    padding: 2px 15px;
+}
+
+#login-show-password {
+    padding: 0;
+}
+
+#login-submit {
+    width: 284px;
+    height: 32px;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 2px 15px;
+    border-radius: 4px;
+
+}

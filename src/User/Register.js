@@ -357,11 +357,6 @@ class Register extends React.Component {
                                     className="register-form-control" id="email" name="email" placeholder="Email Address *" onBlur={this.onEmailChange}/>
                                 <label className="errorLabel">{this.state.emailError}</label>
                             </div>
-                            <div className="register-form-group">
-                                <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
-                                    className="register-form-control" id="username" name="username" placeholder="My Username *" onBlur={this.onUsernameChange}/>
-                                <label className="errorLabel">{this.state.usernameError}</label>
-                            </div>
                         </div>
                         <div className="register-form-input-group">
                             <div className="register-form-group">
@@ -387,6 +382,11 @@ class Register extends React.Component {
                             </div>
                             <div className="register-form-group">
                                 <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="register-form-control" id="jobTitle" name="jobTitle" placeholder="Job title" />
+                            </div>
+                            <div className="register-form-group">
+                                <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
+                                    className="register-form-control" id="username" name="username" placeholder="My Username *" onBlur={this.onUsernameChange}/>
+                                <label className="errorLabel">{this.state.usernameError}</label>
                             </div>
                             <div className="register-form-group">
                                 <span className="register-leading-text">Password</span><input type={this.state.passwordType} maxLength="191" 
