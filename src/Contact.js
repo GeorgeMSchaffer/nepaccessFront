@@ -60,6 +60,9 @@ export default class Contact extends React.Component {
 
             let responseOK = response && response.status === 200;
             if(responseOK) {
+                if(response.data.name==="null null") { // Account created pre-beta, no name
+                    response.data.name="";
+                }
                 this.setState({
                     name: response.data.name,
                     email: response.data.email,
@@ -139,10 +142,10 @@ export default class Contact extends React.Component {
         this.setState({ emailError: message });
         return invalid;
     }
+
 	onNameChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidName(); });
     }
-    
 	onEmailChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidEmail(); });
     }
@@ -165,7 +168,6 @@ export default class Contact extends React.Component {
 
         });
     }
-
     onSelectHandler = (val, act) => {
         console.log("Val/act",val,act);
         if(!val || !act){
@@ -184,11 +186,12 @@ export default class Contact extends React.Component {
         });
 
     }
-    
-    onChangeDummy = () => {
-        // do nothing: can't change name, email
+    onChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value });
     }
-
+    onChangeDummy = () => {
+        // do nothing: can't change email
+    }
 
 
 
@@ -265,7 +268,7 @@ export default class Contact extends React.Component {
                                     placeholder="Your full name *" 
                                     value={this.state.name}
                                     onBlur={this.onNameChange}
-                                    onChange={this.onChangeDummy}
+                                    onChange={this.onChange}
                                 />
                                 
                             </div>
