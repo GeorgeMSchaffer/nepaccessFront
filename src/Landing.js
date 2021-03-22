@@ -53,12 +53,12 @@ class Landing extends React.Component {
           </div> */}
           <div id="landing-images">
                 <div id="headline" className="no-select cursor-default">
-                    <span>
+                    <h1 id="landing-headline-text">
                         Explore Thousands of Environmental Impact Statements.
-                    </span>
-                    <p id="sub-headline">
+                    </h1>
+                    <h2 id="sub-headline">
                         Bringing NEPA into the 21st Century
-                    </p>
+                    </h2>
           
                     <SearcherLanding 
                         id="rawInput"
