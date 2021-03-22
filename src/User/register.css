@@ -35,11 +35,11 @@
 }
 
 #register-form .register-form-control {
-    padding: 5px;
-    margin: 5px;
     
     width: 250px;
     height: 24px;
+
+    margin: 5px;
     margin-bottom: 15px;
     padding: 2px 15px;
 }
@@ -51,9 +51,12 @@
 #register-submit {
     width: 284px;
     height: 32px;
+
     font-size: 20px;
     line-height: 20px;
+
     padding: 2px 15px;
-    border-radius: 4px;
     margin-left: 5px;
+    
+    border-radius: 4px;
 }
