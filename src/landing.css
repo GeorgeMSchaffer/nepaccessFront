@@ -150,7 +150,7 @@
     /* position: absolute; */
     margin: 0 auto;
     width: clamp(557px, 72%, 1200px);
-    height: 100px;
+    height: 160px;
 }
 
 
@@ -161,6 +161,7 @@
     
     padding-right: 77px;
     height: 160px;
+    padding-top: 10px;
 
     background: rgba(0,0,0,0.5);
 }
