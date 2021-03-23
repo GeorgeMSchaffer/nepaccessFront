@@ -93,7 +93,7 @@ class Landing extends React.Component {
           </div> */}
 
             <IframeResizer
-                log
+                // log
                 id="iframe-landing-container"
                 src="https://about.nepaccess.org/"
                 style={{ width: '1px', minWidth: '100%'}}
