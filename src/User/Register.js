@@ -57,6 +57,7 @@ class Register extends React.Component {
         };
 
         this.checkUsername = _.debounce(this.checkUsername, 300);
+        this.checkEmail = _.debounce(this.checkEmail, 300);
         document.body.style.cursor = 'default';
     }
     
@@ -68,7 +69,7 @@ class Register extends React.Component {
             return true;
         }
         // Run everything and all appropriate errors will show at once.
-        let test1 = this.invalidEmail();
+        let test1 = this.checkEmail();
         let test2 = this.checkUsername();
         let test3 = this.invalidPassword();
         let test4 = this.invalidFirst();
