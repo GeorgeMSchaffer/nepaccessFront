@@ -192,6 +192,11 @@ class Login extends React.Component {
         // console.log("Login");
         return (
             <div className="container login-form">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>NEPAccess - Login</title>
+                <link rel="canonical" href="http://nepaccess.org/login" />
+            </Helmet>
                 <div className="form">
                     <div className="note">
                         <p>Login</p>

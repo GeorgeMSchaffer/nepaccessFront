@@ -121,6 +121,11 @@ class Reset extends React.Component {
             console.log("Not rendering reset");
             return (
                 <div id="main" className="container login-form">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>NEPAccess - Reset Password</title>
+                        <link rel="canonical" href="http://nepaccess.org/reset" />
+                    </Helmet>
                     <div className="form">
                         <div className="note">
                             <p>Set New Password</p>
@@ -134,6 +139,11 @@ class Reset extends React.Component {
             console.log("Reset");
             return (
                 <div className="container login-form">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>NEPAccess - Reset Password</title>
+                        <link rel="canonical" href="http://nepaccess.org/reset" />
+                    </Helmet>
                     <div className="form-content">
                         <div className="note">
                             <p>Set New Password</p>

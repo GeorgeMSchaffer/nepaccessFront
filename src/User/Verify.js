@@ -17,37 +17,39 @@ export default class Verify extends React.Component {
     }
 
     verify = () => { // check if JWT is expired/invalid
-		let verified = false;
+        if(localStorage.VerifyToken) {
+            let verified = false;
 
-        let checkURL = new URL('user/verify', Globals.currentHost);
-        
-        axios({
-            method: 'POST', // or 'PUT'
-            headers: {Authorization: localStorage.VerifyToken},
-            url: checkURL
-        }).then(response => {
-            verified = response && response.status === 200;
-            console.log(response);
-
-            if(verified) {
-                this.setState({
-                    successLabel: 'Email has been verified.  If your account has already been approved, you can begin using the system.'
-                });
-            } else if(response && response.status === 208) {
-                this.setState({
-                    successLabel: 'This email address has already been verified.'
-                });
-            } else {
+            let checkURL = new URL('user/verify', Globals.currentHost);
+            
+            axios({
+                method: 'POST', // or 'PUT'
+                headers: {Authorization: localStorage.VerifyToken},
+                url: checkURL
+            }).then(response => {
+                verified = response && response.status === 200;
+                console.log(response);
+    
+                if(verified) {
+                    this.setState({
+                        successLabel: 'Email has been verified.  If your account has already been approved, you can begin using the system.'
+                    });
+                } else if(response && response.status === 208) {
+                    this.setState({
+                        successLabel: 'This email address has already been verified.'
+                    });
+                } else {
+                    this.setState({
+                        successLabel: 'Sorry, we were unable to verify this email address.'
+                    });
+                }
+            }).catch(error => {
+                console.error(error);
                 this.setState({
                     successLabel: 'Sorry, we were unable to verify this email address.'
                 });
-            }
-        }).catch(error => {
-            console.error(error);
-            this.setState({
-                successLabel: 'Sorry, we were unable to verify this email address.'
             });
-        });
+        }
     }
 
     
@@ -55,6 +57,11 @@ export default class Verify extends React.Component {
     render() {
         return (
             <div className="content">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>NEPAccess - Verify Email</title>
+                    <link rel="canonical" href="http://nepaccess.org/verify" />
+                </Helmet>
                 <div className="note">
                     <p>Verify email address</p>
                 </div>
