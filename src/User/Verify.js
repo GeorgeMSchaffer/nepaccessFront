@@ -17,39 +17,37 @@ export default class Verify extends React.Component {
     }
 
     verify = () => { // check if JWT is expired/invalid
-        if(localStorage.VerifyToken) {
-            let verified = false;
+		let verified = false;
 
-            let checkURL = new URL('user/verify', Globals.currentHost);
-            
-            axios({
-                method: 'POST', // or 'PUT'
-                headers: {Authorization: localStorage.VerifyToken},
-                url: checkURL
-            }).then(response => {
-                verified = response && response.status === 200;
-                console.log(response);
-    
-                if(verified) {
-                    this.setState({
-                        successLabel: 'Email has been verified.  If your account has already been approved, you can begin using the system.'
-                    });
-                } else if(response && response.status === 208) {
-                    this.setState({
-                        successLabel: 'This email address has already been verified.'
-                    });
-                } else {
-                    this.setState({
-                        successLabel: 'Sorry, we were unable to verify this email address.'
-                    });
-                }
-            }).catch(error => {
-                console.error(error);
+        let checkURL = new URL('user/verify', Globals.currentHost);
+        
+        axios({
+            method: 'POST', // or 'PUT'
+            headers: {Authorization: localStorage.VerifyToken},
+            url: checkURL
+        }).then(response => {
+            verified = response && response.status === 200;
+            console.log(response);
+
+            if(verified) {
+                this.setState({
+                    successLabel: 'Email has been verified.  If your account has already been approved, you can begin using the system.'
+                });
+            } else if(response && response.status === 208) {
+                this.setState({
+                    successLabel: 'This email address has already been verified.'
+                });
+            } else {
                 this.setState({
                     successLabel: 'Sorry, we were unable to verify this email address.'
                 });
+            }
+        }).catch(error => {
+            console.error(error);
+            this.setState({
+                successLabel: 'Sorry, we were unable to verify this email address.'
             });
-        }
+        });
     }
 
     
