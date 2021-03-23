@@ -1,9 +1,9 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
 
-import axios from 'axios';
+// import axios from 'axios';
 
-import Globals from './globals.js';
+// import Globals from './globals.js';
 
 export default class Test extends React.Component {
 
