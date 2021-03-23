@@ -248,7 +248,7 @@ class Main extends React.Component {
 
                 <Route path="/contact" component={Contact}/>
 
-                <Route path="/recordDetailsTab" component={RecordDetailsTab}/>
+                <Route path="/record-details" component={RecordDetailsTab}/>
                 
                 <Route path="/importer" component={Importer}/>
                 <Route path="/adminFiles" component={AdminFiles}/>

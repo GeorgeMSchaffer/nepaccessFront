@@ -6,7 +6,7 @@ export default class CardDetailsLink extends React.Component {
         return (
             <span className="table-row">
                 <span className="cardHeader">Title:
-                    <a className="link" target="_blank" rel="noopener noreferrer" href={`./recordDetailsTab?id=${this.props.id}`}>
+                    <a className="link" target="_blank" rel="noopener noreferrer" href={`./record-details?id=${this.props.id}`}>
                         {this.props.title}
                     </a>
                 </span>
