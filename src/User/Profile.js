@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 
 import axios from 'axios';
 
@@ -150,6 +151,11 @@ class UserDetails extends React.Component {
     render() {
         return (
             <div className="container login-form">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>NEPAccess - Profile</title>
+                <link rel="canonical" href="http://nepaccess.org/profile" />
+            </Helmet>
             <div className="note">
                 <p>User Details</p>
             </div>

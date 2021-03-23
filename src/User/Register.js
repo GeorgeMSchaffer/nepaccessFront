@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 import Select from 'react-select';
 
 import axios from 'axios';
@@ -334,6 +335,11 @@ class Register extends React.Component {
     render() {
         return (
             <div id="register-form">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>NEPAccess - Register</title>
+                    <link rel="canonical" href="http://nepaccess.org/register" />
+                </Helmet>
                 <div className="note">
                     Register
                 </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 
 import Select from 'react-select';
 import axios from 'axios';
@@ -539,6 +540,11 @@ export default class RecordDetailsTab extends React.Component {
         
         return (
             <div id="details">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>NEPAccess - Details</title>
+                    <link rel="canonical" href={"http://nepaccess.org/recordDetailsTab?id="+Globals.getParameterByName("id")} />
+                </Helmet>
                 <label className="errorLabel">{this.state.networkError}</label>
                 <br />
                 <h3 className="advanced-label inline" htmlFor="detailsDropdown">Select view: </h3>
