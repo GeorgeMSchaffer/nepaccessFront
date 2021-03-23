@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import './index.css';
@@ -36,6 +37,8 @@ import Generate from './Generate.js';
 import Iframes from './iframes/Iframes.js';
 import Approve from './Approve.js';
 import Admin from './Admin.js';
+
+import Test from './Test.js';
 
 
 import Globals from './globals.js';
@@ -146,6 +149,11 @@ class Main extends React.Component {
     render(){
         return (
         <div id="home-page">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>NEPAccess</title>
+                <link rel="canonical" href="http://nepaccess.org/" />
+            </Helmet>
 
             <div id="header" className="no-select">
 
@@ -228,8 +236,6 @@ class Main extends React.Component {
                 <Route path="/reset" component={Reset}/>
                 <Route path="/logout" component={Logout}/>
 
-                <Route path="/test" component={App}/>
-                <Route path="/unified" component={App}/>
                 <Route path="/search" component={App}/>
                 <Route path="/aboutnepa" component={AboutNepa}/>
                 <Route path="/aboutnepaccess" component={AboutNepaccess}/>
@@ -252,6 +258,8 @@ class Main extends React.Component {
                 <Route path="/verify" component={Verify} />
                 <Route path="/approve" component={Approve} />
                 <Route path="/admin" component={Admin} />
+                
+                <Route path="/test" component={Test} />
 
                 <Route path="/" component={Landing}/>
             </Switch>

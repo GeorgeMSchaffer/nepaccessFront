@@ -1,4 +1,7 @@
 import React from 'react';
+
+import {Helmet} from 'react-helmet';
+
 import './index.css';
 import './landing.css';
 
@@ -33,6 +36,11 @@ class Landing extends React.Component {
     render(){
       return (
         <div id="landing">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>NEPAccess</title>
+                <link rel="canonical" href="http://nepaccess.org/" />
+            </Helmet>
           {/* <div id="landing-images">
             <div id="image-1">
               <h1 id="headline" className="no-select cursor-default">

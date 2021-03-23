@@ -1,10 +1,16 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 import './media.css';
 
 export default class Media extends React.Component {
     render() {
         return (
             <div className="iframe-container">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>NEPAccess - Videos</title>
+                    <link rel="canonical" href="http://nepaccess.org/videos" />
+                </Helmet>
                 <iframe src="https://about.nepaccess.org/videos/" title="Videos"
                     scrolling="yes" frameBorder="0" width="100%" height="100%" name="ContentCenter">
                         <p>

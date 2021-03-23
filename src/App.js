@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 
 import axios from 'axios';
 
@@ -700,6 +701,11 @@ export default class App extends React.Component {
 			return (
                 <>
 				<div id="app-content">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>NEPAccess - Search</title>
+                        <link rel="canonical" href="http://nepaccess.org/search" />
+                    </Helmet>
 					<label className="errorLabel">{this.state.networkError}</label>
                     <Search 
                         search={this.startNewSearch} 

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 // import Select from 'react-select';
 import Creatable from 'react-select/lib/Creatable';
 
@@ -251,6 +252,11 @@ export default class Contact extends React.Component {
     render() {
         return (
             <div id="contact-form">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>NEPAccess - Contact</title>
+                    <link rel="canonical" href="http://nepaccess.org/contact" />
+                </Helmet>
                 <div className="note">
                     Contact Us
                 </div>
