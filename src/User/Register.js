@@ -161,6 +161,44 @@ class Register extends React.Component {
 
 
 
+    // Check if email is taken to prevent submission of duplicates
+    checkEmail = () => {
+        if(this.invalidEmail() || this.state.registered){
+            this.setState({ disabled: true });
+            return;
+        } else {
+            this.setState({ disabled: false });
+        }
+
+        let nameUrl = new URL('user/email-exists', globals.currentHost);
+        
+        fetch(nameUrl, { 
+            method: 'POST',
+            body: this.state.email,
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }).then(response => {
+            if(response.ok){ // 200
+                return response.json();
+            } else { // 403
+                return null;
+            }
+        }).then(jsonResponse => {
+            if(jsonResponse && jsonResponse === true){
+                this.setState({ emailError: "Email already claimed.  Please try another email." });
+            } else if(jsonResponse === false) {
+                this.setState({ emailError: "" });
+            }
+        }).catch(error => {
+            this.setState({
+                statusClass: 'errorLabel',
+                statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+            });
+            console.error('Server probably down.', error);
+        });
+    }
+
     // Check if username is taken to prevent submission of duplicates
     checkUsername = () => {
         if(this.invalidUsername() || this.state.registered){
@@ -208,7 +246,7 @@ class Register extends React.Component {
     }
     
 	onEmailChange = (evt) => {
-        this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidEmail(); });
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkEmail(); });
     }
 
     onChangeHandler = (evt) => {
@@ -361,7 +399,7 @@ class Register extends React.Component {
                             <div className="register-form-group">
                                 <span className="register-leading-text">Email</span><input type="text" maxLength="191"
                                     className="register-form-control" id="email" name="email" placeholder="Email Address *" onBlur={this.onEmailChange}/>
-                                <label className="errorLabel">{this.state.emailError}</label>
+                                <label hidden={this.state.registered} className="errorLabel">{this.state.emailError}</label>
                             </div>
                         </div>
                         <div className="register-form-input-group">
@@ -392,7 +430,7 @@ class Register extends React.Component {
                             <div className="register-form-group">
                                 <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
                                     className="register-form-control" id="username" name="username" placeholder="My Username *" onBlur={this.onUsernameChange}/>
-                                <label className="errorLabel">{this.state.usernameError}</label>
+                                <label hidden={this.state.registered} className="errorLabel">{this.state.usernameError}</label>
                             </div>
                             <div className="register-form-group">
                                 <span className="register-leading-text">Password</span><input type={this.state.passwordType} maxLength="191" 
