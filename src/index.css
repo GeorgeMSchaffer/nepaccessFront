@@ -147,10 +147,12 @@ body {
 /* End logo contents */
 
 #top-menu {
-  position: absolute;
-  display: inline-block;
-  right: 1%;
-  top: 10%;
+    background: rgb(170,200,100);
+    position: absolute;
+    display: inline-block;
+    padding: 1%;
+    right: 0;
+    top: 0;
 }
 
 .top-menu-link {
