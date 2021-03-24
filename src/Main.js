@@ -152,7 +152,7 @@ class Main extends React.Component {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>NEPAccess</title>
-                <link rel="canonical" href="https://nepaccess.org/" />
+                <link rel="canonical" href="http://nepaccess.org/" />
             </Helmet>
 
             <div id="header" className="no-select">

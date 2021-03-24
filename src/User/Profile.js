@@ -154,7 +154,7 @@ class UserDetails extends React.Component {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>NEPAccess - Profile</title>
-                <link rel="canonical" href="https://nepaccess.org/profile" />
+                <link rel="canonical" href="http://nepaccess.org/profile" />
             </Helmet>
             <div className="note">
                 <p>User Details</p>

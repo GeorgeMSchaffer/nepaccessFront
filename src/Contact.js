@@ -255,7 +255,7 @@ export default class Contact extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>NEPAccess - Contact</title>
-                    <link rel="canonical" href="https://nepaccess.org/contact" />
+                    <link rel="canonical" href="http://nepaccess.org/contact" />
                 </Helmet>
                 <div className="note">
                     Contact Us

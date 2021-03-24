@@ -24,7 +24,7 @@ export default class Test extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>NEPAccess - Test</title>
-                    <link rel="canonical" href="https://nepaccess.org/test" />
+                    <link rel="canonical" href="http://nepaccess.org/test" />
                 </Helmet>
                 
                 <span>test</span>

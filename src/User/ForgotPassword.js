@@ -131,7 +131,7 @@ class ForgotPassword extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>NEPAccess - Forgot Password</title>
-                    <link rel="canonical" href="https://nepaccess.org/forgotPassword" />
+                    <link rel="canonical" href="http://nepaccess.org/forgotPassword" />
                 </Helmet>
                 <div className="form">
                     <div className="note">
