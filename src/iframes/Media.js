@@ -9,7 +9,7 @@ export default class Media extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>NEPAccess - Videos</title>
-                    <link rel="canonical" href="http://nepaccess.org/videos" />
+                    <link rel="canonical" href="https://nepaccess.org/videos" />
                 </Helmet>
                 <iframe src="https://about.nepaccess.org/videos/" title="Videos"
                     scrolling="yes" frameBorder="0" width="100%" height="100%" name="ContentCenter">
