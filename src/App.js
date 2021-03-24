@@ -704,7 +704,7 @@ export default class App extends React.Component {
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>NEPAccess - Search</title>
-                        <link rel="canonical" href="http://nepaccess.org/search" />
+                        <link rel="canonical" href="https://nepaccess.org/search" />
                     </Helmet>
 					<label className="errorLabel">{this.state.networkError}</label>
                     <Search 

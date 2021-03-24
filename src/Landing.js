@@ -39,7 +39,7 @@ class Landing extends React.Component {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>NEPAccess</title>
-                <link rel="canonical" href="http://nepaccess.org/" />
+                <link rel="canonical" href="https://nepaccess.org/" />
             </Helmet>
           {/* <div id="landing-images">
             <div id="image-1">

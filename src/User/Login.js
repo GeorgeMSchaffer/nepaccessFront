@@ -195,7 +195,7 @@ class Login extends React.Component {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>NEPAccess - Login</title>
-                <link rel="canonical" href="http://nepaccess.org/login" />
+                <link rel="canonical" href="https://nepaccess.org/login" />
             </Helmet>
                 <div className="form">
                     <div className="note">
