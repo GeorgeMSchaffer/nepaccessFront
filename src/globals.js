@@ -40,7 +40,9 @@ const Globals = {
             this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
         }
         
-        axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
+        axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
+        axios.defaults.headers.common['X-Content-Type-Options'] = 'no-sniff';
+        axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
                 
         let token = localStorage.JWT;
         if(token){
