@@ -23,8 +23,6 @@ const affiliations = [
 ];
 //<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
-// TODO: Send email for validation before actually registering user
-// TODO: certs and then HTTPS app-wide, probably
 class Register extends React.Component {
 
     constructor(props) {
