@@ -167,15 +167,17 @@ class Login extends React.Component {
                 //     username: '',
                 //     password: ''
                 // });
-                console.log(jsonResponse.status);
             } else {
-                // Impossible?  Should either be error or 200
+                console.log("No response from server");
+                this.setState({
+                    networkError: "Server may be down.  If you are on a VPN, please try connecting without the VPN."
+                });
             }
         }).catch(error => {
             // TODO: Less brittle way to check error type
             if(error.toString() === 'Error: Network Error') {
                 this.setState({
-                    networkError: "Server may be down, please try again later.  If you are on a VPN, there are occasional issues with logging in (you can try connecting without the VPN)."
+                    networkError: "Server may be down, please try again later.  If you are on a VPN, please try connecting without the VPN."
                 });
             }
             else {
