@@ -27,7 +27,8 @@ class Login extends React.Component {
             usernameError: '',
             passwordError: '',
             networkError: '',
-            passwordType: "password"
+            passwordType: "password",
+            busy: false
         };
         this.onChange = this.onChange.bind(this);
         this.login = this.login.bind(this);
@@ -133,9 +134,7 @@ class Login extends React.Component {
         if(this.invalidFields()){
             return;
         }
-        document.body.style.cursor = 'wait';
-        
-        // TODO: certs and then HTTPS app-wide, probably
+        this.state.busy = true;
 
         let loginUrl = new URL('login', Globals.currentHost);
 
@@ -188,7 +187,7 @@ class Login extends React.Component {
             console.error('error message', error);
         });
 
-        document.body.style.cursor = 'default';
+        this.state.busy = false;
     }
 
     render() {
@@ -203,6 +202,9 @@ class Login extends React.Component {
                 <div className="form">
                     <div className="note">
                         <p>Login</p>
+                    </div>
+                    <div className="loader-holder">
+                        <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
                     <label className="loginErrorLabel">{this.state.networkError}</label>
 
