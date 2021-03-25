@@ -33,8 +33,7 @@ const Globals = {
     // TODO: SSL: set to https here and elsewhere
     setUp() {
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu' || window.location.hostname === 'www.nepaccess.org') {
-            this.currentHost = new URL('//' + 'mis-jvinalappl1.microagelab.arizona.edu:8080/');
-            // //: use existing protocol
+            this.currentHost = new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/');
         } else if(window.location.hostname === 'localhost') {
             this.currentHost = new URL('http://' + window.location.hostname + ':8080/');
         } else if(window.location.hostname) {
