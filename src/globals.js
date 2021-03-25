@@ -34,6 +34,8 @@ const Globals = {
     setUp() {
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu') {
             this.currentHost = new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/');
+        } else if(window.location.hostname === 'localhost') {
+            this.currentHost = new URL('http://' + window.location.hostname + ':8080/');
         } else if(window.location.hostname) {
             this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
         }
