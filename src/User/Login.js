@@ -144,6 +144,7 @@ class Login extends React.Component {
             url: loginUrl,
             data: this.state.user
         }).then(response => {
+            console.log(response);
             let responseOK = response && response.status === 200;
             if (responseOK) {
                 return response.data;
@@ -173,6 +174,7 @@ class Login extends React.Component {
                     networkError: "Server may be down.  If you are on a VPN, please try connecting without the VPN."
                 });
             }
+            this.setState({busy: false});
         }).catch(error => {
             // TODO: Less brittle way to check error type
             if(error.toString() === 'Error: Network Error') {
@@ -186,10 +188,9 @@ class Login extends React.Component {
                 });
             }
             console.error('error message', error);
+            this.setState({busy: false});
         });
 
-        this.setState({busy: false});
-        console.log("End login request");
     }
 
     render() {
