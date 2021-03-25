@@ -167,6 +167,7 @@ class Login extends React.Component {
                 //     username: '',
                 //     password: ''
                 // });
+                console.log(jsonResponse.status);
             } else {
                 // Impossible?  Should either be error or 200
             }
