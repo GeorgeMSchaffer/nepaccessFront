@@ -32,13 +32,15 @@ const Globals = {
     // Set up globals like axios default headers and base URL
     // TODO: SSL: set to https here and elsewhere
     setUp() {
+        console.log(window.location.protocol);
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu' || window.location.hostname === 'www.nepaccess.org') {
-            this.currentHost = new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/');
-        } else if(window.location.hostname === 'localhost') {
-            this.currentHost = new URL('http://' + window.location.hostname + ':8080/');
-        } else if(window.location.hostname) {
-            this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
-        }
+            this.currentHost = new URL(window.location.protocol + 'mis-jvinalappl1.microagelab.arizona.edu:8080/');
+        } else {
+            this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/');
+        } 
+        // else if(window.location.hostname) {
+        //     this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
+        // }
         
         axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
         axios.defaults.headers.common['X-Content-Type-Options'] = 'no-sniff';
