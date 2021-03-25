@@ -134,7 +134,7 @@ class Login extends React.Component {
         if(this.invalidFields()){
             return;
         }
-        this.state.busy = true;
+        this.setState({busy: true});
 
         let loginUrl = new URL('login', Globals.currentHost);
 
@@ -187,7 +187,7 @@ class Login extends React.Component {
             console.error('error message', error);
         });
 
-        this.state.busy = false;
+        this.setState({busy: false});
     }
 
     render() {
