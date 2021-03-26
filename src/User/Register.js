@@ -66,10 +66,13 @@ class Register extends React.Component {
     
 
     captchaChange = (value) => {
-        // console.log("Captcha value:", value);
+        console.log("Captcha value:", value);
         // this.setState({
         //     captcha: value
         // });
+    }
+    log = (value) => {
+        console.log("Log", value);
     }
 
 
