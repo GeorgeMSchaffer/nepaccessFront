@@ -21,6 +21,7 @@ const affiliations = [
     {value:"General public", label:"General public"}, 
     {value:"Other", label:"Other"}
 ];
+const recaptchaRef = React.createRef();
 //<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
 class Register extends React.Component {
@@ -51,7 +52,9 @@ class Register extends React.Component {
 
             statusLabel: '',
             statusClass: '',
-            registered: false
+            registered: false,
+
+            // captcha: ''
         };
 
         this.checkUsername = _.debounce(this.checkUsername, 300);
@@ -59,6 +62,13 @@ class Register extends React.Component {
         document.body.style.cursor = 'default';
     }
     
+
+    captchaChange = (value) => {
+        // console.log("Captcha value:", value);
+        // this.setState({
+        //     captcha: value
+        // });
+    }
 
 
     // Validation
@@ -306,6 +316,9 @@ class Register extends React.Component {
         
         let registerUrl = new URL('user/register', globals.currentHost);
 
+        const recaptchaValue = recaptchaRef.current.getValue();
+        const dataForm = new FormData();
+
         let dataToPass = { 
             username: this.state.username, 
             password: this.state.password, 
@@ -316,11 +329,14 @@ class Register extends React.Component {
             organization: this.state.organization,
             jobTitle: this.state.jobTitle
         };
+        
+        dataForm.append('user', dataToPass);
+        dataForm.append('recaptchaToken', recaptchaValue);
 
         axios({ 
             method: 'POST',
             url: registerUrl,
-            data: dataToPass,
+            data: dataForm,
             headers:{
                 'Content-Type': 'application/json; charset=utf-8'
             }
@@ -334,6 +350,11 @@ class Register extends React.Component {
                     statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.',
                     registered: true
                 });
+            // } else if (response.status===424) {
+            //     this.setState({
+            //         statusClass: 'errorLabel',
+            //         statusLabel: 'Sorry, an error has occurred with the captcha.'
+            //     });
             } else { // 500 or 503, or server down
                 this.setState({
                     statusClass: 'errorLabel',
@@ -345,6 +366,11 @@ class Register extends React.Component {
                 this.setState({
                     statusClass: 'errorLabel',
                     statusLabel: 'Sorry, that username is taken.'
+                });
+            } else if (error.response.status===424) {
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, an error has occurred with the captcha.'
                 });
             } else {
                 this.setState({
@@ -446,6 +472,12 @@ class Register extends React.Component {
                     
                     <div className="register-form-input-group">
                             <div className="register-form-group">
+                                <ReCAPTCHA
+                                    ref={recaptchaRef}
+                                    sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
+                                    onChange={this.captchaChange}
+                                    onErrored={this.log}
+                                />
                                 <span className="register-leading-text"></span>
                                 <button type="button" className="button inline-block" id="register-submit" disabled={this.state.disabled} onClick={this.register}>Register</button>
                             </div>
