@@ -335,7 +335,7 @@ class Register extends React.Component {
             jobTitle: this.state.jobTitle
         };
         
-        dataForm.append('user', JSON.stringify(dataToPass));
+        dataForm.append('jsonUser', JSON.stringify(dataToPass));
         dataForm.append('recaptchaToken', recaptchaValue);
 
         axios({ 
