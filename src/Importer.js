@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import Dropzone from 'react-dropzone';
 
 import Select from 'react-select';
-import Creatable from 'react-select/lib/Creatable';
+import Creatable from 'react-select/creatable';
 import DatePicker from "react-datepicker";
 
 import { CSVReader } from 'react-papaparse';
