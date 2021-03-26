@@ -6,6 +6,8 @@ import Creatable from 'react-select/lib/Creatable';
 import axios from 'axios';
 import globals from './globals.js';
 
+import ReCAPTCHA from "react-google-recaptcha";
+
 import './contact.css';
 
 const subjects = [
@@ -13,6 +15,7 @@ const subjects = [
     {value:"Question about NEPAccess", label:"Question about NEPAccess"}, 
     {value:"Feedback on website", label:"Feedback on website"}
 ];
+const recaptchaRef = React.createRef();
 
 export default class Contact extends React.Component {
 
@@ -36,6 +39,14 @@ export default class Contact extends React.Component {
         };
 
         document.body.style.cursor = 'default';
+    }
+
+    
+    captchaChange = (value) => {
+        // console.log("Captcha value:", value);
+    }
+    log = (value) => {
+        console.log("Log", value);
     }
     
 
@@ -194,6 +205,7 @@ export default class Contact extends React.Component {
         // do nothing: can't change
     }
 
+     
 
 
     /** Axios call to contact */
@@ -209,6 +221,11 @@ export default class Contact extends React.Component {
         
         let _url = new URL('user/contact', globals.currentHost);
 
+        const recaptchaValue = recaptchaRef.current.getValue();
+        const dataForm = new FormData();
+
+        dataForm.append('recaptchaToken', recaptchaValue);
+
         let _data = { 
             name: this.state.name, 
             email: this.state.email,
@@ -216,10 +233,12 @@ export default class Contact extends React.Component {
             body: this.state.message
         };
 
+        dataForm.append('contactData', JSON.stringify(_data));
+
         axios({ 
             method: 'POST',
             url: _url,
-            data: _data,
+            data: dataForm,
             headers:{
                 'Content-Type': 'application/json; charset=utf-8'
             }
@@ -239,11 +258,20 @@ export default class Contact extends React.Component {
                 });
             }
         }).catch(error => {
-            this.setState({
-                statusClass: 'errorLabel',
-                statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
-            });
-            console.error(error);
+            if (error.response.status===424) {
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, an error has occurred with the captcha.'
+                }); 
+            }
+            else 
+            {
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+                });
+                console.error(error);
+            }
         });
 
         this.setState({ disabled: false });
@@ -317,6 +345,14 @@ export default class Contact extends React.Component {
                                 />
                             </div>
                         </div>
+                        
+                        <ReCAPTCHA
+                            id="contact-captcha"
+                            ref={recaptchaRef}
+                            sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
+                            onChange={this.captchaChange}
+                            onErrored={this.log}
+                        />
 
                         <div className="contact-form-input-group">
                             <div className="contact-form-group">
