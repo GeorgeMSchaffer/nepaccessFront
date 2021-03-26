@@ -2,9 +2,9 @@ import React from 'react';
 import {Helmet} from "react-helmet";
 import {ReCAPTCHA} from "react-google-recaptcha";
 
-// import axios from 'axios';
+import axios from 'axios';
 
-// import Globals from './globals.js';
+import Globals from './globals.js';
 
 const recaptchaRef = React.createRef();
 
@@ -20,6 +20,7 @@ export default class Test extends React.Component {
     onSubmit = () => {
         const recaptchaValue = recaptchaRef.current.getValue();
         console.log(recaptchaValue);
+        // axios.post(Globals.currentHost + '/recaptcha_test', {hello: 'world'});
         // this.props.onSubmit(recaptchaValue);
     }
     // onInput = (evt) => {
@@ -39,8 +40,8 @@ export default class Test extends React.Component {
                 </Helmet>
                 
                 <span>test</span>
-                <form onSubmit={this.onSubmit}>
-                    <input type="button" onClick={this.onSubmit}/>
+                <form>
+                    <button type='submit' onClick={this.onSubmit}>Submit</button>
                     <ReCAPTCHA
                         ref={recaptchaRef}
                         sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
