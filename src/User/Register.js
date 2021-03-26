@@ -355,11 +355,6 @@ class Register extends React.Component {
                     statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.',
                     registered: true
                 });
-            // } else if (response.status===424) {
-            //     this.setState({
-            //         statusClass: 'errorLabel',
-            //         statusLabel: 'Sorry, an error has occurred with the captcha.'
-            //     });
             } else { // 500 or 503, or server down
                 this.setState({
                     statusClass: 'errorLabel',
