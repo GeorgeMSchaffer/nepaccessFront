@@ -332,6 +332,10 @@ input:checked + .checkbox-text {
     font-weight: 600;
 }
 
+#results-bar-checkbox>.checkbox-text {
+    cursor: pointer;
+}
+
 .checkbox-container {
     display: block;
     height: 30px;
