@@ -38,12 +38,11 @@
     font-weight: bold;
 }
 
-#contact-form .contact-form-control {
+.contact-form-control {
     display: block;
     width: 300px;
-    padding: 5px;
-    margin: 5px;
-    margin-left: 0px;
+    padding: 7px;
+    margin: 0px 0px 10px 0px;
 
     border-radius: 0px;
     border: 1px solid black;
@@ -70,28 +69,32 @@
 #contact-form #contact-subject-container {
     border: none;
     padding-left: 0px;
+    padding-top: 3px;
 }
 
 #contact-subject-container>div {
     border-radius: 0px;
-    width: 314px;
+    width: 316px; /* normal input plus horizontal padding plus borderx2 */
     border: black 1px solid;
 }
 
 #contact-message {
-    width: 300px;
+    width: 500px;
     height: 200px;
     border: 1px solid black;
 }
 
 #contact-address {
     display: inline-block;
-    border: 1px green solid;
+    /* border: 1px green solid; */
     padding: 4px;
     margin-left: 50px;
+    margin-top: 10px;
 }
 #contact-address span {
     display: block;
+}
 
+#contact-address>span:first-child {
     font-weight: bold;
 }

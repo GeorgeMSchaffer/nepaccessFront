@@ -267,7 +267,7 @@ export default class Contact extends React.Component {
 
                         <div className="contact-form-input-group">
                             <div className="contact-form-group">
-                                <span className="contact-leading-text">Name:</span>
+                                <span className="contact-leading-text">Your full name:</span>
                                 <label className="errorLabel inline-block">{this.state.nameError}</label>
                                 <input type="text" maxLength="191"
                                     className="contact-form-control" id="name" name="name" 
@@ -279,7 +279,7 @@ export default class Contact extends React.Component {
                                 
                             </div>
                             <div className="contact-form-group">
-                                <span className="contact-leading-text">Email:</span>
+                                <span className="contact-leading-text">Your email address:</span>
                                 <label className="errorLabel inline-block">{this.state.emailError}</label>
                                 <input type="text" maxLength="191"
                                     className="contact-form-control" 
@@ -292,7 +292,7 @@ export default class Contact extends React.Component {
                                 />
                             </div>
                             <div className="contact-form-group">
-                                <span className="contact-leading-text">Subject</span>
+                                <span className="contact-leading-text">Subject:</span>
                                 <label className="errorLabel inline-block">{this.state.subjectError}</label>
                                 <Creatable id="contact-subject-container" 
                                     className="contact-form-control" 
@@ -306,7 +306,7 @@ export default class Contact extends React.Component {
                         </div>
                         <div className="contact-form-input-group">
                             <div className="contact-form-group">
-                                <span className="contact-leading-text">Your Message</span>
+                                <span className="contact-leading-text">Message:</span>
                                 <label className="errorLabel inline-block">{this.state.messageError}</label>
                                 <textarea 
                                     className="contact-form-control" 
@@ -331,7 +331,7 @@ export default class Contact extends React.Component {
                     </div>
 
                     <div id="contact-address">
-                        <span>NEPAccess</span>
+                        <span>NEPAccess.org</span>
                         <span>University of Arizona</span>
                         <span>Udall Center for Studies in Public Policy</span>
                         <span>803 E. First St.</span>
