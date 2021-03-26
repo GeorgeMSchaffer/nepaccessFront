@@ -1,0 +1,15 @@
+.profile-row {
+    display: block;
+    margin-bottom: 25px;
+}
+
+.profile-leading {
+    display: inline-block;
+    width: 250px;
+    text-align: right;
+}
+
+#profile-container button {
+    display: inline-block;
+    font-size: 24px;
+}

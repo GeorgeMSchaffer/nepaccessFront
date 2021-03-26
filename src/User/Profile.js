@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import Globals from '../globals';
 
-import './login.css';
+import './profile.css';
 
 // TODO: Move this to its own "change password" component and link to it from userdetails?
 
@@ -161,29 +161,35 @@ class UserDetails extends React.Component {
             </div>
                 <div className="form-content">
                     <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="currentPassword">Enter your current password:</label>
-                            <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" onChange={this.onOldPasswordChange}/>
-                            <label className="loginErrorLabel">{this.state.oldPasswordError}</label>
-                            <br />
-                            <input type="checkbox" id="showCurrentPassword" onClick={this.showCurrentPassword}></input>
-                            <label className="inline noSelect">Show password</label>
+                        <div id="profile-container">
+                            <div className="profile-row">
+                                <label className="profile-leading" htmlFor="currentPassword">Enter your current password:</label>
+                                <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" onChange={this.onOldPasswordChange}/>
+                                <label className="loginErrorLabel">{this.state.oldPasswordError}</label>
+                                <div>
+                                    <label className="profile-leading"></label>
+                                    <input type="checkbox" id="showCurrentPassword" onClick={this.showCurrentPassword}></input>
+                                    <label className="inline noSelect">Show password</label>
+                                </div>
+                            </div>
+
+                            <div className="profile-row">
+                                <label className="profile-leading" htmlFor="newPassword">Enter a new password:</label>
+                                <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
+                                <label className="loginErrorLabel">{this.state.newPasswordError}</label>
+
+                                <div>
+                                    <label className="profile-leading"></label>
+                                    <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
+                                    <label className="inline noSelect">Show password</label>
+                                </div>
+                            </div>
+                            
+                            <label className="profile-leading"></label>
+                            <button type="button" className="button" disabled={this.state.disabled} onClick={this.changePassword}>Change Password</button>
+                            <label className="infoLabel">{this.state.successLabel}</label>
                         </div>
                     </div>
-                    <br />
-                    <br />
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="newPassword">Enter a new password:</label>
-                            <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
-                            <label className="loginErrorLabel">{this.state.newPasswordError}</label>
-                            <br />
-                            <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
-                            <label className="inline noSelect">Show password</label>
-                        </div>
-                    </div>
-                    <button type="button" className="button" disabled={this.state.disabled} onClick={this.changePassword}>Change Password</button>
-                    <label className="infoLabel">{this.state.successLabel}</label>
                 </div>
             </div>
         )
