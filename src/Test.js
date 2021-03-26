@@ -20,7 +20,7 @@ export default class Test extends React.Component {
     onSubmit = () => {
         const recaptchaValue = recaptchaRef.current.getValue();
         console.log(recaptchaValue);
-        // axios.post(Globals.currentHost + '/recaptcha_test', {hello: 'world'});
+        axios.post(Globals.currentHost + '/user/recaptcha_test', {recaptcha: recaptchaValue});
         // this.props.onSubmit(recaptchaValue);
     }
     // onInput = (evt) => {
