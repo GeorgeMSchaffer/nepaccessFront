@@ -17,10 +17,11 @@ export default class Test extends React.Component {
         };
     }
 
-    onSubmit = () => {
+    onSubmit = (evt) => {
+        evt.preventDefault();
         const recaptchaValue = recaptchaRef.current.getValue();
         console.log(recaptchaValue);
-        axios.post(Globals.currentHost + '/user/recaptcha_test', {recaptcha: recaptchaValue});
+        axios.post(Globals.currentHost + 'user/recaptcha_test', {recaptcha: recaptchaValue});
         // this.props.onSubmit(recaptchaValue);
     }
     // onInput = (evt) => {
