@@ -13,22 +13,45 @@ export default class Test extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-
+            captcha: ''
         };
     }
+    
+    captchaValid = () => {
+        let valid = false;
 
-    onSubmit = (evt) => {
-        evt.preventDefault();
         const recaptchaValue = recaptchaRef.current.getValue();
-        console.log(recaptchaValue);
-        axios.post(Globals.currentHost + 'user/recaptcha_test', {recaptcha: recaptchaValue});
+        const recaptchaUrl = new URL('user/recaptcha_test', Globals.currentHost);
+        const dataForm = new FormData();
+        dataForm.append('recaptcha', recaptchaValue);
+
+        axios({
+            url: recaptchaUrl,
+            method: 'POST',
+            data: dataForm
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            valid = responseOK;
+        }).catch(error => { 
+            console.error(error);
+            // TODO: Handle 424 code (current code used for captcha invalid)
+        })
+        
+        return valid;
+    }
+
+    testClick = () => {
         // this.props.onSubmit(recaptchaValue);
+        console.log("Valid?", this.captchaValid());
     }
     // onInput = (evt) => {
     //     this.setState({ [evt.target.name]: evt.target.value });
     // }
     captchaChange(value) {
         console.log("Captcha value:", value);
+        this.setState({
+            captcha: value
+        });
     }
     log(val) {
         console.log("Log", val);
@@ -44,15 +67,15 @@ export default class Test extends React.Component {
                 </Helmet>
                 
                 <span>test</span>
-                <form>
-                    <button type='submit' onClick={this.onSubmit}>Submit</button>
+                <div>
                     <ReCAPTCHA
                         ref={recaptchaRef}
                         sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
                         onChange={this.captchaChange}
                         onErrored={this.log}
                     />
-                </form>
+                    <button type='button' onClick={this.testClick}>Submit</button>
+                </div>
             </div>
         )
     }
