@@ -5,6 +5,8 @@ import Select from 'react-select';
 import axios from 'axios';
 import globals from '../globals.js';
 
+import ReCAPTCHA from 'react-google-recaptcha';
+
 import './login.css';
 import './register.css';
 
