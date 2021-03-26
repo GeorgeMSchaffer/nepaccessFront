@@ -131,10 +131,22 @@ class CardResults extends React.Component {
     // resetSort = () => {
     //     this.my_table.current.table.setData(this.props.results);
     // }
-
+    
     updateTable = () => {
         try {
             this.my_table.current.table.blockRedraw();
+
+            let _columns = [];
+            if(this.props.results && this.props.results[0]){
+                _columns = [
+                    { title: "", field: "", formatter: reactFormatter(<CardResult 
+                        show={this.state.showContext} 
+                        saveDownloaded={this.saveDownloaded}
+                        checkDownloaded={this.checkDownloaded} />)}
+                ];
+            }
+            this.my_table.current.table.setColumns(_columns); // needed for text snippets show/hide
+
             this.my_table.current.table.replaceData(this.props.results);
             // to maintain page user is on even after rerender, we try saving page as a local variable and setting it here
             this.my_table.current.table.setPage(this.page);
