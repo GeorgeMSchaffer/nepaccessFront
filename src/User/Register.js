@@ -335,7 +335,7 @@ class Register extends React.Component {
             jobTitle: this.state.jobTitle
         };
         
-        dataForm.append('user', dataToPass);
+        dataForm.append('user', JSON.stringify(dataToPass));
         dataForm.append('recaptchaToken', recaptchaValue);
 
         axios({ 
@@ -476,17 +476,23 @@ class Register extends React.Component {
                     </div>
                     
                     <div className="register-form-input-group">
-                            <div className="register-form-group">
-                                <ReCAPTCHA
-                                    ref={recaptchaRef}
-                                    sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
-                                    onChange={this.captchaChange}
-                                    onErrored={this.log}
-                                />
-                                <span className="register-leading-text"></span>
-                                <button type="button" className="button inline-block" id="register-submit" disabled={this.state.disabled} onClick={this.register}>Register</button>
-                            </div>
-                            <label className={this.state.statusClass}>{this.state.statusLabel}</label>
+                        <div className="register-form-group">
+                            <span className="register-leading-text"></span>
+                            <ReCAPTCHA
+                                id="register-captcha"
+                                ref={recaptchaRef}
+                                sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
+                                onChange={this.captchaChange}
+                                onErrored={this.log}
+                            />
+                        </div>
+                    </div>
+                    <div className="register-form-input-group">
+                        <div className="register-form-group">
+                            <span className="register-leading-text"></span>
+                            <button type="button" className="button inline-block" id="register-submit" disabled={this.state.disabled} onClick={this.register}>Register</button>
+                        </div>
+                        <label className={this.state.statusClass}>{this.state.statusLabel}</label>
                     </div>
 
                 </div>
