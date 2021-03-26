@@ -1,6 +1,6 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
-import {ReCAPTCHA} from "react-google-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import axios from 'axios';
 
@@ -30,6 +30,9 @@ export default class Test extends React.Component {
     captchaChange(value) {
         console.log("Captcha value:", value);
     }
+    log(val) {
+        console.log("Log", val);
+    }
 
     render () {
         return (
@@ -47,6 +50,7 @@ export default class Test extends React.Component {
                         ref={recaptchaRef}
                         sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
                         onChange={this.captchaChange}
+                        onErrored={this.log}
                     />
                 </form>
             </div>
