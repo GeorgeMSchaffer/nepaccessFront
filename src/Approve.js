@@ -130,7 +130,7 @@ export default class Approve extends React.Component {
     }
 
     setApprove = (_userId, status) => {
-        const approveUrl = new URL('/user/setUserApproved', Globals.currentHost);
+        const approveUrl = new URL('user/setUserApproved', Globals.currentHost);
         const dataForm = new FormData();
         dataForm.append('userId', _userId);
         dataForm.append('approved',status);

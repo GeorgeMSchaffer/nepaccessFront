@@ -122,7 +122,7 @@ export default class Admin extends React.Component {
     }
 
     setApprove = (_userId, status) => {
-        const approveUrl = new URL('/user/setUserApproved', Globals.currentHost);
+        const approveUrl = new URL('user/setUserApproved', Globals.currentHost);
         const dataForm = new FormData();
         dataForm.append('userId', _userId);
         dataForm.append('approved',status);
@@ -157,7 +157,7 @@ export default class Admin extends React.Component {
     }
 
     setVerify = (_userId, status) => {
-        const approveUrl = new URL('/user/setUserVerified', Globals.currentHost);
+        const approveUrl = new URL('user/setUserVerified', Globals.currentHost);
         const dataForm = new FormData();
         dataForm.append('userId', _userId);
         dataForm.append('approved',status);
@@ -193,7 +193,7 @@ export default class Admin extends React.Component {
     
     setRole = (_userId) => {
         console.log("Firing for ID",_userId);
-        const approveUrl = new URL('/user/setUserRole', Globals.currentHost);
+        const approveUrl = new URL('user/setUserRole', Globals.currentHost);
         const dataForm = new FormData();
         dataForm.append('userId', _userId);
         dataForm.append('role',this.state.role);
