@@ -301,7 +301,13 @@ export default class App extends React.Component {
             }
 
 			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
-				this.props.history.push('/login') // Prompt login if no auth token
+                if(this.props.history){
+                    console.log(this.props.history);
+                }
+                // "Add" previous page to history so user can hit back and skip past search, since it would probably rebound them to login
+                this.props.history.goBack(); 
+
+                this.props.history.push('/login'); // Prompt login if no auth token
             }
 
             this._searchTerms = this.state.searcherInputs.titleRaw;
@@ -428,6 +434,9 @@ export default class App extends React.Component {
                         resultsText: "Error: Request timed out"
                     });
                 } else if (error.response && error.response.status === 403) {
+                    // "Add" previous page to history so user can hit back and skip past search, since it would probably rebound them to login
+                    this.props.history.goBack(); 
+                    
                     this.props.history.push('/login');
                 }
                 else {
@@ -653,6 +662,9 @@ export default class App extends React.Component {
 				});
 			} else { // 403?
                 if(err.response && err.response.status===403) {
+                    // "Add" previous page to history so user can hit back and skip past search, since it would probably rebound them to login
+                    this.props.history.goBack(); 
+                    
                     this.props.history.push('/login');
                 }
 			}
