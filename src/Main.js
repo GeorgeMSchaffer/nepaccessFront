@@ -40,13 +40,13 @@ import Admin from './Admin.js';
 
 import Test from './Test.js';
 
-
 import Globals from './globals.js';
 
 import { Link, Switch, Route, withRouter } from 'react-router-dom';
 
 import PropTypes from "prop-types";
 
+import { hotjar } from 'react-hotjar';
 
 class Main extends React.Component {
     
@@ -70,6 +70,7 @@ class Main extends React.Component {
         this.refreshNav = this.refreshNav.bind(this);
         Globals.setUp();
 
+        hotjar.initialize(2319391, 6);
     }
 
 
