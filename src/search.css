@@ -587,8 +587,8 @@ a.link {
   }
   
 #main-search-bar {
-    padding-right: 255px;
-    width: calc(72% - 285px);
+    padding-right: 240px;
+    width: calc(72% - 270px);
 }
 #search-proximity {
     position: absolute;
@@ -617,7 +617,7 @@ a.link {
 }
 
 #main-search-clear {
-    margin-left: -240px;
+    margin-left: -230px;
 }
 /* #main-search-icon {
 } */
