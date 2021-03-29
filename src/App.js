@@ -328,6 +328,15 @@ export default class App extends React.Component {
                     needsDocument: this.state.searcherInputs.needsDocument
                 };
             }
+
+            // Proximity search from UI - surround with quotes, append ~#
+            if(this.state.searcherInputs.proximityOption 
+                && this.state.searcherInputs.proximityOption.value) 
+            {
+                dataToPass.title = 
+                    ("\"" + dataToPass.title + "\"~" + this.state.searcherInputs.proximityOption.value);
+            }
+
             //Send the AJAX call to the server
 
             // console.log("Search init");
