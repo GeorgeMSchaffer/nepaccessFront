@@ -70,7 +70,10 @@ class Main extends React.Component {
         this.refreshNav = this.refreshNav.bind(this);
         Globals.setUp();
 
-        hotjar.initialize(2319391, 6);
+        // Init hotjar for webapp, unless local test
+        if(window.location.hostname != 'localhost') {
+            hotjar.initialize(2319391, 6);
+        }
     }
 
 
