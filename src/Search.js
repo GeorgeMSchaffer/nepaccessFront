@@ -55,7 +55,8 @@ class Search extends React.Component {
             test: globals.anEnum.options,
             cancelButtonActive: true,
             tooltipOpen: undefined,
-            proximityOption: null
+            proximityOption: null,
+            proximityDisabled: true
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
@@ -78,7 +79,7 @@ class Search extends React.Component {
         this.debouncedSearch(this.state);
     }
     onClearClick = (evt) => {
-        this.setState({ titleRaw: '' }); 
+        this.setState({ titleRaw: '', proximityDisabled: true }); 
     }
 
     onRadioChange = (evt) => {
@@ -96,11 +97,21 @@ class Search extends React.Component {
     }
 
 	onInput = (evt) => {
+        
+        // Disable ui proximity search unless search is at least two strings separated by whitespace
+        let disableResult = true;
+        if(evt.target.name==='titleRaw') {
+            if(evt.target.value.trim().match(/\s+/)) {
+                disableResult = false;
+            }
+        }
+
 		//get the evt.target.name (defined by name= in input)
 		//and use it to target the key on our `state` object with the same name, using bracket syntax
 		this.setState( 
 		{ 
             [evt.target.name]: evt.target.value,
+            proximityDisabled: disableResult
         }, () => { // auto-searching is currently too expensive until asynchronous results
             // this.debouncedSearch(this.state);
         });
@@ -293,7 +304,7 @@ class Search extends React.Component {
         // + "<p class=tooltip-line><span class=tooltip-connector></span> <a href=abouthelp>More search tips.</a></p>";
 
         const proximityOptions = [
-            {value: '', label: 'Anywhere'},
+            {value: '', label: 'any distance'},
             {value: 10, label: '10 words'},
             {value: 50, label: '50 words'},
             {value: 100, label: '100 words'}];
@@ -391,6 +402,7 @@ class Search extends React.Component {
                         </svg>
                         <span id="search-proximity">
                             <Select 
+                                className={this.state.proximityDisabled ? " disabled" : ""}
                                 classNamePrefix="react-select control"
                                 placeholder="Find within"
                                 options={proximityOptions} 
