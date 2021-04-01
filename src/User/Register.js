@@ -66,7 +66,7 @@ class Register extends React.Component {
     
 
     captchaChange = (value) => {
-        console.log("Captcha value:", value);
+        // console.log("Captcha value:", value);
         // this.setState({
         //     captcha: value
         // });
@@ -100,6 +100,7 @@ class Register extends React.Component {
         let message = "";
         if(invalid){
             message = "Cannot be empty, alphanumeric only.";
+            message = "*";
         }
         this.setState({ usernameError: message });
         this.setState({ disabled: invalid });
@@ -111,6 +112,7 @@ class Register extends React.Component {
         let message = "";
         if(invalid){
             message = "Cannot be empty, alphabetical characters only.";
+            message = "*";
         }
         this.setState({ firstNameError: message });
         this.setState({ disabled: invalid });
@@ -122,6 +124,7 @@ class Register extends React.Component {
         let message = "";
         if(invalid){
             message = "Cannot be empty, alphabetical characters only.";
+            message = "*";
         }
         this.setState({ lastNameError: message });
         this.setState({ disabled: invalid });
@@ -133,6 +136,7 @@ class Register extends React.Component {
         let message = "";
         if(invalid){
             message = "Please enter a valid email address.";
+            message = "*";
         }
         this.setState({ emailError: message });
         this.setState({ disabled: invalid });
@@ -144,6 +148,7 @@ class Register extends React.Component {
         let message = "";
         if(invalid){
             message = "Please select a field.  If other, select \"Other\" and then type field below.";
+            message = "*";
         }
         this.setState({ affiliationError: message });
         this.setState({ disabled: invalid });
@@ -156,6 +161,7 @@ class Register extends React.Component {
         let message = "";
         if(invalid){
             message = "Required field when selecting \"Other\"";
+            message = "*";
         }
         this.setState({ affiliationOtherError: message });
         this.setState({ disabled: invalid });
@@ -167,6 +173,7 @@ class Register extends React.Component {
         let message = "";
         if(invalid){
             message = "Cannot be empty, must be printable characters.";
+            message = "*";
         }
         this.setState({ passwordError: message });
         this.setState({ disabled: invalid });
@@ -290,7 +297,7 @@ class Register extends React.Component {
     }
 
     onSelectHandler = (val, act) => {
-        console.log("Val/act",val,act);
+        // console.log("Val/act",val,act);
         if(!val || !act){
             return;
         }
@@ -412,58 +419,72 @@ class Register extends React.Component {
 
                         <div className="register-form-input-group">
                             <div className="register-form-group">
-                                <span className="register-leading-text">First name</span><input type="text" maxLength="191"
-                                    className="register-form-control" id="firstName" name="firstName" placeholder="First name *" autoFocus onBlur={this.onChangeHandler}/>
+                                <span className="leading-text">Your first name:</span><input type="text" maxLength="191"
+                                    className="form-control" id="firstName" name="firstName" placeholder="" autoFocus onBlur={this.onChangeHandler}/>
                                 <label className="errorLabel">{this.state.firstNameError}</label>
                             </div>
                             <div className="register-form-group">
-                                <span className="register-leading-text">Last name</span><input type="text" maxLength="191"
-                                    className="register-form-control" id="lastName" name="lastName" placeholder="Last name *" onBlur={this.onChangeHandler}/>
+                                <span className="leading-text">Your last name:</span><input type="text" maxLength="191"
+                                    className="form-control" id="lastName" name="lastName" placeholder="" onBlur={this.onChangeHandler}/>
                                 <label className="errorLabel">{this.state.lastNameError}</label>
                             </div>
                             <div className="register-form-group">
-                                <span className="register-leading-text">Email</span><input type="text" maxLength="191"
-                                    className="register-form-control" id="email" name="email" placeholder="Email Address *" onBlur={this.onEmailChange}/>
+                                <span className="leading-text">Your email address:</span><input type="text" maxLength="191"
+                                    className="form-control" id="email" name="email" placeholder="" onBlur={this.onEmailChange}/>
                                 <label hidden={this.state.registered} className="errorLabel">{this.state.emailError}</label>
                             </div>
                         </div>
                         <div className="register-form-input-group">
                             <div className="register-form-group">
-                            <span className="register-leading-text">Field</span><Select id="affiliation" 
-                                    className="register-form-control inline-block" 
-                                    options={affiliations}
-                                    name="affiliation" 
-                                    placeholder="Select Field *" 
-                                    onChange={this.onSelectHandler}/>
+                                <span className="leading-text">Your user group:</span><Select
+                                        id="register-select"
+                                        className="inline-block"
+                                        classNamePrefix="creatable"
+                                        options={affiliations}
+                                        name="affiliation" 
+                                        placeholder="" 
+                                        onChange={this.onSelectHandler}
+                                        onBlur={this.onChangeHandler}
+                                />
                                 <label className="errorLabel">{this.state.affiliationError}</label>
                             </div>
                             <div className="register-form-group">
-                                <span className="register-leading-text"></span>
+                                <span className="leading-text"></span>
                                 <input disabled={this.state.affiliation !== "Other"} type="text" maxLength="1000"
-                                    className="register-form-control" id="affiliationOther" name="affiliationOther" placeholder="If selecting other: Type field here" onBlur={this.onChangeHandler} />
+                                    className="form-control" id="affiliationOther" name="affiliationOther" 
+                                    placeholder="If choosing &quot;other&quot; type it here" onBlur={this.onChangeHandler} />
                                 <label className="errorLabel">{this.state.affiliationOtherError}</label>
                             </div>
                         </div>
                         
                         <div className="register-form-input-group">
                             <div className="register-form-group">
-                                <span className="register-leading-text">Name of organization</span><input type="text" maxLength="1000" className="register-form-control" id="organization" name="organization" placeholder="Organization name" />
+                                <span className="leading-text">Name of organization:</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" />
                             </div>
                             <div className="register-form-group">
-                                <span className="register-leading-text">Job title</span><input type="text" maxLength="1000" className="register-form-control" id="jobTitle" name="jobTitle" placeholder="Job title" />
+                                <span className="leading-text">
+                                    Your job title
+                                </span>
+                                <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" />
                             </div>
                             <div className="register-form-group">
-                                <span className="register-leading-text">Preferred Username</span><input type="text" maxLength="191"
-                                    className="register-form-control" id="username" name="username" placeholder="My Username *" onBlur={this.onUsernameChange}/>
+                                <span className="leading-text">
+                                    Preferred username:
+                                </span>
+                                <input type="text" maxLength="191"
+                                    className="form-control" id="username" name="username" placeholder="" onBlur={this.onUsernameChange}/>
                                 <label hidden={this.state.registered} className="errorLabel">{this.state.usernameError}</label>
                             </div>
                             <div className="register-form-group">
-                                <span className="register-leading-text">Password</span><input type={this.state.passwordType} maxLength="191" 
-                                    id="password" className="register-form-control password-field" name="password" placeholder="My Password *" onBlur={this.onPasswordChange} />
+                                <span className="leading-text">
+                                    Password:
+                                </span>
+                                <input type={this.state.passwordType} maxLength="191" 
+                                    id="password" className="form-control password-field" name="password" placeholder="" onBlur={this.onPasswordChange} />
                                 <label className="errorLabel">{this.state.passwordError}</label>
                             </div>
                             <div className="register-form-group">
-                                <span className="register-leading-text"></span>
+                                <span className="leading-text"></span>
                                 <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
                                 <label className="inline noSelect">Show password</label>
                             </div>
@@ -472,9 +493,9 @@ class Register extends React.Component {
                     
                     <div className="register-form-input-group">
                         <div className="register-form-group">
-                            <span className="register-leading-text"></span>
+                            <span className="leading-text"></span>
                             <ReCAPTCHA
-                                id="register-captcha"
+                                className="captcha inline-block"
                                 ref={recaptchaRef}
                                 sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
                                 onChange={this.captchaChange}
@@ -484,8 +505,8 @@ class Register extends React.Component {
                     </div>
                     <div className="register-form-input-group">
                         <div className="register-form-group">
-                            <span className="register-leading-text"></span>
-                            <button type="button" className="button inline-block" id="register-submit" disabled={this.state.disabled} onClick={this.register}>Register</button>
+                            <span className="leading-text"></span>
+                            <button type="button" className="button2 inline-block" id="register-submit" disabled={this.state.disabled} onClick={this.register}>Register</button>
                         </div>
                         <label className={this.state.statusClass}>{this.state.statusLabel}</label>
                     </div>

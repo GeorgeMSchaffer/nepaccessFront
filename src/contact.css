@@ -56,7 +56,7 @@ input[type="text"].contact-form-control {
     padding: 20px;
 }
 
-#contact-submit {
+/* #contact-submit {
     width: 200px;
     color: white;
     background: #555;
@@ -68,7 +68,7 @@ input[type="text"].contact-form-control {
         box-shadow: 1px 1px 5px #111;
 
     margin-left: 50px;
-}
+} */
 
 #contact-form #contact-subject-container {
     border: none;

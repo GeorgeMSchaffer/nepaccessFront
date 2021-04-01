@@ -203,7 +203,7 @@ class Login extends React.Component {
             </Helmet>
                 <div className="form">
                     <div className="note">
-                        <p>Login</p>
+                        Log in
                     </div>
                     <div className="loader-holder">
                         <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
@@ -211,15 +211,22 @@ class Login extends React.Component {
                     <label className="loginErrorLabel">{this.state.networkError}</label>
 
                     <div className="form-content">
+                        
                         <div className="login-row">
-                            Please login, or <Link to="/register">create an account</Link>.
+                            <span className="leading-text"></span>
+                            <span className="bold">
+                                Please log in or <Link to="/register">create an account</Link>
+                            </span>
                         </div>
-                        <div className="row">
+                        <div className="login-row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type="text" id="username" className="login-form-control" 
+                                    <span className="leading-text">
+                                        Your username:
+                                    </span>
+                                    <input type="text" id="username" className="form-control" 
                                         name="username" 
-                                        placeholder="Username" 
+                                        placeholder="" 
                                         value={this.state.username} 
                                         autoFocus 
                                         onChange={this.onChange} 
@@ -227,28 +234,36 @@ class Login extends React.Component {
                                     <label className="loginErrorLabel">{this.state.usernameError}</label>
                                 </div>
                             </div>
+                        </div>
+                        <div className="login-row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <input type={this.state.passwordType} id="password" className="login-form-control" 
+                                    <span className="leading-text">
+                                        Your password:
+                                    </span>
+                                    <input type={this.state.passwordType} id="password" className="form-control" 
                                         name="password" 
-                                        placeholder="Password" 
+                                        placeholder="" 
                                         value={this.state.password} 
                                         onChange={this.onChange} 
                                         onKeyUp={this.onKeyUp}/>
                                     <label className="loginErrorLabel">{this.state.passwordError}</label>
                                     <br />
                                     <input type="checkbox" onClick={this.showPassword}></input>
-                                    <label id="login-show-password" className="inline noSelect login-form-control">
+                                    <span className="leading-text"></span>
+                                    <label id="login-show-password" className="inline noSelect form-control">
                                         Show password
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" className="button" id="login-submit" onClick={this.login} >
-                            Log on
+                        <span className="leading-text"></span>
+                        <button type="button" className="button2" id="login-submit" onClick={this.login} >
+                            Log in
                         </button>
                         
                         <div className="login-row">
+                            <span className="leading-text"></span>
                             <Link to="/forgotPassword">Forgot password?</Link>
                         </div>
                     </div>

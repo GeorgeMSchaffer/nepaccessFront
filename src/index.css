@@ -72,7 +72,8 @@ body {
     background-position: center center;
     background-size: contain;
     /* background-size: cover; */
-    background-image: url("assets/nepaccess\ 1x.png");
+    /* background-image: url("assets/nepaccess\ 1x.png"); */
+    background-image: url("assets/thumbnail_logo-beta.png");
 }
 
 #logo-type {
@@ -422,8 +423,22 @@ span.email-text {
 .button:hover {
     background: wheat;
 }
-.button:disabled {
+.button:disabled, .button2:disabled {
     color: #888;
+}
+
+.button2 {
+    color: rgb(113,139,200);
+    font-size: 24px;
+    padding: 10px 36px;
+    border: 2px rgb(113,139,200) solid;
+    border-radius: 0px;
+    cursor: pointer;
+    display: block;
+    background: white;
+}
+.button2:hover {
+    background: lightpink;
 }
 
 .react-select__control {
@@ -525,4 +540,73 @@ span.email-text {
 
 .warning {
     color: red !important;
+}
+
+#contact-form-content {
+    padding-left: 0px !important;
+}
+.logo-size {
+    width: clamp(315px, calc(25vw + 15px), 390px); 
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+span.leading-text {
+    float: left;
+
+    width: clamp(310px, calc(25vw + 10px), 385px) !important; 
+
+    padding-left: 0px !important;
+    padding-right: 5px !important;
+
+    margin-left: 0px !important;
+    margin-top: 5px;
+
+    text-align: right !important;
+
+    font-weight: 700;
+}
+.form-control {
+    display: inline-block !important;
+    
+    width: 300px;
+    height: 20px;
+
+    margin-left: 0px !important;
+    margin-top: 0px;
+    padding: 7px;
+
+    border-radius: 0px;
+    border: solid black 1px;
+}
+.register-form-group {
+    margin-bottom: 15px;
+}
+.form-group {
+    margin-bottom: 30px;
+}
+.logo-left {
+    display: inline-block !important;
+    margin-left: clamp(315px, calc(25vw + 15px), 390px) !important; 
+    padding-left: 5px !important;
+}
+.contact-form-control {
+    display: inline-block !important;
+}
+
+
+.creatable__control {
+    width: 316px;
+    height: 36px;
+
+    padding: 0px;
+    
+    border-radius: 0px !important;
+    border: solid black 1px !important;
+}
+
+.creatable__value-container {
+    height: 34px;
 }

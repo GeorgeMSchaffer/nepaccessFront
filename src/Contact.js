@@ -108,6 +108,7 @@ export default class Contact extends React.Component {
         let message = "";
         if(invalid){
             message = "Cannot be empty.";
+            message = "*";
         }
         this.setState({ 
             nameError: message, 
@@ -116,12 +117,12 @@ export default class Contact extends React.Component {
         return invalid;
     }
     invalidSubject = () => {
-        console.log("Subject",this.state.subject);
         let usernamePattern = /[a-zA-Z\s]/;
         let invalid = !(usernamePattern.test(this.state.subject.trim()));
         let message = "";
         if(invalid){
             message = "Cannot be empty.";
+            message = "*";
         }
         this.setState({ 
             subjectError: message, 
@@ -135,6 +136,7 @@ export default class Contact extends React.Component {
         let message = "";
         if(invalid){
             message = "Cannot be empty.";
+            message = "*";
         }
 
         this.setState({ 
@@ -150,6 +152,7 @@ export default class Contact extends React.Component {
         let message = "";
         if(invalid){
             message = "Please enter your email address.";
+            message = "*";
         }
         this.setState({ emailError: message });
         return invalid;
@@ -181,7 +184,7 @@ export default class Contact extends React.Component {
         });
     }
     onSelectHandler = (val, act) => {
-        console.log("Val/act",val,act);
+        // console.log("Val/act",val,act);
         if(!val || !act){
             return;
         }
@@ -293,73 +296,75 @@ export default class Contact extends React.Component {
                 <div id="contact-form-content">
                     <div id="contact-form-left">
 
-                        <div className="contact-form-input-group">
-                            <div className="contact-form-group">
-                                <span className="contact-leading-text">Your full name:</span>
-                                <label className="errorLabel inline-block">{this.state.nameError}</label>
+                        <div className="form-input-group">
+                            <div className="form-group">
+                                <span className="leading-text">Your full name:</span>
                                 <input type="text" maxLength="191"
-                                    className="contact-form-control" id="name" name="name" 
-                                    // placeholder="Your full name *" 
+                                    className="form-control" id="name" name="name" 
+                                    // placeholder="" 
                                     value={this.state.name}
                                     onBlur={this.onNameChange}
                                     onChange={this.onChange}
                                 />
-                                
+                                <label className="errorLabel inline-block">{this.state.nameError}</label>
                             </div>
-                            <div className="contact-form-group">
-                                <span className="contact-leading-text">Your email address:</span>
-                                <label className="errorLabel inline-block">{this.state.emailError}</label>
+                            <div className="form-group">
+                                <span className="leading-text">Your email address:</span>
                                 <input type="text" maxLength="191"
-                                    className="contact-form-control" 
+                                    className="form-control" 
                                     id="email" 
                                     name="email" 
-                                    // placeholder="Your email address *" 
+                                    // placeholder="" 
                                     value={this.state.email}
                                     onBlur={this.onEmailChange}
                                     onChange={this.onChange}
                                 />
+                                <label className="errorLabel inline-block">{this.state.emailError}</label>
                             </div>
-                            <div className="contact-form-group">
-                                <span className="contact-leading-text">Subject:</span>
-                                <label className="errorLabel inline-block">{this.state.subjectError}</label>
-                                <Creatable id="contact-subject-container" 
-                                    className="contact-form-control" 
+                            <div className="form-group">
+                                <span className="leading-text">Subject:</span>
+                                <Creatable 
+                                    className="inline-block"
+                                    classNamePrefix="creatable"
                                     options={subjects}
                                     name="subject" 
                                     placeholder="Please type or choose a topic" 
                                     onChange={this.onSelectHandler}
                                     onBlur={this.invalidSubject}
                                 />
+                                <label className="errorLabel inline-block">{this.state.subjectError}</label>
                             </div>
                         </div>
-                        <div className="contact-form-input-group">
-                            <div className="contact-form-group">
-                                <span className="contact-leading-text">Message:</span>
-                                <label className="errorLabel inline-block">{this.state.messageError}</label>
+                        <div className="form-input-group">
+                            <div className="form-group">
+                                <span className="leading-text">Message:</span>
                                 <textarea 
-                                    className="contact-form-control" 
+                                    className="form-control" 
                                     id="contact-message" 
                                     name="message" 
                                     placeholder="" 
                                     onBlur={this.onChangeHandler}
                                 />
+                                <label className="errorLabel inline-block">{this.state.messageError}</label>
                             </div>
                         </div>
-                        
+                        <span className="leading-text"></span>
                         <ReCAPTCHA
                             id="contact-captcha"
+                            className="captcha inline-block"
                             ref={recaptchaRef}
                             sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
                             onChange={this.captchaChange}
                             onErrored={this.log}
                         />
 
-                        <div className="contact-form-input-group">
-                            <div className="contact-form-group">
-                                <button type="button" className="button inline-block" id="contact-submit" 
+                        <div className="form-input-group">
+                            <div className="form-group">
+                                <span className="leading-text"></span>
+                                <button type="button" className="button2 inline-block" id="contact-submit" 
                                         disabled={this.state.disabled} 
                                         onClick={this.contact}>
-                                    Send
+                                    Submit
                                 </button>
                             </div>
                             <label className={this.state.statusClass}>{this.state.statusLabel}</label>
