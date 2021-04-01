@@ -463,7 +463,7 @@ class Register extends React.Component {
                             </div>
                             <div className="register-form-group">
                                 <span className="leading-text">
-                                    Your job title
+                                    Your job title:
                                 </span>
                                 <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" />
                             </div>
