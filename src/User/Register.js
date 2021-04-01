@@ -130,7 +130,7 @@ class Register extends React.Component {
         this.setState({ disabled: invalid });
         return invalid;
     }
-    invalidEmail(){
+    invalidEmail = () => {
         let emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let invalid = !(emailPattern.test(this.state.email));
         let message = "";
@@ -142,7 +142,7 @@ class Register extends React.Component {
         this.setState({ disabled: invalid });
         return invalid;
     }
-    invalidAffiliation(){
+    invalidAffiliation = () => {
         let usernamePattern = /[ -~]/;
         let invalid = !(usernamePattern.test(this.state.affiliation));
         let message = "";
@@ -155,9 +155,9 @@ class Register extends React.Component {
         return invalid;
     }
     
-    invalidAffiliationOther(){
+    invalidAffiliationOther = () => {
         let usernamePattern = /[ -~]/;
-        let invalid = !(usernamePattern.test(this.state.affiliationOther)) && this.state.affiliation==="Other";
+        let invalid = this.state.affiliation==="Other" && !(usernamePattern.test(this.state.affiliationOther));
         let message = "";
         if(invalid){
             message = "Required field when selecting \"Other\"";
@@ -167,7 +167,7 @@ class Register extends React.Component {
         this.setState({ disabled: invalid });
         return invalid;
     }
-    invalidPassword(){
+    invalidPassword = () => {
         let passwordPattern = /[ -~]/;
         let invalid = !(passwordPattern.test(this.state.password));
         let message = "";
@@ -299,6 +299,7 @@ class Register extends React.Component {
     onSelectHandler = (val, act) => {
         // console.log("Val/act",val,act);
         if(!val || !act){
+            this.invalidAffiliation();
             return;
         }
 
@@ -444,15 +445,18 @@ class Register extends React.Component {
                                         name="affiliation" 
                                         placeholder="" 
                                         onChange={this.onSelectHandler}
-                                        onBlur={this.onChangeHandler}
+                                        onBlur={this.onSelectHandler}
                                 />
                                 <label className="errorLabel">{this.state.affiliationError}</label>
                             </div>
-                            <div className="register-form-group">
+                            <div className="register-form-group"
+                                    hidden={this.state.affiliation !== "Other"} >
                                 <span className="leading-text"></span>
-                                <input disabled={this.state.affiliation !== "Other"} type="text" maxLength="1000"
+                                <input 
+                                    disabled={this.state.affiliation !== "Other"} 
+                                    type="text" maxLength="1000"
                                     className="form-control" id="affiliationOther" name="affiliationOther" 
-                                    placeholder="If choosing &quot;other&quot; type it here" onBlur={this.onChangeHandler} />
+                                    placeholder="If choosing &quot;other&quot; type it here" onBlur={this.invalidAffiliationOther} />
                                 <label className="errorLabel">{this.state.affiliationOtherError}</label>
                             </div>
                         </div>
