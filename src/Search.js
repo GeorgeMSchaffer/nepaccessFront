@@ -55,7 +55,7 @@ class Search extends React.Component {
             test: globals.anEnum.options,
             cancelButtonActive: true,
             tooltipOpen: undefined,
-            proximityOption: null,
+            proximityOption: -1,
             proximityDisabled: true
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
@@ -97,7 +97,7 @@ class Search extends React.Component {
     }
 
 	onInput = (evt) => {
-        
+
         // Disable ui proximity search unless search is at least two strings separated by whitespace
         let disableResult = true;
         if(evt.target.name==='titleRaw') {
@@ -304,7 +304,8 @@ class Search extends React.Component {
         // + "<p class=tooltip-line><span class=tooltip-connector></span> <a href=abouthelp>More search tips.</a></p>";
 
         const proximityOptions = [
-            {value: '', label: 'any distance'},
+            {value: -1, label: 'any distance'},
+            {value: 0, label: 'Adjacent/Phrase'},
             {value: 10, label: '10 words'},
             {value: 50, label: '50 words'},
             {value: 100, label: '100 words'}];
