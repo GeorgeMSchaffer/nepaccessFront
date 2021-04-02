@@ -14,7 +14,7 @@ class Logout extends React.Component {
             <div className="container login-form">
                 <div className="form">
                     <div className="note">
-                        <p>Logout</p>
+                        Logout
                     </div>
 
                     <span id="logoutSpan">{this.state.logoutText}</span>
