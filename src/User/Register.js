@@ -36,6 +36,8 @@ class Register extends React.Component {
             email: '',
             disabled: false,
             passwordType: "password",
+            termsAgreed: false,
+            termsError: "",
 
             usernameError: '',
             emailError: '',
@@ -72,9 +74,21 @@ class Register extends React.Component {
         // });
     }
     log = (value) => {
-        console.log("Log", value);
+        // console.log("Log", value);
     }
 
+    termsChanged = (evt) => {
+        // console.log("Target",evt.target);
+        this.setState({ termsAgreed: evt.target.checked });
+    }
+
+    termsInvalid = () => {
+        if(!this.state.termsAgreed) {
+            this.state.termsError = "*"
+        } else {
+            this.state.termsError = ""
+        }
+    }
 
     // Validation
     invalidFields = () => {
@@ -89,10 +103,11 @@ class Register extends React.Component {
         let test5 = this.invalidLast();
         let test6 = this.invalidAffiliation();
         let test7 = this.invalidAffiliationOther();
+        let test8 = this.termsInvalid();
 
-        this.setState({ disabled: test1 || test2 || test3 || test4 || test5 || test6 || test7 });
+        this.setState({ disabled: test1 || test2 || test3 || test4 || test5 || test6 || test7 || test8 });
         
-        return (test1 || test2 || test3 || test4 || test5 || test6 || test7 );
+        return (test1 || test2 || test3 || test4 || test5 || test6 || test7 || test8);
     }
     invalidUsername = () => {
         let usernamePattern = /[a-zA-Z0-9]/;
@@ -296,6 +311,11 @@ class Register extends React.Component {
         });
     }
 
+    // silence irrelevant warnings
+    onChangeDummy = (evt) => {
+        // do nothing
+    }
+
     onSelectHandler = (val, act) => {
         // console.log("Val/act",val,act);
         if(!val || !act){
@@ -494,6 +514,20 @@ class Register extends React.Component {
                             </div>
                         </div>
                     </div>
+
+                    <div className="register-form-input-group"><div className="register-form-group">
+                        <span className="leading-text"></span>
+                        <input type="checkbox" 
+                                name="terms" 
+                                checked={this.state.termsAgreed}
+                                onClick={this.termsChanged}
+                                onChange={this.onChangeDummy}></input>
+                            I have read and agreed to the&nbsp;
+                            <a href="https://about.nepaccess.org/privacy-policy/#terms-of-use" target="_blank">
+                                Terms of Use
+                            </a>
+                            <label className="errorLabel">{this.state.termsError}</label>
+                    </div></div>
                     
                     <div className="register-form-input-group">
                         <div className="register-form-group">
