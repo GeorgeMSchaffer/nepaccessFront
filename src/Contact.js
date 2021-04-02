@@ -263,27 +263,32 @@ export default class Contact extends React.Component {
             } else { // 500 or 503, or server down
                 this.setState({
                     statusClass: 'errorLabel',
-                    statusLabel: 'Sorry, an error has occurred. Server responded with ' + response.status
+                    statusLabel: 'Sorry, an error has occurred. Server responded with ' + response.status,
+                    disabled: false, 
+                    busy: false
                 });
             }
         }).catch(error => {
             if (error.response.status===424) {
                 this.setState({
                     statusClass: 'errorLabel',
-                    statusLabel: 'Sorry, an error has occurred with the captcha.'
+                    statusLabel: 'Sorry, an error has occurred with the captcha.',
+                    disabled: false, 
+                    busy: false
                 }); 
             }
             else 
             {
                 this.setState({
                     statusClass: 'errorLabel',
-                    statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+                    statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.',
+                    disabled: false, 
+                    busy: false
                 });
                 console.error(error);
             }
         });
 
-        this.setState({ disabled: false, busy: false });
         document.body.style.cursor = 'default';
     }
     

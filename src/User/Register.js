@@ -395,17 +395,23 @@ class Register extends React.Component {
             if(error.response.status===418) {
                 this.setState({
                     statusClass: 'errorLabel',
-                    statusLabel: 'Sorry, that username is taken.'
+                    statusLabel: 'Sorry, that username is taken.',
+                    disabled: false, 
+                    busy: false
                 });
             } else if (error.response.status===424) {
                 this.setState({
                     statusClass: 'errorLabel',
-                    statusLabel: 'Sorry, an error has occurred with the captcha.'
+                    statusLabel: 'Sorry, an error has occurred with the captcha.',
+                    disabled: false, 
+                    busy: false
                 });
             } else {
                 this.setState({
                     statusClass: 'errorLabel',
-                    statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+                    statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.',
+                    disabled: false, 
+                    busy: false
                 });
             }
             console.error(error);
