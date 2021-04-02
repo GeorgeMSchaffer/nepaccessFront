@@ -152,7 +152,6 @@ class Register extends React.Component {
         let message = "";
         if(invalid){
             message = "Please enter a valid email address.";
-            message = "*";
         }
         this.setState({ emailError: message });
         this.setState({ disabled: invalid });
