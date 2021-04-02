@@ -57,6 +57,7 @@ class Register extends React.Component {
             statusLabel: '',
             statusClass: '',
             registered: false,
+            busy: false
 
             // captcha: ''
         };
@@ -344,6 +345,7 @@ class Register extends React.Component {
         document.body.style.cursor = 'wait';
         this.setState({ 
             disabled: true,
+            busy: true,
             statusLabel: ''
          });
         
@@ -409,7 +411,7 @@ class Register extends React.Component {
             console.error(error);
         });
 
-        this.setState({ disabled: false });
+        this.setState({ disabled: false, busy: false });
         document.body.style.cursor = 'default';
     }
     

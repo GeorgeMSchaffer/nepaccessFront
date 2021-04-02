@@ -29,6 +29,7 @@ export default class Contact extends React.Component {
 
             disabled: false,
             sent: false,
+            busy: false,
 
             nameError: '*',
             emailError: '*',
@@ -222,6 +223,7 @@ export default class Contact extends React.Component {
         document.body.style.cursor = 'wait';
         this.setState({ 
             disabled: true,
+            busy: true,
             statusLabel: ''
          });
         
@@ -281,7 +283,7 @@ export default class Contact extends React.Component {
             }
         });
 
-        this.setState({ disabled: false });
+        this.setState({ disabled: false, busy: false });
         document.body.style.cursor = 'default';
     }
     
@@ -303,6 +305,9 @@ export default class Contact extends React.Component {
                 <div id="contact-form">
                     <div className="note">
                         Contact Us
+                    </div>
+                    <div className="loader-holder">
+                        <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
 
                     <div id="contact-form-content">
