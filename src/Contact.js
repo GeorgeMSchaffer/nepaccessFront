@@ -28,6 +28,7 @@ export default class Contact extends React.Component {
             message: '', 
 
             disabled: false,
+            sent: false,
 
             nameError: '*',
             emailError: '*',
@@ -254,7 +255,8 @@ export default class Contact extends React.Component {
             if(responseOK){ // 200
                 this.setState({
                     statusClass: 'successLabel',
-                    statusLabel: 'Email sent.'
+                    statusLabel: 'Email sent.',
+                    sent: true
                 });
             } else { // 500 or 503, or server down
                 this.setState({
@@ -284,108 +286,117 @@ export default class Contact extends React.Component {
     }
     
     render() {
-        return (
-            <div id="contact-form">
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>NEPAccess - Contact</title>
-                    <link rel="canonical" href="https://nepaccess.org/contact" />
-                </Helmet>
-                <div className="note">
-                    Contact Us
-                </div>
-
-                <div id="contact-form-content">
-                    <div id="contact-form-left">
-
-                        <div className="form-input-group">
-                            <div className="form-group">
-                                <span className="leading-text">Your full name:</span>
-                                <input type="text" maxLength="191"
-                                    className="form-control" id="name" name="name" 
-                                    // placeholder="" 
-                                    value={this.state.name}
-                                    onBlur={this.onNameChange}
-                                    onChange={this.onChange}
-                                />
-                                <label className="errorLabel inline-block">{this.state.nameError}</label>
-                            </div>
-                            <div className="form-group">
-                                <span className="leading-text">Your email address:</span>
-                                <input type="text" maxLength="191"
-                                    className="form-control" 
-                                    id="email" 
-                                    name="email" 
-                                    // placeholder="" 
-                                    value={this.state.email}
-                                    onBlur={this.onEmailChange}
-                                    onChange={this.onChange}
-                                />
-                                <label className="errorLabel inline-block">{this.state.emailError}</label>
-                            </div>
-                            <div className="form-group">
-                                <span className="leading-text">Subject:</span>
-                                <Creatable 
-                                    className="inline-block"
-                                    classNamePrefix="creatable"
-                                    options={subjects}
-                                    name="subject" 
-                                    placeholder="Please type or choose a topic" 
-                                    onChange={this.onSelectHandler}
-                                    onBlur={this.invalidSubject}
-                                />
-                                <label className="errorLabel inline-block">{this.state.subjectError}</label>
-                            </div>
-                        </div>
-                        <div className="form-input-group">
-                            <div className="form-group">
-                                <span className="leading-text">Message:</span>
-                                <textarea 
-                                    className="form-control" 
-                                    id="contact-message" 
-                                    name="message" 
-                                    placeholder="" 
-                                    onBlur={this.onChangeHandler}
-                                />
-                                <label className="errorLabel inline-block">{this.state.messageError}</label>
-                            </div>
-                        </div>
-                        <span className="leading-text"></span>
-                        <ReCAPTCHA
-                            id="contact-captcha"
-                            className="captcha inline-block"
-                            ref={recaptchaRef}
-                            sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
-                            onChange={this.captchaChange}
-                            onErrored={this.log}
-                        />
-
-                        <div className="form-input-group">
-                            <div className="form-group">
-                                <span className="leading-text"></span>
-                                <button type="button" className="button2 inline-block" id="contact-submit" 
-                                        disabled={this.state.disabled} 
-                                        onClick={this.contact}>
-                                    Submit
-                                </button>
-                            </div>
-                            <label className={this.state.statusClass}>{this.state.statusLabel}</label>
-                        </div>
-                    </div>
-
-                    <div id="contact-address">
-                        <span>NEPAccess.org</span>
-                        <span>University of Arizona</span>
-                        <span>Udall Center for Studies in Public Policy</span>
-                        <span>803 E. First St.</span>
-                        <span>Tucson, Arizona 85719</span>
-                        <span>USA</span>
+        if(this.state.sent) {
+            return (
+                <div id="contact-form">
+                    <div className="note">
+                        Contact Us
                     </div>
                     
-
+                    <label className='successLabel large'>
+                        Successfully submitted.
+                    </label>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            return (
+                <div id="contact-form">
+                    <div className="note">
+                        Contact Us
+                    </div>
+
+                    <div id="contact-form-content">
+                        <div id="contact-form-left">
+
+                            <div className="form-input-group">
+                                <div className="form-group">
+                                    <span className="leading-text">Your full name:</span>
+                                    <input type="text" maxLength="191"
+                                        className="form-control" id="name" name="name" 
+                                        // placeholder="" 
+                                        value={this.state.name}
+                                        onBlur={this.onNameChange}
+                                        onChange={this.onChange}
+                                    />
+                                    <label className="errorLabel inline-block">{this.state.nameError}</label>
+                                </div>
+                                <div className="form-group">
+                                    <span className="leading-text">Your email address:</span>
+                                    <input type="text" maxLength="191"
+                                        className="form-control" 
+                                        id="email" 
+                                        name="email" 
+                                        // placeholder="" 
+                                        value={this.state.email}
+                                        onBlur={this.onEmailChange}
+                                        onChange={this.onChange}
+                                    />
+                                    <label className="errorLabel inline-block">{this.state.emailError}</label>
+                                </div>
+                                <div className="form-group">
+                                    <span className="leading-text">Subject:</span>
+                                    <Creatable 
+                                        className="inline-block"
+                                        classNamePrefix="creatable"
+                                        options={subjects}
+                                        name="subject" 
+                                        placeholder="Please type or choose a topic" 
+                                        onChange={this.onSelectHandler}
+                                        onBlur={this.invalidSubject}
+                                    />
+                                    <label className="errorLabel inline-block">{this.state.subjectError}</label>
+                                </div>
+                            </div>
+                            <div className="form-input-group">
+                                <div className="form-group">
+                                    <span className="leading-text">Message:</span>
+                                    <textarea 
+                                        className="form-control" 
+                                        id="contact-message" 
+                                        name="message" 
+                                        placeholder="" 
+                                        onBlur={this.onChangeHandler}
+                                    />
+                                    <label className="errorLabel inline-block">{this.state.messageError}</label>
+                                </div>
+                            </div>
+                            <span className="leading-text"></span>
+                            <ReCAPTCHA
+                                id="contact-captcha"
+                                className="captcha inline-block"
+                                ref={recaptchaRef}
+                                sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
+                                onChange={this.captchaChange}
+                                onErrored={this.log}
+                            />
+
+                            <div className="form-input-group">
+                                <div className="form-group">
+                                    <span className="leading-text"></span>
+                                    <button type="button" className="button2 inline-block" id="contact-submit" 
+                                            disabled={this.state.disabled} 
+                                            onClick={this.contact}>
+                                        Submit
+                                    </button>
+                                </div>
+                                <label className={this.state.statusClass}>{this.state.statusLabel}</label>
+                            </div>
+                        </div>
+
+                        <div id="contact-address">
+                            <span>NEPAccess.org</span>
+                            <span>University of Arizona</span>
+                            <span>Udall Center for Studies in Public Policy</span>
+                            <span>803 E. First St.</span>
+                            <span>Tucson, Arizona 85719</span>
+                            <span>USA</span>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            )
+        }
     }
 
     componentDidMount() {
