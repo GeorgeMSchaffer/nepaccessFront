@@ -40,6 +40,7 @@ import Approve from './Approve.js';
 import Admin from './Admin.js';
 
 import Test from './Test.js';
+import Footer from './Footer.js';
 
 import Globals from './globals.js';
 
@@ -269,6 +270,7 @@ class Main extends React.Component {
 
                 <Route path="/" component={Landing}/>
             </Switch>
+            {/* <Footer id="footer"></Footer> */}
         </div>
         )
     }
