@@ -432,7 +432,7 @@ span.email-text {
     font-size: 24px;
     padding: 10px 36px;
     border: 2px rgb(113,139,200) solid;
-    border-radius: 0px;
+    /* border-radius: 0px; */
     cursor: pointer;
     display: block;
     background: white;
