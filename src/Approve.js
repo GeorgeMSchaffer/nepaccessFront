@@ -22,7 +22,7 @@ const options = {
     paginationSizeSelector:[10, 25, 50, 100], // with all the text, even 50 is a lot.
     movableColumns:false,            //don't allow column order to be changed
     resizableRows:false,             
-    resizableColumns:false,
+    resizableColumns:true,
     layout:"fitColumns",
     invalidOptionWarnings:false, // spams warnings without this
     footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
@@ -30,9 +30,9 @@ const options = {
 
 const columns = [
     { title: "Username", field: "username", headerFilter:"input"},
-    { title: "Active", field: "active", width: 150, headerFilter:"input"  },
-    { title: "Email", field: "email", width: 140, headerFilter:"input"  },
-    { title: "Email verified", field: "verified", width: 200, headerFilter:"input"  },
+    { title: "Active", field: "active", width: 100, headerFilter:"input"  },
+    { title: "Email", field: "email", width: 250, headerFilter:"input"  },
+    { title: "Email verified", field: "verified", width: 140, headerFilter:"input"  },
     { title: "First name", field: "first", width: 150, headerFilter:"input" },
     { title: "Last name", field: "last", width: 140, headerFilter:"input"  },
 ];
