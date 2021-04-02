@@ -135,7 +135,7 @@ class ForgotPassword extends React.Component {
                 </Helmet>
                 <div className="form">
                     <div className="note">
-                        <p>Reset Password</p>
+                        Reset Password
                     </div>
                     
                     <label className="loginErrorLabel">

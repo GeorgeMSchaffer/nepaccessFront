@@ -128,7 +128,7 @@ class Reset extends React.Component {
                     </Helmet>
                     <div className="form">
                         <div className="note">
-                            <p>Set New Password</p>
+                            Set New Password
                         </div>
                         <div className="col-md-6">
                             <label className="loginErrorLabel">Token is expired or invalid, please try again.</label>
@@ -146,7 +146,7 @@ class Reset extends React.Component {
                     </Helmet>
                     <div className="form-content">
                         <div className="note">
-                            <p>Set New Password</p>
+                            Set New Password
                         </div>
                         <div className="col-md-6">
                             <div className="form-group">

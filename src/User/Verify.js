@@ -61,7 +61,7 @@ export default class Verify extends React.Component {
                     <link rel="canonical" href="https://nepaccess.org/verify" />
                 </Helmet>
                 <div className="note">
-                    <p>Verify email address</p>
+                    Verify email address
                 </div>
                 <div id="verifyEmailContent">
                     <label className="infoLabel">{this.state.successLabel}</label>

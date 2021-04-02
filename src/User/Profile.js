@@ -157,7 +157,7 @@ class UserDetails extends React.Component {
                 <link rel="canonical" href="https://nepaccess.org/profile" />
             </Helmet>
             <div className="note">
-                <p>User Details</p>
+                User Details
             </div>
                 <div className="form-content">
                     <div className="col-md-6">

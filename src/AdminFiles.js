@@ -112,7 +112,7 @@ export default class AdminFiles extends React.Component {
         return (<>
             <div className="content">
                 <div className="note">
-                    <p>Missing Files</p>
+                    Missing Files
                 </div>
                 <div id="admin-files-content">
                     

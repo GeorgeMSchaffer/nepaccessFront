@@ -1126,7 +1126,7 @@ class Importer extends Component {
             <div className="form content">
                 
                 <div className="note">
-                    <p>Import New Data with File(s)</p>
+                    Import New Data with File(s)
                 </div>
                 
                 <label className="networkErrorLabel">
