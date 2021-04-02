@@ -56,7 +56,7 @@ class Register extends React.Component {
 
             statusLabel: '',
             statusClass: '',
-            registered: true,
+            registered: false,
 
             // captcha: ''
         };
@@ -444,6 +444,9 @@ class Register extends React.Component {
                     </Helmet>
                     <div className="note">
                         Register
+                    </div>
+                    <div className="loader-holder">
+                        <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
 
                     <div className="form-content">
