@@ -438,7 +438,9 @@ span.email-text {
     background: white;
 }
 .button2:hover {
-    background: rgb(255,240,255);
+    /* background: rgb(255,240,255); */
+    background: #53BABD;
+    color: white;
 }
 
 .react-select__control {
