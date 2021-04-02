@@ -86,3 +86,11 @@
 .label-holder {
     height: 24px;
 }
+
+.successLabel.large {
+    display: block;
+    padding: 5%;
+    width: 90%;
+    background: white;
+    font-size: 30px;
+}

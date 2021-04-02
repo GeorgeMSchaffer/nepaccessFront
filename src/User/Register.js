@@ -56,7 +56,7 @@ class Register extends React.Component {
 
             statusLabel: '',
             statusClass: '',
-            registered: false,
+            registered: true,
 
             // captcha: ''
         };
@@ -424,140 +424,152 @@ class Register extends React.Component {
     } 
     
     render() {
-        return (
-            <div id="register-form">
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>NEPAccess - Register</title>
-                    <link rel="canonical" href="https://nepaccess.org/register" />
-                </Helmet>
-                <div className="note">
-                    Register
-                </div>
-
-                <div className="form-content">
-                    <div className="row">
-                        
-                    <div className="label-holder">
-                        <span className="leading-text"></span>
-                        <span className="errorLabel">* marks a required field</span>
+        if(this.state.registered) {
+            return (<div id="register-form">
+                <div className="register-form-input-group">
+                    <div className="register-form-group">
+                        <label className='successLabel large'>
+                            Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.
+                        </label>
                     </div>
-                        <div className="register-form-input-group">
-                            <div className="register-form-group">
-                                <span className="leading-text">Your first name:</span><input type="text" maxLength="191"
-                                    className="form-control" id="firstName" name="firstName" placeholder="" autoFocus onBlur={this.onChangeHandler}/>
-                                <label className="errorLabel">{this.state.firstNameError}</label>
+                </div></div>
+            );
+        } else {
+            return (
+                <div id="register-form">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>NEPAccess - Register</title>
+                        <link rel="canonical" href="https://nepaccess.org/register" />
+                    </Helmet>
+                    <div className="note">
+                        Register
+                    </div>
+
+                    <div className="form-content">
+                        <div className="row">
+                            
+                        <div className="label-holder">
+                            <span className="leading-text"></span>
+                            <span className="errorLabel">* marks a required field</span>
+                        </div>
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text">Your first name:</span><input type="text" maxLength="191"
+                                        className="form-control" id="firstName" name="firstName" placeholder="" autoFocus onBlur={this.onChangeHandler}/>
+                                    <label className="errorLabel">{this.state.firstNameError}</label>
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">Your last name:</span><input type="text" maxLength="191"
+                                        className="form-control" id="lastName" name="lastName" placeholder="" onBlur={this.onChangeHandler}/>
+                                    <label className="errorLabel">{this.state.lastNameError}</label>
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">Your email address:</span><input type="text" maxLength="191"
+                                        className="form-control" id="email" name="email" placeholder="" onBlur={this.onEmailChange}/>
+                                    <label hidden={this.state.registered} className="errorLabel">{this.state.emailError}</label>
+                                </div>
                             </div>
-                            <div className="register-form-group">
-                                <span className="leading-text">Your last name:</span><input type="text" maxLength="191"
-                                    className="form-control" id="lastName" name="lastName" placeholder="" onBlur={this.onChangeHandler}/>
-                                <label className="errorLabel">{this.state.lastNameError}</label>
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text">Your user group:</span><Select
+                                            id="register-select"
+                                            className="inline-block"
+                                            classNamePrefix="creatable"
+                                            options={affiliations}
+                                            name="affiliation" 
+                                            placeholder="" 
+                                            onChange={this.onSelectHandler}
+                                            onBlur={this.onSelectHandler}
+                                    />
+                                    <label className="errorLabel">{this.state.affiliationError}</label>
+                                </div>
+                                <div className="register-form-group"
+                                        hidden={this.state.affiliation !== "Other"} >
+                                    <span className="leading-text"></span>
+                                    <input 
+                                        disabled={this.state.affiliation !== "Other"} 
+                                        type="text" maxLength="1000"
+                                        className="form-control" id="affiliationOther" name="affiliationOther" 
+                                        placeholder="If choosing &quot;other&quot; type it here" onBlur={this.invalidAffiliationOther} />
+                                    <label className="errorLabel">{this.state.affiliationOtherError}</label>
+                                </div>
                             </div>
-                            <div className="register-form-group">
-                                <span className="leading-text">Your email address:</span><input type="text" maxLength="191"
-                                    className="form-control" id="email" name="email" placeholder="" onBlur={this.onEmailChange}/>
-                                <label hidden={this.state.registered} className="errorLabel">{this.state.emailError}</label>
+                            
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text">Name of organization:</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" />
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">
+                                        Your job title:
+                                    </span>
+                                    <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" />
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">
+                                        Preferred username:
+                                    </span>
+                                    <input type="text" maxLength="191"
+                                        className="form-control" id="username" name="username" placeholder="" onBlur={this.onUsernameChange}/>
+                                    <label hidden={this.state.registered} className="errorLabel">{this.state.usernameError}</label>
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">
+                                        Password:
+                                    </span>
+                                    <input type={this.state.passwordType} maxLength="191" 
+                                        id="password" className="form-control password-field" name="password" placeholder="" onBlur={this.onPasswordChange} />
+                                    <label className="errorLabel">{this.state.passwordError}</label>
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text"></span>
+                                    <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                                    <label className="inline noSelect">Show password</label>
+                                </div>
                             </div>
                         </div>
+
+                        <div className="register-form-input-group"><div className="register-form-group">
+                            <span className="leading-text"></span>
+                            <input type="checkbox" 
+                                name="terms" 
+                                checked={this.state.termsAgreed}
+                                onClick={this.termsChanged}
+                                onChange={this.onChangeDummy}>
+                            </input>
+                            <span>I have read and agreed to the&nbsp;
+                                <a href="https://about.nepaccess.org/privacy-policy/#terms-of-use" target="_blank">
+                                    Terms of Use
+                                </a>
+                            </span>
+                            <label className="errorLabel">{this.state.termsError}</label>
+                        </div></div>
+                        
                         <div className="register-form-input-group">
                             <div className="register-form-group">
-                                <span className="leading-text">Your user group:</span><Select
-                                        id="register-select"
-                                        className="inline-block"
-                                        classNamePrefix="creatable"
-                                        options={affiliations}
-                                        name="affiliation" 
-                                        placeholder="" 
-                                        onChange={this.onSelectHandler}
-                                        onBlur={this.onSelectHandler}
+                                <span className="leading-text"></span>
+                                <ReCAPTCHA
+                                    className="captcha inline-block"
+                                    ref={recaptchaRef}
+                                    sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
+                                    onChange={this.captchaChange}
+                                    onErrored={this.log}
                                 />
-                                <label className="errorLabel">{this.state.affiliationError}</label>
-                            </div>
-                            <div className="register-form-group"
-                                    hidden={this.state.affiliation !== "Other"} >
-                                <span className="leading-text"></span>
-                                <input 
-                                    disabled={this.state.affiliation !== "Other"} 
-                                    type="text" maxLength="1000"
-                                    className="form-control" id="affiliationOther" name="affiliationOther" 
-                                    placeholder="If choosing &quot;other&quot; type it here" onBlur={this.invalidAffiliationOther} />
-                                <label className="errorLabel">{this.state.affiliationOtherError}</label>
                             </div>
                         </div>
-                        
                         <div className="register-form-input-group">
                             <div className="register-form-group">
-                                <span className="leading-text">Name of organization:</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" />
-                            </div>
-                            <div className="register-form-group">
-                                <span className="leading-text">
-                                    Your job title:
-                                </span>
-                                <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" />
-                            </div>
-                            <div className="register-form-group">
-                                <span className="leading-text">
-                                    Preferred username:
-                                </span>
-                                <input type="text" maxLength="191"
-                                    className="form-control" id="username" name="username" placeholder="" onBlur={this.onUsernameChange}/>
-                                <label hidden={this.state.registered} className="errorLabel">{this.state.usernameError}</label>
-                            </div>
-                            <div className="register-form-group">
-                                <span className="leading-text">
-                                    Password:
-                                </span>
-                                <input type={this.state.passwordType} maxLength="191" 
-                                    id="password" className="form-control password-field" name="password" placeholder="" onBlur={this.onPasswordChange} />
-                                <label className="errorLabel">{this.state.passwordError}</label>
-                            </div>
-                            <div className="register-form-group">
                                 <span className="leading-text"></span>
-                                <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
-                                <label className="inline noSelect">Show password</label>
+                                <button type="button" className="button2 inline-block" id="register-submit" disabled={this.state.disabled} onClick={this.register}>Register</button>
                             </div>
+                            <label className={this.state.statusClass}>{this.state.statusLabel}</label>
                         </div>
-                    </div>
 
-                    <div className="register-form-input-group"><div className="register-form-group">
-                        <span className="leading-text"></span>
-                        <input type="checkbox" 
-                            name="terms" 
-                            checked={this.state.termsAgreed}
-                            onClick={this.termsChanged}
-                            onChange={this.onChangeDummy}>
-                        </input>
-                        <span>I have read and agreed to the&nbsp;
-                            <a href="https://about.nepaccess.org/privacy-policy/#terms-of-use" target="_blank">
-                                Terms of Use
-                            </a>
-                        </span>
-                        <label className="errorLabel">{this.state.termsError}</label>
-                    </div></div>
-                    
-                    <div className="register-form-input-group">
-                        <div className="register-form-group">
-                            <span className="leading-text"></span>
-                            <ReCAPTCHA
-                                className="captcha inline-block"
-                                ref={recaptchaRef}
-                                sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
-                                onChange={this.captchaChange}
-                                onErrored={this.log}
-                            />
-                        </div>
                     </div>
-                    <div className="register-form-input-group">
-                        <div className="register-form-group">
-                            <span className="leading-text"></span>
-                            <button type="button" className="button2 inline-block" id="register-submit" disabled={this.state.disabled} onClick={this.register}>Register</button>
-                        </div>
-                        <label className={this.state.statusClass}>{this.state.statusLabel}</label>
-                    </div>
-
                 </div>
-            </div>
-        )
+            )
+        }
     }
 }
 
