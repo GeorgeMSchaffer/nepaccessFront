@@ -304,11 +304,11 @@ class Search extends React.Component {
         // + "<p class=tooltip-line><span class=tooltip-connector></span> <a href=abouthelp>More search tips.</a></p>";
 
         const proximityOptions = [
-            {value: -1, label: 'any distance'},
             {value: 0, label: 'Adjacent/Phrase'},
             {value: 10, label: '10 words'},
             {value: 50, label: '50 words'},
-            {value: 100, label: '100 words'}];
+            {value: 100, label: '100 words'},
+            {value: -1, label: 'any distance'}];
 
         const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
         + "<table class=tooltip-table><tbody>"
