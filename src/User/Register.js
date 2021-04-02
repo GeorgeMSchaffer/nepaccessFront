@@ -80,14 +80,22 @@ class Register extends React.Component {
 
     termsChanged = (evt) => {
         // console.log("Target",evt.target);
-        this.setState({ termsAgreed: evt.target.checked });
+        this.setState({ 
+            termsAgreed: evt.target.checked 
+        }, () => {
+            this.termsInvalid();
+        });
     }
 
     termsInvalid = () => {
         if(!this.state.termsAgreed) {
-            this.state.termsError = "*"
+            this.setState({
+                termsError: "*"
+            });
         } else {
-            this.state.termsError = ""
+            this.setState({
+                termsError: ""
+            });
         }
     }
 
