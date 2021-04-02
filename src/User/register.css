@@ -82,3 +82,7 @@
 /* #register-captcha {
     padding-left: 195px;
 } */
+
+.label-holder {
+    height: 24px;
+}

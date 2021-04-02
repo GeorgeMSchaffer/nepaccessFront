@@ -37,15 +37,15 @@ class Register extends React.Component {
             disabled: false,
             passwordType: "password",
             termsAgreed: false,
-            termsError: "",
+            termsError: "*",
 
-            usernameError: '',
-            emailError: '',
-            passwordError: '',
-            firstNameError: '',
-            lastNameError: '',
-            affiliationError: '',
-            affiliationOtherError: '',
+            usernameError: '*',
+            emailError: '*',
+            passwordError: '*',
+            firstNameError: '*',
+            lastNameError: '*',
+            affiliationError: '*',
+            affiliationOtherError: '*',
 
             firstName: '',
             lastName: '',
@@ -437,7 +437,11 @@ class Register extends React.Component {
 
                 <div className="form-content">
                     <div className="row">
-
+                        
+                    <div className="label-holder">
+                        <span className="leading-text"></span>
+                        <span className="errorLabel">* marks a required field</span>
+                    </div>
                         <div className="register-form-input-group">
                             <div className="register-form-group">
                                 <span className="leading-text">Your first name:</span><input type="text" maxLength="191"
@@ -518,15 +522,17 @@ class Register extends React.Component {
                     <div className="register-form-input-group"><div className="register-form-group">
                         <span className="leading-text"></span>
                         <input type="checkbox" 
-                                name="terms" 
-                                checked={this.state.termsAgreed}
-                                onClick={this.termsChanged}
-                                onChange={this.onChangeDummy}></input>
-                            I have read and agreed to the&nbsp;
+                            name="terms" 
+                            checked={this.state.termsAgreed}
+                            onClick={this.termsChanged}
+                            onChange={this.onChangeDummy}>
+                        </input>
+                        <span>I have read and agreed to the&nbsp;
                             <a href="https://about.nepaccess.org/privacy-policy/#terms-of-use" target="_blank">
                                 Terms of Use
                             </a>
-                            <label className="errorLabel">{this.state.termsError}</label>
+                        </span>
+                        <label className="errorLabel">{this.state.termsError}</label>
                     </div></div>
                     
                     <div className="register-form-input-group">
