@@ -29,10 +29,10 @@ export default class Contact extends React.Component {
 
             disabled: false,
 
-            nameError: '',
-            emailError: '',
-            subjectError: '',
-            messageError: '',
+            nameError: '*',
+            emailError: '*',
+            subjectError: '*',
+            messageError: '*',
 
             statusLabel: '',
             statusClass: '',
@@ -78,6 +78,8 @@ export default class Contact extends React.Component {
                 this.setState({
                     name: response.data.name,
                     email: response.data.email,
+                }, () => {
+                    this.invalidFields();
                 });
             }
         }).catch(error => {
