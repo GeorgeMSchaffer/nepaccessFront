@@ -35,6 +35,7 @@ export default class Pairs3 extends React.Component {
 
     state = {
         datums: [],
+        busy: false,
         approver: false
     }
     
@@ -60,6 +61,7 @@ export default class Pairs3 extends React.Component {
     }
 
     getData = () => {
+        this.setState({ busy: true });
         console.log("Fetching data");
         let getUrl = Globals.currentHost + "test/match_all_pairs_two";
         
@@ -78,12 +80,14 @@ export default class Pairs3 extends React.Component {
         }).then(parsedJson => { 
             if(parsedJson){
                 this.setState({
-                    datums: this.setupData(parsedJson)
+                    datums: this.setupData(parsedJson),
+                    busy: false
                 });
             } else { // null/404
-
+                this.setState({ busy: false });
             }
         }).catch(error => {
+            this.setState({ busy: false });
             console.error(error);
         });
     }
@@ -143,6 +147,9 @@ export default class Pairs3 extends React.Component {
         if(this.state.approver) {
             return (
                 <div id="data-pairs" className="content">
+                    <div className="loader-holder">
+                        <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
+                    </div>
                     <div className="instructions">
                         <span className="bold">
                             Strict pairs (2 actual file documents on file server per pair).  Data may take a bit to load and show up, please be patient.
