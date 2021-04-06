@@ -41,6 +41,7 @@ import Admin from './Admin.js';
 
 import Test from './Test.js';
 import Footer from './Footer.js';
+import Pairs from './Pairs.js';
 
 import Globals from './globals.js';
 
@@ -265,12 +266,13 @@ class Main extends React.Component {
                 <Route path="/verify" component={Verify} />
                 <Route path="/approve" component={Approve} />
                 <Route path="/admin" component={Admin} />
+                <Route path="/pairs" component={Pairs}></Route>
                 
                 <Route path="/test" component={Test} />
 
                 <Route path="/" component={Landing}/>
             </Switch>
-            <Footer id="footer"></Footer>
+            {/* <Footer id="footer"></Footer> */}
         </div>
         )
     }

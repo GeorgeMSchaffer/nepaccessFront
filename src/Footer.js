@@ -9,7 +9,7 @@ export default class Footer extends React.Component {
     render () {
         return (
             <div id="footer">
-                <a href="https://nepaccess.org/privacy-policy"
+                <a href="https://nepaccess.org/privacy-policy" rel="noreferrer"
                         target="_blank">
                     Privacy policy
                 </a>

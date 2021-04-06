@@ -616,10 +616,13 @@ a.link {
     cursor: inherit;
     user-select: none;
 }
-
 #search-proximity>div.disabled * {
     color: lightgray !important;
 }
+#proximity-select .control__placeholder {
+    color: #707070; 
+}
+
 div.disabled::before {
     content: '';
     width: 2px;
@@ -631,7 +634,6 @@ div.disabled::before {
     user-select: none;
     background: lightgray !important;
 }
-
 
 #main-search-clear {
     margin-left: -235px;

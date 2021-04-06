@@ -308,7 +308,7 @@ class Search extends React.Component {
             {value: 10, label: '10 words'},
             {value: 50, label: '50 words'},
             {value: 100, label: '100 words'},
-            {value: -1, label: 'any distance'}];
+            {value: -1, label: 'any distance (default)'}];
 
         const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
         + "<table class=tooltip-table><tbody>"
@@ -403,6 +403,7 @@ class Search extends React.Component {
                         </svg>
                         <span id="search-proximity">
                             <Select 
+                                id="proximity-select"
                                 className={this.state.proximityDisabled ? " disabled" : ""}
                                 classNamePrefix="react-select control"
                                 placeholder="Find within"
