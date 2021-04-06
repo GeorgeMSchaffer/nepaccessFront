@@ -158,7 +158,7 @@ export default class Pairs3 extends React.Component {
                 <div id="data-pairs" className="content">
                     <div className="instructions">
                         <span className="bold">
-                            Unstrict pairs (0-2 actual file documents on file server per pair).  Data may take a bit to load and show up, please be patient.
+                            Strict pairs (2 actual file documents on file server per pair).  Data may take a bit to load and show up, please be patient.
                         </span>
                     </div>
 
