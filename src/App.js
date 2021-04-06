@@ -1,4 +1,5 @@
 import React from 'react';
+// import { Link } from 'react-router-dom';
 import {Helmet} from 'react-helmet';
 
 import axios from 'axios';
@@ -304,7 +305,7 @@ export default class App extends React.Component {
                 if(this.props.history){
                     console.log(this.props.history);
                 }
-                this.props.history.push('/login'); // Prompt login if no auth token
+                // this.props.history.push('/login'); // Prompt login if no auth token
             }
 
             this._searchTerms = this.state.searcherInputs.titleRaw;
@@ -434,7 +435,7 @@ export default class App extends React.Component {
                         resultsText: "Error: Request timed out"
                     });
                 } else if (error.response && error.response.status === 403) {
-                    this.props.history.push('/login');
+                    // this.props.history.push('/login');
                 }
                 else {
                     this.setState({
@@ -460,7 +461,7 @@ export default class App extends React.Component {
             return; // cancel search
         }
         if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
-            this.props.history.push('/login'); // Prompt login if no auth token
+            // this.props.history.push('/login'); // Prompt login if no auth token
         }
         if (typeof _offset === 'undefined') {
             _offset = 0;
@@ -659,7 +660,7 @@ export default class App extends React.Component {
 				});
 			} else { // 403?
                 if(err.response && err.response.status===403) {
-                    this.props.history.push('/login');
+                    // this.props.history.push('/login');
                     // this.setState({
                     //     networkError: "Please log in.",
                     //     shouldUpdate: true
@@ -754,9 +755,16 @@ export default class App extends React.Component {
 		{
 			return (
 				<div className="content">
-					<label className="logged-out-header">
-                        NEPAccess searches are not currently available to the public.
-                    </label>
+                    <div>
+                        <label className="logged-out-header">
+                            NEPAccess searches are not currently available to the public.  
+                        </label>
+                    </div>
+                    {/* <div>
+					    <label className="logged-out-header">
+                            Please <Link to="/login">log in</Link>.
+                        </label>
+                    </div> */}
 				</div>
 			)
 		}
