@@ -45,18 +45,10 @@ const columns = [
 
 export default class Pairs3 extends React.Component {
     ref = null;
-    resp = "";
 
     state = {
         datums: [],
-        approver: false,
-        response: ""
-    }
-
-    constructor(props) {
-        super(props);
-
-        // this.my_table = React.createRef();
+        approver: false
     }
     
     checkApprover = () => {
@@ -109,10 +101,9 @@ export default class Pairs3 extends React.Component {
         });
     }
 
-    // TODO: Verify same agency, one draft-type, one final-type, final date later than draft
     setupData = (results) => {
         if(results && results[0]) {
-            return results.map((result, idx) =>{
+            return results.filter(function(result) {
                 let doc = result;
                 let newObject = {
                     id1: doc[0],
@@ -121,7 +112,25 @@ export default class Pairs3 extends React.Component {
                     agency1: doc[3], 
                     type1: doc[4], 
                     date1: doc[5], 
-                    document2: doc[6],
+                    id2: doc[6],
+                    title2: doc[7], 
+                    filename2: doc[8], 
+                    agency2: doc[9], 
+                    type2: doc[10], 
+                    date2: doc[11],
+                    match_percent: doc[12],
+                };
+                return sanityCheck(newObject)
+            }).map((result, idx) =>{
+                let doc = result;
+                let newObject = {
+                    id1: doc[0],
+                    title1: doc[1], 
+                    filename1: doc[2], 
+                    agency1: doc[3], 
+                    type1: doc[4], 
+                    date1: doc[5], 
+                    id2: doc[6],
                     title2: doc[7], 
                     filename2: doc[8], 
                     agency2: doc[9], 
@@ -136,6 +145,7 @@ export default class Pairs3 extends React.Component {
         }
     }
 
+
     downloadData = () => {
         // console.log("Will download this data: ",this.ref.state.data)
         this.ref.table.download("csv", "data.tsv", {delimiter:'\t'}); // tab delimiter
@@ -148,7 +158,7 @@ export default class Pairs3 extends React.Component {
                 <div id="data-pairs" className="content">
                     <div className="instructions">
                         <span className="bold">
-                            Strict pairs (2 actual file documents on file server per pair)
+                            Unstrict pairs (0-2 actual file documents on file server per pair).  Data may take a bit to load and show up, please be patient.
                         </span>
                     </div>
 
@@ -180,4 +190,66 @@ export default class Pairs3 extends React.Component {
             console.error(e);
         }
     }
+}
+
+function sanityCheck(doc) {
+    if(doc.agency1 !== doc.agency2) {
+        return false;
+    }
+
+    let draftOne = isDraft(doc.type1);
+    let draftTwo = isDraft(doc.type2);
+    let finalOne = isFinal(doc.type1);
+    let finalTwo = isFinal(doc.type2);
+
+    if(
+        (draftOne && finalTwo)
+        || (finalOne && draftTwo)
+    ) {
+        // Good
+        if(draftOne) {
+            // Make sure date1 < date2
+            // console.log("date1,date2",doc.date1,doc.date2);
+            if(doc.date1.localeCompare(doc.date2) === -1) {
+                // console.log("Correct dates");
+            } else {
+                return false;
+            }
+        } else if(draftTwo) {
+            // Make sure date2 < date1
+            // console.log("date2,date1",doc.date2,doc.date1);
+            if(doc.date2.localeCompare(doc.date1) === -1) {
+                // console.log("Correct dates");
+            } else {
+                return false;
+            }
+        }
+    } else {
+        return false; // "bad" document types
+    }
+
+    return true;
+}
+
+function isDraft(type) {
+    return (
+        (type === "Draft") 
+        || (type === "Second Draft")
+        || (type === "Revised Draft")
+        || (type === "Draft Supplement")
+        || (type === "Second Draft Supplemental")
+        || (type === "Third Draft Supplemental")
+    );
+}
+
+function isFinal(type) {
+    return (
+        (type === "Final") 
+        || (type === "Second Final")
+        || (type === "Revised Final")
+        || (type === "Final Supplement")
+        || (type === "Second Final Supplemental")
+        || (type === "Third Final Supplemental")
+    );
+
 }
