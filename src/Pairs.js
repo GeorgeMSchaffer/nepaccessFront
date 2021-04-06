@@ -82,7 +82,7 @@ export default class Pairs extends React.Component {
 
     getData = () => {
         console.log("Fetching data");
-        let getUrl = Globals.currentHost + "test/match_all_advanced";
+        let getUrl = Globals.currentHost + "test/match_all_pairs";
         
         axios.get(getUrl, {
             // params: {
