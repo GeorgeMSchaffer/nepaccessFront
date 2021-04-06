@@ -7,7 +7,7 @@ export default class People extends React.Component {
             <div className="iframe-container">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - People</title>
+                    <title>People - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/people" />
                 </Helmet>
                 <iframe src="https://about.nepaccess.org/people/" title="About Nepaccess"

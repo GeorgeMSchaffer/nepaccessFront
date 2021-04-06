@@ -542,7 +542,7 @@ export default class RecordDetailsTab extends React.Component {
             <div id="details">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - Record Details</title>
+                    <title>Record Details - NEPAccess</title>
                     <link rel="canonical" href={"https://nepaccess.org/record-details?id="+Globals.getParameterByName("id")} />
                 </Helmet>
                 <label className="errorLabel">{this.state.networkError}</label>

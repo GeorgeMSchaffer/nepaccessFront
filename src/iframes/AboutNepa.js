@@ -8,7 +8,7 @@ export default class AboutNepa extends React.Component {
             <div className="iframe-container">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - About NEPA</title>
+                    <title>About NEPA - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/about-nepa" />
                 </Helmet>
                 <iframe src="https://about.nepaccess.org/about-nepa/" title="About Nepa"

@@ -8,7 +8,7 @@ export default class PrivacyPolicy extends React.Component {
             <div className="iframe-container">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - About NEPA</title>
+                    <title>About NEPA - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/privacy-policy" />
                 </Helmet>
                 <iframe src="https://about.nepaccess.org/privacy-policy/" title="About Nepa"

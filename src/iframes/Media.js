@@ -8,7 +8,7 @@ export default class Media extends React.Component {
             <div className="iframe-container">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - Videos</title>
+                    <title>Videos - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/videos" />
                 </Helmet>
                 <iframe src="https://about.nepaccess.org/videos/" title="Videos"

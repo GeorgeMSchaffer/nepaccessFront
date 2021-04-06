@@ -454,7 +454,7 @@ class Register extends React.Component {
                 <div id="register-form">
                     <Helmet>
                         <meta charSet="utf-8" />
-                        <title>NEPAccess - Register</title>
+                        <title>Register - NEPAccess</title>
                         <link rel="canonical" href="https://nepaccess.org/register" />
                     </Helmet>
                     <div className="note">

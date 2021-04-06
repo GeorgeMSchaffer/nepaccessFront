@@ -7,7 +7,7 @@ export default class AboutSearchTips extends React.Component {
             <div className="iframe-container">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - Search Tips</title>
+                    <title>Search Tips - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/search-tips" />
                 </Helmet>
                 <iframe src="https://about.nepaccess.org/search-tips/" title="Search Tips"

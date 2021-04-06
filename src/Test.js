@@ -62,7 +62,7 @@ export default class Test extends React.Component {
             <div id="test-container" className="content">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - Test</title>
+                    <title>Test - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/test" />
                 </Helmet>
                 

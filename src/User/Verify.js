@@ -57,7 +57,7 @@ export default class Verify extends React.Component {
             <div className="content">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - Verify Email</title>
+                    <title>Verify Email - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/verify" />
                 </Helmet>
                 <div className="note">

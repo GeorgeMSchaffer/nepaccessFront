@@ -153,7 +153,7 @@ class UserDetails extends React.Component {
             <div className="container login-form">
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>NEPAccess - Profile</title>
+                <title>Profile - NEPAccess</title>
                 <link rel="canonical" href="https://nepaccess.org/profile" />
             </Helmet>
             <div className="note">

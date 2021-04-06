@@ -130,7 +130,7 @@ class ForgotPassword extends React.Component {
             <div className="container login-form">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - Forgot Password</title>
+                    <title>Forgot Password - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/forgotPassword" />
                 </Helmet>
                 <div className="form">

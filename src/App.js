@@ -723,7 +723,7 @@ export default class App extends React.Component {
 				<div id="app-content">
                     <Helmet>
                         <meta charSet="utf-8" />
-                        <title>NEPAccess - Search</title>
+                        <title>Search - NEPAccess</title>
                         <link rel="canonical" href="https://nepaccess.org/search" />
                     </Helmet>
 					<label className="errorLabel">{this.state.networkError}</label>

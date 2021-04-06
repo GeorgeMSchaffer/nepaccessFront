@@ -123,7 +123,7 @@ class Reset extends React.Component {
                 <div id="main" className="container login-form">
                     <Helmet>
                         <meta charSet="utf-8" />
-                        <title>NEPAccess - Reset Password</title>
+                        <title>Reset Password - NEPAccess</title>
                         <link rel="canonical" href="https://nepaccess.org/reset" />
                     </Helmet>
                     <div className="form">
@@ -141,7 +141,7 @@ class Reset extends React.Component {
                 <div className="container login-form">
                     <Helmet>
                         <meta charSet="utf-8" />
-                        <title>NEPAccess - Reset Password</title>
+                        <title>Reset Password - NEPAccess</title>
                         <link rel="canonical" href="https://nepaccess.org/reset" />
                     </Helmet>
                     <div className="form-content">
