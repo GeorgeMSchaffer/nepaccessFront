@@ -30,19 +30,6 @@ const options = {
     footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
 };
 
-// const columns = [
-//     { title: "Title", field: "document1", width:150, headerFilter:"input"},
-// ];
-const columns = [
-    {title: "id1", field: "id1"},
-    {title: "title1", field: "title1"},
-    {title: "filename1", field: "filename1"},
-    {title: "id2", field: "id2"},
-    {title: "title2", field: "title2"},
-    {title: "filename2", field: "filename2"},
-    {title: "match_percent", field: "match_percent"},
-]
-
 export default class Pairs2 extends React.Component {
     ref = null;
 
@@ -165,7 +152,7 @@ export default class Pairs2 extends React.Component {
                     <ReactTabulator
                         ref={ref => (this.ref = ref)}
                         data={this.state.datums}
-                        columns={columns}
+                        columns={[]}
                         options={options}
                         pageLoaded={this.onPageLoaded}
                     />
