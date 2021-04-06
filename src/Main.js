@@ -276,7 +276,7 @@ class Main extends React.Component {
 
                 <Route path="/" component={Landing}/>
             </Switch>
-            {/* <Footer id="footer"></Footer> */}
+            <Footer id="footer"></Footer>
         </div>
         )
     }
