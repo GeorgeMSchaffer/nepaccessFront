@@ -20,7 +20,7 @@ const options = {
     // responsiveLayoutCollapseUseFormatters:false,
     pagination:"local",             //paginate the data
     paginationSize:10,              //allow 10 rows per page of data
-    paginationSizeSelector:[10, 50, 100, 250, 1000], 
+    paginationSizeSelector:[10, 50, 100, 250], 
     movableColumns:false,            //don't allow column order to be changed
     resizableRows:false,             
     resizableColumns:true,
