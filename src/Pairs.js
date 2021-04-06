@@ -118,10 +118,16 @@ export default class Pairs extends React.Component {
                     id1: doc[0],
                     title1: doc[1], 
                     filename1: doc[2], 
-                    id2: doc[3], 
-                    title2: doc[4], 
-                    filename2: doc[5], 
-                    match_percent: doc[6]
+                    agency1: doc[3], 
+                    type1: doc[4], 
+                    date1: doc[5], 
+                    document2: doc[6],
+                    title2: doc[7], 
+                    filename2: doc[8], 
+                    agency2: doc[9], 
+                    type2: doc[10], 
+                    date2: doc[11],
+                    match_percent: doc[12],
                 };
                 return newObject;
             });
