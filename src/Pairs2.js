@@ -43,7 +43,7 @@ const columns = [
     {title: "match_percent", field: "match_percent"},
 ]
 
-export default class Pairs extends React.Component {
+export default class Pairs2 extends React.Component {
     ref = null;
     resp = "";
 
@@ -82,7 +82,7 @@ export default class Pairs extends React.Component {
 
     getData = () => {
         console.log("Fetching data");
-        let getUrl = Globals.currentHost + "test/match_all_advanced";
+        let getUrl = Globals.currentHost + "test/match_all_pairs_one";
         
         axios.get(getUrl, {
             // params: {
@@ -142,7 +142,7 @@ export default class Pairs extends React.Component {
                 <div id="data-pairs" className="content">
                     <div className="instructions">
                         <span className="bold">
-                            Unstrict pairs (0-2 actual file documents on file server per pair)
+                            Semi-strict pairs (1-2 actual file documents on file server per pair)
                         </span>
                     </div>
 

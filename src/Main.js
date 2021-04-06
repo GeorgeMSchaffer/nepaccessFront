@@ -42,6 +42,8 @@ import Admin from './Admin.js';
 import Test from './Test.js';
 import Footer from './Footer.js';
 import Pairs from './Pairs.js';
+import Pairs2 from './Pairs2';
+import Pairs3 from './Pairs3';
 
 import Globals from './globals.js';
 
@@ -267,6 +269,8 @@ class Main extends React.Component {
                 <Route path="/approve" component={Approve} />
                 <Route path="/admin" component={Admin} />
                 <Route path="/pairs" component={Pairs}></Route>
+                <Route path="/pairs2" component={Pairs2}></Route>
+                <Route path="/pairs3" component={Pairs3}></Route>
                 
                 <Route path="/test" component={Test} />
 
