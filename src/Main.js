@@ -45,6 +45,8 @@ import Pairs from './Pairs.js';
 import Pairs2 from './Pairs2';
 import Pairs3 from './Pairs3';
 
+import SearchLogs from './SearchLogs.js';
+
 import Globals from './globals.js';
 
 import { Link, Switch, Route, withRouter } from 'react-router-dom';
@@ -271,6 +273,7 @@ class Main extends React.Component {
                 <Route path="/pairs" component={Pairs}></Route>
                 <Route path="/pairs2" component={Pairs2}></Route>
                 <Route path="/pairs3" component={Pairs3}></Route>
+                <Route path="/search_logs" component={SearchLogs}></Route>
                 
                 <Route path="/test" component={Test} />
 

@@ -95,6 +95,7 @@ export default class Pair extends React.Component {
         });
     }
 
+    // Wishlist: More efficient to use reduce and not filter here, whoops
     setupData = (results) => {
         let locCheck = this.state.locationCheck;
         if(results && results[0]) {
