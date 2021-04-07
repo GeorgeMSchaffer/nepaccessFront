@@ -452,7 +452,7 @@ class Search extends React.Component {
                 <span className="sidebar-header">Narrow your results</span>
                 <div className="sidebar-hr"></div>
                 <div className="filter">
-                    <label className="sidebar-label" htmlFor="searchAgency">Lead agency or agencies</label>
+                    <label className="sidebar-label" htmlFor="searchAgency">Lead agency or <span className="link" onClick={this.orgClick}>agencies</span></label>
                     <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
                         styles={customStyles}
                         options={agencyOptions} 
@@ -540,8 +540,15 @@ class Search extends React.Component {
                     </label>
                 </div>
             </div>
+            <div hidden={this.state.hideOrganization} id="agency-svg-holder">
+                <button onClick={this.orgClick}>Close</button>
+            </div>
             </>
         )
+    }
+
+    orgClick = () => {
+        this.setState({hideOrganization: !this.state.hideOrganization})
     }
 
     componentWillUnmount() {

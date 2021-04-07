@@ -544,6 +544,11 @@ span.email-text {
     color: red !important;
 }
 
+.link {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #0067B1;
+}
 
 /* resurfeced contact/register/login page css */
 

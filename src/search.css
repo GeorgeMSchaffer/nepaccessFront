@@ -640,3 +640,20 @@ div.disabled::before {
 }
 /* #main-search-icon {
 } */
+
+#agency-svg-holder {
+    display: inline-block;
+    margin-left: 40px;
+    padding-bottom: 40px;
+    border: 2px solid green;
+    height: 630px;
+    width: 66%;
+    max-width: 1600px;
+    /* float: right; */
+    background-image: url("assets/organization.svg");
+    background-size: 100% 100%;
+}
+#agency-svg-holder>button {
+    margin: 5px;
+    float: right;
+}
