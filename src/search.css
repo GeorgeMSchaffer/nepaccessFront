@@ -646,7 +646,7 @@ div.disabled::before {
     margin-left: 40px;
     padding-bottom: 40px;
     border: 2px solid green;
-    height: 630px;
+    height: 595px;
     width: 66%;
     max-width: 1600px;
     /* float: right; */
