@@ -7,12 +7,12 @@ import CardDetailsLink from './CardDetailsLink.js';
 
 // TODO: May be wise to have child components for each element that may change (i.e. download links)
 // TODO: Right now, results from initialSearch include a filename string with zero to many 
-// >-separated filenames.  So, CardResult will have to parse that, 
+// >-separated filenames.  So, SearchResult will have to parse that, 
 // and distribute highlights appropriately.
-// To track whether something was downloaded this session, parent (CardResults) keeps a list.
+// To track whether something was downloaded this session, parent (SearchResults) keeps a list.
 // Filtering results for example rerenders and loses track of downloads otherwise
 
-class CardResult extends React.Component {
+class SearchResult extends React.Component {
 
 	// Receives needed props from React-Tabular instance in SearchResults.js
 	constructor(props) {
@@ -457,4 +457,4 @@ class CardResult extends React.Component {
     }
 }
 
-export default CardResult;
+export default SearchResult;

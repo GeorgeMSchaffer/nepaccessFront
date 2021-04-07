@@ -2,7 +2,7 @@ import React from 'react';
 
 import ResultsHeader from './ResultsHeader.js';
 
-import CardResult from './CardResult.js';
+import SearchResult from './SearchResult.js';
 
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
@@ -33,7 +33,7 @@ const options = {
 
 
 
-class CardResults extends React.Component {
+class SearchResults extends React.Component {
 
     downloaded = {};
     _columns = [];
@@ -48,7 +48,7 @@ class CardResults extends React.Component {
         
         this._columns = [
             { title: "", field: "", formatter: reactFormatter(
-                    <CardResult show={this.state.showContext}
+                    <SearchResult show={this.state.showContext}
                                 saveDownloaded={this.saveDownloaded}
                                 checkDownloaded={this.checkDownloaded} />
                 )
@@ -139,7 +139,7 @@ class CardResults extends React.Component {
             let _columns = [];
             if(this.props.results && this.props.results[0]){
                 _columns = [
-                    { title: "", field: "", formatter: reactFormatter(<CardResult 
+                    { title: "", field: "", formatter: reactFormatter(<SearchResult 
                         show={this.state.showContext} 
                         saveDownloaded={this.saveDownloaded}
                         checkDownloaded={this.checkDownloaded} />)}
@@ -199,7 +199,7 @@ class CardResults extends React.Component {
             // let columns = this.setupColumns();
 
             // let _columns = [
-            //     { title: "", field: "", formatter: reactFormatter(<CardResult show={this.state.showContext} />)}
+            //     { title: "", field: "", formatter: reactFormatter(<SearchResult show={this.state.showContext} />)}
             // ];
 
             return (
@@ -273,4 +273,4 @@ class CardResults extends React.Component {
     }
 }
 
-export default CardResults;
+export default SearchResults;

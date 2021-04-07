@@ -4,7 +4,7 @@ import {Helmet} from 'react-helmet';
 
 import axios from 'axios';
 
-import CardResults from './CardResults.js';
+import SearchResults from './SearchResults.js';
 import Search from './Search.js';
 
 import './User/login.css';
@@ -138,7 +138,7 @@ export default class App extends React.Component {
     }
 
     /** Design: Search component calls this parent method which controls
-    * the results, which gives a filtered version of results to CardResults */
+    * the results, which gives a filtered version of results to SearchResults */
     filterResultsBy = (searcherState) => {
         this._searcherState = searcherState; // for live filtering
         // Only filter if there are any results to filter
@@ -736,7 +736,7 @@ export default class App extends React.Component {
                         optionsChanged={this.optionsChanged}
                         count={this.state.count}
                     />
-                    <CardResults 
+                    <SearchResults 
                         sort={this.sort}
                         results={this.state.outputResults} 
                         resultsText={this.state.resultsText} 

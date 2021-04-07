@@ -11,7 +11,7 @@ import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 
 // import DownloadFile from '../DownloadFile.js';
-import CardResult from '../CardResult.js';
+import SearchResult from '../SearchResult.js';
 
 // import RecordDetailsLink from './RecordDetailsLink.js';
 
@@ -37,7 +37,7 @@ class MatchResults extends React.Component {
             }
             
             const columns = [
-                { title: "", field: "", formatter: reactFormatter(<CardResult />)}
+                { title: "", field: "", formatter: reactFormatter(<SearchResult />)}
             ];
 
             var options = {
