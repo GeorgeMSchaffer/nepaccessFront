@@ -134,7 +134,8 @@ class SearchResults extends React.Component {
     
     updateTable = () => {
         try {
-            this.my_table.current.table.blockRedraw();
+            // Tried to use this to make things better but it seemed to make them worse
+            // this.my_table.current.table.blockRedraw();
 
             let _columns = [];
             if(this.props.results && this.props.results[0]){
@@ -267,7 +268,7 @@ class SearchResults extends React.Component {
                 },0)
             // }
 
-            tbltr.table.restoreRedraw();
+            // tbltr.table.restoreRedraw();
         }
 
     }
