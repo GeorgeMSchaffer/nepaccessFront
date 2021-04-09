@@ -89,7 +89,7 @@ class SearchResults extends React.Component {
     
     onPageLoaded = (pageNumber) => {
         if(this.page !== pageNumber){
-            // console.log("#",pageNumber);
+            console.log("#",pageNumber);
             this.page = pageNumber;
             
             // Scrolling is done by footer at the bottom, so when scrolling pages (of variable height)
@@ -231,10 +231,10 @@ class SearchResults extends React.Component {
         }
         catch (e) {
             if(e instanceof TypeError){
-                console.log(e.toString());
+                console.error("TypeError",e);
                 // expected problem with Tabulator trying to render new results before it switches to new column definitions
             } else {
-                console.log(e.toString());
+                console.error("Other",e);
             }
             /** Wishlist: Put the most relevant error message in here */
             return (
@@ -261,11 +261,15 @@ class SearchResults extends React.Component {
             // card height can't figure itself out precisely without a redraw so for now we disable 
             // this check: even while more results are loading, first page will redraw and look good
             // if(!this.props.searching){ 
-                const tbltr = this.my_table.current;
-                setTimeout(function() {
-                    tbltr.table.redraw(true);
-                    // console.log("Redrawn");
-                },0)
+                try {
+                    const tbltr = this.my_table.current;
+                    setTimeout(function() {
+                        tbltr.table.redraw(true);
+                        // console.log("Redrawn");
+                    },0)
+                } catch(e) {
+                    console.error("Redraw error",e);
+                }
             // }
 
             // tbltr.table.restoreRedraw();
