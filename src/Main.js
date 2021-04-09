@@ -25,6 +25,7 @@ import AboutSearchTips from './iframes/AboutSearchTips.js';
 import AboutSearchTips2 from './iframes/AboutSearchTips2.js';
 import Media from './iframes/Media.js';
 import PrivacyPolicy from './iframes/PrivacyPolicy.js';
+import DisclaimerTermsOfUse from './iframes/DisclaimerTermsOfUse.js';
 
 import Contact from './Contact.js';
 
@@ -266,6 +267,7 @@ class Main extends React.Component {
 
                 <Route path="/iframes" component={Iframes} />
                 <Route path="/privacy-policy" component={PrivacyPolicy} />
+                <Route path="/disclaimer-terms-of-use" component={DisclaimerTermsOfUse} />
                 <Route path="/verify" component={Verify} />
                 <Route path="/approve" component={Approve} />
                 <Route path="/admin" component={Admin} />
