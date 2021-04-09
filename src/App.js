@@ -7,6 +7,8 @@ import axios from 'axios';
 import SearchResults from './SearchResults.js';
 import Search from './Search.js';
 
+import Footer from './Footer.js';
+
 import './User/login.css';
 
 import Globals from './globals.js';
@@ -422,7 +424,7 @@ export default class App extends React.Component {
                     // console.log("No results");
                     this.setState({
                         searching: false,
-                        resultsText: "No results found"
+                        resultsText: "No results found for " + dataToPass.title + " (try adding OR between words for less strict results)"
                     });
                 }
             }).catch(error => { // Server down or 408 (timeout)
@@ -720,7 +722,7 @@ export default class App extends React.Component {
 
 			return (
                 <>
-				<div id="app-content">
+				<div id="app-content" className="footer-content">
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>Search - NEPAccess</title>
@@ -747,6 +749,7 @@ export default class App extends React.Component {
                     />
 				</div>
                 <div ref={this.endRef} />
+                <Footer id="footer"></Footer>
                 </>
 			)
 

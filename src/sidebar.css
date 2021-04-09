@@ -140,16 +140,19 @@ label.checkbox-text {
 
 /* Vertically align results header content */
 .results-bar {
-    display: block;
-    height: 50px;
+    display: inline-block;
+    
+    width: 100%;
+    min-height: 50px;
     line-height: 50px;
+
     background: rgba(196, 196, 196, 1);
 }
 #results-label {
     margin-left: 15px;
     /* width: 40%; */
-    white-space: nowrap;
-    overflow:hidden !important;
+    /* white-space: nowrap;
+    overflow: hidden !important; */
     text-overflow: ellipsis;
 }
 .results-bar>* { 

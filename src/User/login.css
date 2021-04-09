@@ -43,6 +43,7 @@ span.highlight {
 
 .login-form {
     margin-top: 102px;
+    min-width: 700px;
 }
 
 .login-row {

@@ -2,6 +2,8 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import { Link } from 'react-router-dom';
 
+import Footer from '../Footer.js';
+
 import axios from 'axios';
 
 import Globals from '../globals.js';
@@ -268,6 +270,7 @@ class Login extends React.Component {
                         </div>
                     </div>
                 </div>
+                <Footer id="footer"></Footer>
             </div>
             
         )

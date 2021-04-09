@@ -12,11 +12,15 @@ html {
   scroll-behavior: smooth;
   font-family: "Open Sans";
   height: calc(100% - 102px);
+  box-sizing: border-box;
 }
 
 body {
   background: #FBFBF6;
   margin: 0;
+
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -257,6 +261,9 @@ body {
 #app-content {
     min-width: 1300px;
 }
+/* .footer-content {
+    margin-bottom: 15px;
+} */
 
 /* Special tags */
 
@@ -621,10 +628,10 @@ span.leading-text {
     height: 34px;
 }
 
-#footer {
-    position: fixed;
+/* #footer {
+    display: block;
+    position: relative;
     bottom: 0;
-    width: 100%;
 
     padding-bottom: 2px;
 
@@ -632,7 +639,14 @@ span.leading-text {
 
     border-top: 1px solid black;
 
+    height: 15px;
     font-size: 10px;
+    text-align: center;
+} */
+
+#footer {
+    padding: 1rem;
+    background-color: #efefef;
     text-align: center;
 }
 

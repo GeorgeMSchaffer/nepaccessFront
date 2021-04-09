@@ -2,6 +2,8 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import Select from 'react-select';
 
+import Footer from '../Footer.js';
+
 import axios from 'axios';
 import globals from '../globals.js';
 
@@ -587,6 +589,7 @@ class Register extends React.Component {
                         </div>
 
                     </div>
+                    <Footer id="footer"></Footer>
                 </div>
             )
         }

@@ -56,7 +56,8 @@ class Search extends React.Component {
             cancelButtonActive: true,
             tooltipOpen: undefined,
             proximityOption: -1,
-            proximityDisabled: true
+            proximityDisabled: true,
+            hideOrganization: true
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;

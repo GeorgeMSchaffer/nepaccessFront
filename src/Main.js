@@ -40,7 +40,6 @@ import Approve from './Approve.js';
 import Admin from './Admin.js';
 
 import Test from './Test.js';
-import Footer from './Footer.js';
 import Pairs from './Pairs.js';
 import Pairs2 from './Pairs2';
 import Pairs3 from './Pairs3';
@@ -279,7 +278,6 @@ class Main extends React.Component {
 
                 <Route path="/" component={Landing}/>
             </Switch>
-            <Footer id="footer"></Footer>
         </div>
         )
     }

@@ -3,6 +3,8 @@ import {Helmet} from 'react-helmet';
 // import Select from 'react-select';
 import Creatable from 'react-select/creatable';
 
+import Footer from './Footer.js';
+
 import axios from 'axios';
 import globals from './globals.js';
 
@@ -404,6 +406,7 @@ export default class Contact extends React.Component {
                         
 
                     </div>
+                    <Footer id="footer"></Footer>
                 </div>
             )
         }
