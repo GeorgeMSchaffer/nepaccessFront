@@ -475,6 +475,8 @@ export default class RecordDetailsTab extends React.Component {
                     return '';
                 } else if(key==='summaryText') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);
+                } else if(key==='luceneIds') {
+                    return '';
                 }
                 // else: everything else
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p>);

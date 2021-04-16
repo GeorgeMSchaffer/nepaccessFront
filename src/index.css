@@ -178,7 +178,13 @@ body {
     padding-right: 10px;
     border-right: 2px black solid;
 } */
-#admin-span, #profile-span, #login-span {
+/** Temporarily disabled register, right-border */
+/* #admin-span, #profile-span, #login-span {
+    margin: 0;
+    padding-right: 10px;
+    border-right: 2px black solid;
+} */
+#admin-span, #profile-span {
     margin: 0;
     padding-right: 10px;
     border-right: 2px black solid;

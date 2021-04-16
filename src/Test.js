@@ -65,8 +65,12 @@ export default class Test extends React.Component {
                     <title>Test - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/test" />
                 </Helmet>
-                
                 <span>test</span>
+                <div id="agency-svg-holder">
+                    <button>Close</button>
+                </div>
+                <span>test</span>
+                {/* <span>test</span>
                 <div>
                     <ReCAPTCHA
                         ref={recaptchaRef}
@@ -75,7 +79,7 @@ export default class Test extends React.Component {
                         onErrored={this.log}
                     />
                     <button type='button' onClick={this.testClick}>Submit</button>
-                </div>
+                </div> */}
             </div>
         )
     }

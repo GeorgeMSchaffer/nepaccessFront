@@ -205,7 +205,7 @@ export default class App extends React.Component {
 
     // TODO: asc/desc (> vs. <, default desc === >)
     sortDataByField = (field, ascending) => {
-        console.log("Sorting");
+        // console.log("Sorting");
         this.setState({
             // searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
             outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending))),
@@ -370,7 +370,7 @@ export default class App extends React.Component {
                 let _data = [];
                 if(currentResults && currentResults[0] && currentResults[0].doc) {
                     
-                    // console.log(currentResults);
+                    // console.log("Got results from server",currentResults);
                     // TODO: Probably don't want filter permanently, but it was requested for now
                     _data = currentResults
                     .filter((result) => { // Soft rollout logic added to filter out anything without docs.
@@ -390,6 +390,7 @@ export default class App extends React.Component {
                             commentsFilename: doc.commentsFilename,
                             size: doc.size,
                             id: doc.id,
+                            luceneIds: result.ids,
                             folder: doc.folder,
                             plaintext: result.highlights,
                             name: result.filenames,
@@ -403,6 +404,7 @@ export default class App extends React.Component {
                         resultsText: _data.length + " Results",
                     }, () => {
                         this.filterResultsBy(this._searcherState);
+                        // console.log("Mapped data",_data);
                     
                         // title-only (or blank search===no text search at all): return
                         if(Globals.isEmptyOrSpaces(searcherState.titleRaw) || 
@@ -415,8 +417,8 @@ export default class App extends React.Component {
                             });
                         } else {
                             this._searchId = this._searchId + 1;
-                            console.log("Launching fragment search ",this._searchId);
-                            this.gatherHighlights(this._searchId, 0, searcherState, _data);
+                            // console.log("Launching fragment search ",this._searchId);
+                            this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
                         }
                     });
                 } else {
@@ -641,6 +643,182 @@ export default class App extends React.Component {
         
     }
 
+    gatherHighlightsFVH = (searchId, _offset, _inputs, currentResults) => {
+        if(!this._mounted){ // User navigated away or reloaded
+            return; // cancel search
+        }
+        if(searchId < this._searchId) { // Search interrupted
+            return; // cancel search
+        }
+        if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
+            // this.props.history.push('/login'); // Prompt login if no auth token
+        }
+        if (typeof _offset === 'undefined') {
+            _offset = 0;
+        }
+        if (typeof currentResults === 'undefined') {
+            currentResults = [];
+        }
+
+        if(_offset > currentResults.length || this._canceled) {
+            let resultsText = currentResults.length + " Results";
+            if(this._canceled) {
+                resultsText += " (stopped)";
+            }
+            console.log("Nothing left to highlight");
+            this.setState({
+                searching: false,
+                resultsText: resultsText,
+                shouldUpdate: true
+            }, () => {
+                this.filterResultsBy(this._searcherState);
+            });
+            return;
+        }
+
+        let _limit = 100; // normally get 100
+        if(_offset === 0) {
+            _limit = 10; // start with 10
+        } else if(_offset === 10) {
+            _limit = 90;
+        }
+
+        this.setState({
+            snippetsDisabled: false,
+			resultsText: currentResults.length + " Results.  Getting Texts...",
+            networkError: "", // Clear network error
+		}, () => {
+            
+            // For the new search logic, the idea is that the limit and offset are only for the text
+            // fragments.  The first search should get all of the results, without context.
+            // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
+            // properly
+            let searchUrl = new URL('text/get_highlightsFVH', Globals.currentHost);
+
+            // TODO: Gather limit # IDs and filenames starting at offset # from current results,
+            // feed as data.  Because we're deciding what we want from the backend, offset is handled
+            // locally.
+            let _unhighlighted = [];
+            for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++){
+                // Push Lucene IDs and >-delimited list of filenames
+                if(!Globals.isEmptyOrSpaces(currentResults[i].name)) {
+                    // console.log("Pushing...",currentResults[i]);
+                    _unhighlighted.push(
+                        {
+                            luceneIds: currentResults[i].luceneIds, 
+                            filename: currentResults[i].name
+                        }
+                    );
+                }
+            }
+
+
+            // If nothing to highlight in this batch, skip to next run
+            if(_unhighlighted.length === 0) {
+                if(searchId < this._searchId) {
+                    return;
+                } else {
+                    this.gatherHighlightsFVH(searchId, _offset + _limit, _inputs, currentResults);
+                }
+                return;
+            }
+
+			let dataToPass = 
+            { 
+				unhighlighted: _unhighlighted,
+                terms: _inputs.titleRaw,
+            };
+
+            // console.log("For backend",dataToPass);
+
+            //Send the AJAX call to the server
+            axios({
+                method: 'POST', // or 'PUT'
+                url: searchUrl,
+                data: (dataToPass)
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK) {
+                    return response.data;
+                } else {
+                    return null;
+                }
+            }).then(parsedJson => {
+                if(parsedJson){
+                    // console.log("Processing results", parsedJson.length);
+                    let updatedResults = this.state.searchResults;
+
+                    // Fill highlights here; update state
+                    // Presumably comes back in order it was sent out, so we could just do this?:
+                    let j = 0;
+                    for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++) {
+                        // If search is interrupted, updatedResults[i] may be undefined (TypeError)
+                        if(!Globals.isEmptyOrSpaces(currentResults[i].name)){
+                            updatedResults[i].plaintext = parsedJson[j];
+                            j++;
+                        }
+                    }
+                    
+                    // Verify one last time we want this before we actually commit to these results
+                    if(searchId < this._searchId) {
+                        return;
+                    } else {
+                        this.setState({
+                            searchResults: updatedResults,
+                            outputResults: updatedResults,
+                            count: _offset,
+                            // shouldUpdate: false
+                        }, () => {
+                            if(this._sortVal) {
+                                this.sortDataByField(this._sortVal, this._ascVal);
+                            }
+                            this.filterResultsBy(this._searcherState);
+                        });
+                        
+                        // offset for next run incremented by limit used
+                        this.gatherHighlightsFVH(searchId, _offset + _limit, _inputs, updatedResults);
+                    }
+                }
+            }).catch(error => { 
+                if(error.name === 'TypeError') {
+                    console.error(error);
+                } else { // Server down or 408 (timeout)
+                    console.error('Server is down or verification failed.', error);
+                    if(error.response && error.response.status === 408) {
+                        this.setState({
+                            networkError: 'Request has timed out.',
+                            resultsText: 'Timed out',
+                            searching: false,
+                            shouldUpdate: true
+                        });
+                    } else {
+                        this.setState({
+                            networkError: 'Server is down or you may need to login again.',
+                            resultsText: 'Server unresponsive',
+                            searching: false,
+                            shouldUpdate: true
+                        });
+                    }
+                }
+            });
+        });
+
+        // Possible logic: 
+        // 1. Send list of objects with filename + EISDoc ID.
+        // Offset determines how many objects to send at a time.
+        // They have to match the order that the frontend displays the filenames in, per card.
+        // Getting highlights for page user is on, debounced, would be cool, but could be difficult.
+        // Adding spinner as placeholder for highlights would also be cool.
+        // 2. Backend gets text by matching on given list of data, and gets highlights from texts.
+        // 3. Backend sends list of objects containing filename, EISDoc ID, highlight.
+        // 4. Frontend receives, matches, updates highlights.
+
+        // There shouldn't be any cause for giving the entire result set back to the backend.
+        // Other logic would be to expect only highlights back in a particular order.  However sorting
+        // would complicate this in several ways.
+
+        
+    }
 
 
 	check = () => { // check if JWT is expired/invalid
@@ -679,7 +857,7 @@ export default class App extends React.Component {
     /** Scroll to bottom on page change and populate full table with latest results */
     scrollToBottom = (_rows) => {
         try {
-            console.log("Page update");
+            // console.log("Page update");
             // console.log("Rows", _rows);
             // for(let i = 0; i < _rows.length; i++) {
             //     console.log(_rows[i].data);

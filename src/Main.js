@@ -14,7 +14,7 @@ import Logout from './User/Logout.js';
 import Reset from './User/Reset.js';
 import UserDetails from './User/Profile.js';
 import ForgotPassword from './User/ForgotPassword.js';
-import Register from './User/Register.js';
+// import Register from './User/Register.js';
 import Verify from './User/Verify.js';
 
 
@@ -191,9 +191,9 @@ class Main extends React.Component {
                     <span id="login-span" className={this.state.loggedOutDisplay + " logged-out"}>
                         <Link className="top-menu-link" to="/login">Log in</Link>
                     </span>
-                    <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
+                    {/* <span className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
                         <Link className="top-menu-link" to="/register">Register</Link>
-                    </span>
+                    </span> */}
                     <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                         <Link className="top-menu-link" to="/logout">Log out</Link>
                     </span>
@@ -242,7 +242,7 @@ class Main extends React.Component {
             <Switch>
                 <Route path="/profile" component={UserDetails}/>
                 <Route path="/login" component={Login}/>
-                <Route path="/register" component={Register}/>
+                {/* <Route path="/register" component={Register}/> */}
                 <Route path="/forgotPassword" component={ForgotPassword}/>
                 <Route path="/reset" component={Reset}/>
                 <Route path="/logout" component={Logout}/>
