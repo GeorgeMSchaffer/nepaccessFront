@@ -30,10 +30,37 @@ class Login extends React.Component {
             passwordError: '',
             networkError: '',
             passwordType: "password",
-            busy: false
+            busy: false,
+
+            termsAgreed: false,
+            termsError: '*'
         };
         this.onChange = this.onChange.bind(this);
         this.login = this.login.bind(this);
+    }
+    
+
+    termsChanged = (evt) => {
+        // console.log("Target",evt.target);
+        this.setState({ 
+            termsAgreed: evt.target.checked 
+        }, () => {
+            this.termsInvalid();
+        });
+    }
+
+    termsInvalid = () => {
+        if(!this.state.termsAgreed) {
+            this.setState({
+                termsError: '*'
+            });
+        } else {
+            this.setState({
+                termsError: ''
+            });
+        }
+
+        return !this.state.termsAgreed;
     }
     
 
@@ -63,7 +90,8 @@ class Login extends React.Component {
         // Run everything and all appropriate errors will show at once.
         let test1 = this.invalidUsername();
         let test2 = this.invalidPassword();
-        return (test1 || test2);
+        let test3 = this.termsInvalid();
+        return (test1 || test2 || test3);
     }
     invalidUsername = () => {
         let usernamePattern = /[ -~]/;
@@ -129,6 +157,11 @@ class Login extends React.Component {
         }
 
         
+    }
+
+    // silence irrelevant warnings
+    onChangeDummy = (evt) => {
+        // do nothing
     }
     
 
@@ -259,6 +292,24 @@ class Login extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        
+
+                        <div className="register-form-input-group"><div className="register-form-group">
+                            <span className="leading-text"></span>
+                            <input type="checkbox" 
+                                name="terms" 
+                                checked={this.state.termsAgreed}
+                                onClick={this.termsChanged}
+                                onChange={this.onChangeDummy}>
+                            </input>
+                            <span>I have read and agreed to the&nbsp;
+                                <a href="https://about.nepaccess.org/privacy-policy/#terms-of-use" target="_blank">
+                                    Terms of Use
+                                </a>
+                            </span>
+                            <label className="errorLabel">{this.state.termsError}</label>
+                        </div></div>
+
                         <span className="leading-text"></span>
                         <button type="button" className="button2" id="login-submit" onClick={this.login} >
                             Log in
