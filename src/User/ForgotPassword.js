@@ -58,7 +58,7 @@ class ForgotPassword extends React.Component {
         }
         let message = "";
         if(invalid){
-            message = "Email address invalid.";
+            message = "Please enter a valid email address.";
         }
         this.setState({ emailError: message });
         // this.setState({ disabled: invalid });
@@ -143,19 +143,24 @@ class ForgotPassword extends React.Component {
                     </label>
 
                     <div className="form-content">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="form-group">
-                                    <input type="text" id="email" className="form-control" name="email" autoFocus 
-                                            placeholder="Email address" onChange={this.onChange} onKeyUp={this.onKeyUp}/>
-                                    <label className="loginErrorLabel">{this.state.emailError}</label>
-                                </div>
-                            </div>
+                        <div className="login-row">
+                            
+                            <span className="leading-text"></span>
+                            <input type="text" id="email" className="form-control" name="email" autoFocus 
+                                    placeholder="Email address" 
+                                    onChange={this.onChange} 
+                                    onKeyUp={this.onKeyUp}
+                            />
+                            <label className="loginErrorLabel">{this.state.emailError}</label>
                         </div>
-                        <button type="button" className="button" id="submit" onClick={this.sendResetLink}>
-                            Send reset link
-                        </button>
-                        <label className="infoLabel">{this.state.successLabel}</label>
+                        
+                        <div className="login-row">
+                            <span className="leading-text"></span>
+                            <button type="button" className="button" id="submit" onClick={this.sendResetLink}>
+                                Send reset link
+                            </button>
+                            <label className="successLabel inline-block padding">{this.state.successLabel}</label>
+                        </div>
                     </div>
                 </div>
             </div>
