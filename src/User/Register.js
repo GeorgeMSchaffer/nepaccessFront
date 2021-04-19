@@ -99,6 +99,8 @@ class Register extends React.Component {
                 termsError: ""
             });
         }
+        
+        return !this.state.termsAgreed;
     }
 
     // Validation
