@@ -2,12 +2,8 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import Select from 'react-select';
 
-import Footer from '../Footer.js';
-
 import axios from 'axios';
 import globals from '../globals.js';
-
-import ReCAPTCHA from 'react-google-recaptcha';
 
 import './login.css';
 import './register.css';
