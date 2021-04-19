@@ -1,0 +1,467 @@
+import React from 'react';
+import {Helmet} from 'react-helmet';
+import Select from 'react-select';
+
+import Footer from '../Footer.js';
+
+import axios from 'axios';
+import globals from '../globals.js';
+
+import ReCAPTCHA from 'react-google-recaptcha';
+
+import './login.css';
+import './register.css';
+
+const _ = require('lodash');
+const affiliations = [
+    {value:"Federal government", label:"Federal government"}, 
+    {value:"Tribal government", label:"Tribal government"}, 
+    {value:"State/local government", label:"State/local government"}, 
+    {value:"NEPA consultant/preparer", label:"NEPA consultant/preparer"}, 
+    {value:"Private industry", label:"Private industry"}, 
+    {value:"NGO", label:"NGO"}, 
+    {value:"Lawyer", label:"Lawyer"}, 
+    {value:"Academic research", label:"Academic research"}, 
+    {value:"General public", label:"General public"}, 
+    {value:"Other", label:"Other"}
+];
+const recaptchaRef = React.createRef();
+//<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+export default class PreRegister extends React.Component {
+
+    constructor(props) {
+        super(props);
+		this.state = {
+            username: '',
+            password: '',
+            email: '',
+            disabled: false,
+            passwordType: "password",
+            termsAgreed: false,
+            termsError: "*",
+
+            usernameError: '*',
+            emailError: '*',
+            passwordError: '*',
+            affiliationOtherError: '*',
+
+            firstName: '',
+            lastName: '',
+            affiliation: '', // "Field"
+            affiliationOther: '', 
+            jobTitle: '', // optional
+            organization: '', // optional
+
+            statusLabel: '',
+            statusClass: '',
+            registered: false,
+            busy: false
+
+            // captcha: ''
+        };
+
+        this.checkUsername = _.debounce(this.checkUsername, 300);
+        this.checkEmail = _.debounce(this.checkEmail, 300);
+        document.body.style.cursor = 'default';
+    }
+
+    // Validation
+    invalidFields = () => {
+        if(this.state.registered) {
+            return true;
+        }
+        // Run everything and all appropriate errors will show at once.
+        let test1 = this.checkEmail();
+        let test2 = this.checkUsername();
+        let test3 = this.invalidPassword();
+        let test4 = this.invalidAffiliationOther();
+
+        let _disabled = (test1 || test2 || test3 || test4);
+
+        this.setState({ disabled: _disabled });
+        
+        return (_disabled);
+    }
+    invalidUsername = () => {
+        let usernamePattern = /[a-zA-Z0-9]/;
+        let invalid = !(usernamePattern.test(this.state.username));
+        let message = "";
+        if(invalid){
+            message = "Cannot be empty, alphanumeric only.";
+            message = "*";
+        }
+        this.setState({ usernameError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
+    invalidEmail = () => {
+        let emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let invalid = !(emailPattern.test(this.state.email));
+        let message = "";
+        if(invalid){
+            message = "Please enter a valid email address.";
+        }
+        this.setState({ emailError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
+    
+    invalidAffiliationOther = () => {
+        let usernamePattern = /[ -~]/;
+        let invalid = this.state.affiliation==="Other" && !(usernamePattern.test(this.state.affiliationOther));
+        let message = "";
+        if(invalid){
+            message = "Required field when selecting \"Other\"";
+            message = "*";
+        }
+        this.setState({ affiliationOtherError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
+    invalidPassword = () => {
+        let passwordPattern = /[ -~]/;
+        let invalid = !(passwordPattern.test(this.state.password));
+        let message = "";
+        if(invalid){
+            message = "Cannot be empty, must be printable characters.";
+            message = "*";
+        }
+        this.setState({ passwordError: message });
+        this.setState({ disabled: invalid });
+        return invalid;
+    }
+
+
+
+    // Check if email is taken to prevent submission of duplicates
+    checkEmail = () => {
+        if(this.invalidEmail() || this.state.registered){
+            this.setState({ disabled: true });
+            return;
+        } else {
+            this.setState({ disabled: false });
+        }
+
+        let nameUrl = new URL('user/email-exists', globals.currentHost);
+        
+        fetch(nameUrl, { 
+            method: 'POST',
+            body: this.state.email,
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }).then(response => {
+            if(response.ok){ // 200
+                return response.json();
+            } else { // 403
+                return null;
+            }
+        }).then(jsonResponse => {
+            if(jsonResponse && jsonResponse === true){
+                this.setState({ emailError: "Email found in system.  Please try another email." });
+            } else if(jsonResponse === false) {
+                this.setState({ emailError: "" });
+            }
+        }).catch(error => {
+            this.setState({
+                statusClass: 'errorLabel',
+                statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+            });
+            console.error('Server probably down.', error);
+        });
+    }
+
+    // Check if username is taken to prevent submission of duplicates
+    checkUsername = () => {
+        if(this.invalidUsername() || this.state.registered){
+            this.setState({ disabled: true });
+            return;
+        } else {
+            this.setState({ disabled: false });
+        }
+
+        let nameUrl = new URL('user/exists', globals.currentHost);
+        
+        fetch(nameUrl, { 
+            method: 'POST',
+            body: this.state.username,
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }).then(response => {
+            if(response.ok){ // 200
+                return response.json();
+            } else { // 403
+                return null;
+            }
+        }).then(jsonResponse => {
+            if(jsonResponse && jsonResponse === true){
+                this.setState({ usernameError: "Username taken.  Please try another username." });
+            } else if(jsonResponse === false) {
+                this.setState({ usernameError: "" });
+            }
+        }).catch(error => {
+            this.setState({
+                statusClass: 'errorLabel',
+                statusLabel: 'Sorry, an error has occurred.  Server may currently be down.  Please try again later.'
+            });
+            console.error('Server probably down.', error);
+        });
+    }
+
+	onUsernameChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkUsername(); });
+    }
+
+	onPasswordChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidPassword(); });
+    }
+    
+	onEmailChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkEmail(); });
+    }
+
+    onChangeHandler = (evt) => {
+		// evt.target.name defined by name= in input
+        const name = evt.target.name;
+		this.setState( 
+		{ 
+            [name]: evt.target.value,
+        }, () => { 
+            // validate (also disables register button if invalid)
+            this.invalidFields(); // org selection/other org name handles itself from here
+
+        });
+    }
+
+    // silence irrelevant warnings
+    onChangeDummy = (evt) => {
+        // do nothing
+    }
+
+    onSelectHandler = (val, act) => {
+        // console.log("Val/act",val,act);
+        if(!val || !act){
+            return;
+        }
+
+        // if(act.action === ""){
+        // }
+
+        this.setState(
+        { 
+            affiliation: val.value
+        }, () => {
+            // this.invalidFields();
+        });
+
+    }
+
+    // Register
+    register = () => {
+        if(this.invalidFields()){
+            return;
+        }
+        document.body.style.cursor = 'wait';
+        this.setState({ 
+            disabled: true,
+            busy: true,
+            statusLabel: ''
+         });
+        
+        let registerUrl = new URL('user/register', globals.currentHost);
+
+        const recaptchaValue = recaptchaRef.current.getValue();
+        const dataForm = new FormData();
+
+        let dataToPass = { 
+            username: this.state.username, 
+            password: this.state.password, 
+            email: this.state.email,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            affiliation: this.state.affiliation,
+            organization: this.state.organization,
+            jobTitle: this.state.jobTitle
+        };
+        
+        dataForm.append('jsonUser', JSON.stringify(dataToPass));
+        dataForm.append('recaptchaToken', recaptchaValue);
+
+        axios({ 
+            method: 'POST',
+            url: registerUrl,
+            data: dataForm,
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+        
+            if(responseOK){ // 200
+                this.setState({
+                    statusClass: 'successLabel',
+                    statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.',
+                    registered: true
+                });
+            } else { // 500 or 503, or server down
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, an error has occurred. Server responded with ' + response.status
+                });
+            }
+        }).catch(error => {
+            if(error.response.status===418) {
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, that username is taken.',
+                    disabled: false, 
+                    busy: false
+                });
+            } else {
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Sorry, an error has occurred. Please try again later. Server responded with ' + response.status,
+                    disabled: false, 
+                    busy: false
+                });
+            }
+        });
+
+        this.setState({ disabled: false, busy: false });
+        document.body.style.cursor = 'default';
+    }
+    
+    showPassword = () => {
+        let value = "password";
+        if(this.state.passwordType === value){
+            value = "text";
+        }
+        this.setState({
+            passwordType: value
+        });
+    } 
+    
+    render() {
+        if(this.state.registered) {
+            return (<div id="register-form">
+                <div className="register-form-input-group">
+                    <div className="register-form-group">
+                        <label className='successLabel large'>
+                            Successfully added new user.
+                        </label>
+                    </div>
+                </div></div>
+            );
+        } else {
+            return (
+                <div id="register-form">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>Pre-register - NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/register" />
+                    </Helmet>
+                    <div className="note">
+                        Pre-register beta tester
+                    </div>
+                    <div className="loader-holder">
+                        <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
+                    </div>
+
+                    <div className="form-content">
+                        <div className="row">
+                            
+                        <div className="label-holder">
+                            <span className="leading-text"></span>
+                            <span className="errorLabel">* marks a required field</span>
+                        </div>
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text"> first name:</span><input type="text" maxLength="191"
+                                        className="form-control" id="firstName" name="firstName" placeholder="" autoFocus onBlur={this.onChangeHandler}/>
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text"> last name:</span><input type="text" maxLength="191"
+                                        className="form-control" id="lastName" name="lastName" placeholder="" onBlur={this.onChangeHandler}/>
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text"> email address:</span><input type="text" maxLength="191"
+                                        className="form-control" id="email" name="email" placeholder="" onBlur={this.onEmailChange}/>
+                                    <label hidden={this.state.registered} className="errorLabel">{this.state.emailError}</label>
+                                </div>
+                            </div>
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text"> user group:</span><Select
+                                            id="register-select"
+                                            className="inline-block"
+                                            classNamePrefix="creatable"
+                                            options={affiliations}
+                                            name="affiliation" 
+                                            placeholder="" 
+                                            onChange={this.onSelectHandler}
+                                    />
+                                </div>
+                                <div className="register-form-group"
+                                        hidden={this.state.affiliation !== "Other"} >
+                                    <span className="leading-text"></span>
+                                    <input 
+                                        disabled={this.state.affiliation !== "Other"} 
+                                        type="text" maxLength="1000"
+                                        className="form-control" id="affiliationOther" name="affiliationOther" 
+                                        placeholder="If choosing &quot;other&quot; type it here" onBlur={this.invalidAffiliationOther} />
+                                    <label className="errorLabel">{this.state.affiliationOtherError}</label>
+                                </div>
+                            </div>
+                            
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text">Name of organization:</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" />
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">
+                                         job title:
+                                    </span>
+                                    <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" />
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">
+                                         username:
+                                    </span>
+                                    <input type="text" maxLength="191"
+                                        className="form-control" id="username" name="username" placeholder="" onBlur={this.onUsernameChange}/>
+                                    <label hidden={this.state.registered} className="errorLabel">{this.state.usernameError}</label>
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">
+                                        Password:
+                                    </span>
+                                    <input type={this.state.passwordType} maxLength="191" 
+                                        id="password" className="form-control password-field" name="password" placeholder="" onBlur={this.onPasswordChange} />
+                                    <label className="errorLabel">{this.state.passwordError}</label>
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text"></span>
+                                    <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                                    <label className="inline noSelect">Show password</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="register-form-input-group">
+                            <div className="register-form-group">
+                                <span className="leading-text"></span>
+                                <button type="button" className="button2 inline-block" id="register-submit" 
+                                    onClick={this.register}>Register
+                                </button>
+                            </div>
+                            <label className={this.state.statusClass}>{this.state.statusLabel}</label>
+                        </div>
+
+                    </div>
+                </div>
+            )
+        }
+    }
+}

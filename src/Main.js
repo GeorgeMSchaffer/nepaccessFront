@@ -15,6 +15,7 @@ import Reset from './User/Reset.js';
 import UserDetails from './User/Profile.js';
 import ForgotPassword from './User/ForgotPassword.js';
 // import Register from './User/Register.js';
+import PreRegister from './User/PreRegister.js';
 import Verify from './User/Verify.js';
 
 
@@ -243,6 +244,7 @@ class Main extends React.Component {
                 <Route path="/profile" component={UserDetails}/>
                 <Route path="/login" component={Login}/>
                 {/* <Route path="/register" component={Register}/> */}
+                <Route path="/pre_register" component={PreRegister}/>
                 <Route path="/forgotPassword" component={ForgotPassword}/>
                 <Route path="/reset" component={Reset}/>
                 <Route path="/logout" component={Logout}/>
@@ -362,6 +364,7 @@ class Main extends React.Component {
                             <Link to="/importer">Import New Documents</Link>
                             <Link to="/adminFiles">Find Missing Files</Link>
                             <Link to="/approve">Approve Users</Link>
+                            <Link to="/pre_register">Pre-Register Users</Link>
                         </div>
                     </div>
                 </span>
@@ -381,6 +384,7 @@ class Main extends React.Component {
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
                             <Link to="/approve">Approve Users</Link>
+                            <Link to="/pre_register">Pre-Register Users</Link>
                         </div>
                     </div>
                 </span>
