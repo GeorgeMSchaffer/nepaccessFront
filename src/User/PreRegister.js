@@ -270,9 +270,8 @@ export default class PreRegister extends React.Component {
             statusLabel: ''
          });
         
-        let registerUrl = new URL('user/register', globals.currentHost);
+        let registerUrl = new URL('user/pre_register', globals.currentHost);
 
-        const recaptchaValue = recaptchaRef.current.getValue();
         const dataForm = new FormData();
 
         let dataToPass = { 
@@ -287,7 +286,6 @@ export default class PreRegister extends React.Component {
         };
         
         dataForm.append('jsonUser', JSON.stringify(dataToPass));
-        dataForm.append('recaptchaToken', recaptchaValue);
 
         axios({ 
             method: 'POST',
