@@ -222,12 +222,20 @@ export default class PreRegister extends React.Component {
         this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidAffiliationOther(); });
     }
 
+    onChange = (evt) => {
+        const name = evt.target.name;
+        this.setState({
+                [name]: evt.target.value
+        });
+
+    }
+
     onChangeHandler = (evt) => {
 		// evt.target.name defined by name= in input
         const name = evt.target.name;
 		this.setState( 
 		{ 
-            [name]: evt.target.value,
+            [name]: evt.target.value
         }, () => { 
             // validate (also disables register button if invalid)
             this.invalidFields(); // org selection/other org name handles itself from here
@@ -284,6 +292,10 @@ export default class PreRegister extends React.Component {
             organization: this.state.organization,
             jobTitle: this.state.jobTitle
         };
+
+        if(this.state.affiliation==="Other") {
+            dataToPass.affiliation = this.state.affiliationOther;
+        }
         
         dataForm.append('jsonUser', JSON.stringify(dataToPass));
 
@@ -424,24 +436,27 @@ export default class PreRegister extends React.Component {
                                         type="text" maxLength="1000"
                                         className="form-control" id="affiliationOther" name="affiliationOther" 
                                         placeholder="If choosing &quot;other&quot; type it here" 
-                                        onBlur={this.onAffiliationOtherChange} />
+                                        onChange={this.onAffiliationOtherChange} />
                                     <label className="errorLabel">{this.state.affiliationOtherError}</label>
                                 </div>
                             </div>
                             
                             <div className="register-form-input-group">
                                 <div className="register-form-group">
-                                    <span className="leading-text">Name of organization:</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" />
-                                </div>
-                                <div className="register-form-group">
                                     <span className="leading-text">
-                                         job title:
+                                        Name of organization:
                                     </span>
-                                    <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" />
+                                    <input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" onChange={this.onChange} />
                                 </div>
                                 <div className="register-form-group">
                                     <span className="leading-text">
-                                         username:
+                                         Job title:
+                                    </span>
+                                    <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" onChange={this.onChange} />
+                                </div>
+                                <div className="register-form-group">
+                                    <span className="leading-text">
+                                         Username:
                                     </span>
                                     <input type="text" maxLength="191"
                                         className="form-control" id="username" name="username" placeholder="" onBlur={this.onUsernameChange}/>
