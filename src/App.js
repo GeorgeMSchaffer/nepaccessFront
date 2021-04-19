@@ -643,6 +643,7 @@ export default class App extends React.Component {
         
     }
 
+    // Because this seems so optimized on the backend now, we'll try getting 1000 at once after the first page.
     gatherHighlightsFVH = (searchId, _offset, _inputs, currentResults) => {
         if(!this._mounted){ // User navigated away or reloaded
             return; // cancel search
@@ -676,11 +677,11 @@ export default class App extends React.Component {
             return;
         }
 
-        let _limit = 100; // normally get 100
+        let _limit = 1000; // normally get 1000
         if(_offset === 0) {
             _limit = 10; // start with 10
         } else if(_offset === 10) {
-            _limit = 90;
+            _limit = 990;
         }
 
         this.setState({
