@@ -33,7 +33,8 @@ class Login extends React.Component {
             busy: false,
 
             termsAgreed: false,
-            termsError: '*'
+            termsError: '*',
+            termsError2: ''
         };
         this.onChange = this.onChange.bind(this);
         this.login = this.login.bind(this);
@@ -52,11 +53,13 @@ class Login extends React.Component {
     termsInvalid = () => {
         if(!this.state.termsAgreed) {
             this.setState({
-                termsError: '*'
+                termsError: '*',
+                termsError2: 'Please agree to the terms of use above before logging in.'
             });
         } else {
             this.setState({
-                termsError: ''
+                termsError: '',
+                termsError2: ''
             });
         }
 
@@ -98,7 +101,7 @@ class Login extends React.Component {
         let invalid = !(usernamePattern.test(this.state.user.username));
         let message = "";
         if(invalid){
-            message = "Username invalid. Cannot be empty, must be printable characters.";
+            message = "Cannot be empty, must be printable characters.";
         }
         this.setState({
             usernameError: message
@@ -110,7 +113,7 @@ class Login extends React.Component {
         let invalid = !(passwordPattern.test(this.state.user.password));
         let message = "";
         if(invalid){
-            message = "Password invalid. Cannot be empty, must be printable characters.";
+            message = "Cannot be empty, must be printable characters.";
         }
         this.setState({
             passwordError: message
@@ -231,11 +234,12 @@ class Login extends React.Component {
         // console.log("Login");
         return (
             <div className="container login-form">
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>Login - NEPAccess</title>
-                <link rel="canonical" href="https://nepaccess.org/login" />
-            </Helmet>
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Login - NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/login" />
+                </Helmet>
+
                 <div className="form">
                     <div className="note">
                         Log in
@@ -303,9 +307,9 @@ class Login extends React.Component {
                                 onChange={this.onChangeDummy}>
                             </input>
                             <span>I have read and agreed to the&nbsp;
-                                <a href="https://about.nepaccess.org/privacy-policy/#terms-of-use" target="_blank">
+                                <Link to="/disclaimer-terms-of-use" target="_blank">
                                     Terms of Use
-                                </a>
+                                </Link>
                             </span>
                             <label className="errorLabel">{this.state.termsError}</label>
                         </div></div>
@@ -317,10 +321,16 @@ class Login extends React.Component {
                         
                         <div className="login-row">
                             <span className="leading-text"></span>
-                            <Link to="/forgotPassword">Forgot password?</Link>
+                            <label className="loginErrorLabel">{this.state.termsError2}</label>
+                        </div>
+                        
+                        <div className="login-row">
+                            <span className="leading-text"></span>
+                            <Link id="forgot" to="/forgotPassword">Forgot password?</Link>
                         </div>
                     </div>
                 </div>
+
                 <Footer id="footer"></Footer>
             </div>
             
