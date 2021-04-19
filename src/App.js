@@ -1,5 +1,5 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {Helmet} from 'react-helmet';
 
 import axios from 'axios';
@@ -938,7 +938,7 @@ export default class App extends React.Component {
 				<div className="content">
                     <div>
                         <label className="logged-out-header">
-                            NEPAccess searches are not currently available to the public.  
+                            NEPAccess searches are not currently available to the public.  Please <Link to="/login">log in.</Link>
                         </label>
                     </div>
                     {/* <div>
