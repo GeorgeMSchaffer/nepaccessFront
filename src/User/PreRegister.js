@@ -374,12 +374,27 @@ export default class PreRegister extends React.Component {
                     </div>
 
                     <div className="form-content">
+                        <div className="register-form-input-group">
+                            <div className="register-form-group">
+                                <span className="leading-text"></span>
+                                <h3 className="padding">
+                                    This form will add a user to the database pre-verified and pre-approved, but the system will not send any automated emails.  
+                                </h3>
+                        </div></div>
+                        <div className="register-form-input-group">
+                            <div className="register-form-group">
+                                <span className="leading-text"></span>
+                                <h3 className="padding">
+                                    Please remember the username/password/email for later use.  Since passwords are one-way encrypted, 
+                                    the best remedy for lost/forgotten pre-registered user passwords is that the database admin can delete them entirely.
+                                </h3>
+                        </div></div>
                         <div className="row">
                             
-                        <div className="label-holder">
-                            <span className="leading-text"></span>
-                            <span className="errorLabel">* marks a required field</span>
-                        </div>
+                            <div className="label-holder">
+                                <span className="leading-text"></span>
+                                <span className="errorLabel">* marks a required field</span>
+                            </div>
                             <div className="register-form-input-group">
                                 <div className="register-form-group">
                                     <span className="leading-text">First name:</span><input type="text" maxLength="191"
