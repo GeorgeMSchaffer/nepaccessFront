@@ -48,7 +48,7 @@ export default class PreRegister extends React.Component {
 
             firstName: '',
             lastName: '',
-            affiliation: '', // "Field"
+            affiliation: '', // "Field/User Group/..."
             affiliationOther: '', 
             jobTitle: '', // optional
             organization: '', // optional
@@ -221,6 +221,10 @@ export default class PreRegister extends React.Component {
 	onEmailChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkEmail(); });
     }
+    
+    onAffiliationOtherChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidAffiliationOther(); });
+    }
 
     onChangeHandler = (evt) => {
 		// evt.target.name defined by name= in input
@@ -378,22 +382,22 @@ export default class PreRegister extends React.Component {
                         </div>
                             <div className="register-form-input-group">
                                 <div className="register-form-group">
-                                    <span className="leading-text"> first name:</span><input type="text" maxLength="191"
+                                    <span className="leading-text">First name:</span><input type="text" maxLength="191"
                                         className="form-control" id="firstName" name="firstName" placeholder="" autoFocus onBlur={this.onChangeHandler}/>
                                 </div>
                                 <div className="register-form-group">
-                                    <span className="leading-text"> last name:</span><input type="text" maxLength="191"
+                                    <span className="leading-text">Last name:</span><input type="text" maxLength="191"
                                         className="form-control" id="lastName" name="lastName" placeholder="" onBlur={this.onChangeHandler}/>
                                 </div>
                                 <div className="register-form-group">
-                                    <span className="leading-text"> email address:</span><input type="text" maxLength="191"
+                                    <span className="leading-text">Email address:</span><input type="text" maxLength="191"
                                         className="form-control" id="email" name="email" placeholder="" onBlur={this.onEmailChange}/>
                                     <label hidden={this.state.registered} className="errorLabel">{this.state.emailError}</label>
                                 </div>
                             </div>
                             <div className="register-form-input-group">
                                 <div className="register-form-group">
-                                    <span className="leading-text"> user group:</span><Select
+                                    <span className="leading-text">User group:</span><Select
                                             id="register-select"
                                             className="inline-block"
                                             classNamePrefix="creatable"
@@ -410,7 +414,8 @@ export default class PreRegister extends React.Component {
                                         disabled={this.state.affiliation !== "Other"} 
                                         type="text" maxLength="1000"
                                         className="form-control" id="affiliationOther" name="affiliationOther" 
-                                        placeholder="If choosing &quot;other&quot; type it here" onBlur={this.invalidAffiliationOther} />
+                                        placeholder="If choosing &quot;other&quot; type it here" 
+                                        onBlur={this.onAffiliationOtherChange} />
                                     <label className="errorLabel">{this.state.affiliationOtherError}</label>
                                 </div>
                             </div>

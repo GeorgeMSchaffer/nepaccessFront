@@ -297,6 +297,10 @@ class Register extends React.Component {
         this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkEmail(); });
     }
 
+    onAffiliationOtherChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value }, () => { this.invalidAffiliationOther(); });
+    }
+
     onChangeHandler = (evt) => {
 		// evt.target.name defined by name= in input
         const name = evt.target.name;
@@ -513,7 +517,9 @@ class Register extends React.Component {
                                         disabled={this.state.affiliation !== "Other"} 
                                         type="text" maxLength="1000"
                                         className="form-control" id="affiliationOther" name="affiliationOther" 
-                                        placeholder="If choosing &quot;other&quot; type it here" onBlur={this.invalidAffiliationOther} />
+                                        placeholder="If choosing &quot;other&quot; type it here" 
+                                        onChange={this.onAffiliationOtherChange}
+                                        onBlur={this.invalidAffiliationOther} />
                                     <label className="errorLabel">{this.state.affiliationOtherError}</label>
                                 </div>
                             </div>
