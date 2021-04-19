@@ -322,7 +322,7 @@ export default class PreRegister extends React.Component {
             } else {
                 this.setState({
                     statusClass: 'errorLabel',
-                    statusLabel: 'Sorry, an error has occurred. Please try again later. Server responded with ' + response.status,
+                    statusLabel: 'Sorry, an error has occurred. Please try again later. Server responded with ' + error.response.status,
                     disabled: false, 
                     busy: false
                 });
