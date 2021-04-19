@@ -327,6 +327,13 @@ class Register extends React.Component {
         });
     }
 
+    onChange = (evt) => {
+        const name = evt.target.name;
+        this.setState({
+                [name]: evt.target.value
+        });
+    }
+
     // silence irrelevant warnings
     onChangeDummy = (evt) => {
         // do nothing
@@ -379,6 +386,10 @@ class Register extends React.Component {
             organization: this.state.organization,
             jobTitle: this.state.jobTitle
         };
+
+        if(this.state.affiliation==="Other") {
+            dataToPass.affiliation = this.state.affiliationOther;
+        }
         
         dataForm.append('jsonUser', JSON.stringify(dataToPass));
         dataForm.append('recaptchaToken', recaptchaValue);
@@ -526,13 +537,16 @@ class Register extends React.Component {
                             
                             <div className="register-form-input-group">
                                 <div className="register-form-group">
-                                    <span className="leading-text">Name of organization:</span><input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" />
+                                    <span className="leading-text">
+                                        Name of organization:
+                                    </span>
+                                    <input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" onChange={this.onChange} />
                                 </div>
                                 <div className="register-form-group">
                                     <span className="leading-text">
                                         Your job title:
                                     </span>
-                                    <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" />
+                                    <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" onChange={this.onChange} />
                                 </div>
                                 <div className="register-form-group">
                                     <span className="leading-text">
