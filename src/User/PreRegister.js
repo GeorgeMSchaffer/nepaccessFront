@@ -380,7 +380,7 @@ export default class PreRegister extends React.Component {
                                 <span className="leading-text"></span>
                                 <h3 className="padding">
                                     Please remember the username/password/email for later use.  Since passwords are one-way encrypted, 
-                                    the best remedy for lost/forgotten pre-registered user passwords is that the database admin can delete them entirely.
+                                    the best remedy for lost/forgotten pre-registered user passwords that were never distributed is that the database admin can delete them entirely.
                                 </h3>
                         </div></div>
                         <div className="row">
