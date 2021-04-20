@@ -227,7 +227,6 @@ export default class PreRegister extends React.Component {
         this.setState({
                 [name]: evt.target.value
         });
-
     }
 
     onChangeHandler = (evt) => {
@@ -361,6 +360,32 @@ export default class PreRegister extends React.Component {
                         <label className='successLabel large'>
                             Successfully added new user.
                         </label>
+                    </div>
+
+                    <div className="register-form-group">
+                        <span className="leading-text">Email address:</span><span>{this.state.email}</span>
+                    </div>
+                    <div className="register-form-group">
+                        <span className="leading-text">
+                            Username:
+                        </span>
+                        <span>
+                            {this.state.username}
+                        </span>
+                    </div>
+                    <div className="register-form-group" 
+                            hidden={this.state.passwordType === 'password'}>
+                        <span className="leading-text">
+                            Password:
+                        </span>
+                        <span>
+                            {this.state.password}
+                        </span>
+                    </div>
+                    <div className="register-form-group">
+                        <span className="leading-text"></span>
+                        <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                        <label className="inline noSelect">Show password</label>
                     </div>
                 </div></div>
             );
