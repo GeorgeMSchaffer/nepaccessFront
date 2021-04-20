@@ -1,5 +1,6 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
+import IframeResizer from 'iframe-resizer-react';
 
 export default class People extends React.Component {
     render() {
@@ -10,13 +11,14 @@ export default class People extends React.Component {
                     <title>People - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/people" />
                 </Helmet>
-                <iframe src="https://about.nepaccess.org/people/" title="About Nepaccess"
-                    scrolling="yes" frameBorder="0" width="100%" height="100%" name="ContentCenter">
-                        <p>
-                            This should only display if your browser doesn't support iframes 
-                            or if you have iframe support turned off.
-                        </p>
-                    </iframe>
+
+                <IframeResizer
+                    // log
+                    data-hj-allow-iframe="true"
+                    id="iframe-landing-container"
+                    src="https://about.nepaccess.org/people/"
+                    style={{ width: '1px', minWidth: '100%'}}
+                />
             </div>
         );
     }

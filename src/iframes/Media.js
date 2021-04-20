@@ -1,5 +1,6 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
+import IframeResizer from 'iframe-resizer-react';
 import './media.css';
 
 export default class Media extends React.Component {
@@ -11,13 +12,14 @@ export default class Media extends React.Component {
                     <title>Videos - NEPAccess</title>
                     <link rel="canonical" href="https://nepaccess.org/videos" />
                 </Helmet>
-                <iframe src="https://about.nepaccess.org/videos/" title="Videos"
-                    scrolling="yes" frameBorder="0" width="100%" height="100%" name="ContentCenter">
-                        <p>
-                            This should only display if your browser doesn't support iframes 
-                            or if you have iframe support turned off.
-                        </p>
-                </iframe>
+
+                <IframeResizer
+                    // log
+                    data-hj-allow-iframe="true"
+                    id="iframe-landing-container"
+                    src="https://about.nepaccess.org/videos/"
+                    style={{ width: '1px', minWidth: '100%'}}
+                />
             </div>
         );
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
+import IframeResizer from 'iframe-resizer-react';
 
 export default class AboutSearchTips2 extends React.Component {
     render() {
@@ -10,13 +11,14 @@ export default class AboutSearchTips2 extends React.Component {
                     <title>NEPAccess - What Can I Search For?</title>
                     <link rel="canonical" href="https://nepaccess.org/what-can-i-search-for" />
                 </Helmet>
-                <iframe src="https://about.nepaccess.org/what-can-i-search-for/" title="Search Tips 2"
-                    scrolling="yes" frameBorder="0" width="100%" height="100%" name="ContentCenter">
-                        <p>
-                            This should only display if your browser doesn't support iframes 
-                            or if you have iframe support turned off.
-                        </p>
-                </iframe>
+
+                <IframeResizer
+                    // log
+                    data-hj-allow-iframe="true"
+                    id="iframe-landing-container"
+                    src="https://about.nepaccess.org/what-can-i-search-for/"
+                    style={{ width: '1px', minWidth: '100%'}}
+                />
             </div>
         );
     }
