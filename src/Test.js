@@ -13,8 +13,23 @@ export default class Test extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-            captcha: ''
+            captcha: '',
+            approver: false
         };
+
+        let checkUrl = new URL('user/checkApprover', Globals.currentHost);
+        axios({
+            url: checkUrl,
+            method: 'POST'
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) { 
+                this.setState({approver: true});
+            }
+        }).catch(error => { // redirect
+            this.props.history.push('/');
+        })
+
     }
     
     captchaValid = () => {
@@ -58,30 +73,33 @@ export default class Test extends React.Component {
     }
 
     render () {
-        return (
-            <div id="test-container" className="content">
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>Test - NEPAccess</title>
-                    <link rel="canonical" href="https://nepaccess.org/test" />
-                </Helmet>
-                <span>test</span>
-                <div id="agency-svg-holder">
-                    <button>Close</button>
+        if(this.state.approver) {
+            return (
+                <div id="test-container" className="content">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>Test - NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/test" />
+                    </Helmet>
+                    <span>test</span>
+                    <div id="agency-svg-holder">
+                        <button>Close</button>
+                    </div>
+                    {/* <span>test</span>
+                    <div>
+                        <ReCAPTCHA
+                            ref={recaptchaRef}
+                            sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
+                            onChange={this.captchaChange}
+                            onErrored={this.log}
+                        />
+                        <button type='button' onClick={this.testClick}>Submit</button>
+                    </div> */}
                 </div>
-                <span>test</span>
-                {/* <span>test</span>
-                <div>
-                    <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
-                        onChange={this.captchaChange}
-                        onErrored={this.log}
-                    />
-                    <button type='button' onClick={this.testClick}>Submit</button>
-                </div> */}
-            </div>
-        )
+            )
+        } else {
+            return <div className="content">401</div>
+        }
     }
     
 	componentDidMount() {

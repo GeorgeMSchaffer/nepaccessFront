@@ -28,6 +28,20 @@ export default class SearchLogs extends React.Component {
             typeCount: [],
             chartOption: {value: "Search Count By Title", label: "Search Count By Title"}
         };
+        
+        
+        let checkUrl = new URL('user/checkApprover', Globals.currentHost);
+        axios({
+            url: checkUrl,
+            method: 'POST'
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (!responseOK) { // impossible? (either 200 or error?)
+                this.props.history.push('/');
+            }
+        }).catch(error => { // redirect
+            this.props.history.push('/');
+        })
 
         // time to get the stats
         this.getStats();

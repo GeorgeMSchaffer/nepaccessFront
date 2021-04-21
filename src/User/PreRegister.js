@@ -3,7 +3,7 @@ import {Helmet} from 'react-helmet';
 import Select from 'react-select';
 
 import axios from 'axios';
-import globals from '../globals.js';
+import Globals from '../globals.js';
 
 import './login.css';
 import './register.css';
@@ -52,7 +52,9 @@ export default class PreRegister extends React.Component {
             statusLabel: '',
             statusClass: '',
             registered: false,
-            busy: false
+            busy: false,
+
+            approver: false
 
             // captcha: ''
         };
@@ -60,6 +62,27 @@ export default class PreRegister extends React.Component {
         this.checkUsername = _.debounce(this.checkUsername, 300);
         this.checkEmail = _.debounce(this.checkEmail, 300);
         document.body.style.cursor = 'default';
+    }
+
+    checkApprover = () => {
+        let checkUrl = new URL('user/checkApprover', Globals.currentHost);
+        axios({
+            url: checkUrl,
+            method: 'POST'
+        }).then(response => {
+            console.log("Response", response);
+            console.log("Status", response.status);
+            let responseOK = response.data && response.status === 200;
+            if (responseOK) {
+                this.setState({
+                    approver: true
+                });
+            } else {
+                console.log("Else");
+            }
+        }).catch(error => {
+            //
+        })
     }
 
     // Validation
@@ -139,7 +162,7 @@ export default class PreRegister extends React.Component {
             this.setState({ disabled: false });
         }
 
-        let nameUrl = new URL('user/email-exists', globals.currentHost);
+        let nameUrl = new URL('user/email-exists', Globals.currentHost);
         
         fetch(nameUrl, { 
             method: 'POST',
@@ -177,7 +200,7 @@ export default class PreRegister extends React.Component {
             this.setState({ disabled: false });
         }
 
-        let nameUrl = new URL('user/exists', globals.currentHost);
+        let nameUrl = new URL('user/exists', Globals.currentHost);
         
         fetch(nameUrl, { 
             method: 'POST',
@@ -277,7 +300,7 @@ export default class PreRegister extends React.Component {
             statusLabel: ''
          });
         
-        let registerUrl = new URL('user/pre_register', globals.currentHost);
+        let registerUrl = new URL('user/pre_register', Globals.currentHost);
 
         const dataForm = new FormData();
 
@@ -353,169 +376,181 @@ export default class PreRegister extends React.Component {
     } 
     
     render() {
-        if(this.state.registered) {
-            return (<div id="register-form">
-                <div className="register-form-input-group">
-                    <div className="register-form-group">
-                        <label className='successLabel large'>
-                            Successfully added new user.
-                        </label>
-                    </div>
+        if(this.state.approver) {
+            if(this.state.registered) {
+                return (<div id="register-form">
+                    <div className="register-form-input-group">
+                        <div className="register-form-group">
+                            <label className='successLabel large'>
+                                Successfully added new user.
+                            </label>
+                        </div>
 
-                    <div className="register-form-group">
-                        <span className="leading-text">Email address:</span><span>{this.state.email}</span>
+                        <div className="register-form-group">
+                            <span className="leading-text">Email address:</span><span>{this.state.email}</span>
+                        </div>
+                        <div className="register-form-group">
+                            <span className="leading-text">
+                                Username:
+                            </span>
+                            <span>
+                                {this.state.username}
+                            </span>
+                        </div>
+                        <div className="register-form-group" 
+                                hidden={this.state.passwordType === 'password'}>
+                            <span className="leading-text">
+                                Password:
+                            </span>
+                            <span>
+                                {this.state.password}
+                            </span>
+                        </div>
+                        <div className="register-form-group">
+                            <span className="leading-text"></span>
+                            <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                            <label className="inline noSelect">Show password</label>
+                        </div>
+                    </div></div>
+                );
+            } else {
+                return (
+                    <div id="register-form">
+                        <Helmet>
+                            <meta charSet="utf-8" />
+                            <title>Pre-register - NEPAccess</title>
+                            <link rel="canonical" href="https://nepaccess.org/register" />
+                        </Helmet>
+                        <div className="note">
+                            Pre-register beta tester
+                        </div>
+                        <div className="loader-holder">
+                            <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
+                        </div>
+
+                        <div className="form-content">
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text"></span>
+                                    <h3 className="padding">
+                                        This form will add a user to the database pre-verified and pre-approved, but the system will not send any automated emails.  
+                                    </h3>
+                            </div></div>
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text"></span>
+                                    <h3 className="padding">
+                                        Please remember the username/password/email for later use.  Since passwords are one-way encrypted, 
+                                        the best remedy for lost/forgotten pre-registered user passwords that were never distributed is that the database admin can delete them entirely.
+                                    </h3>
+                            </div></div>
+                            <div className="row">
+                                
+                                <div className="label-holder">
+                                    <span className="leading-text"></span>
+                                    <span className="errorLabel">* marks a required field</span>
+                                </div>
+                                <div className="register-form-input-group">
+                                    <div className="register-form-group">
+                                        <span className="leading-text">First name:</span><input type="text" maxLength="191"
+                                            className="form-control" id="firstName" name="firstName" placeholder="" autoFocus onBlur={this.onChangeHandler}/>
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text">Last name:</span><input type="text" maxLength="191"
+                                            className="form-control" id="lastName" name="lastName" placeholder="" onBlur={this.onChangeHandler}/>
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text">Email address:</span><input type="text" maxLength="191"
+                                            className="form-control" id="email" name="email" placeholder="" onBlur={this.onEmailChange}/>
+                                        <label hidden={this.state.registered} className="errorLabel">{this.state.emailError}</label>
+                                    </div>
+                                </div>
+                                <div className="register-form-input-group">
+                                    <div className="register-form-group">
+                                        <span className="leading-text">User group:</span><Select
+                                                id="register-select"
+                                                className="inline-block"
+                                                classNamePrefix="creatable"
+                                                options={affiliations}
+                                                name="affiliation" 
+                                                placeholder="" 
+                                                onChange={this.onSelectHandler}
+                                        />
+                                    </div>
+                                    <div className="register-form-group"
+                                            hidden={this.state.affiliation !== "Other"} >
+                                        <span className="leading-text"></span>
+                                        <input 
+                                            disabled={this.state.affiliation !== "Other"} 
+                                            type="text" maxLength="1000"
+                                            className="form-control" id="affiliationOther" name="affiliationOther" 
+                                            placeholder="If choosing &quot;other&quot; type it here" 
+                                            onChange={this.onAffiliationOtherChange} />
+                                        <label className="errorLabel">{this.state.affiliationOtherError}</label>
+                                    </div>
+                                </div>
+                                
+                                <div className="register-form-input-group">
+                                    <div className="register-form-group">
+                                        <span className="leading-text">
+                                            Name of organization:
+                                        </span>
+                                        <input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" onChange={this.onChange} />
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text">
+                                            Job title:
+                                        </span>
+                                        <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" onChange={this.onChange} />
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text">
+                                            Username:
+                                        </span>
+                                        <input type="text" maxLength="191"
+                                            className="form-control" id="username" name="username" placeholder="" onBlur={this.onUsernameChange}/>
+                                        <label hidden={this.state.registered} className="errorLabel">{this.state.usernameError}</label>
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text">
+                                            Password:
+                                        </span>
+                                        <input type={this.state.passwordType} maxLength="191" 
+                                            id="password" className="form-control password-field" name="password" placeholder="" onBlur={this.onPasswordChange} />
+                                        <label className="errorLabel">{this.state.passwordError}</label>
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text"></span>
+                                        <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                                        <label className="inline noSelect">Show password</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="register-form-input-group">
+                                <div className="register-form-group">
+                                    <span className="leading-text"></span>
+                                    <button type="button" className="button2 inline-block" id="register-submit" 
+                                        onClick={this.register}>Register
+                                    </button>
+                                </div>
+                                <label className={this.state.statusClass}>{this.state.statusLabel}</label>
+                            </div>
+
+                        </div>
                     </div>
-                    <div className="register-form-group">
-                        <span className="leading-text">
-                            Username:
-                        </span>
-                        <span>
-                            {this.state.username}
-                        </span>
-                    </div>
-                    <div className="register-form-group" 
-                            hidden={this.state.passwordType === 'password'}>
-                        <span className="leading-text">
-                            Password:
-                        </span>
-                        <span>
-                            {this.state.password}
-                        </span>
-                    </div>
-                    <div className="register-form-group">
-                        <span className="leading-text"></span>
-                        <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
-                        <label className="inline noSelect">Show password</label>
-                    </div>
-                </div></div>
-            );
+                )
+            }
         } else {
-            return (
-                <div id="register-form">
-                    <Helmet>
-                        <meta charSet="utf-8" />
-                        <title>Pre-register - NEPAccess</title>
-                        <link rel="canonical" href="https://nepaccess.org/register" />
-                    </Helmet>
-                    <div className="note">
-                        Pre-register beta tester
-                    </div>
-                    <div className="loader-holder">
-                        <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
-                    </div>
+            return <div className="content">401</div>
+        }
+    }
 
-                    <div className="form-content">
-                        <div className="register-form-input-group">
-                            <div className="register-form-group">
-                                <span className="leading-text"></span>
-                                <h3 className="padding">
-                                    This form will add a user to the database pre-verified and pre-approved, but the system will not send any automated emails.  
-                                </h3>
-                        </div></div>
-                        <div className="register-form-input-group">
-                            <div className="register-form-group">
-                                <span className="leading-text"></span>
-                                <h3 className="padding">
-                                    Please remember the username/password/email for later use.  Since passwords are one-way encrypted, 
-                                    the best remedy for lost/forgotten pre-registered user passwords that were never distributed is that the database admin can delete them entirely.
-                                </h3>
-                        </div></div>
-                        <div className="row">
-                            
-                            <div className="label-holder">
-                                <span className="leading-text"></span>
-                                <span className="errorLabel">* marks a required field</span>
-                            </div>
-                            <div className="register-form-input-group">
-                                <div className="register-form-group">
-                                    <span className="leading-text">First name:</span><input type="text" maxLength="191"
-                                        className="form-control" id="firstName" name="firstName" placeholder="" autoFocus onBlur={this.onChangeHandler}/>
-                                </div>
-                                <div className="register-form-group">
-                                    <span className="leading-text">Last name:</span><input type="text" maxLength="191"
-                                        className="form-control" id="lastName" name="lastName" placeholder="" onBlur={this.onChangeHandler}/>
-                                </div>
-                                <div className="register-form-group">
-                                    <span className="leading-text">Email address:</span><input type="text" maxLength="191"
-                                        className="form-control" id="email" name="email" placeholder="" onBlur={this.onEmailChange}/>
-                                    <label hidden={this.state.registered} className="errorLabel">{this.state.emailError}</label>
-                                </div>
-                            </div>
-                            <div className="register-form-input-group">
-                                <div className="register-form-group">
-                                    <span className="leading-text">User group:</span><Select
-                                            id="register-select"
-                                            className="inline-block"
-                                            classNamePrefix="creatable"
-                                            options={affiliations}
-                                            name="affiliation" 
-                                            placeholder="" 
-                                            onChange={this.onSelectHandler}
-                                    />
-                                </div>
-                                <div className="register-form-group"
-                                        hidden={this.state.affiliation !== "Other"} >
-                                    <span className="leading-text"></span>
-                                    <input 
-                                        disabled={this.state.affiliation !== "Other"} 
-                                        type="text" maxLength="1000"
-                                        className="form-control" id="affiliationOther" name="affiliationOther" 
-                                        placeholder="If choosing &quot;other&quot; type it here" 
-                                        onChange={this.onAffiliationOtherChange} />
-                                    <label className="errorLabel">{this.state.affiliationOtherError}</label>
-                                </div>
-                            </div>
-                            
-                            <div className="register-form-input-group">
-                                <div className="register-form-group">
-                                    <span className="leading-text">
-                                        Name of organization:
-                                    </span>
-                                    <input type="text" maxLength="1000" className="form-control" id="organization" name="organization" placeholder="" onChange={this.onChange} />
-                                </div>
-                                <div className="register-form-group">
-                                    <span className="leading-text">
-                                         Job title:
-                                    </span>
-                                    <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" placeholder="" onChange={this.onChange} />
-                                </div>
-                                <div className="register-form-group">
-                                    <span className="leading-text">
-                                         Username:
-                                    </span>
-                                    <input type="text" maxLength="191"
-                                        className="form-control" id="username" name="username" placeholder="" onBlur={this.onUsernameChange}/>
-                                    <label hidden={this.state.registered} className="errorLabel">{this.state.usernameError}</label>
-                                </div>
-                                <div className="register-form-group">
-                                    <span className="leading-text">
-                                        Password:
-                                    </span>
-                                    <input type={this.state.passwordType} maxLength="191" 
-                                        id="password" className="form-control password-field" name="password" placeholder="" onBlur={this.onPasswordChange} />
-                                    <label className="errorLabel">{this.state.passwordError}</label>
-                                </div>
-                                <div className="register-form-group">
-                                    <span className="leading-text"></span>
-                                    <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
-                                    <label className="inline noSelect">Show password</label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className="register-form-input-group">
-                            <div className="register-form-group">
-                                <span className="leading-text"></span>
-                                <button type="button" className="button2 inline-block" id="register-submit" 
-                                    onClick={this.register}>Register
-                                </button>
-                            </div>
-                            <label className={this.state.statusClass}>{this.state.statusLabel}</label>
-                        </div>
-
-                    </div>
-                </div>
-            )
+    componentDidMount = () => {
+        try {
+            this.checkApprover();
+        } catch(e) {
+            console.error(e);
         }
     }
 }
