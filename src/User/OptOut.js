@@ -85,25 +85,26 @@ export default class OptOut extends React.Component {
     // Validation
     invalidFields = () => {
         // Run everything and all appropriate errors will show at once.
-        let test1 = this.invalidName();
+        // We'll allow blank names.
+        // let test1 = this.invalidName();
         let test2 = this.invalidEmail();
 
-        return (test1 || test2);
+        return (test2);
     }
-    invalidName = () => {
-        let usernamePattern = /[ -~]/;
-        let invalid = !(usernamePattern.test(this.state.optOutUser.name));
-        let message = "";
+    // invalidName = () => {
+    //     let usernamePattern = /[ -~]/;
+    //     let invalid = !(usernamePattern.test(this.state.optOutUser.name));
+    //     let message = "";
 
-        if(invalid){
-            message = "Cannot be empty, must be printable characters.";
-        }
-        this.setState({
-            nameError: message
-        });
+    //     if(invalid){
+    //         message = "Cannot be empty, must be printable characters.";
+    //     }
+    //     this.setState({
+    //         nameError: message
+    //     });
 
-        return invalid;
-    }
+    //     return invalid;
+    // }
     invalidEmail = () => {
         let emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let invalid = !(emailPattern.test(this.state.optOutUser.email));
