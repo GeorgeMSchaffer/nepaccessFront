@@ -189,7 +189,6 @@ export default class OptOut extends React.Component {
                                         name="email" 
                                         placeholder="" 
                                         value={this.state.email} 
-                                        autoFocus 
                                         onChange={this.onChange} 
                                         onKeyUp={this.onKeyUp}/>
                                     <label className="loginErrorLabel">{this.state.emailError}</label>
