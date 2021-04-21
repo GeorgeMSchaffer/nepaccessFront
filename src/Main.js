@@ -37,6 +37,7 @@ import AboutStats from './AboutStats.js';
 import Importer from './Importer.js';
 import AdminFiles from './AdminFiles.js';
 import Generate from './Generate.js';
+import Generate2 from './Generate2.js';
 import Iframes from './iframes/Iframes.js';
 import Approve from './Approve.js';
 import Admin from './Admin.js';
@@ -266,6 +267,7 @@ class Main extends React.Component {
                 <Route path="/importer" component={Importer}/>
                 <Route path="/adminFiles" component={AdminFiles}/>
                 <Route path="/generate" component={Generate}/>
+                <Route path="/generate2" component={Generate2}/>
 
                 <Route path="/iframes" component={Iframes} />
                 <Route path="/privacy-policy" component={PrivacyPolicy} />
