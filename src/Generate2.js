@@ -67,6 +67,19 @@ export default class Generate2 extends React.Component {
         })
     }
 
+    
+    copyResults = () => {
+        const el = this.textArea
+        el.select()
+        document.execCommand("copy")
+    }
+    
+    copyResultsJSON = () => {
+        const el = this.textArea2
+        el.select()
+        document.execCommand("copy")
+    }
+
     render() {
         if(this.state.admin) {
             return (
@@ -89,17 +102,24 @@ export default class Generate2 extends React.Component {
                             CSV server response
                         </span>
                     </div>
-                    <textarea name="result" value={this.state.result} readOnly />
+                    <textarea ref={(textarea) => this.textArea = textarea}
+                                name="result" value={this.state.result} readOnly />
                     <br />
 
+                    <button className="button"
+                                onClick={this.copyResults}>Copy results to clipboard</button>
                     <div>
                         <span>
                             JSON server response
                         </span>
                     </div>
-                    <textarea name="resultJSONString" value={this.state.resultJSONString} readOnly />
-
+                    <textarea ref={(textarea2) => this.textArea2 = textarea2} 
+                                name="resultJSONString" value={this.state.resultJSONString} readOnly />
                     <br />
+                    
+                    <button className="button"
+                                onClick={this.copyResultsJSON}>Copy results to clipboard</button>
+
                     <div>
                         <span>
                             If blank password in csv line:  Account was not created due to invalid/duplicate username or email address.
