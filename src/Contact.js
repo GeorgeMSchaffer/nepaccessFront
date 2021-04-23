@@ -310,6 +310,11 @@ export default class Contact extends React.Component {
         } else {
             return (
                 <div id="contact-form">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>Contact - NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/contact" />
+                    </Helmet>
                     <div className="note">
                         Contact Us
                     </div>

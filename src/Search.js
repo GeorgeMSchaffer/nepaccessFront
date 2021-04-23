@@ -1,5 +1,4 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
 
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
@@ -349,11 +348,6 @@ class Search extends React.Component {
         
         return (
             <>
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>NEPAccess</title>
-                <link rel="canonical" href="https://nepaccess.org/search" />
-            </Helmet>
             <div className="content" onSubmit={this.submitHandler}>
                 {/* <h1 className="search-header">Search for NEPA documents</h1> */}
                 <div className="search-holder" >
