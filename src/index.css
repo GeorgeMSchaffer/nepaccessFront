@@ -659,3 +659,7 @@ span.leading-text {
 .form-control~.errorLabel, #register-select~.errorLabel {
     margin-left: 5px;
 }
+
+.padding-left {
+    padding-left: clamp(320px, calc(25vw + 20px), 395px);
+}
