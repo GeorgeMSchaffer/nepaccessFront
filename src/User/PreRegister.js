@@ -364,6 +364,15 @@ export default class PreRegister extends React.Component {
         this.setState({ disabled: false, busy: false });
         document.body.style.cursor = 'default';
     }
+
+    generatePassword = () => {
+        let _password = makeNewPassword();
+        this.setState({
+            password: _password,
+            passwordType: "text"
+        });
+        
+    }
     
     showPassword = () => {
         let value = "password";
@@ -432,14 +441,14 @@ export default class PreRegister extends React.Component {
                             <div className="register-form-input-group">
                                 <div className="register-form-group">
                                     <span className="leading-text"></span>
-                                    <h3 className="padding">
+                                    <h3 className="padding-left">
                                         This form will add a user to the database pre-verified and pre-approved, but the system will not send any automated emails.  
                                     </h3>
                             </div></div>
                             <div className="register-form-input-group">
                                 <div className="register-form-group">
                                     <span className="leading-text"></span>
-                                    <h3 className="padding">
+                                    <h3 className="padding-left">
                                         Please remember the username/password/email for later use.  Since passwords are one-way encrypted, 
                                         the best remedy for lost/forgotten pre-registered user passwords that were never distributed is that the database admin can delete them entirely.
                                     </h3>
@@ -516,12 +525,21 @@ export default class PreRegister extends React.Component {
                                             Password:
                                         </span>
                                         <input type={this.state.passwordType} maxLength="191" 
-                                            id="password" className="form-control password-field" name="password" placeholder="" onBlur={this.onPasswordChange} />
+                                            id="password" 
+                                            className="form-control password-field" 
+                                            name="password" placeholder="" 
+                                            onChange={this.onPasswordChange}
+                                            onBlur={this.onPasswordChange} 
+                                            value={this.state.password} />
+                                            <button onClick={this.generatePassword}>Generate 8-character password</button>
                                         <label className="errorLabel">{this.state.passwordError}</label>
                                     </div>
                                     <div className="register-form-group">
                                         <span className="leading-text"></span>
-                                        <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                                        <input type="checkbox" 
+                                            id="showPassword" 
+                                            onClick={this.showPassword}
+                                            checked={this.state.passwordType=="text"}></input>
                                         <label className="inline noSelect">Show password</label>
                                     </div>
                                 </div>
@@ -553,4 +571,14 @@ export default class PreRegister extends React.Component {
             console.error(e);
         }
     }
+}
+
+function makeNewPassword() {
+    var length = 8,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        result = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        result += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return result;
 }
