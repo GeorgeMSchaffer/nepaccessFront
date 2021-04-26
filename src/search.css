@@ -618,9 +618,16 @@ a.link {
 }
 #search-proximity>div.disabled * {
     color: lightgray !important;
+    font-size: 12px;
 }
 #proximity-select .control__placeholder {
-    color: #707070; 
+    /* color: #707070;  */
+    color: black;
+    font-size: 16px;
+}
+
+#search-proximity div.control__indicators path {
+    color: green;
 }
 
 div.disabled::before {
