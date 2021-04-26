@@ -417,7 +417,12 @@ export default class PreRegister extends React.Component {
                         </div>
                         <div className="register-form-group">
                             <span className="leading-text"></span>
-                            <input type="checkbox" id="showPassword" onClick={this.showPassword}></input>
+                            <input type="checkbox" 
+                                    id="showPassword" 
+                                    onClick={this.showPassword}
+                                    onChange={this.showPassword}
+                                    checked={this.state.passwordType=="text"}>
+                            </input>
                             <label className="inline noSelect">Show password</label>
                         </div>
                     </div></div>
