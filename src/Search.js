@@ -54,7 +54,7 @@ class Search extends React.Component {
             test: globals.anEnum.options,
             cancelButtonActive: true,
             tooltipOpen: undefined,
-            proximityOption: 500,
+            proximityOption: null,
             proximityDisabled: true,
             hideOrganization: true
 		};
@@ -304,12 +304,12 @@ class Search extends React.Component {
         // + "<p class=tooltip-line><span class=tooltip-connector></span> <a href=abouthelp>More search tips.</a></p>";
 
         const proximityOptions = [
-            {value: 0, label: 'same phrase'},
+            {value: 0, label: 'exact phrase'},
             {value: 10, label: '10 words'},
             {value: 50, label: '50 words'},
             {value: 100, label: '100 words'},
-            {value: 500, label: '500 words (default)'},
-            {value: -1, label: 'no restriction'}];
+            {value: 500, label: '500 words'},
+            {value: -1, label: 'no restriction (default)'}];
 
         const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
         + "<table class=tooltip-table><tbody>"
@@ -406,6 +406,7 @@ class Search extends React.Component {
                                 placeholder="Find within"
                                 options={proximityOptions} 
                                 value={this.state.proximityOption}
+                                // menuIsOpen={true}
                                 onChange={this.onProximityChange} 
                                 isMulti={false} />
                         </span>
@@ -572,10 +573,15 @@ class Search extends React.Component {
         }
         // Get search params on mount and run search on them (implies came from landing page)
         var queryString = globals.getParameterByName("q");
+        let disableValue = true;
         if(queryString){
+            if(queryString.trim().match(/\s+/)) {
+                disableValue = false;
+            }
             this.setState({
                 titleRaw: queryString,
-                cancelButtonActive: true
+                cancelButtonActive: true,
+                proximityDisabled: disableValue
             }, () => {
                 if(this.state.titleRaw){
                     this.debouncedSearch(this.state);

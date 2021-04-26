@@ -594,8 +594,8 @@ a.link {
 #search-proximity {
     position: absolute;
     margin-left: 80px;
-    width: 145px;
-    margin-left: -199px;
+    width: 195px;
+    margin-left: -249px;
     margin-top: 4px;
     height: 56px;
     line-height: 42px;
@@ -630,6 +630,10 @@ a.link {
     color: green;
 }
 
+#search-proximity .control__option {
+    line-height: 24px;
+}
+
 div.disabled::before {
     content: '';
     width: 2px;
@@ -643,7 +647,7 @@ div.disabled::before {
 }
 
 #main-search-clear {
-    margin-left: -235px;
+    margin-left: -285px;
 }
 /* #main-search-icon {
 } */
