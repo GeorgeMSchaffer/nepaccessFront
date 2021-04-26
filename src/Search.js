@@ -54,7 +54,7 @@ class Search extends React.Component {
             test: globals.anEnum.options,
             cancelButtonActive: true,
             tooltipOpen: undefined,
-            proximityOption: -1,
+            proximityOption: 500,
             proximityDisabled: true,
             hideOrganization: true
 		};
@@ -308,7 +308,8 @@ class Search extends React.Component {
             {value: 10, label: '10 words'},
             {value: 50, label: '50 words'},
             {value: 100, label: '100 words'},
-            {value: -1, label: 'any distance (default)'}];
+            {value: 500, label: '500 words (default)'},
+            {value: -1, label: 'no restriction'}];
 
         const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
         + "<table class=tooltip-table><tbody>"
