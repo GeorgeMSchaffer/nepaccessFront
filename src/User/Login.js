@@ -81,6 +81,19 @@ class Login extends React.Component {
         });
     }
 
+    // Backend now strips surrounding whitespace from username on register
+    onUsernameChange = (evt) => {
+        const value = evt.target.value.trim();
+        
+        this.setState( prevState => {
+            const updatedUser = prevState.user;
+            updatedUser.username = value;
+            return {
+                user: updatedUser
+            }
+        })
+    }
+
     onKeyUp = (evt) => {
         if(evt.keyCode ===13){
             evt.preventDefault();
@@ -268,7 +281,7 @@ class Login extends React.Component {
                                         placeholder="" 
                                         value={this.state.username} 
                                         autoFocus 
-                                        onChange={this.onChange} 
+                                        onChange={this.onUsernameChange} 
                                         onKeyUp={this.onKeyUp}/>
                                     <label className="loginErrorLabel">{this.state.usernameError}</label>
                                 </div>
