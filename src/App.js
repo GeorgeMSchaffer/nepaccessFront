@@ -883,6 +883,14 @@ export default class App extends React.Component {
         }
     }
 
+    scrollToTop = () => {
+        try {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch(e) {
+            console.log("Scroll error", e);
+        }
+    }
+
 
     displayedRowsUnpopulated = () => {
         // console.log("Checking displayed rows...");
@@ -926,6 +934,7 @@ export default class App extends React.Component {
                         searching={this.state.searching}
                         snippetsDisabled={this.state.snippetsDisabled} 
                         scrollToBottom={this.scrollToBottom}
+                        scrollToTop={this.scrollToTop}
                         shouldUpdate={this.state.shouldUpdate}
                     />
 				</div>

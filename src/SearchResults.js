@@ -98,11 +98,12 @@ class SearchResults extends React.Component {
             try {
                 // Probably need to deep clone this but circular structure refuses
                 // const currentPageRows = JSON.parse(JSON.stringify(this.my_table.current.table.rowManager.displayRows[1]));
-                const currentPageRows = this.my_table.current.table.rowManager.displayRows[1];
+                // const currentPageRows = this.my_table.current.table.rowManager.displayRows[1];
 
 
-                const scroll = this.props.scrollToBottom;
-                scroll(currentPageRows);
+                // const scroll = this.props.scrollToBottom;
+                // scroll(currentPageRows);
+                this.props.scrollToTop();
             } catch(e) {
                 console.error(e);
                 // do nothing
