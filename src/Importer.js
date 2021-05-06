@@ -1176,7 +1176,7 @@ class Importer extends Component {
                             If you're sure you want to update existing metadata with an existing filename, then use the Force Update header and put Yes.
                             Valid, non-duplicate data will become new metadata records.
                             </h3>
-                        <h3>Required headers: Federal Register Date, Document, EIS Identifier (or: Filename), Title</h3>
+                        <h3>Required headers: Federal Register Date, Document, EIS Identifier (or for filenames use: Filename), Title</h3>
                         <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Provenance, Force Update</h3>
                         <h1>Import CSV/TSV:</h1>
                         <label className="advanced-label">Delimiter to use (default auto-detect) </label>
