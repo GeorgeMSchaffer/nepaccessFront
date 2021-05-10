@@ -36,16 +36,47 @@ div.update .react-datepicker__input-container>input {
 }
 
 .detail-filename {
+    margin-bottom: 10px;
     display: inline-block;
-}
-.detail-filenames {
-    margin-left: 1em;
 }
 .detail-filenames+p>span {
     display: inline-block;
-    margin-left: 5em;
 }
 
 #files-holder .tabulator-header {
+    display: block;
+}
+
+
+.record-details .containers {
+    display: flex;
+}
+
+.metadata-container, .files-container {
+    background: white;
+    padding: 20px;
+    border: 2px solid rgb(220,220,220);
+    margin-bottom: 35px;
+    margin-right: 20px;
+}
+.metadata-container {
+    flex: 2;
+}
+.files-container {
+    flex: 1;
+}
+
+.metadata-container h3 {
+    margin-top: 0px;
+    margin-bottom: 35px;
+}
+
+.record-details .modal-title {
+    font-weight: normal;
+    width: auto;
+    padding-right:10px;
+}
+
+.files-container .modal-title {
     display: block;
 }

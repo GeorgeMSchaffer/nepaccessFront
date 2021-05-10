@@ -10,7 +10,7 @@ class DownloadFile extends React.Component {
 		this.state = { // Each and every download link via <DownloadFile /> has its own state
 			progressValue: null,
 			downloadText: 'Download',
-			downloadClass: 'download'
+			downloadClass: 'document-download'
 		};
 	}
 
@@ -19,8 +19,8 @@ class DownloadFile extends React.Component {
     // TODO: reset download link if canceled
     // these could be very difficult to figure out for low payoff, however
 	download = (filenameOrID, isFolder) => {
-        console.log("Downloading: " + filenameOrID);
-        console.log("Folder: " + isFolder);
+        // console.log("Downloading: " + filenameOrID);
+        // console.log("Folder: " + isFolder);
 		const FileDownload = require('js-file-download');
 
 		// Indicate download
@@ -120,16 +120,20 @@ class DownloadFile extends React.Component {
                 // console.log("Filename only?: " + this.props.filename);
 				propFilename = this.props.filename;
 			} 
+            let sizeText = "";
+            if(this.props.size) {
+                sizeText = this.props.size+"MB";
+            }
 			if (propFilename) {
                 return (
                     <button className = {this.state.downloadClass} onClick = { () => {this.download(propFilename, false)} }> 
-                        {this.state.downloadText} {this.state.progressValue} 
+                        {this.state.downloadText} {sizeText} {this.state.progressValue} 
                     </button>
                 );
 			} else if (propID) {
                 return (
                     <button className = {this.state.downloadClass} onClick = { () => {this.download(propID, true)} }> 
-                        {this.state.downloadText} {this.state.progressValue} 
+                        {this.state.downloadText} {sizeText} {this.state.progressValue} 
                     </button>
                 );
             } else {

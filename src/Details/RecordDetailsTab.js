@@ -378,7 +378,17 @@ export default class RecordDetailsTab extends React.Component {
             return (
                 <div className="record-details">
                     <h2 className="title-color">Record details:</h2>
-                    {this.showDetails()}
+                    {this.showTitle()}
+                    <div className="containers">
+                        <div className="metadata-container">
+                            <h3>Metadata</h3>
+                            {this.showDetails()}
+                        </div>
+                        <div className="files-container">
+                            <h3>Download Files</h3>
+                            {this.showFiles()}
+                        </div>
+                    </div>
                 </div>
             );
         } else if(this.state.dropdownOption.value === 'Match') {
@@ -407,35 +417,43 @@ export default class RecordDetailsTab extends React.Component {
                 (filename) => <span key={filename} className="detail-filename">{filename}</span>
             );
             return (<div className='modal-line'>
-            <span className='detail-filenames modal-title'>Contents:</span>
+            <span className='detail-filenames modal-title bold'>Individual files</span>
                 <p>{filenameItems}</p>
             </div>);
         }
     }
 
-    /** Return all metadata, not just what search table shows */
-    showDetails = () => {
+    showTitle = () => {
+        let cellData = this.state.details;
+        console.log("Cell",cellData);
+        if(cellData.title) {
+            return (<p key={-1} className='modal-line'><span className='modal-title'>Title:</span> 
+                <span className="bold">{cellData.title}</span>
+            </p>);
+        }
+    }
+
+    showFiles = () => {
         let cellData = this.state.details;
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
-                let keyName = key;
                 // Title now needs its own style
-                if(key==='title') {
-                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> 
-                        <span className="bold">{cellData[key]}</span>
-                    </p>);
-                }
-                if(key==='registerDate') {
-                    keyName = 'date';
-                } else if (key==='documentType') {
-                    keyName = 'type';
-                }
                 if(key==='folder' && cellData[key] && cellData[key].length > 0) {
                     let filenames = this.showFilenames(cellData.id);
                     if(filenames){
                         return (<div key={i}>
-                            <p className='modal-line'><span className='modal-title'>download files:</span> <DownloadFile downloadType="Folder" id={cellData["id"]}/> {cellData[key]}</p>
-                            <p><span className='modal-title'>&nbsp;Folder size: </span>{Math.ceil(cellData.size / 1024 / 1024)} MB</p>
+                            <p className='modal-line'>
+                                <span className='modal-title bold'>Entire archive</span> 
+                                <DownloadFile 
+                                    downloadType="Folder" 
+                                    id={cellData["id"]}
+                                />
+                                &nbsp;{cellData[key]}
+                            </p>
+                            <p>
+                                <span className='modal-title bold'>Folder size</span>
+                                {Math.ceil(cellData.size / 1024 / 1024)} MB
+                            </p>
                             {filenames}
                         </div>);
                     }
@@ -448,12 +466,19 @@ export default class RecordDetailsTab extends React.Component {
                             /** If we do have just a filename then we should be able to get the filesize */
                             return <div key={i}>
                                 <p className='modal-line'>
-                                    <span className='modal-title'>download files:</span> 
-                                    <DownloadFile downloadType="EIS" filename={cellData[key]}/>
+                                    <span className='modal-title bold'>Entire archive</span> 
+                                    <p>
+                                        <span className='bold inline'>&nbsp;Filename:</span>
+                                        &nbsp;{cellData[key]}
+                                    </p>
+                                    <DownloadFile 
+                                        size={Math.ceil(cellData.size / 1024 / 1024)} 
+                                        downloadType="EIS" 
+                                        filename={cellData[key]}
+                                    />
                                 </p>
 
-                                <p><span className='modal-title'>&nbsp;File size: </span>{Math.ceil(cellData.size / 1024 / 1024)} MB</p>
-                                <p><span className='modal-title'>&nbsp;Filename: </span>{cellData[key]}</p>
+                                <p><span className='modal-title bold'>File size</span>{Math.ceil(cellData.size / 1024 / 1024)} MB</p>
 
                                 {filenames}
                             </div>;
@@ -463,15 +488,53 @@ export default class RecordDetailsTab extends React.Component {
                     }
                 } else if(key==='commentsFilename') {
                     if (cellData[key] && cellData[key].length > 0) {
-                        return <p key={i} className='modal-line'><span className='modal-title'>download EPA comments:</span> <DownloadFile downloadType="Comments" filename={cellData[key]}/> {cellData[key]}</p>;
+                        return (
+                            <p key={i} className='modal-line'>
+                                <span className='modal-title bold'>EPA comments</span> 
+                                <DownloadFile downloadType="Comments" filename={cellData[key]}/>&nbsp;{cellData[key]}
+                            </p>
+                        );
                     } else {
                         return '';
                     }
-                // exclusions:
-                } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || key==='plaintext' || key==='folder' || key==='link' || key==='notes') { 
+                } 
+                // else: everything else
+                return '';
+            }));
+        }
+    }
+
+    /** Return all metadata, not just what search table shows */
+    showDetails = () => {
+        let cellData = this.state.details;
+        console.log("Cell",cellData);
+        if(cellData) {
+            return Object.keys(cellData).map( ((key, i) => {
+                let keyName = key;
+                // Title now needs its own style
+                if(key==='title') {
                     return '';
+                }
+                else if(key==='registerDate') {
+                    keyName = 'date';
+                } else if (key==='documentType') {
+                    keyName = 'type';
+                } else if (key==='noiDate') {
+                    keyName = 'Notice of Intent (NOI) date'
+                } else if (key==='draftNoa') {
+                    keyName = 'Draft EIS Notice of Availability (NOA) date'
+                } else if (key==='finalNoa') {
+                    keyName = 'Final EIS Notice of Availability (NOA) date'
+                } else if (key==='firstRodDate') {
+                    keyName = 'Record of Decision (ROD) date'
+                }
                 // hide blank fields
-                } else if(!cellData[key] || cellData[key].length === 0) {
+                else if(!cellData[key] || cellData[key].length === 0) {
+                    return '';
+                // exclusions:
+                } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || 
+                key==='plaintext' || key==='folder' || key==='link' || key==='notes' || key==='commentsFilename'
+                || key === 'filename') { 
                     return '';
                 } else if(key==='summaryText') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);
@@ -479,7 +542,7 @@ export default class RecordDetailsTab extends React.Component {
                     return '';
                 }
                 // else: everything else
-                return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {cellData[key]}</p>);
+                return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key]}</span></p>);
             }));
         }
     }
