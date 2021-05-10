@@ -515,7 +515,11 @@ export default class RecordDetailsTab extends React.Component {
                 if(key==='title') {
                     return '';
                 }
-                else if(key==='registerDate') {
+                // hide blank fields
+                else if(!cellData[key] || cellData[key].length === 0) {
+                    return '';
+                // reword fields
+                } else if(key==='registerDate') {
                     keyName = 'date';
                 } else if (key==='documentType') {
                     keyName = 'type';
@@ -527,10 +531,6 @@ export default class RecordDetailsTab extends React.Component {
                     keyName = 'Final EIS Notice of Availability (NOA) date'
                 } else if (key==='firstRodDate') {
                     keyName = 'Record of Decision (ROD) date'
-                }
-                // hide blank fields
-                else if(!cellData[key] || cellData[key].length === 0) {
-                    return '';
                 // exclusions:
                 } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || 
                 key==='plaintext' || key==='folder' || key==='link' || key==='notes' || key==='commentsFilename'
