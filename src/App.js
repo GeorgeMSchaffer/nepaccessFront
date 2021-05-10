@@ -279,9 +279,9 @@ export default class App extends React.Component {
         }
         
         if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
-            if(this.props.history){
-                console.log(this.props.history);
-            }
+            // if(this.props.history){
+            //     console.log(this.props.history);
+            // }
             this.props.history.push('/login'); // Prompt login if no auth token
         }
 
