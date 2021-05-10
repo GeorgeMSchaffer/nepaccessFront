@@ -277,6 +277,13 @@ export default class App extends React.Component {
         if(!this._mounted){ // User navigated away or reloaded
             return;
         }
+        
+        if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
+            if(this.props.history){
+                console.log(this.props.history);
+            }
+            this.props.history.push('/login'); // Prompt login if no auth token
+        }
 
 		this.setState({
             // Fresh search, fresh results
@@ -301,13 +308,6 @@ export default class App extends React.Component {
                 searchUrl = new URL('text/search_no_context', Globals.currentHost);
             } else if(searcherState.searchOption && searcherState.searchOption === "B") {
                 searchUrl = new URL('text/search_no_context', Globals.currentHost);
-            }
-
-			if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
-                if(this.props.history){
-                    console.log(this.props.history);
-                }
-                // this.props.history.push('/login'); // Prompt login if no auth token
             }
 
             this._searchTerms = this.state.searcherInputs.titleRaw;
@@ -364,6 +364,10 @@ export default class App extends React.Component {
                         resultsText: "No results: Please check use of term modifiers"
                     });
                     return null;
+                } else if(response.status === 403) {
+                    // Not logged in
+                    console.log("Please log in");
+                
                 } else {
                     console.log(response.status);
                     return null;
@@ -376,8 +380,8 @@ export default class App extends React.Component {
                     // TODO: Probably don't want filter permanently, but it was requested for now
                     _data = currentResults
                     .filter((result) => { // Soft rollout logic added to filter out anything without docs.
-                        return result.doc.size > 200; // filter out if no files (200 bytes or less)
-                        // return true;
+                        // return result.doc.size > 200; // filter out if no files (200 bytes or less)
+                        return true;
                     })
                     .map((result, idx) =>{
                         let doc = result.doc;
