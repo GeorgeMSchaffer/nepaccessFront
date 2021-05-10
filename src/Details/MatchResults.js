@@ -17,10 +17,20 @@ import SearchResult from '../SearchResult.js';
 
 class MatchResults extends React.Component {
 
+    downloaded = {}
+
     constructor(props) {
         super(props);
         
         this.match_table = React.createRef();
+    }
+    
+    saveDownloaded = (_name) => {
+        this.downloaded[_name] = true;
+    }
+
+    checkDownloaded = (_name) => {
+        return this.downloaded[_name];
     }
 
 	render() {
@@ -37,7 +47,9 @@ class MatchResults extends React.Component {
             }
             
             const columns = [
-                { title: "", field: "", formatter: reactFormatter(<SearchResult />)}
+                { title: "", field: "", formatter: reactFormatter(<SearchResult              
+                    saveDownloaded={this.saveDownloaded}
+                    checkDownloaded={this.checkDownloaded} />)}
             ];
 
             var options = {
