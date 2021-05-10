@@ -179,6 +179,8 @@ class DetailsUpdate extends React.Component {
             startState.document = startState.documentType;
             startState.comments_filename = startState.commentsFilename;
             startState.eis_identifier = startState.folder;
+            startState.cooperating_agency = startState.cooperatingAgency;
+            startState.web_link = startState.link;
 
 			// prefer empty string to null
             Object.keys(startState).forEach(e => 
@@ -219,6 +221,8 @@ class DetailsUpdate extends React.Component {
                     />
                     <label className="update">Agency</label>
                     <input type="text" name="agency" value={"" + this.state.record.agency} onInput={this.onInput} onChange={this.onChange}></input>
+                    <label className="update">Cooperating Agency</label>
+                    <input type="text" name="cooperating_agency" value={"" + this.state.record.cooperating_agency} onInput={this.onInput} onChange={this.onChange}></input>
                     <label className="update">EPA Comment Letter Date</label>
                     <label className="loginErrorLabel">
                         {this.state.dateError}
@@ -241,7 +245,7 @@ class DetailsUpdate extends React.Component {
                     <label className="update">Folder</label>
                     <input type="text" name="eis_identifier" value={"" + this.state.record.eis_identifier} onInput={this.onInput} onChange={this.onChange}></input>
                     <label className="update">Link</label>
-                    <input type="text" name="link" value={"" + this.state.record.link} onInput={this.onInput} onChange={this.onChange}></input>
+                    <input type="text" name="web_link" value={"" + this.state.record.web_link} onInput={this.onInput} onChange={this.onChange}></input>
                     <label className="update">Notes</label>
                     <input type="text" name="notes" value={"" + this.state.record.notes} onInput={this.onInput} onChange={this.onChange}></input>
                     <label className="update">State</label>
