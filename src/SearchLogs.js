@@ -26,7 +26,7 @@ export default class SearchLogs extends React.Component {
 		super(props);
 		this.state = { 
             typeCount: [],
-            chartOption: {value: "Search Count By Title", label: "Search Count By Title"}
+            chartOption: {value: "Search Count by Terms", label: "Search Count by Terms"}
         };
         
         
@@ -205,7 +205,7 @@ export default class SearchLogs extends React.Component {
 
     render() {
         const chartOptions = [
-            {value: "Search Count By Title", label: "Search Count By Title"}
+            {value: "Search Count by Terms", label: "Search Count by Terms"}
         ];
 
         return (<div className="charts-holder">
@@ -216,7 +216,7 @@ export default class SearchLogs extends React.Component {
                         value={this.state.chartOption}
                         placeholder="Type or select" 
                 />
-                <ChartBar option={this.state.chartOption.value} data={this.state.typeCount} label={"Search Count By Title"} />
+                <ChartBar option={this.state.chartOption.value} data={this.state.typeCount} label={"Search Count by Terms"} />
                 {/* <ChartBar option={this.state.chartOption.value} data={this.state.downloadableCountByType} label={"Downloadable Count by Document Type"} /> */}
                 {/* <ChartBar data={this.state.draftFinalCountByAgency[0]} label={"Draft count by agency"} />
                 <ChartBar data={this.state.draftFinalCountByAgency[1]} label={"Final count by agency"} />
