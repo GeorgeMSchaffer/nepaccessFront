@@ -101,6 +101,26 @@ export default class App extends React.Component {
             return returnValue;
         };
     }
+    
+    
+    /** Special logic for ; or , delimited cooperating agencies from Buomsoo */
+    arrayMatchesArrayNotSpaced(field, val) {
+        return function (a) {
+            // console.log(a);
+            let returnValue = false;
+            val.forEach(item =>{
+                if(a[field]){
+                    let _vals = a[field].split(/[;,]+/); // AK;AL or AK, AL
+                    for(let i = 0; i < _vals.length; i++) {
+                        if (_vals[i].trim() === item) {
+                            returnValue = true; // if we hit ANY of them, then true
+                        }
+                    }
+                }
+            });
+            return returnValue;
+        };
+    }
 
     matchesStartDate(val) {
         return function (a) {
@@ -155,7 +175,7 @@ export default class App extends React.Component {
             }
             if(searcherState.cooperatingAgency && searcherState.cooperatingAgency.length > 0){
                 isFiltered = true;
-                filteredResults = filteredResults.filter(this.arrayMatchesArray("cooperatingAgency", searcherState.cooperatingAgency));
+                filteredResults = filteredResults.filter(this.arrayMatchesArrayNotSpaced("cooperatingAgency", searcherState.cooperatingAgency));
             }
             if(searcherState.state && searcherState.state.length > 0){
                 isFiltered = true;
