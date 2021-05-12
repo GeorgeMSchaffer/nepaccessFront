@@ -587,8 +587,8 @@ a.link {
   }
   
 #main-search-bar {
-    padding-right: 240px;
-    width: calc(72% - 270px);
+    padding-right: 290px;
+    width: calc(72% - 320px);
 }
 
 #search-proximity {
