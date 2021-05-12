@@ -9,8 +9,8 @@ const sortOptions = [ { value: 'relevance', label: 'Relevance' },
     { value: 'documentType', label: 'Type'}
 ];
 
-const sortOrderOptions = [ { value: true, label: 'Asc'},
-    { value: false, label: 'Desc' }
+const sortOrderOptions = [ { value: true, label: '^'},
+    { value: false, label: 'v' }
 ];
 
 export default class ResultsHeader extends React.Component {
@@ -19,7 +19,7 @@ export default class ResultsHeader extends React.Component {
         super(props);
         this.state = {
             sort: { value: 'relevance', label: 'Relevance' },
-            order: { value: true, label: 'Asc'}
+            order: { value: true, label: 'Order'}
         }
     }
 
@@ -70,7 +70,7 @@ export default class ResultsHeader extends React.Component {
                             options={sortOrderOptions} 
                             onChange={this.onSortOrderChange}
                             selected={this.state.order}
-                            placeholder="Asc"
+                            placeholder="Order"
                         />
                     </div>
                     
