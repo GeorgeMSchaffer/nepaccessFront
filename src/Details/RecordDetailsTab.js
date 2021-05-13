@@ -511,7 +511,7 @@ export default class RecordDetailsTab extends React.Component {
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
                 let keyName = key;
-                // Title now needs its own style
+                // Title now outside this structure
                 if(key==='title') {
                     return '';
                 }
@@ -533,14 +533,12 @@ export default class RecordDetailsTab extends React.Component {
                     keyName = 'Record of Decision (ROD) date'
                 // exclusions:
                 } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || 
-                key==='plaintext' || key==='folder' || key==='link' || key==='notes' || key==='commentsFilename'
-                || key === 'filename') { 
+                        key==='plaintext' || key==='folder' || key==='link' || key==='notes' || key==='commentsFilename'
+                        || key === 'filename' || key==='luceneIds') { 
                     return '';
                 } else if(key==='summaryText') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);
-                } else if(key==='luceneIds') {
-                    return '';
-                }
+                } 
                 // else: everything else
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key]}</span></p>);
             }));
