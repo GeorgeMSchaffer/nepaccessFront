@@ -495,12 +495,12 @@ a.link {
   text-decoration: underline;
 } */
 
-.fragment:nth-of-type(odd) {
+/* .fragment:nth-of-type(odd) {
   background-color: rgb(244, 244, 244);
 }
 .fragment:nth-of-type(even) {
   background-color: rgb(222, 222, 222);
-}
+} */
 
 .sort-container {
     float: right;

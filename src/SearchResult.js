@@ -167,10 +167,10 @@ class SearchResult extends React.Component {
                                     {combo[0]}
                                 </span>
                                 
-                                <span className="card-highlight"
-                                    dangerouslySetInnerHTML={{
-                                        __html:combo[1]
-                                    }}>
+                                <span className="card-highlight fragment" 
+                                        dangerouslySetInnerHTML={{
+                                            __html:combo[1]
+                                        }}>
                                 </span>
                             </span>
                         );

@@ -97,6 +97,7 @@ span.fragment {
     font-size: 14px;
     line-height: 18px;
     padding: 10px;
+    background-color: rgb(244, 244, 244);;
 }
 
 span.filename {
@@ -174,10 +175,10 @@ span.filename>* {
     margin-left: 15px;
 } */
 
-.fragment:nth-of-type(2n) {
+/* .fragment:nth-of-type(2n) {
     background: white;
 }
 
 .fragment:nth-of-type(odd) {
     background: rgba(196, 196, 196, 0.4);
-}
+} */
