@@ -668,3 +668,7 @@ div.disabled::before {
     margin: 5px;
     float: right;
 }
+
+#fragmentSize {
+    width: 150px;
+}

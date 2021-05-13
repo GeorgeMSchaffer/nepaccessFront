@@ -57,7 +57,8 @@ class Search extends React.Component {
             proximityOption: null,
             proximityDisabled: true,
             hideOrganization: true,
-            markup: false
+            markup: true,
+            fragmentSizeValue: 1
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
@@ -128,6 +129,14 @@ class Search extends React.Component {
     // suppress warning that there's no onChange event, handler (despite onChange rarely being the best event to take advantage of)
     onChangeHandler = (evt) => {
         // do nothing
+    }
+
+    onFragmentSizeChange = (evt) => {
+        console.log("Val",evt.value);
+        this.setState({
+            fragmentSizeValue: evt.value,
+            fragmentSize: evt
+        });
     }
 
 	onAgencyChange = (evt) => {
@@ -319,6 +328,12 @@ class Search extends React.Component {
             {value: -1, label: 'no restriction (default)'}
         ];
 
+        const fragmentOptions = [
+            {value: 0, label: 'small'},
+            {value: 1, label: 'medium'},
+            {value: 2, label: 'large'}
+        ]
+
         const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
         + "<table class=tooltip-table><tbody>"
             + "<tr class=tooltip-line>"
@@ -442,6 +457,22 @@ class Search extends React.Component {
                                 <label className="sidebar-check-label no-select" htmlFor="check2">
                                     Normalize snippet whitespace
                                 </label> */}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div className="inline-block">
+                                    <Select id="fragmentSize" className="multi" classNamePrefix="react-select" name="fragmentSize"
+                                        styles={customStyles}
+                                        options={fragmentOptions} 
+                                        onChange={this.onFragmentSizeChange} 
+                                        value={this.state.fragmentSize}
+                                        placeholder="Default" 
+                                        // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                                        // menuIsOpen={true}
+                                    />
+                                </div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label className="sidebar-check-label no-select inline-block">
+                                        Fragment Size
+                                    </label>
 
                             </div>
                             <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
@@ -459,7 +490,7 @@ class Search extends React.Component {
                 {/* <div className="center" hidden={!this.props.searching}>Loaded text snippets for {this.props.count} results...</div> */}
                 <div className="lds-ellipsis" hidden={!this.props.searching}><div></div><div></div><div></div><div></div></div>
             </div>
-            
+
             
             <div className="sidebar-filters" 
                 // this would launch a new search on enter key, in some child inputs

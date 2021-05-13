@@ -558,8 +558,7 @@ export default class App extends React.Component {
 
 			let dataToPass = { 
 				unhighlighted: _unhighlighted,
-                terms: _inputs.titleRaw,
-                markup: _inputs.markup
+                terms: _inputs.titleRaw
             };
 
             //Send the AJAX call to the server
@@ -755,6 +754,8 @@ export default class App extends React.Component {
             { 
 				unhighlighted: _unhighlighted,
                 terms: _inputs.titleRaw,
+                markup: _inputs.markup,
+                fragmentSizeValue: _inputs.fragmentSizeValue
             };
 
             // console.log("For backend",dataToPass);
