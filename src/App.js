@@ -559,6 +559,7 @@ export default class App extends React.Component {
 			let dataToPass = { 
 				unhighlighted: _unhighlighted,
                 terms: _inputs.titleRaw,
+                markup: _inputs.markup
             };
 
             //Send the AJAX call to the server
