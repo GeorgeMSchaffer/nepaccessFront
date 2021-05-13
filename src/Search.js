@@ -329,9 +329,10 @@ class Search extends React.Component {
         ];
 
         const fragmentOptions = [
-            {value: 0, label: 'small'},
-            {value: 1, label: 'medium'},
-            {value: 2, label: 'large'}
+            {value: 0, label: 'Small'},
+            {value: 1, label: 'Medium'},
+            {value: 2, label: 'Large'},
+            {value: 3, label: 'Huge'}
         ]
 
         const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
@@ -469,7 +470,7 @@ class Search extends React.Component {
                                         // menuIsOpen={true}
                                     />
                                 </div>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;
                                     <label className="sidebar-check-label no-select inline-block">
                                         Fragment Size
                                     </label>
