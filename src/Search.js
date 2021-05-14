@@ -472,7 +472,7 @@ class Search extends React.Component {
                                 </div>
                                 &nbsp;
                                     <label className="sidebar-check-label no-select inline-block">
-                                        Fragment Size
+                                        Text Snippet Size
                                     </label>
 
                             </div>
