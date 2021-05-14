@@ -685,6 +685,101 @@ class Importer extends Component {
             document.body.style.cursor = 'default'; 
         });
     }
+    importTitleFix = () => {
+        let newCSV = [];
+        for(let i = 0; i < this.state.csv.length; i++){
+            let key, keys = Object.keys(this.state.csv[i]);
+            let n = keys.length;
+            let newObj={};
+            while (n--) {
+                let newKey = keys[n];
+                key = keys[n];
+
+                // Spaces to underscores
+                newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
+            }
+            if(!this.state.csv[i][key]) {
+                // EOF?
+            } else {
+                newObj["title"] = newObj["title"].replace(/\s{2,}/g, ' ');
+    
+                newCSV[i] = newObj;
+            }
+
+        }
+        
+        console.log("Headers", newCSV[0]);
+        if(newCSV[0] && 'title' in newCSV[0]){
+            // All good
+        } else {
+            return;
+        }
+
+        document.body.style.cursor = 'wait';
+        this.setState({ 
+            csvLabel: 'In progress...',
+            csvError: '',
+            disabled: true 
+        });
+        
+        let importUrl = new URL('file/title_fix', Globals.currentHost);
+
+        let uploadFile = new FormData();
+        uploadFile.append("csv", JSON.stringify(newCSV));
+
+        let networkString = '';
+        let successString = '';
+        let resultString = "";
+
+        axios({ 
+            method: 'POST',
+            url: importUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: uploadFile
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+
+            let responseArray = response.data;
+            responseArray.forEach(element => {
+                resultString += element + "\n";
+            });
+            
+            if (responseOK) {
+                return true;
+            } else { 
+                return false;
+            }
+        }).then(success => {
+            if(success){
+                successString = "Success.";
+            } else {
+                successString = "Failed to import."; // Server down?
+            }
+        }).catch(error => {
+            if(error.response) {
+                if (error.response.status === 500) {
+                    networkString = "Internal server error.";
+                } else if (error.response.status === 404) {
+                    networkString = "Not found.";
+                } 
+            } else {
+                networkString = "Server may be down (no response), please try again later.";
+            }
+            successString = "Couldn't import.";
+            console.error('error message ', error);
+        }).finally(e => {
+            this.setState({
+                csvError: networkString,
+                csvLabel: successString,
+                disabled: false,
+                results : resultString
+            });
+    
+            document.body.style.cursor = 'default'; 
+        });
+    }
 
 
     // Expect these headers:
@@ -1203,11 +1298,15 @@ class Importer extends Component {
                         <button type="button" className="button" id="submitCSVDummy" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSVDummy}>
                             Test Import (Would-be results are returned, but nothing is added to database)
                         </button>
+                        <button type="button" className="button" id="submitCSV" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
+                            Import CSV/TSV
+                        </button>
+                        
                         <button type="button" className="button" id="submitCSVTitles" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSVTitles}>
                             (Only works for admin) Import from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
                         </button>
-                        <button type="button" className="button" id="submitCSV" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSV}>
-                            Import CSV/TSV
+                        <button type="button" className="button" id="submitTitleFix" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importTitleFix}>
+                            (Only works for admin) Title fixing tool
                         </button>
 
                         <h3 className="infoLabel">
