@@ -452,6 +452,8 @@ export default class App extends React.Component {
                     // console.log("No results");
                     this.setState({
                         searching: false,
+                        searchResults: [],
+                        outputResults: [],
                         resultsText: "No results found for " + dataToPass.title + " (try adding OR between words for less strict results?)"
                     });
                 }
