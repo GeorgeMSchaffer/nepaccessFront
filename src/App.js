@@ -163,11 +163,13 @@ export default class App extends React.Component {
     * the results, which gives a filtered version of results to SearchResults */
     filterResultsBy = (searcherState) => {
         this._searcherState = searcherState; // for live filtering
+        let preFilterCount;
         // Only filter if there are any results to filter
         if(this.state.searchResults && this.state.searchResults.length > 0){
             // Deep clone results
             let isFiltered = false;
             let filteredResults = JSON.parse(JSON.stringify(this.state.searchResults));
+            preFilterCount = this.state.searchResults.length;
             
             if(searcherState.agency && searcherState.agency.length > 0){
                 isFiltered = true;
@@ -200,7 +202,8 @@ export default class App extends React.Component {
             if(isFiltered) { // filtered: "Matches"
                 textToUse = filteredResults.length + " Matches";
                 if(filteredResults.length === 0) {
-                    textToUse = filteredResults.length + " Matches (try removing filters)";
+                    textToUse = preFilterCount + " Results match your keywords. After applying your filters to narrow results: "
+                    + filteredResults.length + " documents remain";
                 }
 
             }
