@@ -58,7 +58,7 @@ class Search extends React.Component {
             proximityDisabled: true,
             hideOrganization: true,
             markup: true,
-            fragmentSizeValue: 1
+            fragmentSizeValue: 2
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
@@ -458,7 +458,7 @@ class Search extends React.Component {
                                 <label className="sidebar-check-label no-select" htmlFor="check2">
                                     Normalize snippet whitespace
                                 </label> */}
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <div className="inline-block">
                                     <Select id="fragmentSize" className="multi" classNamePrefix="react-select" name="fragmentSize"
                                         styles={customStyles}
@@ -471,9 +471,9 @@ class Search extends React.Component {
                                     />
                                 </div>
                                 &nbsp;
-                                    <label className="sidebar-check-label no-select inline-block">
-                                        Text Snippet Size
-                                    </label>
+                                <label className="sidebar-check-label no-select inline-block">
+                                    Text Snippet Size
+                                </label> */}
 
                             </div>
                             <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
