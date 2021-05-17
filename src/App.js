@@ -200,7 +200,7 @@ export default class App extends React.Component {
             if(isFiltered) { // filtered: "Matches"
                 textToUse = filteredResults.length + " Matches";
                 if(filteredResults.length === 0) {
-                    textToUse = filteredResults.length + " Matches (try relaxing filters?)";
+                    textToUse = filteredResults.length + " Matches (try removing filters)";
                 }
 
             }
@@ -452,7 +452,7 @@ export default class App extends React.Component {
                     // console.log("No results");
                     this.setState({
                         searching: false,
-                        resultsText: "No results found for " + dataToPass.title + " (try adding OR between words for less strict results)"
+                        resultsText: "No results found for " + dataToPass.title + " (try adding OR between words for less strict results?)"
                     });
                 }
             }).catch(error => { // Server down or 408 (timeout)
