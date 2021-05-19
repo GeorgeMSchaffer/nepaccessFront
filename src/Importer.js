@@ -266,11 +266,34 @@ class Importer extends Component {
             // );
             result = ('title' in headers && 'agency' in headers && 'federal_register_date' in headers 
                 && 'state' in headers && 'document' in headers && 
-                ('filename' in headers || 'EIS Identifier' in headers));
+                ('filename' in headers || 'eis_identifier' in headers));
     
             if(!result){
                 this.setState({
                     csvError: "Missing one or more headers (title, federal register date, agency, state, document, filename/EIS Identifier)"
+                });
+            }
+        } else {
+            this.setState({
+                csvError: "No headers found or no data found"
+            });
+        }
+
+        return result;
+    }
+    
+    // only require title/agency/document and either filename or eis identifier
+    csvConstrainedValidated = (csv) => {
+        let result = false;
+        if(csv[0]){
+            let headers = csv[0];
+            console.log("Headers", headers);
+            result = ('title' in headers && 'agency' in headers && 'document' in headers 
+                        && ('filename' in headers || 'eis_identifier' in headers));
+    
+            if(!result){
+                this.setState({
+                    csvError: "Missing one or more headers (title, agency, document, filename/EIS Identifier)"
                 });
             }
         } else {
@@ -781,6 +804,152 @@ class Importer extends Component {
         });
     }
 
+    importCSVConstrained = () => {
+        let newCSV = [];
+        for(let i = 0; i < this.state.csv.length; i++){
+            let key, keys = Object.keys(this.state.csv[i]);
+            let n = keys.length;
+            let newObj={};
+            while (n--) {
+                let newKey = keys[n];
+                key = keys[n];
+                // Handle abnormal headers here
+                if(key==="document_type"){ // actual column name
+                    newKey="document";
+                }
+                if(key==="File name"){
+                    newKey = "filename";
+                }
+                if(key==="register_date"){
+                    newKey = "federal_register_date";
+                }
+                if(key==="comment_date"){
+                    newKey = "epa_comment_letter_date";
+                }
+                if(key==="folder"){
+                    newKey = "eis_identifier";
+                }
+                if(key==="web_link"){
+                    newKey = "link";
+                }
+
+                // Spaces to underscores
+                newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
+
+                // Try to separate by ;, move appropriate value to new comments_filename column
+                if(newKey.toLowerCase()==="filename" && this.state.csv[i][key]) {
+                    // "Filename" could be only comments, so reset it first
+                    newObj["filename"] = "";
+                    try {
+                        let files = this.state.csv[i][key].split(';');
+                        if(files && files.length > 0) {
+                            files.forEach(filename => {
+                                // If comment, send to comments_filename column
+                                if(filename.includes("CommentLetters")) {
+                                    newObj["comments_filename"] = filename;
+                                }
+                                // If EIS, replace with only EIS filename in filename column
+                                else if(filename.includes("EisDocuments")) {
+                                    newObj["filename"] = filename;
+                                }
+                            });
+                        }
+                    } catch(e) {
+                        console.log("Filename parsing error",e);
+                    }
+                }
+            }
+
+            if(!this.state.csv[i][key]) {
+                // EOF?
+            } else {
+                // Normalize title spacing (lots of incoming data has this irregularity)
+                newObj["title"] = newObj["title"].replace(/\s{2,}/g, ' ');
+    
+                newCSV[i] = newObj;
+            }
+
+        }
+
+        if(!this.csvConstrainedValidated(newCSV)) {
+            return;
+        }
+        
+        document.body.style.cursor = 'wait';
+        this.setState({ 
+            csvLabel: 'In progress...',
+            csvError: '',
+            disabled: true 
+        });
+
+        
+        let importUrl = new URL('file/uploadCSV_constraints', Globals.currentHost);
+
+        let uploadFile = new FormData();
+        // uploadFile.append("csv", JSON.stringify(this.state.csv));
+        uploadFile.append("csv", JSON.stringify(newCSV));
+        
+        // let importObject = {"UploadInputs": this.state.csv};
+        // uploadFile.append("csv", JSON.stringify(importObject));
+
+        // console.log(this.state.csv);
+        // console.log(uploadFile.get("csv"));
+
+        let networkString = '';
+        let successString = '';
+        let resultString = "";
+
+        axios({ 
+            method: 'POST',
+            url: importUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: uploadFile
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            // console.log(response);
+
+            let responseArray = response.data;
+            responseArray.forEach(element => {
+                resultString += element + "\n";
+            });
+            
+            if (responseOK) {
+                return true;
+            } else { 
+                return false;
+            }
+        }).then(success => {
+            if(success){
+                successString = "Success.";
+            } else {
+                successString = "Failed to import."; // Server down?
+            }
+        }).catch(error => {
+            if(error.response) {
+                if (error.response.status === 500) {
+                    networkString = "Internal server error.";
+                } else if (error.response.status === 404) {
+                    networkString = "Not found.";
+                } 
+            } else {
+                networkString = "Server may be down (no response), please try again later.";
+            }
+            successString = "Couldn't import.";
+            console.error('error message ', error);
+        }).finally(e => {
+            this.setState({
+                csvError: networkString,
+                csvLabel: successString,
+                disabled: false,
+                results : resultString
+            });
+    
+            document.body.style.cursor = 'default'; 
+        });
+    }
+
 
     // Expect these headers:
     // Title, Document, EPA Comment Letter Date, Federal Register Date, Agency, State, EIS Identifier, Filename, Link
@@ -850,9 +1019,7 @@ class Importer extends Component {
             if(!this.state.csv[i][key]) {
                 // EOF?
             } else {
-                // Normalize title spacing (lots of incoming data has this irregularity)
-                newObj["title"] = newObj["title"].replace(/\s{2,}/g, ' ');
-    
+                // Note: Space normalization now handled by backend entirely
                 newCSV[i] = newObj;
             }
 
@@ -1307,6 +1474,9 @@ class Importer extends Component {
                         </button>
                         <button type="button" className="button" id="submitTitleFix" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importTitleFix}>
                             (Only works for admin) Title fixing tool
+                        </button>
+                        <button type="button" className="button" id="submitCSVConstrained" disabled={!this.state.canImportCSV || this.state.disabled} onClick={this.importCSVConstrained}>
+                            (Only works for admin) Constrained import tool
                         </button>
 
                         <h3 className="infoLabel">
