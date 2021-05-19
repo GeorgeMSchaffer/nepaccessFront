@@ -82,7 +82,7 @@ class Main extends React.Component {
         Globals.setUp();
 
         // Init hotjar for webapp, unless local test
-        if(window.location.hostname != 'localhost') {
+        if(window.location.hostname !== 'localhost') {
             hotjar.initialize(2319391, 6);
         }
     }

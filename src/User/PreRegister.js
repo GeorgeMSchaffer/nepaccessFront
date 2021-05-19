@@ -21,8 +21,7 @@ const affiliations = [
     {value:"General public", label:"General public"}, 
     {value:"Other", label:"Other"}
 ];
-const recaptchaRef = React.createRef();
-//<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+// const recaptchaRef = React.createRef();
 
 export default class PreRegister extends React.Component {
 
@@ -421,7 +420,7 @@ export default class PreRegister extends React.Component {
                                     id="showPassword" 
                                     onClick={this.showPassword}
                                     onChange={this.showPassword}
-                                    checked={this.state.passwordType=="text"}>
+                                    checked={this.state.passwordType==="text"}>
                             </input>
                             <label className="inline noSelect">Show password</label>
                         </div>
@@ -545,7 +544,7 @@ export default class PreRegister extends React.Component {
                                             id="showPassword" 
                                             onClick={this.showPassword}
                                             onChange={this.showPassword}
-                                            checked={this.state.passwordType=="text"}></input>
+                                            checked={this.state.passwordType==="text"}></input>
                                         <label className="inline noSelect">Show password</label>
                                     </div>
                                 </div>

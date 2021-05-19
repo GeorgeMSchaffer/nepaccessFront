@@ -328,12 +328,12 @@ class Search extends React.Component {
             {value: -1, label: 'no restriction (default)'}
         ];
 
-        const fragmentOptions = [
-            {value: 0, label: 'Small'},
-            {value: 1, label: 'Medium'},
-            {value: 2, label: 'Large'},
-            {value: 3, label: 'Huge'}
-        ]
+        // const fragmentOptions = [
+        //     {value: 0, label: 'Small'},
+        //     {value: 1, label: 'Medium'},
+        //     {value: 2, label: 'Large'},
+        //     {value: 3, label: 'Huge'}
+        // ]
 
         const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
         + "<table class=tooltip-table><tbody>"

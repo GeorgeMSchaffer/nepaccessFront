@@ -221,7 +221,7 @@ export default class Pair extends React.Component {
 
     
 function sanityCheck (doc, locationCheck) {
-    if(doc.agency1 != doc.agency2) {
+    if(doc.agency1 !== doc.agency2) {
         return false;
     }
 
@@ -255,7 +255,7 @@ function sanityCheck (doc, locationCheck) {
     } else {
         return false; // "bad" document types
     }
-    if((doc.state1 != doc.state2) && locationCheck) {
+    if((doc.state1 !== doc.state2) && locationCheck) {
         return false;
     }
 

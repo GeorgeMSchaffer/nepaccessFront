@@ -1,6 +1,5 @@
 import React from 'react';
 import './iframes.css';
-import App from '../App.js';
 
 import IframeResizer from 'iframe-resizer-react';
 

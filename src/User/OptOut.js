@@ -44,10 +44,10 @@ export default class OptOut extends React.Component {
                     this.setState({
                         submitted: true
                     });
-                } else if(response.status==208) {
+                } else if(response.status === 208) { // already in?
                     this.setState({
                         submitted: true,
-                        submittedMessage: "Thank you, but this email has already been submitted."
+                        submittedMessage: "Thank you, this email has been submitted."
                     });
                 }
             }).catch(error => { // 400/500
