@@ -227,6 +227,12 @@ class SearchResult extends React.Component {
                     <span>{this.props.cell._cell.row.data.registerDate}</span></span>
                 </div>
             );
+        } else {
+            return (
+                <div><span className="cardHeader">Date:
+                    <span></span></span>
+                </div>
+            );
         }
     }
     showState = () => {
@@ -239,7 +245,7 @@ class SearchResult extends React.Component {
         } else {
             return (
                 <div>
-                    <span className="cardHeader">State: <span>?</span></span>
+                    <span className="cardHeader">State: <span></span></span>
                 </div>
             );
         }
