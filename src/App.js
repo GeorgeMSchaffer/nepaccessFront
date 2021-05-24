@@ -139,18 +139,22 @@ export default class App extends React.Component {
             return (
                 ((
                     (a["documentType"] === "Final") 
+                    || (a["documentType"] === "Final Revised")
                     || (a["documentType"] === "Second Final")
                     || (a["documentType"] === "Revised Final")
                     || (a["documentType"] === "Final Supplement")
+                    || (a["documentType"] === "Final Supplemental")
                     || (a["documentType"] === "Second Final Supplemental")
                     || (a["documentType"] === "Third Final Supplemental")
                 ) 
                 && matchFinal) || 
                 ((
                     (a["documentType"] === "Draft") 
+                    || (a["documentType"] === "Draft Revised")
                     || (a["documentType"] === "Second Draft")
                     || (a["documentType"] === "Revised Draft")
                     || (a["documentType"] === "Draft Supplement")
+                    || (a["documentType"] === "Draft Supplemental")
                     || (a["documentType"] === "Second Draft Supplemental")
                     || (a["documentType"] === "Third Draft Supplemental")
                 ) 
