@@ -672,3 +672,8 @@ div.disabled::before {
 #fragmentSize {
     width: 150px;
 }
+
+#inputMessage {
+    color: blue;
+    font-style: italic;
+}

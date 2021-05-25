@@ -134,7 +134,8 @@ export default class App extends React.Component {
         };
     }
     
-    matchesType(matchFinal, matchDraft) {
+    matchesType(matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping) {
+        console.log("Types",matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping);
         return function (a) {
             return (
                 ((
@@ -158,7 +159,19 @@ export default class App extends React.Component {
                     || (a["documentType"] === "Second Draft Supplemental")
                     || (a["documentType"] === "Third Draft Supplemental")
                 ) 
-                && matchDraft)
+                && matchDraft) || 
+                ((
+                    (a["documentType"] === "EA") 
+                ) && matchEA) || 
+                ((
+                    (a["documentType"] === "NOI") 
+                ) && matchNOI) || 
+                ((
+                    (a["documentType"] === "ROD") 
+                ) && matchROD) || 
+                ((
+                    (a["documentType"] === "Scoping Report") 
+                ) && matchScoping)
             );
         };
     }
@@ -197,16 +210,23 @@ export default class App extends React.Component {
                 let formattedDate = Globals.formatDate(searcherState.endPublish);
                 filteredResults = filteredResults.filter(this.matchesEndDate(formattedDate));
             }
-            if(searcherState.typeFinal || searcherState.typeDraft){
+            if(searcherState.typeFinal || searcherState.typeDraft || searcherState.typeEA 
+                || searcherState.typeNOI || searcherState.typeROD || searcherState.typeScoping){
                 isFiltered = true;
-                filteredResults = filteredResults.filter(this.matchesType(searcherState.typeFinal, searcherState.typeDraft));
+                filteredResults = filteredResults.filter(this.matchesType(
+                    searcherState.typeFinal, 
+                    searcherState.typeDraft,
+                    searcherState.typeEA,
+                    searcherState.typeNOI,
+                    searcherState.typeROD,
+                    searcherState.typeScoping));
             }
             
             let textToUse = filteredResults.length + " Results"; // unfiltered: "Results"
             if(isFiltered) { // filtered: "Matches"
                 textToUse = filteredResults.length + " Matches";
                 if(filteredResults.length === 0) {
-                    textToUse = preFilterCount + " Results match your keywords. After applying your filters to narrow results: "
+                    textToUse = preFilterCount + " Results. After applying your filters to narrow results: "
                     + filteredResults.length + " documents remain";
                 }
 
@@ -988,11 +1008,6 @@ export default class App extends React.Component {
                             NEPAccess searches are not currently available to the public.  Please <Link to="/login">log in.</Link>
                         </label>
                     </div>
-                    {/* <div>
-					    <label className="logged-out-header">
-                            Please <Link to="/login">log in</Link>.
-                        </label>
-                    </div> */}
 				</div>
 			)
 		}

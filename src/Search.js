@@ -43,6 +43,10 @@ class Search extends React.Component {
             typeAll: true,
             typeFinal: false,
             typeDraft: false,
+            typeEA: false,
+            typeNOI: false,
+            typeROD: false,
+            typeScoping: false,
             typeOther: false,
             needsComments: false,
             needsDocument: false,
@@ -81,7 +85,11 @@ class Search extends React.Component {
         this.debouncedSearch(this.state);
     }
     onClearClick = (evt) => {
-        this.setState({ titleRaw: '', proximityDisabled: true }); 
+        this.setState({ 
+            titleRaw: '', 
+            proximityDisabled: true, 
+            inputMessage: "" 
+        }); 
     }
 
     onRadioChange = (evt) => {
@@ -107,10 +115,20 @@ class Search extends React.Component {
 
 	onInput = (evt) => {
 
+        let userInput = evt.target.value;
+
         // Disable ui proximity search unless search is at least two strings separated by whitespace
         let disableResult = true;
-        if(evt.target.name==='titleRaw') {
-            if(evt.target.value.trim().match(/\s+/)) {
+
+        // Disable prox dropdown if conflicting characters in terms
+        let _inputMessage = "";
+        if( userInput.match(/["\?\*~]+/) ) {
+            _inputMessage = "Wildcard, phrase or proximity search character found in terms: " 
+            + userInput.match(/["\?\*~]+/)[0][0]
+            + ".  Disabled proximity search dropdown to prevent unpredictable results."
+            disableResult = true;
+        } else if(evt.target.name==='titleRaw') {
+            if(userInput.trim().match(/\s+/)) {
                 disableResult = false;
             }
         }
@@ -119,8 +137,9 @@ class Search extends React.Component {
 		//and use it to target the key on our `state` object with the same name, using bracket syntax
 		this.setState( 
 		{ 
-            [evt.target.name]: evt.target.value,
-            proximityDisabled: disableResult
+            [evt.target.name]: userInput,
+            proximityDisabled: disableResult,
+            inputMessage: _inputMessage
         }, () => { // auto-searching is currently too expensive until asynchronous results
             // this.debouncedSearch(this.state);
         });
@@ -476,7 +495,7 @@ class Search extends React.Component {
                                 </label> */}
 
                             </div>
-                            <div id="post-search-box-text">Leave search box blank to return all results in database.</div>
+                            {/* <div id="post-search-box-text">Leave search box blank to return all results in database.</div> */}
                         </div>
                         
                     </div>
@@ -485,6 +504,9 @@ class Search extends React.Component {
             </div>
 
             <div className="loader-holder">
+                <div className="center" hidden={this.props.searching}>
+                    <span id="inputMessage">{this.state.inputMessage}</span>
+                </div>
                 <div className="center" hidden={!this.props.searching}>
                     <button disabled={!this.state.cancelButtonActive} onClick={this.onStopClick}>Stop search (cancels after completing outstanding snippet request)</button>
                 </div>
@@ -575,6 +597,34 @@ class Search extends React.Component {
                                     checked={this.state.typeFinal} onChange={this.onTypeChecked} />
                             <label className="checkbox-text" htmlFor="typeFinal">
                                 Final EIS
+                            </label>
+                        </div>
+                        <div className="checkbox-container">
+                            <input type="checkbox" name="typeEA" className="sidebar-checkbox"
+                                    checked={this.state.typeEA} onChange={this.onTypeChecked} />
+                            <label className="checkbox-text" htmlFor="typeEA">
+                                EA
+                            </label>
+                        </div>
+                        <div className="checkbox-container">
+                            <input type="checkbox" name="typeNOI" className="sidebar-checkbox"
+                                    checked={this.state.typeNOI} onChange={this.onTypeChecked} />
+                            <label className="checkbox-text" htmlFor="typeNOI">
+                                NOI
+                            </label>
+                        </div>
+                        <div className="checkbox-container">
+                            <input type="checkbox" name="typeROD" className="sidebar-checkbox"
+                                    checked={this.state.typeROD} onChange={this.onTypeChecked} />
+                            <label className="checkbox-text" htmlFor="typeROD">
+                                ROD
+                            </label>
+                        </div>
+                        <div className="checkbox-container">
+                            <input type="checkbox" name="typeScoping" className="sidebar-checkbox"
+                                    checked={this.state.typeScoping} onChange={this.onTypeChecked} />
+                            <label className="checkbox-text" htmlFor="typeScoping">
+                                Scoping Report
                             </label>
                         </div>
                     </div>
