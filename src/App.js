@@ -225,11 +225,6 @@ export default class App extends React.Component {
             let textToUse = filteredResults.length + " Results"; // unfiltered: "Results"
             if(isFiltered) { // filtered: "Matches"
                 textToUse = filteredResults.length + " Matches (narrowed down from " + preFilterCount + " Results)";
-                if(filteredResults.length === 0) {
-                    textToUse = preFilterCount + " Results. After applying your filters to narrow results: "
-                    + filteredResults.length + " documents remain";
-                }
-
             }
             
             // console.log("Filtering");
