@@ -162,6 +162,9 @@ label.checkbox-text {
     line-height: 50px;
     display: inline-block;
 }
+.results-bar #results-label {
+    display: block;
+}
 #results-bar-checkbox {
     float: right;
     line-height: 50px;

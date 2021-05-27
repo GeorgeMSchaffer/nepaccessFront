@@ -47,10 +47,12 @@ export default class ResultsHeader extends React.Component {
 
         return (
             <div className="results-bar">
-                    <h2 id="results-label" className="inline">
-                        {/* {((this.props.page*10) - 9) + " - " + this.props.page*10 + " of " + this.props.resultsText} */}
-                        {this.props.resultsText}
-                    </h2>
+                    <div>
+                        <h2 id="results-label" className="inline">
+                            {/* {((this.props.page*10) - 9) + " - " + this.props.page*10 + " of " + this.props.resultsText} */}
+                            {this.props.resultsText}
+                        </h2>
+                    </div>
                     
                     <div className="sort-container inline-block">
                         <label className="dropdown-text" htmlFor="post-results-dropdown">
