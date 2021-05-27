@@ -14,13 +14,15 @@ export default class AboutHelpContents extends React.Component {
             finalCount: null,
             draftCount: null,
             finalCountDownloadable: null,
-            draftCountDownloadable: null
+            draftCountDownloadable: null,
+            textCount: null
         }
         
         this.getDraftCount();
         this.getFinalCount();
         this.getDraftCountDownloadable();
         this.getFinalCountDownloadable();
+        this.getTextCount();
     }
     
     getFinalCount = () => {
@@ -131,6 +133,33 @@ export default class AboutHelpContents extends React.Component {
             
         });
     }
+    getTextCount = () => {
+        let getUrl = Globals.currentHost + "stats/text_count";
+        
+        axios.get(getUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            console.log(parsedJson);
+            if(parsedJson){
+                this.setState({
+                    textCount: parsedJson
+                });
+            } else { // null/404
+
+            }
+        }).catch(error => {
+            
+        });
+    }
     
     render () {
         return (
@@ -154,7 +183,7 @@ export default class AboutHelpContents extends React.Component {
                     <div><p>
                         This includes {this.state.draftCount} draft and {this.state.finalCount} final documents. 
                         Of these, {this.state.draftCountDownloadable} draft and {this.state.finalCountDownloadable} final EISs are in a format that supports full-text searching and downloading.
-                        </p><p>NEPAccess is a work in progress—as time goes on, other documents related to the National Environmental Policy Act of 1969 (NEPA) will be added.
+                        </p><p>NEPAccess is a work in progress—as time goes on, other documents related to the National Environmental Policy Act of 1969 (NEPA) will be added.  Total searchable texts (each one representing a .pdf): {this.state.textCount}
                     </p></div>
 
                     {/* <h2>
