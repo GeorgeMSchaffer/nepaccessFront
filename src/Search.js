@@ -124,8 +124,8 @@ class Search extends React.Component {
         let _inputMessage = "";
         if( userInput.match(/["\?\*~]+/) ) {
             _inputMessage = "Wildcard, phrase or proximity search character found in terms: " 
-            + userInput.match(/["\?\*~]+/)[0][0]
-            + ".  Disabled proximity search dropdown to prevent unpredictable results."
+                + userInput.match(/["\?\*~]+/)[0][0]
+                + ".  Disabled proximity search dropdown to prevent unpredictable results."
             disableResult = true;
         } else if(evt.target.name==='titleRaw') {
             if(userInput.trim().match(/\s+/)) {
@@ -286,11 +286,13 @@ class Search extends React.Component {
     tooltipTrigger = (evt) => {
         if(this.state.tooltipOpen){
             this.setState({
-                tooltipOpen: false
+                tooltipOpen: false,
+                tooltipClass: ""
             })
         } else {
             this.setState({
-                tooltipOpen: true
+                tooltipOpen: true,
+                tooltipClass: "tooltip-open"
             })
         }
     }
@@ -418,8 +420,11 @@ class Search extends React.Component {
                                 interactive={false}
                                 hideOnClick={true}
                             >
-                                {<span id="tooltip4" onClick={this.tooltipTrigger}
-                                className="cursor-default no-select">Search tips</span>}
+                                {<span id="tooltip4" 
+                                        onClick={this.tooltipTrigger} 
+                                        className={this.state.tooltipClass + " cursor-default no-select"}>
+                                    Search tips
+                                </span>}
                                 {/* <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
                                     <text className="bold" x="13" y="22" text-align="center" fill="black">?</text>
@@ -586,45 +591,45 @@ class Search extends React.Component {
                     <label className="sidebar-label">Document type</label>
                     <div className="sidebar-checkboxes">
                         <div className="checkbox-container">
-                            <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
-                                    checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                            <label className="checkbox-text" htmlFor="typeDraft">
-                                Draft EIS
+                            <label className="clickable checkbox-text">
+                                <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
+                                        checked={this.state.typeDraft} onChange={this.onTypeChecked} />
+                                <span className="checkbox-text">Draft EIS</span>
                             </label>
                         </div>
                         <div className="checkbox-container">
-                            <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
-                                    checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                            <label className="checkbox-text" htmlFor="typeFinal">
-                                Final EIS
+                            <label className="clickable checkbox-text">
+                                <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
+                                        checked={this.state.typeFinal} onChange={this.onTypeChecked} />
+                                <span className="checkbox-text">Final EIS</span>
                             </label>
                         </div>
                         <div className="checkbox-container">
-                            <input type="checkbox" name="typeEA" className="sidebar-checkbox"
+                            <label className="clickable checkbox-text">
+                                <input type="checkbox" name="typeEA" className="sidebar-checkbox"
                                     checked={this.state.typeEA} onChange={this.onTypeChecked} />
-                            <label className="checkbox-text" htmlFor="typeEA">
-                                EA
+                                <span className="checkbox-text">EA</span>
                             </label>
                         </div>
                         <div className="checkbox-container">
-                            <input type="checkbox" name="typeNOI" className="sidebar-checkbox"
-                                    checked={this.state.typeNOI} onChange={this.onTypeChecked} />
-                            <label className="checkbox-text" htmlFor="typeNOI">
-                                NOI
+                            <label className="clickable checkbox-text">
+                                <input type="checkbox" name="typeNOI" className="sidebar-checkbox"
+                                        checked={this.state.typeNOI} onChange={this.onTypeChecked} />
+                                <span className="checkbox-text">NOI</span>
                             </label>
                         </div>
                         <div className="checkbox-container">
-                            <input type="checkbox" name="typeROD" className="sidebar-checkbox"
+                            <label className="clickable checkbox-text">
+                                <input type="checkbox" name="typeROD" className="sidebar-checkbox"
                                     checked={this.state.typeROD} onChange={this.onTypeChecked} />
-                            <label className="checkbox-text" htmlFor="typeROD">
-                                ROD
+                                <span className="checkbox-text">ROD</span>
                             </label>
                         </div>
                         <div className="checkbox-container">
-                            <input type="checkbox" name="typeScoping" className="sidebar-checkbox"
+                            <label className="clickable checkbox-text">
+                                <input type="checkbox" name="typeScoping" className="sidebar-checkbox"
                                     checked={this.state.typeScoping} onChange={this.onTypeChecked} />
-                            <label className="checkbox-text" htmlFor="typeScoping">
-                                Scoping Report
+                                <span className="checkbox-text">Scoping Report</span>
                             </label>
                         </div>
                     </div>

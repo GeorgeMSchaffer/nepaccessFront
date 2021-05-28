@@ -338,6 +338,10 @@ input[type=checkbox] {
 
 /** Tooltip and custom react-tippy styling */
 
+#tooltip4.tooltip-open {
+    color:rgb(100,50,255);
+}
+
 #tooltip1Mark {
   position: absolute;
   
@@ -458,7 +462,7 @@ button.document-download {
     /* padding-left: 0px !important; */
     margin-left: 0.5em;
     height: 32px;
-    
+
     color: black;
     background-color: #8FBC3F;
 
@@ -682,4 +686,13 @@ div.disabled::before {
 #inputMessage {
     color: blue;
     font-style: italic;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.options-container {
+    float: right;
+    margin-right: 20px !important;
 }

@@ -53,37 +53,38 @@ export default class ResultsHeader extends React.Component {
                             {this.props.resultsText}
                         </h2>
                     </div>
-                    
-                    <div className="sort-container inline-block">
-                        <label className="dropdown-text" htmlFor="post-results-dropdown">
-                            Sort by:
-                        </label>
-                        <Select id="post-results-dropdown" 
-                            className={"multi inline-block"} classNamePrefix="react-select" name="sort" 
-                            // styles={customStyles}
-                            options={sortOptions} 
-                            onChange={this.onSortChange}
-                            selected={this.state.sort}
-                            placeholder="Relevance"
-                        />
-                        <Select id="post-results-dropdown-order" 
-                            className={"multi inline-block"} classNamePrefix="react-select" name="sortOrder" 
-                            // styles={customStyles}
-                            options={sortOrderOptions} 
-                            onChange={this.onSortOrderChange}
-                            selected={this.state.order}
-                            placeholder="Order"
-                        />
-                    </div>
-                    
-                    <div  id="results-bar-checkbox" className="checkbox-container inline-block">
-                        <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
-                                checked={this.props.showContext} 
-                                onChange={this.props.onCheckboxChange}
-                                disabled={this.props.snippetsDisabled}  />
-                        <label className="checkbox-text" htmlFor="post-results-input">
-                            Show text snippets
-                        </label>
+                    <div className="options-container">
+                        <div className="sort-container inline-block">
+                            <label className="dropdown-text" htmlFor="post-results-dropdown">
+                                Sort by:
+                            </label>
+                            <Select id="post-results-dropdown" 
+                                className={"multi inline-block"} classNamePrefix="react-select" name="sort" 
+                                // styles={customStyles}
+                                options={sortOptions} 
+                                onChange={this.onSortChange}
+                                selected={this.state.sort}
+                                placeholder="Relevance"
+                            />
+                            <Select id="post-results-dropdown-order" 
+                                className={"multi inline-block"} classNamePrefix="react-select" name="sortOrder" 
+                                // styles={customStyles}
+                                options={sortOrderOptions} 
+                                onChange={this.onSortOrderChange}
+                                selected={this.state.order}
+                                placeholder="Order"
+                            />
+                        </div>
+                        
+                        <div id="results-bar-checkbox" className="checkbox-container inline-block">
+                            <input id="post-results-input" type="checkbox" name="showContext" className="sidebar-checkbox"
+                                    checked={this.props.showContext} 
+                                    onChange={this.props.onCheckboxChange}
+                                    disabled={this.props.snippetsDisabled}  />
+                            <label className="checkbox-text" htmlFor="post-results-input">
+                                Show text snippets
+                            </label>
+                        </div>
                     </div>
 
                 </div>

@@ -100,7 +100,6 @@
 .sidebar-checkbox {
     background: #FFFFFF;
     border: 1px solid #000000;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
     margin-left: auto;
     cursor: pointer;
     
@@ -333,9 +332,16 @@ label.checkbox-text {
 
     color: white;
 }
+input:checked {
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+}
 input:checked + .sidebar-check-label,
 input:checked + .checkbox-text {
     font-weight: 600;
+}
+
+input:hover {
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
 
 #results-bar-checkbox>.checkbox-text {
@@ -395,11 +401,6 @@ input:checked + .checkbox-text {
 
 #check1:hover {
     cursor: pointer;
-
-    border: solid 2px #CCC;
-    -moz-box-shadow: 1px 1px 5px #999;
-    -webkit-box-shadow: 1px 1px 5px #999;
-        box-shadow: 1px 1px 5px #999;
 }
 .input-bar-left {
     cursor: pointer;
