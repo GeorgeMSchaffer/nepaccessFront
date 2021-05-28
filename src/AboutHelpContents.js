@@ -24,7 +24,7 @@ export default class AboutHelpContents extends React.Component {
         this.getFinalCount();
         this.getDraftCountDownloadable();
         this.getFinalCountDownloadable();
-        this.getTextCount();
+        this.get("stats/text_count","textCount");
         this.get("stats/earliest_year","earliestYear");
         this.get("stats/latest_year","latestYear");
     }
@@ -137,33 +137,6 @@ export default class AboutHelpContents extends React.Component {
             
         });
     }
-    getTextCount = () => {
-        let getUrl = Globals.currentHost + "stats/text_count";
-        
-        axios.get(getUrl, {
-            params: {
-                
-            }
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (responseOK && response.data) {
-                return response.data;
-            } else {
-                return null;
-            }
-        }).then(parsedJson => { 
-            console.log(parsedJson);
-            if(parsedJson){
-                this.setState({
-                    textCount: parsedJson
-                });
-            } else { // null/404
-
-            }
-        }).catch(error => {
-            
-        });
-    }
     
     get = (endPath,stateField) => {
         let getUrl = Globals.currentHost + endPath;
@@ -207,6 +180,11 @@ export default class AboutHelpContents extends React.Component {
                     <h2>
                         Environmental Impact Statements
                     </h2>
+                    
+
+                    <div><p>
+                        <span className="dynamic-stat">Blue</span>: Dynamic (retrieved on demand from database)
+                    </p></div>
                     
                     <div>
                         NEPAccess contains all (or almost all) records from environmental impact statements (EIS) created between 1987-2020. There are downloadable PDF files for EIS’s from <span className="dynamic-stat">{this.state.earliestYear}</span>-<span className="dynamic-stat">{this.state.latestYear}</span>. 
