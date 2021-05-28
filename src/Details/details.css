@@ -37,10 +37,7 @@ div.update .react-datepicker__input-container>input {
 
 .detail-filename {
     margin-bottom: 10px;
-    display: inline-block;
-}
-.detail-filenames+p>span {
-    display: inline-block;
+    display: block;
 }
 
 #files-holder .tabulator-header {
