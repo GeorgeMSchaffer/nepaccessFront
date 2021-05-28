@@ -50,3 +50,8 @@ table.help-table tbody tr td:first-child {
 .bullets span {
     margin-left: 2.5em;
 }
+
+.dynamic-stat {
+    color: blue;
+    font-weight: bold;
+}

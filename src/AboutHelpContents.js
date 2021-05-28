@@ -15,7 +15,9 @@ export default class AboutHelpContents extends React.Component {
             draftCount: null,
             finalCountDownloadable: null,
             draftCountDownloadable: null,
-            textCount: null
+            textCount: null,
+            earliestYear: null,
+            latestYear: null
         }
         
         this.getDraftCount();
@@ -23,6 +25,8 @@ export default class AboutHelpContents extends React.Component {
         this.getDraftCountDownloadable();
         this.getFinalCountDownloadable();
         this.getTextCount();
+        this.get("stats/earliest_year","earliestYear");
+        this.get("stats/latest_year","latestYear");
     }
     
     getFinalCount = () => {
@@ -161,6 +165,34 @@ export default class AboutHelpContents extends React.Component {
         });
     }
     
+    get = (endPath,stateField) => {
+        let getUrl = Globals.currentHost + endPath;
+        
+        axios.get(getUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            console.log(parsedJson);
+            if(parsedJson){
+                this.setState({
+                    [stateField]: parsedJson
+                });
+            } else { // null/404
+
+            }
+        }).catch(error => {
+            
+        });
+    }
+    
     render () {
         return (
             <div>
@@ -177,13 +209,13 @@ export default class AboutHelpContents extends React.Component {
                     </h2>
                     
                     <div>
-                        NEPAccess contains all records from environmental impact statements (EIS) created between  1987-2020. There are downloadable PDF files for EIS’s from 2001-2020. 
+                        NEPAccess contains all (or almost all) records from environmental impact statements (EIS) created between 1987-2020. There are downloadable PDF files for EIS’s from <span className="dynamic-stat">{this.state.earliestYear}</span>-<span className="dynamic-stat">{this.state.latestYear}</span>. 
                     </div>
                     
                     <div><p>
-                        This includes {this.state.draftCount} draft and {this.state.finalCount} final documents. 
-                        Of these, {this.state.draftCountDownloadable} draft and {this.state.finalCountDownloadable} final EISs are in a format that supports full-text searching and downloading.
-                        </p><p>NEPAccess is a work in progress—as time goes on, other documents related to the National Environmental Policy Act of 1969 (NEPA) will be added.  Total searchable texts (each one representing a .pdf): {this.state.textCount}
+                        This includes <span className="dynamic-stat">{this.state.draftCount}</span> draft and <span className="dynamic-stat">{this.state.finalCount}</span> final documents. 
+                        Of these, <span className="dynamic-stat">{this.state.draftCountDownloadable}</span> draft and <span className="dynamic-stat">{this.state.finalCountDownloadable}</span> final EISs are in a format that supports full-text searching and downloading.
+                        </p><p>NEPAccess is a work in progress—as time goes on, other documents related to the National Environmental Policy Act of 1969 (NEPA) will be added.  Total searchable texts (each one representing a .pdf): <span className="dynamic-stat">{this.state.textCount}</span>.
                     </p></div>
 
                     {/* <h2>
