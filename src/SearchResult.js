@@ -20,7 +20,7 @@ class SearchResult extends React.Component {
 		this.state = { 
             fileProgressValue: null,
 			downloadText: 'Download',
-            downloadClass: 'download',
+            downloadClass: 'bold',
             commentProgressValue: null,
             commentDownloadText: 'Download',
             commentDownloadClass: 'download'
@@ -166,7 +166,6 @@ class SearchResult extends React.Component {
                         return (
                             <span className="fragment-container" key={ index }>
                                 <span className="cardHeader bold filename-inner">
-                                    {combo[0]}
                                     <DownloadFile key={combo[0]} downloadType="nepafile" 
                                         id={_id}
                                         filename={combo[0]}/>
@@ -363,7 +362,11 @@ class SearchResult extends React.Component {
                     return (
                         <div className="table-row">
                             <span className="cardHeader">
-                                <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                <button 
+                                    className = {this.state.downloadClass + " document-download"} 
+                                    onClick = { () => {
+                                        this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")
+                                } }> 
                                     <span className="innerText">
                                         {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
                                     </span>
@@ -378,7 +381,12 @@ class SearchResult extends React.Component {
                     return (
                         <div className="table-row">
                             <span className="cardHeader">
-                                <button className = {"disabled_download document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                <button 
+                                    className = {"disabled_download document-download"} 
+                                    onClick = { () => {
+                                        this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")
+                                    } }
+                                > 
                                     <span className="innerText">
                                         Done
                                     </span>
@@ -391,7 +399,12 @@ class SearchResult extends React.Component {
                     return (
                         <div className="table-row">
                             <span className="cardHeader">
-                                <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
+                                <button 
+                                    className = {this.state.downloadClass + " document-download"} 
+                                    onClick = { () => {
+                                        this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")
+                                    } }
+                                > 
                                     <span className="innerText">
                                         {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
                                     </span>

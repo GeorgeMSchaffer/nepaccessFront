@@ -416,7 +416,7 @@ export default class RecordDetailsTab extends React.Component {
             if(this.state.details.folder) {
                 const filenamesForDownload = this.state.filenames.map(
                     (_filename) => 
-                    <span key={_filename} className="detail-filename">{_filename}
+                    <span key={_filename} className="detail-filename">
                         <DownloadFile key={_filename} downloadType="nepafile" 
                                 id={_id}
                                 filename={_filename}/>
@@ -462,12 +462,12 @@ export default class RecordDetailsTab extends React.Component {
                     if(filenames){
                         return (<div key={i}>
                             <p className='modal-line'>
-                                <span className='modal-title bold'>Entire archive</span> 
+                                <span className='modal-title bold'>All files</span> 
                                 <DownloadFile 
                                     downloadType="Folder" 
                                     id={cellData["id"]}
+                                    innerText={cellData[key]}
                                 />
-                                &nbsp;{cellData[key]}
                             </p>
                             <p>
                                 <span className='modal-title bold'>Folder size</span>
@@ -485,7 +485,7 @@ export default class RecordDetailsTab extends React.Component {
                             /** If we do have just a filename then we should be able to get the filesize */
                             return <div key={i}>
                                 <p className='modal-line'>
-                                    <span className='modal-title bold'>Entire archive</span> 
+                                    <span className='modal-title bold'>All files</span> 
                                     <p>
                                         <span className='bold inline'>&nbsp;Filename:</span>
                                         &nbsp;{cellData[key]}
@@ -510,7 +510,8 @@ export default class RecordDetailsTab extends React.Component {
                         return (
                             <p key={i} className='modal-line'>
                                 <span className='modal-title bold'>EPA comments</span> 
-                                <DownloadFile downloadType="Comments" filename={cellData[key]}/>&nbsp;{cellData[key]}
+                                <DownloadFile downloadType="Comments" filename={cellData[key]}/>
+                                {/* &nbsp;{cellData[key]} */}
                             </p>
                         );
                     } else {
