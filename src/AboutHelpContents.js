@@ -20,124 +20,16 @@ export default class AboutHelpContents extends React.Component {
             latestYear: null
         }
         
-        this.getDraftCount();
-        this.getFinalCount();
-        this.getDraftCountDownloadable();
-        this.getFinalCountDownloadable();
+        this.get("stats/draft_count","draftCount");
+        this.get("stats/final_count","finalCount");
+        this.get("stats/draft_count_downloadable","draftCountDownloadable");
+        this.get("stats/final_count_downloadable","finalCountDownloadable");
         this.get("stats/text_count","textCount");
         this.get("stats/earliest_year","earliestYear");
         this.get("stats/latest_year","latestYear");
     }
     
-    getFinalCount = () => {
-        let getUrl = Globals.currentHost + "stats/final_count";
-        
-        axios.get(getUrl, {
-            params: {
-                
-            }
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (responseOK && response.data) {
-                return response.data;
-            } else {
-                return null;
-            }
-        }).then(parsedJson => { 
-            console.log(parsedJson);
-            if(parsedJson){
-                this.setState({
-                    finalCount: parsedJson
-                });
-            } else { // null/404
 
-            }
-        }).catch(error => {
-            
-        });
-    }
-    getFinalCountDownloadable = () => {
-        let getUrl = Globals.currentHost + "stats/final_count_downloadable";
-        
-        axios.get(getUrl, {
-            params: {
-                
-            }
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (responseOK && response.data) {
-                return response.data;
-            } else {
-                return null;
-            }
-        }).then(parsedJson => { 
-            console.log(parsedJson);
-            if(parsedJson){
-                this.setState({
-                    finalCountDownloadable: parsedJson
-                });
-            } else { // null/404
-
-            }
-        }).catch(error => {
-            
-        });
-    }
-    getDraftCount = () => {
-        let getUrl = Globals.currentHost + "stats/draft_count";
-        
-        axios.get(getUrl, {
-            params: {
-                
-            }
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (responseOK && response.data) {
-                return response.data;
-            } else {
-                return null;
-            }
-        }).then(parsedJson => { 
-            console.log(parsedJson);
-            if(parsedJson){
-                this.setState({
-                    draftCount: parsedJson
-                });
-            } else { // null/404
-
-            }
-        }).catch(error => {
-            
-        });
-    }
-    getDraftCountDownloadable = () => {
-        let getUrl = Globals.currentHost + "stats/draft_count_downloadable";
-        
-        axios.get(getUrl, {
-            params: {
-                
-            }
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (responseOK && response.data) {
-                return response.data;
-            } else {
-                return null;
-            }
-        }).then(parsedJson => { 
-            console.log(parsedJson);
-            if(parsedJson){
-                this.setState({
-                    draftCountDownloadable: parsedJson
-                });
-            } else { // null/404
-
-            }
-        }).catch(error => {
-            
-        });
-    }
-    
     get = (endPath,stateField) => {
         let getUrl = Globals.currentHost + endPath;
         
@@ -158,14 +50,15 @@ export default class AboutHelpContents extends React.Component {
                 this.setState({
                     [stateField]: parsedJson
                 });
-            } else { // null/404
-
+            } else { 
+                console.log("Null/404: " + endPath);
             }
         }).catch(error => {
-            
+            console.error(error);
         });
     }
     
+
     render () {
         return (
             <div className="content">
