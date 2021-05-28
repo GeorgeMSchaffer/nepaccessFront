@@ -14,6 +14,61 @@ class DownloadFile extends React.Component {
 		};
 	}
 
+    downloadNepaFile = (_filename,_id) => {
+        const FileDownload = require('js-file-download');
+
+		// Indicate download
+		this.setState({
+			downloadText: 'Downloading...',
+			downloadClass: 'disabled_download'
+        });
+        
+        let getRoute = Globals.currentHost + 'file/download_nepa_file';
+        
+		axios.get(getRoute, {
+				params: {
+                    filename: _filename,
+                    id: _id
+				},
+				responseType: 'blob',
+				onDownloadProgress: (progressEvent) => { // Show progress if available
+					const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+                    
+					if (totalLength !== null) { // Progress as percent, if we have total
+						this.setState({
+							progressValue: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
+						});
+                    } else if(progressEvent.loaded) { // Progress as MB
+						this.setState({
+							progressValue: Math.round(progressEvent.loaded / 1024 / 1024) + 'MB'
+						});
+                    }
+                    // else progress remains blank
+				}
+			}).then((response) => {
+
+                // Indicate download completed as file is saved/prompted save as (depending on browser settings)
+                if(response) {
+                    this.setState({
+                        downloadText: 'Done'
+                    });
+                    FileDownload(response.data, _filename);
+                }
+                
+				// verified = response && response.status === 200;
+			})
+			.catch((err) => { // TODO: Test, This will catch a 404
+				this.setState({
+					downloadText: 'Download not found',
+					downloadClass: 'disabled_download'
+				});
+				// console.log("Error::: ", err);
+				this.setState({
+					downloadText: 'File not found'
+				});
+			});
+    }
+
     // TODO: Cell resets to default state if parent re-renders, preserve the fact it was downloaded
     // at least until user reloads the page or navigates
     // TODO: reset download link if canceled
@@ -124,7 +179,15 @@ class DownloadFile extends React.Component {
             if(this.props.size) {
                 sizeText = this.props.size+"MB";
             }
-			if (propFilename) {
+            if(this.props.downloadType && this.props.downloadType === "nepafile") {
+                propID = this.props.id;
+                return (
+                    <button className = {this.state.downloadClass} onClick = { () => {this.downloadNepaFile(propFilename, propID)} }> 
+                        {this.state.downloadText} {sizeText} {this.state.progressValue} 
+                    </button>
+                );
+            }
+			else if (propFilename) {
                 return (
                     <button className = {this.state.downloadClass} onClick = { () => {this.download(propFilename, false)} }> 
                         {this.state.downloadText} {sizeText} {this.state.progressValue} 

@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './User/login.css';
 import Globals from './globals.js';
-// import DownloadFile from './DownloadFile.js';
+import DownloadFile from './DownloadFile.js';
 import CardDetailsLink from './CardDetailsLink.js';
 
 // TODO: May be wise to have child components for each element that may change (i.e. download links)
@@ -157,7 +157,9 @@ class SearchResult extends React.Component {
                 return [value, texts[index]]
             });
 
-            return (
+            let _id = this.props.cell._cell.row.data.id;
+            if(this.props.cell._cell.row.data.folder) {
+                return (
 
                 <div hidden={!this.props.show}>
                     {combined.map(function(combo, index){
@@ -165,7 +167,11 @@ class SearchResult extends React.Component {
                             <span className="fragment-container" key={ index }>
                                 <span className="cardHeader bold filename-inner">
                                     {combo[0]}
+                                    <DownloadFile key={combo[0]} downloadType="nepafile" 
+                                        id={_id}
+                                        filename={combo[0]}/>
                                 </span>
+                                
                                 
                                 <span className="card-highlight fragment" 
                                         dangerouslySetInnerHTML={{
@@ -177,6 +183,29 @@ class SearchResult extends React.Component {
                     })}
                 </div>
             );
+            } else {
+                return (
+    
+                    <div hidden={!this.props.show}>
+                        {combined.map(function(combo, index){
+                            return (
+                                <span className="fragment-container" key={ index }>
+                                    <span className="cardHeader bold filename-inner">
+                                        {combo[0]}
+                                    </span>
+                                    
+                                    
+                                    <span className="card-highlight fragment" 
+                                            dangerouslySetInnerHTML={{
+                                                __html:combo[1]
+                                            }}>
+                                    </span>
+                                </span>
+                            );
+                        })}
+                    </div>
+                );
+            }
             
 
         } else if(this.props && this.props.cell._cell.row.data.matchPercent) {
@@ -320,7 +349,7 @@ class SearchResult extends React.Component {
                     
                     return (
                         <div className="table-row">
-                            <span className="cardHeader">EIS:
+                            <span className="cardHeader">
                                 <button className = {"disabled_download document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                     <span className="innerText">
                                         Done
@@ -333,7 +362,7 @@ class SearchResult extends React.Component {
                 } else {
                     return (
                         <div className="table-row">
-                            <span className="cardHeader">EIS:
+                            <span className="cardHeader">
                                 <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                     <span className="innerText">
                                         {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
@@ -348,7 +377,7 @@ class SearchResult extends React.Component {
                 if(this.props.checkDownloaded(propID)) {
                     return (
                         <div className="table-row">
-                            <span className="cardHeader">EIS:
+                            <span className="cardHeader">
                                 <button className = {"disabled_download document-download"} onClick = { () => {this.download(propFilename, false, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                     <span className="innerText">
                                         Done
@@ -361,7 +390,7 @@ class SearchResult extends React.Component {
                 } else {
                     return (
                         <div className="table-row">
-                            <span className="cardHeader">EIS:
+                            <span className="cardHeader">
                                 <button className = {this.state.downloadClass + " document-download"} onClick = { () => {this.download(propID, true, "downloadText", "downloadClass", "fileProgressValue")} }> 
                                     <span className="innerText">
                                         {this.state.downloadText} {this.state.fileProgressValue} {" " + size + " MB"}
@@ -374,7 +403,7 @@ class SearchResult extends React.Component {
                 }
             } else {
                 // console.log("Can only get here without propID and size",propFilename,propID,size);
-                return <div className="table-row"><span className="cardHeader">EIS File not in system</span></div>;
+                return <div className="table-row"><span className="cardHeader">File not in system</span></div>;
             }
 		}
 		else {

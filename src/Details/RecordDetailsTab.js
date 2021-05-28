@@ -413,13 +413,32 @@ export default class RecordDetailsTab extends React.Component {
     showFilenames = (_id) => {
         this.debouncedFilenames(_id);
         if(this.state.filenames) {
-            const filenameItems = this.state.filenames.map(
-                (filename) => <span key={filename} className="detail-filename">{filename}</span>
-            );
-            return (<div className='modal-line'>
-            <span className='detail-filenames modal-title bold'>Individual files</span>
-                <p>{filenameItems}</p>
-            </div>);
+            if(this.state.details.folder) {
+                const filenamesForDownload = this.state.filenames.map(
+                    (_filename) => 
+                    <span key={_filename} className="detail-filename">{_filename}
+                        <DownloadFile key={_filename} downloadType="nepafile" 
+                                id={_id}
+                                filename={_filename}/>
+                    </span>
+                    
+                );
+
+                return (<div className='modal-line'>
+                <span className='detail-filenames modal-title bold'>Individual files</span>
+                    {/* <p>{filenameItems}</p> */}
+                    <p>{filenamesForDownload}</p>
+                </div>);
+            } else {
+                const filenameItems = this.state.filenames.map(
+                    (_filename) => <span key={_filename} className="detail-filename">{_filename}</span>
+                );
+
+                return (<div className='modal-line'>
+                <span className='detail-filenames modal-title bold'>Individual files</span>
+                    <p>{filenameItems}</p>
+                </div>);
+            }
         }
     }
 
