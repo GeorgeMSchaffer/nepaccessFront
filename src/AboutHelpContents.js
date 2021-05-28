@@ -168,9 +168,7 @@ export default class AboutHelpContents extends React.Component {
     
     render () {
         return (
-            <div>
-                <div className="spacer"> </div>
-
+            <div className="content">
                 <div id="about-nepa-content">
 
                     <h1 className="about-nepa-title">
@@ -183,7 +181,7 @@ export default class AboutHelpContents extends React.Component {
                     
 
                     <div><p>
-                        <span className="dynamic-stat">Blue</span>: Dynamic (retrieved on demand from database)
+                        <span className="dynamic-stat">Blue</span> items are dynamic (retrieved on demand from database).
                     </p></div>
                     
                     <div>
