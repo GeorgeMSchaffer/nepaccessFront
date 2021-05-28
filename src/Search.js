@@ -205,12 +205,18 @@ class Search extends React.Component {
         });
     }
 	onProximityChange = (evt) => {
-        this.setState( 
-		{ 
-            proximityOption: evt,
-		}, () => { 
-            // console.log(this.state.proximityOption);
-		});
+        if(evt.value === -1) {
+            this.setState({
+                proximityOption: null
+            });
+        } else {
+            this.setState( 
+            { 
+                proximityOption: evt,
+            }, () => { 
+                // console.log(this.state.proximityOption);
+            });
+        }
     }
 
     onTitleOnlyChecked = (evt) => {
@@ -346,7 +352,7 @@ class Search extends React.Component {
             {value: 50, label: '50 words'},
             {value: 100, label: '100 words'},
             {value: 500, label: '500 words'},
-            {value: -1, label: 'no restriction (default)'}
+            {value: -1, label: 'any (default)'}
         ];
 
         // const fragmentOptions = [
