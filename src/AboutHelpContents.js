@@ -81,7 +81,7 @@ export default class AboutHelpContents extends React.Component {
                     </div>
                     
                     <div><p>
-                        This includes <span className="dynamic-stat">{this.state.draftCount}</span> draft and <span className="dynamic-stat">{this.state.finalCount}</span> final EIS documents. 
+                        This includes <span className="dynamic-stat">{this.state.draftCount}</span> draft and <span className="dynamic-stat">{this.state.finalCount}</span> final EIS documents (supplemental/revised not counted here).
                         Of these, <span className="dynamic-stat">{this.state.draftCountDownloadable}</span> drafts and <span className="dynamic-stat">{this.state.finalCountDownloadable}</span> finals are in a format that supports full-text searching and downloading.
                         </p><p>NEPAccess is a work in progress—as time goes on, other documents related to the National Environmental Policy Act of 1969 (NEPA) will be added.  Total searchable texts (each one representing a .pdf): <span className="dynamic-stat">{this.state.textCount}</span>.
                     </p></div>
