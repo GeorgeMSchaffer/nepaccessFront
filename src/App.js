@@ -408,7 +408,9 @@ export default class App extends React.Component {
                     return null;
                 } else if(response.status === 403) {
                     // Not logged in
-                    console.log("Please log in");
+                    Globals.emitEvent('refresh', {
+                        loggedIn: false
+                    });
                 
                 } else {
                     console.log(response.status);
@@ -488,14 +490,18 @@ export default class App extends React.Component {
                     this.setState({
                         resultsText: "Error: Request timed out"
                     });
-                } else if (error.response && error.response.status === 403) {
-                    // this.props.history.push('/login');
+                } else if (error.response && error.response.status === 403) { // token expired?
+                    this.setState({
+                        networkError: 'Please login again (verification expired).',
+                        resultsText: "Error: Please login again (session expired)"
+                    });
+                    Globals.emitEvent('refresh', {
+                        loggedIn: false
+                    });
                 }
                 else {
                     this.setState({
-                        networkError: 'Server is down or you may need to login again.'
-                    });
-                    this.setState({
+                        networkError: 'Server is down or you may need to login again.',
                         resultsText: "Error: Couldn't get results from server"
                     });
                 }
@@ -967,7 +973,6 @@ export default class App extends React.Component {
                         <title>Search - NEPAccess</title>
                         <link rel="canonical" href="https://nepaccess.org/search" />
                     </Helmet>
-					<label className="errorLabel">{this.state.networkError}</label>
                     <Search 
                         search={this.startNewSearch} 
                         stop={this.stopSearch}
@@ -976,6 +981,7 @@ export default class App extends React.Component {
                         useOptions={this.state.useSearchOptions}
                         optionsChanged={this.optionsChanged}
                         count={this.state.count}
+                        networkError={this.state.networkError}
                     />
                     <SearchResults 
                         sort={this.sort}
