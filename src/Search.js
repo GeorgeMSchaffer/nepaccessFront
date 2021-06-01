@@ -515,7 +515,7 @@ class Search extends React.Component {
             </div>
 
             <div className="loader-holder">
-                <div>&nbsp;<span className="errorLabel">{this.props.networkError}</span></div>
+                <div hidden={!this.props.networkError}>&nbsp;<span className="errorLabel">{this.props.networkError}</span></div>
                 <div className="center" hidden={this.props.searching}>
                     <span id="inputMessage">{this.state.inputMessage}</span>
                 </div>
