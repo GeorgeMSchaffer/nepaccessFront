@@ -10,7 +10,8 @@ class DownloadFile extends React.Component {
 		this.state = { // Each and every download link via <DownloadFile /> has its own state
 			progressValue: null,
 			downloadText: 'Download',
-			downloadClass: 'document-download'
+			downloadClass: 'document-download',
+			downloadClass2: ''
 		};
 	}
 
@@ -20,7 +21,7 @@ class DownloadFile extends React.Component {
 		// Indicate download
 		this.setState({
 			downloadText: 'Downloading...',
-			downloadClass: 'disabled_download'
+			downloadClass2: 'disabled_download'
         });
         
         let getRoute = Globals.currentHost + 'file/download_nepa_file';
@@ -60,7 +61,7 @@ class DownloadFile extends React.Component {
 			.catch((err) => { // TODO: Test, This will catch a 404
 				this.setState({
 					downloadText: 'Download not found',
-					downloadClass: 'disabled_download'
+					downloadClass2: 'disabled_download'
 				});
 				// console.log("Error::: ", err);
 				this.setState({
@@ -182,10 +183,11 @@ class DownloadFile extends React.Component {
             }
             if(this.props.downloadType && this.props.downloadType === "nepafile") {
                 propID = this.props.id;
-                return (
-                    <button className = {this.state.downloadClass} onClick = { () => {this.downloadNepaFile(propFilename, propID)} }> 
-                        {this.state.downloadText} <b>{propFilename}</b> {sizeText} {this.state.progressValue} 
+                return (<>
+                    <button className = {this.state.downloadClass2} onClick = { () => {this.downloadNepaFile(propFilename, propID)} }> 
+                        {this.state.downloadText} <b>{propFilename}</b> 
                     </button>
+                     {sizeText} {this.state.progressValue} </>
                 );
             }
 			else if (propFilename) {
