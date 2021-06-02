@@ -123,9 +123,10 @@ class Search extends React.Component {
         // Disable prox dropdown if conflicting characters in terms
         let _inputMessage = "";
         if( userInput.match(/["\?\*~]+/) ) {
-            _inputMessage = "Wildcard, phrase or proximity search character found in terms: " 
-                + userInput.match(/["\?\*~]+/)[0][0]
-                + ".  Disabled proximity search dropdown to prevent unpredictable results."
+            // _inputMessage = "Wildcard, phrase or proximity search character found in terms: " 
+            //     + userInput.match(/["\?\*~]+/)[0][0]
+            //     + ".  Disabled proximity search dropdown to prevent unpredictable results."
+            _inputMessage = "Proximity dropdown is disabled when certain special characters are used: ~ ? \" *";
             disableResult = true;
         } else if(evt.target.name==='titleRaw') {
             if(userInput.trim().match(/\s+/)) {
@@ -618,13 +619,13 @@ class Search extends React.Component {
                                 <span className="checkbox-text">EA</span>
                             </label>
                         </div>
-                        <div className="checkbox-container">
+                        {/* <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeNOI" className="sidebar-checkbox"
                                         checked={this.state.typeNOI} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">NOI</span>
                             </label>
-                        </div>
+                        </div> */}
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeROD" className="sidebar-checkbox"
