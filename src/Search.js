@@ -602,14 +602,14 @@ class Search extends React.Component {
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
                                         checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                <span className="checkbox-text">Draft EIS</span>
+                                <span className="checkbox-text">Draft EIS {this.props.draftCount}</span>
                             </label>
                         </div>
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
                                         checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                <span className="checkbox-text">Final EIS</span>
+                                <span className="checkbox-text">Final EIS {this.props.finalCount}</span>
                             </label>
                         </div>
                         <div className="checkbox-container">

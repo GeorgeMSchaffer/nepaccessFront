@@ -37,7 +37,7 @@ export default class App extends React.Component {
         searching: false,
         useSearchOptions: false,
         snippetsDisabled: false,
-        shouldUpdate: false,
+        shouldUpdate: false
     }
     
     constructor(props){
@@ -63,6 +63,14 @@ export default class App extends React.Component {
     // For sorting mid-search
     _sortVal = null;
     _ascVal = true;
+
+    _finalCount = "";
+    _draftCount = "";
+
+    resetTypeCounts = () => {
+       this._finalCount = "";
+       this._draftCount = "";
+    }
 
     optionsChanged = (val) => {
         this.setState({
@@ -133,33 +141,33 @@ export default class App extends React.Component {
             return (a["registerDate"] <= val); // should this be inclusive? <= or <
         };
     }
+
+    countTypes = () => {
+        let finals = 0;
+        let drafts = 0;
+        this._finalCount ="";
+        this._draftCount = "";
+
+        this.state.searchResults.forEach(item => {
+            if(matchesFinal(item.documentType)) {
+                finals++;
+            }
+            else if(matchesDraft(item.documentType)) {
+                drafts++;
+            }
+        })
+
+        this._finalCount = "("+finals+")";
+        this._draftCount = "("+drafts+")";
+        // this.setState({finalCount: "("+count+")"});
+    }
     
     matchesType(matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping) {
-        console.log("Types",matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping);
+        // console.log("Types",matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping);
         return function (a) {
             return (
-                ((
-                    (a["documentType"] === "Final") 
-                    || (a["documentType"] === "Final Revised")
-                    || (a["documentType"] === "Second Final")
-                    || (a["documentType"] === "Revised Final")
-                    || (a["documentType"] === "Final Supplement")
-                    || (a["documentType"] === "Final Supplemental")
-                    || (a["documentType"] === "Second Final Supplemental")
-                    || (a["documentType"] === "Third Final Supplemental")
-                ) 
-                && matchFinal) || 
-                ((
-                    (a["documentType"] === "Draft") 
-                    || (a["documentType"] === "Draft Revised")
-                    || (a["documentType"] === "Second Draft")
-                    || (a["documentType"] === "Revised Draft")
-                    || (a["documentType"] === "Draft Supplement")
-                    || (a["documentType"] === "Draft Supplemental")
-                    || (a["documentType"] === "Second Draft Supplemental")
-                    || (a["documentType"] === "Third Draft Supplemental")
-                ) 
-                && matchDraft) || 
+                (matchesFinal(a["documentType"]) && matchFinal) || 
+                (matchesDraft(a["documentType"]) && matchDraft) || 
                 ((
                     (a["documentType"] === "EA") 
                 ) && matchEA) || 
@@ -304,6 +312,8 @@ export default class App extends React.Component {
 
         this._canceled = false;
         this._searcherState = searcherState; // for live filtering
+
+        this.resetTypeCounts();
 
         // 1: Collect contextless results
         //        - Consolidate all of the filenames by metadata record into singular results
@@ -455,6 +465,8 @@ export default class App extends React.Component {
                     }, () => {
                         this.filterResultsBy(this._searcherState);
                         // console.log("Mapped data",_data);
+
+                        this.countTypes();
                     
                         // title-only (or blank search===no text search at all): return
                         if(Globals.isEmptyOrSpaces(searcherState.titleRaw) || 
@@ -982,6 +994,8 @@ export default class App extends React.Component {
                         optionsChanged={this.optionsChanged}
                         count={this.state.count}
                         networkError={this.state.networkError}
+                        finalCount={this._finalCount}
+                        draftCount={this._draftCount}
                     />
                     <SearchResults 
                         sort={this.sort}
@@ -1042,4 +1056,30 @@ export default class App extends React.Component {
         }
     }
 	
+}
+
+
+function matchesFinal(docType) {
+    return (
+        (docType === "Final") 
+        || (docType === "Final Revised")
+        || (docType === "Second Final")
+        || (docType === "Revised Final")
+        || (docType === "Final Supplement")
+        || (docType === "Final Supplemental")
+        || (docType === "Second Final Supplemental")
+        || (docType === "Third Final Supplemental")
+    );
+}
+
+function matchesDraft(docType) {
+    return (
+        (docType === "Draft") 
+        || (docType === "Draft Revised")
+        || (docType === "Second Draft")
+        || (docType === "Revised Draft")
+        || (docType === "Draft Supplement")
+        || (docType === "Draft Supplemental")
+        || (docType === "Second Draft Supplemental")
+        || (docType === "Third Draft Supplemental"));
 }
