@@ -303,6 +303,12 @@ class Search extends React.Component {
             })
         }
     }
+    closeTooltip = () => {
+        this.setState({
+            tooltipOpen: false,
+            tooltipClass: ""
+        })
+    }
 
     render () {
         // const { history } = this.props;
@@ -363,39 +369,39 @@ class Search extends React.Component {
         //     {value: 3, label: 'Huge'}
         // ]
 
-        const tooltipTitle = "<div class=tooltip-header>Search word connectors</div>"
-        + "<table class=tooltip-table><tbody>"
-            + "<tr class=tooltip-line>"
-                + "<td>&nbsp;</td><td>&nbsp;</td>"
-            + "</tr>"
-            + "<tr class=tooltip-line><td class=tooltip-connector>AND</td>"
-                + "<td>This is the default. <span class=bold>All</span> words you enter must be found together to return a result.</td>"
-            + "</tr>"
-            + "<tr class=tooltip-line>"
-                + "<td>&nbsp;</td><td>&nbsp;</td>"
-            + "</tr>"
-            + "<tr class=tooltip-line><td class=tooltip-connector>OR</td>"
-                + "<td>(all caps) to search for <span class=bold>any</span> of those words.</td>" 
-            + "</tr>"
-            + "<tr class=tooltip-line>"
-                + "<td>&nbsp;</td><td>&nbsp;</td>"
-            + "</tr>"
-            + "<tr class=tooltip-line><td class=tooltip-connector>NOT</td>"
-                + "<td>(all caps) to <span class=bold>exclude</span> a word or phrase.</td>" 
-            + "</tr>"
-            + "<tr class=tooltip-line>"
-                + "<td>&nbsp;</td><td>&nbsp;</td>"
-            + "</tr>"
-            + "<tr class=tooltip-line><td class=tooltip-connector>&quot; &quot;</td>"
-                + "<td>Surround words with quotes (&quot; &quot;) to search for an <span class=bold>exact phrase.</td>" 
-            + "</tr>"
-            + "<tr class=tooltip-line>"
-                + "<td>&nbsp;</td><td>&nbsp;</td>"
-            + "</tr>"
-            + "<tr class=tooltip-line><td class=tooltip-connector></td>"
-                + "<td><a href=abouthelp target=_blank rel=noopener noreferrer>More search tips.</a></td>" 
-            + "</tr>"
-        + "</tbody></table>";
+        // const tooltipTitle = "<div class=tooltip-header>Search word connectors <button className=>x</button></div>"
+        // + "<table class=tooltip-table><tbody>"
+        //     + "<tr class=tooltip-line>"
+        //         + "<td>&nbsp;</td><td>&nbsp;</td>"
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line><td class=tooltip-connector>AND</td>"
+        //         + "<td>This is the default. <span class=bold>All</span> words you enter must be found together to return a result.</td>"
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line>"
+        //         + "<td>&nbsp;</td><td>&nbsp;</td>"
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line><td class=tooltip-connector>OR</td>"
+        //         + "<td>(all caps) to search for <span class=bold>any</span> of those words.</td>" 
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line>"
+        //         + "<td>&nbsp;</td><td>&nbsp;</td>"
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line><td class=tooltip-connector>NOT</td>"
+        //         + "<td>(all caps) to <span class=bold>exclude</span> a word or phrase.</td>" 
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line>"
+        //         + "<td>&nbsp;</td><td>&nbsp;</td>"
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line><td class=tooltip-connector>&quot; &quot;</td>"
+        //         + "<td>Surround words with quotes (&quot; &quot;) to search for an <span class=bold>exact phrase.</td>" 
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line>"
+        //         + "<td>&nbsp;</td><td>&nbsp;</td>"
+        //     + "</tr>"
+        //     + "<tr class=tooltip-line><td class=tooltip-connector></td>"
+        //         + "<td><a href=abouthelp target=_blank rel=noopener noreferrer>More search tips.</a></td>" 
+        //     + "</tr>"
+        // + "</tbody></table>";
 
 
         
@@ -419,12 +425,48 @@ class Search extends React.Component {
                                 // distance="80"
                                 // offset="80"
                                 // useContext={true}
-                                title={tooltipTitle}
+                                // title={tooltipTitle}
+                                html={(<>
+                                    <div className="tooltip-header">Search word connectors <button className="float-right" onClick={this.closeTooltip}>x</button></div>
+                                    <table className="tooltip-table"><tbody>
+                                        <tr className="tooltip-line">
+                                            <td>&nbsp;</td><td>&nbsp;</td>
+                                        </tr>
+                                        <tr className="tooltip-line"><td className="tooltip-connector">AND</td>
+                                            <td>This is the default. <span className="bold">All</span> words you enter must be found together to return a result.</td>
+                                        </tr>
+                                        <tr className="tooltip-line">
+                                            <td>&nbsp;</td><td>&nbsp;</td>
+                                        </tr>
+                                        <tr className="tooltip-line"><td className="tooltip-connector">OR</td>
+                                            <td>(all caps) to search for <span className="bold">any</span> of those words.</td> 
+                                        </tr>
+                                        <tr className="tooltip-line">
+                                            <td>&nbsp;</td><td>&nbsp;</td>
+                                        </tr>
+                                        <tr className="tooltip-line"><td className="tooltip-connector">NOT</td>
+                                            <td>(all caps) to <span className="bold">exclude</span> a word or phrase.</td> 
+                                        </tr>
+                                        <tr className="tooltip-line">
+                                            <td>&nbsp;</td><td>&nbsp;</td>
+                                        </tr>
+                                        <tr className="tooltip-line"><td className="tooltip-connector">&quot; &quot;</td>
+                                            <td>Surround words with quotes (&quot; &quot;) to search for an <span className="bold">exact phrase.</span></td> 
+                                        </tr>
+                                        <tr className="tooltip-line">
+                                            <td>&nbsp;</td><td>&nbsp;</td>
+                                        </tr>
+                                        <tr className="tooltip-line"><td className="tooltip-connector"></td>
+                                            <td><a href="abouthelp" target="_blank" rel="noopener" noreferrer>More search tips.</a></td> 
+                                        </tr>
+                                    </tbody></table>
+                                    </>
+                                )}
                                 open={this.state.tooltipOpen}
                                 // onShow={this.tooltipTrigger}
                                 // interactive={true} // allow clicking of tooltip without hiding it
                                 // hideOnClick="toggle" // only close when tooltip link is clicked
-                                interactive={false}
+                                interactive={true} // prevents clickthrough
                                 hideOnClick={true}
                             >
                                 {<span id="tooltip4" 

@@ -663,3 +663,7 @@ span.leading-text {
 .padding-left {
     padding-left: clamp(320px, calc(25vw + 20px), 395px);
 }
+
+.float-right {
+    float: right;
+}
