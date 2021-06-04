@@ -385,18 +385,16 @@ input:hover {
     margin: auto;
     margin-top: 16px;
 }
-#tooltip4 {
-    text-decoration: underline;
-    font-weight: 600;
-    color: #64D6FA;
-    display: block;
+#tooltip4Container {
     position: relative;
     width: 100%;
     margin: auto;
     text-align:center;
-    line-height: 64px;
 
-    cursor: pointer !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #check1:hover {
@@ -404,4 +402,14 @@ input:hover {
 }
 .input-bar-left {
     cursor: pointer;
+}
+
+.side-link {
+    text-decoration: underline;
+    color: #64D6FA;
+    font-weight: 600;
+    line-height: 30px;
+
+    /* flex: 0 0 100%; */
+    cursor: pointer !important;
 }

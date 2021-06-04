@@ -338,7 +338,7 @@ input[type=checkbox] {
 
 /** Tooltip and custom react-tippy styling */
 
-#tooltip4.tooltip-open {
+.side-link.open {
     color:rgb(100,50,255);
 }
 
@@ -695,4 +695,16 @@ div.disabled::before {
 .options-container {
     float: right;
     margin-right: 20px !important;
+}
+
+#basic-modal {
+    min-height: 0px;
+    min-width: 0px;
+
+    height: 150px;
+    width: 400px;
+}
+
+.modal-button-space {
+    padding-bottom: 20px;
 }

@@ -14,6 +14,8 @@ import {Tooltip,} from 'react-tippy';
 import globals from './globals.js';
 import persist from './persist.js';
 
+import BasicModal from './BasicModal.js';
+
 import { withRouter } from "react-router";
 
 // import PropTypes from "prop-types";
@@ -299,7 +301,7 @@ class Search extends React.Component {
         } else {
             this.setState({
                 tooltipOpen: true,
-                tooltipClass: "tooltip-open"
+                tooltipClass: "open"
             })
         }
     }
@@ -416,8 +418,9 @@ class Search extends React.Component {
                         <h1 className="search-header-2">Search full text of NEPA documents</h1>
 
                         <div className="pre-input-bar">
+                            <div id="tooltip4Container">
                             <Tooltip 
-                                trigger="mouseenter manual" // default mouseenter focus
+                                trigger="manual" // default mouseenter focus, had mouseenter but it got in the way of "Available files"
                                 // className="cursor-default"
                                 position="bottom"
                                 // arrow="true"
@@ -469,9 +472,9 @@ class Search extends React.Component {
                                 interactive={true} // prevents clickthrough
                                 hideOnClick={true}
                             >
-                                {<span id="tooltip4" 
+                                {<span 
                                         onClick={this.tooltipTrigger} 
-                                        className={this.state.tooltipClass + " cursor-default no-select"}>
+                                        className={this.state.tooltipClass + " side-link"}>
                                     Search tips
                                 </span>}
                                 {/* <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -480,6 +483,13 @@ class Search extends React.Component {
                                 </svg> */}
                                 {/* <span id="tooltip3Mark" className="cursor-default no-select">?</span> */}
                             </Tooltip>
+                                <BasicModal id="basic-modal"
+                                    className="side-link"
+                                    divClassName=""
+                                    html={<div>Currently the site contains Draft and Final Environmental Impact Statements from: <b>2012-2020</b>. Other document types and dates are being added continuously.</div>}
+                                >
+                                </BasicModal>
+                            </div>
                         </div>
 
                         <input id="main-search-bar"
