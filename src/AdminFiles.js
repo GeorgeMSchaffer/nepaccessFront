@@ -149,6 +149,11 @@ export default class AdminFiles extends React.Component {
                                 ref={(textarea) => this.textArea = textarea}
                                 id="fileList" value={this.state.files} onChange={this.onChange} />
                     </div>
+                    
+                <p>This tool is just looking for filenames that don't appear to exist, 
+                    or folders that don't exist/don't have files in the expected subfolder.  
+                    Specifically: It's checking for file sizes saved in the database, but these can be missed by the importer. 
+                    So, the re-check button asks the file server again manually.</p>
                 </div>
             </div>
         </>);
