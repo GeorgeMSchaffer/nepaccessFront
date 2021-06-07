@@ -66,10 +66,17 @@ export default class App extends React.Component {
 
     _finalCount = "";
     _draftCount = "";
+    _eaCount = "";
+    _rodCount = "";
+    _scopingCount = "";
 
     resetTypeCounts = () => {
        this._finalCount = "";
        this._draftCount = "";
+       
+       this._eaCount = "";
+       this._rodCount = "";
+       this._scopingCount = "";
     }
 
     optionsChanged = (val) => {
@@ -145,8 +152,9 @@ export default class App extends React.Component {
     countTypes = () => {
         let finals = 0;
         let drafts = 0;
-        this._finalCount ="";
-        this._draftCount = "";
+        let eas = 0;
+        let rods = 0;
+        let scopings = 0;
 
         this.state.searchResults.forEach(item => {
             if(matchesFinal(item.documentType)) {
@@ -155,10 +163,22 @@ export default class App extends React.Component {
             else if(matchesDraft(item.documentType)) {
                 drafts++;
             }
+            else if(matchesEa(item.documentType)) {
+                eas++;
+            }
+            else if(matchesRod(item.documentType)) {
+                rods++;
+            }
+            else if(matchesScoping(item.documentType)) {
+                scopings++;
+            }
         })
 
         this._finalCount = "("+finals+")";
         this._draftCount = "("+drafts+")";
+        this._eaCount = "("+eas+")";
+        this._rodCount = "("+rods+")";
+        this._scopingCount = "("+scopings+")";
         // this.setState({finalCount: "("+count+")"});
     }
     
@@ -996,6 +1016,9 @@ export default class App extends React.Component {
                         networkError={this.state.networkError}
                         finalCount={this._finalCount}
                         draftCount={this._draftCount}
+                        eaCount={this._eaCount}
+                        rodCount={this._rodCount}
+                        scopingCount={this._scopingCount}
                     />
                     <SearchResults 
                         sort={this.sort}
@@ -1082,4 +1105,19 @@ function matchesDraft(docType) {
         || (docType === "Draft Supplemental")
         || (docType === "Second Draft Supplemental")
         || (docType === "Third Draft Supplemental"));
+}
+
+function matchesEa(docType) {
+    return (
+        (docType === "EA") );
+}
+
+function matchesRod(docType) {
+    return (
+        (docType === "ROD") );
+}
+
+function matchesScoping(docType) {
+    return (
+        (docType === "Scoping Report") );
 }

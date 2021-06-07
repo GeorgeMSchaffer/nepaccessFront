@@ -415,7 +415,7 @@ class Search extends React.Component {
 
                     
                     <div className="search-bar-holder">
-                        <h1 className="search-header-2">Search full text of NEPA documents</h1>
+                        <h1 className="search-header-2">Search full texts and titles of NEPA documents</h1>
 
                         <div className="pre-input-bar">
                             <div id="tooltip4Container">
@@ -654,21 +654,21 @@ class Search extends React.Component {
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
                                         checked={this.state.typeDraft} onChange={this.onTypeChecked} />
-                                <span className="checkbox-text">Draft EIS {this.props.draftCount}</span>
+                                <span className="checkbox-text">Draft EIS <i>{this.props.draftCount}</i></span>
                             </label>
                         </div>
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
                                         checked={this.state.typeFinal} onChange={this.onTypeChecked} />
-                                <span className="checkbox-text">Final EIS {this.props.finalCount}</span>
+                                <span className="checkbox-text">Final EIS <i>{this.props.finalCount}</i></span>
                             </label>
                         </div>
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeEA" className="sidebar-checkbox"
                                     checked={this.state.typeEA} onChange={this.onTypeChecked} />
-                                <span className="checkbox-text">EA</span>
+                                <span className="checkbox-text">EA <i>{this.props.eaCount}</i></span>
                             </label>
                         </div>
                         {/* <div className="checkbox-container">
@@ -682,14 +682,14 @@ class Search extends React.Component {
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeROD" className="sidebar-checkbox"
                                     checked={this.state.typeROD} onChange={this.onTypeChecked} />
-                                <span className="checkbox-text">ROD</span>
+                                <span className="checkbox-text">ROD <i>{this.props.rodCount}</i></span>
                             </label>
                         </div>
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeScoping" className="sidebar-checkbox"
                                     checked={this.state.typeScoping} onChange={this.onTypeChecked} />
-                                <span className="checkbox-text">Scoping Report</span>
+                                <span className="checkbox-text">Scoping Report <i>{this.props.scopingCount}</i></span>
                             </label>
                         </div>
                     </div>
