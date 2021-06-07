@@ -47,11 +47,14 @@ class DeleteFileLink extends React.Component {
 					// return response.data;
 				} else {
                     this.setState({
-                        buttonText: "Failed to delete"
+                        buttonText: response.status + ": Failed to delete"
                     });
                     console.log(response.status);
 				}
 			}).catch(error => {
+                this.setState({
+                    buttonText: error.status + ": Failed to delete"
+                });
                 console.log(error);
             });
     }

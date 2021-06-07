@@ -667,3 +667,8 @@ span.leading-text {
 .float-right {
     float: right;
 }
+
+.propFilename {
+    font-size: 15px;
+    font-weight: bold;
+}
