@@ -48,7 +48,8 @@ class Importer extends Component {
                 dragClass: ''
             }, ()=> {
                 this.setState({
-                    baseDirectory: this.getDirectoryName()
+                    baseDirectory: this.getDirectoryName(),
+                    basePath: this.getPath()
                 });
                 console.log(this.state.files);
                 console.log("Base directory should be " + this.getDirectoryName());
@@ -93,7 +94,8 @@ class Importer extends Component {
             delimiter: {value:"", label:"auto-detect"}, // auto-detect
             files: [],
             importOption: "csv",
-            baseDirectory: ''
+            baseDirectory: '',
+            basePath: ''
         };
         
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -129,6 +131,12 @@ class Importer extends Component {
         }).catch(error => {
             //
         })
+    }
+
+    getPath = () => {
+        // full path that will be uploaded...  in Edge/Chrome at least, so user knows exactly what
+        // directory structure they dropped in?
+        return this.state.files[0].path;
     }
 
     /** Return the base directory of a folder drop to display to user */
@@ -1110,7 +1118,7 @@ class Importer extends Component {
                             Otherwise, there will be incorrect search results and wrong/unavailable files listed for download.  
                             </h3>
                         <h3>The system detects matches by title, register date and document type.  
-                            Existing metadata with no files will be updated if it's a match.  
+                            Existing metadata with no files (no filename and no foldername listed) will be updated if it's a match.  
                             Existing metadata with an existing filename will be skipped if it's a match.  
                             In this situation, when you do the bulk upload, the files for that record will be skipped, because if we already have the documents the system assumes incoming data is duplicate data.  
                             This is to prevent converting and storing duplicate document texts associated with one record.  
@@ -1290,6 +1298,7 @@ class Importer extends Component {
                             <h3>The more new files being uploaded, the longer it will take.  The system also takes a bit to extract from archives, convert PDFs to text, add to database and index that text.</h3>
 
                             <h1>Bulk import:</h1>
+                            <h4>(Function: Upload new directories with PDFs, or standalone archives of PDFs)</h4>
                         </div>
                         <h2 hidden={this.state.importOption !== "single"}>Option 2: Import with multiple files</h2> 
                         
@@ -1299,12 +1308,16 @@ class Importer extends Component {
                                 <section>
                                     <div className={this.state.dragClass} {...getRootProps({id: 'dropzone'})}>
                                         <input {...getInputProps()} />
-                                        <p>Drag and drop file(s) or directory here</p>
+                                        <span className="drag-inner-text">
+                                            Drag and drop file(s), or directory/directories, here
+                                        </span>
                                     </div>
                                     <aside className="dropzone-aside">
+                                        <h3>First path found (should look like: /ABC/ABC_####/TYPE/....pdf, or: /ABC_####/TYPE/....pdf):</h3>
+                                        <ul>{this.state.basePath}</ul>
                                         <h4>First folder found:</h4>
                                         <ul>{this.state.baseDirectory}</ul>
-                                        <h4>Files:</h4>
+                                        <h4>All files found:</h4>
                                         <ul>{files}</ul>
                                     </aside>
                                 </section>
