@@ -181,20 +181,22 @@ class DownloadFile extends React.Component {
             if(this.props.size) {
                 sizeText = this.props.size+"MB";
             }
+
             if(this.props.downloadType && this.props.downloadType === "nepafile") {
                 propID = this.props.id;
                 return (<>
                     <button className = {this.state.downloadClass2} onClick = { () => {this.downloadNepaFile(propFilename, propID)} }> 
-                        {this.state.downloadText} <b>{propFilename}</b> 
-                    </button>
-                     {sizeText} {this.state.progressValue} </>
+                        {this.state.downloadText} {sizeText} {this.state.progressValue} 
+                    </button> <span className="propFilename">{propFilename}</span>
+                    </>
                 );
             }
 			else if (propFilename) {
-                return (
+                return (<>
                     <button className = {this.state.downloadClass} onClick = { () => {this.download(propFilename, false)} }> 
-                        {this.state.downloadText} <b>{propFilename}</b> {sizeText} {this.state.progressValue} 
-                    </button>
+                        {this.state.downloadText} {sizeText} {this.state.progressValue} 
+                    </button> <span className="propFilename">{propFilename}</span>
+                    </>
                 );
 			} else if (propID) {
                 return (
