@@ -20,7 +20,7 @@ import './importer.css';
  *  * multiple file upload functionality for a single record
  **/
 
-// TODO: Re-test single, multi file record import; re-test folder import
+// TODO: Re-test or remove single, multi file record import (fairly useless)
 // file: null would just become files: [] and files: evt.target.files instead of files[0]?
 
 // TODO: Full TSV export for EISDoc table
@@ -73,10 +73,12 @@ class Importer extends Component {
             titleLabel: '',
             csvLabel: '',
             csvError: '',
+            admin: false,
             disabled: false,
             file: null,
             csv: null,
             canImportCSV: false,
+            busy: false,
             filename: '',
             doc: {
                 title: '',
@@ -106,6 +108,27 @@ class Importer extends Component {
           }).catch(error => { // redirect
             this.props.history.push('/');
           })
+    }
+
+    checkAdmin = () => {
+        let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
+        axios({
+            url: checkUrl,
+            method: 'POST'
+        }).then(response => {
+            console.log("Response", response);
+            console.log("Status", response.status);
+            let responseOK = response.data && response.status === 200;
+            if (responseOK) {
+                this.setState({
+                    admin: true
+                });
+            } else {
+                console.log("Else");
+            }
+        }).catch(error => {
+            //
+        })
     }
 
     /** Return the base directory of a folder drop to display to user */
@@ -364,7 +387,8 @@ class Importer extends Component {
         this.setState({ 
             networkError: '',
             successLabel: 'Uploading...  (this tab must remain open to finish)',
-            disabled: true 
+            disabled: true,
+            busy: true
         });
         
         let importUrl = new URL('file/uploadFilesBulk', Globals.currentHost);
@@ -422,7 +446,8 @@ class Importer extends Component {
             this.setState({
                 networkError: networkString,
                 successLabel: successString,
-                disabled: false
+                disabled: false,
+                busy: false
             });
     
             document.body.style.cursor = 'default'; 
@@ -450,7 +475,8 @@ class Importer extends Component {
             stateError: '',
             typeError: '',
             dateError: '',
-            disabled: true 
+            disabled: true ,
+            busy: true
         });
         
         let importUrl = new URL('file/uploadFiles', Globals.currentHost);
@@ -500,7 +526,8 @@ class Importer extends Component {
             this.setState({
                 networkError: networkString,
                 successLabel: successString,
-                disabled: false
+                disabled: false,
+                busy: false
             });
     
             document.body.style.cursor = 'default'; 
@@ -776,7 +803,8 @@ class Importer extends Component {
         this.setState({ 
             csvLabel: 'In progress...',
             csvError: '',
-            disabled: true 
+            disabled: true,
+            busy: true
         });
 
         
@@ -840,7 +868,8 @@ class Importer extends Component {
                 csvError: networkString,
                 csvLabel: successString,
                 disabled: false,
-                results : resultString
+                results : resultString,
+                busy: false
             });
     
             document.body.style.cursor = 'default'; 
@@ -977,6 +1006,33 @@ class Importer extends Component {
     //     console.error(error);
     // }
 
+    // these won't work for non admins so no need to show them to others
+    renderAdminButtons = () => {
+        let result;
+        if(this.state.admin) {
+            result = (<>
+                <button type="button" className="button" id="submitCSVTitles" disabled={!this.state.canImportCSV || this.state.disabled} 
+                onClick={() => this.importCSVOnTitleHandler('file/uploadCSV_titles')}>
+                    (admin) Import from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
+                </button>
+                <button type="button" className="button" id="submitTitleFix" disabled={!this.state.canImportCSV || this.state.disabled} 
+                        onClick={() => this.importCSVOnTitleHandler('file/title_fix')}>
+                    (admin) Title fixing tool
+                </button>
+                <button type="button" className="button" id="submitCSVConstrained" disabled={!this.state.canImportCSV || this.state.disabled} 
+                        onClick={() => this.importCSVHandler(this.csvConstrainedValidated,'file/uploadCSV_constraints')}>
+                    (admin) Constrained import tool
+                </button>
+                <button type="button" className="button" id="submitCSVFilename" disabled={!this.state.canImportCSV || this.state.disabled} 
+                        onClick={() => this.importCSVHandler(this.csvConstrainedValidated,'file/uploadCSV_filenames')}>
+                    (admin) Filename add tool
+                </button>
+            </>);
+        }
+
+        return result;
+    }
+
 
     render() {
 
@@ -1011,7 +1067,7 @@ class Importer extends Component {
             <div className="form content">
                 
                 <div className="note">
-                    Import New Data with File(s)
+                    Import New Data
                 </div>
                 
                 <label className="networkErrorLabel">
@@ -1027,18 +1083,18 @@ class Importer extends Component {
                         <label className="flex-center no-select cursor-pointer">
                             <input type="radio" className="cursor-pointer" name="importOption" value="csv" onChange={this.onRadioChange} 
                             defaultChecked />
-                            CSV
+                            Spreadsheet (.tsv or .csv)
                         </label>
                         <label className="flex-center no-select cursor-pointer">
                             <input type="radio" className="cursor-pointer" name="importOption" value="bulk" onChange={this.onRadioChange} 
                             />
-                            Bulk file import (for adding and linking files to already-imported CSV)
+                            Bulk file import (for adding and linking files to existing metadata)
                         </label>
-                        <label className="flex-center no-select cursor-pointer">
+                        {/* <label className="flex-center no-select cursor-pointer">
                             <input type="radio" className="cursor-pointer" name="importOption" value="single" onChange={this.onRadioChange} 
                             />
                             Single document
-                        </label>
+                        </label> */}
                     </span>
 
                     <hr />
@@ -1061,8 +1117,13 @@ class Importer extends Component {
                             If you're sure you want to update existing metadata with an existing filename, then use the Force Update header and put Yes.
                             Valid, non-duplicate data will become new metadata records.
                             </h3>
-                        <h3>Required headers: Federal Register Date, Document, EIS Identifier (or for filenames use: Filename), Title</h3>
-                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Provenance, Force Update</h3>
+
+                        <hr />
+                        <h3>Required headers: Document, EIS Identifier (or to link a .zip: Filename), Federal Register Date, Title</h3>
+                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Cooperating Agency, Summary, Force Update</h3>
+                        
+                        <hr />
+
                         <h1>Import CSV/TSV:</h1>
                         <label className="advanced-label">Delimiter to use (default auto-detect) </label>
                         <Creatable id="delimiter" className="multi inline-block" classNamePrefix="react-select" name="delimiter" isSearchable isClearable 
@@ -1094,22 +1155,11 @@ class Importer extends Component {
                             Import CSV/TSV
                         </button>
                         
-                        <button type="button" className="button" id="submitCSVTitles" disabled={!this.state.canImportCSV || this.state.disabled} 
-                                onClick={() => this.importCSVOnTitleHandler('file/uploadCSV_titles')}>
-                            (Only works for admin) Import from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
-                        </button>
-                        <button type="button" className="button" id="submitTitleFix" disabled={!this.state.canImportCSV || this.state.disabled} 
-                                onClick={() => this.importCSVOnTitleHandler('file/title_fix')}>
-                            (Only works for admin) Title fixing tool
-                        </button>
-                        <button type="button" className="button" id="submitCSVConstrained" disabled={!this.state.canImportCSV || this.state.disabled} 
-                                onClick={() => this.importCSVHandler(this.csvConstrainedValidated,'file/uploadCSV_constraints')}>
-                            (Only works for admin) Constrained import tool
-                        </button>
-                        <button type="button" className="button" id="submitCSVFilename" disabled={!this.state.canImportCSV || this.state.disabled} 
-                                onClick={() => this.importCSVHandler(this.csvConstrainedValidated,'file/uploadCSV_filenames')}>
-                            (Only works for admin) Filename add tool
-                        </button>
+                        {this.renderAdminButtons()}
+
+                        <div className="loader-holder">
+                            <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
+                        </div>
 
                         <h3 className="infoLabel">
                             {"CSV upload status: " + this.state.csvLabel}
@@ -1270,6 +1320,10 @@ class Importer extends Component {
                             Import Directories with Files to Link with Existing Metadata
                         </button>
                         
+                        <div className="loader-holder">
+                            <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
+                        </div>
+
                         <h3 className="infoLabel green">
                             {"Import status shown here: " + this.state.successLabel}
                         </h3>
@@ -1288,6 +1342,7 @@ class Importer extends Component {
     }
     componentDidMount() {
         // console.log(this.state.importOption);
+        this.checkAdmin();
     }
 }
 
