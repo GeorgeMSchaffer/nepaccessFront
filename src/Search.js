@@ -495,7 +495,7 @@ class Search extends React.Component {
                         <input id="main-search-bar"
                             className="search-bar" 
                             name="titleRaw" 
-                            placeholder="Search by keywords within document title or text" 
+                            placeholder="Leave blank to return all titles (and metadata)" 
                             value={this.state.titleRaw}
                             autoFocus 
                             onChange={this.onChangeHandler}
