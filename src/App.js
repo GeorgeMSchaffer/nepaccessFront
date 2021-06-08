@@ -49,9 +49,6 @@ export default class App extends React.Component {
     // For canceling a search when component unloads
     _mounted = false;
 
-    // For cleaner load when logged in
-    _loaded = false;
-
     // For canceling a search on demand
     _canceled = false;
 
@@ -917,7 +914,7 @@ export default class App extends React.Component {
 
 	check = () => { // check if JWT is expired/invalid
 		
-        this._loaded = false;
+        this.setState({loaded:false});
 
 		let checkURL = new URL('test/check', Globals.currentHost);
 		let result = false;
@@ -925,7 +922,7 @@ export default class App extends React.Component {
 		.then(response => {
 			result = response && response.status === 200;
 			this.setState({
-				verified: result
+				verified: result,
 			})
 		})
 		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
@@ -947,7 +944,7 @@ export default class App extends React.Component {
             }
 		})
 		.finally(() => {
-            this._loaded = true;
+            this.setState({loaded:true});
 			// console.log("Returning... " + result);
 		});
 		// console.log("App check");
@@ -1045,7 +1042,7 @@ export default class App extends React.Component {
 			)
 
 		}
-		else if(this._loaded)
+		else if(this.state.loaded)
 		{
 			return (
 				<div className="content">
