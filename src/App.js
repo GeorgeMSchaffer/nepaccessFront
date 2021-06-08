@@ -1038,7 +1038,7 @@ export default class App extends React.Component {
 			)
 
 		}
-		else 
+		else if(this._mounted)
 		{
 			return (
 				<div className="content">
@@ -1050,6 +1050,9 @@ export default class App extends React.Component {
 				</div>
 			)
 		}
+        else { // show nothing until at least we've loaded
+            return (<div></div>);
+        }
     }
     
 	// After render
