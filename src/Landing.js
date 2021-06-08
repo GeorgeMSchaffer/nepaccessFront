@@ -75,10 +75,12 @@ class Landing extends React.Component {
                         value={this.state.rawInput}
                     />
                 </div>
-                <div id="image-1">
+                <div id="images-combo">
+                </div>
+                {/* <div id="image-1">
                 </div>
                 <div id="image-2">
-                </div>
+                </div> */}
           </div>
           {/* <div>
             <span id="post-text">
