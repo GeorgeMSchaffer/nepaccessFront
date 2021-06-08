@@ -928,12 +928,14 @@ export default class App extends React.Component {
 			if(!err.response){ // server isn't responding
 				this.setState({
 					networkError: Globals.errorMessage.default,
-                    shouldUpdate: true
+                    shouldUpdate: true,
+                    loaded: true
 				});
 			} else if(err.response && err.response.status===403) {
                 this.setState({
                     networkError: Globals.errorMessage.auth,
-                    shouldUpdate: true
+                    shouldUpdate: true,
+                    loaded: true
                 });
                 // this.props.history.push('/login');
                 // this.setState({
