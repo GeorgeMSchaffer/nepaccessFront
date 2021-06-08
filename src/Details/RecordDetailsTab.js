@@ -78,9 +78,9 @@ export default class RecordDetailsTab extends React.Component {
                 this.setState({
                     nepaResults: parsedJson,
                 }, () => {
-                    if(!this.state.nepaResults || !this.state.nepaResults[0]){
+                    // if(!this.state.nepaResults || !this.state.nepaResults[0]){
                         this.getDocumentTextResults();
-                    }
+                    // }
                 });
             } else { // null/404
                 // if(!this.state.nepaResults || !this.state.nepaResults[0]){
