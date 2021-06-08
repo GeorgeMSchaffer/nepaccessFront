@@ -37,7 +37,8 @@ export default class App extends React.Component {
         searching: false,
         useSearchOptions: false,
         snippetsDisabled: false,
-        shouldUpdate: false
+        shouldUpdate: false,
+        loaded: false
     }
     
     constructor(props){
@@ -919,7 +920,8 @@ export default class App extends React.Component {
 		.then(response => {
 			result = response && response.status === 200;
 			this.setState({
-				verified: result
+				verified: result,
+                loaded: true
 			})
 		})
 		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
@@ -1038,7 +1040,7 @@ export default class App extends React.Component {
 			)
 
 		}
-		else if(this._mounted)
+		else if(this.state.loaded)
 		{
 			return (
 				<div className="content">
