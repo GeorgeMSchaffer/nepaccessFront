@@ -49,6 +49,9 @@ export default class App extends React.Component {
     // For canceling a search when component unloads
     _mounted = false;
 
+    // For cleaner load when logged in
+    _loaded = false;
+
     // For canceling a search on demand
     _canceled = false;
 
@@ -914,37 +917,37 @@ export default class App extends React.Component {
 
 	check = () => { // check if JWT is expired/invalid
 		
+        this._loaded = false;
+
 		let checkURL = new URL('test/check', Globals.currentHost);
 		let result = false;
 		axios.post(checkURL)
 		.then(response => {
 			result = response && response.status === 200;
 			this.setState({
-				verified: result,
-                loaded: true
+				verified: result
 			})
 		})
 		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
 			if(!err.response){ // server isn't responding
 				this.setState({
 					networkError: Globals.errorMessage.default,
-                    shouldUpdate: true,
-                    loaded: true
+                    shouldUpdate: true
 				});
 			} else if(err.response && err.response.status===403) {
                 this.setState({
-                    networkError: Globals.errorMessage.auth,
-                    shouldUpdate: true,
-                    loaded: true
+                    verified: false,
+                    shouldUpdate: true
                 });
                 // this.props.history.push('/login');
                 // this.setState({
-                //     networkError: "Please log in.",
+                //     networkError: Globals.errorMessage.auth,
                 //     shouldUpdate: true
                 // });
             }
 		})
 		.finally(() => {
+            this._loaded = true;
 			// console.log("Returning... " + result);
 		});
 		// console.log("App check");
@@ -1042,7 +1045,7 @@ export default class App extends React.Component {
 			)
 
 		}
-		else if(this.state.loaded)
+		else if(this._loaded)
 		{
 			return (
 				<div className="content">
