@@ -524,7 +524,6 @@ export default class App extends React.Component {
                     });
                 } else if (error.response && error.response.status === 403) { // token expired?
                     this.setState({
-                        networkError: Globals.errorMessage.auth,
                         resultsText: "Error: Please login again (session expired)"
                     });
                     Globals.emitEvent('refresh', {
@@ -705,7 +704,7 @@ export default class App extends React.Component {
                     } else {
                         this.setState({
                             networkError: 'Server is down or you may need to login again.',
-                            resultsText: 'Server unresponsive',
+                            resultsText: Globals.errorMessage.default,
                             searching: false,
                             shouldUpdate: true
                         });
@@ -885,7 +884,7 @@ export default class App extends React.Component {
                     } else {
                         this.setState({
                             networkError: 'Server is down or you may need to login again.',
-                            resultsText: 'Server unresponsive',
+                            resultsText: Globals.errorMessage.default,
                             searching: false,
                             shouldUpdate: true
                         });
@@ -924,24 +923,22 @@ export default class App extends React.Component {
 			})
 		})
 		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
-			if(!err.response){ // Probably no need to redirect to login if server isn't responding
+			if(!err.response){ // server isn't responding
 				this.setState({
 					networkError: Globals.errorMessage.default,
                     shouldUpdate: true
 				});
-			} else { // 403 Forbidden?
-                if(err.response && err.response.status===403) {
-                    this.setState({
-                        networkError: Globals.errorMessage.auth,
-                        shouldUpdate: true
-                    });
-                    // this.props.history.push('/login');
-                    // this.setState({
-                    //     networkError: "Please log in.",
-                    //     shouldUpdate: true
-                    // });
-                }
-			}
+			} else if(err.response && err.response.status===403) {
+                this.setState({
+                    networkError: Globals.errorMessage.auth,
+                    shouldUpdate: true
+                });
+                // this.props.history.push('/login');
+                // this.setState({
+                //     networkError: "Please log in.",
+                //     shouldUpdate: true
+                // });
+            }
 		})
 		.finally(() => {
 			// console.log("Returning... " + result);
