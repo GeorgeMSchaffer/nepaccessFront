@@ -133,6 +133,11 @@ const Globals = {
         "Red","Green","Blue","Yellow","Pink","Purple",
         "Orange","Cyan","Magenta","Teal","DarkGray"
     ],
+
+    errorMessage: {
+        default: "Server may be updating, please try again in a minute.",
+        auth: "Please log in again (auth token expires every 10 days).",
+    },
     
     anEnum: Object.freeze({"test":1, "test2":2, "test3":3})
 

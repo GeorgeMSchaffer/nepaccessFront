@@ -460,7 +460,7 @@ class Search extends React.Component {
                                             <td>&nbsp;</td><td>&nbsp;</td>
                                         </tr>
                                         <tr className="tooltip-line"><td className="tooltip-connector"></td>
-                                            <td><a href="abouthelp" target="_blank" rel="noopener" noreferrer>More search tips.</a></td> 
+                                            <td><a href="abouthelp" target="_blank" rel="noopener noreferrer">More search tips.</a></td> 
                                         </tr>
                                     </tbody></table>
                                     </>

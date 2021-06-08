@@ -189,11 +189,13 @@ export default class SearchLogs extends React.Component {
 		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
 			if(!err.response){ // Probably no need to redirect to login if server isn't responding
 				this.setState({
-					networkError: "Server may be down, please try again later."
+					networkError: Globals.errorMessage.default
 				});
 			} else { // 403?
                 if(err.response.status===403) {
-                    console.log("Not logged in/invalid token");
+                    this.setState({
+                        networkError: Globals.errorMessage.auth
+                    });
                 }
 			}
 		})
