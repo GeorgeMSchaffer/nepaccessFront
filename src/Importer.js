@@ -1313,7 +1313,7 @@ class Importer extends Component {
                                         </span>
                                     </div>
                                     <aside className="dropzone-aside">
-                                        <h3>First path found (should look like: /ABC/ABC_####/TYPE/....pdf, or: /ABC_####/TYPE/....pdf):</h3>
+                                        <h3>First path found (either a unique .zip or should look like: /ABC/ABC_####/TYPE/....pdf, or: /ABC_####/TYPE/....pdf):</h3>
                                         <ul>{this.state.basePath}</ul>
                                         <h4>First folder found:</h4>
                                         <ul>{this.state.baseDirectory}</ul>
