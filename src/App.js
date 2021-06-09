@@ -38,7 +38,8 @@ export default class App extends React.Component {
         useSearchOptions: false,
         snippetsDisabled: false,
         shouldUpdate: false,
-        loaded: false
+        loaded: false,
+        down: false
     }
     
     constructor(props){
@@ -914,7 +915,7 @@ export default class App extends React.Component {
 
 	check = () => { // check if JWT is expired/invalid
 		
-        this.setState({loaded:false});
+        this.setState({loaded:false,down:false});
 
 		let checkURL = new URL('test/check', Globals.currentHost);
 		let result = false;
@@ -929,7 +930,8 @@ export default class App extends React.Component {
 			if(!err.response){ // server isn't responding
 				this.setState({
 					networkError: Globals.errorMessage.default,
-                    shouldUpdate: true
+                    shouldUpdate: true,
+                    down: true
 				});
 			} else if(err.response && err.response.status===403) {
                 this.setState({
@@ -1042,6 +1044,16 @@ export default class App extends React.Component {
 			)
 
 		}
+        else if(this.state.down) {
+            return (
+            <div className="content">
+                <div>
+                    <label className="logged-out-header">
+                        Sorry, the server may be down for maintenance.  Please try reloading the page in a minute.
+                    </label>
+                </div>
+            </div>);
+        }
 		else if(this.state.loaded)
 		{
 			return (
@@ -1055,7 +1067,12 @@ export default class App extends React.Component {
 			)
 		}
         else { // show nothing until at least we've loaded
-            return (<div></div>);
+            return (<div className="content">
+
+                <div className="loader-holder">
+                    <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>);
         }
     }
     
