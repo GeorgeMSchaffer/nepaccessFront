@@ -66,10 +66,10 @@
     width: 17%;
 }
 .table-like div.table-row div:nth-child(3) { 
-    width: 45%;
+    width: 35%;
 }
 .table-like div.table-row div:nth-child(4) { 
-    width: 10%;
+    width: 20%;
     padding-right: 0%;
     border-right: none;
 }
