@@ -45,13 +45,22 @@ class Importer extends Component {
         this.onDrop = (dropped) => {
             this.setState({
                 files: dropped,
-                dragClass: ''
+                dragClass: '',
+                totalSize: 0
             }, ()=> {
+                console.log(this.state.files);
+
+                let _totalSize = 0;
+                for(let i = 0; i < this.state.files.length; i++) {
+                    _totalSize += this.state.files[i].size;
+                }
+
                 this.setState({
                     baseDirectory: this.getDirectoryName(),
-                    basePath: this.getPath()
+                    basePath: this.getPath(),
+                    totalSize: _totalSize
                 });
-                console.log(this.state.files);
+
                 console.log("Base directory should be " + this.getDirectoryName());
             });
         };
@@ -95,7 +104,9 @@ class Importer extends Component {
             files: [],
             importOption: "csv",
             baseDirectory: '',
-            basePath: ''
+            basePath: '',
+            totalSize: 0,
+            uploaded: 0
         };
         
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -385,7 +396,7 @@ class Importer extends Component {
         spring.servlet.multipart.max-request-size=8GB
     */
 
-
+    /** Import all files, one at a time, using doSingleImports() */ 
     bulkUpload = () => {
         if(!this.hasFiles()) {
             return;
@@ -398,26 +409,14 @@ class Importer extends Component {
             importResults: '',
             successLabel: 'Uploading...  (this tab must remain open to finish)',
             disabled: true,
-            busy: true
+            busy: true,
+            uploaded: 0
         }, () => {
             this.doSingleImports(0, this.state.files.length);
         });
-        
-
-        // let uploadFiles = new FormData();
-        // for(let i=0; i < this.state.files.length; i++){
-        //     uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
-        // }
-
-        // for(let i=0; i < this.state.files.length; i++){
-        //     let uploadFiles = new FormData();
-        //     uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
-            // this.doSingleImport(uploadFiles);
-        // }
-
-
     }
 
+    /** Import each file until we hit the length of this.state.files */ 
     doSingleImports(i,limit) {
 
         let importUrl = new URL('file/uploadFilesBulk', Globals.currentHost);
@@ -459,7 +458,8 @@ class Importer extends Component {
 
             if(i+1 < limit) {
                 this.setState({
-                    importResults: resultString
+                    importResults: resultString,
+                    uploaded: (this.state.uploaded + this.state.files[i].size)
                 }, () => {
                     this.doSingleImports((i+1), limit);
                 });
@@ -497,75 +497,6 @@ class Importer extends Component {
             });
     
         });
-
-
-    }
-
-    doSingleImport = (uploadFiles) => {
-        document.body.style.cursor = 'wait';
-
-        this.setState({
-            disabled: true,
-            busy: true
-        });
-
-        let importUrl = new URL('file/uploadFilesBulk', Globals.currentHost);
-
-        let networkString = '';
-        let successString = '';
-
-        axios({ 
-            method: 'POST',
-            url: importUrl,
-            headers: {
-                'Content-Type': "multipart/form-data"
-            },
-            data: uploadFiles
-        }).then(response => {
-            console.log("Import response",response);
-            let responseOK = response && response.status === 200;
-            if (responseOK) {
-                
-                let resultString = this.state.importResults;
-                let responseArray = response.data;
-                responseArray.forEach(element => {
-                    resultString += element + "\n";
-                });
-                this.setState({importResults: resultString});
-
-                return true;
-            } else { 
-                return false;
-            }
-        }).then(success => {
-            if(success){
-                successString = "Successfully imported.";
-            } else {
-                successString = "Failed to import."; // Server down?
-            }
-        }).catch(error => {
-            if(error.response) {
-                if (error.response.status === 500) {
-                    networkString = "Internal server error.";
-                } else if (error.response.status === 404) {
-                    networkString = "Not found.";
-                } 
-            } else {
-                networkString = "Server may be down (no response), please try again later.";
-            }
-            successString = "Couldn't import.";
-            console.error('error message ', error);
-        }).finally(e => {
-            this.setState({
-                networkError: networkString,
-                successLabel: successString,
-                disabled: false,
-                busy: false
-            });
-    
-            document.body.style.cursor = 'default'; 
-        });
-
 
     }
 
@@ -1418,6 +1349,8 @@ class Importer extends Component {
                                         <ul>{this.state.baseDirectory}</ul>
                                         <h4>All files found:</h4>
                                         <ul>{files}</ul>
+                                        <h4>Total size:</h4>
+                                        <ul>{this.state.totalSize / 1024 / 1024} MB</ul>
                                     </aside>
                                 </section>
                             )}
@@ -1439,6 +1372,9 @@ class Importer extends Component {
                         <h3 className="infoLabel green">
                             {"Import status: " + this.state.successLabel}
                         </h3>
+                        <div><label hidden={this.state.importOption === "csv" || !this.state.busy}>
+                            <b>Uploaded: {this.state.uploaded / 1024 / 1024} MB ({(this.state.uploaded / this.state.totalSize)*100}%)</b>
+                        </label></div>
                         
                         <label hidden={this.state.importOption === "csv"}>
                             <b>Import results/server response:</b>
