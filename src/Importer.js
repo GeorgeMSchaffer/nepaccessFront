@@ -390,24 +390,129 @@ class Importer extends Component {
         if(!this.hasFiles()) {
             return;
         }
-        
+
         document.body.style.cursor = 'wait';
+        
         this.setState({ 
             networkError: '',
+            importResults: '',
             successLabel: 'Uploading...  (this tab must remain open to finish)',
             disabled: true,
             busy: true
+        }, () => {
+            this.doSingleImports(0, this.state.files.length);
         });
         
+
+        // let uploadFiles = new FormData();
+        // for(let i=0; i < this.state.files.length; i++){
+        //     uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
+        // }
+
+        // for(let i=0; i < this.state.files.length; i++){
+        //     let uploadFiles = new FormData();
+        //     uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
+            // this.doSingleImport(uploadFiles);
+        // }
+
+
+    }
+
+    doSingleImports(i,limit) {
+
         let importUrl = new URL('file/uploadFilesBulk', Globals.currentHost);
 
+        let networkString = '';
+        let successString = '';
+        let resultString = "" + this.state.importResults;
+        
         let uploadFiles = new FormData();
-        for(let i=0; i < this.state.files.length; i++){
-            uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
-        }
+        uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
+
+        axios({ 
+            method: 'POST',
+            url: importUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: uploadFiles
+        }).then(response => {
+            // console.log("Import response",response);
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                
+                let responseArray = response.data;
+                responseArray.forEach(element => {
+                    resultString += element + "\n";
+                });
+
+                return true;
+            } else { 
+                return false;
+            }
+        }).then(success => {
+            if(success){
+                successString = "Successfully imported.";
+            } else {
+                successString = "Failed to import."; // Server down?
+            }
+
+            if(i+1 < limit) {
+                this.setState({
+                    importResults: resultString
+                }, () => {
+                    this.doSingleImports((i+1), limit);
+                });
+            } else {
+                document.body.style.cursor = 'default'; 
+
+                this.setState({
+                    networkError: networkString,
+                    successLabel: successString,
+                    importResults: resultString,
+                    disabled: false,
+                    busy: false
+                });
+        
+            }
+        }).catch(error => {
+            document.body.style.cursor = 'default'; 
+            if(error.response) {
+                if (error.response.status === 500) {
+                    networkString = "Internal server error.";
+                } else if (error.response.status === 404) {
+                    networkString = "Not found.";
+                } 
+            } else {
+                networkString = "Server may be down (no response), please try again later.";
+            }
+            successString = "Couldn't import.";
+            console.error('error message', error);
+            this.setState({
+                networkError: networkString,
+                successLabel: successString,
+                importResults: resultString,
+                disabled: false,
+                busy: false
+            });
+    
+        });
+
+
+    }
+
+    doSingleImport = (uploadFiles) => {
+        document.body.style.cursor = 'wait';
+
+        this.setState({
+            disabled: true,
+            busy: true
+        });
+
+        let importUrl = new URL('file/uploadFilesBulk', Globals.currentHost);
 
         let networkString = '';
-        let successString = 'Now importing files.  This could take some time.';
+        let successString = '';
 
         axios({ 
             method: 'POST',
@@ -421,7 +526,7 @@ class Importer extends Component {
             let responseOK = response && response.status === 200;
             if (responseOK) {
                 
-                let resultString = "";
+                let resultString = this.state.importResults;
                 let responseArray = response.data;
                 responseArray.forEach(element => {
                     resultString += element + "\n";
@@ -462,12 +567,6 @@ class Importer extends Component {
         });
 
 
-        function renameFile(originalFile, newName) {
-            return new File([originalFile], newName, {
-                type: originalFile.type,
-                lastModified: originalFile.lastModified,
-            });
-        }
     }
 
     uploadFiles = () => {
@@ -1338,9 +1437,12 @@ class Importer extends Component {
                         </div>
 
                         <h3 className="infoLabel green">
-                            {"Import status shown here: " + this.state.successLabel}
+                            {"Import status: " + this.state.successLabel}
                         </h3>
-
+                        
+                        <label hidden={this.state.importOption === "csv"}>
+                            <b>Import results/server response:</b>
+                        </label>
                         <textarea hidden={this.state.importOption !== "bulk"}
                             value={this.state.importResults} onChange={this.onChangeDummy}>
                         </textarea>
@@ -1360,3 +1462,10 @@ class Importer extends Component {
 }
 
 export default Importer;
+
+function renameFile(originalFile, newName) {
+    return new File([originalFile], newName, {
+        type: originalFile.type,
+        lastModified: originalFile.lastModified,
+    });
+}
