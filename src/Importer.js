@@ -1327,6 +1327,8 @@ class Importer extends Component {
                                 </h3>
                             <h3>The more new files being uploaded, the longer it will take.  The system also takes a bit to extract from archives, convert PDFs to text, add to database and index that text.</h3>
 
+                            <hr></hr>
+                            
                             <h1>Bulk import:</h1>
                             <h4>(Function: Upload new directories with PDFs, or standalone archives of PDFs)</h4>
                         </div>

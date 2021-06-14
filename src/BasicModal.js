@@ -71,7 +71,7 @@ export default class BasicModal extends React.Component {
                     // ariaHideApp={false}
                 >
                     <div className="modal-button-space">
-                        <button className='float-right' onClick={this.hideModal}>Close</button>
+                        <button className='float-right' onClick={this.hideModal}>x</button>
                     </div>
 
                     <div>
