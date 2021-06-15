@@ -83,8 +83,12 @@ class Search extends React.Component {
     }
 
     onIconClick = (evt) => {
-        this.setState({cancelButtonActive: true});
-        this.debouncedSearch(this.state);
+        this.setState({
+            cancelButtonActive: true, 
+            titleRaw: parseTerms(this.state.titleRaw)
+        }, () => {
+            this.debouncedSearch(this.state);
+        });
     }
     onClearClick = (evt) => {
         this.setState({ 
@@ -744,7 +748,7 @@ class Search extends React.Component {
                 disableValue = false;
             }
             this.setState({
-                titleRaw: queryString,
+                titleRaw: parseTerms(queryString),
                 cancelButtonActive: true,
                 proximityDisabled: disableValue
             }, () => {
@@ -759,3 +763,18 @@ class Search extends React.Component {
 }
 
 export default withRouter(Search);
+
+/** Does a .replace with regex for these rules: 
+ * For the opening ', it could have either no characters before it, or whitespace.
+ * Then another ' must be found after that one preceding either no characters, 
+ * or whitespace.  In between the two can be any characters, so technically this would count:
+ * ' '.  That isn't really a problem, though.
+ * 
+ * In other words, enforce /([\s]|^)'(.+)'([\s]|$)/g and replace surrounding pair of ' with " */ 
+ function parseTerms(str) {
+    if (!str) return str;
+    
+    str = str.replace(/([\s]|^)'(.+)'([\s]|$)/g, "$1\"$2\"$3");
+
+    return str;
+}
