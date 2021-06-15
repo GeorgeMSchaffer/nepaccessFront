@@ -159,14 +159,13 @@ class Generate extends React.Component {
 
     testBulkIndex() {
 
-      console.log("Activating test for " + Globals.currentHost);
+      console.log("Activating full reindex for " + Globals.currentHost);
 
       axios.get((Globals.currentHost + 'text/sync'),{
         responseType: 'blob'
       })
       .then((response) => {
-        console.log("Activating bulk index");
-        console.log(response);
+        console.log("Response", response);
         // verified = response && response.status === 200;
       })
       .catch((err) => { 

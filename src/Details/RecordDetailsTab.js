@@ -83,9 +83,7 @@ export default class RecordDetailsTab extends React.Component {
                     // }
                 });
             } else { // null/404
-                // if(!this.state.nepaResults || !this.state.nepaResults[0]){
-                //     this.getDocumentTextResults();
-                // }
+                
             }
         }).catch(error => {
             
