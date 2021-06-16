@@ -107,8 +107,12 @@ class Search extends React.Component {
     onKeyUp = (evt) => {        
         if(evt.keyCode === 13){
             evt.preventDefault();
-            this.setState({cancelButtonActive: true});
-            this.debouncedSearch(this.state);
+            this.setState({
+                titleRaw: parseTerms(this.state.titleRaw),
+                cancelButtonActive: true
+            }, () => {
+                this.debouncedSearch(this.state);
+            });
         }
     }
 
