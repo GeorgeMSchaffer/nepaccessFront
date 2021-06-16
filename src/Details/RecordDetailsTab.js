@@ -469,7 +469,7 @@ export default class RecordDetailsTab extends React.Component {
                             </p>
                             <p>
                                 <span className='modal-title bold'>Folder size</span>
-                                {Math.ceil(cellData.size / 1024 / 1024)} MB
+                                {Math.ceil(cellData.size / 1024 / 10.24)/100} MB
                             </p>
                             {filenames}
                         </div>);
@@ -489,13 +489,13 @@ export default class RecordDetailsTab extends React.Component {
                                         &nbsp;{cellData[key]}
                                     </p>
                                     <DownloadFile 
-                                        size={Math.ceil(cellData.size / 1024 / 1024)} 
+                                        size={Math.ceil(cellData.size / 1024 / 10.24)/100} 
                                         downloadType="EIS" 
                                         filename={cellData[key]}
                                     />
                                 </p>
 
-                                <p><span className='modal-title bold'>File size</span>{Math.ceil(cellData.size / 1024 / 1024)} MB</p>
+                                <p><span className='modal-title bold'>File size</span>{Math.ceil(cellData.size / 1024 / 10.24)/100} MB</p>
 
                                 {filenames}
                             </div>;

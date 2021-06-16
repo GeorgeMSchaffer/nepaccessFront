@@ -1328,7 +1328,7 @@ class Importer extends Component {
                             <h3>The more new files being uploaded, the longer it will take.  The system also takes a bit to extract from archives, convert PDFs to text, add to database and index that text.</h3>
 
                             <hr></hr>
-                            
+
                             <h1>Bulk import:</h1>
                             <h4>(Function: Upload new directories with PDFs, or standalone archives of PDFs)</h4>
                         </div>
@@ -1352,7 +1352,7 @@ class Importer extends Component {
                                         <h4>All files found:</h4>
                                         <ul>{files}</ul>
                                         <h4>Total size:</h4>
-                                        <ul>{this.state.totalSize / 1024 / 1024} MB</ul>
+                                        <ul>{Math.round(this.state.totalSize / 1024 / 1024)} MB</ul>
                                     </aside>
                                 </section>
                             )}
@@ -1375,7 +1375,7 @@ class Importer extends Component {
                             {"Import status: " + this.state.successLabel}
                         </h3>
                         <div><label hidden={this.state.importOption === "csv" || !this.state.busy}>
-                            <b>Uploaded: {this.state.uploaded / 1024 / 1024} MB ({(this.state.uploaded / this.state.totalSize)*100}%)</b>
+                            <b>Uploaded: {this.state.uploaded / 1024 / 1024} MB : ({Math.round((this.state.uploaded / this.state.totalSize)*100)}%)</b>
                         </label></div>
                         
                         <label hidden={this.state.importOption === "csv"}>

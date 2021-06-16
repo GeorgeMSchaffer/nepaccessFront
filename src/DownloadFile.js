@@ -41,7 +41,7 @@ class DownloadFile extends React.Component {
 						});
                     } else if(progressEvent.loaded) { // Progress as MB
 						this.setState({
-							progressValue: Math.round(progressEvent.loaded / 1024 / 1024) + 'MB'
+							progressValue: ( Math.round(progressEvent.loaded / 1024 / 1024) ) + 'MB'
 						});
                     }
                     // else progress remains blank
@@ -121,7 +121,7 @@ class DownloadFile extends React.Component {
 						});
                     } else if(progressEvent.loaded) { // Progress as MB
 						this.setState({
-							progressValue: Math.round(progressEvent.loaded / 1024 / 1024) + 'MB'
+							progressValue: ( Math.round(progressEvent.loaded / 1024 / 1024) ) + 'MB'
 						});
                     }
                     // else progress remains blank

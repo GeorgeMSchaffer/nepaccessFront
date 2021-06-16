@@ -340,7 +340,7 @@ class SearchResult extends React.Component {
 
             let size = 0;
             if(cellData.size && cellData.size > 0) {
-                size = Math.ceil((cellData.size / 1024) / 1024);
+                size = (Math.ceil((cellData.size / 1024) / 10.24)/100);
             }
 
 			if (propFilename && cellData.size && cellData.size > 200) {
