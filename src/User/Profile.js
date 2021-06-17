@@ -96,11 +96,10 @@ class UserDetails extends React.Component {
     }
     // TODO: Enforce password length of ??? (maybe 50-100 characters)
     invalidNewPassword(){
-        let passwordPattern = /[ -~]/;
-        let invalid = !(passwordPattern.test(this.state.newPassword));
+        let invalid = !(Globals.validPassword(this.state.newPassword));
         let message = "";
         if(invalid){
-            message = "Password invalid. Cannot be empty, must be printable characters.";
+            message = "Password must be at least 4 printable characters.";
         }
         this.setState({ newPasswordError: message });
         this.setState({ disabled: invalid });

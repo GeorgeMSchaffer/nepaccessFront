@@ -112,6 +112,11 @@ const Globals = {
         return [year, month, day].join('-');
     },
 
+    validPassword(pass) {
+        let passwordPattern = /[ -~]/;
+        return  ( pass && passwordPattern.test(pass) && pass.length >= 4 );
+    },
+
     colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
         '#DB843D', '#92A8CD', '#A47D7C', '#B5CA92', 
         "Red","Green","Blue","Yellow","Pink","Purple",

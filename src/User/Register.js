@@ -195,11 +195,10 @@ class Register extends React.Component {
         return invalid;
     }
     invalidPassword = () => {
-        let passwordPattern = /[ -~]/;
-        let invalid = !(passwordPattern.test(this.state.password));
+        let invalid = !( globals.validPassword(this.state.password) );
         let message = "";
         if(invalid){
-            message = "Cannot be empty, must be printable characters.";
+            message = "Must be at least 4 characters, must be printable characters.";
             message = "*";
         }
         this.setState({ passwordError: message });

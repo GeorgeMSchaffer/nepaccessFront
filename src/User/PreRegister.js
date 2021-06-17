@@ -130,7 +130,7 @@ export default class PreRegister extends React.Component {
         let invalid = this.state.affiliation==="Other" && !(usernamePattern.test(this.state.affiliationOther));
         let message = "";
         if(invalid){
-            message = "Required field when selecting \"Other\"";
+            // message = "Required field when selecting \"Other\"";
             message = "*";
         }
         this.setState({ affiliationOtherError: message });
@@ -138,11 +138,10 @@ export default class PreRegister extends React.Component {
         return invalid;
     }
     invalidPassword = () => {
-        let passwordPattern = /[ -~]/;
-        let invalid = !(passwordPattern.test(this.state.password));
+        let invalid = ( !Globals.validPassword(this.state.password) );
         let message = "";
         if(invalid){
-            message = "Cannot be empty, must be printable characters.";
+            // message = "Must be at least 4 characters; must be printable characters.";
             message = "*";
         }
         this.setState({ passwordError: message });

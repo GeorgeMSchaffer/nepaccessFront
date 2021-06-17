@@ -28,13 +28,12 @@ class Reset extends React.Component {
         this.setState({ disabled: test1 });
         return (test1);
     }
-    // TODO: Enforce password length
+    
     invalidNewPassword(){
-        let passwordPattern = /[ -~]/;
-        let invalid = !(passwordPattern.test(this.state.newPassword));
+        let invalid = !( Globals.validPassword(this.state.newPassword) );
         let message = "";
         if(invalid){
-            message = "Password invalid. Cannot be empty, must be printable characters.";
+            message = "Password invalid. Must be at least 4 characters, must be printable characters.";
         }
         this.setState({ newPasswordError: message });
         this.setState({ disabled: invalid });
