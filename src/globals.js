@@ -114,7 +114,7 @@ const Globals = {
 
     validPassword(pass) {
         let passwordPattern = /[ -~]/;
-        return  ( pass && passwordPattern.test(pass) && pass.length >= 4 );
+        return  ( pass && passwordPattern.test(pass) && pass.length >= 4 && pass.length <= 50 );
     },
 
     colors: ['#4572A7', '#AA4643', '#89A54E', '#80699B', '#3D96AE',
