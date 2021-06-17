@@ -412,19 +412,18 @@ class Importer extends Component {
             busy: true,
             uploaded: 0
         }, () => {
-            this.doSingleImports(0, this.state.files.length);
+            this.doSingleImport(0, this.state.files.length);
         });
     }
-
-    /** Import each file until we hit the length of this.state.files */ 
-    doSingleImports(i,limit) {
-
-        let importUrl = new URL('file/uploadFilesBulk', Globals.currentHost);
-
+    
+    // Tries to execute file upload and handles the results
+    doImport = (i,limit) => {
         let networkString = '';
         let successString = '';
         let resultString = "" + this.state.importResults;
-        
+
+        let importUrl = new URL('file/uploadFilesBulk', Globals.currentHost);
+            
         let uploadFiles = new FormData();
         uploadFiles.append("files", renameFile(this.state.files[i], this.state.files[i].path));
 
@@ -461,7 +460,7 @@ class Importer extends Component {
                     importResults: resultString,
                     uploaded: (this.state.uploaded + this.state.files[i].size)
                 }, () => {
-                    this.doSingleImports((i+1), limit);
+                    this.doSingleImport((i+1), limit);
                 });
             } else {
                 document.body.style.cursor = 'default'; 
@@ -497,7 +496,60 @@ class Importer extends Component {
             });
     
         });
+    }
 
+    /** doImport() until we hit the length of this.state.files, 
+     * skip upload if we won't be able to link */ 
+    doSingleImport(i,limit) {
+        let resultString = "" + this.state.importResults;
+
+        // Check with server about if we can link
+        // Backend takes path and derives both folder name and type if possible
+        if(this.state.files[i].path) {
+            let getUrl = Globals.currentHost + 'file/can_link_folder_type';
+            
+            axios.get(getUrl, {
+            params: {
+                path: this.state.files[i].path
+            }
+            }).then(response => {
+                // data should be boolean
+                if (response && response.data) { 
+                    // import
+                    this.doImport(i,limit);
+                } else {
+                    // skip upload
+                    resultString += "Skipped uploading (no metadata record to link to): " + this.state.files[i].path + "\n";
+                    
+                    if(i+1 < limit) {
+                        this.setState({
+                            importResults: resultString,
+                            uploaded: (this.state.uploaded + this.state.files[i].size)
+                        }, () => {
+                            this.doSingleImport((i+1), limit);
+                        });
+                    } else {
+                        document.body.style.cursor = 'default'; 
+
+                        this.setState({
+                            networkError: "",
+                            successLabel: "Done",
+                            importResults: resultString,
+                            disabled: false,
+                            busy: false
+                        });
+                    }
+                }
+            }).catch(error => { 
+                // May as well try to process it
+                console.error(error);
+
+                this.doImport(i,limit);
+            })
+        } else {
+            // May as well try to process it; probably .zip
+            this.doImport(i,limit);
+        }
     }
 
     uploadFiles = () => {
