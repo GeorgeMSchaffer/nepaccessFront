@@ -40,7 +40,8 @@ export default class Admin extends React.Component {
         users: [],
         response: "",
         admin: false,
-        role: ""
+        role: "",
+        password: ""
     }
 
     constructor(props) {
@@ -208,8 +209,11 @@ export default class Admin extends React.Component {
                 response: rsp 
             });
             // let responseOK = response && response.status === 200;
-        }).catch(error => { // redirect
-            console.error(error);
+        }).catch(error => { 
+            const rsp = this.resp += (JSON.stringify({data: error.data, status: error.status}));
+            this.setState({
+                response: rsp 
+            });
         })
     }
 
@@ -229,6 +233,51 @@ export default class Admin extends React.Component {
 
     onChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value });
+    }
+
+    validPassword = () => {
+        return (Globals.validPassword(this.state.password));
+    }
+
+    
+    password = () => {
+        document.body.style.cursor = 'wait';
+        const selectedData = this.my_table.current.table.getSelectedData();
+        
+        for(let i = 0; i < selectedData.length; i++) {
+            this.setPassword(selectedData[i].id);
+        }
+        setTimeout(() => {
+            this.getUsers();
+            document.body.style.cursor = 'default';
+            this.resp = "";
+        }, 1000);
+    }
+
+    setPassword = (_userId) => {
+        console.log("Firing setPassword for ID",_userId);
+        const _url = new URL('admin/set_password', Globals.currentHost);
+        const _data = new FormData();
+        _data.append('userId', _userId);
+        _data.append('password',this.state.password);
+
+        axios({
+            url: _url,
+            method: 'POST',
+            data: _data
+        }).then(_response => {
+            const rsp = this.resp += (JSON.stringify({data: _response.data, status: _response.status}));
+            this.setState({
+                response: rsp,
+                password: ""
+            });
+            // let responseOK = response && response.status === 200;
+        }).catch(error => { 
+            this.setState({
+                response: error.message, 
+                password: ""
+            });
+        })
     }
     
     render() {
@@ -264,7 +313,7 @@ export default class Admin extends React.Component {
                             Verify user(s)
                         </button>
     
-                        <button type="button" className="button"onClick={() => this.verify(false)}>
+                        <button type="button" className="button" onClick={() => this.verify(false)}>
                             Unverify user(s)
                         </button>
                     </div>
@@ -274,15 +323,32 @@ export default class Admin extends React.Component {
                             Approve (activate) user(s)
                         </button>
     
-                        <button type="button" className="button"onClick={() => this.approve(false)}>
+                        <button type="button" className="button" onClick={() => this.approve(false)}>
                             Deactivate user(s)
                         </button>
                     </div>
+
+                    <hr></hr>
+                    <div>
+                        <button disabled={!this.validPassword()}
+                                type="button" onClick={() => this.password()}>
+                            Set password to: 
+                        </button>
+                        
+                        <input type="text" 
+                                onInput={this.onChange} 
+                                onChange={this.onChange} 
+                                name="password" 
+                                value={this.state.password} />
+                    </div>
+                    <hr></hr>
     
                     <br />
+
                     <div><span>
                         Server response
                     </span></div>
+
                     <textarea readOnly value={this.state.response}></textarea>
                 </div>
             );
