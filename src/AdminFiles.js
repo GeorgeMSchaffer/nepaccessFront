@@ -144,7 +144,15 @@ export default class AdminFiles extends React.Component {
                         
                     </div>
                     <div>
-                        <label className="block bold" htmlFor="fileList">Files: Filename,folder,type</label>
+                        <label className="block bold">
+                            Note: Can go to details page for missing record using ID for ?id= parameter,
+                            e.g. for ID 1: &nbsp;
+                            <a href="https://www.nepaccess.org/record-details?id=1" target="_blank">
+                                https://www.nepaccess.org/record-details?id=1
+                            </a>
+                        </label>
+                    </div><div>
+                        <label className="block bold" htmlFor="fileList">Files: ID,Filename,folder,type</label>
                         <textarea 
                                 ref={(textarea) => this.textArea = textarea}
                                 id="fileList" value={this.state.files} onChange={this.onChange} />
