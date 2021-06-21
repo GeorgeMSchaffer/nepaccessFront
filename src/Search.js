@@ -776,12 +776,12 @@ export default withRouter(Search);
  * 
  * In other words, enforce /([\s]|^)'(.+)'([\s]|$)/g and replace surrounding pair of ' with " 
  * 
- * Secondly turn probable (roughly definitive) proximity search attempts into proper proximity searches */ 
+ * Also before then turn probable (roughly definitive) proximity search attempts into proper proximity searches */ 
  function parseTerms(str) {
     if (!str) return str;
     
-    str = str.replace(/([\s]|^)'(.+)'([\s]|$)/g, "$1\"$2\"$3")
-        .replace(/"(.+)"[\s]*~[\s]*([0-9]+)/g, "\"$1\"~$2");
+    str = str.replace(/"(.+)"[\s]*~[\s]*([0-9]+)/g, "\"$1\"~$2") // "this" ~ 100 -> "this"~100
+        .replace(/([\s]|^)'(.+)'([\s]|$)/g, "$1\"$2\"$3"); // 'this's a mistake' -> "this's a mistake"
 
     return str;
 }
