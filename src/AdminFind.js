@@ -134,6 +134,7 @@ export default class AdminFind extends React.Component {
                 this.setState({
                     columns: newColumns,
                     data: this.handleData(parsedJson),
+                    response: this.jsonToTSV(parsedJson),
                     busy: false
                 });
             } else {
@@ -141,6 +142,7 @@ export default class AdminFind extends React.Component {
             }
         }).catch(error => { // 401/404/...
             console.error(error);
+            this.setState({ busy: false });
         });
     }
 
@@ -165,11 +167,22 @@ export default class AdminFind extends React.Component {
         return results;
     }
 
+    jsonToTSV = (data) => {
+        const items = data;
+        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        const header = Object.keys(items[0])
+        const tsv = [
+        header.join('\t'), // header row first
+        ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
+        ].join('\r\n')
+        
+        return tsv;
+    }
+
     onChange = (evt) => {
         this.setState({ [evt.target.name]: evt.target.value });
     }
     
-
     onSelectHandler = (val, act) => {
         if(!val || !act){
             return;
