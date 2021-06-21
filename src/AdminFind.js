@@ -167,6 +167,7 @@ export default class AdminFind extends React.Component {
         return results;
     }
 
+    // format json as tab separated values
     jsonToTSV = (data) => {
         const items = data;
         const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
@@ -197,13 +198,28 @@ export default class AdminFind extends React.Component {
 
     }
     
+    // best performance is to Blob it on demand
+    downloadResults = () => {
+        if(this.state.response) {
+            const csvBlob = new Blob([this.state.response]);
+            const today = new Date().toISOString().split('T')[0];
+            const csvFilename = `results_${today}.tsv`;
 
-    copyResults = () => {
-        const el = this.textArea
-        el.select()
-        document.execCommand("copy")
+    
+            if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                window.navigator.msSaveBlob(csvBlob, csvFilename);
+            }
+            else {
+                const temporaryDownloadLink = window.document.createElement("a");
+                temporaryDownloadLink.href = window.URL.createObjectURL(csvBlob);
+                temporaryDownloadLink.download = csvFilename;
+                document.body.appendChild(temporaryDownloadLink);
+                temporaryDownloadLink.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                document.body.removeChild(temporaryDownloadLink);
+            }
+
+        }
     }
-
 
     render() {
 
@@ -230,22 +246,12 @@ export default class AdminFind extends React.Component {
                         name="getRoute" 
                         onChange={this.onSelectHandler}
                     />
-                    
-                    <div><span>
-                        Server response
-                    </span></div>
 
-                    <textarea 
-                        ref={ (textarea) => this.textArea = textarea }
-                        readOnly 
-                        value={this.state.response}>
-                    </textarea>
-                    
                     <button 
                         className="button"
-                        onClick={this.copyResults}
+                        onClick={this.downloadResults}
                     >
-                        Copy results to clipboard
+                        Download results as .tsv
                     </button>
                 </div>
             );
