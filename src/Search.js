@@ -780,8 +780,8 @@ export default withRouter(Search);
  function parseTerms(str) {
     if (!str) return str;
     
-    str = str.replace(/([\s]|^)'(.+)'([\s]|$)/g, "$1\"$2\"$3");
-    str = str.replace(/"(.+)"[\s]*~[\s]*([0-9]+)/g, "\"$1\"~$2");
+    str = str.replace(/([\s]|^)'(.+)'([\s]|$)/g, "$1\"$2\"$3")
+        .replace(/"(.+)"[\s]*~[\s]*([0-9]+)/g, "\"$1\"~$2");
 
     return str;
 }
