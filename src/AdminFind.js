@@ -26,15 +26,15 @@ const options = {
 };
 
 const getRoutes = [
-    { label: "file/findAllNepaFiles", value: "file/findAllNepaFiles" }, // TODO: Parse EISDoc
     { label: "admin/findAllEmailLogs", value: "admin/findAllEmailLogs" },
-    { label: "admin/findAllFileLogs", value: "admin/findAllFileLogs" }, // TODO: Parse ApplicationUser
+    { label: "admin/findAllFileLogs", value: "admin/findAllFileLogs" },
     { label: "admin/findAllUpdateLogs", value: "admin/findAllUpdateLogs" },
+    { label: "test/findAllDocs", value: "test/findAllDocs" },
     { label: "test/findAllSearchLogs", value: "test/findAllSearchLogs" },
+    { label: "file/findAllNepaFiles", value: "file/findAllNepaFiles" },
     { label: "user/findAllUsers", value: "user/findAllUsers" },
     { label: "user/findAllOptedOut", value: "user/findAllOptedOut" },
-    { label: "user/findAllContacts", value: "user/findAllContacts" },
-    { label: "test/findAllDocs", value: "test/findAllDocs" }
+    { label: "user/findAllContacts", value: "user/findAllContacts" }
 ];
 
 export default class AdminFind extends React.Component {
@@ -88,21 +88,6 @@ export default class AdminFind extends React.Component {
         });
     }
 
-    
-    
-    updateTable = () => {
-        try {
-            this.my_table.current.table.setColumns(this.state.columns);
-
-            // this.my_table.current.table.replaceData(this.state.data);
-            
-            // this.my_table.current.table.setPage(this.page);
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-
 
     get = () => {
         this.setState({ busy: true });
@@ -146,6 +131,7 @@ export default class AdminFind extends React.Component {
         });
     }
 
+    // stringify expected objects rather than just displaying [object Object]
     handleData = (results) => {
         if(results && results[0]) {
             let headers = getKeys(results[0]);
@@ -167,7 +153,7 @@ export default class AdminFind extends React.Component {
         return results;
     }
 
-    // format json as tab separated values
+    // format json as tab separated values to prep .tsv download
     jsonToTSV = (data) => {
         const items = data;
         const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
@@ -179,10 +165,21 @@ export default class AdminFind extends React.Component {
         
         return tsv;
     }
+    
+    updateTable = () => {
+        try {
+            // seems necessary when using dynamic columns
+            this.my_table.current.table.setColumns(this.state.columns);
 
-    onChange = (evt) => {
-        this.setState({ [evt.target.name]: evt.target.value });
+            // this.my_table.current.table.replaceData(this.state.data);
+        } catch (e) {
+            console.error(e);
+        }
     }
+
+    // onChange = (evt) => {
+    //     this.setState({ [evt.target.name]: evt.target.value });
+    // }
     
     onSelectHandler = (val, act) => {
         if(!val || !act){
@@ -197,6 +194,7 @@ export default class AdminFind extends React.Component {
         });
 
     }
+
     
     // best performance is to Blob it on demand
     downloadResults = () => {
@@ -221,6 +219,7 @@ export default class AdminFind extends React.Component {
         }
     }
 
+
     render() {
 
         if(this.state.admin) {
@@ -236,7 +235,6 @@ export default class AdminFind extends React.Component {
                         data={this.state.data}
                         columns={this.state.columns}
                         options={options}
-                        pageLoaded={this.onPageLoaded}
                     />
                     <br />
                     
@@ -253,12 +251,12 @@ export default class AdminFind extends React.Component {
                     >
                         Download results as .tsv
                     </button>
+
                 </div>
             );
         } else {
             return <div className="content">401</div>;
         }
-
         
     }
 
@@ -266,20 +264,10 @@ export default class AdminFind extends React.Component {
         this.checkAdmin();
     }
     
-    
     componentDidUpdate() {
         if(this.my_table && this.my_table.current){
             this.updateTable();
-
-            // try {
-            //     setTimeout(function() {
-            //         this.my_table.current.table.redraw(true);
-            //     },0)
-            // } catch(e) {
-            //     console.error("Redraw error",e);
-            // }
         }
-
     }
 }
 
