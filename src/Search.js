@@ -774,11 +774,14 @@ export default withRouter(Search);
  * or whitespace.  In between the two can be any characters, so technically this would count:
  * ' '.  That isn't really a problem, though.
  * 
- * In other words, enforce /([\s]|^)'(.+)'([\s]|$)/g and replace surrounding pair of ' with " */ 
+ * In other words, enforce /([\s]|^)'(.+)'([\s]|$)/g and replace surrounding pair of ' with " 
+ * 
+ * Secondly turn probable (roughly definitive) proximity search attempts into proper proximity searches */ 
  function parseTerms(str) {
     if (!str) return str;
     
     str = str.replace(/([\s]|^)'(.+)'([\s]|$)/g, "$1\"$2\"$3");
+    str = str.replace(/"(.+)"[\s]*~[\s]*([0-9]+)/g, "\"$1\"~$2");
 
     return str;
 }
