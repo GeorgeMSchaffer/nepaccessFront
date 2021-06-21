@@ -38,7 +38,6 @@ const getRoutes = [
 ];
 
 export default class AdminFind extends React.Component {
-    resp = "";
 
     state = {
         data: [],
