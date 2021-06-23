@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const Globals = {
-    currentHost: new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/'),
+    // currentHost: new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/'),
+    currentHost: new URL('https://www.nepaccess.org:8080/'),
 
     listeners: {},
 
@@ -31,11 +32,11 @@ const Globals = {
     
     // Set up globals like axios default headers and base URL
     setUp() {
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu' || window.location.hostname === 'www.nepaccess.org') {
-            this.currentHost = new URL(window.location.protocol + 'mis-jvinalappl1.microagelab.arizona.edu:8080/');
-        } else {
+        // if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu' || window.location.hostname === 'www.nepaccess.org') {
+        //     this.currentHost = new URL(window.location.protocol + 'mis-jvinalappl1.microagelab.arizona.edu:8080/');
+        // } else {
             this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/');
-        } 
+        // } 
         // else if(window.location.hostname) {
         //     this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
         // }
