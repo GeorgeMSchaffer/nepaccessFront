@@ -25,7 +25,14 @@ class SearchResult extends React.Component {
             commentDownloadText: 'Download',
             commentDownloadClass: 'download'
         };
+    }
 
+    hidden = () => {
+        return this.props.hidden(this.props.cell._cell.row.data.id);
+    }
+
+    hide = () => {
+        this.props.hideText(this.props.cell._cell.row.data.id);
     }
     
 	download = (filenameOrID, isFolder, downloadTextName, className, progressName) => {
@@ -157,35 +164,54 @@ class SearchResult extends React.Component {
                 return [value, texts[index]]
             });
 
-            let _id = this.props.cell._cell.row.data.id;
-            if(this.props.cell._cell.row.data.folder) {
+            let _id = this.props.cell._cell.row.data.id; 
+            if(!this.props.show) {
                 return (
-
-                <div hidden={!this.props.show}>
-                    {combined.map(function(combo, index){
-                        return (
-                            <span className="fragment-container" key={ index }>
-                                <span className="cardHeader bold filename-inner">
-                                    <DownloadFile key={combo[0]} downloadType="nepafile" 
-                                        id={_id}
-                                        filename={combo[0]}/>
+                    <div>
+                        (text snippets hidden)
+                    </div>
+                );
+            } else if(this.hidden()) {
+                return (
+                    <div>
+                        <div>
+                            <button className="hide-button" onClick={this.hide}>Unhide these text snippets</button>
+                        </div>
+                        ...
+                    </div>
+                );
+            } else if(this.props.cell._cell.row.data.folder) {
+                return (
+                    <div>
+                        <div className="wide-flex">
+                            <button className="hide-button" onClick={this.hide}>Hide these text snippets</button>
+                        </div>
+                        {combined.map(function(combo, index){
+                            return (
+                                <span className="fragment-container" key={ index }>
+                                    <span className="cardHeader bold filename-inner">
+                                        <DownloadFile key={combo[0]} downloadType="nepafile" 
+                                            id={_id}
+                                            filename={combo[0]}/>
+                                    </span>
+                                    
+                                    
+                                    <span className="card-highlight fragment" 
+                                            dangerouslySetInnerHTML={{
+                                                __html:combo[1]
+                                            }}>
+                                    </span>
                                 </span>
-                                
-                                
-                                <span className="card-highlight fragment" 
-                                        dangerouslySetInnerHTML={{
-                                            __html:combo[1]
-                                        }}>
-                                </span>
-                            </span>
-                        );
-                    })}
-                </div>
-            );
+                            );
+                        })}
+                    </div>
+                );
             } else {
                 return (
-    
-                    <div hidden={!this.props.show}>
+                    <div>
+                        <div className="wide-flex">
+                            <button className="hide-button" onClick={this.hide}>Hide these text snippets</button>
+                        </div>
                         {combined.map(function(combo, index){
                             return (
                                 <span className="fragment-container" key={ index }>
@@ -464,7 +490,7 @@ class SearchResult extends React.Component {
     }
 
 	render() {
-        return (<>
+        return (
             <div className="table-holder">
                 <div className="upper-tables">
                     <div className="table-like">
@@ -486,11 +512,11 @@ class SearchResult extends React.Component {
                 </div>
                 {this.showText()}
             </div>
-            
-        </>);
+        );
     }
     
     componentDidMount() {
+        // console.log("Card mounted");
         // if(
         //     this.props 
         //     && this.props.cell._cell.row.data.id 
@@ -502,6 +528,10 @@ class SearchResult extends React.Component {
                 // have file sizes stored in the database so we don't have to ask the file server for them
             // }
         // }
+    }
+
+    componentDidUpdate() {
+        // console.log("Card updated");
     }
 }
 

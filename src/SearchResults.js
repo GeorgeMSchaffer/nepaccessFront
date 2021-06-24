@@ -37,11 +37,13 @@ class SearchResults extends React.Component {
 
     downloaded = {};
     _columns = [];
+    hidden = new Set();
 
     constructor(props) {
         super(props);
         this.state = {
-            showContext: true
+            showContext: true,
+            hidden: new Set()
         }
         this.my_table = React.createRef();
         window.addEventListener('resize', this.handleResize);
@@ -50,13 +52,30 @@ class SearchResults extends React.Component {
             { title: "", field: "", formatter: reactFormatter(
                     <SearchResult show={this.state.showContext}
                                 saveDownloaded={this.saveDownloaded}
-                                checkDownloaded={this.checkDownloaded} />
+                                checkDownloaded={this.checkDownloaded} 
+                                hideText={this.hideText}
+                                hidden={this.hide} />
                 )
             }
         ];
     }
     
     page = 1;
+
+    hide = (props) => {
+        // console.log("Hit",props);
+        return this.hidden.has(props);
+    }
+
+    hideText = (id) => {
+        if(this.hidden.has(id)) {
+            this.hidden.delete(id);
+            this.setState({hidden: this.hidden});
+        } else {
+            this.hidden.add(id);
+            this.setState({hidden: this.hidden});
+        }
+    }
 
     /**Giving up on this again for now.  A ton of work would be required to have this AND:
     * automatic result population 
@@ -89,12 +108,13 @@ class SearchResults extends React.Component {
     
     onPageLoaded = (pageNumber) => {
         if(this.page !== pageNumber){
-            console.log("#",pageNumber);
+            // console.log("#",pageNumber);
             this.page = pageNumber;
             
             // Scrolling is done by footer at the bottom, so when scrolling pages (of variable height)
             // this will keep the user at the bottom of the page, using a referenced div
             // const pageChanged = this.props.pageChanged;
+
             try {
                 // Probably need to deep clone this but circular structure refuses
                 // const currentPageRows = JSON.parse(JSON.stringify(this.my_table.current.table.rowManager.displayRows[1]));
@@ -144,7 +164,9 @@ class SearchResults extends React.Component {
                     { title: "", field: "", formatter: reactFormatter(<SearchResult 
                         show={this.state.showContext} 
                         saveDownloaded={this.saveDownloaded}
-                        checkDownloaded={this.checkDownloaded} />)}
+                        checkDownloaded={this.checkDownloaded} 
+                        hideText={this.hideText}
+                        hidden={this.hide} />)}
                 ];
             }
             this.my_table.current.table.setColumns(_columns); // needed for text snippets show/hide

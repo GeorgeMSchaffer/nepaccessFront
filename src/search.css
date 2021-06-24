@@ -708,3 +708,13 @@ div.disabled::before {
 .modal-button-space {
     padding-bottom: 20px;
 }
+
+.wide-flex {
+    display: flex;
+    width: 100%;
+}
+.hide-button {
+    margin: auto;
+    margin-top:10px;
+    display: flex;
+}
