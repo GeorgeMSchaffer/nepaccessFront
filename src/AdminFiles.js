@@ -13,7 +13,8 @@ export default class AdminFiles extends React.Component {
         this.state = {
             files: [{}],
             networkError: "",
-            networkStatus: ""
+            networkStatus: "",
+            goToId: 1
         }
         
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -79,10 +80,16 @@ export default class AdminFiles extends React.Component {
                     networkStatus: "Error? Status not 200"
                 })
             } else {
+                let firstId = 1;
+                if(response.data && response.data[0] && response.data[0][0]) { 
+                    firstId = response.data[0][0];
+                }
+
                 this.setState({
                     networkError: "",
                     networkStatus: "OK: File list returned; ~" + response.data.length + " files missing.",
-                    files: response.data.join('\n')
+                    files: response.data.join('\n'),
+                    goToId: firstId
                 });
             }
         }).catch(error => { 
@@ -100,13 +107,16 @@ export default class AdminFiles extends React.Component {
     }
 
 
-
-    onChange = () => {
-        // do nothing
+    goToRecord = () => {
+        this.props.history.push('/record-details?id=' + this.state.goToId);
     }
 
-
-
+    onChangeDummy = () => {
+        // do nothing
+    }
+    onChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value });
+    }
 
     render() {
         return (<>
@@ -144,18 +154,13 @@ export default class AdminFiles extends React.Component {
                         
                     </div>
                     <div>
-                        <label className="block bold">
-                            Note: Can go to details page for missing record using ID for ?id= parameter,
-                            e.g. for ID 1: &nbsp;
-                            <a href="https://www.nepaccess.org/record-details?id=1" target="_blank">
-                                https://www.nepaccess.org/record-details?id=1
-                            </a>
-                        </label>
+                        <a target="_blank" href={"https://www.nepaccess.org/record-details?id="+this.state.goToId}>Go to record:</a>
+                        <input name="goToId" value={this.state.goToId} onChange={this.onChange} />
                     </div><div>
                         <label className="block bold" htmlFor="fileList">Files: ID,Filename,folder,type</label>
                         <textarea 
                                 ref={(textarea) => this.textArea = textarea}
-                                id="fileList" value={this.state.files} onChange={this.onChange} />
+                                id="fileList" value={this.state.files} onChange={this.onChangeDummy} />
                     </div>
                     
                 <p>This tool is just looking for filenames that don't appear to exist, 
