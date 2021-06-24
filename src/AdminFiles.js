@@ -154,7 +154,7 @@ export default class AdminFiles extends React.Component {
                         
                     </div>
                     <div>
-                        <a target="_blank" href={"https://www.nepaccess.org/record-details?id="+this.state.goToId}>Go to record:</a>
+                        <a target="_blank" rel="noreferrer" href={"https://www.nepaccess.org/record-details?id="+this.state.goToId}>Go to record:</a>
                         <input name="goToId" value={this.state.goToId} onChange={this.onChange} />
                     </div><div>
                         <label className="block bold" htmlFor="fileList">Files: ID,Filename,folder,type</label>
