@@ -457,7 +457,6 @@ export default class App extends React.Component {
                     _data = currentResults
                     .filter((result) => { // Soft rollout logic added to filter out anything without docs.
                         return result.doc.size > 200; // filter out if no files (200 bytes or less)
-                        // return true;
                     })
                     .map((result, idx) =>{
                         let doc = result.doc;
@@ -546,191 +545,22 @@ export default class App extends React.Component {
         });
     }
     
-    gatherHighlights = (searchId, _offset, _inputs, currentResults) => {
-        if(!this._mounted){ // User navigated away or reloaded
-            return; // cancel search
-        }
-        if(searchId < this._searchId) { // Search interrupted
-            return; // cancel search
-        }
-        if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
-            // this.props.history.push('/login'); // Prompt login if no auth token
-        }
-        if (typeof _offset === 'undefined') {
-            _offset = 0;
-        }
-        if (typeof currentResults === 'undefined') {
-            currentResults = [];
-        }
 
-        if(_offset > currentResults.length || this._canceled) {
-            let resultsText = currentResults.length + " Results";
-            if(this._canceled) {
-                resultsText += " (stopped)";
-            }
-            console.log("Nothing left to highlight");
-            this.setState({
-                searching: false,
-                resultsText: resultsText,
-                shouldUpdate: true
-            }, () => {
-                this.filterResultsBy(this._searcherState);
-            });
-            return;
-        }
+    //     // Possible logic: 
+    //     // 1. Send list of objects with filename + EISDoc ID.
+    //     // Offset determines how many objects to send at a time.
+    //     // They have to match the order that the frontend displays the filenames in, per card.
+    //     // Getting highlights for page user is on, debounced, would be cool, but could be difficult.
+    //     // Adding spinner as placeholder for highlights would also be cool.
+    //     // 2. Backend gets text by matching on given list of data, and gets highlights from texts.
+    //     // 3. Backend sends list of objects containing filename, EISDoc ID, highlight.
+    //     // 4. Frontend receives, matches, updates highlights.
 
-        let _limit = 100; // normally get 100
-        if(_offset === 0) {
-            _limit = 10; // start with 10
-        } else if(_offset === 10) {
-            _limit = 90;
-        }
+    //     // There shouldn't be any cause for giving the entire result set back to the backend.
+    //     // Other logic would be to expect only highlights back in a particular order.  However sorting
+    //     // would complicate this in several ways.
 
-        this.setState({
-            snippetsDisabled: false,
-			resultsText: currentResults.length + " Results.  Getting Texts...",
-            networkError: "", // Clear network error
-		}, () => {
-            
-            // For the new search logic, the idea is that the limit and offset are only for the text
-            // fragments.  The first search should get all of the results, without context.
-            // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
-            // properly
-            let searchUrl = new URL('text/get_highlights', Globals.currentHost);
-
-            // TODO: Gather limit # IDs and filenames starting at offset # from current results,
-            // feed as data.  Because we're deciding what we want from the backend, offset is handled
-            // locally.
-            let _unhighlighted = [];
-            for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++){
-                // Push EISDoc ID and comma-delimited list of filenames
-                if(!Globals.isEmptyOrSpaces(currentResults[i].name)){
-                    _unhighlighted.push({id: currentResults[i].id, filename: currentResults[i].name});
-                }
-            }
-
-            // If nothing to highlight in this batch, skip to next run
-            if(_unhighlighted.length === 0) {
-                if(searchId < this._searchId) {
-                    return;
-                } else {
-                    this.gatherHighlights(searchId, _offset + _limit, _inputs, currentResults);
-                }
-                return;
-            }
-
-			let dataToPass = { 
-				unhighlighted: _unhighlighted,
-                terms: _inputs.titleRaw
-            };
-
-            //Send the AJAX call to the server
-            axios({
-                method: 'POST', // or 'PUT'
-                url: searchUrl,
-                data: dataToPass
-            }).then(response => {
-                let responseOK = response && response.status === 200;
-                if (responseOK) {
-                    return response.data;
-                } else {
-                    return null;
-                }
-            }).then(parsedJson => {
-                if(parsedJson){
-                    // console.log("Processing results", parsedJson.length);
-                    let updatedResults = this.state.searchResults;
-
-                    // Fill highlights here; update state
-                    // Presumably comes back in order it was sent out, so we could just do this?:
-                    let j = 0;
-                    for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++) {
-                        // If search is interrupted, updatedResults[i] may be undefined (TypeError)
-                        if(!Globals.isEmptyOrSpaces(currentResults[i].name)){
-                            updatedResults[i].plaintext = parsedJson[j];
-                            j++;
-                        }
-                    }
-                    
-                    // Verify one last time we want this before we actually commit to these results
-                    // (new search could have started while getting them)
-                    if(searchId < this._searchId) {
-                        return;
-                    } else {
-                        // if(_limit===10 || this.displayedRowsUnpopulated()) { // Always populate first ten immediately, also populate if user already is looking at unpopulated records
-                        //     // console.log("Updating with full results");
-                        //     this.setState({
-                        //         searchResults: updatedResults,
-                        //         outputResults: updatedResults,
-                        //         count: _offset,
-                        //         shouldUpdate: true
-                        //     }, () => {
-                        //         if(this._sortVal) {
-                        //             this.sortDataByField(this._sortVal, this._ascVal);
-                        //         }
-                        //         this.filterResultsBy(this._searcherState);
-                        //     });
-                            
-                        //     // offset for next run incremented by limit used
-                        //     this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
-                        // } else { // Save data but wait to populate it
-                            this.setState({
-                                searchResults: updatedResults,
-                                outputResults: updatedResults,
-                                count: _offset,
-                                // shouldUpdate: false
-                            }, () => {
-                                if(this._sortVal) {
-                                    this.sortDataByField(this._sortVal, this._ascVal);
-                                }
-                                this.filterResultsBy(this._searcherState);
-                            });
-                            
-                            // offset for next run incremented by limit used
-                            this.gatherHighlights(searchId, _offset + _limit, _inputs, updatedResults);
-                        // }
-                    }
-                }
-            }).catch(error => { 
-                if(error.name === 'TypeError') {
-                    console.error(error);
-                } else { // Server down or 408 (timeout)
-                    console.error('Server is down or verification failed.', error);
-                    if(error.response && error.response.status === 408) {
-                        this.setState({
-                            networkError: 'Request has timed out.',
-                            resultsText: 'Timed out',
-                            searching: false,
-                            shouldUpdate: true
-                        });
-                    } else {
-                        this.setState({
-                            networkError: 'Server is down or you may need to login again.',
-                            resultsText: Globals.errorMessage.default,
-                            searching: false,
-                            shouldUpdate: true
-                        });
-                    }
-                }
-            });
-        });
-
-        // Possible logic: 
-        // 1. Send list of objects with filename + EISDoc ID.
-        // Offset determines how many objects to send at a time.
-        // They have to match the order that the frontend displays the filenames in, per card.
-        // Getting highlights for page user is on, debounced, would be cool, but could be difficult.
-        // Adding spinner as placeholder for highlights would also be cool.
-        // 2. Backend gets text by matching on given list of data, and gets highlights from texts.
-        // 3. Backend sends list of objects containing filename, EISDoc ID, highlight.
-        // 4. Frontend receives, matches, updates highlights.
-
-        // There shouldn't be any cause for giving the entire result set back to the backend.
-        // Other logic would be to expect only highlights back in a particular order.  However sorting
-        // would complicate this in several ways.
-
-        
-    }
+    
 
     // Because this seems so optimized on the backend now, we'll try getting 1000 at once after the first page.
     gatherHighlightsFVH = (searchId, _offset, _inputs, currentResults) => {
