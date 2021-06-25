@@ -498,9 +498,6 @@ export default class RecordDetailsTab extends React.Component {
                 if( docType.toLowerCase() === this.state.details.documentType.toLowerCase() ) {
                     // don't show itself.
                 } else {
-                    console.log(window.location.hostname);
-                    console.log(window.location.protocol);
-                    console.log(window.location.href);
                     return (
                         <div>See <b>{docType}</b> here: 
                             <a href={window.location.href.split("?")[0]+"?id="+docId}>
@@ -565,6 +562,8 @@ export default class RecordDetailsTab extends React.Component {
                     keyName = 'date';
                 } else if (key==='documentType') {
                     keyName = 'type';
+                } else if (key==='cooperatingAgency') {
+                    keyName = 'Cooperating agencies';
                 } else if (key==='noiDate') {
                     keyName = 'Notice of Intent (NOI) date'
                 } else if (key==='draftNoa') {
@@ -671,7 +670,6 @@ export default class RecordDetailsTab extends React.Component {
 
     // After render
 	componentDidMount() {
-        console.log("mountin'");
         const idString = Globals.getParameterByName("id");
         if(idString){
             this.setState({
@@ -690,6 +688,6 @@ export default class RecordDetailsTab extends React.Component {
 	}
 
     componentDidUpdate() {
-        console.log("updatin'");
+
     }
 }
