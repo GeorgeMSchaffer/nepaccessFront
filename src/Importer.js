@@ -852,7 +852,7 @@ class Importer extends Component {
                 }
 
 
-                // TODO: handle unstandardized weirdness we can predict for process imports here
+                // handle unstandardized weirdness we can predict for process imports here
                 if(key==="DraftID") {
                     newKey = "draft_id";
                 }
