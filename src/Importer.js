@@ -812,6 +812,10 @@ class Importer extends Component {
         });
     }
 
+    autoValidate = (csv) => {
+        return true;
+    }
+
     /**  Expects these headers:
     * Title, Document, EPA Comment Letter Date, Federal Register Date, Agency, State, EIS Identifier or  
     * Filename, Cooperating agencies, Edited by, Edited on, Link, Summary, Notes.
@@ -846,6 +850,22 @@ class Importer extends Component {
                 if(key==="web_link"){
                     newKey = "link";
                 }
+
+
+                // TODO: handle unstandardized weirdness we can predict for process imports here
+                if(key==="DraftID") {
+                    newKey = "draft_id";
+                }
+                if(key==="DS_ID") {
+                    newKey = "draftsup_id";
+                }
+                if(key==="SecDS_ID") {
+                    newKey = "secdraftsup_id";
+                }
+                if(key==="RevisedFinal_ID") {
+                    newKey = "revfinal_id";
+                }
+                
 
                 // Spaces to underscores
                 newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
@@ -1116,6 +1136,10 @@ class Importer extends Component {
                 <button type="button" className="button" id="submitCSVFilename" disabled={!this.state.canImportCSV || this.state.disabled} 
                         onClick={() => this.importCSVHandler(this.csvConstrainedValidated,'file/uploadCSV_filenames')}>
                     (admin) Filename add tool
+                </button>
+                <button type="button" className="button" id="submitCSVProcess" disabled={!this.state.canImportCSV || this.state.disabled} 
+                        onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_processes')}>
+                    (admin) Process add tool
                 </button>
             </>);
         }
