@@ -73,7 +73,7 @@ export default class RecordDetailsTab extends React.Component {
                 return null;
             }
         }).then(parsedJson => { // can be empty if nothing found
-            console.log("Parsed", parsedJson);
+            // console.log("Parsed", parsedJson);
             if(parsedJson){
                 this.setState({
                     nepaResults: parsedJson,
@@ -338,38 +338,6 @@ export default class RecordDetailsTab extends React.Component {
         }
     }
 
-    // getFileSize = (_filename) => {
-    //     if(this.state.fileSize){
-    //         // do nothing
-    //     } else {
-    //         let sizeUrl = Globals.currentHost + "file/file_size";
-
-    //         // console.log("Inputs");
-    //         // console.log(JSON.stringify(this.state.searcherInputs));
-            
-    //         //Send the AJAX call to the server
-    //         axios.get(sizeUrl, {
-    //             params: {
-    //                 filename: _filename
-    //             }
-    //             }).then(response => {
-    //                 let responseOK = response && response.status === 200;
-    //                 if (responseOK && response.data && response.data > 0) {
-    //                     this.setState({
-    //                         fileSize: Math.round(response.data / 1024)
-    //                     });
-    //                 } else {
-    //                     return null;
-    //                 }
-    //             }).then(parsedJson => { // can be empty (no results)
-    //                 // return "Unknown";
-    //             }).catch(error => {
-    //                 // return "Unknown (server error)";
-    //         });
-            
-    //     }
-    // }
-    
     showView = () => {
         // One benefit of switching here instead of dynamically hiding elements is that Tabulator doesn't error out when hidden
         if(this.state.dropdownOption.value === 'Details'){ // Show details panel
@@ -442,7 +410,6 @@ export default class RecordDetailsTab extends React.Component {
 
     showTitle = () => {
         let cellData = this.state.details;
-        console.log("Cell",cellData);
         if(cellData.title) {
             return (<p key={-1} className='modal-line'><span className='modal-title'>Title:</span> 
                 <span className="bold">{cellData.title}</span>
@@ -522,10 +489,67 @@ export default class RecordDetailsTab extends React.Component {
         }
     }
 
+    interpretProcess = (proc) => {
+        console.log("proc",proc);
+        return Object.keys(proc).map( ((key, i) => {
+            if(proc[key] && proc[key]['id']) {
+                let docId = proc[key].id;
+                let docType = proc[key].documentType;
+                if( docType.toLowerCase() === this.state.details.documentType.toLowerCase() ) {
+                    // don't show itself.
+                } else {
+                    console.log(window.location.hostname);
+                    console.log(window.location.protocol);
+                    console.log(window.location.href);
+                    return (
+                        <div>See <b>{docType}</b> here: 
+                            <a href={window.location.href.split("?")[0]+"?id="+docId}>
+                                {proc[key].title}
+                            </a>
+                        </div>
+                    );
+                }
+            }
+        }));
+    }
+
+    buildProcess = (processId) => {
+        if(this.state.processId && this.state.process) {
+
+            // already have this data. No need for any axios calls
+            return this.interpretProcess(this.state.process);
+
+        } else {
+
+            // need to get and build
+            let url = Globals.currentHost + "test/get_process";
+
+            //Send the AJAX call to the server
+            axios.get(url, {
+                params: {
+                    processId: processId
+                }
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK && response.data) {
+                    this.setState({
+                        processId: processId,
+                        process: response.data
+                    }, () => {
+                        return this.interpretProcess(response.data);
+                    });
+                }
+            }).catch(error => {
+                return <></>;
+            });
+
+        }
+    }
+
     /** Return all metadata, not just what search table shows */
     showDetails = () => {
         let cellData = this.state.details;
-        console.log("Cell",cellData);
+        // console.log("Cell",cellData);
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
                 let keyName = key;
@@ -556,7 +580,9 @@ export default class RecordDetailsTab extends React.Component {
                     return '';
                 } else if(key==='summaryText') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);
-                } 
+                }  else if(key==='processId') {
+                    return this.buildProcess(cellData[key])
+                }
                 // else: everything else
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key]}</span></p>);
             }));
@@ -645,6 +671,7 @@ export default class RecordDetailsTab extends React.Component {
 
     // After render
 	componentDidMount() {
+        console.log("mountin'");
         const idString = Globals.getParameterByName("id");
         if(idString){
             this.setState({
@@ -661,4 +688,8 @@ export default class RecordDetailsTab extends React.Component {
             });
         }
 	}
+
+    componentDidUpdate() {
+        console.log("updatin'");
+    }
 }
