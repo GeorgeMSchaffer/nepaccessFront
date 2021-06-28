@@ -419,7 +419,7 @@ export default class RecordDetailsTab extends React.Component {
 
     showFiles = () => {
         let cellData = this.state.details;
-        if(cellData) {
+        if(cellData && cellData['size']) {
             return Object.keys(cellData).map( ((key, i) => {
                 // Title now needs its own style
                 if(key==='folder' && cellData[key] && cellData[key].length > 0) {
@@ -486,11 +486,21 @@ export default class RecordDetailsTab extends React.Component {
                 // else: everything else
                 return '';
             }));
+        } else {
+            if(cellData['commentsFilename']) {
+                return <><p className='warning'>Sorry, we're still working on collecting these files.</p>
+                        <p className='modal-line'>
+                        <span className='modal-title bold'>EPA comments</span> 
+                        <DownloadFile downloadType="Comments" filename={cellData['commentsFilename']}/>
+                    </p></>
+            } else {
+                return <p className='warning'>Sorry, we're still working on collecting these files.</p> 
+            }
         }
     }
 
     interpretProcess = (proc) => {
-        console.log("proc",proc);
+        // console.log("proc",proc);
         return Object.keys(proc).map( ((key, i) => {
             if(proc[key] && proc[key]['id']) {
                 let docId = proc[key].id;
@@ -499,11 +509,14 @@ export default class RecordDetailsTab extends React.Component {
                     // don't show itself.
                 } else {
                     return (
-                        <div>See <b>{docType}</b> here: 
+                        <p className='modal-line'>
+                            <span className='modal-title'>
+                                See <b>{docType}</b> here:
+                            </span>
                             <a href={window.location.href.split("?")[0]+"?id="+docId}>
                                 {proc[key].title}
                             </a>
-                        </div>
+                        </p>
                     );
                 }
             }
@@ -580,7 +593,12 @@ export default class RecordDetailsTab extends React.Component {
                 } else if(key==='summaryText') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);
                 }  else if(key==='processId') {
-                    return this.buildProcess(cellData[key])
+                    return (<>
+                        <hr />
+                        <h3>Other files from this NEPA process</h3>
+                        {this.buildProcess(cellData[key])}
+                        </>
+                    );
                 }
                 // else: everything else
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key]}</span></p>);

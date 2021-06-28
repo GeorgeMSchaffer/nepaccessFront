@@ -442,7 +442,7 @@ class SearchResult extends React.Component {
                 }
             } else {
                 // console.log("Can only get here without propID and size",propFilename,propID,size);
-                return <div className="table-row"><span className="cardHeader">File not in system</span></div>;
+                return <div className="table-row"><span className="cardHeader filename warning">File not in system (yet)</span></div>;
             }
 		}
 		else {
