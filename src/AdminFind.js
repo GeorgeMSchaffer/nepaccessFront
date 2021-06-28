@@ -34,7 +34,9 @@ const getRoutes = [
     { label: "file/findAllNepaFiles", value: "file/findAllNepaFiles" },
     { label: "user/findAllUsers", value: "user/findAllUsers" },
     { label: "user/findAllOptedOut", value: "user/findAllOptedOut" },
-    { label: "user/findAllContacts", value: "user/findAllContacts" }
+    { label: "user/findAllContacts", value: "user/findAllContacts" },
+    
+    { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
 ];
 
 export default class AdminFind extends React.Component {
