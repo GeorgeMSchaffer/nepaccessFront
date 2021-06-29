@@ -60,11 +60,13 @@ export default class Deduplicator extends React.Component {
                         Instructions: Enter two record IDs to compare, then edit, save changes, or delete records, as needed.
                     </span></div>
                     
-                    <div className="inline">
-                        Left: <input type="text" onInput={this.onChange} onChange={this.onChange} name="id1" value={this.state.id1}/>
-                    </div>
-                    <div className="inline padding">
-                        Right: <input type="text" onInput={this.onChange} onChange={this.onChange} name="id2" value={this.state.id2}/>
+                    <div className="left-right-holder">
+                        <div className="deduplicator-tab">
+                            Left: <input type="text" onInput={this.onChange} onChange={this.onChange} name="id1" value={this.state.id1}/>
+                        </div>
+                        <div className="deduplicator-tab">
+                            Right: <input type="text" onInput={this.onChange} onChange={this.onChange} name="id2" value={this.state.id2}/>
+                        </div>
                     </div>
 
                     <div className="deduplicator">

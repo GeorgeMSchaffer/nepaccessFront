@@ -684,5 +684,7 @@ span.leading-text {
 
 .deduplicator-tab {
     display: inline-block;
-    width: 50%;
+    width: 47%;
+    padding: 1%;
+    border: 1px dotted blue;
 }
