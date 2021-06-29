@@ -45,6 +45,7 @@ import Generate2 from './Generate2.js';
 import Admin from './Admin.js';
 import AdminFind from './AdminFind';
 import AdminFiles from './AdminFiles.js';
+import Deduplicator from './Deduplicator.js';
 
 import Test from './Test.js';
 import Pairs from './Pairs.js';
@@ -274,6 +275,7 @@ class Main extends React.Component {
                 <Route path="/adminFind" component={AdminFind}/>
                 <Route path="/generate" component={Generate}/>
                 <Route path="/generate2" component={Generate2}/>
+                <Route path="/deduplicator" component={Deduplicator}/>
 
                 <Route path="/iframes" component={Iframes} />
                 <Route path="/privacy-policy" component={PrivacyPolicy} />

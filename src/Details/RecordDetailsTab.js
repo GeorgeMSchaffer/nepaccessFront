@@ -449,18 +449,14 @@ export default class RecordDetailsTab extends React.Component {
                         if(filenames) {
                             /** If we do have just a filename then we should be able to get the filesize */
                             return <div key={i}>
-                                <p className='modal-line'>
+                                <span className='modal-line'>
                                     <span className='modal-title bold'>All files</span> 
-                                    <p>
-                                        <span className='bold inline'>&nbsp;Filename:</span>
-                                        &nbsp;{cellData[key]}
-                                    </p>
                                     <DownloadFile 
                                         size={Math.ceil(cellData.size / 1024 / 10.24)/100} 
                                         downloadType="EIS" 
                                         filename={cellData[key]}
                                     />
-                                </p>
+                                </span>
 
                                 <p><span className='modal-title bold'>File size</span>{Math.ceil(cellData.size / 1024 / 10.24)/100} MB</p>
 
@@ -488,8 +484,9 @@ export default class RecordDetailsTab extends React.Component {
             }));
         } else {
             if(cellData['commentsFilename']) {
-                return <><p className='warning'>Sorry, we're still working on collecting these files.</p>
-                        <p className='modal-line'>
+                return <>
+                    <p className='warning'>Sorry, we're still working on collecting these files.</p>
+                    <p className='modal-line'>
                         <span className='modal-title bold'>EPA comments</span> 
                         <DownloadFile downloadType="Comments" filename={cellData['commentsFilename']}/>
                     </p></>
@@ -506,6 +503,7 @@ export default class RecordDetailsTab extends React.Component {
                 let docId = proc[key].id;
                 let docType = proc[key].documentType;
                 if( docType.toLowerCase() === this.state.details.documentType.toLowerCase() ) {
+                    console.log("No show",docType,this.state.details.documentType,docId);
                     // don't show itself.
                 } else {
                     return (
@@ -617,7 +615,7 @@ export default class RecordDetailsTab extends React.Component {
     
     showUpdate = () => {
         return (<>
-                <DetailsUpdate record={this.state.details} />
+                <DetailsUpdate record={this.state.details} id={null} />
                 <DetailsFileResults results={this.state.nepaResults} headerText="Downloadable file records" />
                 <DetailsFileResults results={this.state.textResults} headerText="Texts" />
             </>
@@ -688,24 +686,52 @@ export default class RecordDetailsTab extends React.Component {
 
     // After render
 	componentDidMount() {
-        const idString = Globals.getParameterByName("id");
-        if(idString){
-            this.setState({
-                detailsID: idString
-            }, () => {
-                if(this.state.detailsID){
+        // console.log("Mtd",this.props.id);
+        if(this.props.id) {
+            if(!this.state.detailsID || this.state.detailsID !== this.props.id) {
+                this.setState({
+                    detailsID: this.props.id
+                }, () => {
+                    console.log("populate");
                     this.populate();
                     this.getNepaFileResults();
-                } else {
-                    this.setState({
-                        networkError: "No record found (try a different ID)"
-                    });
-                }
-            });
+                });
+            } else {
+                console.log("populate");
+                this.populate();
+                this.getNepaFileResults();
+            }
+        } else {
+            const idString = Globals.getParameterByName("id");
+            if(idString){
+                this.setState({
+                    detailsID: idString
+                }, () => {
+                    if(this.state.detailsID){
+                        this.populate();
+                        this.getNepaFileResults();
+                    } else {
+                        this.setState({
+                            networkError: "No record found (try a different ID)"
+                        });
+                    }
+                });
+            }
         }
 	}
 
     componentDidUpdate() {
-
+        // console.log("Update");
+        if(this.props.id) {
+            if(!this.state.detailsID || this.state.detailsID !== this.props.id) {
+                this.setState({
+                    detailsID: this.props.id
+                }, () => {
+                    console.log("populate");
+                    this.populate();
+                    this.getNepaFileResults();
+                });
+            }
+        }
     }
 }

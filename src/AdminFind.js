@@ -36,6 +36,7 @@ const getRoutes = [
     { label: "user/findAllOptedOut", value: "user/findAllOptedOut" },
     { label: "user/findAllContacts", value: "user/findAllContacts" },
     
+    { label: "test/duplicates", value: "test/duplicates" },
     { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
 ];
 

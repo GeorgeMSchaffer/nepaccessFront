@@ -12,6 +12,8 @@ import "./details.css";
 
 class DetailsUpdate extends React.Component {
 
+    _internal = -1;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -162,7 +164,10 @@ class DetailsUpdate extends React.Component {
 
     // Deep clone to state from props to populate inputs (options are either this or a backend call)
     setupInputs = () => {
-        if(this.props && this.props.record && !this.state.record.registerDate) { // Props populated yet?  Record still unpopulated?
+        // Props populated yet?  Record still unpopulated?  Different record now?
+        if(this.props && this.props.record && !this.state.record.registerDate
+                    && this.props.id !== this._internal) { 
+            this._internal = this.props.id;
             // console.log("props", this.props.record);
             // let startState = { ...this.props.record}; /// shallow clone, would be fine today but maybe not tomorrow
             let startState = JSON.parse(JSON.stringify(this.props.record)); // Deep clone (new array/object properties cloned from props object are fully disconnected)
@@ -196,7 +201,7 @@ class DetailsUpdate extends React.Component {
                 record: startState,
                 isDirty: false
             }, () => {
-                console.log(this.state.record);
+                console.log("Record clone", this.state.record);
             });
         }
     }
@@ -255,6 +260,9 @@ class DetailsUpdate extends React.Component {
                         {this.state.titleLabel}
                     </label>
                     <input type="text" name="title" value={"" + this.state.record.title} onInput={this.onInput} onChange={this.onChange}></input>
+                    
+                    <label className="update">Process ID</label>
+                    <input type="text" name="processId" value={"" + this.state.record.processId} onInput={this.onInput} onChange={this.onChange}></input>
 
                     <h3 className="infoLabel">
                         {this.state.successLabel}
@@ -279,10 +287,11 @@ class DetailsUpdate extends React.Component {
     
     componentDidMount() {
         this.setupInputs();
-        console.log("Mounted", this.state.record)
+        // console.log("Mounted", this.state.record)
     }
     componentDidUpdate() {
-        console.log("Component update event", this.state.record);
+        this.setupInputs();
+        // console.log("Component update event", this.state.record);
     }
 }
 
