@@ -73,7 +73,7 @@ body {
 
     background-color: white;
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: center 10px;
     background-size: contain;
     /* background-size: cover; */
     /* background-image: url("assets/nepaccess\ 1x.png"); */
