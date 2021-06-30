@@ -37,6 +37,7 @@ const getRoutes = [
     { label: "user/findAllContacts", value: "user/findAllContacts" },
     
     { label: "test/duplicates", value: "test/duplicates" },
+    { label: "test/duplicates_process", value: "test/duplicates_process" },
     { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
 ];
 
