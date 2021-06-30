@@ -136,8 +136,6 @@ export default class DeduplicatorTab extends React.Component {
                     {this.showTitle()}
                     <h2 className="title-color">Record ID: {this.props.id}</h2>
                     <DetailsUpdate record={this.state.details} id={this._internal} />
-                    <DetailsFileResults results={this.state.nepaResults} headerText="Downloadable file records" />
-                    <DetailsFileResults results={this.state.textResults} headerText="Texts" />
                 </>
             );
         }
