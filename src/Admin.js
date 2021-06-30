@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import Globals from './globals.js';
 
+import DeleteAll from './DeleteAll.js';
+
 import { ReactTabulator } from 'react-tabulator';
 
 const options = {
@@ -350,6 +352,8 @@ export default class Admin extends React.Component {
                     </span></div>
 
                     <textarea readOnly value={this.state.response}></textarea>
+
+                    <DeleteAll admin={this.state.admin} />
                 </div>
             );
         } else {
