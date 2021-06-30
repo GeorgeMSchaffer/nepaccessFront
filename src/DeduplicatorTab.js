@@ -9,8 +9,6 @@ import './index.css';
 
 import Globals from './globals.js';
 
-const _ = require('lodash');
-
 export default class DeduplicatorTab extends React.Component {
 
     _internal = null;
@@ -46,14 +44,16 @@ export default class DeduplicatorTab extends React.Component {
             // console.log("Parsed", parsedJson);
             if(parsedJson){
                 this.setState({
-                    nepaResults: parsedJson,
+                    nepaResults: parsedJson
                 }, () => {
-                    // if(!this.state.nepaResults || !this.state.nepaResults[0]){
                         this.getDocumentTextResults();
-                    // }
                 });
             } else { // null/404
-                
+                this.setState({
+                    nepaResults: null
+                }, () => {
+                    this.getDocumentTextResults();
+                })
             }
         }).catch(error => {
             
@@ -82,7 +82,9 @@ export default class DeduplicatorTab extends React.Component {
                     textResults: parsedJson,
                 });
             } else { // 404
-                
+                this.setState({
+                    textResults: null
+                });
             }
         }).catch(error => {
             
