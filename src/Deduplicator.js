@@ -14,10 +14,6 @@ export default class Deduplicator extends React.Component {
         id2: ""
     }
 
-    constructor(props) {
-        super(props);
-    }
-
 
     checkCurator = () => {
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);

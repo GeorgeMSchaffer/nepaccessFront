@@ -11,10 +11,6 @@ export default class DeleteAll extends React.Component {
         admin: false
     }
 
-    constructor(props) {
-        super(props);
-    }
-
     deleteAll = () => {
         const deleteUrl = new URL('admin/delete_all', Globals.currentHost);
         const dataForm = new FormData();
@@ -44,6 +40,7 @@ export default class DeleteAll extends React.Component {
         if(this.props.admin) {
             return (
                 <div>
+                    <h3>Bulk delete tool</h3>
                     <div className="instructions"><span className="bold">
                         Instructions: 
                         Expects COMMA delimited list of IDs to delete e.g. 1,2,3,4

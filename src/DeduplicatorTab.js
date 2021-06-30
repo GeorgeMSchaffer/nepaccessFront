@@ -3,7 +3,6 @@ import React from 'react';
 import axios from 'axios';
 
 import DetailsUpdate from './Details/DetailsUpdate.js';
-import DetailsFileResults from './Details/DetailsFileResults.js';
 
 import './index.css';
 

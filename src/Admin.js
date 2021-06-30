@@ -353,6 +353,7 @@ export default class Admin extends React.Component {
 
                     <textarea readOnly value={this.state.response}></textarea>
 
+                    <hr />
                     <DeleteAll admin={this.state.admin} />
                 </div>
             );

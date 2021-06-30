@@ -1,9 +1,6 @@
 import React from 'react';
 
 import ReactModal from 'react-modal';
-import axios from 'axios';
-
-import Globals from './globals.js';
 
 export default class BasicModal extends React.Component {
 
