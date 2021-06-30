@@ -9,8 +9,11 @@ import Globals from '../globals.js';
 
 import "./details.css";
 
+const _ = require('lodash');
+
 
 class DetailsUpdate extends React.Component {
+
 
     _internal = -1;
 
@@ -20,6 +23,7 @@ class DetailsUpdate extends React.Component {
             record: {},
             isDirty: false
         };
+        this.setupInputs = _.debounce(this.setupInputs,250);
         // console.log("Constructor", this.props.record);
     }
 
