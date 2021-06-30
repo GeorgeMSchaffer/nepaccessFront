@@ -38,6 +38,7 @@ const getRoutes = [
     
     { label: "test/duplicates", value: "test/duplicates" },
     { label: "test/duplicates_process", value: "test/duplicates_process" },
+    { label: "test/size_under_200", value: "test/size_under_200" },
     { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
 ];
 
