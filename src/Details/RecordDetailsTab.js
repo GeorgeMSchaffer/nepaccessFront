@@ -343,12 +343,15 @@ export default class RecordDetailsTab extends React.Component {
         if(this.state.dropdownOption.value === 'Details'){ // Show details panel
             return (
                 <div className="record-details">
-                    <h2 className="title-color">Record details:</h2>
+                    <h2 className="title-color">Record details</h2>
                     {this.showTitle()}
                     <div className="containers">
-                        <div className="metadata-container">
-                            <h3>Metadata</h3>
-                            {this.showDetails()}
+                        <div className="metadata-container-container">
+                            <div className="metadata-container">
+                                <h3>Metadata</h3>
+                                {this.showDetails()}
+                            </div>
+                            {this.buildProcess()}
                         </div>
                         <div className="files-container">
                             <h3>Download Files</h3>
@@ -412,7 +415,7 @@ export default class RecordDetailsTab extends React.Component {
         let cellData = this.state.details;
         if(cellData.title) {
             return (<p key={-1} className='modal-line'><span className='modal-title'>Title:</span> 
-                <span className="bold">{cellData.title}</span>
+                <span className="bold record-details-title">{cellData.title}</span>
             </p>);
         }
     }
@@ -503,13 +506,13 @@ export default class RecordDetailsTab extends React.Component {
                 let docId = proc[key].id;
                 let docType = proc[key].documentType;
                 if( docType.toLowerCase() === this.state.details.documentType.toLowerCase() ) {
-                    console.log("No show",docType,this.state.details.documentType,docId);
-                    // don't show itself.
+                    // console.log("No show",docType,this.state.details.documentType,docId);
+                    return "";
                 } else {
                     return (
                         <p className='modal-line'>
                             <span className='modal-title'>
-                                See <b>{docType}</b> here:
+                                <b>{docType}</b>:
                             </span>
                             <a href={window.location.href.split("?")[0]+"?id="+docId}>
                                 {proc[key].title}
@@ -517,40 +520,55 @@ export default class RecordDetailsTab extends React.Component {
                         </p>
                     );
                 }
+            } else {
+                return "";
             }
         }));
     }
 
-    buildProcess = (processId) => {
-        if(this.state.processId && this.state.process) {
+    buildProcess = () => {
+        
+        let processId = this.state.details["processId"];
+        
+        if(this.state.details && processId) {
+            if(this.state.processId && this.state.process) {
 
-            // already have this data. No need for any axios calls
-            return this.interpretProcess(this.state.process);
-
-        } else {
-
-            // need to get and build
-            let url = Globals.currentHost + "test/get_process";
-
-            //Send the AJAX call to the server
-            axios.get(url, {
-                params: {
-                    processId: processId
-                }
-            }).then(response => {
-                let responseOK = response && response.status === 200;
-                if (responseOK && response.data) {
-                    this.setState({
-                        processId: processId,
-                        process: response.data
-                    }, () => {
-                        return this.interpretProcess(response.data);
-                    });
-                }
-            }).catch(error => {
-                return <></>;
-            });
-
+                // already have this data. No need for any axios calls
+                return (
+                <div className="metadata-container tinted">
+                    <h3>Other files from this NEPA process</h3>
+                    {this.interpretProcess(this.state.process)}
+                </div>);
+                // return this.interpretProcess(this.state.process);
+    
+            } else {
+    
+                // need to get and build
+                let url = Globals.currentHost + "test/get_process";
+    
+                //Send the AJAX call to the server
+                axios.get(url, {
+                    params: {
+                        processId: processId
+                    }
+                }).then(response => {
+                    let responseOK = response && response.status === 200;
+                    if (responseOK && response.data) {
+                        this.setState({
+                            processId: processId,
+                            process: response.data
+                        }, () => {
+                            return <>
+                            <h3>Other files from this NEPA process</h3>
+                            {this.interpretProcess(this.state.process)}
+                            </>
+                        });
+                    }
+                }).catch(error => {
+                    return <></>;
+                });
+    
+            }
         }
     }
 
@@ -591,12 +609,13 @@ export default class RecordDetailsTab extends React.Component {
                 } else if(key==='summaryText') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);
                 }  else if(key==='processId') {
-                    return (<>
-                        <hr />
-                        <h3>Other files from this NEPA process</h3>
-                        {this.buildProcess(cellData[key])}
-                        </>
-                    );
+                    return ''; // handled elsewhere
+                    // return (<>
+                    //     <hr />
+                    //     <h3>Other files from this NEPA process</h3>
+                    //     {this.buildProcess(cellData[key])}
+                    //     </>
+                    // );
                 }
                 // else: everything else
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key]}</span></p>);
@@ -623,6 +642,51 @@ export default class RecordDetailsTab extends React.Component {
     }
 
 
+    showDropdown = () => {        
+        let curator = localStorage.curator;
+        // let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'More documents from this process'}];
+        let viewOptions = [ { value: 'Details', label: 'Details' } ];
+        if(curator) {
+            viewOptions.push({ value: 'Match', label: 'Title alignment' });
+            viewOptions.push({ value: 'Update', label: 'Edit' });
+        }
+        // Don't show dropdown at all if curator, now that we've hidden the title alignment also
+        if(curator) {
+
+            const customStyles = {
+                option: (styles, state) => ({
+                     ...styles,
+                    borderBottom: '1px dotted',
+                    backgroundColor: 'white',
+                    color: 'black',
+                    '&:hover': {
+                        backgroundColor: 'lightgreen'
+                    },
+                    width: "500px",
+                }),
+                control: (styles) => ({
+                    ...styles,
+                    backgroundColor: 'white',
+                })
+            }
+
+            return (<>
+                <h3 className="advanced-label inline" htmlFor="detailsDropdown">Select view: </h3>
+                <Select id="detailsDropdown" className="multi inline-block" classNamePrefix="react-select" name="detailsDropdown" isSearchable 
+                    styles={customStyles}
+                    options={viewOptions} 
+                    onChange={this.onDropdownChange} 
+                    value={this.state.dropdownOption}
+                    // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
+                    // menuIsOpen={true}
+                />
+            </>);
+        } else {
+            return "";
+        }
+    }
+
+
     render () {
 
         if(!this.state.exists) {
@@ -631,33 +695,6 @@ export default class RecordDetailsTab extends React.Component {
                     <label className="errorLabel">{this.state.networkError}</label>
                 </div>
             )
-        }
-        
-        const customStyles = {
-            option: (styles, state) => ({
-                 ...styles,
-                borderBottom: '1px dotted',
-	            backgroundColor: 'white',
-                color: 'black',
-                '&:hover': {
-                    backgroundColor: 'lightgreen'
-                },
-                width: "500px",
-            }),
-            control: (styles) => ({
-                ...styles,
-                backgroundColor: 'white',
-            })
-        }
-
-        // TODO?: Real curator check (backend does check, so it doesn't really matter...)
-
-        let curator = localStorage.curator;
-        // let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'More documents from this process'}];
-        let viewOptions = [ { value: 'Details', label: 'Details' } ];
-        if(curator) {
-            viewOptions.push({ value: 'Match', label: 'Title alignment' });
-            viewOptions.push({ value: 'Update', label: 'Edit' });
         }
         
         return (
@@ -669,15 +706,7 @@ export default class RecordDetailsTab extends React.Component {
                 </Helmet>
                 <label className="errorLabel">{this.state.networkError}</label>
                 <br />
-                <h3 className="advanced-label inline" htmlFor="detailsDropdown">Select view: </h3>
-                <Select id="detailsDropdown" className="multi inline-block" classNamePrefix="react-select" name="detailsDropdown" isSearchable 
-                    styles={customStyles}
-                    options={viewOptions} 
-                    onChange={this.onDropdownChange} 
-                    value={this.state.dropdownOption}
-                    // (temporarily) specify menuIsOpen={true} parameter to keep menu open to inspect elements.
-                    // menuIsOpen={true}
-                />
+                {this.showDropdown()}
                 {this.showView()}
             </div>
         );

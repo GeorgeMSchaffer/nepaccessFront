@@ -56,16 +56,29 @@ div.update .react-datepicker__input-container>input {
     margin-bottom: 35px;
     margin-right: 20px;
 }
-.metadata-container {
+.metadata-container-container {
     flex: 2;
 }
 .files-container {
     flex: 1;
 }
+.tinted {
+    background-color: rgb(235,235,235);
+}
 
 .metadata-container h3 {
     margin-top: 0px;
     margin-bottom: 35px;
+}
+
+.record-details h2 {
+    font-family: "Open Sans Condensed";
+    font-size: 28px;
+    color: #669e03;
+}
+
+.record-details h3 {
+    color: #669e03;
 }
 
 .record-details .modal-title {
@@ -76,4 +89,9 @@ div.update .react-datepicker__input-container>input {
 
 .files-container .modal-title {
     display: block;
+}
+
+.record-details-title {
+    font-weight: 600;
+    font-size: 20px;
 }
