@@ -42,7 +42,7 @@ export default class Deduplicator extends React.Component {
 
 
     onChange = (evt) => {
-        this.setState({ [evt.target.name]: evt.target.value });
+        this.setState({ [evt.target.name]: evt.target.value.trim() });
     }
     
     
