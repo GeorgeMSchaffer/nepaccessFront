@@ -107,12 +107,15 @@ export default class DeduplicatorTab extends React.Component {
             } else { // 404
                 this.setState({
                     networkError: "No record found (try a different ID)",
+                    details: { },
                     exists: false
                 });
             }
         }).catch(error => {
             this.setState({
-                networkError: 'Server is down or you may need to login again.'
+                networkError: 'Server is down or you may need to login again.',
+                details: { },
+                exists: false
             });
         });
     }

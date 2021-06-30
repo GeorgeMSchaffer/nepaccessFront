@@ -6,8 +6,7 @@ import Globals from './globals.js';
 import DeduplicatorTab from './DeduplicatorTab.js';
 
 export default class Deduplicator extends React.Component {
-    resp = "";
-
+    
     state = {
         response: "",
         admin: false,
@@ -18,6 +17,7 @@ export default class Deduplicator extends React.Component {
     constructor(props) {
         super(props);
     }
+
 
     checkCurator = () => {
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -40,14 +40,9 @@ export default class Deduplicator extends React.Component {
         })
     }
 
-    get = () => {
-        // TODO
-    }
 
     onChange = (evt) => {
-        this.setState({ [evt.target.name]: evt.target.value }, () => {
-            this.get();
-        });
+        this.setState({ [evt.target.name]: evt.target.value });
     }
     
     
@@ -62,10 +57,10 @@ export default class Deduplicator extends React.Component {
                     
                     <div className="left-right-holder">
                         <div className="deduplicator-tab">
-                            Left: <input type="text" onInput={this.onChange} onChange={this.onChange} name="id1" value={this.state.id1}/>
+                            <b>Left: </b><input type="text" onInput={this.onChange} onChange={this.onChange} name="id1" value={this.state.id1}/>
                         </div>
                         <div className="deduplicator-tab">
-                            Right: <input type="text" onInput={this.onChange} onChange={this.onChange} name="id2" value={this.state.id2}/>
+                            <b>Right: </b><input type="text" onInput={this.onChange} onChange={this.onChange} name="id2" value={this.state.id2}/>
                         </div>
                     </div>
 

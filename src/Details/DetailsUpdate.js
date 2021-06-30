@@ -186,6 +186,7 @@ class DetailsUpdate extends React.Component {
             startState.eis_identifier = startState.folder;
             startState.cooperating_agency = startState.cooperatingAgency;
             startState.web_link = startState.link;
+            startState.process_id = startState.processId;
 
 			// prefer empty string to null
             Object.keys(startState).forEach(e => 
@@ -202,6 +203,12 @@ class DetailsUpdate extends React.Component {
                 isDirty: false
             }, () => {
                 console.log("Record clone", this.state.record);
+            });
+        } else if( this.props.id !== this._internal) {
+            this._internal = this.props.id;
+            this.setState({
+                record: { },
+                isDirty: false
             });
         }
     }
@@ -262,7 +269,7 @@ class DetailsUpdate extends React.Component {
                     <input type="text" name="title" value={"" + this.state.record.title} onInput={this.onInput} onChange={this.onChange}></input>
                     
                     <label className="update">Process ID</label>
-                    <input type="text" name="processId" value={"" + this.state.record.processId} onInput={this.onInput} onChange={this.onChange}></input>
+                    <input type="text" name="process_id" value={"" + this.state.record.process_id} onInput={this.onInput} onChange={this.onChange}></input>
 
                     <h3 className="infoLabel">
                         {this.state.successLabel}
