@@ -241,7 +241,7 @@ class DetailsUpdate extends React.Component {
                     <input type="text" name="cooperating_agency" value={"" + this.state.record.cooperating_agency} onInput={this.onInput} onChange={this.onChange}></input>
                     <label className="update">EPA Comment Letter Date</label>
                     <label className="loginErrorLabel">
-                        {this.state.dateError}
+                        
                     </label>
                     <DatePicker
                         selected={this.state.record.epa_comment_letter_date} 
