@@ -435,12 +435,13 @@ export default class RecordDetailsTab extends React.Component {
                                     downloadType="Folder" 
                                     id={cellData["id"]}
                                     innerText={cellData[key]}
+                                    size={Math.ceil(cellData.size / 1024 / 10.24)/100}
                                 />
                             </p>
-                            <p>
+                            {/* <p>
                                 <span className='modal-title bold'>Folder size</span>
                                 {Math.ceil(cellData.size / 1024 / 10.24)/100} MB
-                            </p>
+                            </p> */}
                             {filenames}
                         </div>);
                     }
