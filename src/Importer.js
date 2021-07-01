@@ -252,8 +252,6 @@ class Importer extends Component {
         this.setState({ [evt.target.name]: evt.target.value });
     }
     
-
-    // TODO: Map array into new array of just data, without the name data?
     handleOnDrop = (evt) => {
         // console.log("Data:");
         // console.log(evt);
@@ -269,6 +267,7 @@ class Importer extends Component {
         }, () => {
             // console.log("Event:");
             // console.log(evt);
+            // console.log("CSV",newArray);
             this.setState({ canImportCSV: true });
         });
     }
@@ -332,60 +331,6 @@ class Importer extends Component {
 
         this.setState({successLabel: labelValue});
         return valid;
-    }
-
-    csvValidated = (csv) => {
-        let result = false;
-        if(csv[0]){
-            let headers = csv[0];
-            console.log("Headers", headers);
-            // headers.forEach(header => console.log(header));
-    
-            // Check headers:
-            // result = ( // TODO: Make sure these are standard, reasonable values to require based on current spreadsheets
-            //     headers.includes('title') && headers.includes('federal_register_date') && headers.includes('agency') && headers.includes('state') 
-            //     && headers.includes('document') 
-            //     && headers.includes('filename')
-            // );
-            result = ('title' in headers && 'agency' in headers && 'federal_register_date' in headers 
-                && 'state' in headers && 'document' in headers && 
-                ('filename' in headers || 'eis_identifier' in headers));
-    
-            if(!result){
-                this.setState({
-                    csvError: "Missing one or more headers (title, federal register date, agency, state, document, filename/EIS Identifier)"
-                });
-            }
-        } else {
-            this.setState({
-                csvError: "No headers found or no data found"
-            });
-        }
-
-        return result;
-    }
-    
-    // only require title/agency/document and either filename or eis identifier
-    csvConstrainedValidated = (csv) => {
-        let result = false;
-        if(csv[0]){
-            let headers = csv[0];
-            console.log("Headers", headers);
-            result = ('title' in headers && 'agency' in headers && 'document' in headers 
-                        && ('filename' in headers || 'eis_identifier' in headers));
-    
-            if(!result){
-                this.setState({
-                    csvError: "Missing one or more headers (title, agency, document, filename/EIS Identifier)"
-                });
-            }
-        } else {
-            this.setState({
-                csvError: "No headers found or no data found"
-            });
-        }
-
-        return result;
     }
 
 
@@ -716,105 +661,167 @@ class Importer extends Component {
     /** CSVs/TSVs/otherwise recognized delimited data */
 
 
-    importCSVOnTitleHandler = (urlToUse) => {
-        let newCSV = [];
-        for(let i = 0; i < this.state.csv.length; i++){
-            let key, keys = Object.keys(this.state.csv[i]);
-            let n = keys.length;
-            let newObj={};
-            while (n--) {
-                let newKey = keys[n];
-                key = keys[n];
+    // given row, try to return row with corrected headers, formatted to be ready for the backend
+    translateRow(importRow) {
+        // console.log("Row in",importRow);
 
-                // Spaces to underscores
-                newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
-            }
-            if(!this.state.csv[i][key]) {
-                // EOF?
-            } else {
-                newObj["title"] = newObj["title"].replace(/\s{2,}/g, ' ');
-    
-                newCSV[i] = newObj;
-            }
+        let key, keys = Object.keys(importRow);
+        // console.log("Headers",keys);
 
-        }
-        
-        console.log("Headers", newCSV[0]);
-        if(newCSV[0] && 'title' in newCSV[0]){
-            // All good
-        } else {
-            return;
-        }
+        let n = keys.length;
+        let newObj={};
 
-        document.body.style.cursor = 'wait';
-        this.setState({ 
-            csvLabel: 'In progress...',
-            csvError: '',
-            disabled: true 
-        });
-        
-        let importUrl = new URL(urlToUse, Globals.currentHost);
-
-        let uploadFile = new FormData();
-        uploadFile.append("csv", JSON.stringify(newCSV));
-
-        let networkString = '';
-        let successString = '';
-        let resultString = "";
-
-        axios({ 
-            method: 'POST',
-            url: importUrl,
-            headers: {
-                'Content-Type': "multipart/form-data"
-            },
-            data: uploadFile
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-
-            let responseArray = response.data;
-            responseArray.forEach(element => {
-                resultString += element + "\n";
-            });
+        while (n--) {
+            // Spaces to underscores, lowercase
+            let newKey = keys[n].toLocaleLowerCase().replace(/ /g, "_");
+            // Keep original key we'll need for copying the value
+            key = keys[n];
             
-            if (responseOK) {
-                return true;
-            } else { 
-                return false;
+            // Handle abnormal headers here
+            if(newKey==="document_type" || newKey==="documenttype"){ 
+                newKey="document";
             }
-        }).then(success => {
-            if(success){
-                successString = "Success.";
-            } else {
-                successString = "Failed to import."; // Server down?
+            if(newKey==="file name" || newKey==="file names"){
+                newKey = "filename";
             }
-        }).catch(error => {
-            if(error.response) {
-                if (error.response.status === 500) {
-                    networkString = "Internal server error.";
-                } else if (error.response.status === 404) {
-                    networkString = "Not found.";
-                } 
-            } else {
-                networkString = "Server may be down (no response), please try again later.";
+            if(newKey==="register_date" || newKey==="registerdate"){
+                newKey = "federal_register_date";
             }
-            successString = "Couldn't import.";
-            console.error('error message ', error);
-        }).finally(e => {
-            this.setState({
-                csvError: networkString,
-                csvLabel: successString,
-                disabled: false,
-                results : resultString
-            });
+            if(newKey==="comment_date" || newKey==="commentdate"){
+                newKey = "epa_comment_letter_date";
+            }
+            if(newKey==="folder"){
+                newKey = "eis_identifier";
+            }
+            if(newKey==="web_link"){
+                newKey = "link";
+            }
+
+
+            // handle unstandardized weirdness we can predict for process imports here
+            if(newKey==="draftid") {
+                newKey = "draft_id";
+            }
+            if(newKey==="ds_id") {
+                newKey = "draftsup_id";
+            }
+            if(newKey==="secds_id") {
+                newKey = "secdraftsup_id";
+            }
+            if(newKey==="revisedfinal_id") {
+                newKey = "revfinal_id";
+            }
+            
+            newObj[newKey] = importRow[key];
+
+            // Try to separate by ;, move appropriate value to new comments_filename column
+            if(newKey==="filename" && importRow[key]) {
+                // "Filename" could be only comments, so reset it first
+                newObj["filename"] = "";
+                try {
+                    let files = importRow[key].split(';');
+                    if(files && files.length > 0) {
+                        files.forEach(filename => {
+                            // If comment, send to comments_filename column
+                            if(filename.includes("CommentLetters")) {
+                                newObj["comments_filename"] = filename;
+                            }
+                            // If EIS, replace with only EIS filename in filename column
+                            else if(filename.includes("EisDocument")) {
+                                newObj["filename"] = filename;
+                            } else { // Novel format? Just add as-is
+                                newObj["filename"] = filename;
+                            }
+                        });
+                    }
+                } catch(e) {
+                    console.log("Filename parsing error",e);
+                }
+            }
+        }
+
+        // console.log("New row",newObj);
+        return newObj;
+    }
     
-            document.body.style.cursor = 'default'; 
-        });
+    // helper methods for validation
+
+    requiredHeadersTitleAgencyDocumentFile(headers) {
+        console.log("Hit validator",headers);
+        return ('title' in headers 
+                && 'agency' in headers 
+                && 'document' in headers
+                && ('filename' in headers || 'eis_identifier' in headers));
+    }
+    requiredHeadersTitleAgencyRegisterDateStateTypeFile(headers) {
+        console.log("Hit validator",headers);
+        return ('title' in headers 
+                && 'agency' in headers 
+                && 'federal_register_date' in headers 
+                && 'state' in headers 
+                && ('document' in headers) 
+                && ('filename' in headers || 'eis_identifier' in headers));
     }
 
+    // validation
+
+    // require just about everything
+    csvValidated = (csv) => {
+        let result = false;
+        if(csv[0]){
+            let headers = csv[0];
+            // headers.forEach(header => console.log(header));
+    
+            // Check headers:
+            result = this.requiredHeadersTitleAgencyRegisterDateStateTypeFile(headers);
+    
+            if(!result){
+                this.setState({
+                    csvError: "Missing one or more headers (title, federal register date, agency, state, document, filename/EIS Identifier)"
+                });
+            }
+        } else {
+            this.setState({
+                csvError: "No headers found or no data found"
+            });
+        }
+
+        return result;
+    }
+    // only require title/agency/document and either filename or eis identifier
+    csvConstrainedValidated = (csv) => {
+        let result = false;
+        if(csv[0]){
+            let headers = csv[0];
+            result = this.requiredHeadersTitleAgencyDocumentFile(headers);
+    
+            if(!result){
+                this.setState({
+                    csvError: "Missing one or more headers (title, agency, document, filename/EIS Identifier)"
+                });
+            }
+        } else {
+            this.setState({
+                csvError: "No headers found or no data found"
+            });
+        }
+
+        return result;
+    }
+    // require only title
+    titleOnlyValidate = (csv) => {
+        if(csv[0] && 'title' in csv[0]){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // no requirements; let backend deal with invalid data
     autoValidate = (csv) => {
         return true;
     }
+
+    // CSV/TSV import
 
     /**  Expects these headers:
     * Title, Document, EPA Comment Letter Date, Federal Register Date, Agency, State, EIS Identifier or  
@@ -825,82 +832,14 @@ class Importer extends Component {
     importCSVHandler = (validation, urlToUse) => {
         let newCSV = [];
         for(let i = 0; i < this.state.csv.length; i++){
-            let key, keys = Object.keys(this.state.csv[i]);
-            let n = keys.length;
-            let newObj={};
-            while (n--) {
-                let newKey = keys[n];
-                key = keys[n];
-                // Handle abnormal headers here
-                if(key==="document_type"){ // actual column name
-                    newKey="document";
-                }
-                if(key==="File name" || key==="File names"){
-                    newKey = "filename";
-                }
-                if(key==="register_date"){
-                    newKey = "federal_register_date";
-                }
-                if(key==="comment_date"){
-                    newKey = "epa_comment_letter_date";
-                }
-                if(key==="folder"){
-                    newKey = "eis_identifier";
-                }
-                if(key==="web_link"){
-                    newKey = "link";
-                }
+            let keys = Object.keys(this.state.csv[i]);
 
-
-                // handle unstandardized weirdness we can predict for process imports here
-                if(key==="DraftID") {
-                    newKey = "draft_id";
-                }
-                if(key==="DS_ID") {
-                    newKey = "draftsup_id";
-                }
-                if(key==="SecDS_ID") {
-                    newKey = "secdraftsup_id";
-                }
-                if(key==="RevisedFinal_ID") {
-                    newKey = "revfinal_id";
-                }
-                
-
-                // Spaces to underscores
-                newObj[newKey.toLowerCase().replace(/ /g, "_")] = this.state.csv[i][key];
-
-                // Try to separate by ;, move appropriate value to new comments_filename column
-                if(newKey.toLowerCase()==="filename" && this.state.csv[i][key]) {
-                    // "Filename" could be only comments, so reset it first
-                    newObj["filename"] = "";
-                    try {
-                        let files = this.state.csv[i][key].split(';');
-                        if(files && files.length > 0) {
-                            files.forEach(filename => {
-                                // If comment, send to comments_filename column
-                                if(filename.includes("CommentLetters")) {
-                                    newObj["comments_filename"] = filename;
-                                }
-                                // If EIS, replace with only EIS filename in filename column
-                                else if(filename.includes("EisDocument")) {
-                                    newObj["filename"] = filename;
-                                } else { // Novel format? Just add as-is
-                                    newObj["filename"] = filename;
-                                }
-                            });
-                        }
-                    } catch(e) {
-                        console.log("Filename parsing error",e);
-                    }
-                }
-            }
-
-            if(!this.state.csv[i][key]) {
+            if(!this.state.csv[i][keys[0]]) {
                 // EOF?
             } else {
-                // Note: Space normalization now handled by backend entirely
-                newCSV[i] = newObj;
+                newCSV[i] = this.translateRow(this.state.csv[i]);
+                // Note: Space normalization now handled by backend entirely?  No need for this?
+                newCSV[i]["title"] = newCSV[i]["title"].replace(/\s{2,}/g, ' ');
             }
 
         }
@@ -921,14 +860,7 @@ class Importer extends Component {
         let importUrl = new URL(urlToUse, Globals.currentHost);
 
         let uploadFile = new FormData();
-        // uploadFile.append("csv", JSON.stringify(this.state.csv));
         uploadFile.append("csv", JSON.stringify(newCSV));
-        
-        // let importObject = {"UploadInputs": this.state.csv};
-        // uploadFile.append("csv", JSON.stringify(importObject));
-
-        // console.log(this.state.csv);
-        // console.log(uploadFile.get("csv"));
 
         let networkString = '';
         let successString = '';
@@ -985,6 +917,8 @@ class Importer extends Component {
             document.body.style.cursor = 'default'; 
         });
     }
+
+
 
     showDate = () => {
         const setRegisterDate = (date) => {
@@ -1122,11 +1056,11 @@ class Importer extends Component {
         if(this.state.admin) {
             result = (<>
                 <button type="button" className="button" id="submitCSVTitles" disabled={!this.state.canImportCSV || this.state.disabled} 
-                onClick={() => this.importCSVOnTitleHandler('file/uploadCSV_titles')}>
+                onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/uploadCSV_titles')}>
                     (admin) Import from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
                 </button>
                 <button type="button" className="button" id="submitTitleFix" disabled={!this.state.canImportCSV || this.state.disabled} 
-                        onClick={() => this.importCSVOnTitleHandler('file/title_fix')}>
+                        onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/title_fix')}>
                     (admin) Title fixing tool
                 </button>
                 <button type="button" className="button" id="submitCSVConstrained" disabled={!this.state.canImportCSV || this.state.disabled} 
