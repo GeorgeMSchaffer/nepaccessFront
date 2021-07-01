@@ -37,11 +37,11 @@ class DownloadFile extends React.Component {
                     
 					if (totalLength !== null) { // Progress as percent, if we have total
 						this.setState({
-							progressValue: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
+							progressValue: '('+Math.round((progressEvent.loaded * 100) / totalLength) + '% downloaded)'
 						});
                     } else if(progressEvent.loaded) { // Progress as MB
 						this.setState({
-							progressValue: ( Math.round(progressEvent.loaded / 1024 / 1024) ) + 'MB'
+							progressValue: '('+( Math.round(progressEvent.loaded / 1024 / 1024) ) + 'MB downloaded)'
 						});
                     }
                     // else progress remains blank
@@ -117,11 +117,11 @@ class DownloadFile extends React.Component {
 
 					if (totalLength !== null) { // Progress as percent, if we have total
 						this.setState({
-							progressValue: Math.round((progressEvent.loaded * 100) / totalLength) + '%'
+							progressValue: '('+Math.round((progressEvent.loaded * 100) / totalLength) + '% downloaded)'
 						});
                     } else if(progressEvent.loaded) { // Progress as MB
 						this.setState({
-							progressValue: ( Math.round(progressEvent.loaded / 1024 / 1024) ) + 'MB'
+							progressValue: '('+( Math.round(progressEvent.loaded / 1024 / 1024) ) + 'MB downloaded)'
 						});
                     }
                     // else progress remains blank
