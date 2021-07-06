@@ -245,6 +245,14 @@ class Search extends React.Component {
     onUseOptionsChecked = (evt) => {
         this.props.optionsChanged(evt.target.checked);
     }
+
+    onNeedsDocumentChecked = (evt) => {
+        this.setState({
+            needsDocument: !this.state.needsDocument
+		}, () => { 
+			this.filterBy(this.state);
+        });
+    }
     
     onTypeChecked = (evt) => {
         if(evt.target.name==="optionsChecked") {
@@ -653,6 +661,16 @@ class Search extends React.Component {
                     </div>
                 </div>
 
+                <div className="sidebar-hr"></div>
+
+                <div className="filter">
+                    <input type="checkbox" name="needsDocument" className="sidebar-checkbox"
+                            checked={this.state.needsDocument} onChange={this.onNeedsDocumentChecked} />
+                    <label className="checkbox-text" htmlFor="needsDocument">
+                        Must have files
+                    </label>
+                </div>
+                
                 <div className="sidebar-hr"></div>
                 
                 <div className="filter">

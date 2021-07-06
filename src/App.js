@@ -206,6 +206,10 @@ export default class App extends React.Component {
         };
     }
 
+    hasDocument = (item) => {
+        return (item.size && item.size > 200);
+    }
+
     /** Design: Search component calls this parent method which controls
     * the results, which gives a filtered version of results to SearchResults */
     filterResultsBy = (searcherState) => {
@@ -251,10 +255,24 @@ export default class App extends React.Component {
                     searcherState.typeROD,
                     searcherState.typeScoping));
             }
+            if(searcherState.needsDocument) {
+                isFiltered = true;
+                console.log("Filtering");
+                filteredResults = filteredResults.filter(this.hasDocument)
+            }
             
             let textToUse = filteredResults.length + " Results"; // unfiltered: "Results"
+            if(filteredResults.length === 1) {
+                textToUse = filteredResults.length + " Result";
+            }
             if(isFiltered) { // filtered: "Matches"
                 textToUse = filteredResults.length + " Matches (narrowed down from " + preFilterCount + " Results)";
+                if(filteredResults.length === 1) {
+                    textToUse = filteredResults.length + " Match (narrowed down from " + preFilterCount + " Results)";
+                    if(preFilterCount === 1) {
+                        textToUse = filteredResults.length + " Match (narrowed down from " + preFilterCount + " Result)";
+                    }
+                }
             }
             
             // console.log("Filtering");
