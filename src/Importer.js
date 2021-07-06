@@ -12,6 +12,25 @@ import axios from 'axios';
 import Globals from './globals';
 
 import './importer.css';
+import { ReactTabulator } from 'react-tabulator';
+
+const options = {
+    // maxHeight: "100%",           // for limiting table height
+    selectable:true,
+    layoutColumnsOnNewData: true,
+    tooltips:true,
+    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
+    // responsiveLayoutCollapseUseFormatters:false,
+    pagination:"local",             //paginate the data
+    paginationSize:10,              //allow 10 rows per page of data
+    paginationSizeSelector:[10, 25, 50, 100], 
+    movableColumns:true,
+    resizableRows:true,
+    resizableColumns:true,
+    layout:"fitColumns",
+    invalidOptionWarnings:false,    // spams warnings without this
+    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
+};
 
 /** Importer.js
  *  * Support for multiple files and also for a .csv which would be processed and should probably require:
@@ -20,10 +39,7 @@ import './importer.css';
  *  * multiple file upload functionality for a single record
  **/
 
-// TODO: Re-test or remove single, multi file record import (fairly useless)
 // file: null would just become files: [] and files: evt.target.files instead of files[0]?
-
-// TODO: Full TSV export for EISDoc table
 
 const agencyOptions = [	{ value: 'ACHP', label: 'Advisory Council on Historic Preservation (ACHP)' },{ value: 'USAID', label: 'Agency for International Development (USAID)' },{ value: 'ARS', label: 'Agriculture Research Service (ARS)' },{ value: 'APHIS', label: 'Animal and Plant Health Inspection Service (APHIS)' },{ value: 'AFRH', label: 'Armed Forces Retirement Home (AFRH)' },{ value: 'BPA', label: 'Bonneville Power Administration (BPA)' },{ value: 'BIA', label: 'Bureau of Indian Affairs (BIA)' },{ value: 'BLM', label: 'Bureau of Land Management (BLM)' },{ value: 'USBM', label: 'Bureau of Mines (USBM)' },{ value: 'BOEM', label: 'Bureau of Ocean Energy Management (BOEM)' },{ value: 'BOP', label: 'Bureau of Prisons (BOP)' },{ value: 'BR', label: 'Bureau of Reclamation (BR)' },{ value: 'Caltrans', label: 'California Department of Transportation (Caltrans)' },{ value: 'CHSRA', label: 'California High-Speed Rail Authority (CHSRA)' },{ value: 'CIA', label: 'Central Intelligence Agency (CIA)' },{ value: 'NYCOMB', label: 'City of New York, Office of Management and Budget (NYCOMB)' },{ value: 'CDBG', label: 'Community Development Block Grant (CDBG)' },{ value: 'CTDOH', label: 'Connecticut Department of Housing (CTDOH)' },{ value: 'BRAC', label: 'Defense Base Closure and Realignment Commission (BRAC)' },{ value: 'DLA', label: 'Defense Logistics Agency (DLA)' },{ value: 'DNA', label: 'Defense Nuclear Agency (DNA)' },{ value: 'DNFSB', label: 'Defense Nuclear Fac. Safety Board (DNFSB)' },{ value: 'DSA', label: 'Defense Supply Agency (DSA)' },{ value: 'DRB', label: 'Delaware River Basin Commission (DRB)' },{ value: 'DC', label: 'Denali Commission (DC)' },{ value: 'USDA', label: 'Department of Agriculture (USDA)' },{ value: 'DOC', label: 'Department of Commerce (DOC)' },{ value: 'DOD', label: 'Department of Defense (DOD)' },{ value: 'DOE', label: 'Department of Energy (DOE)' },{ value: 'HHS', label: 'Department of Health and Human Services (HHS)' },{ value: 'DHS', label: 'Department of Homeland Security (DHS)' },{ value: 'HUD', label: 'Department of Housing and Urban Development (HUD)' },{ value: 'DOJ', label: 'Department of Justice (DOJ)' },{ value: 'DOL', label: 'Department of Labor (DOL)' },{ value: 'DOS', label: 'Department of State (DOS)' },{ value: 'DOT', label: 'Department of Transportation (DOT)' },{ value: 'TREAS', label: 'Department of Treasury (TREAS)' },{ value: 'VA', label: 'Department of Veteran Affairs (VA)' },{ value: 'DOI', label: 'Department of the Interior (DOI)' },{ value: 'DEA', label: 'Drug Enforcement Administration (DEA)' },{ value: 'EDA', label: 'Economic Development Administration (EDA)' },{ value: 'ERA', label: 'Energy Regulatory Administration (ERA)' },{ value: 'ERDA', label: 'Energy Research and Development Administration (ERDA)' },{ value: 'EPA', label: 'Environmental Protection Agency (EPA)' },{ value: 'FSA', label: 'Farm Service Agency (FSA)' },{ value: 'FHA', label: 'Farmers Home Administration (FHA)' },{ value: 'FAA', label: 'Federal Aviation Administration (FAA)' },{ value: 'FCC', label: 'Federal Communications Commission (FCC)' },{ value: 'FEMA', label: 'Federal Emergency Management Agency (FEMA)' },{ value: 'FEA', label: 'Federal Energy Administration (FEA)' },{ value: 'FERC', label: 'Federal Energy Regulatory Commission (FERC)' },{ value: 'FHWA', label: 'Federal Highway Administration (FHWA)' },{ value: 'FMC', label: 'Federal Maritime Commission (FMC)' },{ value: 'FMSHRC', label: 'Federal Mine Safety and Health Review Commission (FMSHRC)' },{ value: 'FMCSA', label: 'Federal Motor Carrier Safety Administration (FMCSA)' },{ value: 'FPC', label: 'Federal Power Commission (FPC)' },{ value: 'FRA', label: 'Federal Railroad Administration (FRA)' },{ value: 'FRBSF', label: 'Federal Reserve Bank of San Francisco (FRBSF)' },{ value: 'FTA', label: 'Federal Transit Administration (FTA)' },{ value: 'USFWS', label: 'Fish and Wildlife Service (USFWS)' },{ value: 'FDOT', label: 'Florida Department of Transportation (FDOT)' },{ value: 'FDA', label: 'Food and Drug Administration (FDA)' },{ value: 'USFS', label: 'Forest Service (USFS)' },{ value: 'GSA', label: 'General Services Administration (GSA)' },{ value: 'USGS', label: 'Geological Survey (USGS)' },{ value: 'GLB', label: 'Great Lakes Basin Commission (GLB)' },{ value: 'IHS', label: 'Indian Health Service (IHS)' },{ value: 'IRS', label: 'Internal Revenue Service (IRS)' },{ value: 'IBWC', label: 'International Boundary and Water Commission (IBWC)' },{ value: 'ICC', label: 'Interstate Commerce Commission (ICC)' },{ value: 'JCS', label: 'Joint Chiefs of Staff (JCS)' },{ value: 'MARAD', label: 'Maritime Administration (MARAD)' },{ value: 'MTB', label: 'Materials Transportation Bureau (MTB)' },{ value: 'MSHA', label: 'Mine Safety and Health Administration (MSHA)' },{ value: 'MMS', label: 'Minerals Management Service (MMS)' },{ value: 'MESA', label: 'Mining Enforcement and Safety (MESA)' },{ value: 'MRB', label: 'Missouri River Basin Commission (MRB)' },{ value: 'NASA', label: 'National Aeronautics and Space Administration (NASA)' },{ value: 'NCPC', label: 'National Capital Planning Commission (NCPC)' },{ value: 'NGA', label: 'National Geospatial-Intelligence Agency (NGA)' },{ value: 'NHTSA', label: 'National Highway Traffic Safety Administration (NHTSA)' },{ value: 'NIGC', label: 'National Indian Gaming Commission (NIGC)' },{ value: 'NIH', label: 'National Institute of Health (NIH)' },{ value: 'NMFS', label: 'National Marine Fisheries Service (NMFS)' },{ value: 'NNSA', label: 'National Nuclear Security Administration (NNSA)' },{ value: 'NOAA', label: 'National Oceanic and Atmospheric Administration (NOAA)' },{ value: 'NPS', label: 'National Park Service (NPS)' },{ value: 'NSF', label: 'National Science Foundation (NSF)' },{ value: 'NSA', label: 'National Security Agency (NSA)' },{ value: 'NTSB', label: 'National Transportation Safety Board (NTSB)' },{ value: 'NRCS', label: 'Natural Resource Conservation Service (NRCS)' },{ value: 'NER', label: 'New England River Basin Commission (NER)' },{ value: 'NJDEP', label: 'New Jersey Department of Environmental Protection (NJDEP)' },{ value: 'NRC', label: 'Nuclear Regulatory Commission (NRC)' },{ value: 'OCR', label: 'Office of Coal Research (OCR)' },{ value: 'OSM', label: 'Office of Surface Mining (OSM)' },{ value: 'OBR', label: 'Ohio River Basin Commission (OBR)' },{ value: 'RSPA', label: 'Research and Special Programs (RSPA)' },{ value: 'REA', label: 'Rural Electrification Administration (REA)' },{ value: 'RUS', label: 'Rural Utilities Service (RUS)' },{ value: 'SEC', label: 'Security and Exchange Commission (SEC)' },{ value: 'SBA', label: 'Small Business Administration (SBA)' },{ value: 'SCS', label: 'Soil Conservation Service (SCS)' },{ value: 'SRB', label: 'Souris-Red-Rainy River Basin Commission (SRB)' },{ value: 'STB', label: 'Surface Transportation Board (STB)' },{ value: 'SRC', label: 'Susquehanna River Basin Commission (SRC)' },{ value: 'TVA', label: 'Tennessee Valley Authority (TVA)' },{ value: 'TxDOT', label: 'Texas Department of Transportation (TxDOT)' },{ value: 'TPT', label: 'The Presidio Trust (TPT)' },{ value: 'TDA', label: 'Trade and Development Agency (TDA)' },{ value: 'USACE', label: 'U.S. Army Corps of Engineers (USACE)' },{ value: 'USCG', label: 'U.S. Coast Guard (USCG)' },{ value: 'CBP', label: 'U.S. Customs and Border Protection (CBP)' },{ value: 'RRB', label: 'U.S. Railroad Retirement Board (RRB)' },{ value: 'USAF', label: 'United States Air Force (USAF)' },{ value: 'USA', label: 'United States Army (USA)' },{ value: 'USMC', label: 'United States Marine Corps (USMC)' },{ value: 'USN', label: 'United States Navy (USN)' },{ value: 'USPS', label: 'United States Postal Service (USPS)' },{ value: 'USTR', label: 'United States Trade Representative (USTR)' },{ value: 'UMR', label: 'Upper Mississippi Basin Commission (UMR)' },{ value: 'UMTA', label: 'Urban Mass Transportation Administration (UMTA)' },{ value: 'UDOT', label: 'Utah Department of Transportation (UDOT)' },{ value: 'WAPA', label: 'Western Area Power Administration (WAPA)' }
 ];
@@ -106,7 +122,12 @@ class Importer extends Component {
             baseDirectory: '',
             basePath: '',
             totalSize: 0,
-            uploaded: 0
+            uploaded: 0,
+
+            reportBusy: false,
+            headers: '',
+            columns: [],
+            data: []
         };
         
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -121,6 +142,8 @@ class Importer extends Component {
           }).catch(error => { // redirect
             this.props.history.push('/');
           })
+          
+          this.my_table = React.createRef();
     }
 
     checkAdmin = () => {
@@ -143,6 +166,22 @@ class Importer extends Component {
             //
         })
     }
+
+
+    // format json as tab separated values to prep .tsv download
+    jsonToTSV = (data) => {
+        const items = data;
+        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        const header = Object.keys(items[0])
+        const tsv = [
+        header.join('\t'), // header row first
+        ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
+        ].join('\r\n')
+        
+        return tsv;
+    }
+
+
 
     getPath = () => {
         // full path that will be uploaded...  in Edge/Chrome at least, so user knows exactly what
@@ -257,13 +296,16 @@ class Importer extends Component {
         // console.log(evt);
         // console.log(evt[0]);
         // console.log(evt[0].data);
+
         let newArray = [];
         for(let i = 0; i < evt.length; i++){
             newArray.push(evt[i].data);
         }
+
         // console.log(newArray);
         this.setState({ 
-            csv: newArray
+            csv: newArray,
+            headers: getKeys(evt[0].data).toString().replaceAll(',',', ')
         }, () => {
             // console.log("Event:");
             // console.log(evt);
@@ -1082,6 +1124,48 @@ class Importer extends Component {
     }
 
 
+    
+    getAllDocs = () => {
+        this.setState({ reportBusy: true });
+
+        let getUrl = Globals.currentHost + "test/findAllDocs";
+        
+        axios.get(getUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            let newColumns = [];
+            let headers = getKeys(parsedJson[0]);
+
+            for(let i = 0; i < headers.length; i++) {
+                newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
+            }
+
+            if(parsedJson){
+                this.setState({
+                    columns: newColumns,
+                    data: parsedJson,
+                    response: this.jsonToTSV(parsedJson),
+                    reportBusy: false
+                });
+            } else {
+                console.log("Null");
+            }
+        }).catch(error => { // 401/404/...
+            console.error(error);
+            this.setState({ reportBusy: false });
+        });
+    }
+
+
     render() {
 
         const files = this.state.files.map(file => (
@@ -1122,8 +1206,26 @@ class Importer extends Component {
                     {this.state.networkError}
                 </label>
                 
-                
+                <div className="padding-all">
 
+                    <h3 className="green">Current docs</h3>
+
+                    <ReactTabulator
+                        ref={this.my_table}
+                        data={this.state.data}
+                        columns={this.state.columns}
+                        options={options}
+                    />
+
+                    <button className="button" onClick={this.getAllDocs}>Get or refresh view of all current metadata</button>
+                    <button className="button" onClick={this.downloadResults}>Save this table as tab-separated values file</button>
+
+                </div>
+
+                <div className="loader-holder">
+                    <div className="lds-ellipsis" hidden={!this.state.reportBusy}><div></div><div></div><div></div><div></div></div>
+                </div>
+                
 
                 <div className="import-meta">
 
@@ -1149,9 +1251,10 @@ class Importer extends Component {
 
                     <div className="importFile" hidden={this.state.importOption !== "csv"}>
                         <h2>Instructions:</h2>
-                        <h3>One CSV at a time supported.  
-                            Header names must be exact.  
-                            "EIS Identifier" must represent a foldername that will be uploaded with files in it.  This foldername must be unique system-wide.  
+                        <h3>One CSV at a time supported.  </h3>
+                        <h3>Header names must be exact.  </h3>
+                        <h3>Expected date format: yyyy-MM-dd or MM-dd-yyyy</h3>
+                        <h3>"EIS Identifier" must represent a foldername that will be uploaded with files in it.  This foldername must be unique system-wide.  
                             If separated into subfolders by document type (which is required if you are linking multiple records to the same EIS Identifier, presumably because they are part of the same process), then the "Document" field must be exactly the same as the subfolder name.  </h3>
                         <h3>Example: If you are going to upload NSF/NSF_00001/Final/file.pdf, then the corresponding CSV line must say Final under the Document header, and NSF_00001 for the EIS Identifier.  
                             When uploading, use bulk file import and drag the entire NSF/ base folder in.  
@@ -1180,7 +1283,7 @@ class Importer extends Component {
                                         selected={this.state.delimiter}
                                         onChange={this.onDelimiterChange} 
                                         placeholder="Type or select delimiter" 
-                                    />
+                        />
                         <CSVReader
                             onDrop={this.handleOnDrop}
                             onError={this.handleOnError}
@@ -1194,6 +1297,8 @@ class Importer extends Component {
                         >
                             <span>Drop CSV file here or click to upload.</span>
                         </CSVReader>
+                        <label className="bold">Headers: {this.state.headers}</label>
+
                         <button type="button" className="button" id="submitCSVDummy" disabled={!this.state.canImportCSV || this.state.disabled} 
                                 onClick={() => this.importCSVHandler(this.csvValidated,'file/uploadCSV_dummy')}>
                             Test Import (Would-be results are returned, but nothing is added to database)
@@ -1319,7 +1424,7 @@ class Importer extends Component {
                             </button>
                         </div>
                     </div>
-                            
+                    
                     
                     
                     <div className="importFile" hidden={this.state.importOption==="csv"}>
@@ -1401,7 +1506,45 @@ class Importer extends Component {
         )
     }
 
-    componentDidUpate() {
+    
+    // best performance is to Blob it on demand
+    downloadResults = () => {
+        if(this.state.response) {
+            const csvBlob = new Blob([this.state.response]);
+            const today = new Date().toISOString().split('T')[0];
+            const csvFilename = `metadata_${today}.tsv`;
+
+    
+            if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                window.navigator.msSaveBlob(csvBlob, csvFilename);
+            }
+            else {
+                const temporaryDownloadLink = window.document.createElement("a");
+                temporaryDownloadLink.href = window.URL.createObjectURL(csvBlob);
+                temporaryDownloadLink.download = csvFilename;
+                document.body.appendChild(temporaryDownloadLink);
+                temporaryDownloadLink.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                document.body.removeChild(temporaryDownloadLink);
+            }
+
+        }
+    }
+
+    updateTable = () => {
+        try {
+            // seems necessary when using dynamic columns
+            this.my_table.current.table.setColumns(this.state.columns);
+
+            // this.my_table.current.table.replaceData(this.state.data);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    componentDidUpdate() {
+        if(this.my_table && this.my_table.current){
+            this.updateTable();
+        }
     }
     componentDidMount() {
         // console.log(this.state.importOption);
@@ -1416,4 +1559,12 @@ function renameFile(originalFile, newName) {
         type: originalFile.type,
         lastModified: originalFile.lastModified,
     });
+}
+
+function getKeys(obj) {
+    let keysArr = [];
+    for (var key in obj) {
+      keysArr.push(key);
+    }
+    return keysArr;
 }
