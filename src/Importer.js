@@ -506,7 +506,7 @@ class Importer extends Component {
                     this.doImport(i,limit);
                 } else {
                     // skip upload
-                    resultString += "Skipped uploading (no metadata record to link to): " + this.state.files[i].path + "\n";
+                    resultString += this.state.files[i].path + ": Skipped uploading (no metadata record to link to)" + "\n";
                     
                     if(i+1 < limit) {
                         this.setState({
