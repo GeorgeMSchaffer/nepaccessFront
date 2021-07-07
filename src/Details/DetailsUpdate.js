@@ -27,6 +27,74 @@ class DetailsUpdate extends React.Component {
         // console.log("Constructor", this.props.record);
     }
 
+    // reverts to most recent.  Note that this also counts as an update, meaning it's effectively an undo button
+    // with a depth of only 1.
+    revertRecord = () => {
+        document.body.style.cursor = 'wait';
+        
+        this.setState({
+            isDirty: false,
+            disabled: true
+        });
+
+        let updateUrl = new URL('update_log/restore_doc_last', Globals.currentHost);
+        let update = new FormData();
+        update.append("id", JSON.stringify(this.state.record.id));
+
+        let networkString = '';
+        let successString = '';
+
+        axios({ 
+            method: 'POST',
+            url: updateUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: update
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return true;
+            } else { 
+                return false;
+            }
+        }).then(success => {
+            if(success){
+                successString = "Successfully set most or all fields to before the most recent change.";
+            } else {
+                successString = "Failed to update."; // Server down?
+            }
+        }).catch(error => {
+            if(error.response) {
+                if (error.response.status === 500) {
+                    networkString = "Internal server error.";
+                } else if (error.response.status === 404) {
+                    networkString = "Not found.";
+                } else {
+                    networkString = "Error";
+                }
+            } else {
+                networkString = "Server may be down (no response), please try again later.";
+            }
+            successString = "Couldn't update; this record has probably never been changed.";
+            console.error('revert error ', error);
+        }).finally(e => {
+            this.setState({
+                networkError: networkString,
+                successLabel: successString,
+                disabled: false,
+                titleLabel: "",
+                dateError: "",
+                typeError: ""
+            }, () => {
+                this._internal = -1;
+                this.props.repopulate();
+            });
+    
+            document.body.style.cursor = 'default'; 
+        });
+    }
+
     updateRecord = () => {
         if(!this.validated()) {
             return;
@@ -35,7 +103,8 @@ class DetailsUpdate extends React.Component {
         document.body.style.cursor = 'wait';
         
         this.setState({
-            isDirty: false
+            isDirty: false,
+            disabled: true
         });
         
         let updateUrl = new URL('test/update_doc', Globals.currentHost);
@@ -92,10 +161,6 @@ class DetailsUpdate extends React.Component {
     
             document.body.style.cursor = 'default'; 
         });
-
-
-
-        console.log("Record updated");
     }
 
     // inferior to onInput but react complains if there's no onChange handler
@@ -281,6 +346,8 @@ class DetailsUpdate extends React.Component {
 
                     <button type="button" className="button" disabled={!this.state.isDirty} onClick={this.updateRecord}>Save changes</button>
                     <hr />
+                    {/* <button type="button" className="button" disabled={this.state.disabled} onClick={this.revertRecord}>Revert last change</button>
+                    <hr /> */}
                     {/* <label>Delete metadata and all associated files cleanly from the database.  This cannot be reversed.</label> */}
                     {/* <button type="button" className="button" onClick={this.deleteRecord}>Delete everything</button> */}
                     <DeleteModal idToDelete={this.state.record.id} />

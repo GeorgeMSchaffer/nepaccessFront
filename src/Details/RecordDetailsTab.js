@@ -635,7 +635,7 @@ export default class RecordDetailsTab extends React.Component {
     
     showUpdate = () => {
         return (<>
-                <DetailsUpdate record={this.state.details} id={null} />
+                <DetailsUpdate record={this.state.details} repopulate={this.populate} id={null} />
                 <DetailsFileResults results={this.state.nepaResults} headerText="Downloadable file records" />
                 <DetailsFileResults results={this.state.textResults} headerText="Texts" />
             </>
