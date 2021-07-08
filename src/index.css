@@ -688,3 +688,7 @@ span.leading-text {
     padding: 1%;
     border: 1px dotted blue;
 }
+
+.border-red {
+    border-color: red;
+}
