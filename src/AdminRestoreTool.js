@@ -36,6 +36,9 @@ export default class AdminRestoreTool extends React.Component {
         columns: [],
 
         response: "",
+        server_response: "",
+
+        userID: "",
 
         admin: false,
         busy: false,
@@ -216,12 +219,32 @@ export default class AdminRestoreTool extends React.Component {
         document.body.style.cursor = 'wait';
         const selectedData = this.my_table.current.table.getSelectedData();
         
-        for(let i = selectedData.length; i > 0; i--) {
+        for(let i = selectedData.length - 1; i >= 0; i--) {
             console.log(i);
             console.log(selectedData[i]);
-            this.restoreOneByID(selectedData[i].id);
+            if(selectedData[i] && typeof(selectedData[i] != 'undefined')) {
+                this.restoreOneByID(selectedData[i].id);
+            }
         }
         document.body.style.cursor = 'default';
+    }
+
+    post = (postUrl, dataForm) => {
+        axios({
+            url: postUrl,
+            method: 'POST',
+            data: dataForm
+        }).then(_response => {
+            const rsp = this.resp += (JSON.stringify({data: _response.data, status: _response.status}));
+            this.setState({
+                server_response: rsp 
+            }, () => {
+                console.log(this.state.server_response);
+            });
+            // let responseOK = response && response.status === 200;
+        }).catch(error => { // redirect
+            console.error(error);
+        })
     }
 
     restoreOneByID = (updateLogId) => {
@@ -236,9 +259,9 @@ export default class AdminRestoreTool extends React.Component {
         }).then(_response => {
             const rsp = this.resp += (JSON.stringify({data: _response.data, status: _response.status}));
             this.setState({
-                response: rsp 
+                server_response: rsp 
             }, () => {
-                console.log(this.state.response);
+                console.log(this.state.server_response);
             });
             // let responseOK = response && response.status === 200;
         }).catch(error => { // redirect
@@ -263,9 +286,9 @@ export default class AdminRestoreTool extends React.Component {
         }).then(_response => {
             const rsp = this.resp += (JSON.stringify({data: _response.data, status: _response.status}));
             this.setState({
-                response: rsp 
+                server_response: rsp 
             }, () => {
-                console.log(this.state.response);
+                console.log(this.state.server_response);
             });
             // let responseOK = response && response.status === 200;
         }).catch(error => { // redirect
@@ -325,6 +348,8 @@ export default class AdminRestoreTool extends React.Component {
         // }
     }
 
+    // TODO: So I think the backend should handle the id or date range logic, and it also will figure out
+    // how to handle a given user id (either empty string or string with an integer)
     // TODO: date range and id range logic.  It's simple enough: Use the range to get all distinct document IDs.
     // Then update these using the earliest restore point equal to or after the earliest date or ID in the range.
     // Utilize optional user ID to match on (only restore using that user).
@@ -332,16 +357,20 @@ export default class AdminRestoreTool extends React.Component {
         // If we can programmatically select from the table:
         // Use restoreOne(doc,date,userID) with every distinct doc and the earliest
         // date in the range of dates.
-        // Else do all the work on the backend, or get the list from the backend, put it in the table,
-        // and process it here.
-        console.log(this.my_table.current.table.getSelectedData());
-        if(this.my_table.current.table.getSelectedData().length === 0) {
-            console.log("Whoops");
-            return;
-        }
-        const selectedData = this.my_table.current.table.getSelectedData();
+        // Else do all the work on the backend
+        if(this.state.dateStart && this.state.dateEnd) {
+            const postUrl = new URL('update_log/restore_date_range', Globals.currentHost);
 
-        const distinctDocuments = [...new Set(selectedData.map(x => x.documentId))];
+            const dataForm = new FormData();
+            dataForm.append('datetimeStart',this.state.dateStart);
+            dataForm.append('datetimeEnd',this.state.dateEnd);
+            dataForm.append('userid', this.state.userID);
+
+            this.post(postUrl,dataForm);
+        } else {
+            console.log("Missing dates");
+        }
+
 
     }
     // Theoretically there's no great distinction here - IDs are created sequentially, so they are in the same
@@ -406,6 +435,7 @@ export default class AdminRestoreTool extends React.Component {
                         </button>
                         <p> Note: Can set multiple user IDs, but that's invalid.  Must use one or none.</p>
 
+                        <label>Bonus information:</label>
                         <div>
                             <input type="text" value={this.state.updateLogs} readOnly /> List of UpdateLogs
                         </div>
@@ -427,7 +457,16 @@ export default class AdminRestoreTool extends React.Component {
 
                     <br />
 
-                    <div className="padding-all">
+
+
+                    <label>
+                        Redundant updates will be done if duplicate documents are in the selection.
+                        Updates are restored oldest to earliest, so the earliest updates will be applied last.
+                        This means the earliest restore point should take precedence, but there could be timing
+                        issues, so it's best to not use this when your selection could have duplicate documents. 
+                        In those cases, preferably use a date or ID range restore, or else weed out duplicates.
+                    </label>
+                    <div className="padding-all border-red">
                         <button type="button" onClick={() => this.restoreSelection()}>
                             Restore exact selection
                         </button>
@@ -435,7 +474,7 @@ export default class AdminRestoreTool extends React.Component {
                     <br />
                     <br />
 
-                    <div className="padding-all">
+                    <div className="padding-all border-red">
                         <div>
                             <button type="button" onClick={this.restoreByDateRange}>
                                 Restore within this date range:
@@ -465,7 +504,11 @@ export default class AdminRestoreTool extends React.Component {
                     <br />
 
 
-                    <div className="padding-all">
+                    <label>
+                        Not yet implemented, but effectively the same as date range, and you can get the dates
+                        from the IDs easily within this tool.
+                    </label>
+                    <div className="padding-all border-red">
                         <div>
                             <button type="button" onClick={this.restoreByIDRange}>
                                 Restore within this UpdateLogID range:
@@ -492,6 +535,11 @@ export default class AdminRestoreTool extends React.Component {
                         </div>
                     </div>
 
+                    <br />
+                    <label>Server response</label>
+                    <div>
+                        <textarea readOnly value={this.state.server_response} />
+                    </div>
                     
                 </div>
             );
