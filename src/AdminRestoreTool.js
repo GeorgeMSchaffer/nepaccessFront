@@ -497,7 +497,7 @@ export default class AdminRestoreTool extends React.Component {
                         <div>
                             <input type="text" name="userID" value={this.state.userID} 
                                     onChange={this.onChange} onInput={this.onChange}>
-                            </input> Optional user ID to enforce match on
+                            </input> (Optional, can leave blank) user ID to enforce match on
                         </div>
                     </div>
                     <br />
@@ -531,7 +531,7 @@ export default class AdminRestoreTool extends React.Component {
                         <div>
                             <input type="text" name="userID" value={this.state.userID} 
                                     onChange={this.onChange} onInput={this.onChange}>
-                            </input> Optional user ID to enforce match on.  
+                            </input> (Optional, can leave blank) user ID to enforce match on.  
                         </div>
                     </div>
 
