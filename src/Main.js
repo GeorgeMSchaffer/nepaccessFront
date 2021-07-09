@@ -40,13 +40,8 @@ import Iframes from './iframes/Iframes.js';
 import Approve from './Approve.js';
 
 import Importer from './Importer.js';
-import Generate from './Generate.js';
-import Generate2 from './Generate2.js';
-import Admin from './Admin.js';
-import AdminFind from './AdminFind';
+import Admin from './AdminPanel.js';
 import AdminFiles from './AdminFiles.js';
-import AdminRestoreTool from './AdminRestoreTool.js';
-import Deduplicator from './Deduplicator.js';
 
 import Test from './Test.js';
 import Pairs from './Pairs.js';
@@ -71,16 +66,19 @@ class Main extends React.Component {
 
     constructor(props){
         super(props);
+
         this.state = {
             displayUsername: '',
             loggedIn: false,
             loggedInDisplay: 'display-none',
             loggedOutDisplay: '',
             loaderClass: 'loadDefault',
+            admin: false,
             curator: false,
             approver: false,
             currentPage: ""
         };
+
         this.refresh = this.refresh.bind(this);
         this.refreshNav = this.refreshNav.bind(this);
         Globals.setUp();
@@ -273,11 +271,6 @@ class Main extends React.Component {
                 
                 <Route path="/importer" component={Importer}/>
                 <Route path="/adminFiles" component={AdminFiles}/>
-                <Route path="/adminFind" component={AdminFind}/>
-                <Route path="/adminRestoreTool" component={AdminRestoreTool}/>
-                <Route path="/generate" component={Generate}/>
-                <Route path="/generate2" component={Generate2}/>
-                <Route path="/deduplicator" component={Deduplicator}/>
 
                 <Route path="/iframes" component={Iframes} />
                 <Route path="/privacy-policy" component={PrivacyPolicy} />
@@ -299,7 +292,37 @@ class Main extends React.Component {
     }
 
 
+    /** Checks all possible relevant roles */
     checkCurator = () => {
+        
+        if(this.state.loggedIn === false) { // No need for axios call
+            this.setState({
+                admin: false
+            }, () =>{
+                this.getCuratorMenuItems();
+            })
+        } else {
+            let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
+            let result = false;
+            axios({
+                url: checkUrl,
+                method: 'POST'
+            }).then(response => {
+                result = response && response.status === 200;
+                this.setState({
+                    admin: result
+                }, () => {
+                    this.getCuratorMenuItems();
+                });
+            }).catch(error => { // 401/403
+                this.setState({
+                    admin: false
+                }, () => {
+                    this.getCuratorMenuItems();
+                });
+            });
+        }
+
         if(this.state.loggedIn === false) { // No need for axios call
             this.setState({
                 curator: false
@@ -359,6 +382,12 @@ class Main extends React.Component {
 
     }
 
+    adminLink = () => {
+        if(this.state.admin) {
+            return <Link to="/admin">Admin Panel</Link>
+        }
+    }
+
     getCuratorMenuItems = () => {
         if(this.state.curator === true) {
             localStorage.curator = true;
@@ -373,6 +402,7 @@ class Main extends React.Component {
                         </Link>
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
+                            {this.adminLink()}
                             <Link to="/importer">Import New Documents</Link>
                             <Link to="/adminFiles">Find Missing Files</Link>
                             <Link to="/approve">Approve Users</Link>

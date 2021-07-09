@@ -538,7 +538,7 @@ export default class AdminRestoreTool extends React.Component {
                     <br />
                     <label>Server response</label>
                     <div>
-                        <textarea readOnly value={this.state.server_response} />
+                        <textarea className="server-response" readOnly value={this.state.server_response} />
                     </div>
                     
                 </div>

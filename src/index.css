@@ -692,3 +692,9 @@ span.leading-text {
 .border-red {
     border-color: red;
 }
+
+textarea.server-response {
+    display: flex;
+    width: 100%;
+    min-height: 100px;
+}

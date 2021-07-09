@@ -149,6 +149,7 @@ export default class DetailsRestore extends React.Component {
     }
 
     restoreOneByID = (updateLogId) => {
+        this.setState({busy: true});
         const postUrl = new URL('update_log/restore', Globals.currentHost);
         const dataForm = new FormData();
         dataForm.append('id', updateLogId);
@@ -168,6 +169,8 @@ export default class DetailsRestore extends React.Component {
             // let responseOK = response && response.status === 200;
         }).catch(error => { // redirect
             console.error(error);
+        }).finally(() => {
+            this.setState({busy: false});
         })
     }
 
@@ -178,12 +181,20 @@ export default class DetailsRestore extends React.Component {
         if(this.state.admin) {
             return (
                 <div className="content padding-all">
-                    <h4>Restore this record's metadata to any available selectable row.</h4>
+                    <h3>Click a row and click the Restore button to replace this record's current metadata with the selected row.</h3>
+                    <h4>Function: Restore this record's metadata to any row in the table below.  
+                        Changes will be reflected immediately, system-wide. 
+                        A new update log will also be created for this restore operation, and will appear in the table.
+                    </h4>
+                    <h4>Only the listed columns (ignoring id, userId and savedTime, which are metadata for the update log itself) will be restored; unlisted columns (if any) will remain unchanged.</h4>
 
                     <div className="loader-holder">
                         <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
-                    
+
+                    <h5>Explanation of this table: These are all of the former versions of this record's metadata that the system remembers (the current version is not represented - only all past versions are). 
+                    (If the table is empty, then this record has never been updated.)</h5>
+
                     <ReactTabulator
                         ref={this.my_table}
                         data={this.state.data}
@@ -192,7 +203,7 @@ export default class DetailsRestore extends React.Component {
                     />
                     <br />
 
-                    <span>Warning: The "Restore" button will in fact change the database contents.</span>
+                    <span className="errorLabel">Warning: The "Restore" button will in fact change the database contents.</span>
 
                     <br />
 
@@ -203,9 +214,10 @@ export default class DetailsRestore extends React.Component {
                     </div>
 
                     <br />
+
                     <label>Server response</label>
                     <div>
-                        <textarea readOnly value={this.state.server_response} />
+                        <textarea className="server-response" readOnly value={this.state.server_response} />
                     </div>
                     
                 </div>

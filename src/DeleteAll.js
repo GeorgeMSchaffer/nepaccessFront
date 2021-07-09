@@ -58,7 +58,7 @@ export default class DeleteAll extends React.Component {
                         Server response
                     </span></div>
 
-                    <textarea readOnly value={this.state.response}></textarea>
+                    <textarea className="server-response" readOnly value={this.state.response}></textarea>
                 </div>
             );
         } else {

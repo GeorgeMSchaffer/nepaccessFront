@@ -351,7 +351,7 @@ export default class Admin extends React.Component {
                         Server response
                     </span></div>
 
-                    <textarea readOnly value={this.state.response}></textarea>
+                    <textarea className="server-response" readOnly value={this.state.response}></textarea>
 
                     <hr />
                     <DeleteAll admin={this.state.admin} />
