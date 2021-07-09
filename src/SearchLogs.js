@@ -26,7 +26,8 @@ export default class SearchLogs extends React.Component {
 		super(props);
 		this.state = { 
             typeCount: [],
-            chartOption: {value: "Search Count by Terms", label: "Search Count by Terms"}
+            chartOption: {value: "Search Count by Terms", label: "Search Count by Terms"},
+            authorized: false
         };
         
         
@@ -37,10 +38,14 @@ export default class SearchLogs extends React.Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (!responseOK) { // impossible? (either 200 or error?)
-                this.props.history.push('/');
+                // this.props.history.push('/');
+            } else {
+                this.setState({authorized: true});
             }
-        }).catch(error => { // redirect
-            this.props.history.push('/');
+        }).catch(error => {
+            this.setState({
+                networkError: error.message
+            });
         })
 
         // time to get the stats
@@ -79,7 +84,9 @@ export default class SearchLogs extends React.Component {
 
             }
         }).catch(error => {
-            
+            this.setState({
+                networkError: error.message
+            });
         });
         
     }
@@ -186,18 +193,10 @@ export default class SearchLogs extends React.Component {
 				verified: result
 			})
 		})
-		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
-			if(!err.response){ // Probably no need to redirect to login if server isn't responding
-				this.setState({
-					networkError: Globals.errorMessage.default
-				});
-			} else { // 403?
-                if(err.response.status===403) {
-                    this.setState({
-                        networkError: Globals.errorMessage.auth
-                    });
-                }
-			}
+		.catch((error) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
+            this.setState({
+                networkError: error.message
+            });
 		})
 		.finally(() => {
 			// console.log("Returning... " + result);
@@ -210,29 +209,36 @@ export default class SearchLogs extends React.Component {
             {value: "Search Count by Terms", label: "Search Count by Terms"}
         ];
 
-        return (<div className="charts-holder">
-                <Select id="chart-picker" classNamePrefix="react-select" name="chart" isSearchable 
-                        // styles={customStyles}
-                        options={chartOptions} 
-                        onChange={this.onDropdownChange}
-                        value={this.state.chartOption}
-                        placeholder="Type or select" 
-                />
-                <ChartBar option={this.state.chartOption.value} data={this.state.typeCount} label={"Search Count by Terms"} />
-                {/* <ChartBar option={this.state.chartOption.value} data={this.state.downloadableCountByType} label={"Downloadable Count by Document Type"} /> */}
-                {/* <ChartBar data={this.state.draftFinalCountByAgency[0]} label={"Draft count by agency"} />
-                <ChartBar data={this.state.draftFinalCountByAgency[1]} label={"Final count by agency"} />
-                <ChartBar data={this.state.draftFinalCountByYear[0]} label={"Draft count by year"} />
-                <ChartBar data={this.state.draftFinalCountByYear[1]} label={"Final count by year"} />
-                <ChartBar data={this.state.draftFinalCountByState[0]} label={"Draft count by state"} />
-                <ChartBar data={this.state.draftFinalCountByState[1]} label={"Final count by state"} /> */}
-                
-                {/* <ChartBar size="larger" option={this.state.chartOption.value} data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
-                <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
-                <ChartBar stacked={true} option={this.state.chartOption.value} meta={this.state.metadataCountByYear} down={this.state.downloadableCountByYear} label={"Downloadable Draft or Final EIS by Year"} />
-                <ChartBar size="largest" option={this.state.chartOption.value} data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} /> */}
+        if(!this.state.authorized) {
+            return <div className="content">
+                <label className="errorLabel">{this.state.networkError}</label>
             </div>
-        );
+        } else {
+            return (<div className="charts-holder">
+                    <div><label className="errorLabel">{this.state.networkError}</label></div>
+                    <Select id="chart-picker" classNamePrefix="react-select" name="chart" isSearchable 
+                            // styles={customStyles}
+                            options={chartOptions} 
+                            onChange={this.onDropdownChange}
+                            value={this.state.chartOption}
+                            placeholder="Type or select" 
+                    />
+                    <ChartBar option={this.state.chartOption.value} data={this.state.typeCount} label={"Search Count by Terms"} />
+                    {/* <ChartBar option={this.state.chartOption.value} data={this.state.downloadableCountByType} label={"Downloadable Count by Document Type"} /> */}
+                    {/* <ChartBar data={this.state.draftFinalCountByAgency[0]} label={"Draft count by agency"} />
+                    <ChartBar data={this.state.draftFinalCountByAgency[1]} label={"Final count by agency"} />
+                    <ChartBar data={this.state.draftFinalCountByYear[0]} label={"Draft count by year"} />
+                    <ChartBar data={this.state.draftFinalCountByYear[1]} label={"Final count by year"} />
+                    <ChartBar data={this.state.draftFinalCountByState[0]} label={"Draft count by state"} />
+                    <ChartBar data={this.state.draftFinalCountByState[1]} label={"Final count by state"} /> */}
+                    
+                    {/* <ChartBar size="larger" option={this.state.chartOption.value} data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
+                    <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
+                    <ChartBar stacked={true} option={this.state.chartOption.value} meta={this.state.metadataCountByYear} down={this.state.downloadableCountByYear} label={"Downloadable Draft or Final EIS by Year"} />
+                    <ChartBar size="largest" option={this.state.chartOption.value} data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} /> */}
+                </div>
+            );
+        }
     }
 
 	componentDidMount() {
