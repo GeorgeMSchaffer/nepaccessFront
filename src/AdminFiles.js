@@ -1,7 +1,30 @@
 import React from 'react';
 import axios from 'axios';
+
 import Globals from './globals.js';
+
+import { ReactTabulator } from 'react-tabulator';
+
 import './adminFiles.css';
+
+
+const options = {
+    // maxHeight: "100%",           // for limiting table height
+    selectable:true,
+    layoutColumnsOnNewData: true,
+    tooltips:true,
+    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
+    // responsiveLayoutCollapseUseFormatters:false,
+    pagination:"local",             //paginate the data
+    paginationSize:10,              //allow 10 rows per page of data
+    paginationSizeSelector:[10, 25, 50, 100], 
+    movableColumns:true,
+    resizableRows:true,
+    resizableColumns:true,
+    layout:"fitColumns",
+    invalidOptionWarnings:false,    // spams warnings without this
+    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
+};
 
 
 export default class AdminFiles extends React.Component {
@@ -12,6 +35,8 @@ export default class AdminFiles extends React.Component {
 
         this.state = {
             files: [{}],
+            data: [],
+            columns: [],
             networkError: "",
             networkStatus: "",
             goToId: 1
@@ -29,9 +54,63 @@ export default class AdminFiles extends React.Component {
         }).catch(error => { // redirect
             this.props.history.push('/');
         })
+        
+        this.my_table = React.createRef();
     }
 
 
+
+
+    get = () => {
+        this.setState({ busy: true });
+
+        let getUrl = Globals.currentHost + "test/size_under_200";
+        
+        axios.get(getUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            let newColumns = [];
+            let headers = getKeys(parsedJson[0]);
+
+            console.log("Keys",headers);
+
+            for(let i = 0; i < headers.length; i++) {
+                newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
+            }
+
+            if(parsedJson){
+                this.setState({
+                    columns: newColumns,
+                    data: parsedJson,
+                    response: this.jsonToTSV(parsedJson),
+                    busy: false
+                });
+            } else {
+                console.log("Null");
+            }
+        }).catch(error => { // 401/404/...
+            console.error(error);
+            this.setState({ busy: false });
+        });
+    }
+    
+    updateTable = () => {
+        try {
+            // seems necessary when using dynamic columns
+            this.my_table.current.table.setColumns(this.state.columns);
+        } catch (e) {
+            console.error(e);
+        }
+    }
 
 
     reCheck = () => {
@@ -118,6 +197,42 @@ export default class AdminFiles extends React.Component {
         this.setState({ [evt.target.name]: evt.target.value });
     }
 
+    
+    // format json as tab separated values to prep .tsv download
+    jsonToTSV = (data) => {
+        const items = data;
+        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        const header = Object.keys(items[0])
+        const tsv = [
+        header.join('\t'), // header row first
+        ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
+        ].join('\r\n')
+        
+        return tsv;
+    }
+    // best performance is to Blob it on demand
+    downloadResults = () => {
+        if(this.state.response) {
+            const csvBlob = new Blob([this.state.response]);
+            const today = new Date().toISOString().split('T')[0];
+            const csvFilename = `results_${today}.tsv`;
+
+    
+            if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                window.navigator.msSaveBlob(csvBlob, csvFilename);
+            }
+            else {
+                const temporaryDownloadLink = window.document.createElement("a");
+                temporaryDownloadLink.href = window.URL.createObjectURL(csvBlob);
+                temporaryDownloadLink.download = csvFilename;
+                document.body.appendChild(temporaryDownloadLink);
+                temporaryDownloadLink.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                document.body.removeChild(temporaryDownloadLink);
+            }
+
+        }
+    }
+
     render() {
         return (<>
             <div className="content">
@@ -125,6 +240,9 @@ export default class AdminFiles extends React.Component {
                     Missing Files
                 </div>
                 <div id="admin-files-content">
+
+                    <h3>Expectation: Metadata listing folder or filename should have files.  
+                        This page lists the discrepancy.</h3>
                     
                     
                     <label className="networkErrorLabel">
@@ -153,21 +271,42 @@ export default class AdminFiles extends React.Component {
                                 onClick={this.copyResults}>Copy results to clipboard</button>
                         
                     </div>
+
                     <div>
                         <a target="_blank" rel="noreferrer" href={"https://www.nepaccess.org/record-details?id="+this.state.goToId}>Go to record:</a>
                         <input name="goToId" value={this.state.goToId} onChange={this.onChange} />
-                    </div><div>
-                        <label className="block bold" htmlFor="fileList">Files: ID,Filename,folder,type</label>
+                    </div>
+                    
+                    <div>
+                        <label className="block bold" htmlFor="fileList">CSV of records where files on disk were expected: ID,Filename,folder,type</label>
                         <textarea 
                                 className="server-response"
                                 ref={(textarea) => this.textArea = textarea}
                                 id="fileList" value={this.state.files} onChange={this.onChangeDummy} />
                     </div>
-                    
-                <p>This tool is just looking for filenames that don't appear to exist, 
-                    or folders that don't exist/don't have files in the expected subfolder.  
-                    Specifically: It's checking for file sizes saved in the database, but these can be missed by the importer. 
-                    So, the re-check button asks the file server again manually.</p>
+
+                    <br />
+                    <hr />
+                    <br />
+
+                    <div className="padding-all">
+                        <h3>ALL records with no apparent files on disk:</h3>
+                        <ReactTabulator
+                            ref={this.my_table}
+                            data={this.state.data}
+                            columns={this.state.columns}
+                            options={options}
+                        />
+                        <button 
+                            className="button"
+                            onClick={this.downloadResults}
+                        >
+                            Download this full has-no-files list as .tsv
+                        </button>
+                        <br />
+    
+                    </div>
+
                 </div>
             </div>
         </>);
@@ -178,5 +317,20 @@ export default class AdminFiles extends React.Component {
 
     componentDidMount() {
         this.getMissingFiles();
+        this.get();
     }
+
+    componentDidUpdate() {
+        if(this.my_table && this.my_table.current){
+            this.updateTable();
+        }
+    }
+}
+
+function getKeys(obj) {
+    let keysArr = [];
+    for (var key in obj) {
+      keysArr.push(key);
+    }
+    return keysArr;
 }
