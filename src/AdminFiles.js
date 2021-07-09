@@ -301,7 +301,7 @@ export default class AdminFiles extends React.Component {
                             className="button"
                             onClick={this.downloadResults}
                         >
-                            Download this full has-no-files list as .tsv
+                            Download this full has-no-files list as a .tsv file
                         </button>
                         <br />
     
