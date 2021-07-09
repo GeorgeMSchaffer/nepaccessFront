@@ -215,7 +215,7 @@ export default class AdminFiles extends React.Component {
         if(this.state.response) {
             const csvBlob = new Blob([this.state.response]);
             const today = new Date().toISOString().split('T')[0];
-            const csvFilename = `results_${today}.tsv`;
+            const csvFilename = `missing_${today}.tsv`;
 
     
             if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
@@ -232,6 +232,57 @@ export default class AdminFiles extends React.Component {
 
         }
     }
+    downloadMetadata = () => {
+        this.setState({ busy: true });
+
+        let getUrl = Globals.currentHost + "test/findAllDocs";
+        
+        axios.get(getUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+
+            if(parsedJson){
+                this.setState({
+                    metadata: this.jsonToTSV(parsedJson),
+                    busy: false
+                }, () => {
+                    if(this.state.metadata) {
+                        const csvBlob = new Blob([this.state.metadata]);
+                        const today = new Date().toISOString().split('T')[0];
+                        const csvFilename = `metadata_${today}.tsv`;
+            
+                
+                        if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                            window.navigator.msSaveBlob(csvBlob, csvFilename);
+                        }
+                        else {
+                            const temporaryDownloadLink = window.document.createElement("a");
+                            temporaryDownloadLink.href = window.URL.createObjectURL(csvBlob);
+                            temporaryDownloadLink.download = csvFilename;
+                            document.body.appendChild(temporaryDownloadLink);
+                            temporaryDownloadLink.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                            document.body.removeChild(temporaryDownloadLink);
+                        }
+            
+                    }
+                });
+            } else {
+                console.log("Null");
+            }
+        }).catch(error => { // 401/404/...
+            console.error(error);
+            this.setState({ busy: false });
+        });
+    }
 
     render() {
         return (<>
@@ -240,6 +291,14 @@ export default class AdminFiles extends React.Component {
                     Missing Files
                 </div>
                 <div id="admin-files-content">
+                    <div className="padding-all">
+                        <button 
+                            className="button"
+                            onClick={this.downloadMetadata}
+                        >
+                            Download .tsv of entire metadata table
+                        </button>
+                    </div>
 
                     <h3>Expectation: Metadata listing folder or filename should have files.  
                         This page lists the discrepancy.</h3>
@@ -304,7 +363,6 @@ export default class AdminFiles extends React.Component {
                             Download this full has-no-files list as a .tsv file
                         </button>
                         <br />
-    
                     </div>
 
                 </div>
