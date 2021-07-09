@@ -9,6 +9,7 @@ import MatchSearcher from './MatchSearcher.js';
 import MatchResults from './MatchResults.js';
 import DetailsUpdate from './DetailsUpdate.js';
 import DetailsFileResults from './DetailsFileResults.js';
+import DetailsRestore from './DetailsRestore.js';
 
 import '../index.css';
 import './match.css';
@@ -370,6 +371,8 @@ export default class RecordDetailsTab extends React.Component {
                     {this.showDocuments()}
                 </div>
             );
+        } else if(this.state.dropdownOption.value === 'Restore') {
+            return this.showRestore()
         } else { // Show update panel
             return (
                 <div className="record-details">
@@ -642,6 +645,10 @@ export default class RecordDetailsTab extends React.Component {
         );
     }
 
+    showRestore = () => {
+        return <DetailsRestore id={this.getIdParam()} repopulate={this.populate} />
+    }
+
 
     showDropdown = () => {        
         let curator = localStorage.curator;
@@ -650,6 +657,7 @@ export default class RecordDetailsTab extends React.Component {
         if(curator) {
             viewOptions.push({ value: 'Match', label: 'Title alignment' });
             viewOptions.push({ value: 'Update', label: 'Edit' });
+            viewOptions.push({ value: 'Restore', label: 'Restore' });
         }
         // Don't show dropdown at all if curator, now that we've hidden the title alignment also
         if(curator) {
