@@ -64,7 +64,7 @@ export default class AdminFiles extends React.Component {
     get = () => {
         this.setState({ busy: true });
 
-        let getUrl = Globals.currentHost + "test/size_under_200";
+        let getUrl = Globals.currentHost + "file/missing_size";
         
         axios.get(getUrl, {
             params: {
