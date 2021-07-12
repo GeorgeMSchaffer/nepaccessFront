@@ -601,7 +601,21 @@ class Search extends React.Component {
                 // onKeyUp={this.onKeyUp}
             >
                 <span className="sidebar-header">Narrow your results</span>
+                
                 <div className="sidebar-hr"></div>
+
+                <div className="filter">
+                    <div className="checkbox-container">
+                        <label className="clickable checkbox-text">
+                            <input type="checkbox" name="needsDocument" className="sidebar-checkbox"
+                                    checked={this.state.needsDocument} onChange={this.onNeedsDocumentChecked} />
+                            <span className="checkbox-text">Has files</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div className="sidebar-hr"></div>
+                
                 <div className="filter">
                     <label className="sidebar-label" htmlFor="searchAgency">Lead agency or <span className="link" onClick={this.orgClick}>agencies</span></label>
                     <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
@@ -661,16 +675,6 @@ class Search extends React.Component {
                     </div>
                 </div>
 
-                <div className="sidebar-hr"></div>
-
-                <div className="filter">
-                    <input type="checkbox" name="needsDocument" className="sidebar-checkbox"
-                            checked={this.state.needsDocument} onChange={this.onNeedsDocumentChecked} />
-                    <label className="checkbox-text" htmlFor="needsDocument">
-                        Must have files
-                    </label>
-                </div>
-                
                 <div className="sidebar-hr"></div>
                 
                 <div className="filter">
