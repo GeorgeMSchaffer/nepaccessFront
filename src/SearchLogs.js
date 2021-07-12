@@ -5,6 +5,8 @@ import Globals from './globals.js';
 
 import ChartBar from './ChartBar.js';
 
+import { ReactTabulator } from 'react-tabulator';
+
 // const typeLabels = ["Draft",
 //     "Final",
 //     "Second Draft",
@@ -19,15 +21,46 @@ import ChartBar from './ChartBar.js';
 //     "Third Final Supplemental",
 //     "Other"];
 
+const columns = [
+    { title: "username", field: "username", width: 200, headerFilter:"input"  },
+    { title: "terms", field: "terms", headerFilter:"input"},
+    { title: "time", field: "time", width: 250, headerFilter:"input"  },
+    { title: "mode", field: "mode", width: 100, headerFilter:"input"  },
+];
+const options = {
+    // maxHeight: "100%",           // for limiting table height
+    selectable:true,
+    layoutColumnsOnNewData: true,
+    tooltips:true,
+    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
+    // responsiveLayoutCollapseUseFormatters:false,
+    pagination:"local",             //paginate the data
+    paginationSize:10,              //allow 10 rows per page of data
+    paginationSizeSelector:[10, 25, 50, 100], 
+    movableColumns:true,
+    resizableRows:true,
+    resizableColumns:true,
+    layout:"fitColumns",
+    invalidOptionWarnings:false,    // spams warnings without this
+    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
+};
+
+const chartOptions = [
+    {value: "Search Count by Terms", label: "Search Count by Terms"},
+    {value: "Table of all searches", label: "Table of all searches"}
+];
 
 export default class SearchLogs extends React.Component {
+    
     
 	constructor(props) {
 		super(props);
 		this.state = { 
             typeCount: [],
             chartOption: {value: "Search Count by Terms", label: "Search Count by Terms"},
-            authorized: false
+            authorized: false,
+            searches: [],
+            response: []
         };
         
         
@@ -54,6 +87,7 @@ export default class SearchLogs extends React.Component {
 
     getStats = () => {
         this.getTitleCount();
+        this.findAllSearches();
     }
 
     /** Top 50 searches by terms */
@@ -73,12 +107,61 @@ export default class SearchLogs extends React.Component {
             }
         }).then(parsedJson => {
             if(parsedJson){
-                console.log("Results",parsedJson);
+                console.log("typeCount Results",parsedJson);
                 this.setState({
                     typeCount: transformArrayOfArrays(parsedJson)
                     // typeCount: (parsedJson)
                 }, () => {
-                    console.log("Results after",this.state.typeCount);
+                    console.log("typeCount Results after",this.state.typeCount);
+                });
+            } else { // null/404
+
+            }
+        }).catch(error => {
+            this.setState({
+                networkError: error.message
+            });
+        });
+        
+    }
+
+    mapSearches = (data) => {
+        return data.map((datum) => {
+            let newObject = { username: datum[0],
+                terms: datum[1],
+                time: datum[2],
+                mode: datum[3]
+            };
+            return newObject;
+        });
+    }
+
+    findAllSearches = () => {
+
+        // TODO: This and the logic to get it and populate with it like with adminFind
+
+        
+        let populateUrl = Globals.currentHost + "stats/find_all_searches";
+        
+        axios.get(populateUrl, {
+            // params: {
+                
+            // }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data && response.data.length > 0) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => {
+            if(parsedJson){
+                console.log("Results",parsedJson);
+                this.setState({
+                    searches: this.mapSearches(parsedJson),
+                    response: this.jsonToCSV(this.mapSearches(parsedJson))
+                }, () => {
+                    console.log("Results after",this.state.searches);
                 });
             } else { // null/404
 
@@ -91,96 +174,47 @@ export default class SearchLogs extends React.Component {
         
     }
     
-    // getDownloadableCountByYear = () => {
-
-    //     let populateUrl = Globals.currentHost + "stats/count_year_downloadable";
+    // format json as tab separated values to prep .tsv download
+    jsonToCSV = (data) => {
+        const items = data;
+        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        const header = Object.keys(items[0])
+        const csv = [
+        header.join(','), // header row first
+        ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+        ].join('\r\n')
         
-    //     axios.get(populateUrl, {
-    //         params: {
+        return csv;
+    }
+    // best performance is to Blob it on demand
+    downloadResults = () => {
+        if(this.state.response) {
+            const csvBlob = new Blob([this.state.response]);
+            const today = new Date().toISOString().split('T')[0];
+            const csvFilename = `results_${today}.csv`;
 
-    //         }
-    //     }).then(response => {
-    //         let responseOK = response && response.status === 200;
-    //         if (responseOK && response.data && response.data.length > 0) {
-    //             return response.data;
-    //         } else {
-    //             return null;
-    //         }
-    //     }).then(parsedJson => { 
-    //         if(parsedJson){
-    //             this.setState({
-    //                 downloadableCountByYear: transformYearStack(parsedJson, this.state.yearLabels)
-    //             });
-    //         } else { // null/404
-
-    //         }
-    //     }).catch(error => {
-            
-    //     });
-        
-    // }
-
-    // getDraftFinalCountByYear = () => {
-    //     let populateUrl = Globals.currentHost + "stats/draft_final_count_year";
-        
-    //     axios.get(populateUrl, {
-    //         params: {
-
-    //         }
-    //     }).then(response => {
-    //         let responseOK = response && response.status === 200;
-    //         if (responseOK && response.data && response.data.length > 0) {
-    //             return response.data;
-    //         } else {
-    //             return null;
-    //         }
-    //     }).then(parsedJson => { 
-    //         if(parsedJson){
-    //             this.setState({
-    //                 draftFinalCountByYear: transformArraysWithLabels(parsedJson, this.state.yearLabels)
-    //             });
-    //         } else { // null/404
-
-    //         }
-    //     }).catch(error => {
-            
-    //     });
-        
-    // }
-
-    // getDraftFinalCountByState = () => {
-    //     let populateUrl = Globals.currentHost + "stats/draft_final_count_state";
-        
-    //     axios.get(populateUrl, {
-    //         params: {
-                
-    //         }
-    //     }).then(response => {
-    //         let responseOK = response && response.status === 200;
-    //         if (responseOK && response.data && response.data.length > 0) {
-    //             return response.data;
-    //         } else {
-    //             return null;
-    //         }
-    //     }).then(parsedJson => { 
-    //         if(parsedJson){
-    //             this.setState({
-    //                 draftFinalCountByState: transformLongerArrayOfArrays(parsedJson)
-    //             });
-    //         } else { // null/404
-
-    //         }
-    //     }).catch(error => {
-            
-    //     });
-        
-    // }
     
-    // onDropdownChange = (evt) => {
-    //     this.setState({
-    //         chartOption: evt
-    //     });
-    // }
+            if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                window.navigator.msSaveBlob(csvBlob, csvFilename);
+            }
+            else {
+                const temporaryDownloadLink = window.document.createElement("a");
+                temporaryDownloadLink.href = window.URL.createObjectURL(csvBlob);
+                temporaryDownloadLink.download = csvFilename;
+                document.body.appendChild(temporaryDownloadLink);
+                temporaryDownloadLink.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                document.body.removeChild(temporaryDownloadLink);
+            }
+
+        }
+    }
+    
+    onDropdownChange = (evt) => {
+        console.log(evt.value);
+        this.setState({
+            chartOption: evt
+        });
+    }
     
 	check = () => { // check if JWT is expired/invalid
 		
@@ -205,17 +239,15 @@ export default class SearchLogs extends React.Component {
     }
 
     render() {
-        const chartOptions = [
-            {value: "Search Count by Terms", label: "Search Count by Terms"}
-        ];
 
         if(!this.state.authorized) {
             return <div className="content">
                 <label className="errorLabel">{this.state.networkError}</label>
             </div>
-        } else {
+        } else if(this.state.chartOption.value === "Search Count by Terms") {
             return (<div className="charts-holder">
                     <div><label className="errorLabel">{this.state.networkError}</label></div>
+
                     <Select id="chart-picker" classNamePrefix="react-select" name="chart" isSearchable 
                             // styles={customStyles}
                             options={chartOptions} 
@@ -223,21 +255,44 @@ export default class SearchLogs extends React.Component {
                             value={this.state.chartOption}
                             placeholder="Type or select" 
                     />
-                    <ChartBar option={this.state.chartOption.value} data={this.state.typeCount} label={"Search Count by Terms"} />
-                    {/* <ChartBar option={this.state.chartOption.value} data={this.state.downloadableCountByType} label={"Downloadable Count by Document Type"} /> */}
-                    {/* <ChartBar data={this.state.draftFinalCountByAgency[0]} label={"Draft count by agency"} />
-                    <ChartBar data={this.state.draftFinalCountByAgency[1]} label={"Final count by agency"} />
-                    <ChartBar data={this.state.draftFinalCountByYear[0]} label={"Draft count by year"} />
-                    <ChartBar data={this.state.draftFinalCountByYear[1]} label={"Final count by year"} />
-                    <ChartBar data={this.state.draftFinalCountByState[0]} label={"Draft count by state"} />
-                    <ChartBar data={this.state.draftFinalCountByState[1]} label={"Final count by state"} /> */}
-                    
-                    {/* <ChartBar size="larger" option={this.state.chartOption.value} data={this.state.draftFinalCountByState} label={"Draft and Final Count by State"} />
-                    <ChartBar option={this.state.chartOption.value} data={this.state.draftFinalCountByYear} label={"Draft and Final Count by Year"} />
-                    <ChartBar stacked={true} option={this.state.chartOption.value} meta={this.state.metadataCountByYear} down={this.state.downloadableCountByYear} label={"Downloadable Draft or Final EIS by Year"} />
-                    <ChartBar size="largest" option={this.state.chartOption.value} data={this.state.draftFinalCountByAgency} label={"Draft and Final Count by Agency"} /> */}
+                
+                    <hr />
+
+                    <ChartBar option={this.state.chartOption.value} data={this.state.typeCount} label={this.state.chartOption.label} />
+
                 </div>
             );
+        } else {
+        return (
+            <div className="charts-holder">
+
+                <div><label className="errorLabel">{this.state.networkError}</label></div>
+
+                <Select id="chart-picker" classNamePrefix="react-select" name="chart" isSearchable 
+                        // styles={customStyles}
+                        options={chartOptions} 
+                        onChange={this.onDropdownChange}
+                        value={this.state.chartOption}
+                        placeholder="Type or select" 
+                />
+                
+                <hr />
+
+                <ReactTabulator
+                    ref={this.my_table}
+                    data={this.state.searches}
+                    columns={columns}
+                    options={options}
+                />
+
+                <button 
+                    className="button"
+                    onClick={this.downloadResults}
+                >
+                    Download all searches as .csv
+                </button>
+
+            </div>);
         }
     }
 
