@@ -730,7 +730,7 @@ class Search extends React.Component {
                 </div>
             </div>
             <div hidden={this.state.hideOrganization} id="agency-svg-holder">
-                <button onClick={this.orgClick}>Close</button>
+                <button onClick={this.orgClick}>x</button>
             </div>
             </>
         )

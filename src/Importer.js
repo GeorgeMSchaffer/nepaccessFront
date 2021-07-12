@@ -1218,7 +1218,7 @@ class Importer extends Component {
                     />
 
                     <button className="button" onClick={this.getAllDocs}>Get or refresh view of all current metadata</button>
-                    <button className="button" onClick={this.downloadResults}>Save this table as tab-separated values file</button>
+                    <button className="button" onClick={this.downloadResults}>Save full metadata table as tab-separated values file</button>
 
                 </div>
 
