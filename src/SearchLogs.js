@@ -191,7 +191,7 @@ export default class SearchLogs extends React.Component {
         if(this.state.response) {
             const csvBlob = new Blob([this.state.response]);
             const today = new Date().toISOString().split('T')[0];
-            const csvFilename = `results_${today}.csv`;
+            const csvFilename = `search_logs_${today}.csv`;
 
     
             if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
