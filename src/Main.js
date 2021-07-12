@@ -235,7 +235,7 @@ class Main extends React.Component {
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
                             <Link to="/abouthelp">Search Tips</Link>
-                            <Link to="/abouthelp2">What Can I Search For?</Link>
+                            <Link to="/abouthelp2">Available Files</Link>
                         </div>
                     </div>
                     <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">

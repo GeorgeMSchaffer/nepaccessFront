@@ -8,7 +8,7 @@ export default class AboutSearchTips2 extends React.Component {
             <div className="iframe-container">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>NEPAccess - What Can I Search For?</title>
+                    <title>NEPAccess - Available Files</title>
                     <link rel="canonical" href="https://nepaccess.org/what-can-i-search-for" />
                 </Helmet>
 
