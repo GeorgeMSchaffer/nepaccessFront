@@ -33,6 +33,7 @@ export default class App extends React.Component {
         count: 0,
 		resultsText: 'Results',
 		networkError: '',
+        parseError: '',
 		verified: false,
         searching: false,
         useSearchOptions: false,
@@ -346,26 +347,56 @@ export default class App extends React.Component {
 
     // Start a brand new search.
     startNewSearch = (searcherState) => {
-        // reset sort
-        this._sortVal = "relevance"; 
-        this._ascVal = true;
 
-        this._canceled = false;
-        this._searcherState = searcherState; // for live filtering
+        const oldTerms = searcherState.titleRaw;
 
-        this.resetTypeCounts();
+        // Parse terms, set to what Lucene will actually use for full transparency.
+        
+        axios({
+            method: 'GET', 
+            url: Globals.currentHost + 'text/test_terms',
+            params: {
+                terms: searcherState.titleRaw
+            }
+        }).then(response => {
 
-        // 1: Collect contextless results
-        //        - Consolidate all of the filenames by metadata record into singular results
-        //          (maintaining original order by first appearance)
-        this.initialSearch(searcherState);
-        // 2: Begin collecting text fragments 10-100 at a time or all for current page,  
-        //          assign accordingly, in a cancelable recursive function
-        //          IF TITLE ONLY SEARCH: We can stop here.
+            if(response.data !== oldTerms && "\""+response.data+"\"" !== oldTerms) {
+                searcherState.titleRaw = response.data; // escape terms
+
+                this.setState({
+                    parseError: 'Special characters were escaped to avoid parsing error.  Old search terms: ' + oldTerms
+                })
+            } else {
+                this.setState({
+                    parseError: ''
+                })
+            }
+            
+            // reset sort
+            this._sortVal = "relevance"; 
+            this._ascVal = true;
+
+            this._canceled = false;
+            this._searcherState = searcherState; // for live filtering
+
+            this.resetTypeCounts();
+            
+            // 1: Collect contextless results
+            //        - Consolidate all of the filenames by metadata record into singular results
+            //          (maintaining original order by first appearance)
+            this.initialSearch(searcherState);
+            // 2: Begin collecting text fragments 10-100 at a time or all for current page,  
+            //          assign accordingly, in a cancelable recursive function
+            //          IF TITLE ONLY SEARCH: We can stop here.
+
+        }).catch(error => {
+            console.error(error);
+        })
 
     }
 
     initialSearch = (searcherState) => {
+        console.log("here we go");
         if(!this._mounted){ // User navigated away or reloaded
             return;
         }
@@ -407,6 +438,8 @@ export default class App extends React.Component {
 			let dataToPass = { 
 				title: this.state.searcherInputs.titleRaw
             };
+
+
 
             // OPTION: If we restore a way to use search options for faster searches, we'll assign here
             if(this.state.useSearchOptions) {
@@ -882,6 +915,7 @@ export default class App extends React.Component {
                         optionsChanged={this.optionsChanged}
                         count={this.state.count}
                         networkError={this.state.networkError}
+                        parseError={this.state.parseError}
                         finalCount={this._finalCount}
                         draftCount={this._draftCount}
                         eaCount={this._eaCount}

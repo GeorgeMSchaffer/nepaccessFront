@@ -426,6 +426,7 @@ class Search extends React.Component {
         return (
             <>
             <div className="content" onSubmit={this.submitHandler}>
+                {this.props.parseError}
                 {/* <h1 className="search-header">Search for NEPA documents</h1> */}
                 <div className="search-holder" >
 
