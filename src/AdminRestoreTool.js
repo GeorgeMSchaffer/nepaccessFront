@@ -348,11 +348,7 @@ export default class AdminRestoreTool extends React.Component {
         // }
     }
 
-    // TODO: So I think the backend should handle the id or date range logic, and it also will figure out
-    // how to handle a given user id (either empty string or string with an integer)
-    // TODO: date range and id range logic.  It's simple enough: Use the range to get all distinct document IDs.
-    // Then update these using the earliest restore point equal to or after the earliest date or ID in the range.
-    // Utilize optional user ID to match on (only restore using that user).
+    /** Update all documents inside date range to the earliest version of each document starting from dateStart */
     restoreByDateRange = () => {
         // If we can programmatically select from the table:
         // Use restoreOne(doc,date,userID) with every distinct doc and the earliest
@@ -373,25 +369,31 @@ export default class AdminRestoreTool extends React.Component {
 
 
     }
+
+    /** Update all documents inside id range to the earliest version of each document starting from idStart */
     // Theoretically there's no great distinction here - IDs are created sequentially, so they are in the same
     // exact order as dates.  But the user is more likely to have an exact ID range handy than an exact date range.
     restoreByIDRange = () => {
-        // TODO: 
-        // If we can programmatically select from the table:
-        // Make a new special restoreOne(doc,updateLogID,userID) with every distinct doc and the earliest
-        // ID in the range of IDs.  Make a special case on the backend that goes by earliest ID 
-        // instead of earliest date.
-        // Else do all the work on the backend, or get the list from the backend, put it in the table,
-        // and process it here.
-        console.log(this.my_table.current.table.getSelectedData());
-        if(this.my_table.current.table.getSelectedData().length === 0) {
-            console.log("Whoops");
-            return;
-        }
-        const selectedData = this.my_table.current.table.getSelectedData();
+        // console.log(this.my_table.current.table.getSelectedData());
+        // if(this.my_table.current.table.getSelectedData().length === 0) {
+        //     return;
+        // }
+        // const selectedData = this.my_table.current.table.getSelectedData();
 
-        const distinctDocuments = [...new Set(selectedData.map(x => x.documentId))];
+        // const distinctDocuments = [...new Set(selectedData.map(x => x.documentId))];
         
+        if(this.state.logStart && this.state.logEnd) {
+            const postUrl = new URL('update_log/restore_id_range', Globals.currentHost);
+
+            const dataForm = new FormData();
+            dataForm.append('idStart',this.state.logStart);
+            dataForm.append('idEnd',this.state.logEnd);
+            dataForm.append('userid', this.state.userID);
+
+            this.post(postUrl,dataForm);
+        } else {
+            console.log("Missing ids");
+        }
     }
 
 
