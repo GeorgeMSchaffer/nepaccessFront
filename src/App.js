@@ -522,8 +522,17 @@ export default class App extends React.Component {
                             this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
                         }
                     });
+                } else if(currentResults && currentResults[0] && currentResults[0].filenames) {
+                    // Found nothing but ParseException under filenames property
+                    
+                    this.setState({
+                        searching: false,
+                        searchResults: [],
+                        outputResults: [],
+                        networkError: 'Please remove invalid special characters from your search and try again.  (e.g. /, *, -, ^, etc., depending on context)',
+                        resultsText: "Error: " + currentResults[0].filenames.split(':')[0]
+                    });
                 } else {
-                    // Found nothing
                     // console.log("No results");
                     this.setState({
                         searching: false,
@@ -548,8 +557,12 @@ export default class App extends React.Component {
                     Globals.emitEvent('refresh', {
                         loggedIn: false
                     });
-                }
-                else {
+                } else if(error.response && error.response.status === 400) { // bad request
+                    this.setState({
+                        networkError: Globals.errorMessage.default,
+                        resultsText: "Couldn't parse terms, please try removing any special characters"
+                    });
+                } else {
                     this.setState({
                         networkError: Globals.errorMessage.default,
                         resultsText: "Error: Couldn't get results from server"
