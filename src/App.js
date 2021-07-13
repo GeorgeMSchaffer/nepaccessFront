@@ -555,16 +555,6 @@ export default class App extends React.Component {
                             this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
                         }
                     });
-                } else if(currentResults && currentResults[0] && currentResults[0].filenames) {
-                    // Found nothing but ParseException under filenames property
-                    
-                    this.setState({
-                        searching: false,
-                        searchResults: [],
-                        outputResults: [],
-                        networkError: 'Please remove invalid special characters from your search and try again.  (e.g. /, *, -, ^, etc., depending on context)',
-                        resultsText: "Error: " + currentResults[0].filenames.split(':')[0]
-                    });
                 } else {
                     // console.log("No results");
                     this.setState({
