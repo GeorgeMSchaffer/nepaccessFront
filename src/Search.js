@@ -610,7 +610,7 @@ class Search extends React.Component {
                         <label className="clickable checkbox-text">
                             <input type="checkbox" name="needsDocument" className="sidebar-checkbox"
                                     checked={this.state.needsDocument} onChange={this.onNeedsDocumentChecked} />
-                            <span className="checkbox-text">Has files</span>
+                            <span className="checkbox-text">Has available files</span>
                         </label>
                     </div>
                 </div>
