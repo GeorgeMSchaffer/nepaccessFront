@@ -44,9 +44,7 @@ const getRoutes = [
     { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
 
     { label: "reports/report_agency", value: "reports/report_agency" },
-    { label: "reports/report_files_agency", value: "reports/report_files_agency" },
     { label: "reports/report_agency_2000", value: "reports/report_agency_2000" },
-    { label: "reports/report_files_agency_2000", value: "reports/report_files_agency_2000" },
 ];
 
 export default class AdminFind extends React.Component {
