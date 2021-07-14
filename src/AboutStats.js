@@ -321,15 +321,9 @@ export default class AboutStats extends React.Component {
 			})
 		})
 		.catch((err) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
-			if(!err.response){ // Probably no need to redirect to login if server isn't responding
-				this.setState({
-					networkError: "Server may be down, please try again later."
-				});
-			} else { // 403?
-                if(err.response.status===403) {
-                    this.props.history.push('/login');
-                }
-			}
+            this.setState({
+                networkError: Globals.getErrorMessage(err)
+            });
 		})
 		.finally(() => {
 			// console.log("Returning... " + result);

@@ -145,7 +145,7 @@ export default class RecordDetailsTab extends React.Component {
                 this.setState({
                     details: parsedJson,
                 });
-            } else { // 404
+            } else { // null (no record?)
                 this.setState({
                     networkError: "No record found (try a different ID)",
                     exists: false
@@ -153,7 +153,7 @@ export default class RecordDetailsTab extends React.Component {
             }
         }).catch(error => {
             this.setState({
-                networkError: 'Server is down or you may need to login again.'
+                networkError: Globals.getErrorMessage(error)
             });
         });
     }
@@ -205,7 +205,7 @@ export default class RecordDetailsTab extends React.Component {
 				}
 			}).catch(error => {
 				this.setState({
-					networkError: 'Server is down or you may need to login again.'
+					networkError: Globals.getErrorMessage(error)
 				});
 				this.setState({
 					resultsText: "Error: Couldn't get results"

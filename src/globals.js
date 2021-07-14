@@ -139,6 +139,35 @@ const Globals = {
         "Orange","Cyan","Magenta","Teal","DarkGray"
     ],
 
+    getErrorMessage(error) {
+        let message = "Sorry, the server encountered an unexpected error.";
+
+        if(error && error.response && error.response.status){
+
+            const _status = error.response.status;
+
+            if(_status == 400) {
+                message = "400 Bad request";
+            }
+            else if(_status == 401) {
+                message = "401 Unauthorized";
+            }
+            else if(_status == 403) {
+                message = "Please log in again (user session may have expired).";
+            }
+            else if(_status == 404) {
+                message = "404 Not Found";
+            }
+            else if(_status == 408) {
+                message = "408 Request Timed Out";
+            }
+        } else {
+            message = "Server appears to be down right now, please try again later."
+        }
+
+        return message;
+    },
+
     errorMessage: {
         default: "Server may be updating, please try again in a minute.",
         auth: "Please log in again (auth token expires every 10 days).",
