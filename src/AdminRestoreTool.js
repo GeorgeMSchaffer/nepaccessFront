@@ -505,11 +505,6 @@ export default class AdminRestoreTool extends React.Component {
                     <br />
                     <br />
 
-
-                    <label>
-                        Not yet implemented, but effectively the same as date range, and you can get the dates
-                        from the IDs easily within this tool.
-                    </label>
                     <div className="padding-all border-red">
                         <div>
                             <button type="button" onClick={this.restoreByIDRange}>
