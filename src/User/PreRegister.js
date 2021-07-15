@@ -518,8 +518,8 @@ export default class PreRegister extends React.Component {
                                         <span className="leading-text">
                                             Username:
                                         </span>
-                                        <input type="text" maxLength="191"
-                                            className="form-control" id="username" name="username" placeholder="" onBlur={this.onUsernameChange}/>
+                                        <input type="text" maxLength="191" value={this.state.username}
+                                            className="form-control" id="username" name="username" placeholder="" onChange={this.onUsernameChange}/>
                                         <label hidden={this.state.registered} className="errorLabel">{this.state.usernameError}</label>
                                     </div>
                                     <div className="register-form-group">
