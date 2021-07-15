@@ -228,7 +228,7 @@ export default class PreRegister extends React.Component {
     }
 
 	onUsernameChange = (evt) => {
-        this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkUsername(); });
+        this.setState({ [evt.target.name]: evt.target.value.trim() }, () => { this.checkUsername(); });
     }
 
 	onPasswordChange = (evt) => {
@@ -236,7 +236,7 @@ export default class PreRegister extends React.Component {
     }
     
 	onEmailChange = (evt) => {
-        this.setState({ [evt.target.name]: evt.target.value }, () => { this.checkEmail(); });
+        this.setState({ [evt.target.name]: evt.target.value.trim() }, () => { this.checkEmail(); });
     }
     
     onAffiliationOtherChange = (evt) => {
