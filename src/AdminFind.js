@@ -43,8 +43,12 @@ const getRoutes = [
     { label: "test/size_under_200", value: "test/size_under_200" },
     { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
 
+    // Headers: Agency, Record count, Count with files
     { label: "reports/report_agency", value: "reports/report_agency" },
     { label: "reports/report_agency_2000", value: "reports/report_agency_2000" },
+    // Headers: Agency, Record count, Count with files, Process Count, Process Count where at least one document in the process has files
+    { label: "reports/report_agency_process", value: "reports/report_agency_process" },
+    { label: "reports/report_agency_process_2000", value: "reports/report_agency_process_2000" },
 ];
 
 export default class AdminFind extends React.Component {
@@ -70,6 +74,7 @@ export default class AdminFind extends React.Component {
 
     checkAdmin = () => {
         let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
+        let _admin = false;
 
         axios({
             url: checkUrl,
@@ -79,20 +84,15 @@ export default class AdminFind extends React.Component {
             let responseOK = response.data && response.status === 200;
 
             if (responseOK) {
-                this.setState({
-                    admin: true
-                });
-            } else {
-                this.setState({
-                    admin: false
-                });
+                _admin = true;
             }
         })
         .catch(error => {
             console.error(error);
-
+        })
+        .finally(onF => {
             this.setState({
-                admin: false
+                admin: _admin
             });
         });
     }
