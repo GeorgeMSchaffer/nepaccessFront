@@ -49,6 +49,8 @@ const getRoutes = [
     // Headers: Agency, Record count, Count with files, Process Count, Process Count where at least one document in the process has files
     { label: "reports/report_agency_process", value: "reports/report_agency_process" },
     { label: "reports/report_agency_process_2000", value: "reports/report_agency_process_2000" },
+
+    { label: "reports/duplicates_size", value: "reports/duplicates_size" },
 ];
 
 export default class AdminFind extends React.Component {
@@ -124,7 +126,7 @@ export default class AdminFind extends React.Component {
                 newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
             }
 
-            if(parsedJson){
+            if(parsedJson && parsedJson.length > 0){
                 this.setState({
                     columns: newColumns,
                     data: this.handleData(parsedJson),
@@ -132,7 +134,13 @@ export default class AdminFind extends React.Component {
                     busy: false
                 });
             } else {
-                console.log("Null");
+                console.log("Null results");
+                this.setState({
+                    columns: newColumns,
+                    data: [],
+                    response: this.jsonToTSV(parsedJson),
+                    busy: false
+                });
             }
         }).catch(error => { // 401/404/...
             console.error(error);
