@@ -141,7 +141,7 @@ export default class DetailsRestore extends React.Component {
         for(let i = selectedData.length - 1; i >= 0; i--) {
             console.log(i);
             console.log(selectedData[i]);
-            if(selectedData[i] && typeof(selectedData[i] != 'undefined')) {
+            if(selectedData[i] && typeof(selectedData[i] !== 'undefined')) {
                 this.restoreOneByID(selectedData[i].id);
             }
         }

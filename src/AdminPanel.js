@@ -21,10 +21,6 @@ export default class AdminPanel extends React.Component {
         dropdownOption: { value: '', label: ''}
     }
 
-    constructor(props) {
-        super(props);
-    }
-
     checkAdmin = () => {
         let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
         axios({
