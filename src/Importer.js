@@ -786,10 +786,6 @@ class Importer extends Component {
     
     // helper methods for validation
 
-    requiredHeadersIdState(headers) {
-        console.log("Hit validator",headers);
-        return ('id' in headers && 'state' in headers);
-    }
     requiredHeadersTitleAgencyDocumentFile(headers) {
         console.log("Hit validator",headers);
         return ('title' in headers 
@@ -855,6 +851,14 @@ class Importer extends Component {
     // require only title
     titleOnlyValidate = (csv) => {
         if(csv[0] && 'title' in csv[0]){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // require only state, id
+    stateIdOnlyValidate = (csv) => {
+        if(csv[0] && 'id' in csv[0] && 'state' in csv[0]){
             return true;
         } else {
             return false;
@@ -1119,8 +1123,8 @@ class Importer extends Component {
                         onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_processes')}>
                     (admin) Process add tool
                 </button>
-                <button type="button" className="button" id="submitCSVProcess" disabled={!this.state.canImportCSV || this.state.disabled} 
-                        onClick={() => this.importCSVHandler(this.requiredHeadersIdState,'file/uploadCSV_statefix')}>
+                <button type="button" className="button" id="submitCSVStateID" disabled={!this.state.canImportCSV || this.state.disabled} 
+                        onClick={() => this.importCSVHandler(this.stateIdOnlyValidate,'file/uploadCSV_id_state')}>
                     (admin) State update by ID
                 </button>
             </>);
