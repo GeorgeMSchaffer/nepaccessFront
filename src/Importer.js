@@ -887,7 +887,9 @@ class Importer extends Component {
             } else {
                 newCSV[i] = this.translateRow(this.state.csv[i]);
                 // Note: Space normalization now handled by backend entirely?  No need for this?
-                newCSV[i]["title"] = newCSV[i]["title"].replace(/\s{2,}/g, ' ');
+                if(newCSV[i]["title"]) {
+                    newCSV[i]["title"] = newCSV[i]["title"].replace(/\s{2,}/g, ' ');
+                }
             }
 
         }
