@@ -154,7 +154,7 @@ export default class AdminRestoreTool extends React.Component {
         const header = Object.keys(items[0])
         const tsv = [
         header.join('\t'), // header row first
-        ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
+        ...items.map(row => header.map(fieldName => (row[fieldName])).join('\t'))
         ].join('\r\n')
         
         return tsv;
@@ -222,7 +222,7 @@ export default class AdminRestoreTool extends React.Component {
         for(let i = selectedData.length - 1; i >= 0; i--) {
             console.log(i);
             console.log(selectedData[i]);
-            if(selectedData[i] && typeof(selectedData[i] != 'undefined')) {
+            if(selectedData[i] && typeof(selectedData[i] !== 'undefined')) {
                 this.restoreOneByID(selectedData[i].id);
             }
         }

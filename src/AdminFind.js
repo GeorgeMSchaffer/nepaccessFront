@@ -173,11 +173,13 @@ export default class AdminFind extends React.Component {
     // format json as tab separated values to prep .tsv download
     jsonToTSV = (data) => {
         const items = data;
-        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        // const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
         const header = Object.keys(items[0])
         const tsv = [
         header.join('\t'), // header row first
-        ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
+        // JSON.stringify results in 1. double quotes around all fields and 2. some weird unnecessary escaping
+        // ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
+        ...items.map(row => header.map(fieldName => (row[fieldName])).join('\t'))
         ].join('\r\n')
         
         return tsv;
