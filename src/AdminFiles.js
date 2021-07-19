@@ -201,7 +201,7 @@ export default class AdminFiles extends React.Component {
     // format json as tab separated values to prep .tsv download
     jsonToTSV = (data) => {
         const items = data;
-        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        // const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
         const header = Object.keys(items[0])
         const tsv = [
         header.join('\t'), // header row first
