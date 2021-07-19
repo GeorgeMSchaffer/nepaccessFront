@@ -183,6 +183,18 @@ class DetailsUpdate extends React.Component {
         }
     }
 
+    /**  TODO: Need to get direction on if we really want to do this - if we don't want the comments to be searchable
+     * then we need to prepare a different design than what I have in mind.
+    /* Front and back:
+    /* Take title, prefix with "EPA comments for ", take comment filename, take date, create brand new record.
+    /* Type will be "Comments" or "EPA Comments"?  After that it will theoretically be open to the extract/index 
+    /* process so that could be run on the backend or done in a bulk call in the future, and then the letter itself
+    /* will be searchable.  Process ID will be the same as the derived record.  If base rec has no process, make one?
+     */
+    extractCommentToNewRecord = () => {
+        
+    }
+
     validated = () => {
         let valid = true;
 
