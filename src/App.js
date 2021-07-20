@@ -347,29 +347,28 @@ export default class App extends React.Component {
     // Start a brand new search.
     startNewSearch = (searcherState) => {
 
-        const oldTerms = searcherState.titleRaw;
+        // Parse terms, set to what Lucene will actually use for full transparency.  Disabled on request
+        // const oldTerms = searcherState.titleRaw;
 
-        // Parse terms, set to what Lucene will actually use for full transparency.
-        
-        axios({
-            method: 'GET', 
-            url: Globals.currentHost + 'text/test_terms',
-            params: {
-                terms: searcherState.titleRaw
-            }
-        }).then(response => {
+        // axios({
+        //     method: 'GET', 
+        //     url: Globals.currentHost + 'text/test_terms',
+        //     params: {
+        //         terms: searcherState.titleRaw
+        //     }
+        // }).then(response => {
 
-            if(response.data !== oldTerms && "\""+response.data+"\"" !== oldTerms) {
-                searcherState.titleRaw = response.data; // escape terms
+        //     if(response.data !== oldTerms && "\""+response.data+"\"" !== oldTerms) {
+        //         searcherState.titleRaw = response.data; // escape terms
 
-                this.setState({
-                    parseError: 'Special characters were escaped to avoid parsing error.  Old search terms: ' + oldTerms
-                })
-            } else {
-                this.setState({
-                    parseError: ''
-                })
-            }
+        //         this.setState({
+        //             parseError: 'Special characters were escaped to avoid parsing error.  Old search terms: ' + oldTerms
+        //         })
+        //     } else {
+        //         this.setState({
+        //             parseError: ''
+        //         })
+        //     }
             
             // reset sort
             this._sortVal = "relevance"; 
@@ -388,9 +387,9 @@ export default class App extends React.Component {
             //          assign accordingly, in a cancelable recursive function
             //          IF TITLE ONLY SEARCH: We can stop here.
 
-        }).catch(error => {
-            console.error(error);
-        })
+        // }).catch(error => {
+        //     console.error(error);
+        // })
 
     }
 
