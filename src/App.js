@@ -347,6 +347,9 @@ export default class App extends React.Component {
     // Start a brand new search.
     startNewSearch = (searcherState) => {
 
+        // throw out anything we really don't want to support/include
+        searcherState.titleRaw = preProcessTerms(searcherState.titleRaw);
+
         // Parse terms, set to what Lucene will actually use for full transparency.  Disabled on request
         // const oldTerms = searcherState.titleRaw;
 
@@ -394,7 +397,6 @@ export default class App extends React.Component {
     }
 
     initialSearch = (searcherState) => {
-        console.log("here we go");
         if(!this._mounted){ // User navigated away or reloaded
             return;
         }
@@ -1028,4 +1030,8 @@ function matchesRod(docType) {
 function matchesScoping(docType) {
     return (
         (docType === "Scoping Report") );
+}
+
+function preProcessTerms(terms) {
+    return terms.replaceAll(':','');
 }
