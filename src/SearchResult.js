@@ -504,7 +504,7 @@ class SearchResult extends React.Component {
                             {this.showState()}
                         </div>
                     </div>
-                    <div className="table-like">
+                    <div className="table-like card-files">
                         {this.showFilename()}
                         {this.showFileDownload()}
                         {this.showCommentsDownload()}

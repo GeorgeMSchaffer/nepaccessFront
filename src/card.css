@@ -16,6 +16,9 @@
     width: 79%; /* title can't flow into filename, downloads */
     padding-right: 1%; /* buffer space */
 }
+.card-files {
+    width: 20%;
+}
 
 /* Filename, downloads style */
 .table-holder>.table-like:nth-child(2) {
