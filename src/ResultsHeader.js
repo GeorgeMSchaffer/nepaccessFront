@@ -43,6 +43,14 @@ export default class ResultsHeader extends React.Component {
         }
     }
 
+    showDownloadButton = () => {
+        if(localStorage.curator) {
+            return <label className="results-download" onClick={this.props.download}>
+                Download this table
+            </label>;
+        }
+    }
+
     render () {
 
         return (
@@ -85,8 +93,7 @@ export default class ResultsHeader extends React.Component {
                                 Show text snippets
                             </label>
                         </div>
-                        <input type="button" className="results-download" onClick={this.props.download}
-                            value="Download this table" />
+                        {this.showDownloadButton()}
                     </div>
 
                 </div>
