@@ -237,6 +237,7 @@ class SearchResults extends React.Component {
                                 snippetsDisabled={this.props.snippetsDisabled} 
                                 showContext={this.state.showContext}
                                 onCheckboxChange={this.onCheckboxChange}
+                                download={this.props.download}
                                 // page={this.state.page}
                             />
                             {/* <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button> */}

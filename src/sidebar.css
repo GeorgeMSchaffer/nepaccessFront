@@ -139,7 +139,8 @@ label.checkbox-text {
 
 /* Vertically align results header content */
 .results-bar {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
     
     width: 100%;
     min-height: 50px;
@@ -154,21 +155,28 @@ label.checkbox-text {
     overflow: hidden !important; */
     text-overflow: ellipsis;
 }
-.results-bar>* { 
+.results-bar>* {
+    display: inline-flex;
+    flex-direction: row;
+    margin-left: 15px;
+}
+/* .results-bar>* { 
     margin: 0;
     padding: 0;
     height: 50px;
     line-height: 50px;
     display: inline-block;
-}
+} */
 .results-bar #results-label {
     display: block;
 }
 #results-bar-checkbox {
-    float: right;
     line-height: 50px;
     height: 50px;
     margin-right: 15px;
+}
+.results-download {
+
 }
 
 .search-header {

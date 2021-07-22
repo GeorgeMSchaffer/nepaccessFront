@@ -85,6 +85,8 @@ export default class ResultsHeader extends React.Component {
                                 Show text snippets
                             </label>
                         </div>
+                        <input type="button" className="results-download" onClick={this.props.download}
+                            value="Download this table" />
                     </div>
 
                 </div>

@@ -883,6 +883,50 @@ export default class App extends React.Component {
 
         return false;
     }
+
+    downloadCurrentAsTSV = () => {
+        if(this.state.outputResults && this.state.outputResults.length > 0) {
+            const resultsForDownload = this.state.outputResults.map((result, idx) => {
+                // omit stuff like comments, highlights, relevance, lucene stuff
+                let newResult = {
+                    id: result.id,
+                    title: result.title,
+                    documentType: result.documentType,
+                    registerDate: result.registerDate,
+                    agency: result.agency,
+                    cooperating_agency: result.cooperatingAgency,
+                    state: result.state,
+                    filename: result.filename,
+                    folder: result.folder
+                }
+                return newResult;
+            });
+            this.downloadResults(Globals.jsonToTSV(resultsForDownload));
+        }
+    }
+
+    // best performance is to Blob it on demand
+    downloadResults = (results) => {
+        if(results) {
+            const csvBlob = new Blob([results]);
+            const today = new Date().toISOString();
+            const csvFilename = `search_results_${today}.tsv`;
+
+    
+            if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                window.navigator.msSaveBlob(csvBlob, csvFilename);
+            }
+            else {
+                const temporaryDownloadLink = window.document.createElement("a");
+                temporaryDownloadLink.href = window.URL.createObjectURL(csvBlob);
+                temporaryDownloadLink.download = csvFilename;
+                document.body.appendChild(temporaryDownloadLink);
+                temporaryDownloadLink.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                document.body.removeChild(temporaryDownloadLink);
+            }
+
+        }
+    }
 	
 
 	render() {
@@ -921,6 +965,7 @@ export default class App extends React.Component {
                         scrollToBottom={this.scrollToBottom}
                         scrollToTop={this.scrollToTop}
                         shouldUpdate={this.state.shouldUpdate}
+                        download={this.downloadCurrentAsTSV}
                     />
 				</div>
                 <div ref={this.endRef} />
