@@ -176,7 +176,11 @@ label.checkbox-text {
     margin-right: 15px;
 }
 .results-download {
-
+    color: blue;
+    cursor: pointer;
+}
+.results-download:hover {
+    text-shadow: 1px 1px 5px #888;
 }
 
 .search-header {
