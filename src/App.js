@@ -348,7 +348,7 @@ export default class App extends React.Component {
     startNewSearch = (searcherState) => {
 
         // throw out anything we really don't want to support/include
-        searcherState.titleRaw = searcherState.titleRaw;
+        searcherState.titleRaw = preProcessTerms(searcherState.titleRaw);
 
         // Parse terms, set to what Lucene will actually use for full transparency.  Disabled on request
         // const oldTerms = searcherState.titleRaw;
@@ -433,13 +433,11 @@ export default class App extends React.Component {
                 searchUrl = new URL('text/search_no_context', Globals.currentHost);
             }
 
-            this._searchTerms = preProcessTerms(this.state.searcherInputs.titleRaw);
+            this._searchTerms = this.state.searcherInputs.titleRaw;
 
 			let dataToPass = { 
 				title: this.state.searcherInputs.titleRaw
             };
-
-
 
             // OPTION: If we restore a way to use search options for faster searches, we'll assign here
             if(this.state.useSearchOptions) {
@@ -1087,5 +1085,6 @@ function preProcessTerms(terms) {
 /** Return modified terms but not for user to see */
 function postProcessTerms(terms) {
     return terms.replaceAll(':','')
-        .replaceAll(/(^|[\s]+)US($|[\s]+)/g,' (U.S. | US) ');
+        .replaceAll(/(^|[\s]+)US($|[\s]+)/g,' ("U. S." | U.S. | US) ')
+        .replaceAll(/(^|[\s]+)U\.S\.($|[\s]+)/g,' ("U. S." | U.S. | US) ');
 }
