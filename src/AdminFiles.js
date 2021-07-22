@@ -91,7 +91,7 @@ export default class AdminFiles extends React.Component {
                 this.setState({
                     columns: newColumns,
                     data: parsedJson,
-                    response: this.jsonToTSV(parsedJson),
+                    response: Globals.jsonToTSV(parsedJson),
                     busy: false
                 });
             } else {
@@ -198,18 +198,7 @@ export default class AdminFiles extends React.Component {
     }
 
     
-    // format json as tab separated values to prep .tsv download
-    jsonToTSV = (data) => {
-        const items = data;
-        // const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
-        const header = Object.keys(items[0])
-        const tsv = [
-        header.join('\t'), // header row first
-        ...items.map(row => header.map(fieldName => (row[fieldName])).join('\t'))
-        ].join('\r\n')
-        
-        return tsv;
-    }
+
     // best performance is to Blob it on demand
     downloadResults = () => {
         if(this.state.response) {
@@ -252,7 +241,7 @@ export default class AdminFiles extends React.Component {
 
             if(parsedJson){
                 this.setState({
-                    metadata: this.jsonToTSV(parsedJson),
+                    metadata: Globals.jsonToTSV(parsedJson),
                     busy: false
                 }, () => {
                     if(this.state.metadata) {

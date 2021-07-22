@@ -166,20 +166,6 @@ class Importer extends Component {
     }
 
 
-    // format json as tab separated values to prep .tsv download
-    jsonToTSV = (data) => {
-        const items = data;
-        // const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
-        const header = Object.keys(items[0])
-        const tsv = [
-        header.join('\t'), // header row first
-        ...items.map(row => header.map(fieldName => (row[fieldName])).join('\t'))
-        ].join('\r\n')
-        
-        return tsv;
-    }
-
-
 
     getPath = () => {
         // full path that will be uploaded...  in Edge/Chrome at least, so user knows exactly what
@@ -1165,7 +1151,7 @@ class Importer extends Component {
                 this.setState({
                     columns: newColumns,
                     data: parsedJson,
-                    response: this.jsonToTSV(parsedJson),
+                    response: Globals.jsonToTSV(parsedJson),
                     reportBusy: false
                 });
             } else {

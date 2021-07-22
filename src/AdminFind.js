@@ -130,7 +130,7 @@ export default class AdminFind extends React.Component {
                 this.setState({
                     columns: newColumns,
                     data: this.handleData(parsedJson),
-                    response: this.jsonToTSV(parsedJson),
+                    response: Globals.jsonToTSV(parsedJson),
                     busy: false
                 });
             } else {
@@ -138,7 +138,7 @@ export default class AdminFind extends React.Component {
                 this.setState({
                     columns: newColumns,
                     data: [],
-                    response: this.jsonToTSV(parsedJson),
+                    response: Globals.jsonToTSV(parsedJson),
                     busy: false
                 });
             }
@@ -168,21 +168,6 @@ export default class AdminFind extends React.Component {
         }
 
         return results;
-    }
-
-    // format json as tab separated values to prep .tsv download
-    jsonToTSV = (data) => {
-        const items = data;
-        // const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
-        const header = Object.keys(items[0])
-        const tsv = [
-        header.join('\t'), // header row first
-        // JSON.stringify results in 1. double quotes around all fields and 2. some weird unnecessary escaping
-        // ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
-        ...items.map(row => header.map(fieldName => (row[fieldName])).join('\t'))
-        ].join('\r\n')
-        
-        return tsv;
     }
     
     updateTable = () => {
