@@ -348,7 +348,7 @@ export default class App extends React.Component {
     startNewSearch = (searcherState) => {
 
         // throw out anything we really don't want to support/include
-        searcherState.titleRaw = preProcessTerms(searcherState.titleRaw);
+        searcherState.titleRaw = searcherState.titleRaw;
 
         // Parse terms, set to what Lucene will actually use for full transparency.  Disabled on request
         // const oldTerms = searcherState.titleRaw;
@@ -433,7 +433,7 @@ export default class App extends React.Component {
                 searchUrl = new URL('text/search_no_context', Globals.currentHost);
             }
 
-            this._searchTerms = this.state.searcherInputs.titleRaw;
+            this._searchTerms = preProcessTerms(this.state.searcherInputs.titleRaw);
 
 			let dataToPass = { 
 				title: this.state.searcherInputs.titleRaw
@@ -459,6 +459,8 @@ export default class App extends React.Component {
                     needsDocument: this.state.searcherInputs.needsDocument
                 };
             }
+
+            dataToPass.title = postProcessTerms(dataToPass.title);
 
             // Proximity search from UI - surround with quotes, append ~#
             if(!this.state.searcherInputs.proximityDisabled && this.state.searcherInputs.proximityOption)
@@ -541,7 +543,7 @@ export default class App extends React.Component {
                         this.countTypes();
                     
                         // title-only (or blank search===no text search at all): return
-                        if(Globals.isEmptyOrSpaces(searcherState.titleRaw) || 
+                        if(Globals.isEmptyOrSpaces(dataToPass.title) || 
                                 (searcherState.searchOption && searcherState.searchOption === "C"))
                         {
                             this.setState({
@@ -561,7 +563,7 @@ export default class App extends React.Component {
                         searching: false,
                         searchResults: [],
                         outputResults: [],
-                        resultsText: "No results found for " + dataToPass.title + " (try adding OR between words for less strict results?)"
+                        resultsText: "No results found for " + this._searchTerms + " (try adding OR between words for less strict results?)"
                     });
                 }
             }).catch(error => { // Server down or 408 (timeout)
@@ -700,7 +702,7 @@ export default class App extends React.Component {
 			let dataToPass = 
             { 
 				unhighlighted: _unhighlighted,
-                terms: _inputs.titleRaw,
+                terms: postProcessTerms(_inputs.titleRaw),
                 markup: _inputs.markup,
                 fragmentSizeValue: _inputs.fragmentSizeValue
             };
@@ -1077,6 +1079,13 @@ function matchesScoping(docType) {
         (docType === "Scoping Report") );
 }
 
+/** Return modified terms for user to see */
 function preProcessTerms(terms) {
-    return terms.replaceAll(':','');
+    return terms;
+}
+
+/** Return modified terms but not for user to see */
+function postProcessTerms(terms) {
+    return terms.replaceAll(':','')
+        .replaceAll(/(^|[\s]+)US($|[\s]+)/g,' (U.S. | US) ');
 }
