@@ -1084,7 +1084,7 @@ function preProcessTerms(terms) {
 
 /** Return modified terms but not for user to see */
 function postProcessTerms(terms) {
-    return terms.replaceAll(':','')
-        .replaceAll(/(^|[\s]+)US($|[\s]+)/g,' ("U. S." | U.S. | US) ')
-        .replaceAll(/(^|[\s]+)U\.S\.($|[\s]+)/g,' ("U. S." | U.S. | US) ');
+    return terms.replaceAll(':','');
+        // .replaceAll(/(^|[\s]+)US($|[\s]+)/g,' ("U. S." | U.S. | US) ') // this was a very bad idea
+        // .replaceAll(/(^|[\s]+)U\.S\.($|[\s]+)/g,' ("U. S." | U.S. | US) ');
 }
