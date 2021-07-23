@@ -61,7 +61,7 @@ class MatchResults extends React.Component {
                 paginationSizeSelector:[10, 25, 50, 100],
                 movableColumns:false,      //allow column order to be changed
                 resizableRows:false,       //allow row order to be changed
-                resizableColumns:false,
+                resizableColumns:true,
                 layout:"fitColumns",
                 invalidOptionWarnings:false, // spams warnings without this
                 footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
