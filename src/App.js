@@ -896,7 +896,6 @@ export default class App extends React.Component {
                     agency: result.agency,
                     cooperating_agency: result.cooperatingAgency,
                     state: result.state,
-                    filename: result.filename,
                     folder: result.folder
                 }
                 return newResult;
