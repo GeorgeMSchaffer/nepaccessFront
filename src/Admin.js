@@ -19,7 +19,7 @@ const options = {
     paginationSizeSelector:[10, 25, 50, 100], // with all the text, even 50 is a lot.
     movableColumns:false,            //don't allow column order to be changed
     resizableRows:false,             
-    resizableColumns:false,
+    resizableColumns:true,
     layout:"fitColumns",
     invalidOptionWarnings:false, // spams warnings without this
     footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
