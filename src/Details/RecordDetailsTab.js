@@ -652,15 +652,16 @@ export default class RecordDetailsTab extends React.Component {
 
     showDropdown = () => {        
         let curator = localStorage.curator;
-        // let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'More documents from this process'}];
-        let viewOptions = [ { value: 'Details', label: 'Details' } ];
-        if(curator) {
-            viewOptions.push({ value: 'Match', label: 'Title alignment' });
-            viewOptions.push({ value: 'Update', label: 'Edit' });
-            viewOptions.push({ value: 'Restore', label: 'Restore' });
-        }
         // Don't show dropdown at all if curator, now that we've hidden the title alignment also
         if(curator) {
+
+            // let viewOptions = [ { value: 'Details', label: 'Details' }, {value: 'Match', label: 'More documents from this process'}];
+            let viewOptions = [ { value: 'Details', label: 'Details' } ];
+            if(curator) {
+                viewOptions.push({ value: 'Match', label: 'Title alignment' });
+                viewOptions.push({ value: 'Update', label: 'Edit' });
+                viewOptions.push({ value: 'Restore', label: 'Restore' });
+            }
 
             const customStyles = {
                 option: (styles, state) => ({
@@ -730,12 +731,10 @@ export default class RecordDetailsTab extends React.Component {
                 this.setState({
                     detailsID: this.props.id
                 }, () => {
-                    console.log("populate");
                     this.populate();
                     this.getNepaFileResults();
                 });
             } else {
-                console.log("populate");
                 this.populate();
                 this.getNepaFileResults();
             }
