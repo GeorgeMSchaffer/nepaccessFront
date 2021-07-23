@@ -1,17 +1,20 @@
 import React from 'react';
 
+import axios from 'axios';
+
 import Select from 'react-select';
 import DatePicker from "react-datepicker";
 
 import './css/tabulator.css';
 import "./search.css";
 import "./sidebar.css";
+import './survey.css';
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
 import {Tooltip,} from 'react-tippy';
 
-import globals from './globals.js';
+import Globals from './globals.js';
 import persist from './persist.js';
 
 import BasicModal from './BasicModal.js';
@@ -57,14 +60,18 @@ class Search extends React.Component {
             limit: 100,
             offset: 0,
             searchOption: "B",
-            test: globals.anEnum.options,
+            test: Globals.anEnum.options,
             cancelButtonActive: true,
             tooltipOpen: undefined,
             proximityOption: null,
             proximityDisabled: true,
             hideOrganization: true,
             markup: true,
-            fragmentSizeValue: 2
+            fragmentSizeValue: 2,
+            isDirty: false,
+            surveyChecked: true,
+            surveyDone: true,
+            surveyResult: "Haven't searched yet"
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
@@ -85,7 +92,10 @@ class Search extends React.Component {
     onIconClick = (evt) => {
         this.setState({
             cancelButtonActive: true, 
-            titleRaw: parseTerms(this.state.titleRaw)
+            titleRaw: parseTerms(this.state.titleRaw),
+            surveyChecked: false,
+            surveyDone: false,
+            isDirty: true
         }, () => {
             this.debouncedSearch(this.state);
         });
@@ -109,7 +119,10 @@ class Search extends React.Component {
             evt.preventDefault();
             this.setState({
                 titleRaw: parseTerms(this.state.titleRaw),
-                cancelButtonActive: true
+                cancelButtonActive: true,
+                surveyChecked: false,
+                surveyDone: false,
+                isDirty: true
             }, () => {
                 this.debouncedSearch(this.state);
             });
@@ -361,7 +374,7 @@ class Search extends React.Component {
             ,{ value: 'OSMRE', label: 'Office of Surface Mining Reclamation and Enforcement (OSMRE)' },{ value: 'OBR', label: 'Ohio River Basin Commission (OBR)' },{ value: 'RSPA', label: 'Research and Special Programs (RSPA)' },{ value: 'REA', label: 'Rural Electrification Administration (REA)' },{ value: 'RUS', label: 'Rural Utilities Service (RUS)' },{ value: 'SEC', label: 'Security and Exchange Commission (SEC)' },{ value: 'SBA', label: 'Small Business Administration (SBA)' },{ value: 'SCS', label: 'Soil Conservation Service (SCS)' },{ value: 'SRB', label: 'Souris-Red-Rainy River Basin Commission (SRB)' },{ value: 'STB', label: 'Surface Transportation Board (STB)' },{ value: 'SRC', label: 'Susquehanna River Basin Commission (SRC)' },{ value: 'TVA', label: 'Tennessee Valley Authority (TVA)' },{ value: 'TxDOT', label: 'Texas Department of Transportation (TxDOT)' },{ value: 'TPT', label: 'The Presidio Trust (TPT)' },{ value: 'TDA', label: 'Trade and Development Agency (TDA)' },{ value: 'USACE', label: 'U.S. Army Corps of Engineers (USACE)' },{ value: 'USCG', label: 'U.S. Coast Guard (USCG)' },{ value: 'CBP', label: 'U.S. Customs and Border Protection (CBP)' },{ value: 'RRB', label: 'U.S. Railroad Retirement Board (RRB)' },{ value: 'USAF', label: 'United States Air Force (USAF)' },{ value: 'USA', label: 'United States Army (USA)' },{ value: 'USMC', label: 'United States Marine Corps (USMC)' },{ value: 'USN', label: 'United States Navy (USN)' },{ value: 'USPS', label: 'United States Postal Service (USPS)' },{ value: 'USTR', label: 'United States Trade Representative (USTR)' },{ value: 'UMR', label: 'Upper Mississippi Basin Commission (UMR)' },{ value: 'UMTA', label: 'Urban Mass Transportation Administration (UMTA)' },{ value: 'UDOT', label: 'Utah Department of Transportation (UDOT)' }
             ,{ value: 'URC', label: 'Utah Reclamation Mitigation and Conservation Commission (URC)' },{ value: 'WAPA', label: 'Western Area Power Administration (WAPA)' }
         ];
-        const stateOptions = globals.locations;
+        const stateOptions = Globals.locations;
         // const tooltipTitle = "<p class=tooltip-line><span class=bold>Search word connectors</span></p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>AND</span>This is the default. <span class=bold>All</span> words you enter must be found together to return a result.</p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>OR</span> (all caps) to search for <span class=bold>any</span> of those words.</p>"
@@ -574,10 +587,30 @@ class Search extends React.Component {
                                 </label> */}
 
                             </div>
+                            <div className="surveyHolder" hidden={this.state.surveyChecked}>
+                                Did you find what you were looking for?
+                                <label className="surveyRadio" ><input type="radio" value="Yes" checked={false} onClick={this.surveyClick} />
+                                    Yes
+                                </label>
+                                <label className="surveyRadio" ><input type="radio" value="Partially" checked={false} onClick={this.surveyClick} />
+                                    Partially
+                                </label>
+                                <label className="surveyRadio" ><input type="radio" value="Not at all" checked={false} onClick={this.surveyClick} />
+                                    Not at all
+                                </label>
+                            </div>
+                            <div className="surveyHolder" hidden={!this.state.surveyChecked || this.state.surveyDone}>
+                                <label className="surveyResult">You chose: <span>{this.state.surveyResult}</span></label>
+                                <button className="surveyButton" onClick={this.revert}>Show me the options again</button>
+                                <button className="surveyButton" onClick={this.surveySubmit}>Submit</button>
+                            </div>
+                            <div hidden={!this.state.surveyDone || !this.state.isDirty}>
+                                <div>Thank you for your feedback.</div>
+                            </div>
                             {/* <div id="post-search-box-text">Leave search box blank to return all results in database.</div> */}
                         </div>
-                        
                     </div>
+
 
                 </div>
             </div>
@@ -754,11 +787,11 @@ class Search extends React.Component {
             // console.log(rehydrate.startPublish);
             // console.log(new Date(rehydrate.startPublish));
             if(typeof(rehydrate.startPublish) === "string"){
-                rehydrate.startPublish = globals.getCorrectDate(rehydrate.startPublish);
+                rehydrate.startPublish = Globals.getCorrectDate(rehydrate.startPublish);
             } // else number
             
             if(typeof(rehydrate.endPublish) === "string"){
-                rehydrate.endPublish = globals.getCorrectDate(rehydrate.endPublish);
+                rehydrate.endPublish = Globals.getCorrectDate(rehydrate.endPublish);
             }
             this.setState(rehydrate);
         }
@@ -766,7 +799,7 @@ class Search extends React.Component {
             // do nothing
         }
         // Get search params on mount and run search on them (implies came from landing page)
-        var queryString = globals.getParameterByName("q");
+        var queryString = Globals.getParameterByName("q");
         let disableValue = true;
         if(queryString){
             if(queryString.trim().match(/\s+/)) {
@@ -785,6 +818,52 @@ class Search extends React.Component {
             // Option: Search on load to get all results so user can start filtering?
         }
 	}
+
+
+    post = (postUrl, dataForm) => {
+        axios({
+            url: postUrl,
+            method: 'POST',
+            data: dataForm
+        }).then(_response => {
+            const rsp = this.resp += (JSON.stringify({data: _response.data, status: _response.status}));
+            this.setState({
+                server_response: rsp 
+            }, () => {
+                console.log(this.state.server_response);
+            });
+            // let responseOK = response && response.status === 200;
+        }).catch(error => { // redirect
+            console.error(error);
+        })
+    }
+    
+
+    surveyClick = (evt) => {
+        this.setState({
+            surveyResult: evt.target.value,
+            surveyChecked: true
+        })
+    }
+
+    revert = (evt) => {
+        this.setState({
+            surveyChecked: false
+        })
+    }
+
+    surveySubmit = () => {
+        this.setState({
+            surveyDone: true
+        }, () => {
+            const postUrl = new URL('survey/save', Globals.currentHost);
+            const dataForm = new FormData();
+            dataForm.append('surveyResult', this.state.surveyResult);
+            this.post(postUrl,dataForm);
+        })
+    }
+
+
 }
 
 export default withRouter(Search);

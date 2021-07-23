@@ -1,0 +1,21 @@
+.surveyResult span {
+    color: blue;
+    font-style: italic;
+}
+
+.surveyRadio {
+    margin: 0px 15px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.surveyRadio:hover {
+    box-shadow: 1px 1px 5px #888;
+}
+
+.surveyButton {
+    margin: 15px;
+}
+
+.surveyHolder {
+    color: #ddd;
+}
