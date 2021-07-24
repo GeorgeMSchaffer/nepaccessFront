@@ -595,8 +595,8 @@ class Search extends React.Component {
                                 <label className="surveyRadio" ><input type="radio" value="Partially" checked={false} onClick={this.surveyClick} />
                                     Partially
                                 </label>
-                                <label className="surveyRadio" ><input type="radio" value="Not at all" checked={false} onClick={this.surveyClick} />
-                                    Not at all
+                                <label className="surveyRadio" ><input type="radio" value="No" checked={false} onClick={this.surveyClick} />
+                                    No
                                 </label>
                             </div>
                             <div className="surveyHolder" hidden={!this.state.surveyChecked || this.state.surveyDone}>
