@@ -500,7 +500,6 @@ export default class App extends React.Component {
                     return null;
                 }
             }).then(currentResults => {
-                console.log(currentResults);
                 let _data = [];
                 if(currentResults && currentResults[0] && currentResults[0].doc) {
                     
