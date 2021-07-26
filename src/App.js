@@ -896,7 +896,10 @@ export default class App extends React.Component {
                     agency: result.agency,
                     cooperating_agency: result.cooperatingAgency,
                     state: result.state,
-                    folder: result.folder
+                    folder: result.folder,
+                    processId: result.processId,
+                    link: result.link,
+                    rodDate: result.firstRodDate
                 }
                 return newResult;
             });
