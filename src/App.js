@@ -500,6 +500,7 @@ export default class App extends React.Component {
                     return null;
                 }
             }).then(currentResults => {
+                console.log(currentResults);
                 let _data = [];
                 if(currentResults && currentResults[0] && currentResults[0].doc) {
                     
@@ -526,6 +527,9 @@ export default class App extends React.Component {
                             folder: doc.folder,
                             plaintext: result.highlights,
                             name: result.filenames,
+                            link: doc.link,
+                            firstRodDate: doc.firstRodDate,
+                            processId: doc.processId,
                             relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                         };
                         return newObject;
