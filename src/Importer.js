@@ -1095,6 +1095,10 @@ class Importer extends Component {
                 onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/uploadCSV_titles')}>
                     (admin) Import from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
                 </button>
+                <button type="button" className="button" id="submitCSVTitlesRod" disabled={!this.state.canImportCSV || this.state.disabled} 
+                onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/uploadCSV_titles_rod')}>
+                    (admin) Fix ROD dates from Buomsoo: no new records created
+                </button>
                 <button type="button" className="button" id="submitTitleFix" disabled={!this.state.canImportCSV || this.state.disabled} 
                         onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/title_fix')}>
                     (admin) Title fixing tool
