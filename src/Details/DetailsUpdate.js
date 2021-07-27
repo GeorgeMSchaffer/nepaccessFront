@@ -266,11 +266,7 @@ class DetailsUpdate extends React.Component {
             startState.comments_filename = startState.commentsFilename;
             startState.eis_identifier = startState.folder;
             startState.cooperating_agency = startState.cooperatingAgency;
-            startState.web_link = startState.link;
             startState.process_id = startState.processId;
-            startState.county = startState.county;
-            startState.subtype = startState.subtype;
-            startState.status = startState.status;
 
 			// prefer empty string to null
             Object.keys(startState).forEach(e => 
@@ -305,6 +301,13 @@ class DetailsUpdate extends React.Component {
                         {this.state.networkError}
                     </label>
                     <hr />
+
+                    <label className="update">Title</label>
+                    <label className="loginErrorLabel">
+                        {this.state.titleLabel}
+                    </label>
+                    <input type="text" name="title" value={"" + this.state.record.title} onInput={this.onInput} onChange={this.onChange}></input>
+                    
                     <label className="update">Federal Register Date</label>
                     <label className="loginErrorLabel">
                         {this.state.dateError}
@@ -315,10 +318,43 @@ class DetailsUpdate extends React.Component {
                         dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                         className="date block" 
                     />
+
+                    <label className="update">Document type</label>
+                    <label className="loginErrorLabel">
+                        {this.state.typeError}
+                    </label>
+                    <input type="text" name="document" value={"" + this.state.record.document} onInput={this.onInput} onChange={this.onChange}></input>
+                    
                     <label className="update">Agency</label>
                     <input type="text" name="agency" value={"" + this.state.record.agency} onInput={this.onInput} onChange={this.onChange}></input>
                     <label className="update">Cooperating Agency</label>
                     <input type="text" name="cooperating_agency" value={"" + this.state.record.cooperating_agency} onInput={this.onInput} onChange={this.onChange}></input>
+                    <label className="update">Department</label>
+                    <input type="text" name="department" value={"" + this.state.record.department} onInput={this.onInput} onChange={this.onChange}></input>
+                    
+                    <label className="update">Filename</label>
+                    <input type="text" name="filename" value={"" + this.state.record.filename} onInput={this.onInput} onChange={this.onChange}></input>
+                    <label className="update">Folder</label>
+                    <input type="text" name="eis_identifier" value={"" + this.state.record.eis_identifier} onInput={this.onInput} onChange={this.onChange}></input>
+                    
+                    <label className="update">State</label>
+                    <input type="text" name="state" value={"" + this.state.record.state} onInput={this.onInput} onChange={this.onChange}></input>
+                    <label className="update">County</label>
+                    <input type="text" name="county" value={"" + this.state.record.county} onInput={this.onInput} onChange={this.onChange}></input>
+
+                    <label className="update">Process ID</label>
+                    <input type="text" name="process_id" value={"" + this.state.record.process_id} onInput={this.onInput} onChange={this.onChange}></input>
+                    <label className="update">Link</label>
+                    <input type="text" name="link" value={"" + this.state.record.link} onInput={this.onInput} onChange={this.onChange}></input>
+                    <label className="update">Notes</label>
+                    <input type="text" name="notes" value={"" + this.state.record.notes} onInput={this.onInput} onChange={this.onChange}></input>
+
+                    <label className="update">Subtype</label>
+                    <input type="text" name="subtype" value={"" + this.state.record.subtype} onInput={this.onInput} onChange={this.onChange}></input>
+
+                    <label className="update">Status</label>
+                    <input type="text" name="status" value={"" + this.state.record.status} onInput={this.onInput} onChange={this.onChange}></input>
+
                     <label className="update">EPA Comment Letter Date</label>
                     <label className="loginErrorLabel">
                         
@@ -331,39 +367,7 @@ class DetailsUpdate extends React.Component {
                     />
                     <label className="update">Comments filename</label>
                     <input type="text" name="comments_filename" value={"" + this.state.record.comments_filename} onInput={this.onInput} onChange={this.onChange}></input>
-                    <label className="update">Document type</label>
-                    <label className="loginErrorLabel">
-                        {this.state.typeError}
-                    </label>
-                    <input type="text" name="document" value={"" + this.state.record.document} onInput={this.onInput} onChange={this.onChange}></input>
-                    <label className="update">Filename</label>
-                    <input type="text" name="filename" value={"" + this.state.record.filename} onInput={this.onInput} onChange={this.onChange}></input>
-                    <label className="update">Folder</label>
-                    <input type="text" name="eis_identifier" value={"" + this.state.record.eis_identifier} onInput={this.onInput} onChange={this.onChange}></input>
-                    <label className="update">Link</label>
-                    <input type="text" name="web_link" value={"" + this.state.record.web_link} onInput={this.onInput} onChange={this.onChange}></input>
-                    <label className="update">Notes</label>
-                    <input type="text" name="notes" value={"" + this.state.record.notes} onInput={this.onInput} onChange={this.onChange}></input>
-                    <label className="update">State</label>
-                    <input type="text" name="state" value={"" + this.state.record.state} onInput={this.onInput} onChange={this.onChange}></input>
-                    <label className="update">Title</label>
-                    <label className="loginErrorLabel">
-                        {this.state.titleLabel}
-                    </label>
-                    <input type="text" name="title" value={"" + this.state.record.title} onInput={this.onInput} onChange={this.onChange}></input>
                     
-                    <label className="update">Process ID</label>
-                    <input type="text" name="process_id" value={"" + this.state.record.process_id} onInput={this.onInput} onChange={this.onChange}></input>
-
-                    <label className="update">County</label>
-                    <input type="text" name="county" value={"" + this.state.record.county} onInput={this.onInput} onChange={this.onChange}></input>
-
-                    <label className="update">Subtype</label>
-                    <input type="text" name="subtype" value={"" + this.state.record.subtype} onInput={this.onInput} onChange={this.onChange}></input>
-
-                    <label className="update">Status</label>
-                    <input type="text" name="status" value={"" + this.state.record.status} onInput={this.onInput} onChange={this.onChange}></input>
-
                     <h3 className="infoLabel">
                         {this.state.successLabel}
                     </h3>
