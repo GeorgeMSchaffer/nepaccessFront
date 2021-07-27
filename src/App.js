@@ -905,11 +905,11 @@ export default class App extends React.Component {
                     agency: result.agency,
                     cooperating_agency: result.cooperatingAgency,
                     state: result.state,
-                    county: result.county,
-                    subtype: result.subtype,
+                    // county: result.county,
+                    // subtype: result.subtype,
                     folder: result.folder,
                     processId: result.processId,
-                    link: result.link,
+                    // link: result.link,
                     notes: result.notes,
                     status: result.status
                     // rodDate: result.firstRodDate
