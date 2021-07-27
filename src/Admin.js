@@ -282,6 +282,27 @@ export default class Admin extends React.Component {
         })
     }
     
+    doPost = (url) => {
+        const _url = new URL(url, Globals.currentHost);
+
+        axios({
+            url: _url,
+            method: 'POST',
+            data: {
+
+            }
+        }).then(_response => {
+            const rsp = this.resp += (JSON.stringify({data: _response.data, status: _response.status}));
+            this.setState({
+                response: rsp
+            });
+        }).catch(error => { 
+            this.setState({
+                response: error.message
+            });
+        })
+    }
+    
     render() {
 
         if(this.state.admin) {
@@ -346,6 +367,10 @@ export default class Admin extends React.Component {
                     <hr></hr>
     
                     <br />
+                    
+                    <button type="button" onClick={() => this.doPost("test/add_rods")}>
+                        Generate RODs
+                    </button>
 
                     <div><span>
                         Server response
