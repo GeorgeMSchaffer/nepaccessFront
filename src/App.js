@@ -526,9 +526,12 @@ export default class App extends React.Component {
                             folder: doc.folder,
                             plaintext: result.highlights,
                             name: result.filenames,
+
                             link: doc.link,
                             firstRodDate: doc.firstRodDate,
                             processId: doc.processId,
+                            notes: doc.notes,
+
                             relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                         };
                         return newObject;
@@ -902,7 +905,8 @@ export default class App extends React.Component {
                     folder: result.folder,
                     processId: result.processId,
                     link: result.link,
-                    rodDate: result.firstRodDate
+                    notes: result.notes,
+                    // rodDate: result.firstRodDate
                 }
                 return newResult;
             });
