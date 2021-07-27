@@ -908,6 +908,9 @@ export default class App extends React.Component {
                     notes: result.notes,
                     // rodDate: result.firstRodDate
                 }
+                if(!newResult.processId) { // don't want to imply zeroes are valid
+                    newResult.processId = '';
+                }
                 return newResult;
             });
             this.downloadResults(Globals.jsonToTSV(resultsForDownload));
