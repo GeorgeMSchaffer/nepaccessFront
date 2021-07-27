@@ -531,6 +531,9 @@ export default class App extends React.Component {
                             firstRodDate: doc.firstRodDate,
                             processId: doc.processId,
                             notes: doc.notes,
+                            status: doc.status,
+                            subtype: doc.subtype,
+                            county: doc.county,
 
                             relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                         };
@@ -902,10 +905,13 @@ export default class App extends React.Component {
                     agency: result.agency,
                     cooperating_agency: result.cooperatingAgency,
                     state: result.state,
+                    county: result.county,
+                    subtype: result.subtype,
                     folder: result.folder,
                     processId: result.processId,
                     link: result.link,
                     notes: result.notes,
+                    status: result.status
                     // rodDate: result.firstRodDate
                 }
                 if(!newResult.processId) { // don't want to imply zeroes are valid

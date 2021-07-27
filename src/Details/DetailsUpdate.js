@@ -268,6 +268,9 @@ class DetailsUpdate extends React.Component {
             startState.cooperating_agency = startState.cooperatingAgency;
             startState.web_link = startState.link;
             startState.process_id = startState.processId;
+            startState.county = startState.county;
+            startState.subtype = startState.subtype;
+            startState.status = startState.status;
 
 			// prefer empty string to null
             Object.keys(startState).forEach(e => 
@@ -351,6 +354,15 @@ class DetailsUpdate extends React.Component {
                     
                     <label className="update">Process ID</label>
                     <input type="text" name="process_id" value={"" + this.state.record.process_id} onInput={this.onInput} onChange={this.onChange}></input>
+
+                    <label className="update">County</label>
+                    <input type="text" name="county" value={"" + this.state.record.county} onInput={this.onInput} onChange={this.onChange}></input>
+
+                    <label className="update">Subtype</label>
+                    <input type="text" name="subtype" value={"" + this.state.record.subtype} onInput={this.onInput} onChange={this.onChange}></input>
+
+                    <label className="update">Status</label>
+                    <input type="text" name="status" value={"" + this.state.record.status} onInput={this.onInput} onChange={this.onChange}></input>
 
                     <h3 className="infoLabel">
                         {this.state.successLabel}

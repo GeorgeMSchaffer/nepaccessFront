@@ -1273,7 +1273,7 @@ class Importer extends Component {
 
                         <hr />
                         <h3>Required headers: Document, EIS Identifier (or to link a .zip: Filename), Federal Register Date, Title</h3>
-                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Cooperating Agency, Summary, Force Update</h3>
+                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Cooperating Agency, Summary, County, Subtype, Status, Force Update</h3>
                         
                         <hr />
 
