@@ -699,7 +699,7 @@ class Importer extends Component {
 
         while (n--) {
             // Spaces to underscores, lowercase
-            let newKey = keys[n].toLocaleLowerCase().replace(/ /g, "_");
+            let newKey = keys[n].toLocaleLowerCase().replace(/ /g, "_").trim();
             // Keep original key we'll need for copying the value
             key = keys[n];
             
@@ -721,6 +721,15 @@ class Importer extends Component {
             }
             if(newKey==="web_link"){
                 newKey = "link";
+            }
+            if(newKey==="processid"){
+                newKey = "process_id";
+            }
+            if(newKey==="firstroddate" || newKey ==="1st_rod_date"){
+                newKey = "first_rod_date";
+            }
+            if(newKey==="commentsfilename") {
+                newKey = "comments_filename";
             }
 
 
@@ -772,15 +781,18 @@ class Importer extends Component {
     
     // helper methods for validation
 
+    requiredHeadersTitleRegisterDateType(headers) {
+        return (   'title' in headers 
+                && 'federal_register_date' in headers 
+                && 'document' in headers );
+    }
     requiredHeadersTitleAgencyDocumentFile(headers) {
-        console.log("Hit validator",headers);
         return ('title' in headers 
                 && 'agency' in headers 
                 && 'document' in headers
                 && ('filename' in headers || 'eis_identifier' in headers));
     }
     requiredHeadersTitleAgencyRegisterDateStateTypeFile(headers) {
-        console.log("Hit validator",headers);
         return ('title' in headers 
                 && 'agency' in headers 
                 && 'federal_register_date' in headers 
@@ -799,11 +811,11 @@ class Importer extends Component {
             // headers.forEach(header => console.log(header));
     
             // Check headers:
-            result = this.requiredHeadersTitleAgencyRegisterDateStateTypeFile(headers);
+            result = this.requiredHeadersTitleRegisterDateType(headers);
     
             if(!result){
                 this.setState({
-                    csvError: "Missing one or more headers (title, federal register date, agency, state, document, filename/EIS Identifier)"
+                    csvError: "Missing one or more headers (title, federal register date, document)"
                 });
             }
         } else {
@@ -1272,8 +1284,8 @@ class Importer extends Component {
                             </h3>
 
                         <hr />
-                        <h3>Required headers: Document, EIS Identifier (or to link a .zip: Filename), Federal Register Date, Title</h3>
-                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Cooperating Agency, Summary, County, Subtype, Status, Force Update</h3>
+                        <h3>Required headers: Document, Federal Register Date, Title</h3>
+                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Cooperating Agency, Summary, County, Subtype, Status, EIS identifier, Filename, Force Update</h3>
                         
                         <hr />
 
