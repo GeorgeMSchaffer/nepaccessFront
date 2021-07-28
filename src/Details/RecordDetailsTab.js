@@ -538,11 +538,13 @@ export default class RecordDetailsTab extends React.Component {
             if(this.state.processId && this.state.process) {
 
                 // already have this data. No need for any axios calls
-                return (
-                <div className="metadata-container tinted">
-                    <h3>Other files from this NEPA process</h3>
-                    {this.interpretProcess(this.state.process)}
-                </div>);
+                if(this.state.process.length > 1) { // a process with only itself does not call for this html
+                    return (
+                    <div className="metadata-container tinted">
+                        <h3>Other files from this NEPA process</h3>
+                        {this.interpretProcess(this.state.process)}
+                    </div>);
+                }
                 // return this.interpretProcess(this.state.process);
     
             } else {
