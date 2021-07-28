@@ -731,6 +731,9 @@ class Importer extends Component {
             if(newKey==="commentsfilename") {
                 newKey = "comments_filename";
             }
+            if(newKey==="cooperatingagency") {
+                newKey = "cooperating_agency";
+            }
 
 
             // handle unstandardized weirdness we can predict for process imports here
