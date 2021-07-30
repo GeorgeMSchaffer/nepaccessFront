@@ -1126,6 +1126,10 @@ class Importer extends Component {
                         onClick={() => this.importCSVHandler(this.csvConstrainedValidated,'file/uploadCSV_filenames')}>
                     (admin) Filename add tool
                 </button>
+                <button type="button" className="button" id="submitCSVProcessDumb" disabled={!this.state.canImportCSV || this.state.disabled} 
+                        onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_processes_dumb')}>
+                    (admin) Dumb Process add tool
+                </button>
                 <button type="button" className="button" id="submitCSVProcess" disabled={!this.state.canImportCSV || this.state.disabled} 
                         onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_processes')}>
                     (admin) Process add tool
