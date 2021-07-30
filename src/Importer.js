@@ -1272,27 +1272,27 @@ class Importer extends Component {
 
                     <div className="importFile" hidden={this.state.importOption !== "csv"}>
                         <h2>Instructions:</h2>
-                        <h3>One CSV at a time supported.  </h3>
+                        <h3>One .tsv/.csv at a time supported.  </h3>
                         <h3>Header names must be exact.  </h3>
                         <h3>Expected date format: yyyy-MM-dd or MM-dd-yyyy</h3>
-                        <h3>"EIS Identifier" must represent a foldername that will be uploaded with files in it.  This foldername must be unique system-wide.  
-                            If separated into subfolders by document type (which is required if you are linking multiple records to the same EIS Identifier, presumably because they are part of the same process), then the "Document" field must be exactly the same as the subfolder name.  </h3>
+                        <h3>"EIS Identifier" must represent a foldername that will be uploaded with files in it. 
+                            The file system expects subfolders. 
+                            The "Document" field must be exactly the same as the subfolder name.  </h3>
                         <h3>Example: If you are going to upload NSF/NSF_00001/Final/file.pdf, then the corresponding CSV line must say Final under the Document header, and NSF_00001 for the EIS Identifier.  
                             When uploading, use bulk file import and drag the entire NSF/ base folder in.  
                             Otherwise, there will be incorrect search results and wrong/unavailable files listed for download.  
                             </h3>
                         <h3>The system detects matches by title, register date and document type.  
-                            Existing metadata with no files (no filename and no foldername listed) will be updated if it's a match.  
-                            Existing metadata with an existing filename will be skipped if it's a match.  
-                            In this situation, when you do the bulk upload, the files for that record will be skipped, because if we already have the documents the system assumes incoming data is duplicate data.  
-                            This is to prevent converting and storing duplicate document texts associated with one record.  
-                            If you're sure you want to update existing metadata with an existing filename, then use the Force Update header and put Yes.
-                            Valid, non-duplicate data will become new metadata records.
+                            All non-blank, valid fields will overwrite existing fields. 
+                            Existing metadata will be updated if it's a match except for the filename/folder values. </h3>
+                        <h3>If you're sure you want to overwrite existing folder or filenames, then use the Force Update header and put Yes for that row.
+                            </h3>
+                        <h3>Valid, non-duplicate data will become new metadata records.
                             </h3>
 
                         <hr />
                         <h3>Required headers: Document, Federal Register Date, Title</h3>
-                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Cooperating Agency, Summary, County, Subtype, Status, EIS identifier, Filename, Force Update</h3>
+                        <h3>Optional headers: Agency, State, Link, Notes, Comments Filename, EPA Comment Letter Date, Cooperating Agency, Summary, County, Subtype, Status, EIS identifier, Filename, Process ID, Force Update</h3>
                         
                         <hr />
 
