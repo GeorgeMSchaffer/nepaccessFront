@@ -326,7 +326,7 @@ export default class AdminFiles extends React.Component {
                     </div>
                     
                     <div>
-                        <label className="block bold" htmlFor="fileList">CSV of records where files on disk were expected: Folder,ID,Type,Filename</label>
+                        <label className="block bold" htmlFor="fileList">CSV of records where files on disk were expected: Folder,ID,Document Type,Filename</label>
                         <textarea 
                                 className="server-response"
                                 ref={(textarea) => this.textArea = textarea}
