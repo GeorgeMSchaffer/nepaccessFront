@@ -1326,7 +1326,7 @@ class Importer extends Component {
                         </button>
                         <button type="button" className="button" id="submitCSVProcessDumb" disabled={!this.state.canImportCSV || this.state.disabled} 
                                 onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_processes_dumb')}>
-                            Dumb Process add tool (just updates process ID by document ID)
+                            Process add-by-ID tool (just updates process ID by given document ID)
                         </button>
                         
                         {this.renderAdminButtons()}
