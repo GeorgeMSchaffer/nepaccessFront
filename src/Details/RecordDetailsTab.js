@@ -610,7 +610,7 @@ export default class RecordDetailsTab extends React.Component {
                 // exclusions:
                 } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || 
                         key==='plaintext' || key==='folder' || key==='link' || key==='notes' || key==='commentsFilename'
-                        || key === 'filename' || key==='luceneIds') { 
+                        || key === 'filename' || key==='luceneIds' || key==='status') { 
                     return '';
                 } else if(key==='summaryText') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);
