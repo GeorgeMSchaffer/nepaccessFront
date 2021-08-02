@@ -160,8 +160,8 @@ export default class AdminFiles extends React.Component {
                 })
             } else {
                 let firstId = 1;
-                if(response.data && response.data[0] && response.data[0][0]) { 
-                    firstId = response.data[0][0];
+                if(response.data && response.data[0] && response.data[0][1]) { 
+                    firstId = response.data[0][1];
                 }
 
                 this.setState({
@@ -326,7 +326,7 @@ export default class AdminFiles extends React.Component {
                     </div>
                     
                     <div>
-                        <label className="block bold" htmlFor="fileList">CSV of records where files on disk were expected: ID,Filename,folder,type</label>
+                        <label className="block bold" htmlFor="fileList">CSV of records where files on disk were expected: Folder,ID,Type,Filename</label>
                         <textarea 
                                 className="server-response"
                                 ref={(textarea) => this.textArea = textarea}
