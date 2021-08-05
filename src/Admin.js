@@ -212,7 +212,7 @@ export default class Admin extends React.Component {
             });
             // let responseOK = response && response.status === 200;
         }).catch(error => { 
-            const rsp = this.resp += (JSON.stringify({data: error.data, status: error.status}));
+            const rsp = this.resp += (JSON.stringify({data: error.data, status: error.response.status}));
             this.setState({
                 response: rsp 
             });
@@ -298,7 +298,7 @@ export default class Admin extends React.Component {
             });
         }).catch(error => { 
             this.setState({
-                response: error.message
+                response:error.response.status + ": " + error.message
             });
         })
     }
@@ -370,6 +370,10 @@ export default class Admin extends React.Component {
                     
                     <button type="button" onClick={() => this.doPost("test/add_rods")}>
                         Generate RODs
+                    </button>
+
+                    <button type="button" onClick={() => this.doPost("admin/exec_delete_requests")}>
+                        Execute all delete requests
                     </button>
 
                     <div><span>

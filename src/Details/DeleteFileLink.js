@@ -10,7 +10,8 @@ class DeleteFileLink extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            buttonText: "Delete this now"
+            buttonText: "Delete this now",
+            buttonDisabled: false
         }
     }
 
@@ -42,18 +43,23 @@ class DeleteFileLink extends React.Component {
 				let responseOK = response && response.status === 200;
 				if (responseOK) {
                     this.setState({
-                        buttonText: "Deleted"
+                        buttonText: "Deleted",
+                        buttonDisabled: true
                     });
 					// return response.data;
-				} else {
+                } else if(response && response.status === 202) {
                     this.setState({
-                        buttonText: response.status + ": Failed to delete"
+                        buttonText: "Request received",
+                        buttonDisabled: true
                     });
-                    console.log(response.status);
+				} else { // impossible?  Should be 200, 202, or error.
+                    this.setState({
+                        buttonText: response.status
+                    });
 				}
 			}).catch(error => {
                 this.setState({
-                    buttonText: error.status + ": Failed to delete"
+                    buttonText: error.response.status + ": Failed to delete"
                 });
                 console.log(error);
             });
@@ -62,8 +68,16 @@ class DeleteFileLink extends React.Component {
     render(){
         // console.log("DeleteFileLink active", this.props.cell._cell.row.data);
         return(
-            <button className="" onClick={this.deleteRecord}>{this.state.buttonText}</button>
+            <button disabled={this.state.buttonDisabled} className="" onClick={this.deleteRecord}>{this.state.buttonText}</button>
         );
+    }
+
+    componentDidMount() {
+        if(localStorage.curator && this.state.buttonText==="Delete this now") { 
+            this.setState({
+                buttonText: "Request delete"
+            })
+        }
     }
 }
 
