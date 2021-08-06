@@ -14,7 +14,8 @@ export default class DeleteFileLink extends React.Component {
             show: false,
             deleteText: '',
             result: '',
-            deleted: false
+            deleted: false,
+            resultText: 'Record and associated texts have been deleted.'
         };
     }
     
@@ -61,19 +62,17 @@ export default class DeleteFileLink extends React.Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (responseOK) {
-                return response.data; // can be empty if nothing found
-            } else { // 404 or server not up?
-                // console.log(response.status);
-                return null;
-            }
-        }).then(parsedJson => {
-            if(parsedJson){
-                // console.log(parsedJson);
                 this.setState({
-                    result: parsedJson,
+                    result: response.data,
                     deleted: true
                 });
-            } else {
+            } else if(response && response.status === 202) {
+                this.setState({
+                    result: response.data,
+                    deleted: true,
+                    resultText: "Request submitted successfully."
+                })
+            } else { // 404 or server not up?
                 this.setState({
                     networkError: "No record found or server is down; nothing was deleted"
                 });
@@ -121,7 +120,6 @@ export default class DeleteFileLink extends React.Component {
                     <div hidden={this.state.deleted}>
                         <button className='button modal-close' onClick={this.hideModal}>Cancel</button>
 
-                        <label className="errorLabel">{this.state.networkError}</label>
 
                         <h2 className="title-color">Type DELETE and confirm to really delete this record:</h2>
                         
@@ -134,11 +132,12 @@ export default class DeleteFileLink extends React.Component {
                         <hr />
 
                         <button className='button' onClick={this.deleteRecord} disabled={this.state.deleteText!=='DELETE'}>Delete</button>
+                        <label className="errorLabel">{this.state.networkError}</label>
                     </div>
                     <div hidden={!this.state.deleted}>
                         <button className='button modal-close' onClick={this.hideModal}>Close</button>
                         <label className="errorLabel">{this.state.networkError}</label>
-                        <h2 className="title-color">Record and associated texts have been deleted.</h2>
+                        <h2 className="title-color">{this.state.resultText}</h2>
                     </div>
                 </ReactModal>
             </div>
