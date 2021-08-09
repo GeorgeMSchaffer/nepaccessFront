@@ -907,12 +907,12 @@ export default class App extends React.Component {
                     state: result.state,
                     // county: result.county,
                     // subtype: result.subtype,
-                    folder: result.folder,
                     processId: result.processId,
                     // link: result.link,
                     notes: result.notes,
-                    status: result.status
                     // rodDate: result.firstRodDate
+                    status: result.status,
+                    folder: result.folder
                 }
                 if(!newResult.processId) { // don't want to imply zeroes are valid
                     newResult.processId = '';
