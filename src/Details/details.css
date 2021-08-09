@@ -66,7 +66,7 @@ div.update .react-datepicker__input-container>input {
     background-color: rgb(235,235,235);
 }
 
-.metadata-container h3 {
+.metadata-container h3, .files-container h3 {
     margin-top: 0px;
     margin-bottom: 35px;
 }
