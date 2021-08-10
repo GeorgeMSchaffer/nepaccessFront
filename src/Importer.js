@@ -707,7 +707,7 @@ class Importer extends Component {
             if(newKey==="document_type" || newKey==="documenttype"){ 
                 newKey="document";
             }
-            if(newKey==="file name" || newKey==="file names"){
+            if(newKey==="file name" || newKey==="file names" || newKey==="files"){
                 newKey = "filename";
             }
             if(newKey==="register_date" || newKey==="registerdate"){
