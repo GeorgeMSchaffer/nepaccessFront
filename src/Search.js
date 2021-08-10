@@ -80,6 +80,50 @@ class Search extends React.Component {
 
         this.myRef = React.createRef();
     }
+    
+    doSearch = (terms) => {
+        this.setState({
+            titleRaw: parseTerms(terms),
+            cancelButtonActive: true, 
+            surveyChecked: false,
+            surveyDone: false,
+            isDirty: true
+        }, () => {
+            this.debouncedSearch(this.state);
+        });
+    }
+
+    doSearchFromParams = () => {
+        var queryString = Globals.getParameterByName("q");
+        if(queryString){
+            let disableValue = true;
+            let _inputMessage = "";
+
+            if( queryString.match(/["\?\*~]+/) ) {
+                _inputMessage = "Proximity dropdown is disabled when certain special characters are used: ~ ? \" *";
+                disableValue = true;
+            }
+            else if(queryString.trim().match(/\s+/)) {
+                disableValue = false;
+            }
+
+            this.setState({
+                titleRaw: parseTerms(queryString),
+                cancelButtonActive: true,
+                proximityDisabled: disableValue,
+                surveyChecked: false,
+                surveyDone: false,
+                isDirty: true,
+                inputMessage: _inputMessage
+            }, () => {
+                if(this.state.titleRaw){
+                    this.debouncedSearch(this.state);
+                }
+            });
+        } else {
+            // Option: Search on load to get all results so user can start filtering?
+        }
+    }
 
     /**
      * Event handlers
@@ -89,16 +133,9 @@ class Search extends React.Component {
         this.setState({cancelButtonActive: false});
     }
 
+
     onIconClick = (evt) => {
-        this.setState({
-            cancelButtonActive: true, 
-            titleRaw: parseTerms(this.state.titleRaw),
-            surveyChecked: false,
-            surveyDone: false,
-            isDirty: true
-        }, () => {
-            this.debouncedSearch(this.state);
-        });
+        this.doSearch(this.state.titleRaw);
     }
     onClearClick = (evt) => {
         this.setState({ 
@@ -117,15 +154,7 @@ class Search extends React.Component {
     onKeyUp = (evt) => {        
         if(evt.keyCode === 13){
             evt.preventDefault();
-            this.setState({
-                titleRaw: parseTerms(this.state.titleRaw),
-                cancelButtonActive: true,
-                surveyChecked: false,
-                surveyDone: false,
-                isDirty: true
-            }, () => {
-                this.debouncedSearch(this.state);
-            });
+            this.doSearch(this.state.titleRaw);
         }
     }
 
@@ -589,13 +618,13 @@ class Search extends React.Component {
                             </div>
                             <div className="surveyHolder" hidden={this.state.surveyChecked}>
                                 Did you find what you were looking for?
-                                <label className="surveyRadio" ><input type="radio" value="Yes" checked={false} onClick={this.surveyClick} />
+                                <label className="surveyRadio" ><input type="radio" value="Yes" checked={false} onChange={this.surveyClick} />
                                     Yes
                                 </label>
-                                <label className="surveyRadio" ><input type="radio" value="Partially" checked={false} onClick={this.surveyClick} />
+                                <label className="surveyRadio" ><input type="radio" value="Partially" checked={false} onChange={this.surveyClick} />
                                     Partially
                                 </label>
-                                <label className="surveyRadio" ><input type="radio" value="No" checked={false} onClick={this.surveyClick} />
+                                <label className="surveyRadio" ><input type="radio" value="No" checked={false} onChange={this.surveyClick} />
                                     No
                                 </label>
                             </div>
@@ -793,30 +822,16 @@ class Search extends React.Component {
             if(typeof(rehydrate.endPublish) === "string"){
                 rehydrate.endPublish = Globals.getCorrectDate(rehydrate.endPublish);
             }
+            rehydrate.isDirty = false;
+            rehydrate.surveyChecked = true;
+            rehydrate.surveyDone = true;
             this.setState(rehydrate);
         }
         catch(e) {
             // do nothing
         }
         // Get search params on mount and run search on them (implies came from landing page)
-        var queryString = Globals.getParameterByName("q");
-        let disableValue = true;
-        if(queryString){
-            if(queryString.trim().match(/\s+/)) {
-                disableValue = false;
-            }
-            this.setState({
-                titleRaw: parseTerms(queryString),
-                cancelButtonActive: true,
-                proximityDisabled: disableValue
-            }, () => {
-                if(this.state.titleRaw){
-                    this.debouncedSearch(this.state);
-                }
-            });
-        } else {
-            // Option: Search on load to get all results so user can start filtering?
-        }
+        this.doSearchFromParams();
 	}
 
 
