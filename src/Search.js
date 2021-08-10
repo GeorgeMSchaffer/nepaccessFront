@@ -96,25 +96,16 @@ class Search extends React.Component {
     doSearchFromParams = () => {
         var queryString = Globals.getParameterByName("q");
         if(queryString){
-            let disableValue = true;
-            let _inputMessage = "";
-
-            if( queryString.match(/["\?\*~]+/) ) {
-                _inputMessage = "Proximity dropdown is disabled when certain special characters are used: ~ ? \" *";
-                disableValue = true;
-            }
-            else if(queryString.trim().match(/\s+/)) {
-                disableValue = false;
-            }
+            let proximityValues = this.handleProximityValues(queryString);
 
             this.setState({
                 titleRaw: parseTerms(queryString),
                 cancelButtonActive: true,
-                proximityDisabled: disableValue,
+                proximityDisabled: proximityValues.disableValue,
                 surveyChecked: false,
                 surveyDone: false,
                 isDirty: true,
-                inputMessage: _inputMessage
+                inputMessage: proximityValues._inputMessage
             }, () => {
                 if(this.state.titleRaw){
                     this.debouncedSearch(this.state);
@@ -123,6 +114,26 @@ class Search extends React.Component {
         } else {
             // Option: Search on load to get all results so user can start filtering?
         }
+    }
+
+    handleProximityValues = (string) => {
+        let valuesResult = {_inputMessage:"", disableValue: true};
+
+        // Disable prox dropdown if conflicting characters in terms
+        if( string.match(/["\?\*~]+/) ) {
+            // _inputMessage = "Wildcard, phrase or proximity search character found in terms: " 
+            //     + userInput.match(/["\?\*~]+/)[0][0]
+            //     + ".  Disabled proximity search dropdown to prevent unpredictable results."
+            valuesResult._inputMessage = "Proximity dropdown is disabled when certain special characters are used: ~ ? \" *";
+            valuesResult.disableValue = true;
+        }
+        // Disable ui proximity search unless search is at least two strings separated by whitespace
+        else if( string.trim().match(/\s+/) ) {
+            valuesResult._inputMessage = "";
+            valuesResult.disableValue = false;
+        }
+
+        return valuesResult;
     }
 
     /**
@@ -169,30 +180,15 @@ class Search extends React.Component {
 
         let userInput = evt.target.value;
 
-        // Disable ui proximity search unless search is at least two strings separated by whitespace
-        let disableResult = true;
-
-        // Disable prox dropdown if conflicting characters in terms
-        let _inputMessage = "";
-        if( userInput.match(/["\?\*~]+/) ) {
-            // _inputMessage = "Wildcard, phrase or proximity search character found in terms: " 
-            //     + userInput.match(/["\?\*~]+/)[0][0]
-            //     + ".  Disabled proximity search dropdown to prevent unpredictable results."
-            _inputMessage = "Proximity dropdown is disabled when certain special characters are used: ~ ? \" *";
-            disableResult = true;
-        } else if(evt.target.name==='titleRaw') {
-            if(userInput.trim().match(/\s+/)) {
-                disableResult = false;
-            }
-        }
+        let proximityValues = this.handleProximityValues(userInput);
 
 		//get the evt.target.name (defined by name= in input)
 		//and use it to target the key on our `state` object with the same name, using bracket syntax
 		this.setState( 
 		{ 
             [evt.target.name]: userInput,
-            proximityDisabled: disableResult,
-            inputMessage: _inputMessage
+            proximityDisabled: proximityValues.disableResult,
+            inputMessage: proximityValues._inputMessage
         }, () => { // auto-searching is currently too expensive until asynchronous results
             // this.debouncedSearch(this.state);
         });
