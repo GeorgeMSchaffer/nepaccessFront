@@ -187,7 +187,7 @@ class Search extends React.Component {
 		this.setState( 
 		{ 
             [evt.target.name]: userInput,
-            proximityDisabled: proximityValues.disableResult,
+            proximityDisabled: proximityValues.disableValue,
             inputMessage: proximityValues._inputMessage
         }, () => { // auto-searching is currently too expensive until asynchronous results
             // this.debouncedSearch(this.state);
