@@ -302,6 +302,26 @@ export default class Admin extends React.Component {
             });
         })
     }
+    doGet = (url) => {
+        const _url = new URL(url, Globals.currentHost);
+
+        axios({
+            url: _url,
+            method: 'GET',
+            data: {
+
+            }
+        }).then(_response => {
+            const rsp = this.resp += (JSON.stringify({data: _response.data, status: _response.status}));
+            this.setState({
+                response: rsp
+            });
+        }).catch(error => { 
+            this.setState({
+                response:error.response.status + ": " + error.message
+            });
+        })
+    }
     
     render() {
 
@@ -379,6 +399,12 @@ export default class Admin extends React.Component {
                     <button type="button" onClick={() => this.doPost("admin/fix_garbage")}>
                         Delete garbage and get report
                     </button>
+
+                    <div>
+                        <button type="button" onClick={() => this.doGet("text/milli_test")}>
+                            Test speeds (scored; unscored)
+                        </button>
+                    </div>
 
                     <div><span>
                         Server response
