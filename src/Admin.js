@@ -376,6 +376,10 @@ export default class Admin extends React.Component {
                         Execute all delete requests
                     </button>
 
+                    <button type="button" onClick={() => this.doPost("admin/fix_garbage")}>
+                        Delete garbage and get report
+                    </button>
+
                     <div><span>
                         Server response
                     </span></div>
