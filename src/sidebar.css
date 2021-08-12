@@ -150,6 +150,7 @@ label.checkbox-text {
 }
 #results-label {
     margin-left: 15px;
+    line-height: normal;
     /* width: 40%; */
     /* white-space: nowrap;
     overflow: hidden !important; */
