@@ -891,8 +891,14 @@ export default withRouter(Search);
  function parseTerms(str) {
     if (!str) return str;
     
-    str = str.replace(/"(.+)"[\s]*~[\s]*([0-9]+)/g, "\"$1\"~$2") // "this" ~ 100 -> "this"~100
-        .replace(/([\s]|^)'(.+)'([\s]|$)/g, "$1\"$2\"$3"); // 'this's a mistake' -> "this's a mistake"
+    str = str.replace(/"(.+)"[\s]*~[\s]*([0-9]+)/g, "\"$1\"~$2"); // "this" ~ 100 -> "this"~100
+
+    // so this regex works correctly, but after replacing, it matches internal single quotes again.  
+    // Therefore we shouldn't even run this if there are already double quotes.
+    // If the user is using double quotes already, we don't need to try to help them out anyway.
+    if(!str.includes('"')) {
+        str = str.replace(/([\s]|^)'(.+)'([\s]|$)/g, "$1\"$2\"$3"); // 'this's a mistake' -> "this's a mistake"
+    }
 
     return str;
 }
