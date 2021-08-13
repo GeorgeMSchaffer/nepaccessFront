@@ -34,6 +34,7 @@ import Contact from './Contact.js';
 
 import AboutHelpContents from './AboutHelpContents.js';
 import AboutStats from './AboutStats.js';
+import StatTables from './StatTables.js';
 
 import Iframes from './iframes/Iframes.js';
 
@@ -282,6 +283,7 @@ class Main extends React.Component {
                 <Route path="/pairs2" component={Pairs2}></Route>
                 <Route path="/pairs3" component={Pairs3}></Route>
                 <Route path="/search_logs" component={SearchLogs}></Route>
+                <Route path="/stat_tables" component={StatTables}></Route>
                 
                 <Route path="/test" component={Test} />
 
