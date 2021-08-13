@@ -20,6 +20,7 @@ import persist from './persist.js';
 import BasicModal from './BasicModal.js';
 
 import { withRouter } from "react-router";
+import { get } from 'lodash';
 
 // import PropTypes from "prop-types";
 
@@ -366,6 +367,26 @@ class Search extends React.Component {
         })
     }
 
+
+    getCounts = () => {
+        this.get('stats/earliest_year','firstYear');
+        this.get('stats/latest_year','lastYear');
+        this.get('stats/eis_count','EISCount')
+    }
+    get = (url, stateName) => {
+        const _url = new URL(url, Globals.currentHost);
+        axios({
+            url: _url,
+            method: 'GET',
+            data: { }
+        }).then(_response => {
+            const rsp = _response.data;
+            this.setState({ [stateName]: rsp });
+        }).catch(error => { 
+        })
+    }
+
+
     render () {
         // const { history } = this.props;
 
@@ -539,7 +560,7 @@ class Search extends React.Component {
                                 <BasicModal id="basic-modal"
                                     className="side-link"
                                     divClassName=""
-                                    html={<div>Currently the site contains Draft and Final Environmental Impact Statements from: <b>2012-2020</b>. Other document types and dates are being added continuously.</div>}
+                                    html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. Other document types and dates are being added continuously.</div>}
                                 >
                                 </BasicModal>
                             </div>
@@ -826,6 +847,9 @@ class Search extends React.Component {
         catch(e) {
             // do nothing
         }
+        
+        this.getCounts();
+
         // Get search params on mount and run search on them (implies came from landing page)
         this.doSearchFromParams();
 	}
