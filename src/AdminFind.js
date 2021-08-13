@@ -192,7 +192,8 @@ export default class AdminFind extends React.Component {
 
         this.setState(
         { 
-            getRoute: val.value
+            getRoute: val.value,
+            getLabel: val.label
         }, () => {
             this.get();
         });
@@ -205,7 +206,7 @@ export default class AdminFind extends React.Component {
         if(this.state.response) {
             const csvBlob = new Blob([this.state.response]);
             const today = new Date().toISOString().split('T')[0];
-            const csvFilename = `results_${today}.tsv`;
+            const csvFilename = `${this.state.getLabel}_${today}.tsv`;
 
     
             if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
