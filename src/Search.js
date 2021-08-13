@@ -20,7 +20,6 @@ import persist from './persist.js';
 import BasicModal from './BasicModal.js';
 
 import { withRouter } from "react-router";
-import { get } from 'lodash';
 
 // import PropTypes from "prop-types";
 
