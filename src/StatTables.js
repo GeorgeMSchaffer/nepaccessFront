@@ -15,7 +15,7 @@ const options = {
     responsiveLayout:"collapse",    //collapse columns that dont fit on the table
     // responsiveLayoutCollapseUseFormatters:false,
     pagination:"local",             //paginate the data
-    paginationSize:10,              //allow 10 rows per page of data
+    paginationSize:100,              //allow 100 rows per page of data
     paginationSizeSelector:[10, 25, 50, 100], 
     movableColumns:true,
     resizableRows:true,
