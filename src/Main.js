@@ -51,6 +51,8 @@ import Pairs3 from './Pairs3';
 
 import SearchLogs from './SearchLogs.js';
 
+import Excel from './Excel.js';
+
 import Globals from './globals.js';
 
 import { Link, Switch, Route, withRouter } from 'react-router-dom';
@@ -284,6 +286,7 @@ class Main extends React.Component {
                 <Route path="/pairs3" component={Pairs3}></Route>
                 <Route path="/search_logs" component={SearchLogs}></Route>
                 <Route path="/stat_tables" component={StatTables}></Route>
+                <Route path="/excel" component={Excel}></Route>
                 
                 <Route path="/test" component={Test} />
 

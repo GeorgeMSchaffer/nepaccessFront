@@ -1,0 +1,16 @@
+.ExcelTable {
+    border: solid 1px black;
+    border-collapse: collapse;
+}
+.ExcelTable td {
+    border: solid 1px black;
+    min-width: 25px;
+    padding: 1px;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.ExcelTable td.heading + td {
+    text-align: left;
+    min-width: 300px;
+}
