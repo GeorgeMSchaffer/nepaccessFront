@@ -560,7 +560,7 @@ class Search extends React.Component {
                                 <BasicModal id="basic-modal"
                                     className="side-link"
                                     divClassName=""
-                                    html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. Other document types and dates are being added continuously.</div>}
+                                    html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. More files are being added continuously.</div>}
                                 >
                                 </BasicModal>
                             </div>
