@@ -83,13 +83,16 @@ export default class Excel extends React.Component {
             }
         });               
     }
+    /** Assuming row number % 3 has malformed percentages from Excel, reform them into percentages */
     convertDecimalsInRowsToPercents = (rows) => {
         rows.map(items => {
-            for(let i = 2; i < items.length; i++) {
-                if( items[i] && (items[i] - Math.floor(items[i]) !== 0) ) {
+            for(let i = 3; i < items.length; i += 3) {
+                if(items[i]) {
                     // convert to percentile and also use .floor to round out decimals
                     let newItem = (Math.floor(items[i]*10000) / 100) + "%";
                     items[i] = newItem;
+                } else if(items[i] === 0) {
+                    items[i] = "0%";
                 }
             }
             return items;
