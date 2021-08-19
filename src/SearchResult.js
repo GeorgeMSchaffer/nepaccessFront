@@ -27,6 +27,33 @@ class SearchResult extends React.Component {
         };
     }
 
+    /** Log download */
+    logInteraction = (isFolder) => {
+        const _url = new URL('interaction/set', Globals.currentHost);
+        const dataForm = new FormData(); 
+
+        dataForm.append('source',"RESULTS");
+        
+        // individual downloads are presented as DownloadFile components, but could be a comment letter
+        if(isFolder) {
+            dataForm.append('type',"DOWNLOAD_ARCHIVE"); 
+        } else {
+            dataForm.append('type','DOWNLOAD_ONE'); // comment letter
+        }
+        dataForm.append('docId',this.props.cell._cell.row.data.id);
+        
+        axios({
+            url: _url,
+            method: 'POST',
+            data: dataForm
+        }).then(response => {
+            // let responseOK = response && response.status === 200;
+            console.log(response.status);
+        }).catch(error => { 
+            console.error(error);
+        })
+    }
+
     hidden = () => {
         return this.props.hidden(this.props.cell._cell.row.data.id);
     }
@@ -101,6 +128,8 @@ class SearchResult extends React.Component {
                 });
                 FileDownload(response.data, _filename);
                 this.props.saveDownloaded(filenameOrID);
+
+                this.logInteraction(isFolder);
             }
             
             // verified = response && response.status === 200;
@@ -192,7 +221,8 @@ class SearchResult extends React.Component {
                                     <span className="cardHeader bold filename-inner">
                                         <DownloadFile key={combo[0]} downloadType="nepafile" 
                                             id={_id}
-                                            filename={combo[0]}/>
+                                            filename={combo[0]}
+                                            results={true} />
                                     </span>
                                     
                                     

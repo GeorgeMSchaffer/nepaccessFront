@@ -14,6 +14,40 @@ class DownloadFile extends React.Component {
 			downloadClass2: ''
 		};
 	}
+    
+    /** Log download */
+    logInteraction = (isFolder) => {
+        const _url = new URL('interaction/set', Globals.currentHost);
+        const dataForm = new FormData(); 
+
+        // DownloadFile component shows up in both main results and details page, so SearchResult includes .results=true prop
+        if(this.props.results) {
+            dataForm.append('source',"RESULTS");
+        } else {
+            dataForm.append('source',"DETAILS");
+        }
+
+        if(isFolder) {
+            dataForm.append('type',"DOWNLOAD_ARCHIVE"); 
+        } else {
+            // individual file OR epa comments archive.  
+            // Can differentiate if important but even the distinction between single file/all is just a bonus already.
+            dataForm.append('type',"DOWNLOAD_ONE"); 
+        }
+        
+        dataForm.append('docId',this.props.id); // TODO: May not have this every time unfortunately, need to clean up outside logic
+        
+        axios({
+            url: _url,
+            method: 'POST',
+            data: dataForm
+        }).then(response => {
+            // let responseOK = response && response.status === 200;
+            console.log(response.status);
+        }).catch(error => { 
+            console.error(error);
+        })
+    }
 
     downloadNepaFile = (_filename,_id) => {
         const FileDownload = require('js-file-download');
@@ -54,6 +88,8 @@ class DownloadFile extends React.Component {
                         downloadText: 'Done'
                     });
                     FileDownload(response.data, _filename);
+
+                    this.logInteraction(false);
                 }
                 
 				// verified = response && response.status === 200;
@@ -134,6 +170,8 @@ class DownloadFile extends React.Component {
                         downloadText: 'Done'
                     });
                     FileDownload(response.data, _filename);
+
+                    this.logInteraction(isFolder);
                 }
                 
 				// verified = response && response.status === 200;

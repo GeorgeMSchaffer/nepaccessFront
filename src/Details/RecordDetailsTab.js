@@ -44,7 +44,9 @@ export default class RecordDetailsTab extends React.Component {
             networkError: '',
             searcherClassName: '',
             resultsText: "",
-            exists: true
+            exists: true,
+
+            logged: false
         };
 
         // this.debouncedSize = _.debounce(this.getFileSize, 300);
@@ -121,12 +123,37 @@ export default class RecordDetailsTab extends React.Component {
             
         });
     }
+    
+    /** Log details page "click" (render) -
+     * user could theoretically type the page in or something, so this would have to be confirmed by if a search preceded it.
+     */
+    logInteraction = () => {
+        const _url = new URL('interaction/set', Globals.currentHost);
+        const dataForm = new FormData(); 
 
+        dataForm.append('source',"RESULTS");
+        dataForm.append('type',"DETAILS_CLICK"); 
+        dataForm.append('docId',this.state.detailsID);
+        
+        axios({
+            url: _url,
+            method: 'POST',
+            data: dataForm
+        }).then(response => {
+            // let responseOK = response && response.status === 200;
+            console.log(response.status);
+        }).catch(error => { 
+            console.error(error);
+        })
+    }
 
     populate = () => {
         let populateUrl = Globals.currentHost + "test/get_by_id";
             
         // console.log("Trying to populate details", this.state.detailsID);
+        if(!this.state.logged) {
+            this.logInteraction();
+        }
             
         //Send the AJAX call to the server
         axios.get(populateUrl, {
@@ -144,6 +171,7 @@ export default class RecordDetailsTab extends React.Component {
             if(parsedJson){
                 this.setState({
                     details: parsedJson,
+                    logged: true
                 });
             } else { // null (no record?)
                 this.setState({
@@ -478,7 +506,8 @@ export default class RecordDetailsTab extends React.Component {
                         return (
                             <p key={i} className='modal-line'>
                                 <span className='modal-title bold'>EPA comments</span> 
-                                <DownloadFile downloadType="Comments" filename={cellData[key]}/>
+                                <DownloadFile downloadType="Comments" filename={cellData[key]}
+                                    id={cellData["id"]} />
                                 {/* &nbsp;{cellData[key]} */}
                             </p>
                         );
@@ -495,7 +524,8 @@ export default class RecordDetailsTab extends React.Component {
                     <p className='warning'>Sorry, we're still working on collecting these files.</p>
                     <p className='modal-line'>
                         <span className='modal-title bold'>EPA comments</span> 
-                        <DownloadFile downloadType="Comments" filename={cellData['commentsFilename']}/>
+                        <DownloadFile downloadType="Comments" filename={cellData['commentsFilename']} 
+                                    id={cellData["id"]} />
                     </p></>
             } else {
                 return <p className='warning'>Sorry, we're still working on collecting these files.</p> 
