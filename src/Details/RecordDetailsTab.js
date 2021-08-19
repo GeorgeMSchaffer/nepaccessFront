@@ -125,13 +125,13 @@ export default class RecordDetailsTab extends React.Component {
     }
     
     /** Log details page "click" (render) -
-     * user could theoretically type the page in or something, so this would have to be confirmed by if a search preceded it.
+     * user could type the page in or navigate from related process member, could check if a search preceded it.
      */
     logInteraction = () => {
         const _url = new URL('interaction/set', Globals.currentHost);
         const dataForm = new FormData(); 
 
-        dataForm.append('source',"RESULTS");
+        dataForm.append('source',"UNKNOWN"); // Can't actually know this with current logic
         dataForm.append('type',"DETAILS_CLICK"); 
         dataForm.append('docId',this.state.detailsID);
         
