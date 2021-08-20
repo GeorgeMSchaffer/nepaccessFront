@@ -7,24 +7,6 @@ import Globals from './globals.js';
 
 import { ReactTabulator } from 'react-tabulator';
 
-const options = {
-    // maxHeight: "100%",           // for limiting table height
-    selectable:true,
-    layoutColumnsOnNewData: true,
-    tooltips:true,
-    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
-    // responsiveLayoutCollapseUseFormatters:false,
-    pagination:"local",             //paginate the data
-    paginationSize:10,              //allow 10 rows per page of data
-    paginationSizeSelector:[10, 25, 50, 100], 
-    movableColumns:true,
-    resizableRows:true,
-    resizableColumns:true,
-    layout:"fitColumns",
-    invalidOptionWarnings:false,    // spams warnings without this
-    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
-};
-
 const getRoutes = [
     { label: "admin/findAllEmailLogs", value: "admin/findAllEmailLogs" },
     { label: "admin/findAllFileLogs", value: "admin/findAllFileLogs" },
@@ -53,26 +35,46 @@ const getRoutes = [
     { label: "reports/duplicates_size", value: "reports/duplicates_size" },
 ];
 
+const options = {
+    // maxHeight: "100%",           // for limiting table height
+    selectable:true,
+    layoutColumnsOnNewData: true,
+    tooltips:true,
+    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
+    // responsiveLayoutCollapseUseFormatters:false,
+    pagination:"local",             //paginate the data
+    paginationSize:10,              //allow 10 rows per page of data
+    paginationSizeSelector:[10, 25, 50, 100], 
+    movableColumns:true,
+    resizableRows:true,
+    resizableColumns:true,
+    layout:"fitColumns",
+    invalidOptionWarnings:false,    // spams warnings without this
+    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
+};
+
 export default class AdminFind extends React.Component {
+
 
     state = {
         data: [],
         columns: [],
+        rows: [],
+        selected: "",
 
         response: "",
 
         admin: false,
         busy: false,
 
-        getRoute: ""
+        getRoute: "",
+        selectedName: ""
     }
-
     constructor(props) {
         super(props);
 
-        this.my_table = React.createRef();
+        this.ref = null;
     }
-
 
     checkAdmin = () => {
         let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
@@ -132,11 +134,15 @@ export default class AdminFind extends React.Component {
                     data: this.handleData(parsedJson),
                     response: Globals.jsonToTSV(parsedJson),
                     busy: false
+                }, () => {
+                    if(this.ref && this.ref.table){
+                        this.updateTable();
+                    }
                 });
             } else {
                 console.log("Null results");
                 this.setState({
-                    columns: newColumns,
+                    columns: [],
                     data: [],
                     response: Globals.jsonToTSV(parsedJson),
                     busy: false
@@ -173,9 +179,9 @@ export default class AdminFind extends React.Component {
     updateTable = () => {
         try {
             // seems necessary when using dynamic columns
-            this.my_table.current.table.setColumns(this.state.columns);
+            this.ref.table.setColumns(this.state.columns);
 
-            // this.my_table.current.table.replaceData(this.state.data);
+            // this.ref.table.replaceData(this.state.data);
         } catch (e) {
             console.error(e);
         }
@@ -224,6 +230,30 @@ export default class AdminFind extends React.Component {
         }
     }
 
+    // rowSelectionChanged = (data, rows) => {
+    //     console.log(data,rows);
+    //     if(data && data.length > 0) {
+    //         this.setState({ selectedData: data[0].id });
+    //     }
+    // }
+    // rowClick = (e, row) => {
+    //     console.log("ref table: ", this.ref); // this is the Tabulator table instance
+    //     console.log(`rowClick id: \${row.getData().id}`, row, e);
+    //     this.setState({ selectedName: row.getData().name });
+    // };
+
+    copy = () => {
+        if(this.ref.table) {
+            console.log(this.ref.table.getSelectedData());
+            this.setState({ 
+                selected: JSON.stringify(this.ref.table.getSelectedData()),
+                rows: this.ref.table.getSelectedRows()
+            });
+        }
+        // this.ref.table.modules.selectRow.selectRows(this.state.rows[0]);
+        // this.state.rows[0].select();
+        // can't seem to persist rows through state change (update)...
+    }
 
     render() {
 
@@ -234,14 +264,24 @@ export default class AdminFind extends React.Component {
                     <div className="loader-holder">
                         <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
-                    
+
                     <ReactTabulator
-                        ref={this.my_table}
+                        ref={ref => (this.ref = ref)}
                         data={this.state.data}
-                        columns={this.state.columns}
+                        columns={[]}
                         options={options}
+                        // rowClick={this.rowClick}
+                        // rowSelectionChanged={this.rowSelectionChanged}
                     />
                     <br />
+                    
+                    <button 
+                        className="button"
+                        onClick={this.copy}
+                    >
+                        Stringify selection
+                    </button>
+                    <textarea value={this.state.selected} readOnly />
                     
                     <Select
                         className="block"
@@ -249,13 +289,13 @@ export default class AdminFind extends React.Component {
                         name="getRoute" 
                         onChange={this.onSelectHandler}
                     />
-
                     <button 
                         className="button"
                         onClick={this.downloadResults}
                     >
                         Download results as .tsv
                     </button>
+
 
                 </div>
             );
@@ -270,9 +310,7 @@ export default class AdminFind extends React.Component {
     }
     
     componentDidUpdate() {
-        if(this.my_table && this.my_table.current){
-            this.updateTable();
-        }
+        console.log("Updated");
     }
 }
 
