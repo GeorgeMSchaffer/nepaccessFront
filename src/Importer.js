@@ -125,7 +125,11 @@ class Importer extends Component {
             reportBusy: false,
             headers: '',
             columns: [],
-            data: []
+            data: [],
+
+            shouldReplace: false,
+            filenames: [],
+            filenamesRun: false
         };
         
         let checkUrl = new URL('user/checkCurator', Globals.currentHost);
@@ -184,6 +188,57 @@ class Importer extends Component {
         return baseFolder;
     }
 
+    getFilenameOnly = (idx) => {
+        let pathSegments = this.state.files[idx].path.split('/');
+        if(pathSegments) {
+            return pathSegments[(pathSegments.length - 1)];
+        }
+    }
+
+    shouldUpload = (idx) => {
+        const filename = this.getFilenameOnly(idx);
+        if(filename && filename.substr(-4) == ".zip") {
+            return this.state.filenames.includes(filename);
+        } else {
+            return true;
+        }
+    }
+
+
+    // TODO: Pull full list of filenames with size < 200 bytes; compare on those;
+    // only upload those archives (for each .zip) unless new "replace all" checkbox checked.
+
+    getMissingFilenames = () => {
+        this.setState({ reportBusy: true });
+
+        let getUrl = Globals.currentHost + "test/findMissingFilenames";
+        
+        axios.get(getUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            if(parsedJson){
+                this.setState({
+                    filenames: parsedJson,
+                    filenamesRun: true,
+                    reportBusy: false
+                });
+            } else {
+                console.log("Null");
+            }
+        }).catch(error => { // 401/404/...
+            console.error(error);
+            this.setState({ reportBusy: false, filenamesRun: true });
+        });
+    }
 
     /** Event handlers */
 
@@ -485,10 +540,10 @@ class Importer extends Component {
             }
             }).then(response => {
                 // data should be boolean
-                if (response && response.data) { 
+                if (response && response.data && this.state.shouldReplace) { 
                     // import
                     this.doImport(i,limit);
-                } else {
+                } else if(!(response && response.data)) {
                     // skip upload
                     resultString += this.state.files[i].path + ": Skipped uploading (no metadata record to link to)\n";
                     
@@ -508,6 +563,34 @@ class Importer extends Component {
                             importResults: resultString,
                             disabled: false,
                             busy: false
+                        }, () => {
+                            this.getMissingFilenames();
+                        });
+                    }
+                } else if(!this.state.shouldReplace && this.shouldUpload(i)) {
+                    this.doImport(i,limit);
+                } else if(!this.state.shouldReplace && !this.shouldUpload(i)) {
+                    // skip
+                    resultString += this.state.files[i].path + ": Skipped uploading (file already uploaded)\n";
+                    
+                    if(i+1 < limit) {
+                        this.setState({
+                            importResults: resultString,
+                            uploaded: (this.state.uploaded + this.state.files[i].size)
+                        }, () => {
+                            this.doSingleImport((i+1), limit);
+                        });
+                    } else {
+                        document.body.style.cursor = 'default'; 
+
+                        this.setState({
+                            networkError: "",
+                            successLabel: "Done",
+                            importResults: resultString,
+                            disabled: false,
+                            busy: false
+                        }, () => {
+                            this.getMissingFilenames();
                         });
                     }
                 }
@@ -1466,6 +1549,14 @@ class Importer extends Component {
                             <hr></hr>
 
                             <h1>Bulk import:</h1>
+
+                            <label>
+                                Skip uploading existing archives
+                                <input type="checkbox" 
+                                    onClick={() => this.setState({shouldReplace: !this.state.shouldReplace})} 
+                                    checked={!this.state.shouldReplace} />
+                            </label>
+                            
                             <h4>(Function: Upload new directories with PDFs, or standalone archives of PDFs)</h4>
                         </div>
                         <h2 hidden={this.state.importOption !== "single"}>Option 2: Import with multiple files</h2> 
@@ -1570,6 +1661,10 @@ class Importer extends Component {
     componentDidMount() {
         // console.log(this.state.importOption);
         this.checkAdmin();
+
+        if(!this.state.filenamesRun) {
+            this.getMissingFilenames();
+        }
     }
 }
 
