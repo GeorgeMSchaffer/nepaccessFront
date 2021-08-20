@@ -892,7 +892,14 @@ class Search extends React.Component {
         }, () => {
             const postUrl = new URL('survey/save', Globals.currentHost);
             const dataForm = new FormData();
+
             dataForm.append('surveyResult', this.state.surveyResult);
+            if(!parseTerms(this.state.titleRaw)) {
+                dataForm.append('searchTerms', "");
+            } else {
+                dataForm.append('searchTerms', parseTerms(this.state.titleRaw));
+            }
+            
             this.post(postUrl,dataForm);
         })
     }
