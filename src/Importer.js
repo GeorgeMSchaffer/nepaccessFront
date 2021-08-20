@@ -192,15 +192,26 @@ class Importer extends Component {
         let pathSegments = this.state.files[idx].path.split('/');
         if(pathSegments) {
             return pathSegments[(pathSegments.length - 1)];
+        } else {
+            return null;
         }
     }
 
     shouldUpload = (idx) => {
-        const filename = this.getFilenameOnly(idx);
-        if(filename && filename.substr(-4) == ".zip") {
-            return this.state.filenames.includes(filename);
-        } else {
+        if(this.state.shouldReplace) {
             return true;
+        } else {
+            try {
+                const filename = this.getFilenameOnly(idx);
+                if(filename && filename.substr(-4) == ".zip") {
+                    // returns true only if this .zip is in the list of missing filenames
+                    return this.state.filenames.includes(filename);
+                } else {
+                    return true;
+                }
+            } catch(e) {
+                return true;
+            }
         }
     }
 
@@ -540,39 +551,17 @@ class Importer extends Component {
             }
             }).then(response => {
                 // data should be boolean
-                if (response && response.data && this.state.shouldReplace) { 
+                if (response && response.data && this.shouldUpload(i)) { 
                     // import
                     this.doImport(i,limit);
-                } else if(!(response && response.data)) {
+                } else {
                     // skip upload
-                    resultString += this.state.files[i].path + ": Skipped uploading (no metadata record to link to)\n";
-                    
-                    if(i+1 < limit) {
-                        this.setState({
-                            importResults: resultString,
-                            uploaded: (this.state.uploaded + this.state.files[i].size)
-                        }, () => {
-                            this.doSingleImport((i+1), limit);
-                        });
-                    } else {
-                        document.body.style.cursor = 'default'; 
-
-                        this.setState({
-                            networkError: "",
-                            successLabel: "Done",
-                            importResults: resultString,
-                            disabled: false,
-                            busy: false
-                        }, () => {
-                            this.getMissingFilenames();
-                        });
+                    if(!response || !response.data) {
+                        resultString += this.state.files[i].path + ": Skipped uploading (no metadata record to link to)\n";
+                    } else if(!this.shouldUpload(i)) {
+                        resultString += this.state.files[i].path + ": Skipped uploading (file already uploaded)\n";
                     }
-                } else if(!this.state.shouldReplace && this.shouldUpload(i)) {
-                    this.doImport(i,limit);
-                } else if(!this.state.shouldReplace && !this.shouldUpload(i)) {
-                    // skip
-                    resultString += this.state.files[i].path + ": Skipped uploading (file already uploaded)\n";
-                    
+
                     if(i+1 < limit) {
                         this.setState({
                             importResults: resultString,
