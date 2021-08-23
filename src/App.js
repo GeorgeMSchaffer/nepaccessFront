@@ -382,10 +382,11 @@ export default class App extends React.Component {
 
             this.resetTypeCounts();
             
+            // 0: Get top 100 results
             // 1: Collect contextless results
             //        - Consolidate all of the filenames by metadata record into singular results
             //          (maintaining original order by first appearance)
-            this.initialSearch(searcherState);
+            this.startSearch(searcherState);
             // 2: Begin collecting text fragments 10-100 at a time or all for current page,  
             //          assign accordingly, in a cancelable recursive function
             //          IF TITLE ONLY SEARCH: We can stop here.
@@ -396,16 +397,10 @@ export default class App extends React.Component {
 
     }
 
-    initialSearch = (searcherState) => {
+    /** Just get the top results quickly before launching the "full" search with initialSearch() */
+    startSearch = (searcherState) => {
         if(!this._mounted){ // User navigated away or reloaded
             return;
-        }
-        
-        if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
-            // if(this.props.history){
-            //     console.log(this.props.history);
-            // }
-            this.props.history.push('/login'); // Prompt login if no auth token
         }
 
 		this.setState({
@@ -419,7 +414,6 @@ export default class App extends React.Component {
             searching: true,
             shouldUpdate: true
 		}, () => {
-
             // title-only
             let searchUrl = new URL('text/search', Globals.currentHost);
             
@@ -428,12 +422,18 @@ export default class App extends React.Component {
             // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
             // properly
             if(searcherState.searchOption && searcherState.searchOption === "A") {
-                searchUrl = new URL('text/search_no_context', Globals.currentHost);
+                searchUrl = new URL('text/search_top', Globals.currentHost);
             } else if(searcherState.searchOption && searcherState.searchOption === "B") {
-                searchUrl = new URL('text/search_no_context', Globals.currentHost);
+                searchUrl = new URL('text/search_top', Globals.currentHost);
             }
 
             this._searchTerms = this.state.searcherInputs.titleRaw;
+
+            // Update query params
+            // We could also probably clear them on reload (component will unmount) if anyone wants to
+            let currentUrlParams = new URLSearchParams(window.location.search);
+            currentUrlParams.set('q', this._searchTerms);
+            this.props.history.push(window.location.pathname + "?" + currentUrlParams.toString());
 
 			let dataToPass = { 
 				title: this.state.searcherInputs.titleRaw
@@ -474,6 +474,7 @@ export default class App extends React.Component {
             }
 
             //Send the AJAX call to the server
+            let shouldContinue = true;
 
             // console.log("Search init");
             axios({
@@ -494,7 +495,9 @@ export default class App extends React.Component {
                     Globals.emitEvent('refresh', {
                         loggedIn: false
                     });
-                
+                } else if(response.status === 202) {
+                    shouldContinue = false; // found all results already
+                    return response.data;
                 } else {
                     console.log(response.status);
                     return null;
@@ -542,7 +545,6 @@ export default class App extends React.Component {
                     this.setState({
                         searchResults: _data,
                         outputResults: _data,
-                        resultsText: _data.length + " Results",
                     }, () => {
                         this.filterResultsBy(this._searcherState);
                         // console.log("Mapped data",_data);
@@ -556,12 +558,27 @@ export default class App extends React.Component {
                             this.setState({
                                 searching: false,
                                 snippetsDisabled: true,
-                                shouldUpdate: true
+                                shouldUpdate: true,
+                                resultsText: _data.length + " Results"
+                            });
+                        } else if(!shouldContinue) {
+                            // got all results already, so stop searching and start highlighting.
+                            this.setState({
+                                searchResults: _data,
+                                outputResults: _data,
+                                resultsText: _data.length + " Results",
+                            }, () => {
+                                this.filterResultsBy(this._searcherState);
+                                // console.log("Mapped data",_data);
+            
+                                this.countTypes();
+                            
+                                this._searchId = this._searchId + 1;
+                                // console.log("Launching fragment search ",this._searchId);
+                                this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
                             });
                         } else {
-                            this._searchId = this._searchId + 1;
-                            // console.log("Launching fragment search ",this._searchId);
-                            this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
+                            this.initialSearch(searcherState);
                         }
                     });
                 } else {
@@ -606,6 +623,176 @@ export default class App extends React.Component {
             })
     
         });
+    }
+
+    /** Populates full results without text highlights and then starts the highlighting process */
+    initialSearch = (searcherState) => {
+        if(!this._mounted){ // User navigated away or reloaded
+            return;
+        }
+
+        let searchUrl = new URL('text/search_no_context', Globals.currentHost);
+
+        this._searchTerms = this.state.searcherInputs.titleRaw;
+
+        let dataToPass = { 
+            title: this.state.searcherInputs.titleRaw
+        };
+
+        // OPTION: If we restore a way to use search options for faster searches, we'll assign here
+        if(this.state.useSearchOptions) {
+            dataToPass = { 
+                title: this.state.searcherInputs.titleRaw, 
+                startPublish: this.state.searcherInputs.startPublish,
+                endPublish: this.state.searcherInputs.endPublish,
+                startComment: this.state.searcherInputs.startComment,
+                endComment: this.state.searcherInputs.endComment,
+                agency: this.state.searcherInputs.agency,
+                state: this.state.searcherInputs.state,
+                typeAll: this.state.searcherInputs.typeAll,
+                typeFinal: this.state.searcherInputs.typeFinal,
+                typeDraft: this.state.searcherInputs.typeDraft,
+                typeOther: this.state.searcherInputs.typeOther,
+                needsComments: this.state.searcherInputs.needsComments,
+                needsDocument: this.state.searcherInputs.needsDocument
+            };
+        }
+
+        dataToPass.title = postProcessTerms(dataToPass.title);
+
+        // Proximity search from UI - surround with quotes, append ~#
+        if(!this.state.searcherInputs.proximityDisabled && this.state.searcherInputs.proximityOption)
+        {
+            if(this.state.searcherInputs.proximityOption.value >= 0) {
+                try {
+                    dataToPass.title = 
+                        ("\"" + dataToPass.title + "\"~" + this.state.searcherInputs.proximityOption.value);
+                } catch(e) {
+                    
+                }
+            }
+        }
+
+        //Send the AJAX call to the server
+
+        // console.log("Search init");
+        axios({
+            method: 'POST', // or 'PUT'
+            url: searchUrl,
+            data: dataToPass
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return response.data;
+            } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
+                this.setState({
+                    resultsText: "No results: Please check use of term modifiers"
+                });
+                return null;
+            } else if(response.status === 403) {
+                // Not logged in
+                Globals.emitEvent('refresh', {
+                    loggedIn: false
+                });
+            
+            } else {
+                console.log(response.status);
+                return null;
+            }
+        }).then(currentResults => {
+            let _data = [];
+            if(currentResults && currentResults[0] && currentResults[0].doc) {
+                
+                // console.log("Got results from server",currentResults);
+                // TODO: Probably don't want filter permanently, but it was requested for now
+                _data = currentResults
+                // .filter((result) => { // Soft rollout logic added to filter out anything without docs.
+                //     return result.doc.size > 200; // filter out if no files (200 bytes or less)
+                // })
+                .map((result, idx) =>{
+                    let doc = result.doc;
+                    let newObject = {title: doc.title, 
+                        agency: doc.agency, 
+                        cooperatingAgency: doc.cooperatingAgency,
+                        commentDate: doc.commentDate, 
+                        registerDate: doc.registerDate, 
+                        state: doc.state, 
+                        documentType: doc.documentType, 
+                        filename: doc.filename, 
+                        commentsFilename: doc.commentsFilename,
+                        size: doc.size,
+                        id: doc.id,
+                        luceneIds: result.ids,
+                        folder: doc.folder,
+                        plaintext: result.highlights,
+                        name: result.filenames,
+
+                        link: doc.link,
+                        firstRodDate: doc.firstRodDate,
+                        processId: doc.processId,
+                        notes: doc.notes,
+                        status: doc.status,
+                        subtype: doc.subtype,
+                        county: doc.county,
+
+                        relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
+                    };
+                    return newObject;
+                }); 
+                this.setState({
+                    searchResults: _data,
+                    outputResults: _data,
+                    resultsText: _data.length + " Results",
+                }, () => {
+                    this.filterResultsBy(this._searcherState);
+                    // console.log("Mapped data",_data);
+
+                    this.countTypes();
+                
+                    this._searchId = this._searchId + 1;
+                    // console.log("Launching fragment search ",this._searchId);
+                    this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
+                });
+            } else {
+                // console.log("No results");
+                this.setState({
+                    searching: false,
+                    searchResults: [],
+                    outputResults: [],
+                    resultsText: "No results found for " + this._searchTerms + " (try adding OR between words for less strict results?)"
+                });
+            }
+        }).catch(error => { // Server down or 408 (timeout)
+            console.error('Server is down or verification failed.', error);
+            if(error.response && error.response.status === 408) {
+                this.setState({
+                    networkError: 'Request has timed out.'
+                });
+                this.setState({
+                    resultsText: "Error: Request timed out"
+                });
+            } else if (error.response && error.response.status === 403) { // token expired?
+                this.setState({
+                    resultsText: "Error: Please login again (session expired)"
+                });
+                Globals.emitEvent('refresh', {
+                    loggedIn: false
+                });
+            } else if(error.response && error.response.status === 400) { // bad request
+                this.setState({
+                    networkError: Globals.errorMessage.default,
+                    resultsText: "Couldn't parse terms, please try removing any special characters"
+                });
+            } else {
+                this.setState({
+                    networkError: Globals.errorMessage.default,
+                    resultsText: "Error: Couldn't get results from server"
+                });
+            }
+            this.setState({
+                searching: false
+            });
+        })
     }
     
 
