@@ -546,15 +546,14 @@ export default class App extends React.Component {
                         searchResults: _data,
                         outputResults: _data,
                     }, () => {
-                        this.filterResultsBy(this._searcherState);
-                        // console.log("Mapped data",_data);
-
-                        this.countTypes();
                     
                         // title-only (or blank search===no text search at all): return
                         if(Globals.isEmptyOrSpaces(dataToPass.title) || 
                                 (searcherState.searchOption && searcherState.searchOption === "C"))
                         {
+                            this.filterResultsBy(this._searcherState);
+                            this.countTypes();
+
                             this.setState({
                                 searching: false,
                                 snippetsDisabled: true,
@@ -564,13 +563,9 @@ export default class App extends React.Component {
                         } else if(!shouldContinue) {
                             // got all results already, so stop searching and start highlighting.
                             this.setState({
-                                searchResults: _data,
-                                outputResults: _data,
                                 resultsText: _data.length + " Results",
                             }, () => {
                                 this.filterResultsBy(this._searcherState);
-                                // console.log("Mapped data",_data);
-            
                                 this.countTypes();
                             
                                 this._searchId = this._searchId + 1;
@@ -703,12 +698,7 @@ export default class App extends React.Component {
             let _data = [];
             if(currentResults && currentResults[0] && currentResults[0].doc) {
                 
-                // console.log("Got results from server",currentResults);
-                // TODO: Probably don't want filter permanently, but it was requested for now
                 _data = currentResults
-                // .filter((result) => { // Soft rollout logic added to filter out anything without docs.
-                //     return result.doc.size > 200; // filter out if no files (200 bytes or less)
-                // })
                 .map((result, idx) =>{
                     let doc = result.doc;
                     let newObject = {title: doc.title, 
