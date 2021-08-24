@@ -27,6 +27,7 @@ const _ = require('lodash');
 
 
 class Search extends React.Component {
+    _lastSearchTerms = "";
 
 	// static propTypes = {
         // match: PropTypes.object.isRequired,
@@ -82,6 +83,7 @@ class Search extends React.Component {
     }
     
     doSearch = (terms) => {
+        this._lastSearchTerms = terms;
         this.setState({
             titleRaw: parseTerms(terms),
             cancelButtonActive: true, 
@@ -98,6 +100,7 @@ class Search extends React.Component {
         if(queryString){
             let proximityValues = this.handleProximityValues(queryString);
 
+            this._lastSearchTerms = queryString;
             this.setState({
                 titleRaw: parseTerms(queryString),
                 cancelButtonActive: true,
@@ -894,10 +897,10 @@ class Search extends React.Component {
             const dataForm = new FormData();
 
             dataForm.append('surveyResult', this.state.surveyResult);
-            if(!parseTerms(this.state.titleRaw)) {
+            if(!parseTerms(this._lastSearchTerms)) {
                 dataForm.append('searchTerms', "");
             } else {
-                dataForm.append('searchTerms', parseTerms(this.state.titleRaw));
+                dataForm.append('searchTerms', parseTerms(this._lastSearchTerms));
             }
             
             this.post(postUrl,dataForm);
