@@ -234,7 +234,19 @@ export default class Admin extends React.Component {
     }
 
     onChange = (evt) => {
-        this.setState({ [evt.target.name]: evt.target.value });
+        if(this.my_table && this.my_table.current) {
+            this.setState({ 
+                [evt.target.name]: evt.target.value,
+                rows: this.my_table.current.table.getSelectedRows()
+            }, () => {
+                // keep selection
+                this.state.rows.forEach(row => {
+                    this.my_table.current.table.selectRow(row._row.data.id);
+                });
+            });
+        } else {
+            this.setState({[evt.target.name]: evt.target.value});
+        }
     }
 
     validPassword = () => {
