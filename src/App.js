@@ -257,7 +257,6 @@ export default class App extends React.Component {
             }
             if(searcherState.needsDocument) {
                 isFiltered = true;
-                console.log("Filtering");
                 filteredResults = filteredResults.filter(this.hasDocument)
             }
             
@@ -557,21 +556,16 @@ export default class App extends React.Component {
                             this.setState({
                                 searching: false,
                                 snippetsDisabled: true,
-                                shouldUpdate: true,
-                                resultsText: _data.length + " Results"
+                                shouldUpdate: true
                             });
                         } else if(!shouldContinue) {
                             // got all results already, so stop searching and start highlighting.
-                            this.setState({
-                                resultsText: _data.length + " Results",
-                            }, () => {
-                                this.filterResultsBy(this._searcherState);
-                                this.countTypes();
-                            
-                                this._searchId = this._searchId + 1;
-                                // console.log("Launching fragment search ",this._searchId);
-                                this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
-                            });
+                            this.filterResultsBy(this._searcherState);
+                            this.countTypes();
+                        
+                            this._searchId = this._searchId + 1;
+                            // console.log("Launching fragment search ",this._searchId);
+                            this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
                         } else {
                             this.initialSearch(searcherState);
                         }
