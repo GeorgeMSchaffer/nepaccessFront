@@ -522,9 +522,33 @@ class Importer extends Component {
     doSingleImport(i,limit) {
         let resultString = "" + this.state.importResults;
 
+        // skip 0 byte files
+        if(this.state.files[i] && this.state.files[i].size != null && this.state.files[i].size === 0) {
+            resultString += this.state.files[i].path + ": Skipped uploading (0 byte file)\n";
+            if(i+1 < limit) {
+                this.setState({
+                    importResults: resultString,
+                    uploaded: (this.state.uploaded + this.state.files[i].size)
+                }, () => {
+                    this.doSingleImport((i+1), limit);
+                });
+            } else {
+                document.body.style.cursor = 'default'; 
+
+                this.setState({
+                    networkError: "",
+                    successLabel: "Done",
+                    importResults: resultString,
+                    disabled: false,
+                    busy: false
+                }, () => {
+                    this.getMissingFilenames();
+                });
+            }
+        }
         // Check with server about if we can link
         // Backend takes path and derives both folder name and type if possible
-        if(this.state.files[i].path) {
+        else if(this.state.files[i].path) {
             let getUrl = Globals.currentHost + 'file/can_link_folder_type';
             
             axios.get(getUrl, {
