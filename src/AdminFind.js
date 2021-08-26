@@ -126,6 +126,10 @@ export default class AdminFind extends React.Component {
 
             for(let i = 0; i < headers.length; i++) {
                 newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
+                // headerFilter: "input",
+                // cellClick: (e, cell) => {
+                //     console.log( cell.getRow().getData() );
+                // },
             }
 
             if(parsedJson && parsedJson.length > 0){

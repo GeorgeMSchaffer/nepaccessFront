@@ -373,23 +373,23 @@ export default class App extends React.Component {
         //         })
         //     }
             
-            // reset sort
-            this._sortVal = "relevance"; 
-            this._ascVal = true;
+        // reset sort
+        this._sortVal = "relevance"; 
+        this._ascVal = true;
 
-            this._canceled = false;
-            this._searcherState = searcherState; // for live filtering
+        this._canceled = false;
+        this._searcherState = searcherState; // for live filtering
 
-            this.resetTypeCounts();
-            
-            // 0: Get top 100 results
-            // 1: Collect contextless results
-            //        - Consolidate all of the filenames by metadata record into singular results
-            //          (maintaining original order by first appearance)
-            this.startSearch(searcherState);
-            // 2: Begin collecting text fragments 10-100 at a time or all for current page,  
-            //          assign accordingly, in a cancelable recursive function
-            //          IF TITLE ONLY SEARCH: We can stop here.
+        this.resetTypeCounts();
+        
+        // 0: Get top 100 results
+        // 1: Collect contextless results
+        //        - Consolidate all of the filenames by metadata record into singular results
+        //          (maintaining original order by first appearance)
+        this.startSearch(searcherState);
+        // 2: Begin collecting text fragments 10-100 at a time or all for current page,  
+        //          assign accordingly, in a cancelable recursive function
+        //          IF TITLE ONLY SEARCH: We can stop here.
 
         // }).catch(error => {
         //     console.error(error);
@@ -430,7 +430,7 @@ export default class App extends React.Component {
             this._searchTerms = this.state.searcherInputs.titleRaw;
 
             // Update query params
-            // We could also probably clear them on reload (component will unmount) if anyone wants to
+            // We could also probably clear them on reload (component will unmount) if anyone wants
             let currentUrlParams = new URLSearchParams(window.location.search);
             currentUrlParams.set('q', this._searchTerms);
             this.props.history.push(window.location.pathname + "?" + currentUrlParams.toString());

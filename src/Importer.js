@@ -197,16 +197,17 @@ class Importer extends Component {
         }
     }
 
+    /** returns true if this.state.shouldReplace or if the file at idx is a .zip and it is in the list of missing filenames */
     shouldUpload = (idx) => {
         if(this.state.shouldReplace) {
             return true;
         } else {
+            // returns true if the file at idx is a .zip and it is in the list of missing filenames
             try {
                 const filename = this.getFilenameOnly(idx);
-                if(filename && filename.substr(-4) == ".zip") {
-                    // returns true only if this .zip is in the list of missing filenames
+                if(filename && (filename.substr(-4).toLocaleLowerCase() === ".zip")) {
                     return this.state.filenames.includes(filename);
-                } else {
+                } else { // not a zip/no filename, that's a job for other logic
                     return true;
                 }
             } catch(e) {
@@ -215,10 +216,7 @@ class Importer extends Component {
         }
     }
 
-
-    // TODO: Pull full list of filenames with size < 200 bytes; compare on those;
-    // only upload those archives (for each .zip) unless new "replace all" checkbox checked.
-
+    // Pull full list of filenames with size < 200 bytes; compare on those
     getMissingFilenames = () => {
         this.setState({ reportBusy: true });
 
@@ -251,6 +249,7 @@ class Importer extends Component {
         });
     }
 
+    
     /** Event handlers */
 
 
@@ -268,18 +267,12 @@ class Importer extends Component {
         if(!val || !act){
             return;
         }
-        
-        // console.log(val);
-        // console.log(act);
 
         let name = act.name;
         if(act.action === "create-option"){ // Custom value for document type support
             name = "document";
         }
         const value = val.value;
-        
-        // console.log(value);
-        // console.log(name);
 
         this.setState( prevState =>
         { 
@@ -300,8 +293,6 @@ class Importer extends Component {
 
     onChange = (evt) => {
         if(evt && evt.target){
-            // console.log(evt);
-            // console.log(evt.target);
     
             const name = evt.target.name;
             const value = evt.target.value;
@@ -342,33 +333,24 @@ class Importer extends Component {
     }
     
     handleOnDrop = (evt) => {
-        // console.log("Data:");
-        // console.log(evt);
-        // console.log(evt[0]);
-        // console.log(evt[0].data);
 
         let newArray = [];
         for(let i = 0; i < evt.length; i++){
             newArray.push(evt[i].data);
         }
 
-        // console.log(newArray);
         this.setState({ 
             csv: newArray,
             headers: getKeys(evt[0].data).toString().replaceAll(',',', ')
         }, () => {
-            // console.log("Event:");
-            // console.log(evt);
-            // console.log("CSV",newArray);
             this.setState({ canImportCSV: true });
         });
     }
 
     handleOnRemoveFile = (evt) => { this.setState({ csv: null, canImportCSV: false }); }
 
-    handleOnError = (evt) => {
-        // Note: Just because errors are generated does not necessarily mean that parsing failed.
-    }
+    // Note: Just because errors are generated does not necessarily mean that parsing failed.
+    handleOnError = (evt) => {}
 
 
     /** Validation */
