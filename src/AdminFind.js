@@ -248,11 +248,23 @@ export default class AdminFind extends React.Component {
     // };
 
     copy = () => {
+        // this.ref.table.blockRedraw();
         if(this.ref.table) {
             console.log(this.ref.table.getSelectedData());
             this.setState({ 
                 selected: JSON.stringify(this.ref.table.getSelectedData()),
                 rows: this.ref.table.getSelectedRows()
+            }, () => {
+                const el = this.textArea;
+                el.select();
+                document.execCommand("copy");
+                // this.ref.table.restoreRedraw();
+
+                // table is somehow smart enough to use ID even if it doesn't line up with the "row number"
+                // so this logic maintains the selection
+                this.state.rows.forEach(row => {
+                    this.ref.table.selectRow(row._row.data.id);
+                });
             });
         }
         // this.ref.table.modules.selectRow.selectRows(this.state.rows[0]);
@@ -284,9 +296,10 @@ export default class AdminFind extends React.Component {
                         className="button"
                         onClick={this.copy}
                     >
-                        Stringify selection
+                        Stringify and copy selection to clipboard
                     </button>
-                    <textarea value={this.state.selected} readOnly />
+                    <textarea ref={(textarea) => this.textArea = textarea} 
+                                name="resultJSONString" value={this.state.selected} readOnly />
                     
                     <Select
                         className="block"
