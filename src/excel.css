@@ -1,6 +1,7 @@
 .ExcelTable {
     border: solid 1px black;
     border-collapse: collapse;
+    margin-bottom: 500px;
 }
 .ExcelTable td {
     border: solid 1px black;
@@ -13,4 +14,11 @@
 .ExcelTable td.heading + td {
     text-align: left;
     min-width: 300px;
+}
+
+.ExcelTable tbody tr:nth-child(2) {
+    position: sticky; 
+    top: 102px; /** same as #header height */
+    font-weight: bold;
+    background: #FBFBF6; /** Useful to give whole row "opacity" when scrolling down */
 }
