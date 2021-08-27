@@ -1,3 +1,6 @@
+#excel-holder {
+    padding: 1%;
+}
 .ExcelTable {
     border: solid 1px black;
     border-collapse: collapse;
@@ -18,7 +21,11 @@
 
 .ExcelTable tbody tr:nth-child(2) {
     position: sticky; 
-    top: 102px; /** same as #header height */
+    top: 101px; /** same as #header height minus border width */
     font-weight: bold;
     background: #FBFBF6; /** Useful to give whole row "opacity" when scrolling down */
+}
+
+.ExcelTable tbody tr:last-child { 
+    font-weight: bold;
 }

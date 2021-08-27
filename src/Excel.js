@@ -129,7 +129,7 @@ export default class Excel extends React.Component {
 
     render() {
         return (
-            <div className="content padding-all">
+            <div id="excel-holder" className="content">
                 <div className="loader-holder" hidden={!this.state.busy}>
                     <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                 </div>
