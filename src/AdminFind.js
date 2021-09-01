@@ -12,6 +12,7 @@ const getRoutes = [
     { label: "admin/findAllFileLogs", value: "admin/findAllFileLogs" },
     { label: "admin/findAllUpdateLogs", value: "admin/findAllUpdateLogs" },
     { label: "admin/findAllUserStatusLogs", value: "admin/findAllUserStatusLogs" },
+    { label: "admin/findAllDeleteRequests", value: "admin/findAllDeleteRequests" },
     { label: "test/findAllDocs", value: "test/findAllDocs" },
     { label: "test/findAllSearchLogs", value: "test/findAllSearchLogs" },
     { label: "file/findAllNepaFiles", value: "file/findAllNepaFiles" },
