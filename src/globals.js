@@ -1,5 +1,22 @@
 import axios from 'axios';
 
+const finalTypeLabels = ["Final",
+    "Second Final",
+    "Revised Final",
+    "Final Revised",
+    "Final Supplement",
+    "Final Supplemental",
+    "Second Final Supplemental",
+    "Third Final Supplemental"];
+const draftTypeLabels = ["Draft",
+    "Second Draft",
+    "Revised Draft",
+    "Draft Revised",
+    "Draft Supplement",
+    "Draft Supplemental",
+    "Second Draft Supplemental",
+    "Third Draft Supplemental"];
+
 const Globals = {
     currentHost: new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/'),
 
@@ -257,10 +274,329 @@ const Globals = {
         
         return tsv;
     },
-    
+
+    isFinalType: (type) => {
+        let result = false;
+        if(type && finalTypeLabels.indexOf(type) >= 0) {
+            result = true;
+        }
+
+        return result;
+    },
+
+    isDraftType: (type) => {
+        let result = false;
+        if(type && draftTypeLabels.indexOf(type) >= 0) {
+            result = true;
+        }
+
+        return result;
+    },
+
+    doFilter: (searcherState, searchResults, preFilterCount, legacyStyle) => {
+
+        let filtered = {isFiltered: false, textToUse: "", filteredResults: []};
+        
+        let isFiltered = false;
+
+        // Deep clone results
+        let filteredResults = JSON.parse(JSON.stringify(searchResults));
+        
+        if(searcherState.agency && searcherState.agency.length > 0){
+            isFiltered = true;
+            filteredResults = filteredResults.filter(matchesArray("agency", searcherState.agency));
+        }
+        if(searcherState.cooperatingAgency && searcherState.cooperatingAgency.length > 0){
+            isFiltered = true;
+            if(legacyStyle) {
+                filteredResults = filteredResults.filter(arrayMatchesArrayNotSpacedOld("cooperatingAgency", searcherState.cooperatingAgency));
+            } else {
+                filteredResults = filteredResults.filter(arrayMatchesArrayNotSpaced("cooperatingAgency", searcherState.cooperatingAgency));
+            }
+        }
+        if(searcherState.state && searcherState.state.length > 0){
+            isFiltered = true;
+            filteredResults = filteredResults.filter(arrayMatchesArray("state", searcherState.state));
+        }
+        if(searcherState.startPublish){
+            isFiltered = true;
+            let formattedDate = Globals.formatDate(searcherState.startPublish);
+            if(legacyStyle) {
+                filteredResults = filteredResults.filter(matchesStartDateOld(formattedDate));
+            } else {
+                filteredResults = filteredResults.filter(matchesStartDate(formattedDate));
+            }
+        }
+        if(searcherState.endPublish){
+            isFiltered = true;
+            let formattedDate = Globals.formatDate(searcherState.endPublish);
+            if(legacyStyle) {
+                filteredResults = filteredResults.filter(matchesEndDateOld(formattedDate));
+            } else {
+                filteredResults = filteredResults.filter(matchesEndDate(formattedDate));
+            }
+        }
+        if(searcherState.typeFinal || searcherState.typeDraft || searcherState.typeEA 
+            || searcherState.typeNOI || searcherState.typeROD || searcherState.typeScoping){
+            isFiltered = true;
+            if(legacyStyle) {
+                filteredResults = filteredResults.filter(matchesTypeOld(
+                    searcherState.typeFinal, 
+                    searcherState.typeDraft,
+                    searcherState.typeEA,
+                    searcherState.typeNOI,
+                    searcherState.typeROD,
+                    searcherState.typeScoping));
+            } else {
+                filteredResults = filteredResults.filter(matchesType(
+                    searcherState.typeFinal, 
+                    searcherState.typeDraft,
+                    searcherState.typeEA,
+                    searcherState.typeNOI,
+                    searcherState.typeROD,
+                    searcherState.typeScoping));
+            }
+        }
+        if(searcherState.needsDocument) {
+            isFiltered = true;
+            if(legacyStyle) {
+                filteredResults = filteredResults.filter(hasDocumentOld)
+            } else {
+                filteredResults = filteredResults.filter(hasDocument)
+            }
+        }
+        
+        let textToUse = filteredResults.length + " Results"; // unfiltered: "Results"
+        if(filteredResults.length === 1) {
+            textToUse = filteredResults.length + " Result";
+        }
+        if(isFiltered) { // filtered: "Matches"
+            textToUse = filteredResults.length + " Matches (narrowed down from " + preFilterCount + " Results)";
+            if(filteredResults.length === 1) {
+                textToUse = filteredResults.length + " Match (narrowed down from " + preFilterCount + " Results)";
+                if(preFilterCount === 1) {
+                    textToUse = filteredResults.length + " Match (narrowed down from " + preFilterCount + " Result)";
+                }
+            }
+        }
+
+        filtered.textToUse = textToUse;
+        filtered.filteredResults = filteredResults;
+        filtered.isFiltered = isFiltered;
+
+        return filtered;
+    },
+    /** Settings for multiple admin tables */
+    tabulatorOptions: { 
+        selectable:true,                   // true===multiselect (1 for single select)
+        layoutColumnsOnNewData:true,
+        tooltips:true,
+        // responsiveLayout:"collapse",    // specifying this at all enables responsive layout (deals with horizontal overflow)
+        // responsiveLayoutCollapseUseFormatters:false,
+        pagination:"local",
+        paginationSize:10,
+        paginationSizeSelector:[10, 25, 50, 100], 
+        movableColumns:true,
+        resizableRows:true,
+        resizableColumns:true,
+        layout:"fitColumns",
+        invalidOptionWarnings:false,       // spams pointless warnings without this
+        columnResized:function(col){
+            // col.updateDefinition({width:col._column.width}); // needed if widths not all explicitly defined
+            col._column.table.redraw(); // important for dynamic columns, prevents vertical scrollbar
+        },
+        // columnVisibilityChanged:function(col,vis){
+        //     col.updateDefinition({visible:vis}); // needed if widths not all explicitly defined
+        // },
+    },
     anEnum: Object.freeze({"test":1, "test2":2, "test3":3})
 
     
 }
+
+    /** Filters */
+
+
+
+
+    // Process oriented version of the hasDocument filter.
+    const hasDocument = (item) => {
+        let hasDocument = false;
+        item.records.some(function(el) {
+            if(el.size && el.size > 200) {
+                hasDocument = true;
+                return true;
+            }
+            return false;
+        })
+        return hasDocument;
+    }
+    const hasDocumentOld = (item) => {
+        return (item.size && item.size > 200);
+    }
+
+    const matchesArray = (field, val) => {
+        return function (a) {
+            let returnValue = false;
+            val.forEach(item =>{
+                if (a[field] === item) {
+                    returnValue = true;
+                }
+            });
+            return returnValue;
+        };
+    }
+
+    /** Special logic for ;-delimited states from Buomsoo, Alex/Natasha/... */
+    const arrayMatchesArray = (field, val) => {
+        return function (a) {
+            // console.log(a);
+            let returnValue = false;
+            val.forEach(item =>{
+                if(a[field]){
+                    let _vals = a[field].split(/[;,]+/); // e.g. AK;AL or AK,AL
+                    for(let i = 0; i < _vals.length; i++) {
+                        if (_vals[i].trim() === item.trim()) {
+                            returnValue = true; // if we hit ANY of them, then true
+                        }
+                    }
+                }
+            });
+            return returnValue;
+        };
+    }
+
+
+    /** Special logic for ; or , delimited cooperating agencies from Buomsoo */
+    const arrayMatchesArrayNotSpaced = (field, val) => {
+        return function (a) {
+            // console.log(a);
+            let returnValue = false;
+            val.forEach(item =>{
+                for(let i = 0; i < a.records.length; i++) {
+                    if(a.records[i][field]){
+                        let _vals = a.records[i][field].split(/[;,]+/); // AK;AL or AK, AL
+                        for(let j = 0; j < _vals.length; j++) {
+                            if (_vals[j].trim() === item.trim()) {
+                                returnValue = true; // if we hit ANY of them, then true
+                            }
+                        }
+                    }
+                }
+            });
+            return returnValue;
+        };
+    }
+    const arrayMatchesArrayNotSpacedOld = (field, val) => {
+        return function (a) {
+            let returnValue = false;
+            val.forEach(item =>{
+                if(a[field]){
+                    let _vals = a[field].split(/[;,]+/); // AK;AL or AK, AL
+                    for(let i = 0; i < _vals.length; i++) {
+                        if (_vals[i].trim() === item.trim()) {
+                            returnValue = true; // if we hit ANY of them, then true
+                        }
+                    }
+                }
+            });
+            return returnValue;
+        };
+    }
+
+    const matchesStartDate = (val) => {
+        return function (a) {
+            let returnValue = false;
+
+            a.records.some(item => {
+                console.log(item.registerDate, val, item["registerDate"] >= val);
+                if(item["registerDate"] >= val) {
+                    returnValue = true;
+                    return true;
+                }
+                return false;
+            });
+            
+            return returnValue;
+        };
+    }
+    const matchesEndDate = (val) => {
+        return function (a) {
+            let returnValue = false;
+
+            a.records.some(item => {
+                console.log(item.registerDate, val, item["registerDate"] <= val);
+                if(item["registerDate"] <= val) {
+                    returnValue = true;
+                    return true;
+                }
+                return false;
+            });
+            
+            return returnValue;
+        };
+    }
+
+    const matchesStartDateOld = (val) => {
+        return function (a) {
+            return (a["registerDate"] >= val);
+        };
+    }
+    const matchesEndDateOld = (val) => {
+        return function (a) {
+            return (a["registerDate"] <= val); // should this be inclusive? <= or <
+        };
+    }
+    const matchesType = (matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping) => {
+        return function (a) {
+            for(let i = 0; i < a.records.length; i++) {
+                const type = a.records[i].documentType;
+                if(matchFinal && type && finalTypeLabels.indexOf(type) >= 0) {
+                    return true;
+                }
+                if(matchDraft && type && draftTypeLabels.indexOf(type) >= 0) {
+                    return true;
+                }
+                if(
+                    ((
+                        (type === "EA") 
+                    ) && matchEA) || 
+                    ((
+                        (type === "NOI") 
+                    ) && matchNOI) || 
+                    ((
+                        (type === "ROD") 
+                    ) && matchROD) || 
+                    ((
+                        (type === "Scoping Report") 
+                    ) && matchScoping))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+    }
+    const matchesTypeOld = (matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping) => {
+        return function (a) {
+            return (
+                (Globals.isFinalType(a["documentType"]) && matchFinal) || 
+                (Globals.isDraftType(a["documentType"]) && matchDraft) || 
+                ((
+                    (a["documentType"] === "EA") 
+                ) && matchEA) || 
+                ((
+                    (a["documentType"] === "NOI") 
+                ) && matchNOI) || 
+                ((
+                    (a["documentType"] === "ROD") 
+                ) && matchROD) || 
+                ((
+                    (a["documentType"] === "Scoping Report") 
+                ) && matchScoping)
+            );
+        };
+    }
 
 export default Globals;
