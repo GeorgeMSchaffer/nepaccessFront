@@ -8,7 +8,7 @@ export default class Generate2 extends React.Component {
         users: [], // Naming should mirror Generate POJO on backend
         shouldSend: false,
         admin: false,
-        result: null,
+        result: "",
         resultJSONString: ""
     }
 
