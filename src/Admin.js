@@ -7,23 +7,7 @@ import DeleteAll from './DeleteAll.js';
 
 import { ReactTabulator } from 'react-tabulator';
 
-const options = {
-    // maxHeight: "100%",           // for limiting table height
-    selectable:true,
-    layoutColumnsOnNewData: true,
-    tooltips:false,
-    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
-    // responsiveLayoutCollapseUseFormatters:false,
-    pagination:"local",             //paginate the data
-    paginationSize:10,              //allow 10 rows per page of data
-    paginationSizeSelector:[10, 25, 50, 100], // with all the text, even 50 is a lot.
-    movableColumns:false,            //don't allow column order to be changed
-    resizableRows:false,             
-    resizableColumns:true,
-    layout:"fitColumns",
-    invalidOptionWarnings:false, // spams warnings without this
-    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
-};
+const options = Globals.tabulatorOptions;
 
 const columns = [
     { title: "Role", field: "role", width: 140, headerFilter:"input"  },

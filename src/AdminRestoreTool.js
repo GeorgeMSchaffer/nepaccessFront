@@ -7,23 +7,7 @@ import Globals from './globals.js';
 
 import { ReactTabulator } from 'react-tabulator';
 
-const options = {
-    // maxHeight: "100%",           // for limiting table height
-    selectable:true,
-    layoutColumnsOnNewData: true,
-    tooltips:true,
-    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
-    // responsiveLayoutCollapseUseFormatters:false,
-    pagination:"local",             //paginate the data
-    paginationSize:10,              //allow 10 rows per page of data
-    paginationSizeSelector:[10, 25, 50, 100], 
-    movableColumns:true,
-    resizableRows:true,
-    resizableColumns:true,
-    layout:"fitColumns",
-    invalidOptionWarnings:false,    // spams warnings without this
-    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
-};
+const options = Globals.tabulatorOptions;
 
 const getRoutes = [
     { label: "admin/findAllUpdateLogs", value: "admin/findAllUpdateLogs" },

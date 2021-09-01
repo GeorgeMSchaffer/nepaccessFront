@@ -37,28 +37,7 @@ const getRoutes = [
     { label: "reports/duplicates_size", value: "reports/duplicates_size" },
 ];
 
-const options = {
-    selectable:true, // true===multiselect (1 for single select)
-    layoutColumnsOnNewData:true,
-    tooltips:true,
-    // responsiveLayout:"collapse",    // specifying this at all enables responsive layout (deals with horizontal overflow)
-    // responsiveLayoutCollapseUseFormatters:false,
-    pagination:"local",
-    paginationSize:10,
-    paginationSizeSelector:[10, 25, 50, 100], 
-    movableColumns:true,
-    resizableRows:true,
-    resizableColumns:true,
-    layout:"fitColumns",
-    columnMinWidth:100,
-    invalidOptionWarnings:false,    // spams pointless warnings without this
-    columnResized:function(col){ // Why do columns normally reset style on sort/etc.?
-        col.updateDefinition({width:col._column.width});
-    },
-    columnVisibilityChanged:function(col,vis){ // Why do columns normally reset style on sort/etc.?
-        col.updateDefinition({visible:vis});
-    },
-};
+const options = Globals.tabulatorOptions;
 
 export default class AdminFind extends React.Component {
 
@@ -130,12 +109,15 @@ export default class AdminFind extends React.Component {
             console.log("Keys",headers);
 
             for(let i = 0; i < headers.length; i++) {
-                newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input",
-                cellClick: (e, cell) => {
-                    // console.log(e,cell.getRow().getData());
-                    const _terms = cell.getValue();
-                    navigator.clipboard.writeText(_terms);
-                } }
+                newColumns[i] = {title: headers[i], field: headers[i], 
+                    width: 100, // bunch of stuff breaks without this
+                    headerFilter: "input",
+                    cellClick: (e, cell) => {
+                        // console.log(e,cell.getRow().getData());
+                        const _terms = cell.getValue();
+                        navigator.clipboard.writeText(_terms);
+                    } 
+                };
             }
 
             if(parsedJson && parsedJson.length > 0){

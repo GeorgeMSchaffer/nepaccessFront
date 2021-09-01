@@ -14,23 +14,7 @@ import Globals from './globals';
 import './importer.css';
 import { ReactTabulator } from 'react-tabulator';
 
-const options = {
-    // maxHeight: "100%",           // for limiting table height
-    selectable:true,
-    layoutColumnsOnNewData: true,
-    tooltips:true,
-    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
-    // responsiveLayoutCollapseUseFormatters:false,
-    pagination:"local",             //paginate the data
-    paginationSize:10,              //allow 10 rows per page of data
-    paginationSizeSelector:[10, 25, 50, 100], 
-    movableColumns:true,
-    resizableRows:true,
-    resizableColumns:true,
-    layout:"fitColumns",
-    invalidOptionWarnings:false,    // spams warnings without this
-    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
-};
+const options = Globals.tabulatorOptions;
 
 /** Importer.js
  *  * Support for multiple files and also for a .csv which would be processed and should probably require:
@@ -1241,7 +1225,7 @@ class Importer extends Component {
             let headers = getKeys(parsedJson[0]);
 
             for(let i = 0; i < headers.length; i++) {
-                newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
+                newColumns[i] = {title: headers[i], field: headers[i], width: 100, headerFilter: "input"};
             }
 
             if(parsedJson){
