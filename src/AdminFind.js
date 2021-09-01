@@ -127,11 +127,12 @@ export default class AdminFind extends React.Component {
             console.log("Keys",headers);
 
             for(let i = 0; i < headers.length; i++) {
-                newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
-                // headerFilter: "input",
-                // cellClick: (e, cell) => {
-                //     console.log( cell.getRow().getData() );
-                // },
+                newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input",
+                cellClick: (e, cell) => {
+                    // console.log(e,cell.getRow().getData());
+                    const _terms = cell.getValue();
+                    navigator.clipboard.writeText(_terms);
+                } }
             }
 
             if(parsedJson && parsedJson.length > 0){
@@ -291,6 +292,7 @@ export default class AdminFind extends React.Component {
                         // rowClick={this.rowClick}
                         // rowSelectionChanged={this.rowSelectionChanged}
                     />
+                    <label>(Click any cell to copy that value.)</label>
                     <br />
                     
                     <button 
@@ -314,6 +316,7 @@ export default class AdminFind extends React.Component {
                     >
                         Download results as .tsv
                     </button>
+
 
 
                 </div>
