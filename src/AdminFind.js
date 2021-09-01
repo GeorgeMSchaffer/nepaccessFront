@@ -38,21 +38,26 @@ const getRoutes = [
 ];
 
 const options = {
-    // maxHeight: "100%",           // for limiting table height
-    selectable:true,
-    layoutColumnsOnNewData: true,
+    selectable:true, // true===multiselect (1 for single select)
+    layoutColumnsOnNewData:true,
     tooltips:true,
-    responsiveLayout:"collapse",    //collapse columns that dont fit on the table
+    // responsiveLayout:"collapse",    // specifying this at all enables responsive layout (deals with horizontal overflow)
     // responsiveLayoutCollapseUseFormatters:false,
-    pagination:"local",             //paginate the data
-    paginationSize:10,              //allow 10 rows per page of data
+    pagination:"local",
+    paginationSize:10,
     paginationSizeSelector:[10, 25, 50, 100], 
     movableColumns:true,
     resizableRows:true,
     resizableColumns:true,
     layout:"fitColumns",
-    invalidOptionWarnings:false,    // spams warnings without this
-    footerElement:("<span class=\"tabulator-paginator-replacer\"><label>Results Per Page:</label></span>")
+    columnMinWidth:100,
+    invalidOptionWarnings:false,    // spams pointless warnings without this
+    columnResized:function(col){ // Why do columns normally reset style on sort/etc.?
+        col.updateDefinition({width:col._column.width});
+    },
+    columnVisibilityChanged:function(col,vis){ // Why do columns normally reset style on sort/etc.?
+        col.updateDefinition({visible:vis});
+    },
 };
 
 export default class AdminFind extends React.Component {
@@ -105,8 +110,6 @@ export default class AdminFind extends React.Component {
 
 
     get = () => {
-        this.setState({ busy: true });
-
         let getUrl = Globals.currentHost + this.state.getRoute;
         
         axios.get(getUrl, {
@@ -136,11 +139,13 @@ export default class AdminFind extends React.Component {
             }
 
             if(parsedJson && parsedJson.length > 0){
+                console.log("Got results");
                 this.setState({
                     columns: newColumns,
                     data: this.handleData(parsedJson),
                     response: Globals.jsonToTSV(parsedJson),
-                    busy: false
+                    busy: false,
+                    toggles: headers
                 }, () => {
                     if(this.ref && this.ref.table){
                         this.updateTable();
@@ -151,7 +156,7 @@ export default class AdminFind extends React.Component {
                 this.setState({
                     columns: [],
                     data: [],
-                    response: Globals.jsonToTSV(parsedJson),
+                    response: parsedJson,
                     busy: false
                 });
             }
@@ -184,7 +189,9 @@ export default class AdminFind extends React.Component {
     }
     
     updateTable = () => {
+        console.log("Table updated");
         try {
+            this.ref.table.clearFilter(true);
             // seems necessary when using dynamic columns
             this.ref.table.setColumns(this.state.columns);
 
@@ -199,6 +206,7 @@ export default class AdminFind extends React.Component {
     // }
     
     onSelectHandler = (val, act) => {
+        console.log("Select");
         if(!val || !act){
             return;
         }
@@ -206,7 +214,8 @@ export default class AdminFind extends React.Component {
         this.setState(
         { 
             getRoute: val.value,
-            getLabel: val.label
+            getLabel: val.label,
+            busy: true
         }, () => {
             this.get();
         });
@@ -269,21 +278,39 @@ export default class AdminFind extends React.Component {
                 });
             });
         }
-        // this.ref.table.modules.selectRow.selectRows(this.state.rows[0]);
-        // this.state.rows[0].select();
-        // can't seem to persist rows through state change (update)...
+    }
+
+    toggle = (key) => {
+        this.ref.table.toggleColumn(key);
+    }
+
+    showColumnToggles = () => {
+        if(this.state.toggles) {
+            return this.state.toggles.map( ((key, i) => {
+                return <button key={key} onClick={() => this.toggle(key)}>{key}</button>
+            }));
+        }
     }
 
     render() {
 
         if(this.state.admin) {
             return (
-                <div className="content padding-all">
+                <div className="padding-all">
 
+                    <Select
+                        className="block"
+                        options={getRoutes}
+                        name="getRoute" 
+                        onChange={this.onSelectHandler}
+                    />
                     <div className="loader-holder">
                         <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
 
+
+                    <div>Click to toggle columns: {this.showColumnToggles()}</div>
+                    
                     <ReactTabulator
                         ref={ref => (this.ref = ref)}
                         data={this.state.data}
@@ -304,19 +331,12 @@ export default class AdminFind extends React.Component {
                     <textarea ref={(textarea) => this.textArea = textarea} 
                                 name="resultJSONString" value={this.state.selected} readOnly />
                     
-                    <Select
-                        className="block"
-                        options={getRoutes}
-                        name="getRoute" 
-                        onChange={this.onSelectHandler}
-                    />
                     <button 
                         className="button"
                         onClick={this.downloadResults}
                     >
                         Download results as .tsv
                     </button>
-
 
 
                 </div>
@@ -332,7 +352,7 @@ export default class AdminFind extends React.Component {
     }
     
     componentDidUpdate() {
-        console.log("Updated");
+        console.log("Component Updated");
     }
 }
 
