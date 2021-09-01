@@ -90,7 +90,7 @@ export default class AdminRestoreTool extends React.Component {
             console.log("Keys",headers);
 
             for(let i = 0; i < headers.length; i++) {
-                newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
+                newColumns[i] = {title: headers[i], field: headers[i], width: 100, headerFilter: "input"};
             }
 
             if(parsedJson){
@@ -309,7 +309,14 @@ export default class AdminRestoreTool extends React.Component {
             logEnd: last,
             userID: distinctUserIDs,
             updateLogs: distinctIDs,
-            documents: distinctDocuments
+            documents: distinctDocuments,
+            rows: this.my_table.current.table.getSelectedRows()
+        }, () => {
+            if(this.my_table.current) {
+                this.state.rows.forEach(row => {
+                    this.my_table.current.table.selectRow(row._row.data.id);
+                });
+            }
         });
 
         // for(let i = selectedData.length; i > 0; i--) {
