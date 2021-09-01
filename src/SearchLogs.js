@@ -21,15 +21,9 @@ import { ReactTabulator } from 'react-tabulator';
 //     "Third Final Supplemental",
 //     "Other"];
 
-const columns = [
-    { title: "username", field: "username", width: 200, headerFilter:"input"  },
-    { title: "terms", field: "terms", headerFilter:"input"},
-    { title: "time", field: "time", width: 250, headerFilter:"input"  },
-    { title: "mode", field: "mode", width: 100, headerFilter:"input"  },
-];
 const options = {
     // maxHeight: "100%",           // for limiting table height
-    selectable:true,
+    selectable:1,
     layoutColumnsOnNewData: true,
     tooltips:true,
     responsiveLayout:"collapse",    //collapse columns that dont fit on the table
@@ -62,6 +56,8 @@ export default class SearchLogs extends React.Component {
             searches: [],
             response: []
         };
+
+        this.my_table = React.createRef();
         
         
         let checkUrl = new URL('user/checkApprover', Globals.currentHost);
@@ -239,6 +235,24 @@ export default class SearchLogs extends React.Component {
     }
 
     render() {
+        const columns = [
+            { title: "username", field: "username", width: 200, headerFilter:"input"},
+            { 
+                title: "terms", 
+                field: "terms", 
+                headerFilter:"input", 
+                // cellClick: (e, cell) => {
+                //     const _terms = cell.getRow().getData().terms;
+                //     this.setState({
+                //         clipboard: _terms
+                //     }, () => {
+                //         navigator.clipboard.writeText(this.state.clipboard);
+                //     });
+                // } 
+            },
+            { title: "time", field: "time", width: 250, headerFilter:"input"  },
+            { title: "mode", field: "mode", width: 100, headerFilter:"input"  },
+        ];
 
         if(!this.state.authorized) {
             return <div className="content">
@@ -264,7 +278,7 @@ export default class SearchLogs extends React.Component {
             );
         } else {
         return (
-            <div className="charts-holder">
+            <div className="charts-holder padding-all">
 
                 <div><label className="errorLabel">{this.state.networkError}</label></div>
 
@@ -283,7 +297,13 @@ export default class SearchLogs extends React.Component {
                     data={this.state.searches}
                     columns={columns}
                     options={options}
+                    rowClick={(e, row) => {
+                        const _terms = row.getData().terms;
+                        navigator.clipboard.writeText(_terms);
+                    }}
                 />
+
+                <label>Click on a row to copy terms to clipboard.</label>
 
                 <button 
                     className="button"
