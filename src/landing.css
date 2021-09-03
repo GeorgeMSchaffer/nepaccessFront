@@ -80,7 +80,7 @@
 }
 
 #landing-images {
-    min-height: 585px;
+    min-height: 685px;
     height: 80%;
 }
 
@@ -278,4 +278,11 @@
     #subhead>p.size {
         line-height: 165%;
     }
+}
+
+#flip {
+    margin-top: 50px;
+    width: 170px;
+    font-size: 16px;
+    line-height: 20px;
 }

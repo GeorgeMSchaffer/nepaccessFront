@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import Globals from './globals.js';
 
+import FlipNumbers from 'react-flip-numbers';
+
 /** Search box with planned autocomplete suggestion that loads the main search page (app.js) with the search input
  *  or preloaded results when search is confirmed */
 class SearcherLanding extends React.Component {
@@ -10,7 +12,8 @@ class SearcherLanding extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-            titleRaw: ''
+            titleRaw: '',
+            num: 0
         };
         
         this.getTitles = this.getTitles.bind(this);
@@ -67,6 +70,42 @@ class SearcherLanding extends React.Component {
 			});
     }
 
+
+
+    get = (url, stateName) => {
+        const _url = new URL(url, Globals.currentHost);
+        axios({
+            url: _url,
+            method: 'GET',
+            data: { }
+        }).then(_response => {
+            const rsp = _response.data;
+            this.setState({ [stateName]: rsp });
+        }).catch(error => { 
+        })
+    }
+    getCounts = () => {
+        this.get('stats/earliest_year','firstYear');
+        this.get('stats/latest_year','lastYear');
+        this.get('stats/total_count','total')
+    }
+
+    showFlipNum = () => {
+        if(this.state.total) {
+            return <div id="flip">
+                <FlipNumbers 
+                    id="flipNumbers"
+                    height={20} width={20} color="white" background="rgba(0,0,0,0.4)" 
+                    play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
+                /> <span>NEPA documents and counting</span>
+            </div>;
+        } else {
+            return <></>;
+        }
+    }
+
+
+
     render () {
         return (
             <div id="landing-search-box-container">
@@ -100,12 +139,34 @@ class SearcherLanding extends React.Component {
 
                 </div>
 
+
+                {this.showFlipNum()}
             </div>
         )
     }
     
-	componentDidMount() {
-	}
+    componentDidMount() {
+        this.getCounts();
+
+        this.timer = setInterval(() => {
+            if(this.state.num < this.state.total) {
+                let increment = 1;
+                if(this.state.total - this.state.num > 1000) {
+                    increment = 50;
+                } else if(this.state.total - this.state.num > 100) {
+                    increment = 5;
+                }
+
+                this.setState({
+                  num: this.state.num + increment,
+                });
+            }
+        }, 10);
+    }
+    
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
 }
 
 export default SearcherLanding;
