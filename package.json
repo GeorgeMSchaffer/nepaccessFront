@@ -16,6 +16,7 @@
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.2",
     "react-excel-renderer": "^1.1.0",
+    "react-flip-numbers": "^3.0.5",
     "react-google-recaptcha": "^2.1.0",
     "react-helmet": "^6.1.0",
     "react-hotjar": "^2.2.1",
