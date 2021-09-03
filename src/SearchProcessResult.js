@@ -103,16 +103,16 @@ export default class SearchProcessResult extends React.Component {
 
     
     showFilename = () => {
-        if(this.props && this.props.cell._cell.row.data.filename){
-            return (
-                <div><span className="cardHeader filename">Filename:
-                    <span>{this.props.cell._cell.row.data.filename}</span></span>
-                </div>
-            );
-        } else if(this.props && this.props.cell._cell.row.data.folder){
+        if(this.props && this.props.cell._cell.row.data.folder){
             return (
                 <div><span className="cardHeader filename">Filename:
                     <span>{this.props.cell._cell.row.data.folder + "_" + this.props.cell._cell.row.data.documentType}.zip</span></span>
+                </div>
+            );
+        } else if(this.props && this.props.cell._cell.row.data.filename){
+            return (
+                <div><span className="cardHeader filename">Filename:
+                    <span>{this.props.cell._cell.row.data.filename}</span></span>
                 </div>
             );
         } else {
