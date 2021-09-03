@@ -1,15 +1,17 @@
 import React from 'react';
 import Select from 'react-select';
 
-const sortOptions = [ { value: 'relevance', label: 'Relevance' },
+const sortOptions = [ 
+    { value: 'relevance', label: 'Relevance' },
     { value: 'title', label: 'Title'},
     { value: 'agency', label: 'Lead Agency'},
-    { value: 'registerDate', label: 'Date'},
+    // { value: 'registerDate', label: 'Date'},
     { value: 'state', label: 'State'},
-    { value: 'documentType', label: 'Type'}
+    // { value: 'documentType', label: 'Type'}
 ];
 
-const sortOrderOptions = [ { value: true, label: '^'},
+const sortOrderOptions = [ 
+    { value: true, label: '^'},
     { value: false, label: 'v' }
 ];
 

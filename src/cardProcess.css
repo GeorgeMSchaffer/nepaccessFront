@@ -1,0 +1,127 @@
+#process-results .table-holder {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    overflow-wrap: anywhere;
+}
+
+#process-results .table-like {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.record {
+    margin: 20px 20px 10px 25px;
+    background-color: #f0efed;
+    border: 2px solid black;
+}
+
+.record-line {
+    display: inline-flex;
+    line-height: 40px;
+    align-items: center;
+}
+.record-field {
+    padding: 0 15px;
+}
+.record-field:first-child {
+    font-size: 18px;
+    font-weight: bold;
+}
+.record-field:nth-child(2) {
+    font-size: 18px;
+    font-style: italic;
+}
+
+.cardHeader>span, .cardHeader>.download, .cardHeader>.link {
+    padding-left: 0.5em;
+    font-weight: bold;
+    white-space: normal;
+    padding-right: 2em;
+}
+
+span.highlight {
+    font-weight: bolder;
+}
+
+.fragment-container {
+    display: block;
+    margin: 15px 10px 0px 10px;
+}
+span.fragment {
+    display: block;
+    white-space: normal;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 10px;
+    background-color: rgb(225, 225, 225);;
+}
+
+span.filename {
+    font-weight: bold;
+}
+
+span.filename-inner {
+    display: block;
+    padding-bottom: 5px;
+    white-space: normal;
+}
+
+span.filename>* {
+    font-weight: normal;
+}
+
+#process-results .tabulator-row .tabulator-cell {
+    background: #FFFFFF;
+    border: 2px solid #DCDCDC;
+}
+#process-results .cardTitle {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 125%;
+}
+#process-results .tabulator-cell a.link {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 125%;
+    color: #0067B1;
+}
+#process-results .table-meta {
+    display: inline-flex;
+    flex-wrap: wrap;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 125%;
+}
+/** Tabulator cell, row custom CSS */
+
+#process-results .tabulator-tableHolder .tabulator-table .tabulator-row .tabulator-cell, 
+#process-results .tabulator-table .tabulator-row {
+    min-height: 100px;
+}
+#process-results .tabulator-table .tabulator-row,
+#process-results .tabulator>.tabulator-footer {
+    border-top: 10px solid #FBFBF6;
+}
+#process-results .tabulator-row>.tabulator-cell,
+#process-results .tabulator[tabulator-layout=fitColumns] .tabulator-row .tabulator-cell:last-of-type {
+    border: 2px solid #DADADA;
+}
+
+#process-results .tabulator-header {
+    display: none;
+}
+
+#process-results .tabulator-holder {
+    margin: 0 25px;
+    height: 800px;
+}

@@ -16,7 +16,7 @@ class DownloadFile extends React.Component {
 	}
     
     /** Log download */
-    logInteraction = (isFolder) => {
+    logInteraction = (downloadedAll) => {
         const _url = new URL('interaction/set', Globals.currentHost);
         const dataForm = new FormData(); 
 
@@ -27,15 +27,19 @@ class DownloadFile extends React.Component {
             dataForm.append('source',"DETAILS");
         }
 
-        if(isFolder) {
+        if(downloadedAll) {
             dataForm.append('type',"DOWNLOAD_ARCHIVE"); 
         } else {
             // individual file OR epa comments archive.  
             // Can differentiate if important but even the distinction between single file/all is just a bonus already.
             dataForm.append('type',"DOWNLOAD_ONE"); 
         }
-        
-        dataForm.append('docId',this.props.id); // TODO: May not have this every time unfortunately, need to clean up outside logic
+
+        if(this.props.recordId) {
+            dataForm.append('docId',this.props.recordId);
+        } else {
+            dataForm.append('docId',this.props.id); // TODO: May not have this every time unfortunately, need to clean up outside logic    
+        }
         
         axios({
             url: _url,
@@ -107,7 +111,7 @@ class DownloadFile extends React.Component {
     }
 
     // TODO: Cell resets to default state if parent re-renders, preserve the fact it was downloaded
-    // at least until user reloads the page or navigates
+    // at least until user reloads the page or navigates?  This was working before, but got more complex with process view
     // TODO: reset download link if canceled
     // these could be very difficult to figure out for low payoff, however
 	download = (filenameOrID, isFolder) => {
@@ -171,7 +175,7 @@ class DownloadFile extends React.Component {
                     });
                     FileDownload(response.data, _filename);
 
-                    this.logInteraction(isFolder);
+                    this.logInteraction(true);
                 }
                 
 				// verified = response && response.status === 200;
@@ -237,10 +241,16 @@ class DownloadFile extends React.Component {
                     </>
                 );
 			} else if (propID) {
+                // folder downloads are zipped on demand and should therefore display as .zip
+                let innerText = this.props.innerText;
+                if(innerText && innerText.length>4 && innerText.substr(-4).toLowerCase() !== '.zip') {
+                    innerText+=".zip";
+                }
+                
                 return (
                     <button className = {this.state.downloadClass} onClick = { () => {this.download(propID, true)} }> 
-                        {this.state.downloadText} <b>{this.props.innerText}</b> {sizeText} {this.state.progressValue} 
-                    </button>
+                        {this.state.downloadText} <b>{innerText}</b> - {sizeText} {this.state.progressValue}
+                    </button> 
                 );
             } else {
 				return propFilename;

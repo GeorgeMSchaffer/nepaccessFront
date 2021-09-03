@@ -53,75 +53,61 @@ export default class RecordDetailsTab extends React.Component {
         this.debouncedFilenames = _.debounce(this.getFilenames, 300);
     }
 
-    
-	onDropdownChange = (evt) => {
-        this.setState({ dropdownOption: evt });
+    get = async (_url, _params) => {
+        try {
+            const response = await axios.get(_url, {
+                params: _params
+            });
+            let responseOK = response && response.status === 200;
+            if (responseOK) {
+                return response.data;
+            }
+        } catch (error) { 
+            throw error; 
+        }
     }
 
     getNepaFileResults = () => {
-        let populateUrl = Globals.currentHost + "file/nepafiles";
-        
-        // console.log("Trying to get nepafile results", this.state.detailsID);
-            
-        //Send the AJAX call to the server
-        axios.get(populateUrl, {
-            params: {
-                id: this.state.detailsID
-            }
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (responseOK && response.data && response.data.length > 0) {
-                return response.data;
-            } else {
-                return null;
-            }
-        }).then(parsedJson => { // can be empty if nothing found
-            // console.log("Parsed", parsedJson);
-            if(parsedJson){
+        const url = Globals.currentHost + "file/nepafiles";
+        const params = {id: this.state.detailsID};
+
+        this.get(url, params).then(results => {
+            if(results){
                 this.setState({
-                    nepaResults: parsedJson,
+                    nepaResults: results,
                 }, () => {
                     if(!this.state.nepaResults || !this.state.nepaResults[0]){
                         this.getDocumentTextResults();
                     }
                 });
-            } else { // null/404
-                
+            } else { // null
+    
             }
-        }).catch(error => {
-            
+        }).catch(e => {
+            console.error(e);
         });
-        
     }
     
     getDocumentTextResults = () => {
-        let populateUrl = Globals.currentHost + "file/doc_texts";
+        const populateUrl = Globals.currentHost + "file/doc_texts";
+        const params = {id: this.state.detailsID};
 
-        // console.log("Trying to get document text results", this.state.detailsID);
-            
-        //Send the AJAX call to the server
-        axios.get(populateUrl, {
-            params: {
-                id: this.state.detailsID
-            }
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (responseOK) {
-                return response.data;
-            } else {
-                return null;
-            }
-        }).then(parsedJson => { // can be empty if nothing found
-            if(parsedJson){
+        this.get(populateUrl, params).then(results => {
+            if(results){
                 this.setState({
-                    textResults: parsedJson,
+                    textResults: results,
                 });
-            } else { // 404
+            } else { // null
                 
             }
-        }).catch(error => {
-            
+        }).catch(e => {
+            console.error(e);
         });
+    }
+
+    
+	onDropdownChange = (evt) => {
+        this.setState({ dropdownOption: evt });
     }
     
     /** Log details page "click" (render) -
@@ -148,30 +134,18 @@ export default class RecordDetailsTab extends React.Component {
     }
 
     populate = () => {
-        let populateUrl = Globals.currentHost + "test/get_by_id";
+        const populateUrl = Globals.currentHost + "test/get_by_id";
+        const params = {id: this.state.detailsID};
             
-        // console.log("Trying to populate details", this.state.detailsID);
-        if(!this.state.logged) {
-            this.logInteraction();
-        }
-            
-        //Send the AJAX call to the server
-        axios.get(populateUrl, {
-            params: {
-                id: this.state.detailsID
-            }
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            if (responseOK) {
-                return response.data;
-            } else {
-                return null;
-            }
-        }).then(parsedJson => { // can be empty (no record found)
-            if(parsedJson){
+        this.get(populateUrl, params).then(results => {
+            if(results){
                 this.setState({
-                    details: parsedJson,
+                    details: results,
                     logged: true
+                }, () => {
+                    if(!this.state.logged) {
+                        this.logInteraction();
+                    }
                 });
             } else { // null (no record?)
                 this.setState({
@@ -179,10 +153,6 @@ export default class RecordDetailsTab extends React.Component {
                     exists: false
                 });
             }
-        }).catch(error => {
-            this.setState({
-                networkError: Globals.getErrorMessage(error)
-            });
         });
     }
 
@@ -534,7 +504,7 @@ export default class RecordDetailsTab extends React.Component {
     }
 
     interpretProcess = (proc) => {
-        // console.log("proc",proc);
+        console.log("proc",proc);
         return Object.keys(proc).map( ((key, i) => {
             if(proc[key] && proc[key]['id']) {
                 let docId = proc[key].id;

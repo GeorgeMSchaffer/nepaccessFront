@@ -7,6 +7,7 @@ import './index.css';
 import Landing from './Landing.js';
 import App from './App';
 
+import ProcessDetailsTab from './Details/ProcessDetailsTab.js';
 import RecordDetailsTab from './Details/RecordDetailsTab.js';
 
 import OptOut from './User/OptOut';
@@ -271,6 +272,7 @@ class Main extends React.Component {
                 <Route path="/contact" component={Contact}/>
 
                 <Route path="/record-details" component={RecordDetailsTab}/>
+                <Route path="/process-details" component={ProcessDetailsTab}/>
                 
                 <Route path="/importer" component={Importer}/>
                 <Route path="/adminFiles" component={AdminFiles}/>

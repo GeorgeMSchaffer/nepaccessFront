@@ -4,7 +4,7 @@ import {Helmet} from 'react-helmet';
 
 import axios from 'axios';
 
-import SearchProcessResults from './SearchProcessResults.js';
+import SearchResults from './SearchResults.js';
 import Search from './Search.js';
 
 import Footer from './Footer.js';
@@ -95,24 +95,22 @@ export default class App extends React.Component {
         let rods = 0;
         let scopings = 0;
 
-        this.state.searchResults.forEach(process => {
-            process.records.forEach(item => {
-                if(Globals.isFinalType(item.documentType)) {
-                    finals++;
-                }
-                else if(Globals.isDraftType(item.documentType)) {
-                    drafts++;
-                }
-                else if(matchesEa(item.documentType)) {
-                    eas++;
-                }
-                else if(matchesRod(item.documentType)) {
-                    rods++;
-                }
-                else if(matchesScoping(item.documentType)) {
-                    scopings++;
-                }
-            })
+        this.state.searchResults.forEach(item => {
+            if(Globals.isFinalType(item.documentType)) {
+                finals++;
+            }
+            else if(Globals.isDraftType(item.documentType)) {
+                drafts++;
+            }
+            else if(matchesEa(item.documentType)) {
+                eas++;
+            }
+            else if(matchesRod(item.documentType)) {
+                rods++;
+            }
+            else if(matchesScoping(item.documentType)) {
+                scopings++;
+            }
         })
 
         this._finalCount = "("+finals+")";
@@ -130,7 +128,7 @@ export default class App extends React.Component {
         // Only filter if there are any results to filter
         if(this.state.searchResults && this.state.searchResults.length > 0){
 
-            const filtered = Globals.doFilter(searcherState, this.state.searchResults, this.state.searchResults.length, false);
+            const filtered = Globals.doFilter(searcherState, this.state.searchResults, this.state.searchResults.length, true);
             
             // Even if there are no filters active we still need to update to reflect this,
             // because if there are no filters the results must be updated to the full unfiltered set
@@ -186,74 +184,6 @@ export default class App extends React.Component {
         
         };
       
-    }
-
-    /** Rebuild results into process-oriented results, where a new object property is created for every process ID.
-     * It's basically a hashmap where the processIDs are keys.
-     * A new unique key is created if there is no process.
-     * So results returned look like: results{ 
-     *  key: {title: "", agency: "", state: "", relevance: #, date?: ..., records: [...]},
-     *  otherKey: {...}, ...
-     * }
-     * 
-     * can iterate over a results object later using forEach() if you transform the object into an array first, 
-     * using Object.keys(), Object.values(), or Object.entries() 
-     */
-    buildData = (data) => {
-        let processResults = {};
-        let newUniqueKey = -1;
-
-        data.forEach(datum => {
-            // Use process IDs as keys
-            let key = datum.processId;
-
-            // Set impossible process ids as keys for records without one and use them as "solo" process items
-            if(key === null || key === 0) {
-                key = newUniqueKey;
-                newUniqueKey = newUniqueKey - 1;
-            } 
-
-            // Init if necessary
-            if(!processResults[key]) {
-                processResults[key] = {records: [], processId: key, isProcess: true};
-            }
-            if(key < 0) { // Solo process, use ID
-                processResults[key].processId = datum.id;
-                processResults[key].isProcess = false;
-            }
-
-            // Add record to array of records for this "key"
-            processResults[key].records.push(datum);
-
-            // Lowest number = highest relevance; keep the highest relevance.  All datums have a relevance value.
-            if(processResults[key].relevance) { // already have relevance: use lowest
-                processResults[key].relevance = Math.min(datum.relevance,processResults[key].relevance)
-            } else { // don't have relevance yet: init
-                processResults[key].relevance = datum.relevance;
-            }
-
-            // Assume state and agency are consistent
-            if(!processResults[key].agency) {
-                processResults[key].agency = datum.agency;
-            }
-            if(!processResults[key].state) {
-                processResults[key].state = datum.state;
-            }
-
-            // titles change, which makes everything harder.
-            if(!processResults[key].title) {
-                processResults[key].title = datum.title;
-            } else if(Globals.isFinalType(datum.documentType)) {
-                processResults[key].title = datum.title;
-                // TODO: At this point we could verify we don't already have a "later" title (done by type priority logic) 
-                // in the records array, which would mean we've already added the "best" (most recent) title.
-                // However: Assuming we filter on all titles in the contents, this isn't a big deal.
-            }
-            // TODO: Date range logic so we can filter on that?  Or the filter could account for the structure.
-        });
-        
-        // Have to "flatten" and also sort that by relevance
-        return Object.values(processResults).sort(function(a,b){return a.relevance - b.relevance;});
     }
 
     // TODO: Can't set state here, state update logic needs to happen elsewhere?
@@ -466,15 +396,6 @@ export default class App extends React.Component {
                         return newObject;
                     }); 
 
-                    // Important: This is where we're shifting to process-based results.
-                    let processResults = {};
-                    processResults = this.buildData(_data);
-                    _data = processResults;
-                    // console.log("Process oriented results flattened",_data);
-
-                    // At this point we don't need the hashmap design anymore, it's just very fast for its purpose.
-                    // Now we have to iterate through all of it anyway, and it makes sense to put it in an array.
-
                     this.setState({
                         searchResults: _data,
                         outputResults: _data,
@@ -505,7 +426,6 @@ export default class App extends React.Component {
                         }
                     });
                 } else {
-                    // console.log("No results");
                     this.setState({
                         searching: false,
                         searchResults: [],
@@ -660,11 +580,6 @@ export default class App extends React.Component {
                     return newObject;
                 }); 
 
-                // Important: This is where we're shifting to process-based results.
-                let processResults = {};
-                processResults = this.buildData(_data);
-                _data = processResults;
-
                 this.setState({
                     searchResults: _data,
                     outputResults: _data,
@@ -781,7 +696,7 @@ export default class App extends React.Component {
 
         this.setState({
             snippetsDisabled: false,
-			resultsText: currentResults.length + " Results.  Getting Text snippets...",
+			resultsText: currentResults.length + " Results.  Getting Texts...",
             networkError: "", // Clear network error
 		}, () => {
             
@@ -796,17 +711,15 @@ export default class App extends React.Component {
             // locally.
             let _unhighlighted = [];
             for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++){
-                for(let j = 0; j < currentResults[i].records.length; j++) {
-                    // Push Lucene IDs and >-delimited list of filenames
-                    if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)) {
-                        // console.log("Pushing",i,j,currentResults[i].records[j].id);
-                        _unhighlighted.push(
-                            {
-                                luceneIds: currentResults[i].records[j].luceneIds, 
-                                filename: currentResults[i].records[j].name
-                            }
-                        );
-                    }
+                // Push Lucene IDs and >-delimited list of filenames
+                if(!Globals.isEmptyOrSpaces(currentResults[i].name)) {
+                    // console.log("Pushing",i,j,currentResults[i].records[j].id);
+                    _unhighlighted.push(
+                        {
+                            luceneIds: currentResults[i].luceneIds, 
+                            filename: currentResults[i].name
+                        }
+                    );
                 }
             }
 
@@ -845,26 +758,16 @@ export default class App extends React.Component {
                 }
             }).then(parsedJson => {
                 if(parsedJson){
-                    // Incoming data is an array of arrays of text fragments, so for example if a record has 4 file hits,
-                    // we expect it to get an array of 4 fragments.
-                    // Since it goes out and comes back in in order of relevance and that's how we maintain the association
-                    // during multiple calls, we'd have to be aware of that if rearranging internal file
-                    // or record order to not be by relevance (safest would be only rearranging after getting all fragments)
-                    // console.log("Processing results", parsedJson.length);
                     let updatedResults = this.state.searchResults;
 
-                    // IMPORTANT: Redone to accommodate for process view of course
-                    // Fill highlights here; update state
-                    // Presumably comes back in order it was sent out, so we could just do this?:
+                    // Fill highlights here
                     let x = 0;
                     for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++) {
-                        for(let j = 0; j < currentResults[i].records.length; j++) {
-                            // If search is interrupted, updatedResults[i] may be undefined (TypeError)
-                            if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)){
-                                // console.log("Assigning",i,j,currentResults[i].records[j].name);
-                                updatedResults[i].records[j].plaintext = parsedJson[x];
-                                x++;
-                            }
+                        // If search is interrupted, updatedResults[i] may be undefined (TypeError)
+                        if(!Globals.isEmptyOrSpaces(currentResults[i].name)){
+                            // console.log("Assigning",i,j,currentResults[i].records[j].name);
+                            updatedResults[i].plaintext = parsedJson[x];
+                            x++;
                         }
                     }
                     
@@ -903,7 +806,7 @@ export default class App extends React.Component {
 
                     this.setState({
                         networkError: _networkError,
-                        resultsText: _resultsText,
+                        resultsText: Globals.errorMessage.default,
                         searching: false,
                         shouldUpdate: true
                     });
@@ -1016,48 +919,8 @@ export default class App extends React.Component {
         return false;
     }
 
-    /** Flattens process-oriented data to download as record metadata */
-    downloadCurrentAsTSV = () => {
-        if(this.state.outputResults && this.state.outputResults.length > 0) {
-            const resultsForDownload = this.state.outputResults.map((process, idx) => {
-                let newResult = process.records.map((result, idx) => {
-                    let newRecord = {
-                        id: result.id,
-                        title: result.title,
-                        documentType: result.documentType,
-                        registerDate: result.registerDate,
-                        agency: result.agency,
-                        cooperating_agency: result.cooperatingAgency,
-                        state: result.state,
-                        processId: result.processId,
-                        notes: result.notes,
-                        status: result.status,
-                        folder: result.folder
-                    }
-                    if(!newRecord.processId) { // don't want to imply zeroes are valid
-                        newRecord.processId = '';
-                    }
-                    return newRecord;
-                });
-                return newResult;
-                
-            });
-
-            // flatten, sort, convert to TSV, download
-            this.downloadResults(Globals
-                .jsonToTSV(resultsForDownload
-                    .flat() // have to flatten from process structure
-                    .sort( 
-                        function(a, b) { // sort by ID
-                            return a.id - b.id;
-                        }
-                    )
-                )
-            );
-        }
-    }
     // Only works for records, not processes
-    downloadCurrentAsTSVOld = () => {
+    downloadCurrentAsTSV = () => {
         if(this.state.outputResults && this.state.outputResults.length > 0) {
             const resultsForDownload = this.state.outputResults.map((result, idx) => {
                 // omit stuff like comments, highlights, relevance, lucene stuff
@@ -1138,7 +1001,7 @@ export default class App extends React.Component {
                         rodCount={this._rodCount}
                         scopingCount={this._scopingCount}
                     />
-                    <SearchProcessResults 
+                    <SearchResults 
                         sort={this.sort}
                         results={this.state.outputResults} 
                         resultsText={this.state.resultsText} 

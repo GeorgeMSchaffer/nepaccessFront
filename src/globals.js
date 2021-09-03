@@ -401,7 +401,8 @@ const Globals = {
         resizableColumns:true,
         layout:"fitColumns",
         invalidOptionWarnings:false,       // spams pointless warnings without this
-        columnResized:function(col){
+        // http://tabulator.info/docs/4.9/callbacks#column 
+        columnResized:function(col) {
             // col.updateDefinition({width:col._column.width}); // needed if widths not all explicitly defined
             col._column.table.redraw(); // important for dynamic columns, prevents vertical scrollbar
         },

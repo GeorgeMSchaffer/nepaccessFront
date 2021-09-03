@@ -1,36 +1,36 @@
-.table-holder {
+#search-results .table-holder {
     display: inline;
 }
 
-.upper-tables {
+#search-results .upper-tables {
     min-height: 89px;
 }
 
-.table-like {
+#search-results .table-like {
     vertical-align: top;
     display: inline-block;
 }
 
 /* Title holder */
-.table-like:first-child {
+#search-results .table-like:first-child {
     width: 79%; /* title can't flow into filename, downloads */
     padding-right: 1%; /* buffer space */
 }
-.card-files {
+#search-results .card-files {
     width: 20%;
 }
 
 /* Filename, downloads style */
-.table-holder>.table-like:nth-child(2) {
+#search-results .table-holder>.table-like:nth-child(2) {
     width: 20%; /* limit properly */
     overflow-wrap: break-word; /* long filenames can't go off page */
 }
   
-.table-like div.table-row { 
+#search-results .table-like div.table-row { 
     display: block;
 }
 
-.table-like div.table-row div { 
+#search-results .table-like div.table-row div { 
     display: inline-block;
 
     /* Limiting height makes the in-between borders consistent if some elements are multi-line and therefore
@@ -60,18 +60,18 @@
 
 
 /* Type/Date/Agency/State style */
-.table-like div.table-row div:first-child { 
+#search-results .table-like div.table-row div:first-child { 
     width: 17%;
     padding-right: 1%;
     padding-left: 0%;
 }
-.table-like div.table-row div:nth-child(2) { 
+#search-results .table-like div.table-row div:nth-child(2) { 
     width: 17%;
 }
-.table-like div.table-row div:nth-child(3) { 
+#search-results .table-like div.table-row div:nth-child(3) { 
     width: 35%;
 }
-.table-like div.table-row div:nth-child(4) { 
+#search-results .table-like div.table-row div:nth-child(4) { 
     width: 20%;
     padding-right: 0%;
     border-right: none;
