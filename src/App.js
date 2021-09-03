@@ -70,6 +70,7 @@ export default class App extends React.Component {
     _finalCount = "";
     _draftCount = "";
     _eaCount = "";
+    _noiCount = "";
     _rodCount = "";
     _scopingCount = "";
 
@@ -78,6 +79,7 @@ export default class App extends React.Component {
        this._draftCount = "";
        
        this._eaCount = "";
+       this._noiCount = "";
        this._rodCount = "";
        this._scopingCount = "";
     }
@@ -93,6 +95,7 @@ export default class App extends React.Component {
         let drafts = 0;
         let eas = 0;
         let rods = 0;
+        let nois = 0;
         let scopings = 0;
 
         this.state.searchResults.forEach(process => {
@@ -111,6 +114,8 @@ export default class App extends React.Component {
                 }
                 else if(matchesScoping(item.documentType)) {
                     scopings++;
+                } else if(matchesNOI(item.documentType)) {
+                    nois++;
                 }
             })
         })
@@ -119,6 +124,7 @@ export default class App extends React.Component {
         this._draftCount = "("+drafts+")";
         this._eaCount = "("+eas+")";
         this._rodCount = "("+rods+")";
+        this._noiCount = "("+nois+")";
         this._scopingCount = "("+scopings+")";
         // this.setState({finalCount: "("+count+")"});
     }
@@ -1135,6 +1141,7 @@ export default class App extends React.Component {
                         finalCount={this._finalCount}
                         draftCount={this._draftCount}
                         eaCount={this._eaCount}
+                        noiCount={this._noiCount}
                         rodCount={this._rodCount}
                         scopingCount={this._scopingCount}
                     />
@@ -1231,6 +1238,10 @@ function matchesRod(docType) {
 function matchesScoping(docType) {
     return (
         (docType === "Scoping Report") );
+}
+function matchesNOI(docType) {
+    return (
+        (docType === "NOI") );
 }
 
 /** Return modified terms for user to see */

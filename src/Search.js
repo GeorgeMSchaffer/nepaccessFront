@@ -785,7 +785,7 @@ class Search extends React.Component {
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeNOI" className="sidebar-checkbox"
                                         checked={this.state.typeNOI} onChange={this.onTypeChecked} />
-                                <span className="checkbox-text">NOI</span>
+                                <span className="checkbox-text">NOI <i>{this.props.noiCount}</i></span>
                             </label>
                         </div>
                         <div className="checkbox-container">
