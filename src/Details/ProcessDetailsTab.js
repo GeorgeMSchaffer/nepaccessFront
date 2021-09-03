@@ -244,7 +244,7 @@ export default class ProcessDetailsTab extends React.Component {
                         recordDownload = this.renderDownload(proc.id,size,proc.filename,true,"EIS");
                     }
                 } else {
-                    recordDownload = <div className="table-row"><span className="cardHeader filename warning">File(s) not yet available</span></div>;
+                    recordDownload = <div className="table-row"><span className="cardHeader filename">File(s) not yet available</span></div>;
                 }
 
                 return (<>
