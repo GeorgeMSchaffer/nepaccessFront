@@ -214,10 +214,9 @@ export default class ProcessDetailsTab extends React.Component {
     }
 
     showTitle = () => {
-        let cellData = this.state.details;
-        if(cellData.title) {
+        if(this.state.title) {
             return (<p key={-1} className='modal-line'><span className='modal-title'>Title:</span> 
-                <span className="bold record-details-title">{cellData.title}</span>
+                <span className="bold record-details-title">{this.state.title}</span>
             </p>);
         }
     }
@@ -292,10 +291,19 @@ export default class ProcessDetailsTab extends React.Component {
 
             //Send the AJAX call to the server
             this.get(url, params).then(response => {
-                console.log("Populate",response);
+                // console.log("Populate",response);
+
+                let _title = response[0].doc.title;
+                for(let i = 0; i < response.length; i++) {
+                    if(Globals.isFinalType(response[i].doc.documentType)) {
+                        _title = response[i].doc.title;
+                    }
+                }
+
                 this.setState({
                     processId: processId,
-                    process: response
+                    process: response,
+                    title: _title
                 });
 
                 return <>
