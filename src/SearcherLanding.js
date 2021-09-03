@@ -92,12 +92,28 @@ class SearcherLanding extends React.Component {
 
     showFlipNum = () => {
         if(this.state.total) {
-            return <div id="flip">
-                <FlipNumbers 
-                    id="flipNumbers"
-                    height={20} width={20} color="white" background="rgba(0,0,0,0.4)" 
-                    play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
-                /> <span>NEPA documents and counting</span>
+            return <div className="under-search-holder">
+                <div className="flip">
+                    <FlipNumbers 
+                        height={20} width={20} color="white" background="rgba(0,0,0,0.4)" 
+                        play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
+                    /> <span className="flip-span">NEPA documents and counting</span>
+                </div>
+                <div className="flip">
+                    <div>
+                        <span className="transparent-background">{this.state.firstYear}</span> - <span className="transparent-background">{this.state.lastYear}</span>
+                    </div>
+                    <span className="flip-span">Date range</span>
+                </div>
+                <div className="flip flip-3">
+                    <div className="transparent-background">
+                        
+                    <a className="link landing-link" target="_blank" rel="noopener noreferrer" 
+                            href={`./abouthelp2`}>
+                        More about Available Files
+                    </a>
+                    </div>
+                </div>
             </div>;
         } else {
             return <></>;

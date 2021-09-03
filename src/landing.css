@@ -8,7 +8,7 @@
     min-height: 600px;
     height: 100%;
     width: 100%;
-    min-width: 500px;
+    min-width: 650px;
 }
 
 #headline {
@@ -80,7 +80,7 @@
 }
 
 #landing-images {
-    min-height: 685px;
+    min-height: 655px;
     height: 80%;
 }
 
@@ -280,9 +280,42 @@
     }
 }
 
-#flip {
-    margin-top: 50px;
+.under-search-holder {
+    display: flex;
+    
+    align-items: top;
+    margin: 0 auto;
+    margin-top: 40px;
+
+    max-width: 80%;
+}
+.flip {
+    display: inline-flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+    vertical-align: top;
+
     width: 170px;
+
     font-size: 16px;
+    line-height: 24px;
+}
+.flip-span {
+    display: inline-block;
+    margin-top: 10px;
+}
+.flip-3 {
+    height: 110%;
+    margin-top: -10px;
+}
+.transparent-background {
+    padding: 0 5px;
+    font-size: 20px;
     line-height: 20px;
+    background: rgba(0,0,0,0.5);
+}
+a.link.landing-link {
+    color: lightskyblue;
+    line-height:24px;
 }
