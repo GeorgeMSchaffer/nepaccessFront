@@ -249,7 +249,7 @@ export default class ProcessDetailsTab extends React.Component {
 
                 return (<>
                     <div key={key} className='modal-line'>
-                        <a href={window.location.href.split("/")[0]+"record-details?id="+proc.id} target="_blank">
+                        <a href={window.location.href.split("/")[0]+"record-details?id="+proc.id} target="_blank" rel="noreferrer">
                             <span className='modal-title'>
                                 <b>{proc.documentType}</b>
                             </span>
