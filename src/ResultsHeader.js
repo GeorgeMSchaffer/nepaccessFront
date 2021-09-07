@@ -5,7 +5,7 @@ const sortOptions = [
     { value: 'relevance', label: 'Relevance' },
     { value: 'title', label: 'Title'},
     { value: 'agency', label: 'Lead Agency'},
-    // { value: 'registerDate', label: 'Date'},
+    { value: 'registerDate', label: 'Date'},
     { value: 'state', label: 'State'},
     // { value: 'documentType', label: 'Type'}
 ];

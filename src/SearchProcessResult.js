@@ -250,7 +250,7 @@ export default class SearchProcessResult extends React.Component {
 
             if(record.size && record.size > 200) {
                 if(record.folder) {
-                    return this.renderDownload(record.id,size,record.folder,true,"Folder");
+                    return this.renderDownload(record.id,size,record.folder + "_" + record.documentType + ".zip",true,"Folder");
                 } else if(record.filename) {
                     return this.renderDownload(record.id,size,record.filename,true,"EIS");
                 }
@@ -268,9 +268,24 @@ export default class SearchProcessResult extends React.Component {
         if(this.props && this.props.cell._cell.row.data.records){
             const records = this.props.cell._cell.row.data.records;
 
-            const newRecords = records.map(record => {
+            // Sort records by date instead of relevance
+            // 1: Works without converting String to Date first thanks to YYYY-MM-DD format, until the year 10,000.
+            // 2: Latest dates at the top
+            // 3: The results data doesn't change; this only affects record display order
+            const newRecords = records.sort(
+                (a,b) => {
+                    if (b.registerDate > a.registerDate) {
+                      return 1;
+                    }
+                    if (b.registerDate < a.registerDate) {
+                      return -1;
+                    }
+                    return 0;
+                }
+            ).map(record => {
                 return this.showRecord(record);
-            })
+            });
+
             return newRecords;
         }
     }

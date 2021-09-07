@@ -228,6 +228,14 @@ export default class App extends React.Component {
                 processResults[key].isProcess = false;
             }
 
+            if(!processResults[key].registerDate && datum.registerDate) {
+                processResults[key].registerDate = datum.registerDate;
+            } else if(
+                    datum.registerDate && processResults[key].registerDate && 
+                    processResults[key].registerDate < datum.registerDate) {
+                processResults[key].registerDate = datum.registerDate;
+            }
+
             // Add record to array of records for this "key"
             processResults[key].records.push(datum);
 
@@ -255,7 +263,6 @@ export default class App extends React.Component {
                 // in the records array, which would mean we've already added the "best" (most recent) title.
                 // However: Assuming we filter on all titles in the contents, this isn't a big deal.
             }
-            // TODO: Date range logic so we can filter on that?  Or the filter could account for the structure.
         });
         
         // Have to "flatten" and also sort that by relevance

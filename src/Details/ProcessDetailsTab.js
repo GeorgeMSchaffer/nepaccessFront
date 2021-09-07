@@ -224,6 +224,18 @@ export default class ProcessDetailsTab extends React.Component {
     
 
     interpretProcess = (process) => {
+        process = (process.sort(
+            (a,b) => {
+                if (b.doc.registerDate > a.doc.registerDate) {
+                  return 1;
+                }
+                if (b.doc.registerDate < a.doc.registerDate) {
+                  return -1;
+                }
+                return 0;
+            }
+        ));
+        
         return Object.keys(process).map( ((key, i) => {
             let proc = process[key].doc;
             let filenames = process[key].filenames;
@@ -239,7 +251,7 @@ export default class ProcessDetailsTab extends React.Component {
     
                 if(proc.size && proc.size > 200) {
                     if(proc.folder) {
-                        recordDownload = this.renderDownload(proc.id,size,proc.folder,true,"Folder");
+                        recordDownload = this.renderDownload(proc.id,size,proc.folder + "_" + proc.documentType + ".zip",true,"Folder");
                     } else if(proc.filename) {
                         recordDownload = this.renderDownload(proc.id,size,proc.filename,true,"EIS");
                     }
@@ -251,7 +263,7 @@ export default class ProcessDetailsTab extends React.Component {
                     <div key={key} className='modal-line'>
                         <a href={window.location.href.split("/")[0]+"record-details?id="+proc.id} target="_blank" rel="noreferrer">
                             <span className='modal-title'>
-                                <b>{proc.documentType}</b>
+                                <b>{proc.documentType} : {proc.registerDate}</b>
                             </span>
                         </a>
                         {recordDownload}
@@ -291,25 +303,26 @@ export default class ProcessDetailsTab extends React.Component {
 
             //Send the AJAX call to the server
             this.get(url, params).then(response => {
-                // console.log("Populate",response);
 
-                let _title = response[0].doc.title;
-                for(let i = 0; i < response.length; i++) {
-                    if(Globals.isFinalType(response[i].doc.documentType)) {
-                        _title = response[i].doc.title;
+                if(response && response.length > 0){
+                    let _title = response[0].doc.title;
+                    for(let i = 0; i < response.length; i++) {
+                        if(Globals.isFinalType(response[i].doc.documentType)) {
+                            _title = response[i].doc.title;
+                        }
                     }
+    
+                    this.setState({
+                        processId: processId,
+                        process: response,
+                        title: _title
+                    });
+    
+                    return <>
+                        <h3>Other files from this NEPA process</h3>
+                        {this.interpretProcess(response)}
+                    </>
                 }
-
-                this.setState({
-                    processId: processId,
-                    process: response,
-                    title: _title
-                });
-
-                return <>
-                    <h3>Other files from this NEPA process</h3>
-                    {this.interpretProcess(response)}
-                </>
             }).catch(error => {
                 console.error(error);
 
