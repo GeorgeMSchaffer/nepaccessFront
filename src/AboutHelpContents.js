@@ -17,7 +17,7 @@ export default class AboutHelpContents extends React.Component {
             draftCountDownloadable: null,
             textCount: null,
             earliestYear: null,
-            latestYear: null
+            latestYear: '2021'
         }
         
         this.get("stats/draft_count","draftCount");
@@ -77,7 +77,7 @@ export default class AboutHelpContents extends React.Component {
                     </p></div>
                     
                     <div>
-                        NEPAccess contains all (or almost all) records from environmental impact statements (EIS) created between 1987-2020. There are downloadable PDF files for EIS’s from <span className="dynamic-stat">{this.state.earliestYear}</span>-<span className="dynamic-stat">{this.state.latestYear}</span>. 
+                        NEPAccess contains all (or almost all) records from environmental impact statements (EIS) created between 1987-{this.state.latestYear}. There are downloadable PDF files from <span className="dynamic-stat">{this.state.earliestYear}</span>-<span className="dynamic-stat">{this.state.latestYear}</span>. 
                     </div>
                     
                     <div><p>

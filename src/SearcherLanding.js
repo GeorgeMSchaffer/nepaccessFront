@@ -91,12 +91,20 @@ class SearcherLanding extends React.Component {
     }
 
     showFlipNum = () => {
+        const numStyle = {
+            color:"white",
+            ['-webkit-font-smoothing']:"none",
+            ['font-size']:"20px"
+        };
+
         if(this.state.total) {
             return <div className="under-search-holder">
                 <div className="flip">
                     <FlipNumbers 
-                        height={20} width={20} color="white" background="rgba(0,0,0,0.4)" 
+                        height={30} width={25} color="white" background="rgba(0,0,0,0.5)" 
                         play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
+                        perspective={1000} 
+                        numberStyle={numStyle}
                     /> <span className="flip-span">NEPA documents and counting</span>
                 </div>
                 <div className="flip">

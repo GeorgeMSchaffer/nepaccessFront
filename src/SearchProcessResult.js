@@ -132,17 +132,17 @@ export default class SearchProcessResult extends React.Component {
             let _id = record.id; 
             if(!this.props.show) {
                 return (
-                    <div>
-                        (text snippets hidden)
+                    <div className="margins">
+                        (all text snippets hidden)
                     </div>
                 );
             } else if(this.hidden(record.id)) {
                 return (
-                    <div>
+                    <div className="margins">
                         <div>
                             <button className="hide-button" onClick={() => this.hide(record.id)}>Unhide these text snippets</button>
                         </div>
-                        ...
+                        (text snippet hidden)
                     </div>
                 );
             } else if(record.folder) {

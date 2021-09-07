@@ -237,6 +237,9 @@ body {
   text-decoration: none;
   
 }
+.main-menu-link:hover {
+    color: white;
+}
 
 #bottom-border-header {
   position: fixed;
@@ -567,6 +570,10 @@ span.email-text {
     color: #0067B1;
 }
 
+#process-results .tabulator-cell a.link:hover, .side-link:hover {
+    color:#8FBC3F;
+}
+
 /* resurfeced contact/register/login page css */
 
 #contact-form-content {
@@ -697,4 +704,8 @@ textarea.server-response {
     display: flex;
     width: 100%;
     min-height: 100px;
+}
+
+.margins {
+    margin: 5px;
 }

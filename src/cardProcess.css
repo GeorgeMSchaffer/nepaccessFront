@@ -13,7 +13,7 @@
 .record {
     margin: 20px 20px 10px 25px;
     background-color: #f0efed;
-    border: 2px solid black;
+    border: 1px solid darkslategray;
 }
 
 .record-line {
