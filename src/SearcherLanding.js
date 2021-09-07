@@ -185,8 +185,7 @@ class SearcherLanding extends React.Component {
                 }
 
                 this.setState({
-                  num: this.state.num + increment,
-                  total: 6615
+                  num: this.state.num + increment
                 });
             }
         }, 10);
