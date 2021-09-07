@@ -287,7 +287,8 @@
     margin: 0 auto;
     margin-top: 40px;
 
-    max-width: 100%;
+    max-width: 80%;
+    min-width: 566px;
 }
 
 .flip {
