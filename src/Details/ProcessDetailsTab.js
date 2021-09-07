@@ -256,7 +256,7 @@ export default class ProcessDetailsTab extends React.Component {
                         recordDownload = this.renderDownload(proc.id,size,proc.filename,true,"EIS");
                     }
                 } else {
-                    recordDownload = <div className="table-row"><span className="cardHeader filename">File(s) not yet available</span></div>;
+                    recordDownload = <div className="table-row"><span className="cardHeader filename missing">File(s) not yet available</span></div>;
                 }
 
                 return (<>
@@ -288,7 +288,7 @@ export default class ProcessDetailsTab extends React.Component {
             if(this.state.process.length > 0) { 
                 for(let i = 0; i < this.state.process.length; i++) {
                     return (
-                        <div className="metadata-container">
+                        <div className="metadata-container process-files">
                             <h3>Files</h3>
                             {this.interpretProcess(this.state.process)}
                         </div>);

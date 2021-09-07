@@ -350,13 +350,13 @@ export default class RecordDetailsTab extends React.Component {
                                 <h3>Metadata</h3>
                                 {this.showDetails()}
                             </div>
-                            {this.buildProcess()}
-                        </div>
-                        <div className="files-container">
-                            <h3>Download Files</h3>
-                            {this.showFiles()}
+                            <div className="metadata-container files-container">
+                                <h3>Download Files</h3>
+                                {this.showFiles()}
+                            </div>
                         </div>
                     </div>
+                    {this.buildProcess()}
                 </div>
             );
         } else if(this.state.dropdownOption.value === 'Match') {

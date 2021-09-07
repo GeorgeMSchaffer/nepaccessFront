@@ -49,17 +49,24 @@ div.update .react-datepicker__input-container>input {
     display: flex;
 }
 
-.metadata-container, .files-container {
+.metadata-container-container {
+    display: flex;
+    flex-direction: row;
+    flex: 2;
+}
+@media (max-width: 900px) {
+    .metadata-container-container {
+        flex-direction: column;
+    }
+}
+.metadata-container {
     background: white;
     padding: 20px;
     border: 2px solid rgb(220,220,220);
     margin-bottom: 35px;
     margin-right: 20px;
 }
-.metadata-container-container {
-    flex: 2;
-}
-.files-container {
+.files-container, .process-files {
     flex: 1;
 }
 .tinted {
@@ -98,4 +105,12 @@ div.update .react-datepicker__input-container>input {
 
 .modal-line a:hover {
     color: green;
+}
+
+.modal-line .document-download {
+    margin: 10px 0;
+}
+
+.modal-line .missing {
+    color: coral;
 }
