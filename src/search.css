@@ -478,6 +478,9 @@ button.document-download {
     border-radius: 4px;
     /* width: 50%; */
 }
+button.document-download:hover {
+    background-color: rgb(100,255,100);
+}
 
 a.link {
     text-decoration: none;

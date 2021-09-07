@@ -95,3 +95,7 @@ div.update .react-datepicker__input-container>input {
     font-weight: 600;
     font-size: 20px;
 }
+
+.modal-line a:hover {
+    color: green;
+}

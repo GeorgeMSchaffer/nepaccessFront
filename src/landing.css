@@ -287,7 +287,7 @@
     margin: 0 auto;
     margin-top: 40px;
 
-    max-width: 80%;
+    max-width: 100%;
 }
 
 .flip {
@@ -306,14 +306,11 @@
     display: inline-block;
     margin-top: 10px;
 }
-.flip-3 {
-    height: 110%;
-    margin-top: -10px;
-}
 .transparent-background {
-    padding: 0 5px;
-    font-size: 19px;
-    line-height: 20px;
+    padding: 5px 10px;
+    font-size: 20px;
+    line-height: 37px;
+    /* line-height: 30px; */
     background: rgba(0,0,0,0.5);
 }
 a.link.landing-link {

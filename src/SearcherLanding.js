@@ -92,18 +92,21 @@ class SearcherLanding extends React.Component {
 
     showFlipNum = () => {
         const numStyle = {
-            color:"white",
-            ['-webkit-font-smoothing']:"none",
-            ['font-size']:"20px"
+            color: "white",
+            'font-family': "Open Sans",
+            'font-style': "normal",
+            '-webkit-font-smoothing':"none",
+            'font-size': "20px",
+            'text-shadow': "0 4px 2px rgb(0 0 0 / 50%)"
         };
 
         if(this.state.total) {
             return <div className="under-search-holder">
                 <div className="flip">
                     <FlipNumbers 
-                        height={30} width={25} color="white" background="rgba(0,0,0,0.5)" 
+                        height={37} width={25} color="white" background="rgba(0,0,0,0.5)" 
                         play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
-                        perspective={1000} 
+                        // perspective={500} 
                         numberStyle={numStyle}
                     /> <span className="flip-span">NEPA documents and counting</span>
                 </div>
@@ -113,7 +116,7 @@ class SearcherLanding extends React.Component {
                     </div>
                     <span className="flip-span">Date range</span>
                 </div>
-                <div className="flip flip-3">
+                <div className="flip">
                     <div className="transparent-background">
                         
                     <a className="link landing-link" target="_blank" rel="noopener noreferrer" 
@@ -176,13 +179,14 @@ class SearcherLanding extends React.Component {
             if(this.state.num < this.state.total) {
                 let increment = 1;
                 if(this.state.total - this.state.num > 1000) {
-                    increment = 50;
+                    increment = 111;
                 } else if(this.state.total - this.state.num > 100) {
-                    increment = 5;
+                    increment = 11;
                 }
 
                 this.setState({
                   num: this.state.num + increment,
+                  total: 6615
                 });
             }
         }, 10);
