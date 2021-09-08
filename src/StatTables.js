@@ -103,12 +103,23 @@ export default class StatTables extends React.Component {
                 newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
             }
 
+            let _post2010 = 0;
+            let _pre2010 = 0;
             if(parsedJson && parsedJson.length > 0){
+                parsedJson.forEach(el => {
+                    if(el[0] >= '2010') {
+                        _post2010 += el[1];
+                    } else {
+                        _pre2010 += el[1];
+                    }
+                })
                 this.setState({
                     columns: newColumns,
                     data: parsedJson,
                     response: Globals.jsonToTSV(parsedJson),
-                    busy: false
+                    busy: false,
+                    pre2010: _pre2010,
+                    post2010: _post2010
                 });
             } else {
                 console.log("Null results");
@@ -116,7 +127,9 @@ export default class StatTables extends React.Component {
                     columns: newColumns,
                     data: [],
                     response: Globals.jsonToTSV(parsedJson),
-                    busy: false
+                    busy: false,
+                    pre2010: _pre2010,
+                    post2010: _post2010
                 });
             }
         }).catch(error => { // 401/404/...
@@ -200,6 +213,13 @@ export default class StatTables extends React.Component {
                         name="getRoute" 
                         onChange={this.onSelectHandler}
                     />
+
+                    <div>
+                        <label><b># after 2009: {this.state.post2010}</b></label>
+                    </div>
+                    <div>
+                        <label><b># through 2009: {this.state.pre2010}</b></label>
+                    </div>
 
                     <button 
                         className="button"
