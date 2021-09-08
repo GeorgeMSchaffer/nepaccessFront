@@ -114,3 +114,9 @@
     background: white;
     padding: 10px;
 }
+
+
+.import-meta input[type=radio] {
+    width: 24px;
+    height: 24px;
+}
