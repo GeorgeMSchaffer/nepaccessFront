@@ -67,6 +67,7 @@ div.update .react-datepicker__input-container>input {
     margin-right: 20px;
 }
 .files-container, .process-files {
+    min-width: 300px;
     flex: 1;
 }
 .tinted {
