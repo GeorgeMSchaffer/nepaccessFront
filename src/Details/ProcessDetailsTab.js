@@ -359,6 +359,11 @@ export default class ProcessDetailsTab extends React.Component {
                     keyName = 'type';
                 } else if (key==='cooperatingAgency') {
                     keyName = 'Cooperating agencies';
+                    
+                    const coops = cellData[key].split(';').map(coop => {
+                        return <div className="cooperating"><b>{coop}</b></div>;
+                    })
+                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {coops}</p>);
                 } else if (key==='noiDate') {
                     keyName = 'Notice of Intent (NOI) date'
                 } else if (key==='draftNoa') {
@@ -374,7 +379,7 @@ export default class ProcessDetailsTab extends React.Component {
                         || key==='registerDate' || key==='title') { 
                     return '';
                 } 
-                // else: everything else
+
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key]}</span></p>);
             }));
         }
