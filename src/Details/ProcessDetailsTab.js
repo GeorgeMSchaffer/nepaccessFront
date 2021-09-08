@@ -4,13 +4,9 @@ import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import DownloadFile from '../DownloadFile.js';
-
-import '../index.css';
-import './match.css';
+import Chart from './Chart.js';
 
 import Globals from '../globals.js';
-
-const _ = require('lodash');
 
 // TODO: Get all data for all records for process (needs new backend route)
 // buildProcess() gets all metadata for process ID.  Move that to the ?id= param and give it the process ID from the results
@@ -23,23 +19,14 @@ export default class ProcessDetailsTab extends React.Component {
 	constructor(props){
 		super(props);
         this.state = {
-            details: {
-
-            },
-            detailsID: 0,
+            detailsID: null,
             networkError: '',
-            exists: true,
-
-            logged: false
+            exists: true
         };
 
-        // this.debouncedSize = _.debounce(this.getFileSize, 300);
-        this.debouncedFilenames = _.debounce(this.getFilenames, 300);
-    }
-
-    
-	onDropdownChange = (evt) => {
-        this.setState({ dropdownOption: evt });
+        if(!this.state.processId) {
+            this.populate();
+        }
     }
 
     get = async (_url, _params) => {
@@ -48,11 +35,12 @@ export default class ProcessDetailsTab extends React.Component {
                 params: _params
             });
 
-            let responseOK = response && response.status === 200;
-            if (responseOK) {
+            // let responseOK = response && response.status === 200;
+            // if (responseOK) {
                 return response.data;
-            }
+            // }
         } catch (error) {
+            console.log(error);
             throw error;
         }
     }   
@@ -69,78 +57,27 @@ export default class ProcessDetailsTab extends React.Component {
             throw e;
         }
     }
-
-    getNepaFileResults = () => {
-        const url = Globals.currentHost + "file/nepafiles";
-        const params = {id: this.state.detailsID};
-
-        this.get(url, params).then(results => {
-            if(results){
-                this.setState({
-                    nepaResults: results,
-                });
-            } else { // null: no files?
-    
-            }
-        }).catch(e => {
-            console.error(e);
-        })
-    }
     
     /** Log details page "click" (render) -
-     * user could type the page in or navigate from related process member, could check if a search preceded it.
+     * Since we know it's a process, we'll just be sending any ID from any of the records - they all have the same
+     * process ID, so that can be derived from any record.
+     * This will also fire if they reload the page, although there's no reason to reload.
      */
-    logInteraction = () => {
+    logInteraction = (_id) => {
         const _url = new URL('interaction/set', Globals.currentHost);
         const dataForm = new FormData(); 
-        dataForm.append('source',"UNKNOWN"); // Can't actually know this with current logic
-        dataForm.append('type',"DETAILS_CLICK"); 
-        dataForm.append('docId',this.state.detailsID);
+        dataForm.append('source',"UNKNOWN"); // Don't know if it's clicked, typed or reloaded until logic changes
+        dataForm.append('type',"PROCESS_CLICK"); 
+        dataForm.append('docId',_id);
 
         this.post(_url, dataForm).then(resp => {
-            console.log(resp.status);
+            // console.log(resp.status);
         }).catch(e => {
             console.error(e);
         })
 
     }
 
-    
-    
-    getIdParam = () => {
-        let idString = Globals.getParameterByName("id");
-        return parseInt(idString);
-    }
-    
-    getFilenames = (_id) => {
-        if(this.state.filenames){
-            // do nothing (already have this data)
-        } else {
-            let filenamesUrl = Globals.currentHost + "file/filenames";
-            
-            //Send the AJAX call to the server
-            axios.get(filenamesUrl, {
-                params: {
-                    document_id: _id
-                }
-                }).then(response => {
-                    let responseOK = response && response.status === 200;
-                    if (responseOK && response.data && response.data.length > 0) {
-                        this.setState({
-                            filenames: response.data
-                        });
-                    } else {
-                        // console.log("Can't have filenames");
-                        return null;
-                    }
-                }).then(parsedJson => { // can be empty (no results)
-                    // return "Unknown";
-                }).catch(error => {
-                    // return "Unknown (server error)";
-            });
-            
-        }
-    }
     
     renderDownload = (_id,_size,_filename,_results, _downloadType) => {
         return (<DownloadFile key={_id} downloadType={_downloadType}
@@ -162,8 +99,9 @@ export default class ProcessDetailsTab extends React.Component {
                         <div className="metadata-container">
                             <h3>Metadata</h3>
                             {this.showDetails()}
+                            <Chart dates={this.state.dates} />
                         </div>
-                        {this.populate()}
+                        {this.showProcess()}
                     </div>
                 </div>
             </div>
@@ -180,37 +118,6 @@ export default class ProcessDetailsTab extends React.Component {
                         filename={_filename}/>
             </span>
         );
-    }
-
-    showFilenames = (_id) => {
-        this.debouncedFilenames(_id);
-        if(this.state.filenames) {
-            if(this.state.details.folder) {
-                const filenamesForDownload = this.state.filenames.map(
-                    (_filename) => 
-                    <span key={_filename} className="detail-filename">
-                        <DownloadFile key={_filename} downloadType="nepafile" 
-                                id={_id}
-                                filename={_filename}/>
-                    </span>
-                    
-                );
-
-                return (<div className='modal-line'>
-                <span className='detail-filenames modal-title bold'>Individual files</span>
-                    <p>{filenamesForDownload}</p>
-                </div>);
-            } else {
-                const filenameItems = this.state.filenames.map(
-                    (_filename) => <span key={_filename} className="detail-filename">{_filename}</span>
-                );
-
-                return (<div className='modal-line'>
-                <span className='detail-filenames modal-title bold'>Individual files</span>
-                    <p>{filenameItems}</p>
-                </div>);
-            }
-        }
     }
 
     showTitle = () => {
@@ -277,11 +184,7 @@ export default class ProcessDetailsTab extends React.Component {
         }));
     }
 
-    // Gets all metadata records for this process if available
-    populate = () => {
-        
-        let processId = this.state.detailsID;
-        
+    showProcess = () => {
         if(this.state.processId && this.state.process) {
 
             // already have this data. No need for any axios calls
@@ -295,40 +198,46 @@ export default class ProcessDetailsTab extends React.Component {
                 }
             }
 
-        } else {
+        }
+    }
 
+    // Gets all metadata records for this process if available
+    populate = (_processId) => {
+
+        if(!this.state.processId && this.state.detailsID) {
             // need to get and build
             const url = Globals.currentHost + "test/get_process_full";
-            const params = {processId: processId};
+            const params = {processId: _processId};
 
             //Send the AJAX call to the server
             this.get(url, params).then(response => {
-
-                if(response && response.length > 0){
+                if(response && response.length > 0) {
                     let _title = response[0].doc.title;
                     for(let i = 0; i < response.length; i++) {
                         if(Globals.isFinalType(response[i].doc.documentType)) {
                             _title = response[i].doc.title;
                         }
                     }
-    
-                    this.setState({
-                        processId: processId,
-                        process: response,
-                        title: _title
+
+                    // For Chart (timeline of dates)
+                    let _dates = [];
+                    response.forEach(record => {
+                        _dates.push({registerDate: record.doc.registerDate, documentType: record.doc.documentType});
                     });
-    
-                    return <>
-                        <h3>Other files from this NEPA process</h3>
-                        {this.interpretProcess(response)}
-                    </>
+                    
+                    this.setState({
+                        processId: _processId,
+                        process: response,
+                        title: _title,
+                        dates: _dates
+                    }, () => {
+                        this.logInteraction(response[0].doc.id);
+                    });
                 }
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.error(error);
-
-                return <></>;
             });
-
         }
     }
 
@@ -349,7 +258,7 @@ export default class ProcessDetailsTab extends React.Component {
                 return false;
             });
 
-            return Object.keys(cellData).map( ((key, i) => {
+            return Object.keys(cellData).map( (key, i) => {
                 let keyName = key;
                 // hide blank fields
                 if(!cellData[key] || cellData[key].length === 0) {
@@ -360,9 +269,10 @@ export default class ProcessDetailsTab extends React.Component {
                 } else if (key==='cooperatingAgency') {
                     keyName = 'Cooperating agencies';
                     
-                    const coops = cellData[key].split(';').map(coop => {
-                        return <div className="cooperating"><b>{coop}</b></div>;
+                    const coops = cellData[key].split(';').map( (coop,j) => {
+                        return <span key={key+j} className="cooperating block"><b>{coop}</b></span>;
                     })
+
                     return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> {coops}</p>);
                 } else if (key==='noiDate') {
                     keyName = 'Notice of Intent (NOI) date'
@@ -381,13 +291,11 @@ export default class ProcessDetailsTab extends React.Component {
                 } 
 
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key]}</span></p>);
-            }));
+            });
         }
     }
 
-
     render () {
-
         if(!this.state.exists) {
             return(
                 <div id="details">
@@ -413,28 +321,17 @@ export default class ProcessDetailsTab extends React.Component {
 
     // After render
 	componentDidMount() {
-        if(this.props.id) {
-            if(!this.state.detailsID || this.state.detailsID !== this.props.id) {
-                this.setState({
-                    detailsID: this.props.id
-                });
-            } 
-        } else {
-            const idString = Globals.getParameterByName("id");
-            if(idString){
-                this.setState({
-                    detailsID: idString
-                }, () => {
-                    if(!this.state.detailsID) {
-                        this.setState({
-                            networkError: "No record found (try a different ID)"
-                        });
-                    }
-                });
-            }
+        const idString = Globals.getParameterByName("id");
+        if(idString){
+            this.setState({
+                detailsID: idString
+            }, () => {
+                this.populate(idString);
+            });
         }
 	}
 
-    componentDidUpdate() {
+    componentDidUpdate(props,state) {
+        // console.log(state);
     }
 }
