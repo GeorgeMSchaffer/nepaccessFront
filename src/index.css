@@ -714,3 +714,6 @@ textarea.server-response {
 .margins {
     margin: 5px;
 }
+.missing {
+    color: coral;
+}

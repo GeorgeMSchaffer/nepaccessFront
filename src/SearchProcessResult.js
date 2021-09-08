@@ -255,7 +255,7 @@ export default class SearchProcessResult extends React.Component {
                     return this.renderDownload(record.id,size,record.filename,true,"EIS");
                 }
             } else {
-                return <div className="table-row"><span className="cardHeader filename warning">File(s) not yet available</span></div>;
+                return <div className="table-row"><span className="cardHeader filename missing">File(s) not yet available</span></div>;
             }
 		}
 		else {

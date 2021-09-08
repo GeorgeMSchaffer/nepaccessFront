@@ -111,7 +111,3 @@ div.update .react-datepicker__input-container>input {
 .modal-line .document-download {
     margin: 10px 0;
 }
-
-.modal-line .missing {
-    color: coral;
-}
