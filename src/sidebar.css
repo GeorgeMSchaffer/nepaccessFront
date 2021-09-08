@@ -308,7 +308,7 @@ label.checkbox-text {
   
     cursor: pointer;
   }
-  
+
 .cancel-icon {
   
     width: 24px;
@@ -325,6 +325,11 @@ label.checkbox-text {
 /* Parent hover: Child changes fill color */
 .cancel-icon:hover .circle {
     fill:rgb(218, 218, 218);
+}
+
+.search-icon:hover path {
+    fill: white;
+    fill-opacity: 1;
 }
 
 #post-search-box-text {
