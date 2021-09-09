@@ -53,8 +53,9 @@ div.update .react-datepicker__input-container>input {
     display: flex;
     flex-direction: row;
     flex: 3 2;
+    width: 100%;
 }
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .metadata-container-container {
         flex-direction: column;
     }

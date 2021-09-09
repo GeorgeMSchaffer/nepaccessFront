@@ -687,6 +687,7 @@ span.leading-text {
 .propFilename {
     font-size: 15px;
     font-weight: bold;
+    overflow-wrap: break-word;
 }
 
 .padding-all {
