@@ -63,6 +63,14 @@ export default class RecordDetailsTab extends React.Component {
                 return response.data;
             }
         } catch (error) { 
+            
+            if(error.response.status === 403 ) {
+                this.setState({ 
+                    networkError: "Please log in.",
+                    exists: false
+                });
+            }
+
             throw error; 
         }
     }
@@ -139,11 +147,12 @@ export default class RecordDetailsTab extends React.Component {
             
         this.get(populateUrl, params).then(results => {
             if(results){
+                const alreadyLogged = this.state.logged;
                 this.setState({
                     details: results,
                     logged: true
                 }, () => {
-                    if(!this.state.logged) {
+                    if(!alreadyLogged) {
                         this.logInteraction();
                     }
                 });
