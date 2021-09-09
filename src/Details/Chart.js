@@ -4,7 +4,7 @@ import {showTimeline} from './Timeline';
 
 
 export default function Chart(props) {
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
 
     useEffect(() => {
         showTimeline(props.dates, props.WIDTH);

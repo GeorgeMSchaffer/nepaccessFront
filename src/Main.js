@@ -213,6 +213,16 @@ class Main extends React.Component {
                     <Link currentpage={(this.state.currentPage==="/search").toString()} className="main-menu-link" to="/search">
                         Search
                     </Link>
+                    <div id="about-dropdown-2" className="main-menu-link dropdown">
+                        <Link currentpage={(this.state.currentPage==="/abouthelp" || this.state.currentPage==="/abouthelp2").toString()} id="about-button-2" className="main-menu-link drop-button" to="/abouthelp">
+                            Search Tips
+                        </Link>
+                        <i className="fa fa-caret-down"></i>
+                        <div className="dropdown-content">
+                            <Link to="/abouthelp">Search Tips</Link>
+                            <Link to="/abouthelp2">Available Files</Link>
+                        </div>
+                    </div>
                     <Link currentpage={(this.state.currentPage==="/aboutnepa").toString()} className="main-menu-link" to="/aboutnepa">
                         About NEPA
                     </Link>
@@ -232,16 +242,6 @@ class Main extends React.Component {
                         </div>
                     </div>
                     
-                    <div id="about-dropdown-2" className="main-menu-link dropdown">
-                        <Link currentpage={(this.state.currentPage==="/abouthelp" || this.state.currentPage==="/abouthelp2").toString()} id="about-button-2" className="main-menu-link drop-button" to="/abouthelp">
-                            Search Tips
-                        </Link>
-                        <i className="fa fa-caret-down"></i>
-                        <div className="dropdown-content">
-                            <Link to="/abouthelp">Search Tips</Link>
-                            <Link to="/abouthelp2">Available Files</Link>
-                        </div>
-                    </div>
                     <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
                         Contact
                     </Link>
