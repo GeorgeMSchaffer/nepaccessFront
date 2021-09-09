@@ -7,8 +7,8 @@ export default function Chart(props) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        showTimeline(props.dates);
-    }, [props.dates]);
+        showTimeline(props.dates, props.WIDTH);
+    }, [props.dates, props.WIDTH]);
 
 
     return (

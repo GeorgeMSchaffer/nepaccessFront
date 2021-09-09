@@ -21,13 +21,26 @@ export default class ProcessDetailsTab extends React.Component {
         this.state = {
             detailsID: null,
             networkError: '',
-            exists: true
+            exists: true,
+            width: 400
         };
 
         if(!this.state.processId) {
             this.populate();
         }
+        
+        window.addEventListener('resize', this.handleResize);
     }
+
+    handleResize = () => {
+        const WIDTH = parentWidth(document.getElementById('chart'));
+
+        this.setState({
+            width: WIDTH
+        });
+    }
+
+    
 
     get = async (_url, _params) => {
         try {
@@ -40,7 +53,12 @@ export default class ProcessDetailsTab extends React.Component {
                 return response.data;
             // }
         } catch (error) {
-            console.log(error);
+            if(error.response.status === 403 ) {
+                this.setState({ 
+                    networkError: "Please log in.",
+                    exists: false
+                });
+            }
             throw error;
         }
     }   
@@ -99,7 +117,7 @@ export default class ProcessDetailsTab extends React.Component {
                         <div className="metadata-container">
                             <h3>Metadata</h3>
                             {this.showDetails()}
-                            <Chart dates={this.state.dates} />
+                            <Chart dates={this.state.dates} WIDTH={this.state.width} />
                         </div>
                         {this.showProcess()}
                     </div>
@@ -233,7 +251,7 @@ export default class ProcessDetailsTab extends React.Component {
                     }, () => {
                         this.logInteraction(response[0].doc.id);
                     });
-                }
+                } // error handled inside get()
             })
             .catch(error => {
                 console.error(error);
@@ -324,7 +342,8 @@ export default class ProcessDetailsTab extends React.Component {
         const idString = Globals.getParameterByName("id");
         if(idString){
             this.setState({
-                detailsID: idString
+                detailsID: idString,
+                width: parentWidth(document.getElementById('chart'))
             }, () => {
                 this.populate(idString);
             });
@@ -333,5 +352,13 @@ export default class ProcessDetailsTab extends React.Component {
 
     componentDidUpdate(props,state) {
         // console.log(state);
+    }
+}
+
+function parentWidth(elem) {
+    if(elem && elem.clientWidth) {
+        return Math.max(elem.clientWidth*.6,400);
+    } else {
+        return 400;
     }
 }
