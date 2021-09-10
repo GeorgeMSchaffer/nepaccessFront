@@ -26,7 +26,7 @@ export function showTimeline(dates, WIDTH) {
 
             return {times: [{
                 // label: date.documentType, 
-                label: date.registerDate,
+                // label: date.registerDate,
                 starting_time: Date.parse(date.registerDate), 
                 ending_time: Date.parse(date.registerDate)
             }]};
@@ -55,7 +55,7 @@ export function showTimeline(dates, WIDTH) {
                 tickInterval: _interval,
                 tickSize: 10,
             })
-            .stack() // giving each their own "row" prevents overlap
+            // .stack() // giving each their own "row" prevents overlap
             .display('circle');
 
         
@@ -72,7 +72,7 @@ export function showTimeline(dates, WIDTH) {
 
         dates.forEach((datum, i) => {
             d3.select(".chart-key-holder")
-                .append("label").attr('class', 'chart-key').text(datum.documentType);
+                .append("label").attr('class', 'chart-key').text(datum.registerDate + ": " + datum.documentType);
         });
         
         svg.datum(DATA).call(chart);
