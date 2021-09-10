@@ -117,13 +117,19 @@ export default class ProcessDetailsTab extends React.Component {
                         <div className="metadata-container">
                             <h3>Metadata</h3>
                             {this.showDetails()}
-                            <Chart dates={this.state.dates} WIDTH={this.state.width} />
+                            {this.showTimeline()}
                         </div>
                         {this.showProcess()}
                     </div>
                 </div>
             </div>
         );
+    }
+    showTimeline = () => {
+        return <div className="timeline-container">
+            <h3 className="timeline-header">Timeline</h3>
+            <Chart dates={this.state.dates} WIDTH={this.state.width} />
+        </div>
     }
 
     showFilesNew = (_id, filenames) => {
@@ -341,7 +347,7 @@ export default class ProcessDetailsTab extends React.Component {
         if(idString){
             this.setState({
                 detailsID: idString,
-                width: parentWidth(document.getElementById('chart'))
+                width: parentWidth(document.getElementById('chart')) - 80
             }, () => {
                 this.populate(idString);
             });

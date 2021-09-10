@@ -51,7 +51,7 @@ export function showTimeline(dates, WIDTH) {
                 tickInterval: _interval,
                 tickSize: 10,
             })
-            .stack() // giving each their own "row" prevents overlap
+            // .stack() // giving each their own "row" prevents overlap
             .display('circle');
         var svg = d3.select("#chart")
             .html("")

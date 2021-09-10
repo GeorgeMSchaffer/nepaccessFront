@@ -16,6 +16,8 @@
     border: 2px solid #dadada;
 }
 
+/**Line will flex to fit contents if, say, the filename is super long. 
+Also no longer possible to overflow off the page or out of the card.*/
 .record-line {
     display: flex;
     flex-direction: row;
@@ -37,7 +39,7 @@
     padding: 15px 0;
 }
 .document-download {
-    max-width: 98%;
+    max-width: 98%; /** 2% room for dots on overflow, mostly */
     overflow-x: hidden;
     text-overflow: ellipsis;
 }
@@ -146,4 +148,8 @@ span.filename>* {
 #process-results .tabulator-holder {
     margin: 0 25px;
     height: 800px;
+}
+
+.timeline-header {
+    padding-top: 40px;
 }
