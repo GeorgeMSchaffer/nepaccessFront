@@ -178,7 +178,6 @@
 
 #landing-search-bar {
     width: calc(90% - 110px);
-    padding: 0;
     padding-left: 15px;
     padding-right: 110px;
 }
