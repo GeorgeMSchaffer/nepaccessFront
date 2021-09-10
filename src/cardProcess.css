@@ -71,6 +71,9 @@ span.highlight {
     display: block;
     margin: 15px 10px 0px 10px;
 }
+.fragment-container:last-child {
+    margin-bottom: 10px;
+}
 span.fragment {
     display: block;
     white-space: normal;
