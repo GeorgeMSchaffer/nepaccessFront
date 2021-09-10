@@ -24,7 +24,9 @@ export function showTimeline(dates, WIDTH) {
                 dateMin = date.registerDate;
             }
 
-            return {times: [{label: date.documentType, 
+            return {times: [{
+                // label: date.documentType, 
+                label: date.registerDate,
                 starting_time: Date.parse(date.registerDate), 
                 ending_time: Date.parse(date.registerDate)
             }]};
@@ -46,19 +48,34 @@ export function showTimeline(dates, WIDTH) {
         
         var chart = d3.timeline()
             .tickFormat({
-                format: function(d) { return d3.time.format(_tickFormat)(d) },
+                format: function(d) { 
+                    return d3.time.format(_tickFormat)(d) 
+                },
                 tickTime: _tickTime,
                 tickInterval: _interval,
                 tickSize: 10,
             })
-            // .stack() // giving each their own "row" prevents overlap
+            .stack() // giving each their own "row" prevents overlap
             .display('circle');
+
+        
         var svg = d3.select("#chart")
             .html("")
             .append("svg")
             .attr("width", WIDTH)
-            .attr("overflow","visible")
-            .datum(DATA).call(chart);
+            .attr("overflow","visible");
+            
+        // let colors = chart.colors();
+        d3.select("#chart")
+            .append("div")
+            .attr('class', 'chart-key-holder');
+
+        dates.forEach((datum, i) => {
+            d3.select(".chart-key-holder")
+                .append("label").attr('class', 'chart-key').text(datum.documentType);
+        });
+        
+        svg.datum(DATA).call(chart);
 
     }
 }

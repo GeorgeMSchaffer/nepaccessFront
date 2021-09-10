@@ -350,7 +350,7 @@ export default class ProcessDetailsTab extends React.Component {
         if(idString){
             this.setState({
                 detailsID: idString,
-                width: parentWidth(document.getElementById('chart')) - 80
+                width: parentWidth(document.getElementById('chart')) - 90
             }, () => {
                 this.populate(idString);
             });
