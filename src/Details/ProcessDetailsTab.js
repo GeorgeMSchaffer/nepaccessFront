@@ -287,6 +287,9 @@ export default class ProcessDetailsTab extends React.Component {
                 // hide blank fields
                 if(!cellData[key] || cellData[key].length === 0) {
                     return '';
+                } else if(key==='department' && cellData[key] && cellData['agency'] && cellData[key]===cellData['agency']) {
+                    // No great need to show department if it's equal to agency, at least until departments are cleaned up manually
+                    return '';
                 // reword fields;
                 } else if (key==='cooperatingAgency') {
                     keyName = 'Cooperating agencies';
