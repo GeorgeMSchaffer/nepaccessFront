@@ -686,11 +686,9 @@ class Search extends React.Component {
 
                 <div className="filter">
                     <div className="checkbox-container">
-                        <label className="clickable checkbox-text">
-                            <input type="checkbox" name="needsDocument" className="sidebar-checkbox"
-                                    checked={this.state.needsDocument} onChange={this.onNeedsDocumentChecked} />
-                            <span className="checkbox-text">Has available files</span>
-                        </label>
+                        <input type="checkbox" name="needsDocument" id="needsDocument" className="sidebar-checkbox"
+                                checked={this.state.needsDocument} onChange={this.onNeedsDocumentChecked} />
+                        <label className="checkbox-text no-select" htmlFor="needsDocument">Has downloadable files</label>
                     </div>
                 </div>
                 
@@ -755,9 +753,9 @@ class Search extends React.Component {
                     </div>
                 </div>
 
-                <div className="sidebar-hr"></div>
+                <div className="sidebar-hr" hidden={true}></div>
                 
-                <div className="filter">
+                <div className="filter" hidden={true}>
                     <label className="sidebar-label">Document type</label>
                     <div className="sidebar-checkboxes">
                         <div className="checkbox-container">

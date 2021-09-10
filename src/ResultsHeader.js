@@ -91,7 +91,7 @@ export default class ResultsHeader extends React.Component {
                                     checked={this.props.showContext} 
                                     onChange={this.props.onCheckboxChange}
                                     disabled={this.props.snippetsDisabled}  />
-                            <label className="checkbox-text" htmlFor="post-results-input">
+                            <label className="checkbox-text no-select" htmlFor="post-results-input">
                                 Show text snippets
                             </label>
                         </div>

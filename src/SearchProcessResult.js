@@ -292,9 +292,9 @@ export default class SearchProcessResult extends React.Component {
     showRecord = (record) => {
         return (<div key={record.relevance} className="record">
             <div className="record-line">
-                <span className="record-field">
+                <span className="record-field regular">
                     <a className="link" target="_blank" rel="noopener noreferrer" href={`./record-details?id=${record.id}`}>
-                        {record.documentType}
+                        {this.showDocumentType(record.documentType)}
                     </a>
                 </span>
                 <span className="record-field">{record.registerDate}</span>
@@ -302,6 +302,15 @@ export default class SearchProcessResult extends React.Component {
             </div>
             {this.showText(record)}
         </div>)
+    }
+    showDocumentType = (docType) => {
+        if(docType.toLowerCase() === "rod") {
+            return "Record of Decision (ROD)";
+        } else if(Globals.isFinalType(docType) || Globals.isDraftType(docType)) {
+            return docType + " Environmental Impact Statement"; 
+        } else {
+            return docType;
+        }
     }
 
     renderDownload = (_id,_size,_filename,_results, _downloadType) => {

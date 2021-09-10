@@ -1,5 +1,70 @@
 import * as d3 from 'd3';
 
+export function showTimeline(dates, WIDTH) {
+    
+    if(dates) {
+    
+        let dateMax = dates[0].registerDate;
+        let dateMin = dates[0].registerDate;
+
+        // TODO: While preprocessing, combine any types that fall on the exact same date.
+        // Text overlap is a harder problem, so generally getting rid of .stack() means accepting that possibility
+        const DATA = dates.sort((a,b) => {
+            if(a.registerDate > b.registerDate) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }).map(date => {
+            // Collect earliest and latest date to compare year difference later
+            if(dateMax < date.registerDate) {
+                dateMax = date.registerDate;
+            }
+            if(dateMin > date.registerDate) {
+                dateMin = date.registerDate;
+            }
+
+            return {times: [{label: date.documentType, 
+                starting_time: Date.parse(date.registerDate), 
+                ending_time: Date.parse(date.registerDate)
+            }]};
+        });
+
+        let _interval = 1; 
+        let _tickTime = d3.time.years;
+        let _tickFormat = ("%Y"); // Just year
+        const DATE_DIFF = (new Date(dateMax).getFullYear() - new Date(dateMin).getFullYear());
+        if(DATE_DIFF > 8) {
+            // Display only every other year if there's at least 8 years' difference
+            _interval = 2;
+        } else if(DATE_DIFF === 1) {
+            // Display a tick every 3 months for a ~1 year process
+            _interval = 3;
+            _tickTime = d3.time.months;
+            _tickFormat = ("%Y-%m"); // Year and numerical month
+        }
+        
+        var chart = d3.timeline()
+            .tickFormat({
+                format: function(d) { return d3.time.format(_tickFormat)(d) },
+                tickTime: _tickTime,
+                tickInterval: _interval,
+                tickSize: 10,
+            })
+            .stack() // giving each their own "row" prevents overlap
+            .display('circle');
+        var svg = d3.select("#chart")
+            .html("")
+            .append("svg")
+            .attr("width", WIDTH)
+            .attr("overflow","visible")
+            .datum(DATA).call(chart);
+
+    }
+}
+
+// d3-timeline
+
 d3.timeline = function() {
     var DISPLAY_TYPES = ["circle", "rect"];
 
@@ -664,64 +729,3 @@ d3.timeline = function() {
 
     return timeline;
 };
-
-export function showTimeline(dates, WIDTH) {
-    
-    if(dates) {
-    
-        let dateMax = dates[0].registerDate;
-        let dateMin = dates[0].registerDate;
-
-        const DATA = dates.sort((a,b) => {
-            if(a.registerDate > b.registerDate) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }).map(date => {
-            // Collect earliest and latest date to compare year difference later
-            if(dateMax < date.registerDate) {
-                dateMax = date.registerDate;
-            }
-            if(dateMin > date.registerDate) {
-                dateMin = date.registerDate;
-            }
-
-            return {times: [{label: date.documentType, 
-                starting_time: Date.parse(date.registerDate), 
-                ending_time: Date.parse(date.registerDate)
-            }]};
-        });
-
-        let _interval = 1; 
-        let _tickTime = d3.time.years;
-        let _tickFormat = ("%Y"); // Just year
-        const DATE_DIFF = (new Date(dateMax).getFullYear() - new Date(dateMin).getFullYear());
-        if(DATE_DIFF > 8) {
-            // Display only every other year if there's at least 8 years' difference
-            _interval = 2;
-        } else if(DATE_DIFF === 1) {
-            // Display a tick every 3 months for a ~1 year process
-            _interval = 3;
-            _tickTime = d3.time.months;
-            _tickFormat = ("%Y-%m"); // Year and numerical month
-        }
-        
-        var chart = d3.timeline()
-            .tickFormat({
-                format: function(d) { return d3.time.format(_tickFormat)(d) },
-                tickTime: _tickTime,
-                tickInterval: _interval,
-                tickSize: 10,
-            })
-            .stack() // giving each their own "row" prevents overlap
-            .display('circle');
-        var svg = d3.select("#chart")
-            .html("")
-            .append("svg")
-            .attr("width", WIDTH)
-            .attr("overflow","visible")
-            .datum(DATA).call(chart);
-
-    }
-}

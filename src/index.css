@@ -718,3 +718,7 @@ textarea.server-response {
 .missing {
     color: coral;
 }
+
+.table-holder>div {
+    width: 100%;
+}

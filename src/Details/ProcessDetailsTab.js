@@ -281,9 +281,7 @@ export default class ProcessDetailsTab extends React.Component {
                 // hide blank fields
                 if(!cellData[key] || cellData[key].length === 0) {
                     return '';
-                // reword fields
-                } else if (key==='documentType') {
-                    keyName = 'type';
+                // reword fields;
                 } else if (key==='cooperatingAgency') {
                     keyName = 'Cooperating agencies';
                     
@@ -304,7 +302,7 @@ export default class ProcessDetailsTab extends React.Component {
                 } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || 
                         key==='plaintext' || key==='folder' || key==='link' || key==='notes' || key==='commentsFilename'
                         || key === 'filename' || key==='luceneIds' || key==='status' || key==='processId' || key==='summaryText'
-                        || key==='registerDate' || key==='title') { 
+                        || key==='registerDate' || key==='title' || key==='documentType') { 
                     return '';
                 } 
 

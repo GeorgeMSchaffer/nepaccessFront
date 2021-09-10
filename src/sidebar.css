@@ -374,6 +374,7 @@ input:hover {
     padding: 0;
 }
 .checkbox-container>input, .checkbox-container>label {
+    cursor: pointer;
     vertical-align: middle;
 }
 .multi>.react-select__control {
