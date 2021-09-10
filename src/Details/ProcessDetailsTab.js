@@ -19,10 +19,13 @@ export default class ProcessDetailsTab extends React.Component {
 	constructor(props){
 		super(props);
         this.state = {
+            process: null,
+            processId: null,
             detailsID: null,
             networkError: '',
             exists: true,
-            width: 400
+            width: 400,
+            showMore: []
         };
 
         if(!this.state.processId) {
@@ -131,17 +134,49 @@ export default class ProcessDetailsTab extends React.Component {
             <Chart dates={this.state.dates} WIDTH={this.state.width} />
         </div>
     }
+    // Use record id to track showing or hiding of its individual files (empty array on mount)
+    showMoreToggle = (id) => {
+        let shows = this.state.showMore;
+        if(shows.includes(id)) {
+            const index = shows.indexOf(id);
+            if (index > -1) {
+                shows.splice(index, 1);
+            }
+        } else {
+            shows.push(id);
+        }
+
+        this.setState({
+            showMore: shows
+        });
+    }
 
     showFilesNew = (_id, filenames) => {
+
+        let showMore = this.state.showMore.includes(_id);
         
-        return filenames.map(
-            (_filename) => 
-            <span key={_filename} className="detail-filename">
-                <DownloadFile key={_filename} downloadType="nepafile" 
+        return filenames.map((_filename, i) => {
+            if(i === 0) {
+                if(!showMore) {
+                    return <span className="show-more-link" onClick={() => {this.showMoreToggle(_id)}}>Show individual file downloads &#129170;</span>
+                } else {
+                    return <>
+                        <span className="show-more-link" onClick={() => {this.showMoreToggle(_id)}}>Hide individual file downloads &#129171;</span>
+                        <span key={_filename} className="detail-filename">
+                            <DownloadFile key={_filename} downloadType="nepafile" 
+                                id={_id}
+                                filename={_filename}/>
+                        </span>
+                    </>
+                }
+            } else if(showMore) {
+                return <span key={_filename} className="detail-filename">
+                    <DownloadFile key={_filename} downloadType="nepafile" 
                         id={_id}
                         filename={_filename}/>
-            </span>
-        );
+                </span>
+            } 
+        });
     }
 
     showTitle = () => {
@@ -199,7 +234,7 @@ export default class ProcessDetailsTab extends React.Component {
                         </a>
                         {recordDownload}
                     </div>
-                    {this.showFilesNew(proc.id,filenames)}
+                    <div className="individual-files" key={key+"Files"}>{this.showFilesNew(proc.id,filenames)}</div>
                     </>
                 );
             } else {
@@ -275,14 +310,17 @@ export default class ProcessDetailsTab extends React.Component {
             cellData = this.state.process[0].doc;
             
             process.some(function(el) {
-                if(Globals.isFinalType(el.documentType)) {
-                    cellData = el;
+                if(Globals.isFinalType(el.doc.documentType)) {
+                    cellData = el.doc;
                     return true;
                 }
                 return false;
             });
 
             return Object.keys(cellData).map( (key, i) => {
+                if(key==='documentType') {
+                    console.log(key,cellData[key]);
+                }
                 let keyName = key;
                 // hide blank fields
                 if(!cellData[key] || cellData[key].length === 0) {

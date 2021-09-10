@@ -118,6 +118,13 @@ div.update .react-datepicker__input-container>input {
 .cooperating {
     margin-left: 25px;
 }
+.show-more-link {
+    cursor: pointer;
+    display: inline-block;
+    color: #0067B1;
+    margin: 15px 0;
+    user-select: none;
+}
 
 
 /** Timeline  */
