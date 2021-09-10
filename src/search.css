@@ -663,8 +663,9 @@ div.disabled::before {
 #main-search-clear {
     margin-left: -285px;
 }
-/* #main-search-icon {
-} */
+#main-search-icon {
+    background: #8FBC3F;
+}
 
 #agency-svg-holder {
     display: inline-block;
