@@ -152,7 +152,7 @@ div.update .react-datepicker__input-container>input {
 }
 .chart-key {
     display: block;
-    padding-left: 20px;
+    padding-left: 30px;
 }
 .chart-key:nth-child(1) {
     background: linear-gradient(to right, #1f77b4 0%,#1f77b4 20px,#FFF 20px);

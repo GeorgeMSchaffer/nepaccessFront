@@ -150,6 +150,7 @@ span.filename>* {
     height: 800px;
 }
 
-.timeline-header {
+.metadata-container .timeline-header {
     padding-top: 40px;
+    margin-bottom: 10px;
 }
