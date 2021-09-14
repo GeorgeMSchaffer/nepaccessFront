@@ -20,43 +20,27 @@ export default class SearchProcessResult extends React.Component {
         };
     }
 
-    /** Log download */
-    logInteraction = (isFolder, recordId) => {
-        const _url = new URL('interaction/set', Globals.currentHost);
-        const dataForm = new FormData(); 
-
-        dataForm.append('source',"RESULTS");
-        
-        // individual downloads are presented as DownloadFile components, but could be a comment letter
-        if(isFolder) {
-            dataForm.append('type',"DOWNLOAD_ARCHIVE"); 
-        } else {
-            dataForm.append('type','DOWNLOAD_ONE'); // comment letter
-        }
-        if(recordId) { 
-            dataForm.append('docId',recordId);
-        } else {
-            dataForm.append('docId',this.props.cell._cell.row.data.id);
-        }
-        
-        axios({
-            url: _url,
-            method: 'POST',
-            data: dataForm
-        }).then(response => {
-            // let responseOK = response && response.status === 200;
-            console.log(response.status);
-        }).catch(error => { 
-            console.error(error);
-        })
-    }
-
     hidden = (id) => {
         return this.props.hidden(id);
     }
 
-    hide = (id) => {
-        this.props.hideText(id);
+    /** TODO: Issue is this isn't perfectly responsive because the timing is variable and if we scroll too early,
+     * then the scroll gets ruined.  250ms is okay, but theoretically there should be a better way.
+     * Experimenting with passing offset along this.props.hideText and use that to set a global variable in the parent.
+     * Then the parent scrolls to that offset on table redraw, since parent can easily track that event.
+     */
+    /** Hide and scroll to element (because rerendering likely lost view of it) */
+    hide = (e, id) => {
+        const offs = e.nativeEvent.pageY - (window.innerHeight / 2);
+        this.props.hideText(id,offs);
+        
+        // Using parent for scroll, for now
+        // this.scrollTo(offs);
+    }
+    scrollTo = (offs) => {
+        setTimeout(function() {
+            window.scrollTo(0,offs);
+        }, 250);
     }
 
     showTitle = () => {
@@ -100,26 +84,32 @@ export default class SearchProcessResult extends React.Component {
             );
         }
     }
-
     
-    showFilename = () => {
-        if(this.props && this.props.cell._cell.row.data.folder){
-            return (
-                <div><span className="cardHeader filename">Filename:
-                    <span>{this.props.cell._cell.row.data.folder + "_" + this.props.cell._cell.row.data.documentType}.zip</span></span>
-                </div>
-            );
-        } else if(this.props && this.props.cell._cell.row.data.filename){
-            return (
-                <div><span className="cardHeader filename">Filename:
-                    <span>{this.props.cell._cell.row.data.filename}</span></span>
-                </div>
-            );
-        } else {
-            return <div><span className="cardHeader"></span></div>
-        }
+    /** Used by showText(). 
+     * Takes: record ID,filename,text,index; 
+     * Returns: HTML for React incl. DownloadFile (which handles logging downloads)
+     */
+     showFragment = (_id,_filename,text,index) => {
+        return (
+            <span className="fragment-container" key={ index }>
+                <span className="cardHeader bold filename-inner">
+                    <DownloadFile key={_filename} downloadType="nepafile" 
+                        recordId={_id}
+                        id={_id}
+                        filename={_filename}
+                        results={true} />
+                </span>
+
+                <span className="card-highlight fragment" 
+                        dangerouslySetInnerHTML={{
+                            __html:text
+                        }}>
+                </span>
+            </span>
+        );
     }
-    /** Show list of downloadable filenames each with highlight(s) as highlights are populated */ 
+    /** Used by showRecord(). 
+     * Returns HTML for downloadable filenames each with highlight(s) as highlights are populated; show more/less buttons */ 
     showText = (record) => {
         if(record && record.name){
             let filenames = record.name.split(">");
@@ -136,48 +126,48 @@ export default class SearchProcessResult extends React.Component {
                         (all text snippets hidden)
                     </div>
                 );
-            } else if(this.hidden(record.id)) {
-                return (
-                    <div className="margins">
-                        <div>
-                            <button className="hide-button" onClick={() => this.hide(record.id)}>Unhide these text snippets</button>
+            } else if(!this.hidden(record.id)) {
+                if(combined.length > 1) {
+
+                    return (<>
+                        {this.showFragment(_id,combined[0][0],combined[0][1],0)}
+    
+                        <div className="margins">
+                            <div>
+                                <span className="hide-button" onClick={(e) => this.hide(e, record.id)}>
+                                    Show more text snippets ({combined.length - 1})
+                                </span>
+                            </div>
                         </div>
-                        (text snippet hidden)
-                    </div>
-                );
+                    </>);
+                } else {
+                    return this.showFragment(_id,combined[0][0],combined[0][1],0);
+                }
             } else if(record.folder) {
                 return (
                     <div>
-                        <div className="wide-flex">
-                            <button className="hide-button" onClick={() => this.hide(record.id)}>Hide these text snippets</button>
-                        </div>
-                        {combined.map(function(combo, index){
-                            return (
-                                <span className="fragment-container" key={ index }>
-                                    <span className="cardHeader bold filename-inner">
-                                        <DownloadFile key={combo[0]} downloadType="nepafile" 
-                                            recordId={record.id}
-                                            id={_id}
-                                            filename={combo[0]}
-                                            results={true} />
-                                    </span>
-                                    
-                                    
-                                    <span className="card-highlight fragment" 
-                                            dangerouslySetInnerHTML={{
-                                                __html:combo[1]
-                                            }}>
-                                    </span>
-                                </span>
-                            );
+                        {combined.map((combo, index) => {
+                            if(index == 0) {
+                                return (<>
+                                    {this.showFragment(_id,combo[0],combo[1],index)}
+                                    <div className="margins">
+                                        <span className="hide-button" onClick={(e) => this.hide(e,record.id)}>
+                                            Show less text snippets
+                                        </span>
+                                    </div>
+                                    </>
+                                );
+                            } else {
+                                return this.showFragment(_id,combo[0],combo[1],index);
+                            }
                         })}
                     </div>
                 );
-            } else {
+            } else { // Folders are basically a given now, so this should be unused legacy code.
                 return (
                     <div>
                         <div className="wide-flex">
-                            <button className="hide-button" onClick={() => this.hide(record.id)}>Hide these text snippets</button>
+                            <span className="hide-button" onClick={() => this.hide(record.id)}>Hide these text snippets</span>
                         </div>
                         {combined.map(function(combo, index){
                             return (
@@ -208,33 +198,6 @@ export default class SearchProcessResult extends React.Component {
                             {"" + (record.matchPercent*100) + "% Match"}
                         </span></span>
                     </div>
-                </div>
-            );
-        }
-    }
-    showDate = () => {
-        if(this.props && this.props.cell._cell.row.data.registerDate){
-            return (
-                <div><span className="cardHeader">Date:
-                    <span>{this.props.cell._cell.row.data.registerDate}</span></span>
-                </div>
-            );
-        } else {
-            return (
-                <div><span className="cardHeader">Date:
-                    <span></span></span>
-                </div>
-            );
-        }
-    }
-    showVersion = () => {
-        if(this.props && this.props.cell._cell.row.data.documentType){
-            return (
-                <div>
-                    <span className="cardHeader">Type:
-                        <span>{this.props.cell._cell.row.data.documentType}</span>
-                    </span>
-                    
                 </div>
             );
         }

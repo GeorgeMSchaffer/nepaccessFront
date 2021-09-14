@@ -48,12 +48,15 @@ export default class SearchProcessResults extends React.Component {
     }
     
     page = 1;
+    offsetY = null;
 
     hide = (props) => {
         return this.hidden.has(props);
     }
 
-    hideText = (id) => {
+    hideText = (id,_offsetY) => {
+        this.offsetY = _offsetY;
+        
         if(this.hidden.has(id)) {
             this.hidden.delete(id);
             this.setState({hidden: this.hidden});
@@ -63,14 +66,24 @@ export default class SearchProcessResults extends React.Component {
         }
     }
     
-    // Table needs help to resize its cells if window is resized
     handleResize = () => {
-        this.setState({
-            height: window.innerHeight,
-            width: window.innerWidth
-        });
     }
-    
+    /** TODO:  The problem is that we don't always want to scroll when the page has to
+    * redraw.  Examples would be showing/hiding text snippets or changing the page.  Page tends to redraw
+    * several times, so we can't just immediately set offsetY to null, and it's slightly laborious to clear
+    * offsetY every time we do any other kind of event.  So we just clear it here on a delay, but it's a little
+    * bit of a hack. */
+    doneRender = () => {
+        // console.log("They see me scrollin'")
+        if(this.offsetY) {
+            // console.log("They hatin'",this.offsetY)
+            window.scrollTo(0,this.offsetY);
+            setTimeout(() => {
+                // After all redraws are probably finished, clear variable
+                this.offsetY = null;
+            }, 500);
+        }
+    }
     onPageLoaded = (pageNumber) => {
         if(this.page !== pageNumber){
             this.page = pageNumber;
@@ -120,7 +133,7 @@ export default class SearchProcessResults extends React.Component {
                 // need to redraw to accommodate new data (new dimensions) or hiding/showing texts
                 setTimeout(function() {
                     TABLE.redraw(true);
-                    // console.log("Redrawn");
+                    console.log("Redrawn");
                 },0)
             }
         }
@@ -173,6 +186,7 @@ export default class SearchProcessResults extends React.Component {
                                 columns={this._columns}
                                 options={this.options}
                                 pageLoaded={this.onPageLoaded}
+                                renderComplete={this.doneRender}
                             />
                         </div>
                     </div>

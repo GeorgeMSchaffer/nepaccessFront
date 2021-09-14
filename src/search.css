@@ -720,6 +720,14 @@ div.disabled::before {
 }
 .hide-button {
     margin: auto;
-    margin-top:10px;
+    margin-top: 10px;
+    margin-left: 30px;
     display: flex;
+
+    font-weight: bold;
+
+    cursor: pointer;
+    /* display: inline-block; */
+    color: blue;
+    user-select: none;
 }
