@@ -129,12 +129,26 @@ span.filename>* {
     font-size: 14px;
     line-height: 125%;
 }
-/** Tabulator cell, row custom CSS */
 
+/** Tabulator table, cell, row custom CSS */
+
+/** The two height: 100% rules reduce "jitter" on redraw (this results in better UX while changing pages, results are loading,
+ and also when toggling text snippets, because the table doesn't over-shrink vertically) - this can be observed in how much 
+ more the browser scrollbar moves without these rules. */
+#process-results .tabulator .tabulator-tableHolder {
+    overflow: hidden;
+    height: 100% !important;
+}
 #process-results .tabulator-tableHolder .tabulator-table .tabulator-row .tabulator-cell, 
 #process-results .tabulator-table .tabulator-row {
-    min-height: 100px;
+    min-height: 100px !important;
+    height: 100% !important;
+    overflow: hidden;
 }
+#process-results .tabulator .tabulator-tableHolder .tabulator-table {
+    padding-bottom: 0px !important;
+}
+
 #process-results .tabulator-table .tabulator-row,
 #process-results .tabulator>.tabulator-footer {
     border-top: 20px solid #FBFBF6;
