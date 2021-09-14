@@ -43,7 +43,8 @@ export default class StatTables extends React.Component {
         approver: false,
         busy: false,
 
-        getRoute: ""
+        getRoute: "",
+        date: '1999'
     }
 
     constructor(props) {
@@ -103,33 +104,40 @@ export default class StatTables extends React.Component {
                 newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
             }
 
-            let _post2010 = 0;
-            let _pre2010 = 0;
+            // Changed to 2000 from 2010
+            let postDate = 0;
+            let preDate = 0;
+            let _noDate = 0;
             if(parsedJson && parsedJson.length > 0){
                 parsedJson.forEach(el => {
-                    if(el[0] >= '2010') {
-                        _post2010 += el[1];
-                    } else {
-                        _pre2010 += el[1];
+                    if(el[0] === null) {
+                        _noDate += el[1];
                     }
-                })
+                    else if(el[0] >= this.state.date) {
+                        postDate += el[1];
+                    } else {
+                        preDate += el[1];
+                    }
+                });
+
                 this.setState({
                     columns: newColumns,
                     data: parsedJson,
                     response: Globals.jsonToTSV(parsedJson),
                     busy: false,
-                    pre2010: _pre2010,
-                    post2010: _post2010
+                    preDate: preDate,
+                    postDate: postDate,
+                    noDate: _noDate
                 });
             } else {
-                console.log("Null results");
                 this.setState({
                     columns: newColumns,
                     data: [],
                     response: Globals.jsonToTSV(parsedJson),
                     busy: false,
-                    pre2010: _pre2010,
-                    post2010: _post2010
+                    pre2010: preDate,
+                    post2010: postDate,
+                    noDate: _noDate
                 });
             }
         }).catch(error => { // 401/404/...
@@ -188,6 +196,36 @@ export default class StatTables extends React.Component {
         }
     }
 
+    // event handlers
+
+    onChange = (evt) => {
+        this.setState({date: evt.target.value}, () => {
+            this.updateArithmetic();
+        });
+    }
+    updateArithmetic = () => {
+        let _post = 0;
+        let _pre = 0;
+        let _noDate = 0;
+        if(this.state.data && this.state.data.length > 0){
+            this.state.data.forEach(el => {
+                if(el[0] === null) {
+                    _noDate += el[1];
+                }
+                else if(el[0] > this.state.date) {
+                    _post += el[1];
+                } else {
+                    _pre += el[1];
+                }
+            })
+            this.setState({
+                preDate: _pre,
+                postDate: _post,
+                noDate: _noDate
+            });
+        }
+    }
+
 
     render() {
 
@@ -215,11 +253,16 @@ export default class StatTables extends React.Component {
                     />
 
                     <div>
-                        <label><b># after 2009: {this.state.post2010}</b></label>
+                        <label><b>Count after {this.state.date}: {this.state.postDate}</b></label>
                     </div>
                     <div>
-                        <label><b># through 2009: {this.state.pre2010}</b></label>
+                        <label><b>Count through {this.state.date}: {this.state.preDate}</b></label>
                     </div>
+                    <div>
+                        <label><b>Count with no date: {this.state.noDate}</b></label>
+                    </div>
+
+                    Type year to break on: <input type="text" value={this.state.date} onChange={(e) => this.onChange(e)} />
 
                     <button 
                         className="button"
