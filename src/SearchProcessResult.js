@@ -33,7 +33,7 @@ export default class SearchProcessResult extends React.Component {
     hide = (e, id) => {
         const offs = e.nativeEvent.pageY - (window.innerHeight / 2);
         this.props.hideText(id,offs);
-        
+
         // Using parent for scroll, for now
         // this.scrollTo(offs);
     }
@@ -233,10 +233,10 @@ export default class SearchProcessResult extends React.Component {
 
             // Sort records by date instead of relevance
             // 1: Works without converting String to Date first thanks to YYYY-MM-DD format, until the year 10,000.
-            // 2: Latest dates at the top
+            // 2: Earliest dates at the top
             // 3: The results data doesn't change; this only affects record display order
             const newRecords = records.sort(
-                (a,b) => {
+                (b,a) => {
                     if (b.registerDate > a.registerDate) {
                       return 1;
                     }
