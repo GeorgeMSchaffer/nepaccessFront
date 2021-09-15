@@ -35,6 +35,7 @@ const getRoutes = [
     { label: "reports/report_agency_process_2000", value: "reports/report_agency_process_2000" },
 
     { label: "reports/duplicates_size", value: "reports/duplicates_size" },
+    { label: "reports/duplicates_type_folder", value: "reports/duplicates_type_folder" },
 ];
 
 const options = Globals.tabulatorOptions;
