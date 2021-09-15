@@ -38,6 +38,11 @@ Also no longer possible to overflow off the page or out of the card.*/
     font-weight: 400 !important;
     padding: 15px 0;
 }
+/** Whitespace around button for when it wraps to next line */
+.record-line .document-download {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .document-download {
     max-width: 98%; /** 2% room for dots on overflow, mostly */
     overflow-x: hidden;
