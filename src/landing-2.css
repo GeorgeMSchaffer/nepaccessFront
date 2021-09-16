@@ -30,7 +30,9 @@
     font-size: 26px;
     line-height: 140%;
     margin-top: 10px;
+    margin-block-end: 0.5em;
     min-height: 100px;
+    
 }
 
 #headline,
