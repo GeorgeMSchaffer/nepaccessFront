@@ -28,7 +28,30 @@
     border-radius: 0px;
   
     cursor: text;
-  }
+}
+
+
+.search-box::placeholder {
+    color: #ccc;
+}
+
+.search-box:focus {
+    outline: none;
+}
+
+.search-box {
+    width: 670px;
+    height: 50px;
+    margin: 0;
+    padding: 0 0 0 31px;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 111%;
+    /* or 27px */
+    border-width: 0;
+}
 
 .title-container {
     height: 80px;
