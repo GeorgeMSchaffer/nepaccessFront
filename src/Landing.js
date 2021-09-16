@@ -3,7 +3,7 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 
 import './index.css';
-import './landing.css';
+import './landing-2.css';
 
 import SearcherLanding from './SearcherLanding.js';
 import './User/login.css';

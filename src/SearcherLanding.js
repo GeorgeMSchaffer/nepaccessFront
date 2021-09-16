@@ -108,21 +108,27 @@ class SearcherLanding extends React.Component {
                         play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
                         // perspective={500} 
                         numberStyle={numStyle}
-                    /> <span className="flip-span">NEPA documents and counting</span>
+                    /> 
+                    <span className="flip-span">
+                        NEPA documents and counting
+                    </span>
                 </div>
+
                 <div className="flip">
-                    <div>
-                        <span className="transparent-background">{this.state.firstYear}</span> - <span className="transparent-background">{this.state.lastYear}</span>
+                    <div className="flip-range flip-top">
+                        <span className="transparent-background">
+                            {this.state.firstYear}</span> - <span className="transparent-background">{this.state.lastYear}
+                        </span>
                     </div>
                     <span className="flip-span">Date range</span>
                 </div>
+
                 <div className="flip">
                     <div className="transparent-background">
-                        
-                    <a className="link landing-link" target="_blank" rel="noopener noreferrer" 
-                            href={`./abouthelp2`}>
-                        More about Available Files
-                    </a>
+                        <a className="link landing-link" target="_blank" rel="noopener noreferrer" 
+                                href={`./abouthelp2`}>
+                            More about Available Files
+                        </a>
                     </div>
                 </div>
             </div>;
@@ -137,15 +143,15 @@ class SearcherLanding extends React.Component {
         return (
             <div id="landing-search-box-container">
                 
-                <div id="landing-search-holder" className="search-holder" >
+                <div id="landing-search-holder">
                 
                         
                     
-                    <div id="landing-search-bar-holder" className="search-bar-holder">
-                        <h3 id="landing-search-header" className="search-header-2">
+                    <div id="landing-search-bar-holder">
+                        <h3 id="landing-search-header">
                             Begin with a simple keyword search:
                         </h3>
-                        <input id="landing-search-bar" className="search-bar" 
+                        <input id="landing-search-bar"
                             name="titleRaw" 
                             placeholder="Search for NEPA documents" 
                             value={this.state.titleRaw}
