@@ -96,17 +96,17 @@ class SearcherLanding extends React.Component {
             'font-family': "Open Sans",
             'font-style': "normal",
             '-webkit-font-smoothing':"none",
-            'font-size': "20px",
-            'text-shadow': "0 4px 2px rgb(0 0 0 / 50%)"
+            'font-size': "23px",
+            'text-shadow': "0 4px 2px rgb(0 0 0 / 50%)",
         };
 
         if(this.state.total) {
             return <div className="under-search-holder">
                 <div className="flip">
                     <FlipNumbers 
-                        height={37} width={25} color="white" background="rgba(0,0,0,0.5)" 
+                        height={44} width={25} color="white" background="rgba(0,0,0,0.5)" 
                         play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
-                        // perspective={500} 
+                        perspective={500} 
                         numberStyle={numStyle}
                     /> 
                     <span className="flip-span">

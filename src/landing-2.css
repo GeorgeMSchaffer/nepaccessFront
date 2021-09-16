@@ -1,21 +1,24 @@
 /* Landing */
 #landing {
     position: relative;
-    margin: auto;
-    margin-top: 102px;
     height: 100%;
     width: 100%;
     /** The search box now has a percentage-based position, which means the overall page
     needs a minimum height that does not clip into the header texts. This needs to change if the landing text changes. */
     min-width: 650px;
+    
+    margin: auto;
+    margin-top: 102px;
 }
 
 #headline {
     display: block;
     position: relative;
-    padding-top: 70px;
-    font-weight: bold;
     width: 100%;
+
+    padding-top: 70px;
+
+    font-weight: bold;
     text-align: center;
 }
 
@@ -26,13 +29,13 @@
 }
 
 #sub-headline {
+    min-height: 100px;
+
     font-weight: 600;
     font-size: 26px;
     line-height: 140%;
     margin-top: 10px;
     margin-block-end: 0.5em;
-    min-height: 100px;
-    
 }
 
 #headline,
@@ -43,32 +46,6 @@
     /* font-size: calc(24px + 0.5vw); */
     color: #FFFFFF;
     text-shadow: 0 4px 2px rgba(0, 0, 0, 0.5);
-}
-
-#post-text {
-    display: block;
-    text-align: left;
-    width: 50%;
-    margin: auto;
-    margin-top: 25px;
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 25px;
-    color: #333333;
-}
-
-#post-text>span {
-    display: block;
-}
-
-#post-text>span:first-child {
-    font-weight: 800;
-}
-
-.post-text-bullet {
-    padding-left: 15px;
 }
 
 #landing-images {
