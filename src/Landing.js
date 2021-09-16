@@ -62,7 +62,7 @@ class Landing extends React.Component {
           <div id="landing-images">
                 <div id="headline" className="no-select cursor-default">
                     <h1 id="landing-headline-text">
-                        Bringing NEPA into the 21st Century through the Power of Data Science
+                        Bringing NEPA into the 21st Century<br /> through the Power of Data Science
                     </h1>
                     <h2 id="sub-headline">
                         Engage with data from thousands of environmental review documents.
