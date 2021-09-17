@@ -1234,21 +1234,21 @@ export default class App extends React.Component {
 
 function matchesEa(docType) {
     return (
-        (docType === "EA") );
+        (docType.toLowerCase() === "ea") );
 }
 
 function matchesRod(docType) {
     return (
-        (docType === "ROD") );
+        (docType.toLowerCase() === "rod") );
 }
 
 function matchesScoping(docType) {
     return (
-        (docType === "Scoping Report") );
+        (docType.toLowerCase() === "scoping report") );
 }
 function matchesNOI(docType) {
     return (
-        (docType === "NOI") );
+        (docType.toLowerCase() === "noi") );
 }
 
 /** Return modified terms for user to see */

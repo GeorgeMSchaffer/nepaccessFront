@@ -755,7 +755,7 @@ class Search extends React.Component {
 
                 <div className="sidebar-hr" hidden={true}></div>
                 
-                <div className="filter" hidden={true}>
+                <div className="filter">
                     <label className="sidebar-label">Document type</label>
                     <div className="sidebar-checkboxes">
                         <div className="checkbox-container">
