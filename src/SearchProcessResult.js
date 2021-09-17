@@ -89,24 +89,39 @@ export default class SearchProcessResult extends React.Component {
      * Takes: record ID,filename,text,index; 
      * Returns: HTML for React incl. DownloadFile (which handles logging downloads)
      */
-     showFragment = (_id,_filename,text,index) => {
+    showFragment = (_id,_filename,text,index) => {
+        if(text) {
         return (
-            <span className="fragment-container" key={ index }>
-                <span className="cardHeader bold filename-inner">
-                    <DownloadFile key={_filename} downloadType="nepafile" 
-                        recordId={_id}
-                        id={_id}
-                        filename={_filename}
-                        results={true} />
-                </span>
+                <span className="fragment-container" key={ index }>
+                    <span className="cardHeader bold filename-inner" key={ `${index}-2` }>
+                        <DownloadFile key={_filename} downloadType="nepafile" 
+                            recordId={_id}
+                            id={_id}
+                            filename={_filename}
+                            results={true} />
+                    </span>
 
-                <span className="card-highlight fragment" 
-                        dangerouslySetInnerHTML={{
-                            __html:text
-                        }}>
+                    <span className="card-highlight fragment" key={ `${index}-3` }
+                            dangerouslySetInnerHTML={{
+                                __html:text
+                            }}>
+                    </span>
                 </span>
-            </span>
-        );
+            );
+        } else {
+            return (
+                    <span className="fragment-container" key={ index }>
+                        <span className="cardHeader bold filename-inner" key={ `${index}-2` }>
+                            <DownloadFile key={_filename} downloadType="nepafile" 
+                                recordId={_id}
+                                id={_id}
+                                filename={_filename}
+                                results={true} />
+                        </span>
+                    </span>
+                );
+        }
+
     }
     /** Used by showRecord(). 
      * Returns HTML for downloadable filenames each with highlight(s) as highlights are populated; show more/less buttons */ 
