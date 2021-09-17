@@ -794,7 +794,7 @@ export default class App extends React.Component {
 
         this.setState({
             snippetsDisabled: false,
-			resultsText: currentResults.length + " Results.  Getting Text snippets...",
+			resultsText: currentResults.length + " Results.  Getting Text Snippets...",
             networkError: "", // Clear network error
 		}, () => {
             
