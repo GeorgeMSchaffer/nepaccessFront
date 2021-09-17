@@ -92,12 +92,8 @@ class SearcherLanding extends React.Component {
 
     showFlipNum = () => {
         const numStyle = {
-            color: "white",
-            'font-family': "Open Sans",
-            'font-style': "normal",
-            '-webkit-font-smoothing':"none",
-            'font-size': "23px",
-            'text-shadow': "0 4px 2px rgb(0 0 0 / 50%)",
+            'fontFamily': "Open Sans",
+            'fontSize': "23px",
         };
 
         if(this.state.total) {
