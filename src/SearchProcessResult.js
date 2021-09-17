@@ -234,19 +234,22 @@ export default class SearchProcessResult extends React.Component {
             // Sort records by date instead of relevance
             // 1: Works without converting String to Date first thanks to YYYY-MM-DD format, until the year 10,000.
             // 2: Earliest dates at the top
-            const newRecords = records
-            // DISABLED: TODO: This DOES change the results data, which messes up text snippet order.
-            // This can only be done at the VERY end.
-            // .sort(
-            //     (b,a) => {
-            //         if (b.registerDate > a.registerDate) {
-            //           return 1;
-            //         }
-            //         if (b.registerDate < a.registerDate) {
-            //           return -1;
-            //         }
-            //         return 0;
-            //     })
+            // DISABLED: This DOES change the results data, which messes up text snippet order.
+            // I'd really like a better solution than deep cloning every single array, though.  Why is .sort modifying state
+            // in-place?
+            // const newRecords = records
+            // Deep clone
+            const newRecords = JSON.parse(JSON.stringify(records))
+            .sort(
+                (b,a) => {
+                    if (b.registerDate > a.registerDate) {
+                      return 1;
+                    }
+                    if (b.registerDate < a.registerDate) {
+                      return -1;
+                    }
+                    return 0;
+                })
             .map(record => {
                 return this.showRecord(record);
             });
