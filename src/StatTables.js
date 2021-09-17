@@ -36,6 +36,8 @@ const getRoutes = [
     { label: "Total final count by year", value: "stats/count_year_final" },
     { label: "Downloadable supplement count by year", value: "stats/count_year_downloadable_supplement" },
     { label: "Total supplement count by year", value: "stats/count_year_supplement" },
+    { label: "Downloadable non-final/draft/rod/EA count by year", value: "stats/count_year_downloadable_other" },
+    { label: "Total non-final/draft/rod/EA count by year", value: "stats/count_year_other" },
 ];
 
 export default class StatTables extends React.Component {
