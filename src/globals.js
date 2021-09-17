@@ -8,6 +8,14 @@ const finalTypeLabels = ["Final",
     "Final Supplemental",
     "Second Final Supplemental",
     "Third Final Supplemental"];
+const finalTypeLabelsLower = ["final",
+    "second final",
+    "revised final",
+    "final revised",
+    "final supplement",
+    "final supplemental",
+    "second final supplemental",
+    "third final supplemental"];
 const draftTypeLabels = ["Draft",
     "Second Draft",
     "Revised Draft",
@@ -16,6 +24,14 @@ const draftTypeLabels = ["Draft",
     "Draft Supplemental",
     "Second Draft Supplemental",
     "Third Draft Supplemental"];
+const draftTypeLabelsLower = ["draft",
+    "second draft",
+    "revised draft",
+    "draft revised",
+    "draft supplement",
+    "draft supplemental",
+    "second draft supplemental",
+    "third draft supplemental"];
 
 const Globals = {
     currentHost: new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/'),
@@ -277,7 +293,7 @@ const Globals = {
 
     isFinalType: (type) => {
         let result = false;
-        if(type && finalTypeLabels.indexOf(type) >= 0) {
+        if(type && finalTypeLabelsLower.indexOf(type.toLowerCase()) >= 0) {
             result = true;
         }
 
@@ -286,7 +302,7 @@ const Globals = {
 
     isDraftType: (type) => {
         let result = false;
-        if(type && draftTypeLabels.indexOf(type) >= 0) {
+        if(type && draftTypeLabelsLower.indexOf(type.toLowerCase()) >= 0) {
             result = true;
         }
 
@@ -548,35 +564,47 @@ const Globals = {
             return (a["registerDate"] <= val); // should this be inclusive? <= or <
         };
     }
+    /** Removes records that don't match */
     const matchesType = (matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping) => {
         return function (a) {
+            // Keep list of indeces to splice afterward, to exclude them from filtered results.
+            let recordsToSplice = [];
+            let filterResult = false;
             for(let i = 0; i < a.records.length; i++) {
-                const type = a.records[i].documentType;
-                if(matchFinal && type && finalTypeLabels.indexOf(type) >= 0) {
-                    return true;
+                let standingResult = false;
+                const type = a.records[i].documentType.toLowerCase();
+                if(matchFinal && Globals.isFinalType(type)) {
+                    filterResult = true;
+                    standingResult = true;
                 }
-                if(matchDraft && type && draftTypeLabels.indexOf(type) >= 0) {
-                    return true;
+                if(matchDraft && Globals.isDraftType(type)) {
+                    filterResult = true;
+                    standingResult = true;
                 }
-                if(
-                    ((
-                        (type === "EA") 
-                    ) && matchEA) || 
-                    ((
-                        (type === "NOI") 
-                    ) && matchNOI) || 
-                    ((
-                        (type === "ROD") 
-                    ) && matchROD) || 
-                    ((
-                        (type === "Scoping Report") 
-                    ) && matchScoping))
+                if( ( (type === "ea") && matchEA ) || 
+                    ( (type === "noi") && matchNOI ) || 
+                    ( (type === "rod") && matchROD ) || 
+                    ( (type === "scoping report") && matchScoping ))
                 {
-                    return true;
+                    filterResult = true;
+                    standingResult = true;
+                }
+
+                // No match for records[i]; mark it for deletion after loop is done
+                // (splicing now would rearrange the array and break this loop logic)
+                if(!standingResult) {
+                    recordsToSplice.push(i);
                 }
             }
 
-            return false;
+            // Remove marked records from filtered results
+            for(let i = recordsToSplice.length - 1; i >= 0; i--) {
+                if (recordsToSplice[i] > -1) {
+                    a.records.splice(recordsToSplice[i], 1);
+                }
+            }
+
+            return filterResult;
         };
     }
     const matchesTypeOld = (matchFinal, matchDraft, matchEA, matchNOI, matchROD, matchScoping) => {
