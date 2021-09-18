@@ -34,7 +34,7 @@ body {
 #header {
   position: fixed;
   width: 100%;
-  min-width: 700px;
+  min-width: 615px;
   height: 102px;
   left: 0px;
   top: 0px;
@@ -173,6 +173,17 @@ body {
   color: #000000;
 }
 
+@media screen and (max-width: 700px) {
+    #main-menu .main-menu-link {
+        font-size: 0.8em;
+        margin-left: 20px;
+    }
+    #main-menu .dropdown-content a {
+        width: 130px;
+        margin-left: 30px;
+    }
+}
+
 .top-menu-link:hover {
     color: white;
     text-shadow: 1px 1px 10px black;
@@ -204,7 +215,6 @@ body {
     position: relative;
     /* left: calc(25vw + 10px); */
     margin-left: clamp(315px, calc(25vw + 15px), 390px); 
-    min-width: 480px;
     height: 52px;
     top: 50px;
 }
