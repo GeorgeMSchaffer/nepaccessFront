@@ -34,7 +34,7 @@ body {
 #header {
   position: fixed;
   width: 100%;
-  min-width: 615px;
+  min-width: 700px;
   height: 102px;
   left: 0px;
   top: 0px;
@@ -171,17 +171,6 @@ body {
   text-decoration: none;
 
   color: #000000;
-}
-
-@media screen and (max-width: 700px) {
-    #main-menu .main-menu-link {
-        font-size: 0.8em;
-        margin-left: 20px;
-    }
-    #main-menu .dropdown-content a {
-        width: 130px;
-        margin-left: 30px;
-    }
 }
 
 .top-menu-link:hover {

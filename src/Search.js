@@ -637,15 +637,17 @@ class Search extends React.Component {
                             </div>
                             <div className="surveyHolder" hidden={this.state.surveyChecked}>
                                 Did you find what you were looking for?
-                                <label className="surveyRadio" ><input type="radio" value="Yes" checked={false} onChange={this.surveyClick} />
-                                    Yes
-                                </label>
-                                <label className="surveyRadio" ><input type="radio" value="Partially" checked={false} onChange={this.surveyClick} />
-                                    Partially
-                                </label>
-                                <label className="surveyRadio" ><input type="radio" value="No" checked={false} onChange={this.surveyClick} />
-                                    No
-                                </label>
+                                <div className="radio-holder">
+                                    <label className="surveyRadio" ><input type="radio" value="Yes" checked={false} onChange={this.surveyClick} />
+                                        Yes
+                                    </label>
+                                    <label className="surveyRadio" ><input type="radio" value="Partially" checked={false} onChange={this.surveyClick} />
+                                        Partially
+                                    </label>
+                                    <label className="surveyRadio" ><input type="radio" value="No" checked={false} onChange={this.surveyClick} />
+                                        No
+                                    </label>
+                                </div>
                             </div>
                             <div className="surveyHolder" hidden={!this.state.surveyChecked || this.state.surveyDone}>
                                 <label className="surveyResult">You chose: <span>{this.state.surveyResult}</span></label>

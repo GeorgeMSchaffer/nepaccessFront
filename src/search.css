@@ -731,3 +731,58 @@ div.disabled::before {
     color: blue;
     user-select: none;
 }
+
+
+/** Low width @media responsive css */
+
+
+@media screen and (max-width: 1190px) {
+    * {
+        line-height: normal !important;
+    }
+    #app-content, .content, .content .search-holder {
+        min-height: 220px;
+        min-width: 700px;
+    }
+    .search-bar-holder .search-header-2 {
+        display: block;
+        font-size: 20px;
+        margin: auto auto;
+        text-align: center;
+    }
+    #main-search-bar {
+        font-size: 16px;
+    }
+    .search-bar-holder #main-search-icon {
+        background-color: unset;
+        height: 100%;
+    }
+    #app-content .sidebar-filters {
+        display: block;
+        margin: 0 auto;
+        width: 80%;
+        min-width: 20%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+    .input-bar-left .sidebar-check-label {
+        font-size: 14px;
+    }
+    .radio-holder .surveyRadio {
+        display: block;
+    }
+    #app-content .sidebar-results, .sidebar-filters {
+    }
+    .sidebar-filters .filter {
+    }
+    .sidebar-filters .sidebar-hr {
+    }
+    .filter .multi {
+        min-width: 220px;
+    }
+    #app-content .sidebar-results {
+        width: 100%;
+        min-width: 20%;
+        max-width: 100%;
+    }
+}
