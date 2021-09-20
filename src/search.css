@@ -737,8 +737,9 @@ div.disabled::before {
 
 
 @media screen and (max-width: 1190px) {
-    * {
-        line-height: normal !important;
+    .input-bar-2>.surveyHolder, .options-container>#results-bar-checkbox, #results-bar-checkbox>.checkbox-text,
+    div>.side-link, .options-container .results-download {
+        line-height: normal;
     }
     #app-content, .content, .content .search-holder {
         min-height: 220px;
@@ -770,6 +771,9 @@ div.disabled::before {
     }
     .radio-holder .surveyRadio {
         display: block;
+    }
+    #tooltip4Container>div {
+        margin-bottom: 10px;
     }
     #app-content .sidebar-results, .sidebar-filters {
     }
