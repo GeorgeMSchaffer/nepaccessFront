@@ -126,6 +126,17 @@ div.update .react-datepicker__input-container>input {
     user-select: none;
 }
 
+.report-link {
+    display: block;
+    margin-top: 20px;
+
+    cursor: pointer;
+    
+    color: blue;
+
+    font-weight: bold;
+    text-decoration: none;
+}
 
 /** Timeline  */
 
