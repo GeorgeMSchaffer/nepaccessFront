@@ -39,7 +39,7 @@ export function showTimeline(dates, WIDTH) {
         if(DATE_DIFF > 8) {
             // Display only every other year if there's at least 8 years' difference
             _interval = 2;
-        } else if(DATE_DIFF === 1) {
+        } else if(DATE_DIFF <= 1) {
             // Display a tick every 3 months for a ~1 year process
             _interval = 3;
             _tickTime = d3.time.months;

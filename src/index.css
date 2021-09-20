@@ -689,6 +689,10 @@ span.leading-text {
     overflow-wrap: break-word;
 }
 
+.detail-filename:last-child {
+    margin-bottom: 15px;
+}
+
 .padding-all {
     padding: 1%;
     border: 1px solid blue;
@@ -715,7 +719,10 @@ textarea.server-response {
     margin: 5px;
 }
 .missing {
+    /** Take up the same height as the download button (applies to details page also) */
+    line-height: 49px;
     color: coral;
+    font-weight: normal !important;
 }
 
 .table-holder>div {

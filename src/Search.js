@@ -586,7 +586,7 @@ class Search extends React.Component {
                                 id="proximity-select"
                                 className={this.state.proximityDisabled ? " disabled" : ""}
                                 classNamePrefix="react-select control"
-                                placeholder="Find within"
+                                placeholder="Find within..."
                                 options={proximityOptions} 
                                 value={this.state.proximityOption}
                                 // menuIsOpen={true}

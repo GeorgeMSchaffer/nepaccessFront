@@ -91,7 +91,7 @@ export default class SearchProcessResult extends React.Component {
      */
     showFragment = (_id,_filename,text,index) => {
         if(text) {
-        return (
+            return (
                 <span className="fragment-container" key={ index }>
                     <span className="cardHeader bold filename-inner" key={ `${index}-2` }>
                         <DownloadFile key={_filename} downloadType="nepafile" 
@@ -110,16 +110,16 @@ export default class SearchProcessResult extends React.Component {
             );
         } else {
             return (
-                    <span className="fragment-container" key={ index }>
-                        <span className="cardHeader bold filename-inner" key={ `${index}-2` }>
-                            <DownloadFile key={_filename} downloadType="nepafile" 
-                                recordId={_id}
-                                id={_id}
-                                filename={_filename}
-                                results={true} />
-                        </span>
+                <span className="fragment-container" key={ index }>
+                    <span className="cardHeader bold filename-inner" key={ `${index}-2` }>
+                        <DownloadFile key={_filename} downloadType="nepafile" 
+                            recordId={_id}
+                            id={_id}
+                            filename={_filename}
+                            results={true} />
                     </span>
-                );
+                </span>
+            );
         }
 
     }
@@ -150,7 +150,7 @@ export default class SearchProcessResult extends React.Component {
                         <div className="margins">
                             <div>
                                 <span className="hide-button" onClick={(e) => this.hide(e, record.id)}>
-                                    Show more text snippets ({combined.length - 1})
+                                    Show more text snippets ({combined.length - 1}) ↴
                                 </span>
                             </div>
                         </div>
@@ -167,7 +167,7 @@ export default class SearchProcessResult extends React.Component {
                                     {this.showFragment(_id,combo[0],combo[1],index)}
                                     <div className="margins">
                                         <span className="hide-button" onClick={(e) => this.hide(e,record.id)}>
-                                            Show less text snippets
+                                            Show fewer text snippets
                                         </span>
                                     </div>
                                     </>
@@ -272,13 +272,17 @@ export default class SearchProcessResult extends React.Component {
             return newRecords;
         }
     }
+    /** TODO: Re-enable link, for admins only (link is too confusing for average user) */
     showRecord = (record) => {
         return (<div key={record.relevance} className="record">
             <div className="record-line">
                 <span className="record-field regular">
-                    <a className="link" target="_blank" rel="noopener noreferrer" href={`./record-details?id=${record.id}`}>
+                    <span className="record-type-header">
                         {this.showDocumentType(record.documentType)}
-                    </a>
+                    </span>
+                    {/* <a className="link" target="_blank" rel="noopener noreferrer" href={`./record-details?id=${record.id}`}>
+                        {this.showDocumentType(record.documentType)}
+                    </a> */}
                 </span>
                 <span className="record-field">{record.registerDate}</span>
                 {this.showFileDownload(record)}

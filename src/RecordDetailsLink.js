@@ -1,5 +1,6 @@
 import React from 'react';
 
+/** Only used in MatchResults right now */
 export default class RecordDetailsLink extends React.Component {
 
     render () {

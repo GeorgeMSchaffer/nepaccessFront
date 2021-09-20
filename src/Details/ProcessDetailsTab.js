@@ -25,7 +25,8 @@ export default class ProcessDetailsTab extends React.Component {
             networkError: '',
             exists: true,
             width: 400,
-            showMore: []
+            showMore: [],
+            reportText: ''
         };
 
         if(!this.state.processId) {
@@ -43,6 +44,9 @@ export default class ProcessDetailsTab extends React.Component {
         });
     }
 
+    onChange = (evt) => {
+        this.setState({ [evt.target.name]: evt.target.value });
+    }
     
 
     get = async (_url, _params) => {
@@ -97,6 +101,11 @@ export default class ProcessDetailsTab extends React.Component {
             console.error(e);
         })
 
+    }
+
+    // TODO: Send to server, which sends email
+    reportDataIssue = () => {
+        this.setState({ reported: true });
     }
 
     
@@ -158,10 +167,10 @@ export default class ProcessDetailsTab extends React.Component {
         return filenames.map((_filename, i) => {
             if(i === 0) {
                 if(!showMore) {
-                    return <span className="show-more-link" onClick={() => {this.showMoreToggle(_id)}}>Show individual file downloads &#129170;</span>
+                    return <span className="show-more-link" onClick={() => {this.showMoreToggle(_id)}}>Show individual file downloads ↴</span>
                 } else {
                     return <>
-                        <span className="show-more-link" onClick={() => {this.showMoreToggle(_id)}}>Hide individual file downloads &#129171;</span>
+                        <span className="show-more-link" onClick={() => {this.showMoreToggle(_id)}}>Hide individual file downloads</span>
                         <span key={_filename} className="detail-filename">
                             <DownloadFile key={_filename} downloadType="nepafile" 
                                 id={_id}
@@ -191,7 +200,7 @@ export default class ProcessDetailsTab extends React.Component {
 
     interpretProcess = (process) => {
         process = (process.sort(
-            (a,b) => {
+            (b,a) => {
                 if (b.doc.registerDate > a.doc.registerDate) {
                   return 1;
                 }
@@ -225,8 +234,12 @@ export default class ProcessDetailsTab extends React.Component {
                     recordDownload = <div className="table-row"><span className="cardHeader filename missing">File(s) not yet available</span></div>;
                 }
 
+                // TODO: Record link for admin only
                 return (<>
                     <div key={key} className='modal-line'>
+                        {/* <span className='modal-title'>
+                            <b>{proc.documentType} : {proc.registerDate}</b>
+                        </span> */}
                         <a href={window.location.href.split("/")[0]+"record-details?id="+proc.id} target="_blank" rel="noreferrer">
                             <span className='modal-title'>
                                 <b>{proc.documentType} : {proc.registerDate}</b>
@@ -234,9 +247,10 @@ export default class ProcessDetailsTab extends React.Component {
                         </a>
                         {recordDownload}
                     </div>
-                    <div className="individual-files" key={key+"Files"}>{this.showFilesNew(proc.id,filenames)}</div>
-                    </>
-                );
+                    <div className="individual-files" key={key+"Files"}>
+                        {this.showFilesNew(proc.id,filenames)}
+                    </div>
+                </>);
             } else {
                 return "";
             }
@@ -253,11 +267,30 @@ export default class ProcessDetailsTab extends React.Component {
                         <div className="metadata-container process-files">
                             <h3>Files</h3>
                             {this.interpretProcess(this.state.process)}
+                            {/* {this.showDataIssueLink()} */}
                         </div>);
                 }
             }
 
         }
+    }
+    showDataIssueLink = () => {
+        return (<div className="report-holder">
+                <span   className="report-link" 
+                        hidden={this.state.linkClicked || this.state.reported} 
+                        onClick={() => { this.setState({ linkClicked:true }) }}>
+                    Report data issue
+                </span>
+                <div hidden={!this.state.linkClicked || this.state.reported}>
+                    <div>Type report here:</div>
+                    <textarea name="reportText" onChange={this.onChange} value={this.state.reportText} />
+                    <span   className="report-link"
+                            onClick={() => { this.reportDataIssue() }}>
+                        Send report
+                    </span>
+                </div>
+                <span hidden={!this.state.reported}>Report sent.  Thank you!</span>
+            </div>);
     }
 
     // Gets all metadata records for this process if available
@@ -318,9 +351,6 @@ export default class ProcessDetailsTab extends React.Component {
             });
 
             return Object.keys(cellData).map( (key, i) => {
-                if(key==='documentType') {
-                    console.log(key,cellData[key]);
-                }
                 let keyName = key;
                 // hide blank fields
                 if(!cellData[key] || cellData[key].length === 0) {
