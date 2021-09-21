@@ -305,7 +305,7 @@ export default class ProcessDetailsTab extends React.Component {
                         Send report
                     </span>
                 </div>
-                <span hidden={!this.state.reported}>Report sent.  Thank you!</span>
+                <span className="italic" hidden={!this.state.reported}>Report sent.  Thank you!</span>
             </div>);
     }
 
