@@ -297,13 +297,13 @@ export default class ProcessDetailsTab extends React.Component {
                 </span>
                 <div hidden={!this.state.linkClicked || this.state.reported}>
                     <div>Type report here:</div>
-                    <textarea 
-                            rows="5" cols="50"
-                            name="reportText" onChange={this.onChange} value={this.state.reportText} />
-                    <span   className="report-link"
-                            onClick={() => { this.reportDataIssue() }}>
-                        Send report
-                    </span>
+                    <textarea rows="5" cols="50" name="reportText" 
+                            onChange={this.onChange} value={this.state.reportText} />
+                    <div>
+                        <span className="report-link" onClick={() => { this.reportDataIssue() }}>
+                            Send report
+                        </span>
+                    </div>
                 </div>
                 <span className="italic" hidden={!this.state.reported}>Report sent.  Thank you!</span>
             </div>);

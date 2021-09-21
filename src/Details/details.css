@@ -134,12 +134,13 @@ div.update .react-datepicker__input-container>input {
 }
 
 #report-start-link {
+    display: inline-block;
     /** Leave room for textarea, send link */
     padding-bottom: 120px;
 }
 
 .report-link {
-    display: block;
+    display: inline-block;
     margin-top: 20px;
 
     cursor: pointer;
