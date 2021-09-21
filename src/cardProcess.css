@@ -45,7 +45,7 @@ Also no longer possible to overflow off the page or out of the card.*/
 }
 .document-download {
     max-width: 98%; /** 2% room for dots on overflow, mostly */
-    overflow-x: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
