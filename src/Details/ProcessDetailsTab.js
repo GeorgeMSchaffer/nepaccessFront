@@ -103,9 +103,20 @@ export default class ProcessDetailsTab extends React.Component {
 
     }
 
-    // TODO: Send to server, which sends email
+    // Send report to server
     reportDataIssue = () => {
         this.setState({ reported: true });
+        
+        const _url = new URL('reports/report_data_issue', Globals.currentHost);
+        const dataForm = new FormData(); 
+        dataForm.append('report',this.state.reportText);
+        dataForm.append('processId',this.state.processId); 
+
+        this.post(_url, dataForm).then(resp => {
+            // console.log(resp.status);
+        }).catch(e => {
+            console.error(e);
+        })
     }
 
     
@@ -267,7 +278,7 @@ export default class ProcessDetailsTab extends React.Component {
                         <div className="metadata-container process-files">
                             <h3>Files</h3>
                             {this.interpretProcess(this.state.process)}
-                            {/* {this.showDataIssueLink()} */}
+                            {this.showDataIssueLink()}
                         </div>);
                 }
             }
