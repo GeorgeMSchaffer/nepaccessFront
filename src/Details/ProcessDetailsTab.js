@@ -145,6 +145,9 @@ export default class ProcessDetailsTab extends React.Component {
                         {this.showProcess()}
                     </div>
                 </div>
+                <div className="report-holder-holder">
+                    {this.showDataIssueLink()}
+                </div>
             </div>
         );
     }
@@ -278,7 +281,7 @@ export default class ProcessDetailsTab extends React.Component {
                         <div className="metadata-container process-files">
                             <h3>Files</h3>
                             {this.interpretProcess(this.state.process)}
-                            {this.showDataIssueLink()}
+                            {/* {this.showDataIssueLink()} */}
                         </div>);
                 }
             }
@@ -287,14 +290,16 @@ export default class ProcessDetailsTab extends React.Component {
     }
     showDataIssueLink = () => {
         return (<div className="report-holder">
-                <span   className="report-link" 
+                <span   id="report-start-link" className="report-link" 
                         hidden={this.state.linkClicked || this.state.reported} 
                         onClick={() => { this.setState({ linkClicked:true }) }}>
                     Report data issue
                 </span>
                 <div hidden={!this.state.linkClicked || this.state.reported}>
                     <div>Type report here:</div>
-                    <textarea name="reportText" onChange={this.onChange} value={this.state.reportText} />
+                    <textarea 
+                            rows="5" cols="50"
+                            name="reportText" onChange={this.onChange} value={this.state.reportText} />
                     <span   className="report-link"
                             onClick={() => { this.reportDataIssue() }}>
                         Send report

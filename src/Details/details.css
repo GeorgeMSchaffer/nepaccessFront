@@ -129,13 +129,18 @@ div.update .react-datepicker__input-container>input {
     user-select: none;
 }
 
+#report-start-link {
+    /** Leave room for textarea, send link */
+    padding-bottom: 120px;
+}
+
 .report-link {
     display: block;
     margin-top: 20px;
 
     cursor: pointer;
     
-    color: blue;
+    color: red;
 
     font-weight: bold;
     text-decoration: none;
