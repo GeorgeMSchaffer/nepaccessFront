@@ -31,39 +31,9 @@ class Login extends React.Component {
             networkError: '',
             passwordType: "password",
             busy: false,
-
-            termsAgreed: false,
-            termsError: '*',
-            termsError2: ''
         };
         this.onChange = this.onChange.bind(this);
         this.login = this.login.bind(this);
-    }
-    
-
-    termsChanged = (evt) => {
-        // console.log("Target",evt.target);
-        this.setState({ 
-            termsAgreed: evt.target.checked 
-        }, () => {
-            this.termsInvalid();
-        });
-    }
-
-    termsInvalid = () => {
-        if(!this.state.termsAgreed) {
-            this.setState({
-                termsError: '*',
-                termsError2: 'Please agree to the terms of use above before logging in.'
-            });
-        } else {
-            this.setState({
-                termsError: '',
-                termsError2: ''
-            });
-        }
-
-        return !this.state.termsAgreed;
     }
     
 
@@ -106,8 +76,7 @@ class Login extends React.Component {
         // Run everything and all appropriate errors will show at once.
         let test1 = this.invalidUsername();
         let test2 = this.invalidPassword();
-        let test3 = this.termsInvalid();
-        return (test1 || test2 || test3);
+        return (test1 || test2);
     }
     invalidUsername = () => {
         let usernamePattern = /[ -~]/;
@@ -309,33 +278,11 @@ class Login extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        
-
-                        <div className="register-form-input-group"><div className="register-form-group">
-                            <span className="leading-text"></span>
-                            <input type="checkbox" 
-                                name="terms" 
-                                checked={this.state.termsAgreed}
-                                onClick={this.termsChanged}
-                                onChange={this.onChangeDummy}>
-                            </input>
-                            <span>I have read and agreed to the&nbsp;
-                                <Link to="/disclaimer-terms-of-use" target="_blank">
-                                    Terms of Use
-                                </Link>
-                            </span>
-                            <label className="errorLabel">{this.state.termsError}</label>
-                        </div></div>
 
                         <span className="leading-text"></span>
                         <button type="button" className="button2" id="login-submit" onClick={this.login} >
                             Log in
                         </button>
-                        
-                        <div className="login-row">
-                            <span className="leading-text"></span>
-                            <label className="loginErrorLabel">{this.state.termsError2}</label>
-                        </div>
                         
                         <div className="login-row">
                             <span className="leading-text"></span>
