@@ -407,7 +407,7 @@ class Register extends React.Component {
             if(responseOK){ // 200
                 this.setState({
                     statusClass: 'successLabel',
-                    statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.',
+                    statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that link, you can use the system.',
                     registered: true
                 });
             } else { // 500 or 503, or server down
@@ -462,7 +462,7 @@ class Register extends React.Component {
                 <div className="register-form-input-group">
                     <div className="register-form-group">
                         <label className='successLabel large'>
-                            Successfully registered.  An email will be sent to you with a verification link.  After clicking that, your account will still need to be approved before you can use the system.
+                            Successfully registered.  An email will be sent to you with a verification link.  After clicking that link, you can use the system.
                         </label>
                     </div>
                 </div></div>

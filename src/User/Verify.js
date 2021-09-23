@@ -31,7 +31,7 @@ export default class Verify extends React.Component {
 
             if(verified) {
                 this.setState({
-                    successLabel: 'Email has been verified.  If your account has already been approved, you can begin using the system.'
+                    successLabel: 'Email has been verified.  You can now login and begin using the system.'
                 });
             } else if(response && response.status === 208) {
                 this.setState({
