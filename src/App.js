@@ -208,6 +208,9 @@ export default class App extends React.Component {
     buildData = (data) => {
         let processResults = {};
         let newUniqueKey = -1;
+        
+        let _title = data[0].title;
+        let _latestDate = data[0].registerDate;
 
         data.forEach(datum => {
             // Use process IDs as keys
@@ -228,12 +231,15 @@ export default class App extends React.Component {
                 processResults[key].isProcess = false;
             }
 
+            // Assign latest date and latest title at the same time
             if(!processResults[key].registerDate && datum.registerDate) {
                 processResults[key].registerDate = datum.registerDate;
-            } else if(
-                    datum.registerDate && processResults[key].registerDate && 
-                    processResults[key].registerDate < datum.registerDate) {
+                processResults[key].title = datum.title;
+            } else if(datum.registerDate && 
+                        processResults[key].registerDate && 
+                        processResults[key].registerDate < datum.registerDate) {
                 processResults[key].registerDate = datum.registerDate;
+                processResults[key].title = datum.title;
             }
 
             // Add record to array of records for this "key"
@@ -255,14 +261,12 @@ export default class App extends React.Component {
             }
 
             // titles change, which makes everything harder.
-            if(!processResults[key].title) {
-                processResults[key].title = datum.title;
-            } else if(Globals.isFinalType(datum.documentType)) {
-                processResults[key].title = datum.title;
-                // TODO: At this point we could verify we don't already have a "later" title (done by type priority logic) 
-                // in the records array, which would mean we've already added the "best" (most recent) title.
-                // However: Assuming we filter on all titles in the contents, this isn't a big deal.
-            }
+            // This logic just assigns the first final type's title as the title.
+            // if(!processResults[key].title) {
+            //     processResults[key].title = _title;
+            // } else if(Globals.isFinalType(datum.documentType)) {
+            //     processResults[key].title = datum.title;
+            // }
         });
         
         // Have to "flatten" and also sort that by relevance
