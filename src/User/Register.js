@@ -210,6 +210,9 @@ class Register extends React.Component {
 
     // Check if email is taken to prevent submission of duplicates
     checkEmail = () => {
+        if(this.state.registered) {
+            this.setState({ emailError: '', usernameError: '' });
+        }
         if(this.invalidEmail() || this.state.registered){
             this.setState({ disabled: true });
             return;
@@ -248,6 +251,9 @@ class Register extends React.Component {
 
     // Check if username is taken to prevent submission of duplicates
     checkUsername = () => {
+        if(this.state.registered) {
+            this.setState({ emailError: '', usernameError: '' });
+        }
         if(this.invalidUsername() || this.state.registered){
             this.setState({ disabled: true });
             return;
@@ -408,7 +414,9 @@ class Register extends React.Component {
                 this.setState({
                     statusClass: 'successLabel',
                     statusLabel: 'Successfully registered.  An email will be sent to you with a verification link.  After clicking that link, you can use the system.',
-                    registered: true
+                    registered: true,
+                    usernameError: '',
+                    emailError: '',
                 });
             } else { // 500 or 503, or server down
                 this.setState({
