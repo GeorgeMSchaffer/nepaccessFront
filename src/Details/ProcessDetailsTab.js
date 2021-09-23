@@ -296,7 +296,9 @@ export default class ProcessDetailsTab extends React.Component {
                     Report data issue
                 </span>
                 <div hidden={!this.state.linkClicked || this.state.reported}>
-                    <div>Type report here:</div>
+                    <div>
+                        Type report here:
+                    </div>
                     <textarea rows="5" cols="50" name="reportText" 
                             onChange={this.onChange} value={this.state.reportText} />
                     <div>
@@ -305,7 +307,9 @@ export default class ProcessDetailsTab extends React.Component {
                         </span>
                     </div>
                 </div>
-                <span className="italic" hidden={!this.state.reported}>Report sent.  Thank you!</span>
+                <span className="italic" hidden={!this.state.reported}>
+                    Report sent.  Thank you!
+                </span>
             </div>);
     }
 
@@ -328,10 +332,33 @@ export default class ProcessDetailsTab extends React.Component {
                     }
 
                     // For Chart (timeline of dates)
+
                     let _dates = [];
+                    let noiAdded = false;
                     response.forEach(record => {
+                        // Add register date for this record in process
                         _dates.push({registerDate: record.doc.registerDate, documentType: record.doc.documentType});
+
+                        // We have both noi dates as metadata and some actual noi records, so we don't want to "double dip"
+                        if(record && record.doc && record.doc.documentType) {
+                            if(record.doc.documentType === "NOI") {
+                                noiAdded = true;
+                            }
+                        }
                     });
+
+                    // Add NOI if missing so far, and date is available in metadata
+                    if(!noiAdded) {
+                        response.forEach(record => {
+                            if(!noiAdded) {
+                                if(record.doc.noiDate && record.doc.noiDate.length > 0) {
+                                    // Add NOI date, only once, if available.
+                                    noiAdded = true;
+                                    _dates.push({registerDate: record.doc.noiDate, documentType: "NOI"});
+                                }
+                            }
+                        });
+                    }
                     
                     this.setState({
                         processId: _processId,
