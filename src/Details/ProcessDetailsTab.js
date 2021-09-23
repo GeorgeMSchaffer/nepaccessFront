@@ -26,6 +26,7 @@ export default class ProcessDetailsTab extends React.Component {
             exists: true,
             width: 400,
             showMore: [],
+            otherTitles: [],
             reportText: ''
         };
 
@@ -141,6 +142,7 @@ export default class ProcessDetailsTab extends React.Component {
                             <h3>Metadata</h3>
                             {this.showDetails()}
                             {this.showTimeline()}
+                            {/* {this.showOtherTitles()} */}
                         </div>
                         {this.showProcess()}
                     </div>
@@ -325,21 +327,60 @@ export default class ProcessDetailsTab extends React.Component {
             this.get(url, params).then(response => {
                 if(response && response.length > 0) {
                     let _title = response[0].doc.title;
-                    for(let i = 0; i < response.length; i++) {
-                        if(Globals.isFinalType(response[i].doc.documentType)) {
-                            _title = response[i].doc.title;
-                        }
-                    }
+                    let _latestDate = response[0].doc.registerDate;
+
 
                     // For Chart (timeline of dates)
 
                     let _dates = [];
                     let noiAdded = false;
                     response.forEach(record => {
+
                         // Add register date for this record in process
-                        _dates.push({registerDate: record.doc.registerDate, documentType: record.doc.documentType});
+                        let hasDate = false;
+                        _dates.some(date => {
+                            // If we already have this exact date in the timeline
+                            if(record.doc.registerDate && date.registerDate === record.doc.registerDate) {
+                                hasDate = true;
+                                // Then just add the type to exising date after a semicolon
+                                date.documentType = date.documentType + "; " + record.doc.documentType; 
+                                return true;
+                            }
+                            return false;
+                        })
+                        // If we didn't have that exact date, add new date to timeline
+                        if(!hasDate) {
+                            _dates.push({registerDate: record.doc.registerDate, documentType: record.doc.documentType});
+                        }
+                        
+                        // Get latest title for display
+                        if(!_latestDate && record.doc.registerDate) {
+                            _latestDate = record.doc.registerDate;
+                            _title = record.doc.title;
+                        } else if(record.doc.registerDate && 
+                                    _latestDate && 
+                                    _latestDate < record.doc.registerDate) {
+                            _latestDate = record.doc.registerDate;
+                            _title = record.doc.title;
+                        }
+                        
+                        // Build list of all titles
+                        let hasTitle = false;
+                        this.state.otherTitles.some(el => {
+                            if(el.toLowerCase() === record.doc.title.toLowerCase()) {
+                                hasTitle = true;
+                                return true;
+                            }
+                            return false;
+                        });
+                        if(!hasTitle) {
+                            let titles = this.state.otherTitles;
+                            titles.push(record.doc.title);
+                            this.setState({otherTitles: titles});
+                        }
 
                         // We have both noi dates as metadata and some actual noi records, so we don't want to "double dip"
+                        // Note: We could repeat this logic for other dates if available (draft/final/ROD)?
                         if(record && record.doc && record.doc.documentType) {
                             if(record.doc.documentType === "NOI") {
                                 noiAdded = true;
@@ -348,6 +389,7 @@ export default class ProcessDetailsTab extends React.Component {
                     });
 
                     // Add NOI if missing so far, and date is available in metadata
+                    // Note: We could repeat this logic for other dates if available (draft/final/ROD)?
                     if(!noiAdded) {
                         response.forEach(record => {
                             if(!noiAdded) {
@@ -373,6 +415,25 @@ export default class ProcessDetailsTab extends React.Component {
             .catch(error => {
                 console.error(error);
             });
+        }
+    }
+
+    /** Show list of other titles if any (all case-insensitive unique record titles excluding the "process title")*/
+    showOtherTitles = () => {
+        if( this.state.title && this.state.otherTitles.length > 0 ) {
+            // Array of html elements, should be === [''] if we don't have any relevant titles
+            const titlesHtml =
+                this.state.otherTitles.map(title => {
+                    if( this.state.title.toLowerCase() !== title.toLowerCase() ) {
+                        return <div> - <b>{title}</b></div>;
+                    } else {
+                        return '';
+                    }
+                });
+
+            if(titlesHtml.toString()) { // [''] is truthy, but '' is falsey
+                return (<div><br />Older titles for this process: {titlesHtml}</div>);
+            }
         }
     }
 
