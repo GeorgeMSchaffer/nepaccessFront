@@ -211,9 +211,9 @@ class Register extends React.Component {
     // Check if email is taken to prevent submission of duplicates
     checkEmail = () => {
         if(this.state.registered) {
-            this.setState({ emailError: '', usernameError: '' });
+            this.setState({ disabled: true, emailError: '', usernameError: '' });
         }
-        if(this.invalidEmail() || this.state.registered){
+        else if(this.invalidEmail()){
             this.setState({ disabled: true });
             return;
         } else {
@@ -252,9 +252,9 @@ class Register extends React.Component {
     // Check if username is taken to prevent submission of duplicates
     checkUsername = () => {
         if(this.state.registered) {
-            this.setState({ emailError: '', usernameError: '' });
+            this.setState({ disabled: true, emailError: '', usernameError: '' });
         }
-        if(this.invalidUsername() || this.state.registered){
+        else if(this.invalidUsername()){
             this.setState({ disabled: true });
             return;
         } else {
