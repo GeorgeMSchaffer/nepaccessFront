@@ -279,7 +279,7 @@ export default class AdminFind extends React.Component {
 
         if(this.state.admin) {
             return (
-                <div className="padding-all">
+                <div id="admin-files" className="padding-all">
 
                     <Select
                         className="block"
