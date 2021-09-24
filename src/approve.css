@@ -13,6 +13,6 @@
     padding: 5px;
 }
 
-#approve .tabulator {
+#approve .tabulator, #admin-files .tabulator {
     min-height: 420px;
 }
