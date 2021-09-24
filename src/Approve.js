@@ -223,11 +223,14 @@ export default class Approve extends React.Component {
                         pageLoaded={this.onPageLoaded}
                     />
                     <br />
+                    <hr />
 
                     <div>
                         <button type="button" className="button" onClick={() => this.verifyEmail()}>
-                            Verify email
+                            Verify email for user(s)
                         </button>
+
+                        <br />
 
                         <button type="button" className="button" onClick={() => this.approve(true)}>
                             Approve (activate) user(s)
@@ -236,6 +239,8 @@ export default class Approve extends React.Component {
                         <button type="button" className="button"onClick={() => this.approve(false)}>
                             Deactivate user(s)
                         </button>
+
+                        <br />
                     </div>
 
                     <br />
