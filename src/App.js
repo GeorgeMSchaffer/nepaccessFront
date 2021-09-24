@@ -1190,7 +1190,7 @@ export default class App extends React.Component {
 				<div className="content">
                     <div>
                         <label className="logged-out-header">
-                            NEPAccess searches are not currently available to the public.  Please <Link to="/login">log in.</Link>
+                            Please <Link to="/login">log in</Link> or <Link to="/register">register</Link> to use NEPAccess.
                         </label>
                     </div>
 				</div>

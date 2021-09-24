@@ -233,12 +233,12 @@ class Login extends React.Component {
 
                     <div className="form-content">
                         
-                        {/* <div className="login-row">
+                        <div className="login-row">
                             <span className="leading-text"></span>
                             <span className="bold">
                                 Please log in or <Link to="/register">create an account</Link>
                             </span>
-                        </div> */}
+                        </div>
                         <div className="login-row">
                             <div className="col-md-6">
                                 <div className="form-group">
