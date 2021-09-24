@@ -154,10 +154,14 @@ export default class ProcessDetailsTab extends React.Component {
         );
     }
     showTimeline = () => {
-        return <div className="timeline-container">
-            <h3 className="timeline-header">Timeline</h3>
-            <Chart dates={this.state.dates} WIDTH={this.state.width} />
-        </div>
+        if(this.state.dates && this.state.dates.length > 1) {
+            return <div className="timeline-container">
+                <h3 className="timeline-header">Timeline</h3>
+                <Chart dates={this.state.dates} WIDTH={this.state.width} />
+            </div>
+        } else {
+            return '';
+        }
     }
     // Use record id to track showing or hiding of its individual files (empty array on mount)
     showMoreToggle = (id) => {
