@@ -166,14 +166,42 @@ export default class Approve extends React.Component {
         }, 1000);
     }
 
-    // probably unneeded
-    // updateTable = () => {
-    //     try {
-    //         this.my_table.current.table.replaceData(this.state.users);
-    //     } catch (e) {
-    //         console.error("update table error");
-    //     }
-    // }
+    setVerifyEmail = (_userId) => {
+        const approveUrl = new URL('user/setUserVerified', Globals.currentHost);
+        const dataForm = new FormData();
+        dataForm.append('userId', _userId);
+        dataForm.append('approved',true);
+
+        axios({
+            url: approveUrl,
+            method: 'POST',
+            data: dataForm
+        }).then(_response => {
+            const rsp = this.resp += (JSON.stringify({data: _response.data, status: _response.status}));
+            this.setState({
+                response: rsp 
+            });
+            // let responseOK = response && response.status === 200;
+        }).catch(error => { // redirect
+            console.error(error);
+        })
+        
+        // this.updateTable();
+    }
+
+    verifyEmail = () => {
+        document.body.style.cursor = 'wait';
+        const selectedData = this.my_table.current.table.getSelectedData();
+        
+        for(let i = 0; i < selectedData.length; i++) {
+            this.setVerifyEmail(selectedData[i].id);
+        }
+        setTimeout(() => {
+            this.getUsers();
+            document.body.style.cursor = 'default';
+            this.resp = "";
+        }, 1000);
+    }
     
     render() {
 
@@ -197,6 +225,10 @@ export default class Approve extends React.Component {
                     <br />
 
                     <div>
+                        <button type="button" className="button" onClick={() => this.verifyEmail()}>
+                            Verify email
+                        </button>
+
                         <button type="button" className="button" onClick={() => this.approve(true)}>
                             Approve (activate) user(s)
                         </button>
