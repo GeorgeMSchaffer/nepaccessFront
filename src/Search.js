@@ -72,7 +72,8 @@ class Search extends React.Component {
             isDirty: false,
             surveyChecked: true,
             surveyDone: true,
-            surveyResult: "Haven't searched yet"
+            surveyResult: "Haven't searched yet",
+            filtersHidden: false
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
@@ -677,12 +678,26 @@ class Search extends React.Component {
                 <div className="lds-ellipsis" hidden={!this.props.searching}><div></div><div></div><div></div><div></div></div>
             </div>
 
-            
-            <div className="sidebar-filters" 
+            <div className="sidebar-filters" hidden={!this.state.filtersHidden}>
+                <span className="sidebar-header">Narrow your results 
+                    <span className="filters-toggle" onClick={() => {this.setState({
+                            filtersHidden: false
+                    })}}>
+                        +
+                    </span>
+                </span>
+            </div>
+            <div className="sidebar-filters" hidden={this.state.filtersHidden}
                 // this would launch a new search on enter key, in some child inputs
                 // onKeyUp={this.onKeyUp}
             >
-                <span className="sidebar-header">Narrow your results</span>
+                <span className="sidebar-header">Narrow your results 
+                    <span className="filters-toggle" onClick={() => {this.setState({
+                        filtersHidden: true
+                    })}}>
+                        -
+                    </span>
+                </span>
                 
                 <div className="sidebar-hr"></div>
 

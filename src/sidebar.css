@@ -433,3 +433,14 @@ input:hover {
     /* flex: 0 0 100%; */
     cursor: pointer !important;
 }
+
+.filters-toggle {
+    float: right;
+    width: 20px;
+    
+    color: blue;
+    background-color: white;
+    border: 1px solid black;
+
+    cursor: pointer;
+}

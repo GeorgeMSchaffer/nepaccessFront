@@ -58,15 +58,11 @@ export default class Approve extends React.Component {
             url: checkUrl,
             method: 'POST'
         }).then(response => {
-            console.log("Response", response);
-            console.log("Status", response.status);
             let responseOK = response.data && response.status === 200;
             if (responseOK) {
                 this.setState({
                     approver: true
                 });
-            } else {
-                console.log("Else");
             }
         }).catch(error => {
             //
@@ -74,7 +70,6 @@ export default class Approve extends React.Component {
     }
 
     getUsers = () => {
-        console.log("Fetching user list");
         let getUrl = Globals.currentHost + "user/getAll";
         
         axios.get(getUrl, {
@@ -84,7 +79,6 @@ export default class Approve extends React.Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (responseOK && response.data) {
-                console.log(response.data);
                 return response.data;
             } else {
                 return null;

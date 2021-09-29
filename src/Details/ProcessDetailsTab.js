@@ -142,7 +142,7 @@ export default class ProcessDetailsTab extends React.Component {
                             <h3>Metadata</h3>
                             {this.showDetails()}
                             {this.showTimeline()}
-                            {/* {this.showOtherTitles()} */}
+                            {this.showOtherTitles()}
                         </div>
                         {this.showProcess()}
                     </div>
@@ -216,7 +216,20 @@ export default class ProcessDetailsTab extends React.Component {
         }
     }
 
-    
+    showRecordLine = (id,type,date) => {
+        if(localStorage.role !== 'user') {
+            return <a href={window.location.href.split("/")[0]+"record-details?id="+id} target="_blank" rel="noreferrer">
+                <span className='modal-title'>
+                    <b>{type} : {date}</b>
+                </span>
+            </a>
+        } else {
+            return <span className='modal-title'>
+                <b>{type} : {date}</b>
+            </span>
+        }
+        
+    }
 
     interpretProcess = (process) => {
         process = (process.sort(
@@ -257,14 +270,7 @@ export default class ProcessDetailsTab extends React.Component {
                 // TODO: Record link for admin only
                 return (<>
                     <div key={key} className='modal-line'>
-                        {/* <span className='modal-title'>
-                            <b>{proc.documentType} : {proc.registerDate}</b>
-                        </span> */}
-                        <a href={window.location.href.split("/")[0]+"record-details?id="+proc.id} target="_blank" rel="noreferrer">
-                            <span className='modal-title'>
-                                <b>{proc.documentType} : {proc.registerDate}</b>
-                            </span>
-                        </a>
+                        {this.showRecordLine(proc.id, proc.documentType, proc.registerDate)}
                         {recordDownload}
                     </div>
                     <div className="individual-files" key={key+"Files"}>

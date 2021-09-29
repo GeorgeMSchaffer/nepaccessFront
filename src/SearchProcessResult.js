@@ -272,23 +272,29 @@ export default class SearchProcessResult extends React.Component {
             return newRecords;
         }
     }
-    /** TODO: Re-enable link, for admins only (link is too confusing for average user) */
+    
     showRecord = (record) => {
         return (<div key={record.relevance} className="record">
             <div className="record-line">
                 <span className="record-field regular">
-                    <span className="record-type-header">
-                        {this.showDocumentType(record.documentType)}
-                    </span>
-                    {/* <a className="link" target="_blank" rel="noopener noreferrer" href={`./record-details?id=${record.id}`}>
-                        {this.showDocumentType(record.documentType)}
-                    </a> */}
+                    {this.showRecordLink(record.id, record.documentType)}
                 </span>
                 <span className="record-field">{record.registerDate}</span>
                 {this.showFileDownload(record)}
             </div>
             {this.showText(record)}
         </div>)
+    }
+    showRecordLink = (id,type) => {
+        if(localStorage.role !== 'user') {
+            return <a className="link" target="_blank" rel="noopener noreferrer" href={`./record-details?id=${id}`}>
+                {this.showDocumentType(type)}
+            </a>;
+        } else {
+            return <span className="record-type-header">
+                {this.showDocumentType(type)}
+            </span>;
+        }
     }
     showDocumentType = (docType) => {
         if(docType.toLowerCase() === "rod") {

@@ -111,12 +111,9 @@ div.update .react-datepicker__input-container>input {
     font-size: 20px;
 }
 
-.modal-line a {
-    color: black;
-}
-/* .modal-line a:hover {
+.modal-line a:hover {
     color: green;
-} */
+}
 
 .modal-line .document-download {
     margin: 10px 0;
@@ -131,6 +128,11 @@ div.update .react-datepicker__input-container>input {
     color: #0067B1;
     margin: 15px 0;
     user-select: none;
+}
+.show-more-link:hover {
+    -moz-text-shadow: 1px 1px 5px #999;
+    -webkit-text-shadow: 1px 1px 5px #999;
+        text-shadow: 1px 1px 5px #999;
 }
 
 #report-start-link {

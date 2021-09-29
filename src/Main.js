@@ -32,6 +32,7 @@ import PrivacyPolicy from './iframes/PrivacyPolicy.js';
 import DisclaimerTermsOfUse from './iframes/DisclaimerTermsOfUse.js';
 
 import Contact from './Contact.js';
+import Future from './iframes/Future.js';
 
 import AboutHelpContents from './AboutHelpContents.js';
 import AboutStats from './AboutStats.js';
@@ -90,6 +91,24 @@ class Main extends React.Component {
         // Init hotjar for webapp, unless local test
         if(window.location.hostname !== 'localhost') {
             hotjar.initialize(2319391, 6);
+        }
+    }
+
+    getRole = () => {
+        if(localStorage.JWT && !localStorage.role) {
+            const checkURL = new URL('user/get_role', Globals.currentHost);
+            axios.post(checkURL)
+            .then(response => {
+                const verified = response && response.status === 200;
+                if(verified) {
+                    localStorage.role = response.data.toLowerCase();
+                }
+            })
+            .catch((err) => { // Token expired or invalid, or server is down
+                this.setState({
+                    loggedIn: false
+                });
+            });
         }
     }
 
@@ -181,11 +200,6 @@ class Main extends React.Component {
                 <div id="logo" className="no-select">
                     <Link id="logo-link" to="/">
                     </Link>
-                    {/* <div id="logo-type">
-                        <span id="NEP">NEP</span>
-                        <span id="A">A</span>
-                        <span id="ccess">ccess</span>
-                    </div> */}
                     <div id="logo-box">
 
                     </div>
@@ -237,11 +251,12 @@ class Main extends React.Component {
                                 Videos
                             </Link>
                             <Link to="/people">People</Link>
-                            {/* <Link to="/abouthelpcontents">Database Contents</Link> */}
-                            {/* <Link to="/stats">Content Statistics</Link> */}
                         </div>
                     </div>
                     
+                    {/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
+                        Future
+                    </Link> */}
                     <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
                         Contact
                     </Link>
@@ -270,6 +285,7 @@ class Main extends React.Component {
                 <Route path="/media" component={Media}/>
 
                 <Route path="/contact" component={Contact}/>
+                <Route path="/future" component={Future}/>
 
                 <Route path="/record-details" component={RecordDetailsTab}/>
                 <Route path="/process-details" component={ProcessDetailsTab}/>
@@ -414,6 +430,9 @@ class Main extends React.Component {
                             <Link to="/adminFiles">Find Missing Files</Link>
                             <Link to="/approve">Approve Users</Link>
                             <Link to="/pre_register">Pre-Register Users</Link>
+                            <Link to="/search_logs">Search Logs</Link>
+                            <Link to="/abouthelpcontents">Database Contents</Link>
+                            <Link to="/stats">Content Statistics</Link>
                         </div>
                     </div>
                 </span>
@@ -453,6 +472,7 @@ class Main extends React.Component {
         });
         this.check();
         this.checkCurator();
+        this.getRole();
     }
 }
 

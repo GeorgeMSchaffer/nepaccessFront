@@ -51,7 +51,7 @@ export default class SearchLogs extends React.Component {
 		super(props);
 		this.state = { 
             typeCount: [],
-            chartOption: {value: "Search Count by Terms", label: "Search Count by Terms"},
+            chartOption: {value: "Table of all searches", label: "Table of all searches"},
             authorized: false,
             searches: [],
             response: []
