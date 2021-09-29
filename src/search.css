@@ -755,8 +755,11 @@ div.disabled::before {
         font-size: 16px;
     }
     .search-bar-holder #main-search-icon {
-        background-color: unset;
         height: 100%;
+        margin-bottom: -20px;
+    }
+    .search-bar-holder #main-search-clear {
+        margin-bottom: -7px;
     }
     #app-content .sidebar-filters {
         display: block;
