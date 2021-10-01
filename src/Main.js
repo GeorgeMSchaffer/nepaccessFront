@@ -37,6 +37,7 @@ import Future from './iframes/Future.js';
 import AboutHelpContents from './AboutHelpContents.js';
 import AboutStats from './AboutStats.js';
 import StatTables from './StatTables.js';
+import InteractionLogs from './InteractionLogs.js';
 
 import Iframes from './iframes/Iframes.js';
 
@@ -303,6 +304,7 @@ class Main extends React.Component {
                 <Route path="/pairs2" component={Pairs2}></Route>
                 <Route path="/pairs3" component={Pairs3}></Route>
                 <Route path="/search_logs" component={SearchLogs}></Route>
+                <Route path="/interaction_logs" component={InteractionLogs}></Route>
                 <Route path="/stat_tables" component={StatTables}></Route>
                 <Route path="/excel" component={Excel}></Route>
                 
@@ -430,9 +432,11 @@ class Main extends React.Component {
                             <Link to="/adminFiles">Find Missing Files</Link>
                             <Link to="/approve">Approve Users</Link>
                             <Link to="/pre_register">Pre-Register Users</Link>
+                            <Link to="/interaction_logs">Interaction Logs</Link>
                             <Link to="/search_logs">Search Logs</Link>
                             <Link to="/abouthelpcontents">Database Contents</Link>
                             <Link to="/stats">Content Statistics</Link>
+                            <Link to="/stat_tables">Stat tables</Link>
                         </div>
                     </div>
                 </span>
@@ -453,6 +457,11 @@ class Main extends React.Component {
                         <div className="dropdown-content">
                             <Link to="/approve">Approve Users</Link>
                             <Link to="/pre_register">Pre-Register Users</Link>
+                            <Link to="/interaction_logs">Interaction Logs</Link>
+                            <Link to="/search_logs">Search Logs</Link>
+                            <Link to="/abouthelpcontents">Database Contents</Link>
+                            <Link to="/stats">Content Statistics</Link>
+                            <Link to="/stat_tables">Stat tables</Link>
                         </div>
                     </div>
                 </span>

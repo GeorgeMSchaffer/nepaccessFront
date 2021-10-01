@@ -8,40 +8,12 @@ import Globals from './globals.js';
 import { ReactTabulator } from 'react-tabulator';
 
 const getRoutes = [
-    { label: "admin/findAllEmailLogs", value: "admin/findAllEmailLogs" },
-    { label: "admin/findAllFileLogs", value: "admin/findAllFileLogs" },
-    { label: "admin/findAllUpdateLogs", value: "admin/findAllUpdateLogs" },
-    { label: "admin/findAllUserStatusLogs", value: "admin/findAllUserStatusLogs" },
-    { label: "admin/findAllDeleteRequests", value: "admin/findAllDeleteRequests" },
-    { label: "test/findAllDocs", value: "test/findAllDocs" },
-    { label: "test/findAllSearchLogs", value: "test/findAllSearchLogs" },
-    { label: "file/findAllNepaFiles", value: "file/findAllNepaFiles" },
-    { label: "user/findAllUsers", value: "user/findAllUsers" },
-    { label: "user/findAllContacts", value: "user/findAllContacts" },
-    { label: "user/findAllOptedOut", value: "user/findAllOptedOut" },
-    
-    { label: "test/duplicates", value: "test/duplicates" },
-    { label: "test/duplicates_close", value: "test/duplicates_close" },
-    { label: "test/duplicates_no_date", value: "test/duplicates_no_date" },
-    { label: "test/duplicates_process", value: "test/duplicates_process" },
-    { label: "test/size_under_200", value: "test/size_under_200" },
-    { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
-
-    // Headers: Agency, Record count, Count with files
-    { label: "reports/report_agency", value: "reports/report_agency" },
-    { label: "reports/report_agency_2000", value: "reports/report_agency_2000" },
-    // Headers: Agency, Record count, Count with files, Process Count, Process Count where at least one document in the process has files
-    { label: "reports/report_agency_process", value: "reports/report_agency_process" },
-    { label: "reports/report_agency_process_2000", value: "reports/report_agency_process_2000" },
-
-    { label: "reports/duplicates_size", value: "reports/duplicates_size" },
-    { label: "reports/duplicates_type_folder", value: "reports/duplicates_type_folder" },
     { label: "interaction/get_all_combined", value: "interaction/get_all_combined" },
 ];
 
-const options = Globals.tabulatorOptions;
+let options = Globals.tabulatorOptions;
 
-export default class AdminFind extends React.Component {
+export default class InteractionLogs extends React.Component {
 
 
     state = {
@@ -52,41 +24,15 @@ export default class AdminFind extends React.Component {
 
         response: "",
 
-        admin: false,
         busy: false,
 
-        getRoute: "",
+        getRoute: "interaction/get_all_combined",
         selectedName: ""
     }
     constructor(props) {
         super(props);
 
         this.ref = null;
-    }
-
-    checkAdmin = () => {
-        let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
-        let _admin = false;
-
-        axios({
-            url: checkUrl,
-            method: 'POST'
-        })
-        .then(response => {
-            let responseOK = response.data && response.status === 200;
-
-            if (responseOK) {
-                _admin = true;
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        })
-        .finally(onF => {
-            this.setState({
-                admin: _admin
-            });
-        });
     }
 
 
@@ -112,7 +58,7 @@ export default class AdminFind extends React.Component {
 
             for(let i = 0; i < headers.length; i++) {
                 newColumns[i] = {title: headers[i], field: headers[i], 
-                    width: 100, // bunch of stuff breaks without this
+                    width: 200,
                     headerFilter: "input",
                     cellClick: (e, cell) => {
                         // console.log(e,cell.getRow().getData());
@@ -156,16 +102,10 @@ export default class AdminFind extends React.Component {
             let headers = getKeys(results[0]);
 
             // stringify any incoming objects
-            if(headers.includes("eisdoc") || headers.includes("doc") || headers.includes("user")) {
+            if(headers.includes("doc")) {
                 results.forEach(function(result) {
-                    if(result.eisdoc) {
-                        result.eisdoc = JSON.stringify(result.eisdoc);
-                    }
                     if(result.doc) {
                         result.doc = JSON.stringify(result.doc);
-                    }
-                    if(result.user) {
-                        result.user = JSON.stringify(result.user);
                     }
                 });
             }
@@ -179,18 +119,11 @@ export default class AdminFind extends React.Component {
         console.log("Table updated");
         try {
             this.ref.table.clearFilter(true);
-            // seems necessary when using dynamic columns
             this.ref.table.setColumns(this.state.columns);
-
-            // this.ref.table.replaceData(this.state.data);
         } catch (e) {
             console.error(e);
         }
     }
-
-    // onChange = (evt) => {
-    //     this.setState({ [evt.target.name]: evt.target.value });
-    // }
     
     onSelectHandler = (val, act) => {
         console.log("Select");
@@ -233,20 +166,7 @@ export default class AdminFind extends React.Component {
         }
     }
 
-    // rowSelectionChanged = (data, rows) => {
-    //     console.log(data,rows);
-    //     if(data && data.length > 0) {
-    //         this.setState({ selectedData: data[0].id });
-    //     }
-    // }
-    // rowClick = (e, row) => {
-    //     console.log("ref table: ", this.ref); // this is the Tabulator table instance
-    //     console.log(`rowClick id: \${row.getData().id}`, row, e);
-    //     this.setState({ selectedName: row.getData().name });
-    // };
-
     copy = () => {
-        // this.ref.table.blockRedraw();
         if(this.ref.table) {
             console.log(this.ref.table.getSelectedData());
             this.setState({ 
@@ -256,10 +176,7 @@ export default class AdminFind extends React.Component {
                 const el = this.textArea;
                 el.select();
                 document.execCommand("copy");
-                // this.ref.table.restoreRedraw();
 
-                // table is somehow smart enough to use ID even if it doesn't line up with the "row number"
-                // so this logic maintains the selection
                 this.state.rows.forEach(row => {
                     this.ref.table.selectRow(row._row.data.id);
                 });
@@ -280,16 +197,16 @@ export default class AdminFind extends React.Component {
     }
 
     render() {
-        if(this.state.admin) {
+        if(localStorage.role  && localStorage.role !== 'user') {
             return (
-                <div id="admin-files" className="padding-all">
+                <div id="admin-files" className="padding-all content">
 
-                    <Select
+                    {/* <Select
                         className="block"
                         options={getRoutes}
                         name="getRoute" 
                         onChange={this.onSelectHandler}
-                    />
+                    /> */}
                     <div className="loader-holder">
                         <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
@@ -302,8 +219,6 @@ export default class AdminFind extends React.Component {
                         data={this.state.data}
                         columns={[]}
                         options={options}
-                        // rowClick={this.rowClick}
-                        // rowSelectionChanged={this.rowSelectionChanged}
                     />
                     <label>(Click any cell to copy that value.)</label>
                     <br />
@@ -333,13 +248,11 @@ export default class AdminFind extends React.Component {
         
     }
 
-    componentDidMount = () => {
-        this.checkAdmin();
+    componentDidMount() {
+        console.log("Get");
+        this.get();
     }
-    
-    componentDidUpdate() {
-        console.log("Component Updated");
-    }
+
 }
 
 function getKeys(obj) {
