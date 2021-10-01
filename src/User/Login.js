@@ -172,15 +172,29 @@ class Login extends React.Component {
             }
         }).then(jsonResponse => {
             if(jsonResponse){
-                // if HTTP 200 (ok), save JWT, username and clear login
+                // if HTTP 200 (ok), save JWT, username, role and clear login
                 localStorage.JWT = jsonResponse.Authorization;
                 localStorage.username = this.state.user.username;
+
                 Globals.signIn();
                 Globals.emitEvent('refresh', {
                     loggedIn: true
                 });
 
-                this.setState({ user: {} }); // clear
+                // Set role
+                this.setState({ user: {} }, () => { // clear
+                    const checkURL = new URL('user/get_role', Globals.currentHost);
+                    axios.post(checkURL)
+                    .then(response => {
+                        const verified = response && response.status === 200;
+                        if(verified) {
+                            localStorage.role = response.data.toLowerCase();
+                        }
+                    })
+                    .catch((err) => { // Token expired or invalid, or server is down
+                    });
+                }); 
+                
                 // TODO: Other logic than .push() for navigation?
                 this.props.history.push('/')
                 // this.setState({
