@@ -163,7 +163,6 @@ class Login extends React.Component {
             url: loginUrl,
             data: this.state.user
         }).then(response => {
-            console.log(response);
             let responseOK = response && response.status === 200;
             if (responseOK) {
                 return response.data;
