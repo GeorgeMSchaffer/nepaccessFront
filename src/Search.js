@@ -113,10 +113,14 @@ class Search extends React.Component {
             }, () => {
                 if(this.state.titleRaw){
                     this.debouncedSearch(this.state);
+                } else {
+                    // Option: Search on load to get all results (no text/highlighting)
+                    this.doSearch("");
                 }
             });
         } else {
-            // Option: Search on load to get all results so user can start filtering?
+            // Option: Search on load to get all results (no text/highlighting)
+            this.doSearch("");
         }
     }
 
@@ -572,7 +576,7 @@ class Search extends React.Component {
                         <input id="main-search-bar"
                             className="search-bar" 
                             name="titleRaw" 
-                            placeholder="Leave blank to return all results" 
+                            placeholder="Enter search terms (or leave blank to get all results)" 
                             value={this.state.titleRaw}
                             autoFocus 
                             onChange={this.onChangeHandler}
