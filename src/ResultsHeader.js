@@ -21,7 +21,7 @@ export default class ResultsHeader extends React.Component {
         super(props);
         this.state = {
             sort: { value: 'relevance', label: 'Relevance' },
-            order: { value: true, label: 'Order'}
+            order: { value: true, label: '^'}
         }
     }
 
@@ -73,16 +73,16 @@ export default class ResultsHeader extends React.Component {
                                 // styles={customStyles}
                                 options={sortOptions} 
                                 onChange={this.onSortChange}
-                                selected={this.state.sort}
-                                placeholder="Relevance"
+                                value={this.state.sort}
+                                placeholder={this.state.sort.label}
                             />
                             <Select id="post-results-dropdown-order" 
                                 className={"multi inline-block"} classNamePrefix="react-select" name="sortOrder" 
                                 // styles={customStyles}
                                 options={sortOrderOptions} 
                                 onChange={this.onSortOrderChange}
-                                selected={this.state.order}
-                                placeholder="Order"
+                                value={this.state.order}
+                                placeholder={this.state.order.label}
                             />
                         </div>
                         
