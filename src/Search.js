@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 
 import Select from 'react-select';
@@ -567,7 +569,13 @@ class Search extends React.Component {
                                 <BasicModal id="basic-modal"
                                     className="side-link"
                                     divClassName=""
-                                    html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. More files are being added continuously.</div>}
+                                    html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
+                                    from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
+                                    More files are being added continuously.
+                                        <div className="text-center margin-top">
+                                            <a href="abouthelp2" target="_blank" rel="noopener noreferrer">Available files</a>
+                                        </div>
+                                    </div>}
                                 >
                                 </BasicModal>
                             </div>
@@ -774,10 +782,10 @@ class Search extends React.Component {
                     </div>
                 </div>
 
-                <div className="sidebar-hr" hidden={true}></div>
+                <div className="sidebar-hr"></div>
                 
                 <div className="filter">
-                    <label className="sidebar-label">Document type</label>
+                    <label className="sidebar-label-date">Document Type</label>
                     <div className="sidebar-checkboxes">
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">

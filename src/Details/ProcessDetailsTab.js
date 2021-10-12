@@ -264,7 +264,7 @@ export default class ProcessDetailsTab extends React.Component {
                         recordDownload = this.renderDownload(proc.id,size,proc.filename,true,"EIS");
                     }
                 } else {
-                    recordDownload = <div className="table-row"><span className="cardHeader filename missing">File(s) not yet available</span></div>;
+                    recordDownload = <div className="table-row inline-block"><span className="cardHeader filename missing">File(s) not yet available</span></div>;
                 }
 
                 // TODO: Record link for admin only
@@ -305,10 +305,10 @@ export default class ProcessDetailsTab extends React.Component {
                 <span   id="report-start-link" className="report-link" 
                         hidden={this.state.linkClicked || this.state.reported} 
                         onClick={() => { this.setState({ linkClicked:true }) }}>
-                    Report data issue
+                    Report a data issue
                 </span>
                 <div hidden={!this.state.linkClicked || this.state.reported}>
-                    <div>
+                    <div className="report-type-header">
                         Type report here:
                     </div>
                     <textarea rows="5" cols="50" name="reportText" 
@@ -319,7 +319,7 @@ export default class ProcessDetailsTab extends React.Component {
                         </span>
                     </div>
                 </div>
-                <span className="italic" hidden={!this.state.reported}>
+                <span className="report-sent-text" hidden={!this.state.reported}>
                     Report sent.  Thank you!
                 </span>
             </div>);

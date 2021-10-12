@@ -72,8 +72,8 @@ export function showTimeline(dates, WIDTH) {
 
         dates.forEach((datum, i) => {
             d3.select(".chart-key-holder")
-                .append("label").attr('class', 'chart-key').text(datum.registerDate + ": ")
-                .append("label").attr('class', 'bold').text(datum.documentType);
+                .append("label").attr('class', 'chart-key bold').text(datum.documentType + ": ")
+                .append("label").attr('class', 'normal').text(datum.registerDate);
         });
         
         svg.datum(DATA).call(chart);

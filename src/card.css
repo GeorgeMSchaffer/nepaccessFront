@@ -77,6 +77,9 @@
     border-right: none;
 }
 
+.table-meta>div:first-child {
+    margin-left: 15px;
+}
 .cardHeader>span, .cardHeader>.download, .cardHeader>.link {
     padding-left: 0.5em;
     font-weight: bold;

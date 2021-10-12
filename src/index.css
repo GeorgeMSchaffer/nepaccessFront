@@ -204,6 +204,7 @@ body {
     position: relative;
     /* left: calc(25vw + 10px); */
     margin-left: clamp(315px, calc(25vw + 15px), 390px); 
+    min-width: 400px;
     height: 52px;
     top: 50px;
 }
@@ -475,20 +476,25 @@ span.email-text {
     cursor: pointer;
 }
 
-/* .react-select__value-container {
-    width: 355px;
+.react-select__value-container>.react-select__multi-value {
+    background: lightgreen;
 }
-
-.react-select__multi-value {
-    max-width: 290px;
-} */
 
 .margin {
     margin-left: 10px;
 }
+.margin-top {
+    margin-top: 15px;
+}
+.text-center {
+    text-align: center;
+}
 
 .bold {
     font-weight: bold !important;
+}
+.normal {
+    font-weight: normal !important;
 }
 
 /* New dropdown for help submenus */
