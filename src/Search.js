@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
-
 import axios from 'axios';
 
 import Select from 'react-select';
@@ -338,9 +336,16 @@ class Search extends React.Component {
             // this.debouncedSearch(this.state); 
         }); 
     }
-    onEndDateChange = (date) => { 
+    onEndDateChange = (date, evt) => { 
+        // should be true at 4 digits e.g. user typed in a year
+        // if(evt && evt.target && evt.target.value && /^\d{4}$/.test(evt.target.value)) { 
+        //     // TODO: Is there a way to change the month/day focused without filling in those text values?
+        //     // Goal is to focus Dec 31 of year instead of Jan 1 (defaults to 01 01 if nothing provided)
+        //     console.log(new Date('12 31 ' + evt.target.value));
+        // }
+
         this.setState( { endPublish: date }, () => { 
-			this.filterBy(this.state);
+            this.filterBy(this.state);
             // this.debouncedSearch(this.state); 
         }); 
     }
@@ -770,6 +775,10 @@ class Search extends React.Component {
                             selected={this.state.startPublish} onChange={this.onStartDateChange} 
                             dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                             className="sidebar-date" 
+                            showMonthDropdown={true}
+                            showYearDropdown={true}
+                            adjustDateOnChange
+                            preventOpenOnFocus={true} 
                         />
                         <span className="sidebar-date-text">
                             To
@@ -778,6 +787,11 @@ class Search extends React.Component {
                             selected={this.state.endPublish} onChange={this.onEndDateChange}
                             dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                             className="sidebar-date" 
+                            showMonthDropdown={true}
+                            showYearDropdown={true}
+                            adjustDateOnChange
+                            preventOpenOnFocus={true} 
+                            // openToDate={new Date('12 31 2021')} 
                         />
                     </div>
                 </div>
