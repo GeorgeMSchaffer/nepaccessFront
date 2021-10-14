@@ -11,10 +11,13 @@ export default class Excel extends React.Component {
     state = {
         rows: [],
         cols: [],
+        lastSaved: "",
 
         busy: false,
         admin: false
     }
+
+    savedDate = "";
 
     get = (getRoute) => {
         this.setState({ busy: true });
@@ -28,6 +31,9 @@ export default class Excel extends React.Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (responseOK && response.data) {
+                if(response.data.savedTime) {
+                    this.savedDate = response.data.savedTime;
+                }
                 return JSON.parse(response.data.json)
             }
         }).then(parsedJson => { 
@@ -36,6 +42,7 @@ export default class Excel extends React.Component {
                 this.setState({
                     cols: parsedJson.cols,
                     rows: parsedJson.rows,
+                    lastSaved: this.savedDate,
                     busy: false
                 });
             } else {
@@ -135,6 +142,7 @@ export default class Excel extends React.Component {
                 </div>
 
                 {this.renderAdminControl()}
+                <label>This data last uploaded at: {this.state.lastSaved}</label>
 
                 <OutTable 
                     data={this.state.rows} 
