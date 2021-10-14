@@ -170,10 +170,22 @@ class Search extends React.Component {
         });
     }
 
-    onKeyUp = (evt) => {        
+    onKeyUp = (evt) => {
         if(evt.keyCode === 13){
             evt.preventDefault();
             this.doSearch(this.state.titleRaw);
+        }
+    }
+    /** For some reason, without this, calendars stay open after tabbing past them. 
+     *  (This is opposite to how react-datepicker's default behavior is described.) */
+    onKeyDown = (e) => {
+        if (e.key === "Tab") {
+            if(this.datePickerStart) {
+                this.datePickerStart.setOpen(false);
+            }
+            if(this.datePickerEnd) {
+                this.datePickerEnd.setOpen(false);
+            }
         }
     }
 
@@ -336,18 +348,35 @@ class Search extends React.Component {
             // this.debouncedSearch(this.state); 
         }); 
     }
+    // Tried quite a bit but I can't force the calendar to Dec 31 of a year as it's typed in without editing the library code itself.
+    // I can change the value but the popper state won't update to reflect it (even when I force it to update).
     onEndDateChange = (date, evt) => { 
         // should be true at 4 digits e.g. user typed in a year
         // if(evt && evt.target && evt.target.value && /^\d{4}$/.test(evt.target.value)) { 
         //     // TODO: Is there a way to change the month/day focused without filling in those text values?
         //     // Goal is to focus Dec 31 of year instead of Jan 1 (defaults to 01 01 if nothing provided)
         //     console.log(new Date('12 31 ' + evt.target.value));
+        //     console.log(this.datePickerEnd);
+        //     this.datePickerEnd.value = new Date('12 31 ' + evt.target.value);
+        //     this.datePickerEnd.state.preSelection = new Date('12 31 ' + evt.target.value);
+        //     this.datePickerEnd.calendar.instanceRef.state.date = new Date('12 31 ' + evt.target.value);
+        //     this.datePickerEnd.forceUpdate();
+
+        //     this.setState( { endPublish: new Date('12 31 ' + evt.target.value) }, () => { 
+        //         this.datePickerEnd.value = this.state.endPublish;
+        //         this.filterBy(this.state);
+        //         console.log(this.state.endPublish);
+        //         this.datePickerEnd.forceUpdate();
+        //         // this.debouncedSearch(this.state); 
+        //     }); 
+        // } else {
+
+            this.setState( { endPublish: date }, () => { 
+                this.filterBy(this.state);
+                // this.debouncedSearch(this.state); 
+            }); 
         // }
 
-        this.setState( { endPublish: date }, () => { 
-            this.filterBy(this.state);
-            // this.debouncedSearch(this.state); 
-        }); 
     }
     onStartCommentChange = (date) => { 
         this.setState( { startComment: date }, () => { 
@@ -590,6 +619,7 @@ class Search extends React.Component {
                             className="search-bar" 
                             name="titleRaw" 
                             placeholder="Enter search terms (or leave blank to get all results)" 
+                            tabIndex="1"
                             value={this.state.titleRaw}
                             autoFocus 
                             onChange={this.onChangeHandler}
@@ -721,6 +751,7 @@ class Search extends React.Component {
                 <div className="filter">
                     <div className="checkbox-container">
                         <input type="checkbox" name="needsDocument" id="needsDocument" className="sidebar-checkbox"
+                                tabIndex="2"
                                 checked={this.state.needsDocument} onChange={this.onNeedsDocumentChecked} />
                         <label className="checkbox-text no-select" htmlFor="needsDocument">Has downloadable files</label>
                     </div>
@@ -732,6 +763,7 @@ class Search extends React.Component {
                     <label className="sidebar-label" htmlFor="searchAgency">Lead agency or <span className="link" onClick={this.orgClick}>agencies</span></label>
                     <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="agency" isSearchable isClearable 
                         styles={customStyles}
+                        tabIndex="3"
                         options={agencyOptions} 
                         onChange={this.onAgencyChange} 
                         value={this.state.agencyRaw}
@@ -744,6 +776,7 @@ class Search extends React.Component {
                     <label className="sidebar-label" htmlFor="searchAgency">Cooperating agencies</label>
                     <Select id="searchAgency" className="multi" classNamePrefix="react-select" isMulti name="cooperatingAgency" isSearchable isClearable 
                         styles={customStyles}
+                        tabIndex="4"
                         options={agencyOptions} 
                         onChange={this.onCooperatingAgencyChange} 
                         value={this.state.cooperatingAgencyRaw}
@@ -756,6 +789,7 @@ class Search extends React.Component {
                     <label className="sidebar-label" htmlFor="searchState">State(s) or regions</label>
                     <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
                         styles={customStyles}
+                        tabIndex="5"
                         options={stateOptions} 
                         onChange={this.onLocationChange} 
                         value={this.state.stateRaw}
@@ -772,25 +806,35 @@ class Search extends React.Component {
                             From
                         </span>
                         <DatePicker
+                            ref={ref => (this.datePickerStart = ref)}
                             selected={this.state.startPublish} onChange={this.onStartDateChange} 
+                            onKeyDown={this.onKeyDown}
                             dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                             className="sidebar-date" 
                             showMonthDropdown={true}
                             showYearDropdown={true}
                             adjustDateOnChange
-                            preventOpenOnFocus={true} 
+                            tabIndex="6"
+                            popperPlacement="right"
+                            isClearable
+                            // preventOpenOnFocus={true} 
                         />
                         <span className="sidebar-date-text">
                             To
                         </span>
                         <DatePicker
+                            ref={ref => (this.datePickerEnd = ref)}
                             selected={this.state.endPublish} onChange={this.onEndDateChange}
+                            onKeyDown={this.onKeyDown}
                             dateFormat="yyyy-MM-dd" placeholderText="YYYY-MM-DD"
                             className="sidebar-date" 
                             showMonthDropdown={true}
                             showYearDropdown={true}
                             adjustDateOnChange
-                            preventOpenOnFocus={true} 
+                            tabIndex="7"
+                            popperPlacement="right"
+                            isClearable
+                            // preventOpenOnFocus={true} 
                             // openToDate={new Date('12 31 2021')} 
                         />
                     </div>
@@ -804,6 +848,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
+                                        tabIndex="8"
                                         checked={this.state.typeDraft} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Draft EIS <i>{this.props.draftCount}</i></span>
                             </label>
@@ -811,6 +856,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
+                                        tabIndex="9"
                                         checked={this.state.typeFinal} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Final EIS <i>{this.props.finalCount}</i></span>
                             </label>
@@ -818,6 +864,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeEA" className="sidebar-checkbox"
+                                        tabIndex="10"
                                     checked={this.state.typeEA} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">EA <i>{this.props.eaCount}</i></span>
                             </label>
@@ -825,6 +872,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeNOI" className="sidebar-checkbox"
+                                        tabIndex="11"
                                         checked={this.state.typeNOI} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">NOI <i>{this.props.noiCount}</i></span>
                             </label>
@@ -832,6 +880,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeROD" className="sidebar-checkbox"
+                                        tabIndex="12"
                                     checked={this.state.typeROD} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">ROD <i>{this.props.rodCount}</i></span>
                             </label>
@@ -839,6 +888,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeScoping" className="sidebar-checkbox"
+                                        tabIndex="13"
                                     checked={this.state.typeScoping} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Scoping Report <i>{this.props.scopingCount}</i></span>
                             </label>
@@ -846,7 +896,7 @@ class Search extends React.Component {
                     </div>
                 </div>
 
-                <div className="filter" hidden={true}>
+                <div className="filter" hidden={localStorage.role !== 'admin'}>
                     <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
                             checked={this.props.useOptions} onChange={this.onUseOptionsChecked} />
                     <label className="checkbox-text" htmlFor="typeFinal">
