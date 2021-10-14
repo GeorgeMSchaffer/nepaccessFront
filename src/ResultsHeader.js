@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
+import Globals from './globals';
 
 const sortOptions = [ 
     { value: 'relevance', label: 'Relevance' },
@@ -46,7 +47,7 @@ export default class ResultsHeader extends React.Component {
     }
 
     showDownloadButton = () => {
-        if(localStorage.curator) {
+        if(Globals.curatorOrHigher()) {
             return <label className="results-download" onClick={this.props.download}>
                 Download this table
             </label>;

@@ -89,13 +89,23 @@ const Globals = {
             axios.defaults.headers.common['Authorization'] = token;
         } 
     },
+    
 
     signOut() {
         localStorage.removeItem("JWT");
         localStorage.removeItem("role");
         axios.defaults.headers.common['Authorization'] = null;
         localStorage.removeItem("username");
+        localStorage.removeItem("admin");
         localStorage.removeItem("curator");
+        localStorage.removeItem("approver");
+    },
+
+    approverOrHigher() {
+        return (localStorage.role && localStorage.role !== 'user')
+    },
+    curatorOrHigher() {
+        return (localStorage.role && (localStorage.role === 'curator' || localStorage.role === 'admin'))
     },
 
     isEmptyOrSpaces(str){
@@ -527,7 +537,7 @@ const Globals = {
             let returnValue = false;
 
             a.records.some(item => {
-                console.log(item.registerDate, val, item["registerDate"] >= val);
+                // console.log(item.registerDate, val, item["registerDate"] >= val);
                 if(item["registerDate"] >= val) {
                     returnValue = true;
                     return true;
@@ -543,7 +553,7 @@ const Globals = {
             let returnValue = false;
 
             a.records.some(item => {
-                console.log(item.registerDate, val, item["registerDate"] <= val);
+                // console.log(item.registerDate, val, item["registerDate"] <= val);
                 if(item["registerDate"] <= val) {
                     returnValue = true;
                     return true;

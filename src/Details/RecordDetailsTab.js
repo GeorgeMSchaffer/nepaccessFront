@@ -666,7 +666,7 @@ export default class RecordDetailsTab extends React.Component {
 
 
     showDropdown = () => {        
-        let curator = localStorage.curator;
+        let curator = Globals.curatorOrHigher();
         // Don't show dropdown at all if curator, now that we've hidden the title alignment also
         if(curator) {
 

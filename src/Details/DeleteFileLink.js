@@ -73,7 +73,7 @@ class DeleteFileLink extends React.Component {
     }
 
     componentDidMount() {
-        if(localStorage.curator && this.state.buttonText==="Delete this now") { 
+        if(Globals.curatorOrHigher() && this.state.buttonText==="Delete this now") { 
             this.setState({
                 buttonText: "Request delete"
             })

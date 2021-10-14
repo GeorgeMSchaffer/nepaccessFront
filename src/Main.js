@@ -64,6 +64,8 @@ import PropTypes from "prop-types";
 
 import { hotjar } from 'react-hotjar';
 
+const _ = require('lodash');
+
 class Main extends React.Component {
     
     static propTypes = {
@@ -79,14 +81,13 @@ class Main extends React.Component {
             loggedInDisplay: 'display-none',
             loggedOutDisplay: '',
             loaderClass: 'loadDefault',
-            admin: false,
-            curator: false,
-            approver: false,
+            role: null,
             currentPage: ""
         };
 
         this.refresh = this.refresh.bind(this);
         this.refreshNav = this.refreshNav.bind(this);
+        this.getRoleDebounced = _.debounce(this.getRole, 500);
         Globals.setUp();
 
         // Init hotjar for webapp, unless local test
@@ -96,21 +97,23 @@ class Main extends React.Component {
     }
 
     getRole = () => {
-        if(localStorage.JWT && !localStorage.role) {
-            const checkURL = new URL('user/get_role', Globals.currentHost);
-            axios.post(checkURL)
-            .then(response => {
-                const verified = response && response.status === 200;
-                if(verified) {
-                    localStorage.role = response.data.toLowerCase();
-                }
-            })
-            .catch((err) => { // Token expired or invalid, or server is down
-                this.setState({
-                    loggedIn: false
-                });
+
+        const checkURL = new URL('user/get_role', Globals.currentHost);
+        axios.post(checkURL)
+        .then(response => {
+            const verified = response && response.status === 200;
+            if(verified) {
+                localStorage.role = response.data.toLowerCase();
+                this.setState({ role: response.data.toLowerCase() });
+            } else {
+                
+            }
+        })
+        .catch((err) => { // Token expired or invalid, or server is down
+            this.setState({
+                loggedIn: false
             });
-        }
+        });
     }
 
 
@@ -124,12 +127,16 @@ class Main extends React.Component {
             this.setState({
                 loggedIn: verified
             }, () => {
+                this.getRoleDebounced();
                 this.refreshNav();
             });
         })
         .catch((err) => { // Token expired or invalid, or server is down
+
+            localStorage.removeItem("role");
             this.setState({
-                loggedIn: false
+                loggedIn: false,
+                role: null
             });
         });
         // console.log("Main check");
@@ -147,8 +154,6 @@ class Main extends React.Component {
     }
 
     refreshNav() {
-        this.checkCurator();
-
         this.setState({
             loggedOutDisplay: 'display-none',
             loggedInDisplay: 'display-none'
@@ -156,12 +161,13 @@ class Main extends React.Component {
         if(this.state.loggedIn){
             // console.log("Logout etc. displaying");
             this.setState({
-                loggedInDisplay: ''
+                loggedInDisplay: '',
             });
         } else {
             // console.log("Login button displaying");
             this.setState({
-                loggedOutDisplay: ''
+                loggedOutDisplay: '',
+                role: null
             });
         }
         
@@ -208,7 +214,7 @@ class Main extends React.Component {
 
                 <div id="top-menu" className="no-select">
                     
-                    {this.state.menuItems}
+                    {this.showMenuItems()}
 
                     <span id="profile-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                         <Link className="top-menu-link" to="/profile">Profile</Link>
@@ -316,161 +322,41 @@ class Main extends React.Component {
         )
     }
 
+    showMenuItems = () => {
+        let role = this.state.role;
 
-    /** Checks all possible relevant roles */
-    checkCurator = () => {
-        
-        if(this.state.loggedIn === false) { // No need for axios call
-            this.setState({
-                admin: false
-            }, () =>{
-                this.getCuratorMenuItems();
-            })
-        } else {
-            let checkUrl = new URL('user/checkAdmin', Globals.currentHost);
-            let result = false;
-            axios({
-                url: checkUrl,
-                method: 'POST'
-            }).then(response => {
-                result = response && response.status === 200;
-                this.setState({
-                    admin: result
-                }, () => {
-                    this.getCuratorMenuItems();
-                });
-            }).catch(error => { // 401/403
-                this.setState({
-                    admin: false
-                }, () => {
-                    this.getCuratorMenuItems();
-                });
-            });
+        if(!role) {
+            if(localStorage.role) {
+                this.setState({ role: localStorage.role });
+            } else if(this.state.loggedIn) {
+                this.getRoleDebounced();
+            }
         }
 
-        if(this.state.loggedIn === false) { // No need for axios call
-            this.setState({
-                curator: false
-            }, () =>{
-                this.getCuratorMenuItems();
-            })
-        } else {
-            let checkUrl = new URL('user/checkCurator', Globals.currentHost);
-            let result = false;
-            axios({
-                url: checkUrl,
-                method: 'POST'
-            }).then(response => {
-                result = response && response.status === 200;
-                this.setState({
-                    curator: result
-                }, () => {
-                    this.getCuratorMenuItems();
-                });
-            }).catch(error => { // 401/403
-                this.setState({
-                    curator: false
-                }, () => {
-                    this.getCuratorMenuItems();
-                });
-            });
-        }
-
-        if(this.state.loggedIn === false) { // No need for axios call
-            this.setState({
-                approver: false
-            }, () =>{
-                this.getCuratorMenuItems();
-            })
-        } else {
-            let checkUrl = new URL('user/checkApprover', Globals.currentHost);
-            let result = false;
-            axios({
-                url: checkUrl,
-                method: 'POST'
-            }).then(response => {
-                result = response && response.status === 200;
-                this.setState({
-                    approver: result
-                }, () => {
-                    this.getCuratorMenuItems();
-                });
-            }).catch(error => { // 401/403
-                this.setState({
-                    approver: false
-                }, () => {
-                    this.getCuratorMenuItems();
-                });
-            });
-        }
-
-
-    }
-
-    adminLink = () => {
-        if(this.state.admin) {
-            return <Link to="/admin">Admin Panel</Link>
-        }
-    }
-
-    getCuratorMenuItems = () => {
-        if(this.state.curator === true) {
-            localStorage.curator = true;
-
-            this.setState({
-                menuItems: 
-                <span id="admin-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-                    
-                    <div id="admin-dropdown" className="main-menu-link dropdown">
-                        <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
-                            Admin
-                        </Link>
-                        <i className="fa fa-caret-down"></i>
-                        <div className="dropdown-content">
-                            {this.adminLink()}
-                            <Link to="/importer">Import New Documents</Link>
-                            <Link to="/adminFiles">Find Missing Files</Link>
-                            <Link to="/approve">Approve Users</Link>
-                            <Link to="/pre_register">Pre-Register Users</Link>
-                            <Link to="/interaction_logs">Interaction Logs</Link>
-                            <Link to="/search_logs">Search Logs</Link>
-                            <Link to="/abouthelpcontents">Database Contents</Link>
-                            <Link to="/stats">Content Statistics</Link>
-                            <Link to="/stat_tables">Stat tables</Link>
-                        </div>
+        return (
+            <span id="admin-span" hidden={(!role || role === 'user')} className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                
+                <div id="admin-dropdown" className="main-menu-link dropdown">
+                    <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
+                        Admin
+                    </Link>
+                    <i className="fa fa-caret-down"></i>
+                    <div className="dropdown-content">
+                        <Link to="/admin" hidden={!(role === 'admin')}>Admin Panel</Link>
+                        <Link to="/importer" hidden={!(role === 'curator' || role === 'admin')}>Import New Documents</Link>
+                        <Link to="/adminFiles" hidden={!(role === 'curator' || role === 'admin')}>Find Missing Files</Link>
+                        <Link to="/approve">Approve Users</Link>
+                        <Link to="/pre_register">Pre-Register Users</Link>
+                        <Link to="/interaction_logs">Interaction Logs</Link>
+                        <Link to="/search_logs">Search Logs</Link>
+                        <Link to="/abouthelpcontents">Database Contents</Link>
+                        <Link to="/stats">Content Statistics</Link>
+                        <Link to="/stat_tables">Stat tables</Link>
                     </div>
-                </span>
-            });
-        } else if(this.state.approver === true) {
-            
-            localStorage.approver = true;
+                </div>
 
-            this.setState({
-                menuItems: 
-                <span id="admin-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-                    
-                    <div id="admin-dropdown" className="main-menu-link dropdown">
-                        <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
-                            Admin
-                        </Link>
-                        <i className="fa fa-caret-down"></i>
-                        <div className="dropdown-content">
-                            <Link to="/approve">Approve Users</Link>
-                            <Link to="/pre_register">Pre-Register Users</Link>
-                            <Link to="/interaction_logs">Interaction Logs</Link>
-                            <Link to="/search_logs">Search Logs</Link>
-                            <Link to="/abouthelpcontents">Database Contents</Link>
-                            <Link to="/stats">Content Statistics</Link>
-                            <Link to="/stat_tables">Stat tables</Link>
-                        </div>
-                    </div>
-                </span>
-            });
-        } else {
-            this.setState({
-                menuItems: <></>
-            });
-        }
+            </span>
+        );
     }
 
     
@@ -480,8 +366,6 @@ class Main extends React.Component {
             currentPage: window.location.pathname
         });
         this.check();
-        this.checkCurator();
-        this.getRole();
     }
 }
 
