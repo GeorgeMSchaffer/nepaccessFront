@@ -286,7 +286,7 @@ export default class SearchProcessResult extends React.Component {
         </div>)
     }
     showRecordLink = (id,type) => {
-        if(localStorage.role !== 'user') {
+        if(Globals.approverOrHigher()) {
             return <a className="link" target="_blank" rel="noopener noreferrer" href={`./record-details?id=${id}`}>
                 {this.showDocumentType(type)}
             </a>;

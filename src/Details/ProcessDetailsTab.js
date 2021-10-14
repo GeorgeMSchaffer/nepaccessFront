@@ -217,7 +217,7 @@ export default class ProcessDetailsTab extends React.Component {
     }
 
     showRecordLine = (id,type,date) => {
-        if(localStorage.role !== 'user') {
+        if(Globals.approverOrHigher()) {
             return <a href={window.location.href.split("/")[0]+"record-details?id="+id} target="_blank" rel="noreferrer">
                 <span className='modal-title'>
                     <b>{type} : {date}</b>

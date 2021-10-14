@@ -197,7 +197,7 @@ export default class InteractionLogs extends React.Component {
     }
 
     render() {
-        if(localStorage.role  && localStorage.role !== 'user') {
+        if(Globals.approverOrHigher()) {
             return (
                 <div id="admin-files" className="padding-all content">
 
