@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+
 import './User/login.css';
 import Globals from './globals.js';
 import DownloadFile from './DownloadFile.js';
@@ -162,7 +162,7 @@ export default class SearchProcessResult extends React.Component {
                 return (
                     <div>
                         {combined.map((combo, index) => {
-                            if(index == 0) {
+                            if(index === 0) {
                                 return (<>
                                     {this.showFragment(_id,combo[0],combo[1],index)}
                                     <div className="margins">

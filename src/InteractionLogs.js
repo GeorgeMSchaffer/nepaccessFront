@@ -1,15 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
-import Select from 'react-select';
-
 import Globals from './globals.js';
 
 import { ReactTabulator } from 'react-tabulator';
-
-const getRoutes = [
-    { label: "interaction/get_all_combined", value: "interaction/get_all_combined" },
-];
 
 let options = Globals.tabulatorOptions;
 

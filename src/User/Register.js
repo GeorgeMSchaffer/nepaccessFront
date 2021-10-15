@@ -588,7 +588,7 @@ class Register extends React.Component {
                                 onChange={this.onChangeDummy}>
                             </input>
                             <span>I have read and agreed to the&nbsp;
-                                <a href="https://about.nepaccess.org/privacy-policy/#terms-of-use" target="_blank">
+                                <a href="https://about.nepaccess.org/privacy-policy/#terms-of-use" target="_blank" rel="noreferrer">
                                     Terms of Use
                                 </a>
                             </span>
