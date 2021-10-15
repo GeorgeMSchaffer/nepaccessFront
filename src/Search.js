@@ -98,7 +98,14 @@ class Search extends React.Component {
 
     doSearchFromParams = () => {
         var queryString = Globals.getParameterByName("q");
-        if(queryString){
+        if(queryString === null) {
+            // No query param: Do nothing
+        } else if(queryString === '') {
+            // Blank query param: Launch no-term search
+            this.doSearch("");
+        }
+        else if(queryString){
+            // Query terms: Handle proximity dropdown logic, launch search
             let proximityValues = this.handleProximityValues(queryString);
 
             this._lastSearchTerms = queryString;
@@ -113,15 +120,9 @@ class Search extends React.Component {
             }, () => {
                 if(this.state.titleRaw){
                     this.debouncedSearch(this.state);
-                } else {
-                    // Option: Search on load to get all results (no text/highlighting)
-                    this.doSearch("");
                 }
             });
-        } else {
-            // Option: Search on load to get all results (no text/highlighting)
-            this.doSearch("");
-        }
+        } 
     }
 
     handleProximityValues = (string) => {
