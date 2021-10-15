@@ -52,6 +52,7 @@ const Globals = {
         });
     },
 
+    /** Returns ?q= value, or '' if no value, or null if no ?q param at all */
     getParameterByName(name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[[\]]/g, '\\$&');
