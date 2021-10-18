@@ -67,14 +67,15 @@ export default class SearchLogs extends React.Component {
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (!responseOK) { // impossible? (either 200 or error?)
-                // this.props.history.push('/');
+                this.props.history.push('/');
             } else {
                 this.setState({authorized: true});
             }
         }).catch(error => {
-            this.setState({
-                networkError: error.message
-            });
+            this.props.history.push('/');
+            // this.setState({
+            //     networkError: error.message
+            // });
         })
 
         // time to get the stats
@@ -277,42 +278,43 @@ export default class SearchLogs extends React.Component {
                 </div>
             );
         } else {
-        return (
-            <div className="charts-holder padding-all">
+            return (
+                <div className="charts-holder padding-all">
 
-                <div><label className="errorLabel">{this.state.networkError}</label></div>
+                    <div><label className="errorLabel">{this.state.networkError}</label></div>
 
-                <Select id="chart-picker" classNamePrefix="react-select" name="chart" isSearchable 
-                        // styles={customStyles}
-                        options={chartOptions} 
-                        onChange={this.onDropdownChange}
-                        value={this.state.chartOption}
-                        placeholder="Type or select" 
-                />
-                
-                <hr />
+                    <Select id="chart-picker" classNamePrefix="react-select" name="chart" isSearchable 
+                            // styles={customStyles}
+                            options={chartOptions} 
+                            onChange={this.onDropdownChange}
+                            value={this.state.chartOption}
+                            placeholder="Type or select" 
+                    />
+                    
+                    <hr />
 
-                <ReactTabulator
-                    ref={this.my_table}
-                    data={this.state.searches}
-                    columns={columns}
-                    options={options}
-                    rowClick={(e, row) => {
-                        const _terms = row.getData().terms;
-                        navigator.clipboard.writeText(_terms);
-                    }}
-                />
+                    <ReactTabulator
+                        ref={this.my_table}
+                        data={this.state.searches}
+                        columns={columns}
+                        options={options}
+                        rowClick={(e, row) => {
+                            const _terms = row.getData().terms;
+                            navigator.clipboard.writeText(_terms);
+                        }}
+                    />
 
-                <label>Click on a row to copy terms to clipboard.</label>
+                    <label>Click on a row to copy terms to clipboard.</label>
 
-                <button 
-                    className="button"
-                    onClick={this.downloadResults}
-                >
-                    Download all searches as .csv
-                </button>
+                    <button 
+                        className="button"
+                        onClick={this.downloadResults}
+                    >
+                        Download all searches as .csv
+                    </button>
 
-            </div>);
+                </div>
+            );
         }
     }
 
