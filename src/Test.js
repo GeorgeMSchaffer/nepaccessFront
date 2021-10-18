@@ -2,6 +2,8 @@ import React from 'react';
 import {Helmet} from "react-helmet";
 import ReCAPTCHA from "react-google-recaptcha";
 
+import FlipNumbers from 'react-flip-numbers';
+
 import axios from 'axios';
 
 import Globals from './globals.js';
@@ -14,7 +16,9 @@ export default class Test extends React.Component {
         super(props);
 		this.state = {
             captcha: '',
-            approver: false
+            approver: false,
+            total: 12345,
+            num: 0
         };
 
         let checkUrl = new URL('user/checkApprover', Globals.currentHost);
@@ -72,6 +76,16 @@ export default class Test extends React.Component {
         console.log("Log", val);
     }
 
+    showFlipNum = () => {
+        if(this.state.num) {
+            return <FlipNumbers 
+                id="flipNumbers"
+                height={20} width={20} color="white" background="rgba(0,0,0,0.4)" 
+                play={true} duration={0} delay={0} numbers={`${this.state.num}`} 
+            />;
+        }
+    }
+
     render () {
         if(this.state.approver) {
             return (
@@ -80,11 +94,13 @@ export default class Test extends React.Component {
                         <meta charSet="utf-8" />
                         <title>Test - NEPAccess</title>
                         <link rel="canonical" href="https://nepaccess.org/test" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
                     </Helmet>
+                    
+
                     <span>test</span>
-                    <div id="agency-svg-holder">
-                        <button>Close</button>
-                    </div>
+                    {this.showFlipNum()}
+
                     {/* <span>test</span>
                     <div>
                         <ReCAPTCHA
@@ -95,13 +111,33 @@ export default class Test extends React.Component {
                         />
                         <button type='button' onClick={this.testClick}>Submit</button>
                     </div> */}
+                    
                 </div>
             )
         } else {
-            return <div className="content">401</div>
+            return <div className="content">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Test - NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/test" />
+                    <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                </Helmet>
+                401
+            </div>
         }
     }
     
-	componentDidMount() {
-	}
+    componentDidMount() {
+        this.timer = setInterval(() => {
+            if(this.state.num < this.state.total) {
+                this.setState({
+                  num: this.state.num + 1,
+                });
+            }
+        }, 10);
+      }
+    
+      componentWillUnmount() {
+        clearInterval(this.timer);
+      }
 }
