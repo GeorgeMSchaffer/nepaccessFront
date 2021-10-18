@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 
 import axios from 'axios';
 import Select from 'react-select';
@@ -127,6 +128,11 @@ export default class AdminPanel extends React.Component {
         if(this.state.admin) {
             return (
                 <div className="content">
+                    <Helmet>
+                        <title>NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/admin" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                    </Helmet>
                     <label className="errorLabel">{this.state.networkError}</label>
                     <br />
                     {this.showDropdown()}
@@ -134,7 +140,14 @@ export default class AdminPanel extends React.Component {
                 </div>
             );
         } else {
-            return <div className="content">401</div>
+            return <div className="content">
+                <Helmet>
+                    <title>NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/admin" />
+                    <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                </Helmet>
+                401
+            </div>
         }
 
         

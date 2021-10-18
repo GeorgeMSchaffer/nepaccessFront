@@ -386,6 +386,11 @@ export default class PreRegister extends React.Component {
         if(this.state.approver) {
             if(this.state.registered) {
                 return (<div id="register-form">
+                    <Helmet>
+                        <title>NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/pre_register" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                    </Helmet>
                     <div className="register-form-input-group">
                         <div className="register-form-group">
                             <label className='successLabel large'>
@@ -429,9 +434,9 @@ export default class PreRegister extends React.Component {
                 return (
                     <div id="register-form">
                         <Helmet>
-                            <meta charSet="utf-8" />
-                            <title>Pre-register - NEPAccess</title>
-                            <link rel="canonical" href="https://nepaccess.org/register" />
+                            <title>NEPAccess</title>
+                            <link rel="canonical" href="https://nepaccess.org/pre_register" />
+                            <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
                         </Helmet>
                         <div className="note">
                             Pre-register beta tester
@@ -563,7 +568,14 @@ export default class PreRegister extends React.Component {
                 )
             }
         } else {
-            return <div className="content">401</div>
+            return <div className="content">
+                <Helmet>
+                    <title>NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/pre_register" />
+                    <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                </Helmet>
+                401
+            </div>
         }
     }
 

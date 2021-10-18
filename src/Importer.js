@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Helmet} from 'react-helmet';
 
 import Dropzone from 'react-dropzone';
 
@@ -1276,6 +1277,11 @@ class Importer extends Component {
 
         return (
             <div className="form content">
+                <Helmet>
+                    <title>NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/import" />
+                    <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                </Helmet>
                 
                 <div className="note">
                     Import New Data

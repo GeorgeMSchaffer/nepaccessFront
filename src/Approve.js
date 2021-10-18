@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import Globals from './globals.js';
@@ -202,6 +203,11 @@ export default class Approve extends React.Component {
         if(this.state.approver) {
             return (
                 <div id="approve">
+                    <Helmet>
+                        <title>NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/approve" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                    </Helmet>
                     <div className="instructions"><span className="bold">
                         Instructions: 
                         Hold shift and drag rows to select/deselect multiple users, or click row to select/deselect.
@@ -245,7 +251,14 @@ export default class Approve extends React.Component {
                 </div>
             );
         } else {
-            return <div id="approve">401</div>
+            return <div id="approve">
+                <Helmet>
+                    <title>NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/approve" />
+                    <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                </Helmet>
+                401
+            </div>
         }
     }
 

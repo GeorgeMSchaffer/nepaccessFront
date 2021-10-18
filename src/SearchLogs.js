@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 import axios from 'axios';
 import Select from 'react-select';
 import Globals from './globals.js';
@@ -257,10 +258,21 @@ export default class SearchLogs extends React.Component {
 
         if(!this.state.authorized) {
             return <div className="content">
+                <Helmet>
+                    <title>NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/search_logs" />
+                    <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                </Helmet>
                 <label className="errorLabel">{this.state.networkError}</label>
             </div>
         } else if(this.state.chartOption.value === "Search Count by Terms") {
-            return (<div className="charts-holder">
+            return (
+                <div className="charts-holder">
+                    <Helmet>
+                        <title>NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/search_logs" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                    </Helmet>
                     <div><label className="errorLabel">{this.state.networkError}</label></div>
 
                     <Select id="chart-picker" classNamePrefix="react-select" name="chart" isSearchable 
@@ -280,6 +292,11 @@ export default class SearchLogs extends React.Component {
         } else {
             return (
                 <div className="charts-holder padding-all">
+                    <Helmet>
+                        <title>NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/search_logs" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                    </Helmet>
 
                     <div><label className="errorLabel">{this.state.networkError}</label></div>
 
