@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import Select from 'react-select';
@@ -240,6 +241,11 @@ export default class StatTables extends React.Component {
         if(this.state.approver) {
             return (
                 <div className="content padding-all">
+                    <Helmet>
+                        <title>NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/stat_tables" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                    </Helmet>
 
                     <div className="loader-holder">
                         <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
@@ -282,7 +288,14 @@ export default class StatTables extends React.Component {
                 </div>
             );
         } else {
-            return <div className="content">401</div>;
+            return <div className="content">
+                <Helmet>
+                    <title>NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/stat_tables" />
+                    <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                </Helmet>
+                401
+            </div>;
         }
         
     }

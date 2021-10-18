@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import Globals from './globals.js';
@@ -194,6 +195,11 @@ export default class InteractionLogs extends React.Component {
         if(Globals.approverOrHigher()) {
             return (
                 <div id="admin-files" className="padding-all content">
+                    <Helmet>
+                        <title>NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/interaction_logs" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                    </Helmet>
 
                     {/* <Select
                         className="block"
@@ -237,7 +243,14 @@ export default class InteractionLogs extends React.Component {
                 </div>
             );
         } else {
-            return <div className="content">401</div>;
+            return <div className="content">
+                <Helmet>
+                    <title>NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/interaction_logs" />
+                    <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
+                </Helmet>
+                401
+            </div>;
         }
         
     }
