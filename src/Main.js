@@ -25,9 +25,9 @@ import Verify from './User/Verify.js';
 import AboutNepa from './iframes/AboutNepa.js';
 import AboutNepaccess from './iframes/AboutNepaccess.js';
 import People from './iframes/People.js';
-import AboutSearchTips from './iframes/AboutSearchTips.js';
-import AboutSearchTips2 from './iframes/AboutSearchTips2.js';
-import Media from './iframes/Media.js';
+import SearchTips from './iframes/SearchTips.js';
+import AvailableDocuments from './iframes/AvailableDocuments.js';
+import Videos from './iframes/Videos.js';
 import PrivacyPolicy from './iframes/PrivacyPolicy.js';
 import DisclaimerTermsOfUse from './iframes/DisclaimerTermsOfUse.js';
 
@@ -235,33 +235,33 @@ class Main extends React.Component {
                         Search
                     </Link>
                     <div id="about-dropdown-2" className="main-menu-link dropdown">
-                        <Link currentpage={(this.state.currentPage==="/abouthelp" || this.state.currentPage==="/abouthelp2").toString()} id="about-button-2" className="main-menu-link drop-button" to="/abouthelp">
+                        <Link currentpage={(this.state.currentPage==="/search-tips" || this.state.currentPage==="/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
                             Search Tips
                         </Link>
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
-                            <Link to="/abouthelp">Search Tips</Link>
-                            <Link to="/abouthelp2">Available Files</Link>
+                            <Link to="/search-tips">Search Tips</Link>
+                            <Link to="/available-documents">Available Files</Link>
                         </div>
                     </div>
-                    <Link currentpage={(this.state.currentPage==="/aboutnepa").toString()} className="main-menu-link" to="/aboutnepa">
+                    <Link currentpage={(this.state.currentPage==="/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
                         About NEPA
                     </Link>
                     <div id="about-dropdown" className="main-menu-link dropdown">
-                        <Link currentpage={(this.state.currentPage==="/aboutnepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/media").toString()} id="about-button" className="main-menu-link drop-button" to="/aboutnepaccess">
+                        <Link currentpage={(this.state.currentPage==="/about-nepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/videos").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
                             About NEPAccess
                         </Link>
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
-                            <Link to="/aboutnepaccess">About NEPAccess</Link>
-                            <Link to="/media">
+                            <Link to="/about-nepaccess">About NEPAccess</Link>
+                            <Link to="/videos">
                                 Videos
                             </Link>
                             <Link to="/people">People</Link>
                         </div>
                     </div>
                     
-                    {/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
+                    {/* <Link currentpage={(this.state.currentPage==="/nepaccess-future").toString()} className="main-menu-link" to="/nepaccess-future">
                         Future
                     </Link> */}
                     <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
@@ -282,17 +282,17 @@ class Main extends React.Component {
                 <Route path="/logout" component={Logout}/>
 
                 <Route path="/search" component={App}/>
-                <Route path="/aboutnepa" component={AboutNepa}/>
-                <Route path="/aboutnepaccess" component={AboutNepaccess}/>
+                <Route path="/about-nepa" component={AboutNepa}/>
+                <Route path="/about-nepaccess" component={AboutNepaccess}/>
                 <Route path="/people" component={People}/>
-                <Route path="/abouthelp" component={AboutSearchTips}/>
-                <Route path="/abouthelp2" component={AboutSearchTips2}/>
+                <Route path="/search-tips" component={SearchTips}/>
+                <Route path="/available-documents" component={AvailableDocuments}/>
                 <Route path="/abouthelpcontents" component={AboutHelpContents}/>
                 <Route path="/stats" component={AboutStats}/>
-                <Route path="/media" component={Media}/>
+                <Route path="/videos" component={Videos}/>
 
                 <Route path="/contact" component={Contact}/>
-                <Route path="/future" component={Future}/>
+                <Route path="/nepaccess-future" component={Future}/>
 
                 <Route path="/record-details" component={RecordDetailsTab}/>
                 <Route path="/process-details" component={ProcessDetailsTab}/>

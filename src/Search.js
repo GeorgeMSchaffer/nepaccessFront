@@ -470,7 +470,7 @@ class Search extends React.Component {
         // + "<p class=tooltip-line><span class=tooltip-connector>OR</span> (all caps) to search for <span class=bold>any</span> of those words.</p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>NOT</span> (all caps) to <span class=bold>exclude</span> a word or phrase.</p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>&quot; &quot;</span> Surround words with quotes (&quot; &quot;) to search for an <span class=bold>exact phrase.</span></p>"
-        // + "<p class=tooltip-line><span class=tooltip-connector></span> <a href=abouthelp>More search tips.</a></p>";
+        // + "<p class=tooltip-line><span class=tooltip-connector></span> <a href=search-tips>More search tips.</a></p>";
 
         const proximityOptions = [
             {value: 0, label: 'exact phrase'},
@@ -518,7 +518,7 @@ class Search extends React.Component {
         //         + "<td>&nbsp;</td><td>&nbsp;</td>"
         //     + "</tr>"
         //     + "<tr class=tooltip-line><td class=tooltip-connector></td>"
-        //         + "<td><a href=abouthelp target=_blank rel=noopener noreferrer>More search tips.</a></td>" 
+        //         + "<td><a href=search-tips target=_blank rel=noopener noreferrer>More search tips.</a></td>" 
         //     + "</tr>"
         // + "</tbody></table>";
 
@@ -578,7 +578,7 @@ class Search extends React.Component {
                                             <td>&nbsp;</td><td>&nbsp;</td>
                                         </tr>
                                         <tr className="tooltip-line"><td className="tooltip-connector"></td>
-                                            <td><a href="abouthelp" target="_blank" rel="noopener noreferrer">More search tips.</a></td> 
+                                            <td><a href="search-tips" target="_blank" rel="noopener noreferrer">More search tips.</a></td> 
                                         </tr>
                                     </tbody></table>
                                     </>
@@ -608,7 +608,7 @@ class Search extends React.Component {
                                     from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
                                     More files are being added continuously.
                                         <div className="text-center margin-top">
-                                            <a href="abouthelp2" target="_blank" rel="noopener noreferrer">Available files</a>
+                                            <a href="available-files" target="_blank" rel="noopener noreferrer">Available files</a>
                                         </div>
                                     </div>}
                                 >
