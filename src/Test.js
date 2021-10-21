@@ -96,7 +96,7 @@ export default class Test extends React.Component {
                         <meta charSet="utf-8" />
                         <title>Test - NEPAccess</title>
                         <link rel="canonical" href="https://nepaccess.org/test" />
-                        {/* <meta name="robots" content="noindex, nofollow" data-react-helmet="true" /> */}
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
                     </Helmet>
                     
 
