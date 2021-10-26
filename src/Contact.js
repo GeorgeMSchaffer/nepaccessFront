@@ -313,6 +313,7 @@ export default class Contact extends React.Component {
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>Contact - NEPAccess</title>
+                        <meta name="description" content="University of Arizona, Udall Center for Studies in Public Policy, 803 E. First St. Tucson, Arizona 85719 USA." />
                         <link rel="canonical" href="https://nepaccess.org/contact" />
                     </Helmet>
                     <div className="note">
