@@ -9,6 +9,7 @@ export default class SearchTips extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Search Tips - NEPAccess</title>
+                    <meta name="description" content="To make an advanced search in NEPAccess.org, use these keyboard symbols to narrow or expand your search within the search box." />
                     <link rel="canonical" href="https://nepaccess.org/search-tips" />
                 </Helmet>
                 

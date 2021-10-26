@@ -39,6 +39,7 @@ class Landing extends React.Component {
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>NEPAccess</title>
+                <meta name="description" content="Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents." />
                 <link rel="canonical" href="https://nepaccess.org/" />
             </Helmet>
           {/* <div id="landing-images">

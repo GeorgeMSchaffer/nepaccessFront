@@ -1134,6 +1134,7 @@ export default class App extends React.Component {
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>Search - NEPAccess</title>
+                        <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." />
                         <link rel="canonical" href="https://nepaccess.org/search" />
                     </Helmet>
                     <Search 

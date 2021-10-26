@@ -9,6 +9,8 @@ export default class AboutNepaccess extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>About NEPAccess</title>
+                    <meta name="description" content="NEPAccess allows anyone to search, download, and analyze thousands of NEPA environmental review documents, from Notice of Intent, through the Environmental Impact Statement, to the final Record of Decision." />
+                    
                     <link rel="canonical" href="https://nepaccess.org/about-nepaccess" />
                 </Helmet>
                 

@@ -10,6 +10,7 @@ export default class Videos extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Videos - NEPAccess</title>
+                    <meta name="description" content="Short videos explain why we created NEPAccess.org, the work done by students building the database, and their perspectives on being on a high-level team." />
                     <link rel="canonical" href="https://nepaccess.org/videos" />
                 </Helmet>
 

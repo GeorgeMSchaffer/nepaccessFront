@@ -11,6 +11,7 @@ export default class AboutNepa extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>About NEPA - NEPAccess</title>
+                    <meta name="description" content="The National Environmental Policy Act (NEPA) of 1969 created a new approach that brought science and the public into federal environmental decision-making." />
                     <link rel="canonical" href="https://nepaccess.org/about-nepa" />
                 </Helmet>
                 
