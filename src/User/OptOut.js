@@ -137,6 +137,7 @@ export default class OptOut extends React.Component {
                         <meta charSet="utf-8" />
                         <title>Opt out - NEPAccess</title>
                         <link rel="canonical" href="https://nepaccess.org/opt_out" />
+                        <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
                     </Helmet>
 
                     <div className="form">

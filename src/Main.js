@@ -10,7 +10,7 @@ import App from './App';
 import ProcessDetailsTab from './Details/ProcessDetailsTab.js';
 import RecordDetailsTab from './Details/RecordDetailsTab.js';
 
-import OptOut from './User/OptOut';
+// import OptOut from './User/OptOut';
 
 import Login from './User/Login.js';
 import Logout from './User/Logout.js';
@@ -273,7 +273,7 @@ class Main extends React.Component {
             </div>
             <Switch>
                 <Route path="/profile" component={UserDetails}/>
-                <Route path="/opt_out" component={OptOut}/>
+                {/* <Route path="/opt_out" component={OptOut}/> */}
                 <Route path="/login" component={Login}/>
                 <Route path="/register" component={Register}/>
                 <Route path="/pre_register" component={PreRegister}/>
