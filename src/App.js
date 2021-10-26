@@ -208,9 +208,6 @@ export default class App extends React.Component {
     buildData = (data) => {
         let processResults = {};
         let newUniqueKey = -1;
-        
-        let _title = data[0].title;
-        let _latestDate = data[0].registerDate;
 
         data.forEach(datum => {
             // Use process IDs as keys

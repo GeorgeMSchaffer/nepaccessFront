@@ -9,7 +9,7 @@ import IframeResizer from 'iframe-resizer-react';
 
 // import Globals from './globals.js';
 
-const recaptchaRef = React.createRef();
+// const recaptchaRef = React.createRef();
 
 export default class Test extends React.Component {
 

@@ -129,7 +129,7 @@ class Search extends React.Component {
         let valuesResult = {_inputMessage:"", disableValue: true};
 
         // Disable prox dropdown if conflicting characters in terms
-        if( string.match(/["\?\*~]+/) ) {
+        if( string.match(/["?*~]+/) ) {
             // _inputMessage = "Wildcard, phrase or proximity search character found in terms: " 
             //     + userInput.match(/["\?\*~]+/)[0][0]
             //     + ".  Disabled proximity search dropdown to prevent unpredictable results."

@@ -9,6 +9,7 @@ import Globals from '../globals.js';
 
 import './optout.css';
 
+/** No one ever opted out, so this page was never used and should now be irrelevant. */
 export default class OptOut extends React.Component {
     
     constructor(props) {
@@ -106,7 +107,7 @@ export default class OptOut extends React.Component {
     //     return invalid;
     // }
     invalidEmail = () => {
-        let emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let invalid = !(emailPattern.test(this.state.optOutUser.email));
         let message = "";
 

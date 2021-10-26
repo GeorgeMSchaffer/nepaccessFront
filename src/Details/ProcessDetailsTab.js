@@ -204,7 +204,9 @@ export default class ProcessDetailsTab extends React.Component {
                         id={_id}
                         filename={_filename}/>
                 </span>
-            } 
+            } else {
+                return <></>
+            }
         });
     }
 
