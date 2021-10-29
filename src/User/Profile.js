@@ -10,14 +10,29 @@ import './profile.css';
 // TODO: Move this to its own "change password" component and link to it from userdetails?
 
 class UserDetails extends React.Component {
-    state = {
-        newPassword: '',
-        oldPassword: '',
-        currentChecked: "password",
-        newChecked: "password",
-        successLabel: '',
-        newPasswordError: '',
-        oldPasswordError: ''
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            newPassword: '',
+            oldPassword: '',
+            currentChecked: "password",
+            newChecked: "password",
+            successLabel: '',
+            successLabelPassword: '',
+            newPasswordError: '',
+            oldPasswordError: '',
+            userDetails: {
+                username: '',
+                firstName: '',
+                lastName: '',
+                affiliation: '',
+                organization: '',
+                jobTitle: ''
+            },
+            disabled: true,
+            disabledPassword: true
+        }
     }
 
     changePassword = () => {
@@ -45,7 +60,7 @@ class UserDetails extends React.Component {
             if(success){
                 // if HTTP 200 (ok), clear fields and display success
                 this.setState({
-                    successLabel: "Password changed.",
+                    successLabelPassword: "Password changed.",
                     oldPassword: '',
                     newPassword: ''
                 });
@@ -56,7 +71,7 @@ class UserDetails extends React.Component {
         }).catch(error => { // 401
             console.error('error message', error);
             this.setState({
-                successLabel: "Password was not changed."
+                successLabelPassword: "Password was not changed."
             });
             this.setState({
                 oldPasswordError: "Password incorrect."
@@ -91,7 +106,7 @@ class UserDetails extends React.Component {
         // Run everything and all appropriate errors will show at once.
         let test1 = this.invalidNewPassword();
         let test2 = this.invalidOldPassword();
-        this.setState({ disabled: test1 || test2 });
+        this.setState({ disabledPassword: test1 || test2 });
         return (test1 || test2 );
     }
     // TODO: Enforce password length of ??? (maybe 50-100 characters)
@@ -101,8 +116,7 @@ class UserDetails extends React.Component {
         if(invalid){
             message = "Password must be at least 4 printable characters.";
         }
-        this.setState({ newPasswordError: message });
-        this.setState({ disabled: invalid });
+        this.setState({ newPasswordError: message, disabledPassword: invalid });
         return invalid;
     }
     invalidOldPassword(){
@@ -112,11 +126,9 @@ class UserDetails extends React.Component {
         if(invalid){
             message = "Password invalid. Cannot be empty, must be printable characters.";
         }
-        this.setState({ oldPasswordError: message });
-        this.setState({ disabled: invalid });
+        this.setState({ oldPasswordError: message, disabledPassword: invalid }); 
         return invalid;
     }
-
 
 	onNewPasswordChange = (evt) => {
         this.setState({ newPassword: evt.target.value }, () => { this.invalidNewPassword(); });
@@ -124,10 +136,85 @@ class UserDetails extends React.Component {
 	onOldPasswordChange = (evt) => {
         this.setState({ oldPassword: evt.target.value }, () => { this.invalidOldPassword(); });
     }
+    
+    // Special change handler for userDetails {} variables, also triggers sanity checking
+    onChangeDetails = (evt) => {
+        if(evt && evt.target){
+            let targetName = evt.target.name;
+            let targetValue = evt.target.value;
+            this.setState(prevState => {
+                let userDetails = { ...prevState.userDetails };  // shallow copy of state variable
+                userDetails[targetName] = targetValue;                
+                return { userDetails };
+            }, () =>{
+                this.checkFields();
+            });
+        }
+    }
+
+    /** Validates first/last; title/org can be blank; not doing any others currently. */
+    checkFields = () => {
+        this.invalidFirst();
+        this.invalidLast();
+    }
+    
+    invalidFirst = () => {
+        let usernamePattern = /[a-zA-Z\s]/;
+        let invalid = !this.state.userDetails.firstName || !(usernamePattern.test(this.state.userDetails.firstName.trim()));
+        let message = "";
+        if(invalid){
+            message = "Cannot be empty, alphabetical characters only.";
+            message = "*";
+        }
+        this.setState({ firstNameError: message, disabled: invalid });
+        return invalid;
+    }
+    invalidLast = () => {
+        let usernamePattern = /[a-zA-Z\s]/;
+        let invalid = !this.state.userDetails.lastName || !(usernamePattern.test(this.state.userDetails.lastName.trim()));
+        let message = "";
+        if(invalid){
+            message = "Cannot be empty, alphabetical characters only.";
+            message = "*";
+        }
+        this.setState({ lastNameError: message, disabled: invalid });
+        return invalid;
+    }
+
+
+    get = (endPath, stateField) => {
+        let getUrl = Globals.currentHost + endPath;
+        
+        axios.get(getUrl, {
+            params: {
+                
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                return response.data;
+            } else {
+                return null;
+            }
+        }).then(parsedJson => { 
+            console.log(parsedJson);
+            if(parsedJson){
+                this.setState({
+                    [stateField]: parsedJson,
+                    ready: true
+                }, () => {
+                    console.log(this.state);
+                });
+            } else { 
+                console.log("Null/404: " + endPath);
+            }
+        }).catch(error => {
+            console.error(error);
+        });
+    }
 
 
     check = () => { // check if JWT is expired/invalid
-				
 		let verified = false;
 
 		let checkURL = new URL('test/check', Globals.currentHost);
@@ -141,61 +228,193 @@ class UserDetails extends React.Component {
             if(!result){
                 this.props.history.push('/login');
             }
-        }).catch(error => {
-            console.error('Server is probably down.', error);
+        }).catch(error => { // probably 403 (not authorized)
+            // TODO: Catch indication that server is down
+            this.props.history.push('/login');
         });
 	}
+
+    /** Push changes to this user details */
+    setDetails = () => {
+        document.body.style.cursor = 'wait';
+        this.setState({ 
+            disabled: true
+        });
+        
+        let postUrl = new URL('user/details/change_details', Globals.currentHost);
+
+        const dataForm = new FormData();
+        let dataToPass = this.state.userDetails;
+        
+        dataForm.append('jsonDetails', JSON.stringify(dataToPass));
+
+        axios({ 
+            method: 'POST',
+            url: postUrl,
+            data: dataForm,
+            headers:{
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+        
+            if(responseOK){ 
+                this.setState({
+                    successLabel: "Details changed."
+                });
+            } else { // server down?
+                this.setState({
+                    successLabel: "Error: Details not changed.  Please try again later.",
+                    disabled: false
+                });
+            }
+        }).catch(error => {
+            this.setState({
+                successLabel: "Error: Details not changed.  Please try again later.",
+                disabled: false
+            });
+            console.error(error);
+        });
+        
+        document.body.style.cursor = 'default';
+    }
 	
 
     render() {
-        return (
-            <div className="container login-form">
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>Profile - NEPAccess</title>
-                <link rel="canonical" href="https://nepaccess.org/profile" />
-            </Helmet>
-            <div className="note">
-                User Details
-            </div>
-                <div className="form-content">
-                    <div className="col-md-6">
-                        <div id="profile-container">
-                            <div className="profile-row">
-                                <label className="profile-leading" htmlFor="currentPassword">Enter your current password:</label>
-                                <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" onChange={this.onOldPasswordChange}/>
-                                <label className="loginErrorLabel">{this.state.oldPasswordError}</label>
-                                <div>
-                                    <label className="profile-leading"></label>
-                                    <input type="checkbox" id="showCurrentPassword" onClick={this.showCurrentPassword}></input>
-                                    <label className="inline noSelect">Show password</label>
-                                </div>
-                            </div>
+        if(this.state.ready) {
+            return (
+                <div className="container login-form">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>Profile - NEPAccess</title>
+                        <link rel="canonical" href="https://nepaccess.org/profile" />
+                    </Helmet>
 
-                            <div className="profile-row">
-                                <label className="profile-leading" htmlFor="newPassword">Enter a new password:</label>
-                                <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" onChange={this.onNewPasswordChange}/>
-                                <label className="loginErrorLabel">{this.state.newPasswordError}</label>
+                    <h1 className="note">
+                        User Details
+                    </h1>
 
-                                <div>
-                                    <label className="profile-leading"></label>
-                                    <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
-                                    <label className="inline noSelect">Show password</label>
+                    <div className="form-content">
+                        <h2 className="padding-left">Change User Details</h2>
+                        <div className="col-md-6">
+                            <div id="profile-container">
+
+                                <div className="register-form-group">
+                                    <span className="leading-text">
+                                        Username:
+                                    </span>
+                                    <input type="text" className="form-control" id="username" name="username" 
+                                        value={this.state.userDetails.username} disabled />
                                 </div>
+
+                                <div className="register-form-input-group">
+                                    <div className="register-form-group">
+                                        <span className="leading-text">Your first name:</span>
+                                        <input type="text" maxLength="191"
+                                            className="form-control" id="firstName" name="firstName" value={this.state.userDetails.firstName} autoFocus onChange={this.onChangeDetails} />
+                                        <label className="errorLabel">{this.state.firstNameError}</label>
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text">Your last name:</span>
+                                        <input type="text" maxLength="191" value={this.state.userDetails.lastName || ""}
+                                            className="form-control" id="lastName" name="lastName" onChange={this.onChangeDetails} />
+                                        <label className="errorLabel">{this.state.lastNameError}</label>
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text">Your email address:</span>
+                                        <input type="text" 
+                                            className="form-control" id="email" name="email" value={this.state.userDetails.email} disabled />
+                                    </div>
+                                </div>
+                                <div className="register-form-input-group">
+                                    <div className="register-form-group">
+                                        <span className="leading-text">Your user group:</span>
+                                        <input
+                                            className="form-control"
+                                            name="affiliation" 
+                                            value={this.state.affiliation} 
+                                            disabled />
+                                    </div>
+                                </div>
+                                
+                                <div className="register-form-input-group">
+                                    <div className="register-form-group">
+                                        <span className="leading-text">
+                                            Name of organization:
+                                        </span>
+                                        <input type="text" maxLength="1000" className="form-control" id="organization" name="organization" 
+                                            value={this.state.userDetails.organization || ""} onChange={this.onChangeDetails} />
+                                    </div>
+                                    <div className="register-form-group">
+                                        <span className="leading-text">
+                                            Your job title:
+                                        </span>
+                                        <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" 
+                                            value={this.state.userDetails.jobTitle || ""} onChange={this.onChangeDetails} />
+                                    </div>
+                                </div>
+                                
+                                <span className="leading-text"></span>
+                                <button type="button" className="button" disabled={this.state.disabled} 
+                                    onClick={this.setDetails}>Change Details
+                                </button>
+                                <label className="infoLabel">{this.state.successLabel}</label>
+                                <hr />
+                                <h2 className="padding-left">Change Password</h2>
+
+                                <div className="profile-row">
+                                    <span className="leading-text" htmlFor="currentPassword">Enter your current password:</span>
+                                    <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" 
+                                        onChange={this.onOldPasswordChange}/>
+                                    <label className="loginErrorLabel">{this.state.oldPasswordError}</label>
+                                    <div>
+                                        <span className="leading-text"></span>
+                                        <input type="checkbox" id="showCurrentPassword" 
+                                            onClick={this.showCurrentPassword}></input>
+                                        <label className="inline noSelect">Show password</label>
+                                    </div>
+                                </div>
+
+                                <div className="profile-row">
+                                    <span className="leading-text" htmlFor="newPassword">Enter a new password:</span>
+                                    <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" 
+                                        onChange={this.onNewPasswordChange}/>
+                                    <label className="loginErrorLabel">{this.state.newPasswordError}</label>
+
+                                    <div>
+                                        <span className="leading-text"></span>
+                                        <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
+                                        <label className="inline noSelect">Show password</label>
+                                    </div>
+                                </div>
+                                
+                                <span className="leading-text"></span>
+                                <button type="button" className="button" disabled={this.state.disabledPassword} 
+                                    onClick={this.changePassword}>Change Password</button>
+                                <label className="infoLabel">{this.state.successLabelPassword}</label>
                             </div>
-                            
-                            <label className="profile-leading"></label>
-                            <button type="button" className="button" disabled={this.state.disabled} onClick={this.changePassword}>Change Password</button>
-                            <label className="infoLabel">{this.state.successLabel}</label>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            return (<div className="content">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Profile - NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/profile" />
+                </Helmet>
+                
+                <div className="loader-holder">
+                    <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
+            </div>);
+        }
     }
 
 	componentDidMount() {
 		this.check();
+        this.get("user/details/get_details", 'userDetails');
 	}
 }
 
