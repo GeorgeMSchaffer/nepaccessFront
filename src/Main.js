@@ -109,15 +109,17 @@ class Main extends React.Component {
                     this.refreshNav();
                 });
             } else {
-                localStorage.role = undefined;
+                if('role' in localStorage) {
+                    localStorage.removeItem('role');
+                }
                 this.setState({ role: undefined, loggedIn: false, anonymous: true });
             }
         })
         .catch((err) => { // Token expired or invalid, or server is down
-            console.log("Error (No Role)", localStorage.role);
-            this.setState({
-                loggedIn: false
-            });
+            if('role' in localStorage) {
+                localStorage.removeItem('role');
+            }
+            this.setState({ role: undefined, loggedIn: false, anonymous: true });
         });
     }
 
