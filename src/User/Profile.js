@@ -214,6 +214,7 @@ class UserDetails extends React.Component {
     }
 
 
+    /** Currently this should always get a 200 back since searches were allowed when not logged in. */
     check = () => { // check if JWT is expired/invalid
 		let verified = false;
 
@@ -281,7 +282,18 @@ class UserDetails extends React.Component {
 	
 
     render() {
-        if(this.state.ready) {
+        if(localStorage.role === undefined) {
+            return (<div className="content">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Profile - NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/profile" />
+                </Helmet>
+                
+                Please log in.
+            </div>);
+        }
+        else if(this.state.ready) {
             return (
                 <div className="container login-form">
                     <Helmet>

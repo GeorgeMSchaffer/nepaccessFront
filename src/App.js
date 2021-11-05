@@ -943,6 +943,7 @@ export default class App extends React.Component {
     }
 
 
+    /** Currently this should always get a 200 back since searches were allowed when not logged in. */
 	check = () => { // check if JWT is expired/invalid
 		
         this.setState({loaded:false,down:false});

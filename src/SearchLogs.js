@@ -213,28 +213,6 @@ export default class SearchLogs extends React.Component {
             chartOption: evt
         });
     }
-    
-	check = () => { // check if JWT is expired/invalid
-		
-		let checkURL = new URL('test/check', Globals.currentHost);
-		let result = false;
-		axios.post(checkURL)
-		.then(response => {
-			result = response && response.status === 200;
-			this.setState({
-				verified: result
-			})
-		})
-		.catch((error) => { // This will catch a 403 from the server from a malformed/expired JWT, will also fire if server down
-            this.setState({
-                networkError: error.message
-            });
-		})
-		.finally(() => {
-			// console.log("Returning... " + result);
-		});
-		// console.log("App check");
-    }
 
     render() {
         const columns = [
@@ -333,10 +311,6 @@ export default class SearchLogs extends React.Component {
                 </div>
             );
         }
-    }
-
-	componentDidMount() {
-        this.check();
     }
 }
 

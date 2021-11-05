@@ -96,6 +96,7 @@ class Main extends React.Component {
         }
     }
 
+    /** This effectively replaces the original purpose of check(), especially with anonymous user support */
     getRole = () => {
 
         const checkURL = new URL('user/get_role', Globals.currentHost);
@@ -104,9 +105,10 @@ class Main extends React.Component {
             const verified = response && response.status === 200;
             if(verified) {
                 localStorage.role = response.data.toLowerCase();
-                this.setState({ role: response.data.toLowerCase() });
+                this.setState({ role: response.data.toLowerCase(), loggedIn: true });
             } else {
-                
+                localStorage.role = undefined;
+                this.setState({ role: undefined, loggedIn: false });
             }
         })
         .catch((err) => { // Token expired or invalid, or server is down
@@ -118,27 +120,27 @@ class Main extends React.Component {
 
 
     check = () => { // check if logged in (JWT is valid and not expired)
-        let verified = false;
-        let checkURL = new URL('test/check', Globals.currentHost);
+        // let verified = false;
+        // let checkURL = new URL('test/check', Globals.currentHost);
         
-        axios.post(checkURL)
-        .then(response => {
-            verified = response && response.status === 200;
-            this.setState({
-                loggedIn: verified
-            }, () => {
+        // axios.post(checkURL)
+        // .then(response => {
+        //     verified = response && response.status === 200;
+        //     this.setState({
+        //         loggedIn: verified
+        //     }, () => {
                 this.getRoleDebounced();
                 this.refreshNav();
-            });
-        })
-        .catch((err) => { // Token expired or invalid, or server is down
+        //     });
+        // })
+        // .catch((err) => { // Token expired or invalid, or server is down
 
-            localStorage.removeItem("role");
-            this.setState({
-                loggedIn: false,
-                role: null
-            });
-        });
+        //     localStorage.removeItem("role");
+        //     this.setState({
+        //         loggedIn: false,
+        //         role: null
+        //     });
+        // });
         // console.log("Main check");
         
     }
@@ -146,6 +148,7 @@ class Main extends React.Component {
     // refresh() has a global listener so as to change the loggedIn state and then update the navbar
     // as needed, from child components
     refresh(verified) { 
+        console.log("Refresh",verified);
         this.setState({
             loggedIn: verified.loggedIn
         }, () => {

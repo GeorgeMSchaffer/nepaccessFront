@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './User/login.css';
 import Globals from './globals.js';
+
 class DownloadFile extends React.Component {
 
 	// Receives needed props from React-Tabular instance in SearchResults.js
@@ -194,7 +195,11 @@ class DownloadFile extends React.Component {
 	}
 
 	render() {
-		if (this.props) {
+        console.log(localStorage.role);
+        if(localStorage.role === undefined) {
+            return <span className="not-logged-in">Please <a className="not-logged-in" href='login' target='_blank' rel='noopener noreferrer' >log in </a> or <a className="not-logged-in" href='register' target='_blank' rel='noopener noreferrer'>register</a> to download files.</span>
+        }
+		else if (this.props) {
 			let cellData = null;
             let propFilename = null;
             let propID = null;

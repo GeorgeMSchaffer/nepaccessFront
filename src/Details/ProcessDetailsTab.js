@@ -182,6 +182,12 @@ export default class ProcessDetailsTab extends React.Component {
 
     showFilesNew = (_id, filenames) => {
 
+        // If user is not logged in (anonymous), then no need to show a list of "Please log in or register to download"
+        if(localStorage.role === undefined) { 
+            return <></>;
+        }
+        
+
         let showMore = this.state.showMore.includes(_id);
         
         return filenames.map((_filename, i) => {
