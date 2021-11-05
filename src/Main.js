@@ -27,7 +27,7 @@ import AboutNepaccess from './iframes/AboutNepaccess.js';
 import People from './iframes/People.js';
 import SearchTips from './iframes/SearchTips.js';
 import AvailableDocuments from './iframes/AvailableDocuments.js';
-import Videos from './iframes/Videos.js';
+import Media from './iframes/Media.js';
 import PrivacyPolicy from './iframes/PrivacyPolicy.js';
 import DisclaimerTermsOfUse from './iframes/DisclaimerTermsOfUse.js';
 
@@ -248,14 +248,14 @@ class Main extends React.Component {
                         About NEPA
                     </Link>
                     <div id="about-dropdown" className="main-menu-link dropdown">
-                        <Link currentpage={(this.state.currentPage==="/about-nepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/videos").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
+                        <Link currentpage={(this.state.currentPage==="/about-nepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
                             About NEPAccess
                         </Link>
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
                             <Link to="/about-nepaccess">About NEPAccess</Link>
-                            <Link to="/videos">
-                                Videos
+                            <Link to="/media">
+                                Media
                             </Link>
                             <Link to="/people">People</Link>
                         </div>
@@ -289,7 +289,7 @@ class Main extends React.Component {
                 <Route path="/available-documents" component={AvailableDocuments}/>
                 <Route path="/abouthelpcontents" component={AboutHelpContents}/>
                 <Route path="/stats" component={AboutStats}/>
-                <Route path="/videos" component={Videos}/>
+                <Route path="/media" component={Media}/>
 
                 <Route path="/contact" component={Contact}/>
                 <Route path="/nepaccess-future" component={Future}/>

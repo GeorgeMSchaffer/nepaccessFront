@@ -3,15 +3,15 @@ import {Helmet} from 'react-helmet';
 import IframeResizer from 'iframe-resizer-react';
 import './media.css';
 
-export default class Videos extends React.Component {
+export default class Media extends React.Component {
     render() {
         return (
             <div className="iframe-container">
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Videos - NEPAccess</title>
-                    <meta name="description" content="Short videos explain why we created NEPAccess.org, the work done by students building the database, and their perspectives on being on a high-level team." />
-                    <link rel="canonical" href="https://nepaccess.org/videos" />
+                    <meta name="description" content="Media explaining why we created NEPAccess.org, the work done by students building the database, and their perspectives on being on a high-level team." />
+                    <link rel="canonical" href="https://nepaccess.org/media" />
                 </Helmet>
 
                 <IframeResizer
