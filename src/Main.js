@@ -82,7 +82,8 @@ class Main extends React.Component {
             loggedOutDisplay: '',
             loaderClass: 'loadDefault',
             role: null,
-            currentPage: ""
+            currentPage: "",
+            anonymous: false
         };
 
         this.refresh = this.refresh.bind(this);
@@ -153,7 +154,6 @@ class Main extends React.Component {
     // refresh() has a global listener so as to change the loggedIn state and then update the navbar
     // as needed, from child components
     refresh(verified) { 
-        console.log("Refresh",verified);
         this.setState({
             loggedIn: verified.loggedIn
         }, () => {
@@ -331,9 +331,7 @@ class Main extends React.Component {
     }
 
     showMenuItems = () => {
-        let role = this.state.role;
-
-        if(!role) {
+        if(!this.state.role) {
             if(localStorage.role) {
                 this.setState({ role: localStorage.role });
             } else if(this.state.anonymous) {
