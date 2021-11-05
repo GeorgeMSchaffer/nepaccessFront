@@ -523,7 +523,7 @@ export default class ProcessDetailsTab extends React.Component {
             <div id="details">
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>Record Details - NEPAccess</title>
+                    <title>Process Details - NEPAccess</title>
                     <link rel="canonical" href={"https://nepaccess.org/process-details?id="+Globals.getParameterByName("id")} />
                 </Helmet>
                 <label className="errorLabel">{this.state.networkError}</label>
