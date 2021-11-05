@@ -13,3 +13,39 @@
     display: inline-block;
     font-size: 24px;
 }
+
+.profile-flex-container {
+    display: flex;
+
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+}
+.flex-content-columns {
+}
+.profile-link-button-holder {
+    display: inline-block;
+    width: 200px;
+}
+.profile-link-button {
+    text-align: left;
+    line-height: 20px;
+    font-size: 16px;
+
+    margin-left: 4%;
+    background: none;
+    border: none;
+    
+    user-select: auto;
+    color: #0067B1;
+
+    font-weight: bold;
+}  
+.profile-link-button:hover {
+    cursor: pointer;
+    background: none;
+    box-shadow: none;
+
+    color:#8FBC3F;
+}
+.profile-link-button + .profile-link-button {
+}

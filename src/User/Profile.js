@@ -7,7 +7,7 @@ import Globals from '../globals';
 
 import './profile.css';
 
-// TODO: Move this to its own "change password" component and link to it from userdetails?
+// TODO: Move pieces to child components, and turn this page into a menu of links for them?
 
 class UserDetails extends React.Component {
     
@@ -30,6 +30,7 @@ class UserDetails extends React.Component {
                 organization: '',
                 jobTitle: ''
             },
+            show: "change_password",
             disabled: true,
             disabledPassword: true
         }
@@ -279,6 +280,135 @@ class UserDetails extends React.Component {
         
         document.body.style.cursor = 'default';
     }
+
+    handleClick = (evt) => {
+        this.setState({
+            show: evt.target.name
+        });
+    }
+
+    showLinks = () => {
+        return (
+            <div className="flex-content-columns">
+                <div className="profile-link-button-holder">
+                    <input type="button" name="change_password" className="profile-link-button" value="Change password"
+                        onClick={this.handleClick} />
+                </div>
+                <div className="profile-link-button-holder">
+                    <input type="button" name="change_details" className="profile-link-button" value="Change details"
+                        onClick={this.handleClick} />
+                </div>
+            </div>
+        );
+    }
+
+    showContent= () => {
+        return (
+            <div className="form-content">
+                <div id="profile-container">
+
+                    <div id="change_details_div" hidden={this.state.show !== "change_details"}>
+                    <h2 className="padding-left">Change User Details</h2>
+                        <div className="register-form-group">
+                            <span className="leading-text">
+                                Username:
+                            </span>
+                            <input type="text" className="form-control" id="username" name="username" 
+                                value={this.state.userDetails.username} disabled />
+                        </div>
+
+                        <div className="register-form-input-group">
+                            <div className="register-form-group">
+                                <span className="leading-text">Your first name:</span>
+                                <input type="text" maxLength="191"
+                                    className="form-control" id="firstName" name="firstName" value={this.state.userDetails.firstName} autoFocus onChange={this.onChangeDetails} />
+                                <label className="errorLabel">{this.state.firstNameError}</label>
+                            </div>
+                            <div className="register-form-group">
+                                <span className="leading-text">Your last name:</span>
+                                <input type="text" maxLength="191" value={this.state.userDetails.lastName || ""}
+                                    className="form-control" id="lastName" name="lastName" onChange={this.onChangeDetails} />
+                                <label className="errorLabel">{this.state.lastNameError}</label>
+                            </div>
+                            <div className="register-form-group">
+                                <span className="leading-text">Your email address:</span>
+                                <input type="text" 
+                                    className="form-control" id="email" name="email" value={this.state.userDetails.email} disabled />
+                            </div>
+                        </div>
+                        <div className="register-form-input-group">
+                            <div className="register-form-group">
+                                <span className="leading-text">Your user group:</span>
+                                <input
+                                    className="form-control"
+                                    name="affiliation" 
+                                    value={this.state.affiliation} 
+                                    disabled />
+                            </div>
+                        </div>
+                        
+                        <div className="register-form-input-group">
+                            <div className="register-form-group">
+                                <span className="leading-text">
+                                    Name of organization:
+                                </span>
+                                <input type="text" maxLength="1000" className="form-control" id="organization" name="organization" 
+                                    value={this.state.userDetails.organization || ""} onChange={this.onChangeDetails} />
+                            </div>
+                            <div className="register-form-group">
+                                <span className="leading-text">
+                                    Your job title:
+                                </span>
+                                <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" 
+                                    value={this.state.userDetails.jobTitle || ""} onChange={this.onChangeDetails} />
+                            </div>
+                        </div>
+                        
+                        <span className="leading-text"></span>
+                        <button type="button" className="button" disabled={this.state.disabled} 
+                            onClick={this.setDetails}>Change Details
+                        </button>
+                        <label className="infoLabel">{this.state.successLabel}</label>
+                    </div>
+                    
+
+
+                    <div id="change_password_div" hidden={this.state.show !== "change_password"}>
+                        <h2 className="padding-left">Change Password</h2>
+                        <div className="profile-row">
+                            <span className="leading-text" htmlFor="currentPassword">Enter your current password:</span>
+                            <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" 
+                                onChange={this.onOldPasswordChange}/>
+                            <label className="loginErrorLabel">{this.state.oldPasswordError}</label>
+                            <div>
+                                <span className="leading-text"></span>
+                                <input type="checkbox" id="showCurrentPassword" 
+                                    onClick={this.showCurrentPassword}></input>
+                                <label className="inline noSelect">Show password</label>
+                            </div>
+                        </div>
+                        <div className="profile-row">
+                            <span className="leading-text" htmlFor="newPassword">Enter a new password:</span>
+                            <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" 
+                                onChange={this.onNewPasswordChange}/>
+                            <label className="loginErrorLabel">{this.state.newPasswordError}</label>
+
+                            <div>
+                                <span className="leading-text"></span>
+                                <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
+                                <label className="inline noSelect">Show password</label>
+                            </div>
+                        </div>
+                        
+                        <span className="leading-text"></span>
+                        <button type="button" className="button" disabled={this.state.disabledPassword} 
+                            onClick={this.changePassword}>Change Password</button>
+                        <label className="infoLabel">{this.state.successLabelPassword}</label>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 	
 
     render() {
@@ -306,107 +436,14 @@ class UserDetails extends React.Component {
                         User Details
                     </h1>
 
-                    <div className="form-content">
-                        <h2 className="padding-left">Change User Details</h2>
-                        <div className="col-md-6">
-                            <div id="profile-container">
-
-                                <div className="register-form-group">
-                                    <span className="leading-text">
-                                        Username:
-                                    </span>
-                                    <input type="text" className="form-control" id="username" name="username" 
-                                        value={this.state.userDetails.username} disabled />
-                                </div>
-
-                                <div className="register-form-input-group">
-                                    <div className="register-form-group">
-                                        <span className="leading-text">Your first name:</span>
-                                        <input type="text" maxLength="191"
-                                            className="form-control" id="firstName" name="firstName" value={this.state.userDetails.firstName} autoFocus onChange={this.onChangeDetails} />
-                                        <label className="errorLabel">{this.state.firstNameError}</label>
-                                    </div>
-                                    <div className="register-form-group">
-                                        <span className="leading-text">Your last name:</span>
-                                        <input type="text" maxLength="191" value={this.state.userDetails.lastName || ""}
-                                            className="form-control" id="lastName" name="lastName" onChange={this.onChangeDetails} />
-                                        <label className="errorLabel">{this.state.lastNameError}</label>
-                                    </div>
-                                    <div className="register-form-group">
-                                        <span className="leading-text">Your email address:</span>
-                                        <input type="text" 
-                                            className="form-control" id="email" name="email" value={this.state.userDetails.email} disabled />
-                                    </div>
-                                </div>
-                                <div className="register-form-input-group">
-                                    <div className="register-form-group">
-                                        <span className="leading-text">Your user group:</span>
-                                        <input
-                                            className="form-control"
-                                            name="affiliation" 
-                                            value={this.state.affiliation} 
-                                            disabled />
-                                    </div>
-                                </div>
-                                
-                                <div className="register-form-input-group">
-                                    <div className="register-form-group">
-                                        <span className="leading-text">
-                                            Name of organization:
-                                        </span>
-                                        <input type="text" maxLength="1000" className="form-control" id="organization" name="organization" 
-                                            value={this.state.userDetails.organization || ""} onChange={this.onChangeDetails} />
-                                    </div>
-                                    <div className="register-form-group">
-                                        <span className="leading-text">
-                                            Your job title:
-                                        </span>
-                                        <input type="text" maxLength="1000" className="form-control" id="jobTitle" name="jobTitle" 
-                                            value={this.state.userDetails.jobTitle || ""} onChange={this.onChangeDetails} />
-                                    </div>
-                                </div>
-                                
-                                <span className="leading-text"></span>
-                                <button type="button" className="button" disabled={this.state.disabled} 
-                                    onClick={this.setDetails}>Change Details
-                                </button>
-                                <label className="infoLabel">{this.state.successLabel}</label>
-                                <hr />
-                                <h2 className="padding-left">Change Password</h2>
-
-                                <div className="profile-row">
-                                    <span className="leading-text" htmlFor="currentPassword">Enter your current password:</span>
-                                    <input type={this.state.currentChecked} id="currentPassword" className="form-control password-field" name="currentPassword" placeholder="Current Password *" 
-                                        onChange={this.onOldPasswordChange}/>
-                                    <label className="loginErrorLabel">{this.state.oldPasswordError}</label>
-                                    <div>
-                                        <span className="leading-text"></span>
-                                        <input type="checkbox" id="showCurrentPassword" 
-                                            onClick={this.showCurrentPassword}></input>
-                                        <label className="inline noSelect">Show password</label>
-                                    </div>
-                                </div>
-
-                                <div className="profile-row">
-                                    <span className="leading-text" htmlFor="newPassword">Enter a new password:</span>
-                                    <input type={this.state.newChecked} id="newPassword" className="form-control password-field" name="newPassword" placeholder="New Password *" 
-                                        onChange={this.onNewPasswordChange}/>
-                                    <label className="loginErrorLabel">{this.state.newPasswordError}</label>
-
-                                    <div>
-                                        <span className="leading-text"></span>
-                                        <input type="checkbox" id="showNewPassword" onClick={this.showNewPassword}></input>
-                                        <label className="inline noSelect">Show password</label>
-                                    </div>
-                                </div>
-                                
-                                <span className="leading-text"></span>
-                                <button type="button" className="button" disabled={this.state.disabledPassword} 
-                                    onClick={this.changePassword}>Change Password</button>
-                                <label className="infoLabel">{this.state.successLabelPassword}</label>
-                            </div>
-                        </div>
+                    <div className="profile-flex-container">
+                        {this.showLinks()}
                     </div>
+
+                    <hr />
+
+                    {this.showContent()}
+                    
                 </div>
             )
         } else {
