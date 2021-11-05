@@ -105,13 +105,16 @@ class Main extends React.Component {
             const verified = response && response.status === 200;
             if(verified) {
                 localStorage.role = response.data.toLowerCase();
-                this.setState({ role: response.data.toLowerCase(), loggedIn: true });
+                this.setState({ role: response.data.toLowerCase(), loggedIn: true, anonymous: false }, () => {
+                    this.refreshNav();
+                });
             } else {
                 localStorage.role = undefined;
-                this.setState({ role: undefined, loggedIn: false });
+                this.setState({ role: undefined, loggedIn: false, anonymous: true });
             }
         })
         .catch((err) => { // Token expired or invalid, or server is down
+            console.log("Error (No Role)", localStorage.role);
             this.setState({
                 loggedIn: false
             });
@@ -130,7 +133,7 @@ class Main extends React.Component {
         //         loggedIn: verified
         //     }, () => {
                 this.getRoleDebounced();
-                this.refreshNav();
+                // this.refreshNav();
         //     });
         // })
         // .catch((err) => { // Token expired or invalid, or server is down
@@ -331,13 +334,14 @@ class Main extends React.Component {
         if(!role) {
             if(localStorage.role) {
                 this.setState({ role: localStorage.role });
-            } else if(this.state.loggedIn) {
+            } else if(this.state.anonymous) {
+            } else {
                 this.getRoleDebounced();
             }
         }
 
         return (
-            <span id="admin-span" hidden={(!role || role === 'user')} className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+            <span id="admin-span" hidden={(!this.state.role || this.state.role === 'user')} className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
                 
                 <div id="admin-dropdown" className="main-menu-link dropdown">
                     <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
@@ -345,9 +349,9 @@ class Main extends React.Component {
                     </Link>
                     <i className="fa fa-caret-down"></i>
                     <div className="dropdown-content">
-                        <Link to="/admin" hidden={!(role === 'admin')}>Admin Panel</Link>
-                        <Link to="/importer" hidden={!(role === 'curator' || role === 'admin')}>Import New Documents</Link>
-                        <Link to="/adminFiles" hidden={!(role === 'curator' || role === 'admin')}>Find Missing Files</Link>
+                        <Link to="/admin" hidden={!(this.state.role === 'admin')}>Admin Panel</Link>
+                        <Link to="/importer" hidden={!(this.state.role === 'curator' || this.state.role === 'admin')}>Import New Documents</Link>
+                        <Link to="/adminFiles" hidden={!(this.state.role === 'curator' || this.state.role === 'admin')}>Find Missing Files</Link>
                         <Link to="/approve">Approve Users</Link>
                         <Link to="/pre_register">Pre-Register Users</Link>
                         <Link to="/interaction_logs">Interaction Logs</Link>
