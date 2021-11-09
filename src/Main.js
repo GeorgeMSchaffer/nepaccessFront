@@ -115,9 +115,7 @@ class Main extends React.Component {
             }
         })
         .catch((err) => { // Token expired or invalid, or server is down
-            if('role' in localStorage) {
-                localStorage.removeItem('role');
-            }
+            localStorage.clear();
             this.setState({ role: undefined, loggedIn: false, anonymous: true });
         });
     }
