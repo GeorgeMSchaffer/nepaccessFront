@@ -85,10 +85,6 @@
     transform: translate(-50%, -30%);
 
     width: 86%;
-
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
 }
 #landing-search-header {
     padding-left: 10px;
@@ -100,10 +96,6 @@
     margin-block-start: 0em;
     margin-block-end: 0em;
     margin: 0;
-
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
 }
 
 /* adapted from sidebar.css .search-bar */
@@ -127,10 +119,6 @@
 
     padding-left: 30px;
     padding-right: 110px;
-
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
 }
 
 /* End search box */
