@@ -85,6 +85,9 @@
     transform: translate(-50%, -30%);
 
     width: 86%;
+
+    /* Hopefully fixes Safari moving this to a new line sometimes */
+    white-space: nowrap;
 }
 #landing-search-header {
     padding-left: 10px;
