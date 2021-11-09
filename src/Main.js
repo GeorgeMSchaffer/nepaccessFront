@@ -53,6 +53,7 @@ import Pairs2 from './Pairs2';
 import Pairs3 from './Pairs3';
 
 import SearchLogs from './SearchLogs.js';
+import Surveys from './Surveys.js';
 
 import Excel from './Excel.js';
 
@@ -317,6 +318,7 @@ class Main extends React.Component {
                 <Route path="/search_logs" component={SearchLogs}></Route>
                 <Route path="/interaction_logs" component={InteractionLogs}></Route>
                 <Route path="/stat_tables" component={StatTables}></Route>
+                <Route path="/surveys" component={Surveys}></Route>
                 <Route path="/excel" component={Excel}></Route>
                 
                 <Route path="/test" component={Test} />
@@ -356,6 +358,7 @@ class Main extends React.Component {
                         <Link to="/abouthelpcontents">Database Contents</Link>
                         <Link to="/stats">Content Statistics</Link>
                         <Link to="/stat_tables">Stat tables</Link>
+                        <Link to="/surveys">Surveys</Link>
                     </div>
                 </div>
 

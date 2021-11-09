@@ -37,6 +37,7 @@ const getRoutes = [
     { label: "reports/duplicates_size", value: "reports/duplicates_size" },
     { label: "reports/duplicates_type_folder", value: "reports/duplicates_type_folder" },
     { label: "interaction/get_all_combined", value: "interaction/get_all_combined" },
+    { label: "survey/get_all", value: "survey/get_all" },
 ];
 
 const options = Globals.tabulatorOptions;
