@@ -308,7 +308,8 @@ class UserDetails extends React.Component {
                 <div id="profile-container">
 
                     <div id="change_details_div" hidden={this.state.show !== "change_details"}>
-                    <h2 className="padding-left">Change User Details</h2>
+                        <h2 className="padding-left">Change User Details</h2>
+                        
                         <div className="register-form-group">
                             <span className="leading-text">
                                 Username:
@@ -368,6 +369,7 @@ class UserDetails extends React.Component {
                         <button type="button" className="button" disabled={this.state.disabled} 
                             onClick={this.setDetails}>Change Details
                         </button>
+
                         <label className="infoLabel">{this.state.successLabel}</label>
                     </div>
                     
@@ -403,6 +405,7 @@ class UserDetails extends React.Component {
                         <span className="leading-text"></span>
                         <button type="button" className="button" disabled={this.state.disabledPassword} 
                             onClick={this.changePassword}>Change Password</button>
+
                         <label className="infoLabel">{this.state.successLabelPassword}</label>
                     </div>
                 </div>
