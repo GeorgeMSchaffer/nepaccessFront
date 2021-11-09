@@ -93,13 +93,8 @@ const Globals = {
     
 
     signOut() {
-        localStorage.removeItem("JWT");
-        localStorage.removeItem("role");
+        localStorage.clear();
         axios.defaults.headers.common['Authorization'] = null;
-        localStorage.removeItem("username");
-        localStorage.removeItem("admin");
-        localStorage.removeItem("curator");
-        localStorage.removeItem("approver");
     },
 
     approverOrHigher() {

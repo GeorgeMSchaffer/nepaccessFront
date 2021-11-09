@@ -153,6 +153,7 @@ class Main extends React.Component {
         this.setState({
             loggedIn: verified.loggedIn
         }, () => {
+            this.getRoleDebounced();
             this.refreshNav();
         });
     }
