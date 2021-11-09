@@ -195,7 +195,6 @@ class DownloadFile extends React.Component {
 	}
 
 	render() {
-        console.log(localStorage.role);
         if(localStorage.role === undefined) {
             return <span className="not-logged-in">Please <a className="not-logged-in" href='login' target='_blank' rel='noopener noreferrer' >log in </a> or <a className="not-logged-in" href='register' target='_blank' rel='noopener noreferrer'>register</a> to download files.</span>
         }
