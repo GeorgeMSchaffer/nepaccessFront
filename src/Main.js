@@ -110,9 +110,7 @@ class Main extends React.Component {
                     this.refreshNav();
                 });
             } else {
-                if('role' in localStorage) {
-                    localStorage.removeItem('role');
-                }
+                localStorage.clear();
                 this.setState({ role: undefined, loggedIn: false, anonymous: true });
             }
         })
