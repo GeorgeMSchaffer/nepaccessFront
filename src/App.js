@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import {Helmet} from 'react-helmet';
 
 import axios from 'axios';
@@ -1183,18 +1183,18 @@ export default class App extends React.Component {
                 </div>
             </div>);
         }
-		else if(this.state.loaded)
-		{
-			return (
-				<div className="content">
-                    <div>
-                        <label className="logged-out-header">
-                            Please <Link to="/login">log in</Link> or <Link to="/register">register</Link> to use NEPAccess.
-                        </label>
-                    </div>
-				</div>
-			)
-		}
+		// else if(this.state.loaded)
+		// {
+		// 	return (
+		// 		<div className="content">
+        //             <div>
+        //                 <label className="logged-out-header">
+        //                     Please <Link to="/login">log in</Link> or <Link to="/register">register</Link> to use NEPAccess.
+        //                 </label>
+        //             </div>
+		// 		</div>
+		// 	)
+		// }
         else { // show nothing until at least we've loaded
             return (<div className="content">
 
