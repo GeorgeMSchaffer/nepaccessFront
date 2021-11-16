@@ -1047,7 +1047,8 @@ export default class App extends React.Component {
                         processId: result.processId,
                         notes: result.notes,
                         status: result.status,
-                        folder: result.folder
+                        folder: result.folder,
+                        size: result.size
                     }
                     if(!newRecord.processId) { // don't want to imply zeroes are valid
                         newRecord.processId = '';
