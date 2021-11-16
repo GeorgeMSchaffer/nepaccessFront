@@ -61,12 +61,10 @@ export default class ProcessDetailsTab extends React.Component {
                 return response.data;
             // }
         } catch (error) {
-            if(error.response.status === 403 ) {
-                this.setState({ 
-                    networkError: "Please log in.",
-                    exists: false
-                });
-            }
+            this.setState({ 
+                networkError: Globals.getErrorMessage(error),
+                exists: false
+            });
             throw error;
         }
     }   

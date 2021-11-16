@@ -65,17 +65,7 @@ class DetailsUpdate extends React.Component {
                 successString = "Failed to update."; // Server down?
             }
         }).catch(error => {
-            if(error.response) {
-                if (error.response.status === 500) {
-                    networkString = "Internal server error.";
-                } else if (error.response.status === 404) {
-                    networkString = "Not found.";
-                } else {
-                    networkString = "Error";
-                }
-            } else {
-                networkString = "Server may be down (no response), please try again later.";
-            }
+            networkString = Globals.getErrorMessage(error);
             successString = "Couldn't update; this record has probably never been changed.";
             console.error('revert error ', error);
         }).finally(e => {
@@ -136,17 +126,7 @@ class DetailsUpdate extends React.Component {
                 successString = "Failed to update."; // Server down?
             }
         }).catch(error => {
-            if(error.response) {
-                if (error.response.status === 500) {
-                    networkString = "Internal server error.";
-                } else if (error.response.status === 404) {
-                    networkString = "Not found.";
-                } else {
-                    networkString = "Error";
-                }
-            } else {
-                networkString = "Server may be down (no response), please try again later.";
-            }
+            networkString = Globals.getErrorMessage(error);
             successString = "Couldn't update.";
             console.error('error message ', error);
         }).finally(e => {

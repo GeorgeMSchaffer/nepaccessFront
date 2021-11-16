@@ -271,7 +271,7 @@ export default class Contact extends React.Component {
                 });
             }
         }).catch(error => {
-            if (error.response.status===424) {
+            if (error.response && error.response.status===424) {
                 this.setState({
                     statusClass: 'errorLabel',
                     statusLabel: 'Sorry, an error has occurred with the captcha.',

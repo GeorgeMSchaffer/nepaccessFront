@@ -342,7 +342,14 @@ export default class PreRegister extends React.Component {
                 });
             }
         }).catch(error => {
-            if(error.response.status===418) {
+            if(!error.response) {
+                this.setState({
+                    statusClass: 'errorLabel',
+                    statusLabel: 'Server seems to be down, please try again in a few minutes.',
+                    disabled: false, 
+                    busy: false
+                });
+            } else if(error.response.status===418) {
                 this.setState({
                     statusClass: 'errorLabel',
                     statusLabel: 'Sorry, that username is taken.',
