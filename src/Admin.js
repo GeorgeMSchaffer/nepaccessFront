@@ -401,6 +401,12 @@ export default class Admin extends React.Component {
                             Test speeds (scored; unscored)
                         </button>
                     </div>
+                    
+                    <div>
+                        <button type="button" onClick={() => this.doGet("text/normalize_titles")}>
+                            Normalize titles (tab to space, double space to single space, remove all newline chars)
+                        </button>
+                    </div>
 
                     <div><span>
                         Server response
