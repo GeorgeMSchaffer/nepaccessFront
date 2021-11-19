@@ -199,12 +199,13 @@ class Main extends React.Component {
     }
 
 
-    render(){
+    render() {
         return (
         <div id="home-page">
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>NEPAccess</title>
+                <meta name="description" content="Search, download, and use thousands of NEPA documents from the US National Environmental Policy Act, such as the environmental impact statement (EIS)." />
                 <link rel="canonical" href="https://nepaccess.org/" />
             </Helmet>
 
