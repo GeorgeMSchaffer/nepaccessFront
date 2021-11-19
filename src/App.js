@@ -1137,7 +1137,7 @@ export default class App extends React.Component {
                         <meta charSet="utf-8" />
                         <title>Search - NEPAccess</title>
                         <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." />
-                        <link rel="canonical" href="https://nepaccess.org/search" />
+                        <link rel="canonical" href="https://www.nepaccess.org/search" />
                     </Helmet>
                     <Search 
                         search={this.startNewSearch} 
@@ -1177,6 +1177,12 @@ export default class App extends React.Component {
         else if(this.state.down) {
             return (
             <div className="content">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Search - NEPAccess</title>
+                    <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." />
+                    <link rel="canonical" href="https://www.nepaccess.org/search" />
+                </Helmet>
                 <div>
                     <label className="logged-out-header">
                         Sorry, the server may be down for maintenance.  Please try reloading the page in a minute.
@@ -1198,6 +1204,12 @@ export default class App extends React.Component {
 		// }
         else { // show nothing until at least we've loaded
             return (<div className="content">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Search - NEPAccess</title>
+                    <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." />
+                    <link rel="canonical" href="https://www.nepaccess.org/search" />
+                </Helmet>
 
                 <div className="loader-holder">
                     <div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>

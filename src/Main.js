@@ -206,7 +206,7 @@ class Main extends React.Component {
                 <meta charSet="utf-8" />
                 <title>NEPAccess</title>
                 <meta name="description" content="Search, download, and use thousands of NEPA documents from the US National Environmental Policy Act, such as the environmental impact statement (EIS)." />
-                <link rel="canonical" href="https://nepaccess.org/" />
+                <link rel="canonical" href="https://www.nepaccess.org/" />
             </Helmet>
 
             <div id="header" className="no-select">
