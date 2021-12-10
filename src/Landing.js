@@ -36,12 +36,12 @@ class Landing extends React.Component {
     render(){
       return (
         <div id="landing">
-            {/* <Helmet>
+            <Helmet>
                 <meta charSet="utf-8" />
-                <title>NEPAccess</title>
-                <meta name="description" content="Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents." />
+                <title>NEPAccess: Bringing NEPA into the 21st Century</title>
+                <meta name="description" content="NEPAccess.org is a new knowledge and discovery platform for finding and analyzing decades of applied science in NEPA’s environmental decision-making process." />
                 <link rel="canonical" href="https://nepaccess.org/" />
-            </Helmet> */}
+            </Helmet>
           {/* <div id="landing-images">
             <div id="image-1">
               <h1 id="headline" className="no-select cursor-default">
