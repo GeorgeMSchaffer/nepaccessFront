@@ -1,0 +1,18 @@
+.leafmap {
+    height: 300px;
+    width: 100%;
+}
+.map-container {
+    background: white;
+    padding: 20px;
+    border: 2px solid rgb(220,220,220);
+    margin-bottom: 20px;
+    margin-right: 20px;
+    flex: 3 1;
+}
+.map-header {
+    margin-top: 0px;
+}
+.leafmap_container {
+    
+}

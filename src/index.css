@@ -41,7 +41,7 @@ body {
 
   /* background: #C4C4C4; */
   box-sizing: border-box;
-  z-index: 11;
+  z-index: 1000;
 
   background: #8FBC3F;
 }

@@ -10,9 +10,11 @@ import MatchResults from './MatchResults.js';
 import DetailsUpdate from './DetailsUpdate.js';
 import DetailsFileResults from './DetailsFileResults.js';
 import DetailsRestore from './DetailsRestore.js';
+import LeafletMap from '../LeafletMap.js';
 
 import '../index.css';
 import './match.css';
+import '../leaflet.css';
 
 import Globals from '../globals.js';
 
@@ -45,6 +47,7 @@ export default class RecordDetailsTab extends React.Component {
             searcherClassName: '',
             resultsText: "",
             exists: true,
+            hasGeojson: false,
 
             logged: false
         };
@@ -64,8 +67,7 @@ export default class RecordDetailsTab extends React.Component {
             }
         } catch (error) { 
             this.setState({ 
-                networkError: Globals.getErrorMessage(error),
-                exists: false
+                networkError: Globals.getErrorMessage(error)
             });
 
             throw error; 
@@ -350,6 +352,7 @@ export default class RecordDetailsTab extends React.Component {
                 <div className="record-details">
                     <h2 className="title-color">Record details</h2>
                     {this.showTitle()}
+                    {this.showMap()}
                     <div className="containers">
                         <div className="metadata-container-container">
                             <div className="metadata-container">
@@ -520,7 +523,7 @@ export default class RecordDetailsTab extends React.Component {
                     return "";
                 } else {
                     return (
-                        <p className='modal-line'>
+                        <p key={"proc_p_"+key} className='modal-line'>
                             <span className='modal-title'>
                                 <b>{docType}</b>:
                             </span>
@@ -708,6 +711,38 @@ export default class RecordDetailsTab extends React.Component {
         }
     }
 
+    hasGeojson = () => {
+        let _id = this.state.detailsID;
+        let url = Globals.currentHost + "geojson/exists_for_eisdoc";
+        axios.get(url, {
+            params: {
+                id: _id
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                this.setState({
+                    hasGeojson: response.data
+                });
+            } else {
+                this.setState({
+                    hasGeojson: false
+                });
+            }
+        });
+    }
+    showMap = () => {
+        console.log(this.state.hasGeojson);
+        if(this.state.hasGeojson) {
+            return (
+                <div className="map-container">
+                    <h3 className="map-header">Map</h3>
+                    <LeafletMap docId={this.state.detailsID} />
+                </div>
+            );
+        }
+    }
+
 
     render () {
 
@@ -745,10 +780,12 @@ export default class RecordDetailsTab extends React.Component {
                 }, () => {
                     this.populate();
                     this.getNepaFileResults();
+                    this.hasGeojson();
                 });
             } else {
                 this.populate();
                 this.getNepaFileResults();
+                this.hasGeojson();
             }
         } else {
             const idString = Globals.getParameterByName("id");
@@ -759,6 +796,7 @@ export default class RecordDetailsTab extends React.Component {
                     if(this.state.detailsID){
                         this.populate();
                         this.getNepaFileResults();
+                        this.hasGeojson();
                     } else {
                         this.setState({
                             networkError: "No record found (try a different ID)"
@@ -776,9 +814,9 @@ export default class RecordDetailsTab extends React.Component {
                 this.setState({
                     detailsID: this.props.id
                 }, () => {
-                    console.log("populate");
                     this.populate();
                     this.getNepaFileResults();
+                    this.hasGeojson();
                 });
             }
         }

@@ -4,6 +4,7 @@ import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import DownloadFile from '../DownloadFile.js';
+import LeafletMap from '../LeafletMap.js';
 import Chart from './Chart.js';
 
 import Globals from '../globals.js';
@@ -27,7 +28,8 @@ export default class ProcessDetailsTab extends React.Component {
             width: 400,
             showMore: [],
             otherTitles: [],
-            reportText: ''
+            reportText: '',
+            hasGeojson: false
         };
 
         if(!this.state.processId) {
@@ -134,6 +136,7 @@ export default class ProcessDetailsTab extends React.Component {
             <div className="record-details">
                 <h2 className="title-color">Process details</h2>
                 {this.showTitle()}
+                {this.showMap()}
                 <div className="containers">
                     <div className="metadata-container-container">
                         <div className="metadata-container">
@@ -425,6 +428,7 @@ export default class ProcessDetailsTab extends React.Component {
                         dates: _dates
                     }, () => {
                         this.logInteraction(response[0].doc.id);
+                        this.hasGeojson();
                     });
                 } // error handled inside get()
             })
@@ -441,7 +445,7 @@ export default class ProcessDetailsTab extends React.Component {
             const titlesHtml =
                 this.state.otherTitles.map(title => {
                     if( this.state.title.toLowerCase() !== title.toLowerCase() ) {
-                        return <div> - <b>{title}</b></div>;
+                        return <div key={title}> - <b>{title}</b></div>;
                     } else {
                         return '';
                     }
@@ -507,6 +511,39 @@ export default class ProcessDetailsTab extends React.Component {
             });
         }
     }
+
+
+    hasGeojson = () => {
+        let _id = this.state.processId;
+        let url = Globals.currentHost + "geojson/exists_for_process";
+        axios.get(url, {
+            params: {
+                id: _id
+            }
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+            if (responseOK && response.data) {
+                this.setState({
+                    hasGeojson: response.data
+                });
+            } else {
+                this.setState({
+                    hasGeojson: false
+                });
+            }
+        });
+    }
+    showMap = () => {
+        if(this.state.hasGeojson) {
+            return (
+                <div className="map-container">
+                    <h3 className="map-header">Map</h3>
+                    <LeafletMap processId={this.state.processId} />
+                </div>
+            );
+        }
+    }
+
 
     render () {
         if(!this.state.exists) {
