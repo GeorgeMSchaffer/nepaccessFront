@@ -4,7 +4,7 @@ import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import DownloadFile from '../DownloadFile.js';
-import LeafletMap from '../LeafletMap.js';
+import GeojsonMap from '../GeojsonMap.js';
 import Chart from './Chart.js';
 
 import Globals from '../globals.js';
@@ -136,12 +136,12 @@ export default class ProcessDetailsTab extends React.Component {
             <div className="record-details">
                 <h2 className="title-color">Process details</h2>
                 {this.showTitle()}
-                {this.showMap()}
                 <div className="containers">
                     <div className="metadata-container-container">
                         <div className="metadata-container">
                             <h3>Metadata</h3>
                             {this.showDetails()}
+                            {this.showMap()}
                             {this.showTimeline()}
                             {this.showOtherTitles()}
                         </div>
@@ -536,36 +536,40 @@ export default class ProcessDetailsTab extends React.Component {
     showMap = () => {
         if(this.state.hasGeojson) {
             return (
-                <div className="map-container">
+                <div className="map-container-internal">
                     <h3 className="map-header">Map</h3>
-                    <LeafletMap processId={this.state.processId} />
+                    <GeojsonMap processId={this.state.processId} />
                 </div>
             );
+        } else {
+            return "";
         }
     }
 
 
     render () {
+        
         if(!this.state.exists) {
-            return(
+            return (
                 <div id="details">
                     <label className="errorLabel">{this.state.networkError}</label>
                 </div>
             )
+        } else {
+            return (
+                <div id="details">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>Process Details - NEPAccess</title>
+                        <link rel="canonical" href={"https://nepaccess.org/process-details?id="+Globals.getParameterByName("id")} />
+                    </Helmet>
+                    <label className="errorLabel">{this.state.networkError}</label>
+                    <br />
+                    {this.showView()}
+                </div>
+            );
         }
         
-        return (
-            <div id="details">
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>Process Details - NEPAccess</title>
-                    <link rel="canonical" href={"https://nepaccess.org/process-details?id="+Globals.getParameterByName("id")} />
-                </Helmet>
-                <label className="errorLabel">{this.state.networkError}</label>
-                <br />
-                {this.showView()}
-            </div>
-        );
     }
 
 

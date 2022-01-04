@@ -10,7 +10,7 @@ import MatchResults from './MatchResults.js';
 import DetailsUpdate from './DetailsUpdate.js';
 import DetailsFileResults from './DetailsFileResults.js';
 import DetailsRestore from './DetailsRestore.js';
-import LeafletMap from '../LeafletMap.js';
+import GeojsonMap from '../GeojsonMap.js';
 
 import '../index.css';
 import './match.css';
@@ -352,12 +352,12 @@ export default class RecordDetailsTab extends React.Component {
                 <div className="record-details">
                     <h2 className="title-color">Record details</h2>
                     {this.showTitle()}
-                    {this.showMap()}
                     <div className="containers">
                         <div className="metadata-container-container">
                             <div className="metadata-container">
                                 <h3>Metadata</h3>
                                 {this.showDetails()}
+                                {this.showMap()}
                             </div>
                             <div className="metadata-container files-container">
                                 <h3>Download Files</h3>
@@ -732,14 +732,15 @@ export default class RecordDetailsTab extends React.Component {
         });
     }
     showMap = () => {
-        console.log(this.state.hasGeojson);
         if(this.state.hasGeojson) {
             return (
-                <div className="map-container">
+                <div className="map-container-internal">
                     <h3 className="map-header">Map</h3>
-                    <LeafletMap docId={this.state.detailsID} />
+                    <GeojsonMap docId={this.state.detailsID} />
                 </div>
             );
+        } else {
+            return "";
         }
     }
 
@@ -747,26 +748,27 @@ export default class RecordDetailsTab extends React.Component {
     render () {
 
         if(!this.state.exists) {
-            return(
+            return (
                 <div id="details">
                     <label className="errorLabel">{this.state.networkError}</label>
                 </div>
             )
+        } else {
+            return (
+                <div id="details">
+                    <Helmet>
+                        <meta charSet="utf-8" />
+                        <title>Record Details - NEPAccess</title>
+                        <link rel="canonical" href={"https://nepaccess.org/record-details?id="+Globals.getParameterByName("id")} />
+                    </Helmet>
+                    <label className="errorLabel">{this.state.networkError}</label>
+                    <br />
+                    {this.showDropdown()}
+                    {this.showView()}
+                </div>
+            );
         }
         
-        return (
-            <div id="details">
-                <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>Record Details - NEPAccess</title>
-                    <link rel="canonical" href={"https://nepaccess.org/record-details?id="+Globals.getParameterByName("id")} />
-                </Helmet>
-                <label className="errorLabel">{this.state.networkError}</label>
-                <br />
-                {this.showDropdown()}
-                {this.showView()}
-            </div>
-        );
     }
 
 
