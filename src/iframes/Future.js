@@ -9,14 +9,14 @@ export default class Future extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Future - NEPAccess</title>
-                    <link rel="canonical" href="https://nepaccess.org/nepaccess-future" />
+                    <link rel="canonical" href="https://nepaccess.org/future" />
                 </Helmet>
 
                 <IframeResizer
                     // log
                     data-hj-allow-iframe="true"
                     id="iframe-landing-container"
-                    src="https://about.nepaccess.org/nepaccess-future/"
+                    src="https://about.nepaccess.org/future/"
                     style={{ width: '1px', minWidth: '100%'}}
                 />
             </div>

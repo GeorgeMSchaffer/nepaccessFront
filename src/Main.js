@@ -268,9 +268,9 @@ class Main extends React.Component {
                         </div>
                     </div>
                     
-                    {/* <Link currentpage={(this.state.currentPage==="/nepaccess-future").toString()} className="main-menu-link" to="/nepaccess-future">
+                    <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
                         Future
-                    </Link> */}
+                    </Link>
                     <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
                         Contact
                     </Link>
@@ -299,7 +299,7 @@ class Main extends React.Component {
                 <Route path="/media" component={Media}/>
 
                 <Route path="/contact" component={Contact}/>
-                <Route path="/nepaccess-future" component={Future}/>
+                <Route path="/future" component={Future}/>
 
                 <Route path="/record-details" component={RecordDetailsTab}/>
                 <Route path="/process-details" component={ProcessDetailsTab}/>
