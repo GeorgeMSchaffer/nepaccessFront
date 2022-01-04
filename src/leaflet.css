@@ -13,6 +13,15 @@
 .map-header {
     margin-top: 0px;
 }
+
+
+.map-container-internal {
+    margin-top: 25px;
+}
+.metadata-container h3.map-header {
+    margin-bottom: 20px;
+}
+
 .leafmap_container {
     
 }
