@@ -56,6 +56,8 @@ import SearchLogs from './SearchLogs.js';
 import Surveys from './Surveys.js';
 
 import Excel from './Excel.js';
+import ImporterGeo from './ImporterGeo.js';
+import ImporterGeoLinks from './ImporterGeoLinks.js';
 
 import Globals from './globals.js';
 
@@ -323,6 +325,8 @@ class Main extends React.Component {
                 <Route path="/excel" component={Excel}></Route>
                 
                 <Route path="/test" component={Test} />
+                <Route path="/up_geo" component={ImporterGeo} />
+                <Route path="/up_geo_links" component={ImporterGeoLinks} />
 
                 <Route path="/" component={Landing}/>
             </Switch>

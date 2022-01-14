@@ -433,6 +433,13 @@ const Globals = {
         //     col.updateDefinition({visible:vis}); // needed if widths not all explicitly defined
         // },
     },
+    getKeys: (obj) => {
+        let keysArr = [];
+        for (var key in obj) {
+          keysArr.push(key);
+        }
+        return keysArr;
+    },
     anEnum: Object.freeze({"test":1, "test2":2, "test3":3})
 
     

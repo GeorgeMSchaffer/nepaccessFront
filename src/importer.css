@@ -118,7 +118,11 @@
 
 .import-meta textarea {
     width: 100%;
-    height: 900px;
+    height: 600px;
+}
+
+.import-meta textarea.errors {
+    height: 100px;
 }
 
 .import-table .react-select__control {
