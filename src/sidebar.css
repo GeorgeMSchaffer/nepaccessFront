@@ -212,7 +212,8 @@ label.checkbox-text {
 .search-holder {
     display: block;
 
-    height: 200px;
+    /* height: 200px; */
+    height: 100%;
     min-width: 860px;
     /* width: 84%;
 
@@ -263,11 +264,11 @@ label.checkbox-text {
     display: flex;
     justify-content: space-between;
     width: 72%;
-    height: 30px;
     line-height: 30px;
     margin: auto;
     margin-top: 10px;
     padding: 0;
+    padding-bottom: 5px;
 }
 
 .search-bar {
