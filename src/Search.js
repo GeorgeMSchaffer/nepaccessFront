@@ -897,12 +897,16 @@ class Search extends React.Component {
                     </div>
                 </div>
 
-                <div className="filter" hidden={localStorage.role !== 'admin'}>
-                    <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
-                            checked={this.props.useOptions} onChange={this.onUseOptionsChecked} />
-                    <label className="checkbox-text" htmlFor="typeFinal">
-                        Apply filters when searching
-                    </label>
+                <div className="filter" hidden={!Globals.curatorOrHigher()}>
+                    <hr />
+                    <label className="sidebar-label-date">Advanced</label>
+                    <div className="sidebar-checkboxes">
+                        <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
+                                checked={this.props.useOptions} onChange={this.onUseOptionsChecked} />
+                        <label className="checkbox-text" htmlFor="typeFinal">
+                            Apply filters to search query
+                        </label>
+                    </div>
                 </div>
             </div>
             <div hidden={this.state.hideOrganization} id="agency-svg-holder">
