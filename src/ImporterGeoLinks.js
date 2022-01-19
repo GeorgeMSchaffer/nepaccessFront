@@ -196,7 +196,7 @@ export default class ImporterGeoLinks extends Component {
         let importUrl = new URL(urlToUse, Globals.currentHost);
 
         let uploadFile = new FormData();
-        uploadFile.append("csv", JSON.stringify(newCSV));
+        uploadFile.append("geoLinks", JSON.stringify(newCSV));
 
         let networkString = '';
         let successString = '';
@@ -254,7 +254,7 @@ export default class ImporterGeoLinks extends Component {
         });
     }
     
-    
+
     render() {
 
         if(!Globals.curatorOrHigher()) {
@@ -267,7 +267,7 @@ export default class ImporterGeoLinks extends Component {
             <div className="form content">
                 
                 <div className="note">
-                    Import GeoJSON Data
+                    Import GeoJSON ID Linking Data
                 </div>
                 
                 <label className="networkErrorLabel">
@@ -285,7 +285,7 @@ export default class ImporterGeoLinks extends Component {
                         <h2>Instructions:</h2>
                         <h3>One .tsv or .csv file at a time supported.</h3>
                         <h3>Header names case insensitive but otherwise must be exact</h3>
-                        <h3>Required headers: id; geo_id</h3>
+                        <h3>Required headers: id; geo_id.  (id is for the metadata record ID)</h3>
                         <h3>Optional headers: process_id</h3>
 
                         <hr />
@@ -327,7 +327,7 @@ export default class ImporterGeoLinks extends Component {
 
                         <button type="button" className="button" id="submitCSVGeoLinks" 
                                 disabled = {!this.state.canImportCSV || this.state.disabled} 
-                                onClick  = {() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_geo_links')}
+                                onClick  = {() => this.importCSVHandler(this.autoValidate,'geojson/import_geo_links')}
                         >
                             Import Meta/GeoJSON link data (sets custom geo ID link by meta ID)
                         </button>

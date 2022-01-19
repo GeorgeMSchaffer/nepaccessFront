@@ -7,10 +7,7 @@ import Globals from './globals';
 
 let reader;
 
-// TODO: Everything
-/** Goal: Handle .geojson and prepare it in a way that Java will appreciate, then send it over and return the results
- * for the user.  Include any errors e.g. geojson ID not unique or polygon not unique, if we can do that.
- */
+/** Handle .geojson and prepare it in a way that Java will appreciate, then send it to backend and show the results to user */
 export default class ImporterGeo extends Component {
 
 
@@ -37,7 +34,9 @@ export default class ImporterGeo extends Component {
 
     onDrop = (dropped) => {
         
-        // TODO: If we want to support multiple geojson files, this needs to be an array of feature collections?
+        // TODO: If we want to support multiple geojson files, we need to save a collection of feature collections instead
+        // of exactly one feature collection.  This would probably return the geojson instead of setting state and the parent
+        // calling this would run it in a loop and then save the whole collection of collections to state instead.
         const setText = (text) => {
             let _texts = [];
             let _geojson = [];
@@ -49,10 +48,15 @@ export default class ImporterGeo extends Component {
             // Here's where we actually set up the data for import
 
             json.features.forEach(feature => {
-                _geojson.push({'Feature':feature, 'GeoID':feature.properties.GEOID, 'Name':feature.properties.NAME});
-            })
+                _geojson.push({
+                    'feature':JSON.stringify(feature), 
+                    'geo_id':feature.properties.GEOID, 
+                    'name':feature.properties.NAME,
+                    'state_id':feature.STATEFP
+                });
+            });
 
-            console.log(_geojson);
+            // console.log(_geojson);
 
             this.setState({
                 texts: _texts,
@@ -142,10 +146,11 @@ export default class ImporterGeo extends Component {
             busy: true
         });
 
-        let importUrl = new URL('file/upload_geo', Globals.currentHost);
+        let importUrl = new URL('geojson/import_geo', Globals.currentHost);
 
         let uploadFile = new FormData();
         uploadFile.append("geo", JSON.stringify(this.state.geojson));
+        // uploadFile.append("geo", this.state.geojson);
 
         let networkString = '';
         let successString = '';
@@ -219,7 +224,7 @@ export default class ImporterGeo extends Component {
 
 
     render() {
-        
+
         if(!Globals.curatorOrHigher()) {
             return <div className="content">
                 401 Unauthorized (not admin or try logging in again?)
@@ -268,8 +273,8 @@ export default class ImporterGeo extends Component {
                                     <aside className="dropzone-aside">
                                         <h4>File list:</h4>
                                         <ul>{files}</ul>
-                                        <h4>Total size (rounded to MB):</h4>
-                                        <ul>{Math.round(this.state.totalSize / 1024 / 1024)} MB</ul>
+                                        {/* <h4>Total size (rounded to MB):</h4>
+                                        <ul>{Math.round(this.state.totalSize / 1024 / 1024)} MB</ul> */}
                                     </aside>
                                 </section>
                             )}
