@@ -6,7 +6,7 @@ import Globals from './globals.js';
 
 import './leaflet.css';
 
-// TODO: Use more than a single geojson
+let counties = [];
 
 const MyData = (props) => {
     // create state variable to hold data when it is fetched
@@ -27,11 +27,27 @@ const MyData = (props) => {
         const getDataProcess = async (processId) => {
             let url = Globals.currentHost + "geojson/get_all_geojson_for_process";
             const response = await axios.get(url, { params: { id: processId } });
+            
+            for(let i = 0; i < response.data.length; i++) {
+                let datum = JSON.parse(response.data[i]).properties;
+                if(datum.COUNTYNS) {
+                    counties.push(datum.NAME);
+                }
+            }
+
             setData(response.data);
         };
         const getDataDoc = async (docId) => {
             let url = Globals.currentHost + "geojson/get_all_geojson_for_eisdoc";
             const response = await axios.get(url, { params: { id: docId } });
+
+            for(let i = 0; i < response.data.length; i++) {
+                let datum = JSON.parse(response.data[i]).properties;
+                if(datum.COUNTYNS) {
+                    counties.push(datum.NAME);
+                }
+            }
+
             setData(response.data);
         };
 
@@ -56,7 +72,7 @@ const MyData = (props) => {
         return null;
     }
 };
-  
+
 const LeafletMap = (props) => {
     return (
         <div className="leafmap_container">
@@ -68,6 +84,10 @@ const LeafletMap = (props) => {
                     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                     crossorigin=""></script>
             </Helmet>
+            
+            <p className='modal-line' hidden={!counties.length}>
+                <span className='modal-title'>Counties:</span> <span className="bold">{counties.join("; ")}</span>
+            </p>
             
             <MapContainer className="leafmap" 
                 center={[39.82, -98.58]} 
