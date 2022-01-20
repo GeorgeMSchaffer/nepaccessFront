@@ -284,7 +284,8 @@ export default class ImporterGeoLinks extends Component {
                     <div className="importFile">
                         <h2>Instructions:</h2>
                         <h3>One .tsv or .csv file at a time supported.</h3>
-                        <h3>Header names case insensitive but otherwise must be exact</h3>
+                        <h3>Support for ; delimited list of geoIDs.</h3>
+                        <h3>Header names case insensitive but otherwise must be exact.</h3>
                         <h3>Required headers: id; geo_id.  (id is for the metadata record ID)</h3>
                         <h3>Optional headers: process_id</h3>
 
