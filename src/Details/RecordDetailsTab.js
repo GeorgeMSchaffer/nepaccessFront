@@ -597,6 +597,10 @@ export default class RecordDetailsTab extends React.Component {
                 // Title now outside this structure
                 if(key==='title') {
                     return '';
+                } 
+                // Space after semicolon
+                else if(key==='state' || key==='county') {
+                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key].replaceAll(';',"; ")}</span></p>);
                 }
                 // hide blank fields
                 else if(!cellData[key] || cellData[key].length === 0) {
