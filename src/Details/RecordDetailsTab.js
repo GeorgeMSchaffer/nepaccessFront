@@ -594,8 +594,8 @@ export default class RecordDetailsTab extends React.Component {
         if(cellData) {
             return Object.keys(cellData).map( ((key, i) => {
                 let keyName = key;
-                // Title now outside this structure
-                if(key==='title') {
+                // Title now outside this structure, skip nulls here also
+                if(key==='title' || cellData[key] === null) {
                     return '';
                 } 
                 // Space after semicolon
