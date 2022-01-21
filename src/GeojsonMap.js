@@ -6,8 +6,6 @@ import Globals from './globals.js';
 
 import './leaflet.css';
 
-let counties = [];
-
 const MyData = (props) => {
     // create state variable to hold data when it is fetched
     const [data, setData] = React.useState();
@@ -24,37 +22,17 @@ const MyData = (props) => {
             // save data to state
             setData(JSON.parse(response.data[0].geojson.geojson));
         };
-        const getDataProcess = async (processId) => {
-            let url = Globals.currentHost + "geojson/get_all_geojson_for_process";
-            const response = await axios.get(url, { params: { id: processId } });
-            
-            for(let i = 0; i < response.data.length; i++) {
-                let datum = JSON.parse(response.data[i]).properties;
-                if(datum.COUNTYNS) {
-                    counties.push(datum.NAME);
-                }
-            }
-
-            setData(response.data);
-        };
-        const getDataDoc = async (docId) => {
-            let url = Globals.currentHost + "geojson/get_all_geojson_for_eisdoc";
-            const response = await axios.get(url, { params: { id: docId } });
-
-            for(let i = 0; i < response.data.length; i++) {
-                let datum = JSON.parse(response.data[i]).properties;
-                if(datum.COUNTYNS) {
-                    counties.push(datum.NAME);
-                }
-            }
+        const getDataProcessOrDoc = async (_id, urlAppend) => {
+            let url = Globals.currentHost + urlAppend;
+            const response = await axios.get(url, { params: { id: _id } });
 
             setData(response.data);
         };
 
         if(props && props.processId) {
-            getDataProcess(props.processId);
+            getDataProcessOrDoc(props.processId, "geojson/get_all_geojson_for_process");
         } else if(props && props.docId) {
-            getDataDoc(props.docId);
+            getDataProcessOrDoc(props.docId, "geojson/get_all_geojson_for_eisdoc");
         } else {
             getDataAll();
         }
@@ -84,10 +62,6 @@ const LeafletMap = (props) => {
                     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                     crossorigin=""></script>
             </Helmet>
-            
-            <p className='modal-line' hidden={!counties.length}>
-                <span className='modal-title'>Counties:</span> <span className="bold">{counties.join("; ")}</span>
-            </p>
             
             <MapContainer className="leafmap" 
                 center={[39.82, -98.58]} 
