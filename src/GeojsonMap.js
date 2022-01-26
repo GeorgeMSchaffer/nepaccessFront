@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { MapContainer, TileLayer, GeoJSON, Popup, useMap } from "react-leaflet";
+//https://react-leaflet.js.org/docs/example-react-control/
+import { MapContainer, TileLayer, GeoJSON, Popup, Tooltip, useMap } from "react-leaflet";
 import axios from "axios";
 import Globals from './globals.js';
 
 import './leaflet.css';
+
 
 // basic colorblind palette
 // #000000
@@ -97,7 +99,8 @@ const MyData = (props) => {
                     fillColor={jsonData.style.fillColor} 
 
                 >
-                    <Popup>{jsonData.properties.NAME}</Popup>
+                    {/* <Popup>{jsonData.properties.NAME}</Popup> */}
+                    <Tooltip>{jsonData.properties.NAME}</Tooltip>
                 </GeoJSON>
             );
             
