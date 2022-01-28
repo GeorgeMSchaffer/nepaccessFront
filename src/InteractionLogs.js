@@ -6,7 +6,8 @@ import Globals from './globals.js';
 
 import { ReactTabulator } from 'react-tabulator';
 
-let options = Globals.tabulatorOptions;
+let options = JSON.parse(JSON.stringify(Globals.tabulatorOptions));
+options.paginationSize = 100;
 
 export default class InteractionLogs extends React.Component {
 
