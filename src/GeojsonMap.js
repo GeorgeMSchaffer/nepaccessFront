@@ -66,7 +66,7 @@ const MyData = (props) => {
                         response.data[i] = JSON.stringify(json);
                     }
                     
-                    console.log(json.style);
+                    // console.log(json.style);
                 }
                 // if(jsonData.COUNTYFP) {
                 //     console.log("County", jsonData.COUNTYFP);
@@ -90,7 +90,7 @@ const MyData = (props) => {
     if (data && data[0]) { // Render many
         return data.map( ((datum, i) => {
             let jsonData = JSON.parse(datum);
-            console.log(jsonData);
+            // console.log(jsonData);
 
             return (
                 <GeoJSON key={"leaflet"+i} 
