@@ -37,7 +37,7 @@ export default class InteractionLogs extends React.Component {
         
         axios.get(getUrl, {
             params: {
-                
+                exclude: true
             }
         }).then(response => {
             let responseOK = response && response.status === 200;
