@@ -22,6 +22,7 @@ export default class ImporterGeo extends Component {
             networkError: '',
             successLabel: '',
             failLabel: '',
+            results: "",
 
             dragClass: '',
             files: [],
@@ -37,6 +38,9 @@ export default class ImporterGeo extends Component {
         // TODO: If we want to support multiple geojson files, we need to save a collection of feature collections instead
         // of exactly one feature collection.  This would probably return the geojson instead of setting state and the parent
         // calling this would run it in a loop and then save the whole collection of collections to state instead.
+
+        // TODO: Let's just send each feature individually, and then file size isn't really a problem.  
+        // Server messages will then be added on demand.
         const setText = (text) => {
             let _texts = [];
             let _geojson = [];
@@ -132,7 +136,48 @@ export default class ImporterGeo extends Component {
         return valid;
     }
 
-    // TODO: Adopt csv import logic to importing array of geojson objects?
+    geoUploadOne = (importUrl, formData) => {
+        let resultString = "";
+
+        axios({ 
+            method: 'POST',
+            url: importUrl,
+            headers: {
+                'Content-Type': "multipart/form-data"
+            },
+            data: formData
+        }).then(response => {
+            let responseOK = response && response.status === 200;
+
+            let responseArray = response.data;
+            responseArray.forEach(element => {
+                resultString += element + "\n";
+            });
+            
+            if (responseOK) {
+                return true;
+            } else { 
+                return false;
+            }
+        }).catch(error => {
+            if(error.response) {
+                if (error.response.status === 500) {
+                    resultString += "::Internal server error.::";
+                } else if (error.response.status === 404) {
+                    resultString += "::Not found.::";
+                } 
+            } else {
+                resultString += "::Server may be down (no response), please try again later.::";
+            }
+            console.error('error message ', error);
+            return false;
+        }).finally(e => {
+            this.setState({
+                results : this.state.results.concat(resultString)
+            });
+        });
+    }
+
     geoUpload = () => {
         if(!this.validated()) {
             return;
@@ -146,65 +191,20 @@ export default class ImporterGeo extends Component {
             busy: true
         });
 
-        let importUrl = new URL('geojson/import_geo', Globals.currentHost);
+        let importUrl = new URL('geojson/import_geo_one', Globals.currentHost);
 
-        let uploadFile = new FormData();
-        uploadFile.append("geo", JSON.stringify(this.state.geojson));
-        // uploadFile.append("geo", this.state.geojson);
+        const geoData = this.state.geojson;
 
-        let networkString = '';
-        let successString = '';
-        let resultString = "";
+        for(let i = 0; i < geoData.length; i++) {
+            let uploadFile = new FormData();
+            uploadFile.append("geo", JSON.stringify(geoData[i]));
 
-        axios({ 
-            method: 'POST',
-            url: importUrl,
-            headers: {
-                'Content-Type': "multipart/form-data"
-            },
-            data: uploadFile
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-            // console.log(response);
+            this.geoUploadOne(importUrl,uploadFile);
+        }
 
-            let responseArray = response.data;
-            responseArray.forEach(element => {
-                resultString += element + "\n";
-            });
-            
-            if (responseOK) {
-                return true;
-            } else { 
-                return false;
-            }
-        }).then(success => {
-            if(success){
-                successString = "Success.";
-            } else {
-                successString = "Failed to import."; // Server down?
-            }
-        }).catch(error => {
-            if(error.response) {
-                if (error.response.status === 500) {
-                    networkString = "Internal server error.";
-                } else if (error.response.status === 404) {
-                    networkString = "Not found.";
-                } 
-            } else {
-                networkString = "Server may be down (no response), please try again later.";
-            }
-            successString = "Couldn't import.";
-            console.error('error message ', error);
-        }).finally(e => {
-            this.setState({
-                failLabel: networkString,
-                successLabel: successString,
-                disabled: false,
-                results : resultString,
-                busy: false
-            });
-    
-            document.body.style.cursor = 'default'; 
+        this.setState({
+            disabled: false,
+            busy: false
         });
 
         document.body.style.cursor = 'default'; 
