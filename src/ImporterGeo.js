@@ -16,11 +16,10 @@ export default class ImporterGeo extends Component {
 
         this.state = { 
             totalSize: 0,
-            texts: [],
             geojson: [],
 
             networkError: '',
-            successLabel: '',
+            successLabel: "Not ready",
             failLabel: '',
             results: "",
 
@@ -42,44 +41,26 @@ export default class ImporterGeo extends Component {
         // TODO: Let's just send each feature individually, and then file size isn't really a problem.  
         // Server messages will then be added on demand.
         const setText = (text) => {
-            let _texts = [];
             let _geojson = [];
             let json = JSON.parse(text);
-            console.log("JSON first feature in feature collection",json.features[0]);
-            // _texts.push(text);
-            _texts.push(JSON.stringify(json.features[0]));
+            // console.log("JSON first feature in feature collection",json.features[0]);
 
             // Here's where we actually set up the data for import
 
-
             json.features.forEach(feature => {
-                if(feature.properties.NAME) {
-                    _geojson.push({
-                        'feature':JSON.stringify(feature), 
-                        'geo_id':feature.properties.GEOID, 
-                        'name':feature.properties.NAME,
-                        'state_id':feature.STATEFP
-                    });
-                } else if(feature.properties.name) {
-                    _geojson.push({
-                        'feature':JSON.stringify(feature), 
-                        'geo_id':feature.properties.GEOID, 
-                        'name':feature.properties.name,
-                        'state_id':feature.STATEFP
-                    });
-                } else {
-                    console.error("No name found");
-                }
+                const stringFeature = JSON.stringify(feature);
+                _geojson.push({
+                    'feature':stringFeature, 
+                    'geo_id':feature.properties.GEOID, 
+                    'name':getParameterCaseInsensitive(feature.properties, "name"),
+                    'state_id':feature.STATEFP
+                });
             });
 
-            // console.log(_geojson);
-
             this.setState({
-                texts: _texts,
-                geojson: _geojson
-            }, () => {
-                // console.log("Texts",this.state.texts);
-            })
+                geojson: _geojson,
+                successLabel: "Ready"
+            });
         }
 
         reader.onload = function(e) {
@@ -91,7 +72,6 @@ export default class ImporterGeo extends Component {
 
         this.setState({
             files: dropped,
-            texts: [],
             dragClass: '',
             totalSize: 0
         }, ()=> {
@@ -104,8 +84,6 @@ export default class ImporterGeo extends Component {
             });
         }, () => {
 
-            console.log("Done");
-
             let _totalSize = 0;
             for(let i = 0; i < this.state.files.length; i++) {
                 _totalSize += this.state.files[i].size;
@@ -113,10 +91,9 @@ export default class ImporterGeo extends Component {
 
             this.setState({
                 totalSize: _totalSize,
-            }, () => {
-                console.log(this.state.texts);
             });
         });
+
     };
 
     onDragEnter = (e) => {
@@ -148,48 +125,7 @@ export default class ImporterGeo extends Component {
         return valid;
     }
 
-    geoUploadOne = (importUrl, formData, i) => {
-        let resultString = "Item " + i + ": ";
-
-        axios({ 
-            method: 'POST',
-            url: importUrl,
-            headers: {
-                'Content-Type': "multipart/form-data"
-            },
-            data: formData
-        }).then(response => {
-            let responseOK = response && response.status === 200;
-
-            let responseArray = response.data;
-            responseArray.forEach(element => {
-                resultString += element + "\n";
-            });
-            
-            if (responseOK) {
-                return true;
-            } else { 
-                return false;
-            }
-        }).catch(error => {
-            if(error.response) {
-                if (error.response.status === 500) {
-                    resultString += "::Internal server error.::";
-                } else if (error.response.status === 404) {
-                    resultString += "::Not found.::";
-                } 
-            } else {
-                resultString += "::Server may be down (no response), please try again later.::";
-            }
-            console.error('error message ', error);
-            return false;
-        }).finally(e => {
-            this.setState({
-                results : this.state.results.concat(resultString)
-            });
-        });
-    }
-
+    // Entry point for recursive operation of geoUploadOne()
     geoUpload = () => {
         if(!this.validated()) {
             return;
@@ -204,23 +140,72 @@ export default class ImporterGeo extends Component {
             busy: true
         });
 
-        let importUrl = new URL('geojson/import_geo_one', Globals.currentHost);
+        const importUrl = new URL('geojson/import_geo_one', Globals.currentHost);
 
-        const geoData = this.state.geojson;
+        this.geoUploadOne(importUrl,0);
 
-        for(let i = 0; i < geoData.length; i++) {
+    }
+
+    geoUploadOne = (importUrl, i) => {
+        if(i < this.state.geojson.length) {
+            let resultString = "Item " + i + ": ";
+
             let uploadFile = new FormData();
-            uploadFile.append("geo", JSON.stringify(geoData[i]));
+            uploadFile.append("geo", JSON.stringify(this.state.geojson[i]));
 
-            this.geoUploadOne(importUrl,uploadFile,i);
+            axios({ 
+                method: 'POST',
+                url: importUrl,
+                headers: {
+                    'Content-Type': "multipart/form-data"
+                },
+                data: uploadFile
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+
+                if(response.data) {
+                    let responseArray = response.data;
+                    responseArray.forEach(element => {
+                        resultString += element + "\n";
+                    });
+                } else {
+                    resultString += "No response data\n";
+                    responseOK = false;
+                }
+                
+                if (responseOK) {
+                    return true;
+                } else { 
+                    return false;
+                }
+            }).catch(error => {
+                if(error.response) {
+                    if (error.response.status === 500) {
+                        resultString += "\n::Internal server error.::";
+                    } else if (error.response.status === 404) {
+                        resultString += "\n::Not found.::";
+                    } 
+                } else {
+                    resultString += "\n::Server may be down (no response), please try again later.::";
+                }
+                console.error('error message ', error);
+
+                return false;
+            }).finally(e => { // Run again with i + 1, update results text so user can see progress
+                this.setState({
+                    results : this.state.results.concat(resultString)
+                });
+                this.geoUploadOne(importUrl,i+1);
+            });
+        } else { // Finish
+            this.setState({
+                successLabel: 'Done',
+                disabled: false,
+                busy: false
+            });
+    
+            document.body.style.cursor = 'default'; 
         }
-
-        this.setState({
-            disabled: false,
-            busy: false
-        });
-
-        document.body.style.cursor = 'default'; 
     }
 
     checkFileAPI = () => {
@@ -308,13 +293,6 @@ export default class ImporterGeo extends Component {
                             {"Import status: " + this.state.successLabel}
                         </h3>
                         
-                        {/* <label>
-                            <b>Contents sample (first feature detected):</b>
-                        </label>
-                        <textarea onChange={this.onChangeDummy}
-                            value={this.state.texts}>
-                        </textarea> */}
-                        
                         <label>
                             <b>Server response:</b>
                         </label>
@@ -333,3 +311,14 @@ export default class ImporterGeo extends Component {
         this.checkFileAPI();
     }
 }
+
+/**
+  * @param {Object} object
+  * @param {string} key
+  * @return {any} value
+ */
+ function getParameterCaseInsensitive(object, key) {
+    return object[Object.keys(object)
+      .find(k => k.toLowerCase() === key.toLowerCase())
+    ];
+  }
