@@ -49,21 +49,32 @@ const MyData = (props) => {
             const response = await axios.get(url, { params: { id: _id } });
 
             // Add specific color to states and counties
+
+            // Internal polygons (counties, other) must be added LAST in order to show up, 
+            // otherwise the overlapping labels don't work. We'll use a new property, sortPriority.
             if(response.data && response.data[0]) {
                 for(let i = 0; i < response.data.length; i++) {
                     let json = JSON.parse(response.data[i]);
                     json.style = {};
+                    json.sortPriority = 0;
 
                     if(json.properties.COUNTYFP) {
-                        json.style.color = "#3388ff"; // default
+                        json.style.color = "#3388ff"; // default (blue)
                         json.style.fillColor = "#3388ff";
-                        response.data[i] = JSON.stringify(json);
-                    } else {
-                        json.style.color = "#000";
+                        json.sortPriority = 5;
+                        response.data[i] = json;
+                    } else if(json.properties.STATENS) {
+                        json.style.color = "#000"; // black
                         json.style.fillColor = "#000";
+                        json.sortPriority = 4;
+                        response.data[i] = json;
+                    } else {
+                        json.style.color = "#004949"; // dark green, colorblind friendly
+                        json.style.fillColor = "#004949";
+                        json.sortPriority = 6;
                         // json.style.color = "#8FBC3F";
                         // json.style.fillColor = "#8FBC3F";
-                        response.data[i] = JSON.stringify(json);
+                        response.data[i] = json;
                     }
                     
                     // console.log(json.style);
@@ -72,8 +83,11 @@ const MyData = (props) => {
                 //     console.log("County", jsonData.COUNTYFP);
                 // }
             }
-            
-            setData(response.data);
+
+            // Sort by our sort priority such that the largest .sortPriority numbers are at the top (counties, other regions)
+            let sortedData = response.data.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
+
+            setData(sortedData);
         };
 
         if(props && props.processId) {
@@ -89,8 +103,7 @@ const MyData = (props) => {
     // render react-leaflet GeoJSON when the data is ready
     if (data && data[0]) { // Render many
         return data.map( ((datum, i) => {
-            let jsonData = JSON.parse(datum);
-            // console.log(jsonData);
+            let jsonData = datum;
 
             return (
                 <GeoJSON key={"leaflet"+i} 
