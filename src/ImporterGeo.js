@@ -136,8 +136,8 @@ export default class ImporterGeo extends Component {
         return valid;
     }
 
-    geoUploadOne = (importUrl, formData) => {
-        let resultString = "";
+    geoUploadOne = (importUrl, formData, i) => {
+        let resultString = "Item " + i + ": ";
 
         axios({ 
             method: 'POST',
@@ -187,6 +187,7 @@ export default class ImporterGeo extends Component {
         this.setState({ 
             successLabel: 'In progress...',
             failLabel: '',
+            results: "",
             disabled: true,
             busy: true
         });
@@ -199,7 +200,7 @@ export default class ImporterGeo extends Component {
             let uploadFile = new FormData();
             uploadFile.append("geo", JSON.stringify(geoData[i]));
 
-            this.geoUploadOne(importUrl,uploadFile);
+            this.geoUploadOne(importUrl,uploadFile,i);
         }
 
         this.setState({
