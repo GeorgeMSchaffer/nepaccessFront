@@ -51,13 +51,25 @@ export default class ImporterGeo extends Component {
 
             // Here's where we actually set up the data for import
 
+
             json.features.forEach(feature => {
-                _geojson.push({
-                    'feature':JSON.stringify(feature), 
-                    'geo_id':feature.properties.GEOID, 
-                    'name':feature.properties.NAME,
-                    'state_id':feature.STATEFP
-                });
+                if(feature.properties.NAME) {
+                    _geojson.push({
+                        'feature':JSON.stringify(feature), 
+                        'geo_id':feature.properties.GEOID, 
+                        'name':feature.properties.NAME,
+                        'state_id':feature.STATEFP
+                    });
+                } else if(feature.properties.name) {
+                    _geojson.push({
+                        'feature':JSON.stringify(feature), 
+                        'geo_id':feature.properties.GEOID, 
+                        'name':feature.properties.name,
+                        'state_id':feature.STATEFP
+                    });
+                } else {
+                    console.error("No name found");
+                }
             });
 
             // console.log(_geojson);
@@ -72,7 +84,7 @@ export default class ImporterGeo extends Component {
 
         reader.onload = function(e) {
             let text = e.target.result;
-            console.log("Contents", text);
+            // console.log("Contents", text);
 
             setText(text);
         };
@@ -296,12 +308,12 @@ export default class ImporterGeo extends Component {
                             {"Import status: " + this.state.successLabel}
                         </h3>
                         
-                        <label>
+                        {/* <label>
                             <b>Contents sample (first feature detected):</b>
                         </label>
                         <textarea onChange={this.onChangeDummy}
                             value={this.state.texts}>
-                        </textarea>
+                        </textarea> */}
                         
                         <label>
                             <b>Server response:</b>
