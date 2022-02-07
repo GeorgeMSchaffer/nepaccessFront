@@ -60,6 +60,8 @@ export default class ImporterGeo extends Component {
             this.setState({
                 geojson: _geojson,
                 successLabel: "Ready"
+            }, () => {
+                this.dedupe();
             });
         }
 
@@ -147,7 +149,15 @@ export default class ImporterGeo extends Component {
     }
 
     geoUploadOne = (importUrl, i) => {
-        if(i < this.state.geojson.length) {
+        if(i < this.state.geojson.length && this.state.bads[this.state.geojson[i].geo_id]) {
+            let resultString = "Item " + i + ": " + "Skipping bad id " + this.state.geojson[i].geo_id + "\n";
+            this.setState({
+                results : this.state.results.concat(resultString)
+            }, () => {
+                this.geoUploadOne(importUrl,i+1);
+            });
+        }
+        else if(i < this.state.geojson.length) {
             let resultString = "Item " + i + ": ";
 
             let uploadFile = new FormData();
@@ -218,6 +228,56 @@ export default class ImporterGeo extends Component {
             
             return false;
         }
+    }
+    
+
+    // We can figure out a list of good+bad geoid combos to give to the backend/db
+    // TODO: For now, we're just using it here on demand
+    dedupe = () => {
+        let unduped = this.state.geojson;
+        // let good_bad = [];
+        let bad = {};
+        let sortedData = unduped.sort((a, b) => a.name.localeCompare(b.name));
+
+        console.log("Sorted by name", sortedData);
+
+        for(let i = 0; i < sortedData.length - 1; i++) {
+            if(sortedData[i].name === sortedData[i+1].name) {
+                // console.log(i,sortedData[i].name);
+                // console.log("Same size?",sortedData[i].feature.length === sortedData[i+1].feature.length);
+                let j = i + 1;
+
+                while(sortedData[j] 
+                        && !bad[sortedData[i].geo_id] // Process unless the id at i is bad already
+                        && sortedData[i].name == sortedData[j].name) 
+                {
+                    if(!bad[sortedData[j].geo_id]) { // Process unless id at j is bad already
+                        let geometryA = JSON.stringify(JSON.parse(sortedData[i].feature).geometry);
+                        let geometryB = JSON.stringify(JSON.parse(sortedData[j].feature).geometry);
+                        let identicalIfZero = geometryA.localeCompare(geometryB);
+    
+                        // console.log("Same geometry?",identicalIfZero,i,j,sortedData[j].geo_id,sortedData[j].geo_id);
+                        
+                        if(identicalIfZero === 0) {
+                            // good_bad.push({'good': sortedData[i].geo_id, 'bad': sortedData[j].geo_id});
+                            bad[sortedData[j].geo_id] = sortedData[i].geo_id;
+                        }
+                    }
+
+                    j = j + 1;
+                }
+            }
+        }
+
+        // could check logic here: a good id can replace multiple bad ids and show up multiple times, 
+        // but a bad id should only show up once.
+        // let sortedGoodBad = good_bad.sort((a, b) => a.bad - b.bad);
+
+        this.setState({bads: bad}, () => {
+            console.log("Deduplication results",this.state.bads);
+        });
+
+
     }
 
 

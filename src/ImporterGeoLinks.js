@@ -7,6 +7,55 @@ import { CSVReader } from 'react-papaparse';
 import axios from 'axios';
 import Globals from './globals';
 
+// TODO: Temporary list here. Later we'll build a database table to consult instead, but this way
+// the services don't even need to be restarted to update just the frontend
+/** Key is bad id, value is good id to use instead */
+const bads = {
+    "5000489": 5000463,
+    "5000518": 5000413,
+    "5000803": 5000312,
+    "5001122": 5001121,
+    "5002078": 5001633,
+    "5002573": 5002571,
+    "5002588": 5001039,
+    "5004023": 5003987,
+    "5004597": 5000359,
+    "5004643": 5003066,
+    "5004792": 5003067,
+    "5005038": 5002429,
+    "5005629": 5003593,
+    "5005984": 5003964,
+    "5006183": 5003893,
+    "5006330": 5000111,
+    "5006637": 5006178,
+    "5006982": 5005210,
+    "5007090": 5004572,
+    "5007148": 5002928,
+    "5007743": 5006578,
+    "5008138": 5008135,
+    "5008161": 5001171,
+    "5008287": 5001633,
+    "5008750": 5003253,
+    "5008766": 5002808,
+    "5008899": 5004317,
+    "5009029": 5001081,
+    "5009037": 5007716,
+    "5010177": 5003493,
+    "5010182": 5005992,
+    "5010767": 5008435,
+    "5010848": 5001143,
+    "5010902": 5009787,
+    "5010911": 5005338,
+    "5011455": 5004500,
+    "5011957": 5011852,
+    "5012298": 5011932,
+    "5012340": 5005031,
+    "5012367": 5003885,
+    "5012411": 5010425,
+    "5012800": 5006090,
+    "5013401": 5005779
+}
+
 const customStyles = {
     option: (styles, state) => ({
          ...styles,
@@ -158,6 +207,27 @@ export default class ImporterGeoLinks extends Component {
             }
             
             newObj[newKey] = importRow[key];
+
+            if(newKey=== "geo_id") {
+                // TODO: Temporarily replacing bad ids here using a temporary static list
+                const geoIDs = newObj.geo_id.split(',');
+                let newIDs = [];
+                let hasBad = false;
+                geoIDs.forEach((id) => {
+                    if(bads[id.trim()]) {
+                        console.log("Replacing bad id",id,bads[id.trim()],newObj.geo_id);
+                        newIDs.push(bads[id.trim()]);
+                        hasBad = true;
+                    } else {
+                        newIDs.push(id.trim());
+                    }
+                });
+                newObj.geo_id = newIDs.join(",");
+                if(hasBad) {
+                    console.log("New result",newObj.geo_id);
+                }
+            }
+            
         }
 
         // console.log("New row",newObj);
