@@ -208,6 +208,9 @@ export default class InteractionLogs extends React.Component {
                         name="getRoute" 
                         onChange={this.onSelectHandler}
                     /> */}
+                    <div>
+                        Note: All log times are recorded in Coordinated Universal Time ‎(UTC)‎. Because neither Arizona (Mountain Standard Time (MST)) nor UTC observe daylight saving time, UTC is always 7 hours ahead of MST.
+                    </div>
                     <div className="loader-holder">
                         <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
