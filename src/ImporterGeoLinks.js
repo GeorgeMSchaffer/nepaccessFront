@@ -210,7 +210,7 @@ export default class ImporterGeoLinks extends Component {
 
             if(newKey=== "geo_id") {
                 // TODO: Temporarily replacing bad ids here using a temporary static list
-                const geoIDs = newObj.geo_id.split(',');
+                const geoIDs = newObj.geo_id.split(';');
                 let newIDs = [];
                 let hasBad = false;
                 geoIDs.forEach((id) => {
@@ -222,7 +222,7 @@ export default class ImporterGeoLinks extends Component {
                         newIDs.push(id.trim());
                     }
                 });
-                newObj.geo_id = newIDs.join(",");
+                newObj.geo_id = newIDs.join(";");
                 if(hasBad) {
                     console.log("New result",newObj.geo_id);
                 }
