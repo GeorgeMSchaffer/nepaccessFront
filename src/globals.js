@@ -440,6 +440,18 @@ const Globals = {
         }
         return keysArr;
     },
+    
+    /**
+     * @param {Object} object
+     * @param {string} key
+     * @return {any} value
+     */
+    getParameterCaseInsensitive:(object, key) => {
+        return object[Object.keys(object)
+            .find(k => k.toLowerCase() === key.toLowerCase())
+            ];
+    },
+    
     anEnum: Object.freeze({"test":1, "test2":2, "test3":3})
 
     

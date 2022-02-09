@@ -52,7 +52,7 @@ export default class ImporterGeo extends Component {
                 _geojson.push({
                     'feature':stringFeature, 
                     'geo_id':feature.properties.GEOID, 
-                    'name':getParameterCaseInsensitive(feature.properties, "name"),
+                    'name':Globals.getParameterCaseInsensitive(feature.properties, "name"),
                     'state_id':feature.STATEFP
                 });
             });
@@ -371,14 +371,3 @@ export default class ImporterGeo extends Component {
         this.checkFileAPI();
     }
 }
-
-/**
-  * @param {Object} object
-  * @param {string} key
-  * @return {any} value
- */
- function getParameterCaseInsensitive(object, key) {
-    return object[Object.keys(object)
-      .find(k => k.toLowerCase() === key.toLowerCase())
-    ];
-  }

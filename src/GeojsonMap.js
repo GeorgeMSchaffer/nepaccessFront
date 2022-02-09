@@ -75,6 +75,7 @@ const MyData = (props) => {
                         // json.style.color = "#8FBC3F";
                         // json.style.fillColor = "#8FBC3F";
                         response.data[i] = json;
+                        console.log(json);
                     }
                     
                     // console.log(json.style);
@@ -104,6 +105,7 @@ const MyData = (props) => {
     if (data && data[0]) { // Render many
         return data.map( ((datum, i) => {
             let jsonData = datum;
+            let jsonName = Globals.getParameterCaseInsensitive(jsonData.properties,"name");
 
             return (
                 <GeoJSON key={"leaflet"+i} 
@@ -113,7 +115,7 @@ const MyData = (props) => {
 
                 >
                     {/* <Popup>{jsonData.properties.NAME}</Popup> */}
-                    <Tooltip>{jsonData.properties.NAME}</Tooltip>
+                    <Tooltip>{jsonName}</Tooltip>
                 </GeoJSON>
             );
             
