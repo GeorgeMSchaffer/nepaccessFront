@@ -155,7 +155,7 @@ export default class ImporterGeoLinks extends Component {
             if(evt[i].errors && evt[i].errors.length > 0) {
                 resultString += "Error on line " + (i + 1) + " (this line was skipped): ";
                 for(let j = 0; j < evt[i].errors.length; j++) {
-                    resultString += evt[i].errors[j].message + "\n";
+                    resultString += evt[i].errors[j].message + " (can ignore this error if it's only on the last line)\n";
                 }
             } else {
                 newArray.push(evt[i].data);
