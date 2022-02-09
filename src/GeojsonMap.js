@@ -59,18 +59,18 @@ const MyData = (props) => {
                     json.sortPriority = 0;
 
                     if(json.properties.COUNTYFP) {
-                        json.style.color = "#3388ff"; // default (blue)
+                        json.style.color = "#3388ff"; // county: default (blue)
                         json.style.fillColor = "#3388ff";
                         json.sortPriority = 5;
                         response.data[i] = json;
                     } else if(json.properties.STATENS) {
-                        json.style.color = "#000"; // black
+                        json.style.color = "#000"; // state: black
                         json.style.fillColor = "#000";
                         json.sortPriority = 4;
                         response.data[i] = json;
                     } else {
-                        json.style.color = "#004949"; // dark green, colorblind friendly
-                        json.style.fillColor = "#004949";
+                        json.style.color = "#D54E21"; // other: orange, colorblind friendly and contrasts well
+                        json.style.fillColor = "#D54E21";
                         json.sortPriority = 6;
                         // json.style.color = "#8FBC3F";
                         // json.style.fillColor = "#8FBC3F";
