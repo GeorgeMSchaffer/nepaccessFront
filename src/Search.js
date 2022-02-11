@@ -274,6 +274,19 @@ class Search extends React.Component {
 			this.filterBy(this.state);
         });
     }
+	onCountyChange = (evt) => {
+		var countyValues = [];
+		for(var i = 0; i < evt.length; i++){
+			countyValues.push(evt[i].value + " County");
+		}
+        this.setState( 
+		{ 
+			county: countyValues,
+            countyRaw: evt
+		}, () => { 
+			this.filterBy(this.state);
+        });
+    }
 	onProximityChange = (evt) => {
         if(evt.value === -1) {
             this.setState({
@@ -465,6 +478,7 @@ class Search extends React.Component {
             ,{ value: 'URC', label: 'Utah Reclamation Mitigation and Conservation Commission (URC)' },{ value: 'WAPA', label: 'Western Area Power Administration (WAPA)' }
         ];
         const stateOptions = Globals.locations;
+        const countyOptions = Globals.counties;
         // const tooltipTitle = "<p class=tooltip-line><span class=bold>Search word connectors</span></p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>AND</span>This is the default. <span class=bold>All</span> words you enter must be found together to return a result.</p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>OR</span> (all caps) to search for <span class=bold>any</span> of those words.</p>"
@@ -795,6 +809,17 @@ class Search extends React.Component {
                         onChange={this.onLocationChange} 
                         value={this.state.stateRaw}
                         placeholder="Type or select states" 
+                    />
+                </div>
+                <div className="filter">
+                    <label className="sidebar-label" htmlFor="searchCounty">County/counties</label>
+                    <Select id="searchCounty" className="multi" classNamePrefix="react-select" isMulti name="county" isSearchable isClearable 
+                        styles={customStyles}
+                        tabIndex="5"
+                        options={countyOptions} 
+                        onChange={this.onCountyChange} 
+                        value={this.state.countyRaw}
+                        placeholder="Type or select a county" 
                     />
                 </div>
 

@@ -134,7 +134,7 @@ export default class App extends React.Component {
     filterResultsBy = (searcherState) => {
         this._searcherState = searcherState; // for live filtering
         // Only filter if there are any results to filter
-        if(this.state.searchResults && this.state.searchResults.length > 0){
+        if(this.state.searchResults && this.state.searchResults.length > 0) {
 
             const filtered = Globals.doFilter(searcherState, this.state.searchResults, this.state.searchResults.length, false);
             
@@ -238,6 +238,13 @@ export default class App extends React.Component {
                 processResults[key].registerDate = datum.registerDate;
                 processResults[key].title = datum.title;
             }
+            
+            // Try to simply get first non-null county, if available (if multiple choices, we don't know which is
+            // the most accurate)
+            if(!processResults[key].county) {
+                processResults[key].county = datum.county;
+            }
+
 
             // Add record to array of records for this "key"
             processResults[key].records.push(datum);
@@ -1044,6 +1051,7 @@ export default class App extends React.Component {
                         agency: result.agency,
                         cooperating_agency: result.cooperatingAgency,
                         state: result.state,
+                        county: result.county,
                         processId: result.processId,
                         notes: result.notes,
                         status: result.status,
