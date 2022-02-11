@@ -84,6 +84,17 @@ export default class SearchProcessResult extends React.Component {
             );
         }
     }
+    showCounty = () => {
+        if(this.props && this.props.cell._cell.row.data.county){
+            return (
+                <div><span className="cardHeader">County:
+                    <span>{this.props.cell._cell.row.data.county.replaceAll(";","; ")}</span></span>
+                </div>
+            );
+        } else {
+            return <></>;
+        }
+    }
     
     /** Used by showText(). 
      * Takes: record ID,filename,text,index; 
@@ -329,6 +340,7 @@ export default class SearchProcessResult extends React.Component {
                         <div className="table-meta">
                             {this.showAgency()}
                             {this.showState()}
+                            {this.showCounty()}
                         </div>
                     </div>
                     <div className="records">
