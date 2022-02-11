@@ -277,7 +277,7 @@ class Search extends React.Component {
 	onCountyChange = (evt) => {
 		var countyValues = [];
 		for(var i = 0; i < evt.length; i++){
-			countyValues.push(evt[i].value + " County");
+			countyValues.push(evt[i].label + " County"); // add text to match db county strings, each ends in " County"
 		}
         this.setState( 
 		{ 
