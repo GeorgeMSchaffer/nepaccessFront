@@ -47,15 +47,47 @@ export default class ImporterGeo extends Component {
 
             // Here's where we actually set up the data for import
 
+            // Temporary logic to build a list of counties with prepended state abbreviations
+            // let stateAbbrevs = {};
+            // Globals.locations.forEach(location => {
+            //     stateAbbrevs[location.label] = location.value;
+            // });
+            
+            // Temporary logic to build a list of counties with prepended state abbreviations
+            // let stateIDs = {};
+            // json.features.forEach(feature => {
+            //     if(feature.properties.STATENS) {
+            //         const geoName = Globals.getParameterCaseInsensitive(feature.properties, "name");
+            //         // TODO: Advanced logic could get the states, match those abbreviations and prepend to counties.
+            //         // Then the frontend could split these and filter on state plus county, giving the most accurate county filter
+            //         // possible with our data.
+            //         stateIDs[feature.properties.GEOID] = geoName;
+            //     }
+            // });
+
+            // let counties = [];
             json.features.forEach(feature => {
                 const stringFeature = JSON.stringify(feature);
+                const geoName = Globals.getParameterCaseInsensitive(feature.properties, "name");
+                // Temporary logic to build a master list of 3220 counties with prepended state abbreviations
+                // if(!feature.properties.STATENS) {
+                //     let abbrevPrepend = stateAbbrevs[stateIDs[feature.properties.STATEFP]];
+                //     counties.push({
+                //         'value': geoName,
+                //         'label': abbrevPrepend + ": " + geoName
+                //     });
+                // }
                 _geojson.push({
-                    'feature':stringFeature, 
-                    'geo_id':feature.properties.GEOID, 
-                    'name':Globals.getParameterCaseInsensitive(feature.properties, "name"),
-                    'state_id':feature.STATEFP
+                    'feature' : stringFeature, 
+                    'geo_id'  : feature.properties.GEOID, 
+                    'name'    : geoName,
+                    // 'state_id': feature.properties.STATEFP // haven't used this so far
                 });
             });
+
+            // counties = counties.sort((a, b) => a.label.localeCompare(b.label));
+
+            // console.log("Counties",counties);
 
             this.setState({
                 geojson: _geojson,
