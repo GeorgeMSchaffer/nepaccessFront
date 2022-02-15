@@ -13228,7 +13228,7 @@ const Globals = {
         }
         if(searcherState.county && searcherState.county.length > 0){
             isFiltered = true;
-            filteredResults = filteredResults.filter(arrayMatchesArrayCounty("county", searcherState.county));
+            filteredResults = filteredResults.filter(arrayMatchesArray("county", searcherState.county));
         }
         if(searcherState.startPublish){
             isFiltered = true;
@@ -13390,6 +13390,7 @@ const Globals = {
                     for(let i = 0; i < _vals.length; i++) {
                         if (_vals[i].trim() === item.trim()) {
                             returnValue = true; // if we hit ANY of them, then true
+                            i = _vals.length; // done
                         }
                     }
                 }

@@ -395,6 +395,10 @@ export default class Admin extends React.Component {
                     <button type="button" onClick={() => this.doPost("admin/fix_garbage")}>
                         Delete garbage and get report
                     </button>
+                    
+                    <button type="button" onClick={() => this.doPost("geojson/replace_county_names")}>
+                        Replace county names
+                    </button>
 
                     <div>
                         <button type="button" onClick={() => this.doGet("text/milli_test")}>

@@ -86,9 +86,10 @@ export default class SearchProcessResult extends React.Component {
     }
     showCounty = () => {
         if(this.props && this.props.cell._cell.row.data.county){
+            const countyDisplay = this.props.cell._cell.row.data.county.replaceAll(/[A-Z]{2}\:\ /g,"").replaceAll(";","; ");
             return (
                 <div><span className="cardHeader">County:
-                    <span>{this.props.cell._cell.row.data.county.replaceAll(";","; ")}</span></span>
+                    <span>{countyDisplay}</span></span>
                 </div>
             );
         } else {
