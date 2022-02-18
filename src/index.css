@@ -41,7 +41,7 @@ body {
 
   /* background: #C4C4C4; */
   box-sizing: border-box;
-  z-index: 1000;
+  z-index: 2000; /* Geojson map introduces some very high z-index items */
 
   background: #8FBC3F;
 }
