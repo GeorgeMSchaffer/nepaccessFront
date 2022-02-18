@@ -1,5 +1,8 @@
+.leafmap_container {
+    height: 448px;
+}
 .leafmap {
-    height: 400px;
+    height: 448px;
     width: 100%;
 }
 .map-container {
@@ -22,14 +25,11 @@
     margin-bottom: 20px;
 }
 
-.leafmap_container {
-    
-}
 
 .map-loading-tooltip {
     display: inline-block;
     background: white;
     position: absolute;
-    margin-top: -20px;
+    margin-left: 50px;
     z-index: 500;
 }
