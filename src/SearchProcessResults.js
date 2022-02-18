@@ -3,6 +3,8 @@ import React from 'react';
 import ResultsHeader from './ResultsHeader.js';
 import SearchProcessResult from './SearchProcessResult.js';
 
+import GeojsonMap from './GeojsonMap.js';
+
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 import 'react-tabulator/lib/styles.css'; // required styles
@@ -12,6 +14,7 @@ import './cardProcess.css';
 
 export default class SearchProcessResults extends React.Component {
 
+    _size = 0;
     _columns = [];
     hidden = new Set();
 
@@ -19,6 +22,7 @@ export default class SearchProcessResults extends React.Component {
         super(props);
         this.state = {
             showContext: true,
+            size: 0,
             hidden: new Set()
         }
         window.addEventListener('resize', this.handleResize);
@@ -113,6 +117,8 @@ export default class SearchProcessResults extends React.Component {
                 // all needed for text snippets show/hide
                 let _columns = [];
                 if(this.props.results && this.props.results[0]){
+                    this._size = this.props.results.length;
+
                     _columns = [
                         { title: "", field: "", formatter: reactFormatter(<SearchProcessResult 
                             show={this.state.showContext} 
@@ -169,8 +175,13 @@ export default class SearchProcessResults extends React.Component {
 
             return (
                 <div className="sidebar-results">
+
                     <div id="process-results">
+
                         <div className="tabulator-holder">
+
+                            <GeojsonMap docList={this.props.results} />
+
                             <ResultsHeader 
                                 sort={this.props.sort}
                                 resultsText={this.props.resultsText} 
