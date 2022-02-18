@@ -30,33 +30,6 @@ let _size = 0;
 let _id = -1;
 
 
-// TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
-/** Helper returns <GeoJSON> from data.map */
-const showData = (data) => {
-    if (data && data[0]) { // Render many
-        return data.map( ((datum, i) => {
-            let jsonData = datum;
-            let jsonName = Globals.getParameterCaseInsensitive(jsonData.properties,"name");
-
-            return (
-                <GeoJSON key={"leaflet"+i} 
-                    data={jsonData} 
-                    color={jsonData.style.color} 
-                    fillColor={jsonData.style.fillColor} 
-
-                >
-                    {/* <Popup>{jsonData.properties.NAME}</Popup> */}
-                    <Tooltip>{jsonName}</Tooltip>
-                </GeoJSON>
-            );
-            
-        }));
-    } else if(data) { // Render single geojson
-        return <GeoJSON data={data} />;
-    } else {
-        return null;
-    }
-}
 
 
 const MyData = (props) => {
@@ -64,23 +37,51 @@ const MyData = (props) => {
     const [data, setData] = React.useState(null); // if we don't null this it will actually use pre-existing data for rerenders/updates!
     const [isLoading, setLoading] = React.useState(false);
 
+    
+    // TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
+    /** Helper returns <GeoJSON> from data.map */
+    const showData = () => {
+        if (data && data[0]) { // Render many
+            return data.map( ((datum, i) => {
+                let jsonData = datum;
+                let jsonName = Globals.getParameterCaseInsensitive(jsonData.properties,"name");
+
+                return (
+                    <GeoJSON key={"leaflet"+i} 
+                        data={jsonData} 
+                        color={jsonData.style.color} 
+                        fillColor={jsonData.style.fillColor} 
+
+                    >
+                        {/* <Popup>{jsonData.properties.NAME}</Popup> */}
+                        <Tooltip>{jsonName}</Tooltip>
+                    </GeoJSON>
+                );
+                
+            }));
+        } else if(data) { // Render single geojson
+            return <GeoJSON data={data} />;
+        } else {
+            // console.log("No data");
+            return null;
+        }
+    }
+
+
     // useEffect to fetch data on mount
     useEffect(() => {
         let sortedData = [];
         // console.log("useEffect()",props);
-        setLoading(true);
 
         const getStateCounty = async (docs, urlAppend) => {
-            // console.log("getStateCounty",docs);
+            setData(null);
+            setLoading(true);
+            
             let url = Globals.currentHost + urlAppend;
 
             const response = await axios.post(url, { ids: docs } );
-            let responseData = [];
 
             if(response.data && response.data[0]) {
-                responseData = [response.data.length];
-                console.log(response.data);
-                // console.log(data);
                 for(let i = 0; i < response.data.length; i++) {
                     let json = JSON.parse(response.data[i]);
                     json.style = {};
@@ -99,13 +100,12 @@ const MyData = (props) => {
                         json.style.fillColor = "#D54E21";
                         json.sortPriority = 6;
                     }
-                    responseData[i] = json;
+                    response.data[i] = json;
                 }
-                // sortedData = responseData.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
-                console.log(responseData);
-                setData(responseData);
-            } else {
-                setData(null);
+
+                sortedData = response.data.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
+                
+                setData(sortedData);
             }
 
             setLoading(false);
@@ -122,9 +122,10 @@ const MyData = (props) => {
         //     setData(JSON.parse(response.data[0].geojson.geojson));
         // };
         const getDataProcessOrDoc = async (_id, urlAppend) => {
+            setLoading(true);
+            setData(null);
             let url = Globals.currentHost + urlAppend;
             const response = await axios.get(url, { params: { id: _id } });
-            let responseData = [];
 
             // Add specific color to states and counties
 
@@ -152,14 +153,14 @@ const MyData = (props) => {
                         // json.style.fillColor = "#8FBC3F";
                     }
 
-                    responseData[i] = json;
+                    response.data[i] = json;
                 }
                 // if(jsonData.COUNTYFP) {
                 //     console.log("County", jsonData.COUNTYFP);
                 // }
 
                 // Sort by our sort priority such that the largest .sortPriority numbers are at the top (counties, other regions)
-                sortedData = responseData.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
+                sortedData = response.data.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
 
                 setData(sortedData);
             }
@@ -178,6 +179,8 @@ const MyData = (props) => {
                     })
                 })
                 getStateCounty(_ids, "geojson/get_all_state_county_for_eisdocs");
+            } else {
+                // console.log("Failed size test",_size,props.docList.length);
             }
         }
         else if(props && props.processId && _id === -1) {
@@ -187,12 +190,14 @@ const MyData = (props) => {
             _id = props.docId;
             getDataProcessOrDoc(props.docId, "geojson/get_all_geojson_for_eisdoc");
         } else {
-            setLoading(false);
+            // console.log("Nothing here?",props);
             // getDataAll();
         }
 
-
-        // return () => { mountedRef.current = false }
+        return () => { // unmount
+            _size = 0; // unmounting loses data and will need to re-call and re-render, but _size has to be reset manually.
+            _id = -1;
+        }
     }, [props]);
 
     //     // render react-leaflet GeoJSON when the data is ready
@@ -237,7 +242,7 @@ const MyData = (props) => {
                 center={[39.82, -98.58]} 
                 zoom={3} scrollWheelZoom={false}
             >
-                {showData(data)}
+                {showData()}
                 
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
