@@ -49,7 +49,7 @@ export default class ResultsHeader extends React.Component {
     showDownloadButton = () => {
         if(Globals.curatorOrHigher()) {
             return <label className="results-download" onClick={this.props.download}>
-                Download this table
+                Export results to spreadsheet
             </label>;
         }
     }
