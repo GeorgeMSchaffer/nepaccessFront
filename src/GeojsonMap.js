@@ -26,16 +26,28 @@ import './leaflet.css';
 // #8f4e00
 // #db6d00
 // #ffdf4d
+
+
+
 let _size = 0;
 let _id = -1;
 
-
-
-
 const MyData = (props) => {
     // create state variable to hold data when it is fetched
-    const [data, setData] = React.useState(null); // if we don't null this it will actually use pre-existing data for rerenders/updates!
-    const [isLoading, setLoading] = React.useState(false);
+    const [data, setData] = React.useState(null); 
+    const [isLoading, setLoading] = React.useState(false); 
+    const [isHidden, setHidden] = React.useState(false); 
+    const [minimize, setMinimize] = React.useState("-");
+
+    const hide = () => {
+        if(isHidden) {
+            setMinimize("-");
+            setHidden(false);
+        } else {
+            setMinimize("+");
+            setHidden(true);
+        }
+    }
 
     
     // TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
@@ -73,10 +85,9 @@ const MyData = (props) => {
         let sortedData = [];
         // console.log("useEffect()",props);
 
-        const getStateCounty = async (docs, urlAppend) => {
+        const getByList = async (docs, urlAppend) => {
             setData(null);
             setLoading(true);
-            
             let url = Globals.currentHost + urlAppend;
 
             const response = await axios.post(url, { ids: docs } );
@@ -121,11 +132,12 @@ const MyData = (props) => {
         //     // save data to state
         //     setData(JSON.parse(response.data[0].geojson.geojson));
         // };
-        const getDataProcessOrDoc = async (_id, urlAppend) => {
-            setLoading(true);
+        const getDataProcessOrDoc = async (id, urlAppend) => {
             setData(null);
+            setLoading(true);
             let url = Globals.currentHost + urlAppend;
-            const response = await axios.get(url, { params: { id: _id } });
+
+            const response = await axios.get(url, { params: { id: id } });
 
             // Add specific color to states and counties
 
@@ -178,7 +190,10 @@ const MyData = (props) => {
                         _ids.push(record.id);
                     })
                 })
-                getStateCounty(_ids, "geojson/get_all_state_county_for_eisdocs");
+
+                getByList(_ids, "geojson/get_all_state_county_for_eisdocs"); // total state/county is only ~3MB
+                // getByList(_ids, "geojson/get_geodata_other_for_eisdocs"); // TODO: test
+                // getByList(_ids,"geojson/get_all_geodata_for_eisdocs"); // maximum size is... 100MB+?
             } else {
                 // console.log("Failed size test",_size,props.docList.length);
             }
@@ -226,8 +241,11 @@ const MyData = (props) => {
     //     }
     // }
 
-    return (
-        <div className="leafmap_container">
+    return (<>
+        <div className="toggle-container">
+            <span className="map-filters-toggle" onClick={hide}>{minimize}</span>
+        </div>
+        <div className="leafmap_container" hidden={isHidden}>
             <Helmet>
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
                     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -238,7 +256,7 @@ const MyData = (props) => {
             </Helmet>
             
             <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
-            <MapContainer className="leafmap" 
+            <MapContainer className="leafmap"
                 center={[39.82, -98.58]} 
                 zoom={3} scrollWheelZoom={false}
             >
@@ -249,7 +267,8 @@ const MyData = (props) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
             </MapContainer>
-        </div>);
+        </div>
+        </>);
     
 
 };

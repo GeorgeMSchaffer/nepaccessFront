@@ -33,3 +33,30 @@
     margin-left: 50px;
     z-index: 500;
 }
+
+.toggle-container {
+    float: right;
+}
+.map-filters-toggle {
+    display: block;
+    position: absolute;
+    margin-left: -22px; /* width+border */
+
+    width: 20px;
+
+    color: blue;
+    background-color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    user-select: none;
+    
+    font-family: Open Sans;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: center;
+    
+    z-index: 500;
+}
