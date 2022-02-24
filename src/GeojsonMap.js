@@ -251,35 +251,39 @@ const MyData = (props) => {
     //         return null;
     //     }
     // }
-
-    return (<>
-        <div className="toggle-container">
-            <span className="map-filters-toggle" onClick={hide}>{minimize}</span>
-        </div>
-        <div className="leafmap_container" hidden={isHidden}>
-            <Helmet>
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-                    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-                    crossorigin=""/>
-                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-                    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-                    crossorigin=""></script>
-            </Helmet>
-            
-            <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
-            <MapContainer className="leafmap"
-                center={[39.82, -98.58]} 
-                zoom={3} scrollWheelZoom={false}
-            >
-                {showData()}
+    
+    if(localStorage.role === undefined) {
+        return <></>
+    } else {
+        return (<>
+            <div className="toggle-container">
+                <span className="map-filters-toggle" onClick={hide}>{minimize}</span>
+            </div>
+            <div className="leafmap_container" hidden={isHidden}>
+                <Helmet>
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+                        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+                        crossorigin=""/>
+                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+                        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+                        crossorigin=""></script>
+                </Helmet>
                 
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-            </MapContainer>
-        </div>
-        </>);
+                <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
+                <MapContainer className="leafmap"
+                    center={[39.82, -98.58]} 
+                    zoom={3} scrollWheelZoom={false}
+                >
+                    {showData()}
+                    
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                </MapContainer>
+            </div>
+            </>);
+    }
     
 
 };
