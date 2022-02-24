@@ -738,11 +738,18 @@ export default class RecordDetailsTab extends React.Component {
         });
     }
     showMap = () => {
-        if(this.state.hasGeojson) {
+        if(this.state.hasGeojson && localStorage.role !== undefined) {
             return (
                 <div className="map-container-internal">
                     <h3 className="map-header">Map</h3>
                     <GeojsonMap docId={this.state.detailsID} />
+                </div>
+            );
+        } else if(this.state.hasGeojson && localStorage.role === undefined) {
+            return (
+                <div className="map-container-internal">
+                    <h3 className="map-header">Map</h3>
+                    Please log in to see map data.
                 </div>
             );
         } else {
