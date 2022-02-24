@@ -241,6 +241,7 @@ export default class ProcessDetailsTab extends React.Component {
     }
 
     interpretProcess = (process) => {
+        // console.log("process",process);
         process = (process.sort(
             (b,a) => {
                 if (b.doc.registerDate > a.doc.registerDate) {

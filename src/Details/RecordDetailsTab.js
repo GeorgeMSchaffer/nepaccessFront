@@ -513,7 +513,7 @@ export default class RecordDetailsTab extends React.Component {
     }
 
     interpretProcess = (proc) => {
-        console.log("proc",proc);
+        // console.log("proc",proc);
         return Object.keys(proc).map( ((key, i) => {
             if(proc[key] && proc[key]['id']) {
                 let docId = proc[key].id;
