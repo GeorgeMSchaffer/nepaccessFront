@@ -203,12 +203,18 @@ const MyData = (props) => {
                 // console.log("Failed size test",_size,props.docList.length);
             }
         }
-        else if(props && props.processId && _id === -1) {
-            _id = props.processId;
-            getDataProcessOrDoc(props.processId, "geojson/get_all_geojson_for_process");
-        } else if(props && props.docId && _id === -1) {
-            _id = props.docId;
-            getDataProcessOrDoc(props.docId, "geojson/get_all_geojson_for_eisdoc");
+        else if(props && props.processId) {
+            if(_id !== props.processId) { // simple logic to only rerender when the data has changed
+                _id = props.processId;
+                console.log("Firing");
+                getDataProcessOrDoc(props.processId, "geojson/get_all_geojson_for_process");
+            }
+        } else if(props && props.docId) {
+            if(_id !== props.docId) { // simple logic to only rerender when the data has changed
+                _id = props.docId;
+                console.log("Firing");
+                getDataProcessOrDoc(props.docId, "geojson/get_all_geojson_for_eisdoc");
+            }
         } else {
             // console.log("Nothing here?",props);
             // getDataAll();
@@ -216,7 +222,7 @@ const MyData = (props) => {
 
         return () => { // unmount
             _size = 0; // unmounting loses data and will need to re-call and re-render, but _size has to be reset manually.
-            _id = -1;
+            // _id = -1; // we don't expect to be unmounted in this case; _id should not be reset.
         }
     }, [props]);
 
