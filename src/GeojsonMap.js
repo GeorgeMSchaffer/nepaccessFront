@@ -57,6 +57,9 @@ const MyData = (props) => {
             return data.map( ((datum, i) => {
                 let jsonData = datum;
                 let jsonName = Globals.getParameterCaseInsensitive(jsonData.properties,"name");
+                if(jsonData.count) {
+                    jsonName += "; " + jsonData.count + " Results"
+                }
 
                 return (
                     <GeoJSON key={"leaflet"+i} 
@@ -94,9 +97,11 @@ const MyData = (props) => {
 
             if(response.data && response.data[0]) {
                 for(let i = 0; i < response.data.length; i++) {
-                    let json = JSON.parse(response.data[i]);
+                    // console.log(response.data[i].count); // TODO: use count
+                    let json = JSON.parse(response.data[i]['geojson']);
                     json.style = {};
                     json.sortPriority = 0;
+                    json.count = response.data[i]['count'];
 
                     if(json.properties.COUNTYFP) {
                         json.style.color = "#3388ff"; // county: default (blue)
