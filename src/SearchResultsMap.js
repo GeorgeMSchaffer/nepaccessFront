@@ -12,6 +12,8 @@ const MyData = (props) => {
     const [data, setData] = React.useState(); 
     const [isHidden, setHidden] = React.useState(false); 
     const [minimize, setMinimize] = React.useState("-");
+    const [showStates, setShowStates] = React.useState(true);
+    const [showCounties, setShowCounties] = React.useState(true);
 
 
     const hide = () => {
@@ -24,8 +26,17 @@ const MyData = (props) => {
         }
     }
 
+    const toggleGeodata = (val) => {
+        if(val === 1) {
+            setShowStates(!showStates);
+        } else {
+            setShowCounties(!showCounties);
+        }
+    }
+
     
     const showData = () => {
+        console.log(data);
         if (data && data[0]) { // Render many
             return data.map( ((datum, i) => {
                 let jsonData = datum;
@@ -34,17 +45,19 @@ const MyData = (props) => {
                     jsonName += "; " + jsonData.count + " Results"
                 }
 
-                return (
-                    <GeoJSON key={"leaflet"+i} 
-                        data={jsonData} 
-                        color={jsonData.style.color} 
-                        fillColor={jsonData.style.fillColor} 
-
-                    >
-                        {/* <Popup>{jsonData.properties.NAME}</Popup> */}
-                        <Tooltip>{jsonName}</Tooltip>
-                    </GeoJSON>
-                );
+                if((jsonData.properties.STATENS && showStates) || (!jsonData.properties.STATENS && showCounties)) {
+                    return (
+                        <GeoJSON key={"leaflet"+i} 
+                            data={jsonData} 
+                            color={jsonData.style.color} 
+                            fillColor={jsonData.style.fillColor} 
+    
+                        >
+                            {/* <Popup>{jsonData.properties.NAME}</Popup> */}
+                            <Tooltip>{jsonName}</Tooltip>
+                        </GeoJSON>
+                    );
+                }
                 
             }));
         } else {
@@ -83,6 +96,20 @@ const MyData = (props) => {
         return (<>
             <div className="toggle-container">
                 <span className="map-filters-toggle" onClick={hide}>{minimize}</span>
+                <div className="map-layers-toggle" hidden={isHidden}>
+                    <div className="checkbox-container">
+                        <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
+                                // tabIndex="1"
+                                checked={showStates} onChange={() => toggleGeodata(1)} />
+                        <label className="checkbox-text no-select" htmlFor="showStates">Show states</label>
+                    </div>
+                    <div className="checkbox-container">
+                        <input type="checkbox" name="showCounties" id="showCounties" className="sidebar-checkbox"
+                                // tabIndex="2"
+                                checked={showCounties} onChange={() => toggleGeodata(2)} />
+                        <label className="checkbox-text no-select" htmlFor="showCounties">Show counties</label>
+                    </div>
+                </div>
             </div>
             <div className="leafmap_container" hidden={isHidden}>
                 <Helmet>
@@ -93,7 +120,6 @@ const MyData = (props) => {
                         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                         crossorigin=""></script>
                 </Helmet>
-                
                 <div className="map-loading-tooltip" hidden={!props.geoLoading}>Please wait for map data to load...</div>
                 <MapContainer className="leafmap"
                     center={[39.82, -98.58]} 
