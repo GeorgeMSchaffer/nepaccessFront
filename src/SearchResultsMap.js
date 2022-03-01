@@ -45,7 +45,7 @@ const MyData = (props) => {
                     jsonName += "; " + jsonData.count + " Results"
                 }
 
-                if((jsonData.properties.STATENS && showStates) || (!jsonData.properties.STATENS && showCounties)) {
+                if((jsonData.properties.STATENS && showStates) || (jsonData.properties.COUNTYNS && showCounties)) {
                     return (
                         <GeoJSON key={"leaflet"+i} 
                             data={jsonData} 
