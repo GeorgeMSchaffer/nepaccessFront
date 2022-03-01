@@ -14,6 +14,8 @@ import './User/login.css';
 import Globals from './globals.js';
 import persist from './persist.js';
 
+const _ = require('lodash');
+
 /** For testing redesigned, consolidated search which is in progress */
 export default class App extends React.Component {
 
@@ -30,6 +32,8 @@ export default class App extends React.Component {
         searchResults: [],
         outputResults: [],
         displayRows: [],
+        geoResults: null,
+        geoLoading: true,
         count: 0,
 		resultsText: 'Results',
 		networkError: '',
@@ -46,6 +50,7 @@ export default class App extends React.Component {
     constructor(props){
         super(props);
         this.endRef = React.createRef();
+        this.getGeoDebounced = _.debounce(this.getGeoData,1000);
     }
     
     // For canceling a search when component unloads
@@ -129,6 +134,62 @@ export default class App extends React.Component {
         // this.setState({finalCount: "("+count+")"});
     }
 
+    getGeoData = (filteredResults) => {
+        if(filteredResults) {
+            
+            let _ids = [];
+            filteredResults.forEach(process => {
+                process.records.forEach(record => {
+                    _ids.push(record.id);
+                })
+            })
+            
+            let url = Globals.currentHost + "geojson/get_all_state_county_for_eisdocs";
+
+            axios.post(url, { ids: _ids } ).then(response => {
+                if(response.data && response.data[0]) {
+                    for(let i = 0; i < response.data.length; i++) {
+                        // console.log(response.data[i].count); // TODO: use count
+                        let json = JSON.parse(response.data[i]['geojson']);
+                        json.style = {};
+                        json.sortPriority = 0;
+                        json.count = response.data[i]['count'];
+
+                        if(json.properties.COUNTYFP) {
+                            json.style.color = "#3388ff"; // county: default (blue)
+                            json.style.fillColor = "#3388ff";
+                            json.sortPriority = 5;
+                        } else if(json.properties.STATENS) {
+                            json.style.color = "#000"; // state: black
+                            json.style.fillColor = "#000";
+                            json.sortPriority = 4;
+                        } else {
+                            json.style.color = "#D54E21";
+                            json.style.fillColor = "#D54E21";
+                            json.sortPriority = 6;
+                        }
+                        response.data[i] = json;
+                    }
+
+                    let sortedData = response.data.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
+                    
+                    // console.log("Called for geodata", sortedData);
+                    this.setState({
+                        geoResults: sortedData,
+                        geoLoading: false
+                    });
+                } else {
+                    this.setState({
+                        geoResults: null,
+                        geoLoading: false
+                    });
+                }
+            });
+
+            
+        } 
+    }
+
     /** Design: Search component calls this parent method which controls
     * the results, which gives a filtered version of results to SearchResults */
     filterResultsBy = (searcherState) => {
@@ -138,12 +199,17 @@ export default class App extends React.Component {
 
             const filtered = Globals.doFilter(searcherState, this.state.searchResults, this.state.searchResults.length, false);
             
+            
             // Even if there are no filters active we still need to update to reflect this,
             // because if there are no filters the results must be updated to the full unfiltered set
             this.setState({
                 outputResults: filtered.filteredResults,
+                geoResults: null,
+                geoLoading: true,
                 resultsText: filtered.textToUse,
                 shouldUpdate: true
+            }, () => {
+                this.getGeoDebounced(filtered.filteredResults);
             });
         }
     }
@@ -351,6 +417,7 @@ export default class App extends React.Component {
 		this.setState({
             // Fresh search, fresh results
             outputResults: [],
+            geoResults: null,
             count: 0,
             searcherInputs: searcherState,
             snippetsDisabled: searcherState.searchOption==="C",
@@ -1167,6 +1234,8 @@ export default class App extends React.Component {
                     <SearchProcessResults 
                         sort={this.sort}
                         results={this.state.outputResults} 
+                        geoResults={this.state.geoResults}
+                        geoLoading={this.state.geoLoading}
                         resultsText={this.state.resultsText} 
                         searching={this.state.searching}
                         snippetsDisabled={this.state.snippetsDisabled} 

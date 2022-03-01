@@ -3,7 +3,7 @@ import React from 'react';
 import ResultsHeader from './ResultsHeader.js';
 import SearchProcessResult from './SearchProcessResult.js';
 
-import GeojsonMap from './GeojsonMap.js';
+import SearchResultsMap from './SearchResultsMap.js';
 
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
@@ -180,7 +180,10 @@ export default class SearchProcessResults extends React.Component {
 
                         <div className="tabulator-holder">
 
-                            <GeojsonMap docList={this.props.results} />
+                            <SearchResultsMap 
+                                docList={this.props.geoResults}
+                                geoLoading={this.props.geoLoading}
+                            />
 
                             <ResultsHeader 
                                 sort={this.props.sort}
