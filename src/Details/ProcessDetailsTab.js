@@ -483,7 +483,7 @@ export default class ProcessDetailsTab extends React.Component {
                 } else if(key==='state') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key].replaceAll(';',"; ")}</span></p>);
                 } else if(key==='county') {
-                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key].replaceAll(/[A-Z]{2}\:\ /g,"").replaceAll(';',"; ")}</span></p>);
+                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key].replaceAll(';',"; ")}</span></p>);
                 } else if(key==='department' && cellData[key] && cellData['agency'] && cellData[key]===cellData['agency']) {
                     // No great need to show department if it's equal to agency, at least until departments are cleaned up manually
                     return '';

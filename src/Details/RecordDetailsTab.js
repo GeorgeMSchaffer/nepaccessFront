@@ -602,7 +602,7 @@ export default class RecordDetailsTab extends React.Component {
                 else if(key==='state') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key].replaceAll(';',"; ")}</span></p>);
                 } else if(key==='county') {
-                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key].replaceAll(/[A-Z]{2}\:\ /g,"").replaceAll(';',"; ")}</span></p>);
+                    return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key].replaceAll(';',"; ")}</span></p>);
                 }
                 // hide blank fields
                 else if(!cellData[key] || cellData[key].length === 0) {
