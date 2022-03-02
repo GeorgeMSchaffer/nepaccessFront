@@ -26,7 +26,6 @@ import './leaflet.css';
 // #db6d00
 // #ffdf4d
 
-let _size = 0;
 let _id = -1;
 
 const MyData = (props) => {
@@ -127,15 +126,10 @@ const MyData = (props) => {
             }
         } else {
             // console.log("Nothing here?",props);
-            _size = 0;
         }
 
         return () => { // unmount or rerender
-            if(!mounted.current || !data || !data[0]) {
-                console.log("Size reset",_size);
-                _size = 0;
-            }
-            // _id = -1; // we don't expect to be unmounted in this case; _id should not be reset.
+            // _id = -1;
             mounted.current = false;
         };
     }, [props]);
@@ -144,10 +138,7 @@ const MyData = (props) => {
         return <></>
     } else {
         return (<>
-            <div className="toggle-container">
-                <span className="map-filters-toggle" onClick={hide}>{minimize}</span>
-            </div>
-            <div className="leafmap_container" hidden={isHidden}>
+            <div className="leafmap_container">
                 <Helmet>
                     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
                         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
