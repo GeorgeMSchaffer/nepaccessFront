@@ -9,6 +9,7 @@ import axios from 'axios';
 //     "Second Final Supplemental",
 //     "Third Final Supplemental"];
 const finalTypeLabelsLower = ["final",
+    "final and rod",
     "second final",
     "revised final",
     "final revised",
@@ -13556,7 +13557,7 @@ const Globals = {
                 }
                 if( ( (type === "ea") && matchEA ) || 
                     ( (type === "noi") && matchNOI ) || 
-                    ( (type === "rod") && matchROD ) || 
+                    ( (type === "rod" || type === "final and rod") && matchROD ) || 
                     ( (type === "scoping report") && matchScoping ))
                 {
                     filterResult = true;
