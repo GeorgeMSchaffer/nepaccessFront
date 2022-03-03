@@ -312,7 +312,11 @@ export default class SearchProcessResult extends React.Component {
         if(docType.toLowerCase() === "rod") {
             return "Record of Decision (ROD)";
         } else if(Globals.isFinalType(docType) || Globals.isDraftType(docType)) {
-            return docType + " Environmental Impact Statement"; 
+            if(docType.toLowerCase()==='final and rod') {
+                return "Final Environmental Impact Statement And ROD"; 
+            } else {
+                return docType + " Environmental Impact Statement"; 
+            }
         } else {
             return docType;
         }
