@@ -71,3 +71,7 @@
 
     z-index: 500;
 }
+
+.map-layers-toggle>.checkbox-container:first-child {
+    height: 60px;
+}

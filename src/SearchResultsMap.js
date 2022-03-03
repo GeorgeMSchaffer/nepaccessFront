@@ -33,7 +33,6 @@ const MyData = (props) => {
             setShowCounties(!showCounties);
         }
     }
-
     
     const showData = () => {
         console.log(data);
@@ -51,7 +50,6 @@ const MyData = (props) => {
                             data={jsonData} 
                             color={jsonData.style.color} 
                             fillColor={jsonData.style.fillColor} 
-    
                         >
                             {/* <Popup>{jsonData.properties.NAME}</Popup> */}
                             <Tooltip>{jsonName}</Tooltip>
@@ -101,7 +99,7 @@ const MyData = (props) => {
                         <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
                                 // tabIndex="1"
                                 checked={showStates} onChange={() => toggleGeodata(1)} />
-                        <label className="checkbox-text no-select" htmlFor="showStates">Show states</label>
+                        <label className="checkbox-text no-select" htmlFor="showStates">Show states and territories</label>
                     </div>
                     <div className="checkbox-container">
                         <input type="checkbox" name="showCounties" id="showCounties" className="sidebar-checkbox"
