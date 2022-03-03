@@ -261,7 +261,7 @@ export default class DownloadFile extends React.Component {
                 
                 return (
                     <button className = {this.state.downloadClass} onClick = { () => {this.download(propID, true)} }> 
-                        {this.state.downloadText} <b>{innerText}</b> - {sizeText} {this.state.progressValue}
+                        {this.state.downloadText} <b>{innerText.replaceAll(' ','_')}</b> - {sizeText} {this.state.progressValue}
                     </button> 
                 );
             } else {
