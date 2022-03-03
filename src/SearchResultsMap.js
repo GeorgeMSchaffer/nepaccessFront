@@ -35,7 +35,6 @@ const MyData = (props) => {
     }
     
     const showData = () => {
-        console.log(data);
         if (data && data[0]) { // Render many
             return data.map( ((datum, i) => {
                 let jsonData = datum;
