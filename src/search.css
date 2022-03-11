@@ -601,15 +601,16 @@ a.link {
   }
   
 #main-search-bar {
-    padding-right: 290px;
+    padding-left: 210px;
+    padding-right: 110px;
     width: calc(72% - 320px);
 }
 
 #search-proximity {
     position: absolute;
-    margin-left: 80px;
     width: 195px;
-    margin-left: -249px;
+    /* margin-left: -249px; */
+    margin-left: 4px;
     margin-top: 4px;
     height: 56px;
     line-height: 42px;
@@ -619,7 +620,22 @@ a.link {
     border-radius: 0px;
     border: none;
 }
-#search-proximity::before {
+#proximity-select>div.control__control>div.control__indicators>div.control__indicator::after {
+    content: '';
+    width: 2px;
+    height: 40px;
+    background: black;
+    position: absolute;
+    z-index: 1;
+    margin-top: -10px;
+    margin-left: 26px;
+    cursor: inherit;
+    user-select: none;
+}
+.react-select.control__menu {
+    z-index: 1001;
+}
+/* #search-proximity::before {
     content: '';
     width: 2px;
     height: 40px;
@@ -629,7 +645,7 @@ a.link {
     margin-top: 8px;
     cursor: inherit;
     user-select: none;
-}
+} */
 #search-proximity>div.disabled * {
     color: lightgray !important;
     font-size: 12px;
@@ -661,7 +677,7 @@ div.disabled::before {
 }
 
 #main-search-clear {
-    margin-left: -285px;
+    /* margin-left: -285px; */
 }
 #main-search-icon {
     background: #8FBC3F;

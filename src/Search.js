@@ -157,10 +157,12 @@ class Search extends React.Component {
     onIconClick = (evt) => {
         this.doSearch(this.state.titleRaw);
     }
+    /** clears and disables proximity search option as well as clearing text */
     onClearClick = (evt) => {
         this.setState({ 
             titleRaw: '', 
             proximityDisabled: true, 
+            proximityOption: null, 
             inputMessage: "" 
         }); 
     }
@@ -630,6 +632,18 @@ class Search extends React.Component {
                             </div>
                         </div>
 
+                        <span id="search-proximity">
+                            <Select 
+                                id="proximity-select"
+                                className={this.state.proximityDisabled ? " disabled" : ""}
+                                classNamePrefix="react-select control"
+                                placeholder="Find within..."
+                                options={proximityOptions} 
+                                value={this.state.proximityOption}
+                                // menuIsOpen={true}
+                                onChange={this.onProximityChange} 
+                                isMulti={false} />
+                        </span>
                         <input id="main-search-bar"
                             className="search-bar" 
                             name="titleRaw" 
@@ -644,18 +658,6 @@ class Search extends React.Component {
                         <svg id="main-search-icon"  onClick={this.onIconClick} className="search-icon" width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" clipRule="evenodd" d="M26.4582 24.1397H28.2356L37.7751 33.3063C38.6976 34.1886 38.6976 35.6303 37.7751 36.5125C36.8526 37.3947 35.3452 37.3947 34.4228 36.5125L24.8607 27.3674V25.6675L24.2533 25.065C21.1034 27.6471 16.8061 28.9813 12.2388 28.2496C5.98416 27.2383 0.989399 22.2462 0.224437 16.2212C-0.945506 7.11911 7.0641 -0.541243 16.5811 0.577685C22.8808 1.30929 28.1006 6.08626 29.158 12.0682C29.923 16.4363 28.5281 20.5463 25.8282 23.5588L26.4582 24.1397ZM4.61171 14.4567C4.61171 19.8146 9.13399 24.1397 14.7362 24.1397C20.3384 24.1397 24.8607 19.8146 24.8607 14.4567C24.8607 9.09875 20.3384 4.77366 14.7362 4.77366C9.13399 4.77366 4.61171 9.09875 4.61171 14.4567Z" fill="black" fillOpacity="0.54"/>
                         </svg>
-                        <span id="search-proximity">
-                            <Select 
-                                id="proximity-select"
-                                className={this.state.proximityDisabled ? " disabled" : ""}
-                                classNamePrefix="react-select control"
-                                placeholder="Find within..."
-                                options={proximityOptions} 
-                                value={this.state.proximityOption}
-                                // menuIsOpen={true}
-                                onChange={this.onProximityChange} 
-                                isMulti={false} />
-                        </span>
                         <svg id="main-search-clear" onClick={this.onClearClick} className="cancel-icon" width="24" height="24" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path className="circle" d="M12.2689 1.92334C5.63289 1.92334 0.26889 7.28734 0.26889 13.9233C0.26889 20.5593 5.63289 25.9233 12.2689 25.9233C18.9049 25.9233 24.2689 20.5593 24.2689 13.9233C24.2689 7.28734 18.9049 1.92334 12.2689 1.92334Z" fill="#DADADA"
                             />
