@@ -47,11 +47,12 @@ export default class SearchProcessResult extends React.Component {
         if (this.props) {
             let _href = `./process-details?id=${this.props.cell._cell.row.data.processId}`;
             if(!this.props.cell._cell.row.data.isProcess) {
-                _href = `./record-details?id=${this.props.cell._cell.row.data.processId}`
+                _href = `./record-details?id=${this.props.cell._cell.row.data.processId}`;
             }
+
             return (
                 <span className="table-row">
-                    <span className="cardHeader">Title:
+                    <span className="cardHeader" title="Opens a new tab with more details">Title:
                         <a className="link" target="_blank" rel="noopener noreferrer" 
                                 href={_href}>
                             {this.props.cell._cell.row.data.title} 
