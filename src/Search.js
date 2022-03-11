@@ -73,7 +73,9 @@ class Search extends React.Component {
             surveyChecked: true,
             surveyDone: true,
             surveyResult: "Haven't searched yet",
-            filtersHidden: false
+            filtersHidden: false,
+
+            countyOptions: Globals.counties
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
@@ -271,10 +273,36 @@ class Search extends React.Component {
         this.setState( 
 		{ 
 			state: stateValues,
-            stateRaw: evt
+            stateRaw: evt,
+            countyOptions: this.narrowCountyOptions(stateValues)
 		}, () => { 
 			this.filterBy(this.state);
         });
+    }
+    /** Helper method for onLocationChange limits county options to selected states in filter, 
+     * or resets to all counties if no states selected */
+    narrowCountyOptions = (stateValues) => {
+        console.log(stateValues);
+
+        /** Filter logic for county array of specific label/value format given array of state abbreviations  */
+        function countyFilter(_stateValues) {
+            return function (a) {
+                let returnValue = false;
+                _stateValues.forEach(item =>{
+                    if (a.label.split(':')[0] === item) { // a.label.split(':')[0] gets 'AZ' from expected 'AZ: Arizona'
+                        returnValue = true;
+                    }
+                });
+                return returnValue;
+            };
+        }
+
+        let filteredCounties = Globals.counties;
+        if(stateValues && stateValues.length > 0){
+            filteredCounties = filteredCounties.filter(countyFilter(stateValues));
+        }
+
+        return filteredCounties;
     }
 	onCountyChange = (evt) => {
 		var countyValues = [];
@@ -480,7 +508,6 @@ class Search extends React.Component {
             ,{ value: 'URC', label: 'Utah Reclamation Mitigation and Conservation Commission (URC)' },{ value: 'WAPA', label: 'Western Area Power Administration (WAPA)' }
         ];
         const stateOptions = Globals.locations;
-        const countyOptions = Globals.counties;
         // const tooltipTitle = "<p class=tooltip-line><span class=bold>Search word connectors</span></p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>AND</span>This is the default. <span class=bold>All</span> words you enter must be found together to return a result.</p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>OR</span> (all caps) to search for <span class=bold>any</span> of those words.</p>"
@@ -818,7 +845,7 @@ class Search extends React.Component {
                     <Select id="searchCounty" className="multi" classNamePrefix="react-select" isMulti name="county" isSearchable isClearable 
                         styles={customStyles}
                         tabIndex="5"
-                        options={countyOptions} 
+                        options={this.state.countyOptions} 
                         onChange={this.onCountyChange} 
                         value={this.state.countyRaw}
                         placeholder="Type or select a county" 
