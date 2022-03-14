@@ -153,6 +153,10 @@ const MyData = (props) => {
             return data.map( ((datum, i) => {
                 let jsonData = datum;
                 let jsonName = Globals.getParameterCaseInsensitive(jsonData.properties,"name");
+                let alaskaFlag = false;
+                if(jsonName === "Alaska") {
+                    alaskaFlag = true;
+                }
                 if(jsonData.count) {
                     jsonName += `; ${jsonData.count} ${(jsonData.count === 1) ? "Result" : "Results"}`
                 }
@@ -161,6 +165,18 @@ const MyData = (props) => {
                     && 
                     ((jsonData.properties.STATENS && showStates) || (jsonData.properties.COUNTYNS && showCounties))
                 ) {
+                    if(alaskaFlag) {
+                        return (
+                            <GeoJSON key={"leaflet"+i} 
+                                data={jsonData} 
+                                color={jsonData.style.color} 
+                                fillColor={jsonData.style.fillColor} 
+                            >
+                                {/* <Popup>{jsonData.properties.NAME}</Popup> */}
+                                <Tooltip sticky>{jsonName}</Tooltip>
+                            </GeoJSON>
+                        );
+                    }
                     return (
                         <GeoJSON key={"leaflet"+i} 
                             data={jsonData} 
