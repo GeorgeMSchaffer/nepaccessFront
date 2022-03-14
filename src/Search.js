@@ -282,8 +282,6 @@ class Search extends React.Component {
     /** Helper method for onLocationChange limits county options to selected states in filter, 
      * or resets to all counties if no states selected */
     narrowCountyOptions = (stateValues) => {
-        console.log(stateValues);
-
         /** Filter logic for county array of specific label/value format given array of state abbreviations  */
         function countyFilter(_stateValues) {
             return function (a) {

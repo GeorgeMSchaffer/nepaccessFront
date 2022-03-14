@@ -182,7 +182,8 @@ export default class SearchProcessResults extends React.Component {
 
                             <SearchResultsMap 
                                 docList={this.props.geoResults}
-                                geoLoading={this.props.geoLoading}
+                                results={this.props.results}
+                                // searcherState={this.props.searcherState}
                             />
 
                             <ResultsHeader 
