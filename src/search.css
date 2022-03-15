@@ -623,11 +623,11 @@ a.link {
 #proximity-select>div.control__control>div.control__indicators>div.control__indicator::after {
     content: '';
     width: 2px;
-    height: 40px;
+    height: 60px;
     background: black;
     position: absolute;
     z-index: 1;
-    margin-top: -10px;
+    margin-top: -20px;
     margin-left: 26px;
     cursor: inherit;
     user-select: none;
