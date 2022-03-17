@@ -66,7 +66,10 @@ class Landing extends React.Component {
                         Bringing NEPA Into the 21st Century<br /> Through the Power of Data Science
                     </h1>
                     <h2 id="sub-headline">
-                        Engage with data from thousands of environmental review documents.
+                        Quickly and easily find past environmental data relevant to your community or project.
+                        <div>
+                            Explore and create new knowledge from NEPA environmental reviews.
+                        </div>
                     </h2>
                     {/* <h1 id="landing-headline-text">
                         Explore Thousands of Environmental Impact Statements.
