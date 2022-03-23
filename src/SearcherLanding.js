@@ -121,7 +121,7 @@ class SearcherLanding extends React.Component {
 
                 <div className="flip">
                     <div className="transparent-background">
-                        <a className="link landing-link" target="_blank" rel="noopener noreferrer" 
+                        <a className="link landing-link" rel="noopener noreferrer" 
                                 href={`./available-documents`}>
                             More about Available Files
                         </a>
