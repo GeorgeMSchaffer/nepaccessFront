@@ -649,7 +649,7 @@ class Search extends React.Component {
                                     from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
                                     More files are being added continuously.
                                         <div className="text-center margin-top">
-                                            <a href="available-files" target="_blank" rel="noopener noreferrer">Available files</a>
+                                            <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
                                         </div>
                                     </div>}
                                 >
