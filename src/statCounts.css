@@ -1,0 +1,14 @@
+#countsTable {
+    border: solid 3px black;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+#countsTable th {
+    padding: 10px;
+    border: 2px solid black;
+}
+#countsTable td {
+    border: solid 1px black;
+    border-right: solid 2px black;
+}

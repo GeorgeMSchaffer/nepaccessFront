@@ -36,7 +36,7 @@ import Future from './iframes/Future.js';
 
 import AboutHelpContents from './AboutHelpContents.js';
 import AboutStats from './AboutStats.js';
-import StatTables from './StatTables.js';
+import StatCounts from './StatCounts.js';
 import InteractionLogs from './InteractionLogs.js';
 
 import Iframes from './iframes/Iframes.js';
@@ -320,7 +320,7 @@ class Main extends React.Component {
                 <Route path="/pairs3" component={Pairs3}></Route>
                 <Route path="/search_logs" component={SearchLogs}></Route>
                 <Route path="/interaction_logs" component={InteractionLogs}></Route>
-                <Route path="/stat_tables" component={StatTables}></Route>
+                <Route path="/stat_counts" component={StatCounts}></Route>
                 <Route path="/surveys" component={Surveys}></Route>
                 <Route path="/excel" component={Excel}></Route>
                 
@@ -362,7 +362,7 @@ class Main extends React.Component {
                         <Link to="/search_logs">Search Logs</Link>
                         <Link to="/abouthelpcontents">Database Contents</Link>
                         <Link to="/stats">Content Statistics</Link>
-                        <Link to="/stat_tables">Stat tables</Link>
+                        <Link to="/stat_counts">Stat Counts</Link>
                         <Link to="/surveys">Surveys</Link>
                     </div>
                 </div>

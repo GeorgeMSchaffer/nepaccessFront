@@ -2,10 +2,10 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
-import Select from 'react-select';
-
 import Globals from './globals.js';
+import './statCounts.css';
 
+import Select from 'react-select';
 import { ReactTabulator } from 'react-tabulator';
 
 const options = {
@@ -41,25 +41,36 @@ const getRoutes = [
     { label: "Total non-final/draft/rod/EA count by year", value: "stats/count_year_other" },
 ];
 
-export default class StatTables extends React.Component {
+export default class StatCounts extends React.Component {
 
     state = {
-        data: [],
-        columns: [],
-
-        response: "",
+        data: null,
+        tableData: [],
+        columns: [{title: "Date", field: "0", headerFilter: "input"},
+            {title: "Count", field: "1", headerFilter: "input"}],
 
         approver: false,
         busy: false,
 
-        getRoute: "",
         date: '1999'
     }
 
     constructor(props) {
         super(props);
-
+        
         this.my_table = React.createRef();
+    }
+
+    buildData = () => {
+        this.setState({ busy: true }, () => {
+            const orderPromises = getRoutes.map(getRoute => this.get(getRoute));
+            Promise.all(orderPromises).then(arrayOfResponses => {
+                this.setState({
+                    data: arrayOfResponses,
+                    busy: false
+                });
+            })
+        });
     }
 
 
@@ -76,9 +87,12 @@ export default class StatTables extends React.Component {
 
             if (responseOK) {
                 _approver = true;
+            } else {
+                alert("Not logged in or not an authorized user? Error status: " + response.status);
             }
         })
         .catch(error => {
+            alert(error);
             console.error(error);
         })
         .finally(onF => {
@@ -89,105 +103,130 @@ export default class StatTables extends React.Component {
     }
 
 
-    get = () => {
-        this.setState({ busy: true });
-
-        let getUrl = Globals.currentHost + this.state.getRoute;
+    get = (getRoute) => {
+        let getUrl = Globals.currentHost + getRoute.value;
         
-        axios.get(getUrl, {
+        return axios.get(getUrl, {
             params: {
                 
             }
         }).then(response => {
             let responseOK = response && response.status === 200;
             if (responseOK && response.data) {
-                return response.data;
+                return {label: getRoute.label, data: response.data};
             } else {
                 return null;
             }
-        }).then(parsedJson => { 
-            let newColumns = [];
-            let headers = getKeys(parsedJson[0]);
-
-            for(let i = 0; i < headers.length; i++) {
-                newColumns[i] = {title: headers[i], field: headers[i], headerFilter: "input"};
-            }
-
-            // Changed to 2000 from 2010
-            let postDate = 0;
-            let preDate = 0;
-            let _noDate = 0;
-            if(parsedJson && parsedJson.length > 0){
-                parsedJson.forEach(el => {
-                    if(el[0] === null) {
-                        _noDate += el[1];
-                    }
-                    else if(el[0] >= this.state.date) {
-                        postDate += el[1];
-                    } else {
-                        preDate += el[1];
-                    }
-                });
-
-                this.setState({
-                    columns: newColumns,
-                    data: parsedJson,
-                    response: Globals.jsonToTSV(parsedJson),
-                    busy: false,
-                    preDate: preDate,
-                    postDate: postDate,
-                    noDate: _noDate
-                });
-            } else {
-                this.setState({
-                    columns: newColumns,
-                    data: [],
-                    response: Globals.jsonToTSV(parsedJson),
-                    busy: false,
-                    pre2010: preDate,
-                    post2010: postDate,
-                    noDate: _noDate
-                });
-            }
         }).catch(error => { // 401/404/...
             console.error(error);
-            this.setState({ busy: false });
+            alert(error);
+        });
+
+    }
+
+    // event handlers
+
+    onChange = (evt) => {
+        this.setState({
+            date: evt.target.value
+        }, () => {
+            // TODO: Rebuild counts? I'll probably do the logic such that this happens automatically when state is updated
         });
     }
     
-    updateTable = () => {
-        try {
-            // seems necessary when using dynamic columns
-            this.my_table.current.table.setColumns(this.state.columns);
+    getBreakdown = (arr) => {
+        let _post = 0;
+        let _pre = 0;
+        let _noDate = 0;
+        let _total = 0;
+        if(arr && arr.length > 0){
+            arr.forEach(el => {
+                _total += el[1];
 
-            // this.my_table.current.table.replaceData(this.state.data);
-        } catch (e) {
-            console.error(e);
+                if(el[0] === null) {
+                    _noDate += el[1];
+                }
+                else if(el[0] > this.state.date) {
+                    _post += el[1];
+                } else {
+                    _pre += el[1];
+                }
+            })
+        }
+        
+        return {_pre,_post,_noDate, _total};
+    }
+
+    renderTableItems = () => {
+        return this.state.data.map( ((datum, i) => {
+            let breakdown = this.getBreakdown(datum.data);
+            return (
+                <tr key={datum.label + i}><td>
+                        {datum.label}
+                    </td>
+                    <td>
+                        {breakdown._pre}
+                    </td>
+                    <td>
+                        {breakdown._post}
+                    </td>
+                    <td>
+                        {breakdown._noDate}
+                    </td>
+                    <td>
+                        {breakdown._total}
+                    </td>
+                </tr>
+            );
+        }));
+    }
+
+    renderTable = () => {
+        if(this.state.data) {
+            return (
+                <div>
+                    <table id="countsTable">
+                        <thead>
+                            <tr>
+                                <th>Type of count</th>
+                                <th>Count through {this.state.date}</th>
+                                <th>Count after {this.state.date}</th>
+                                <th>Count with no date</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderTableItems()}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        } else {
+            console.log("No data yet");
+            return null;
         }
     }
-    
+
+
     onSelectHandler = (val, act) => {
+        console.log(val);
         if(!val || !act){
             return;
         }
 
-        this.setState(
-        { 
-            getRoute: val.value,
-            getLabel: val.label
+        this.setState({ 
+            tableData: this.state.data.find(element =>  element.label === val.label).data,
+            tableLabel: val.label
         }, () => {
-            this.get();
+            console.log(this.state.data);
         });
 
     }
-
-    
-    // best performance is to Blob it on demand
     downloadResults = () => {
-        if(this.state.response) {
-            const csvBlob = new Blob([this.state.response]);
+        if(this.state.tableData) {
+            const csvBlob = new Blob([Globals.jsonToTSV(this.state.tableData)]);
             const today = new Date().toISOString().split('T')[0];
-            const csvFilename = `${this.state.getLabel}_${today}.tsv`;
+            const csvFilename = `${this.state.tableLabel}_${today}.tsv`;
 
     
             if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
@@ -205,36 +244,6 @@ export default class StatTables extends React.Component {
         }
     }
 
-    // event handlers
-
-    onChange = (evt) => {
-        this.setState({date: evt.target.value}, () => {
-            this.updateArithmetic();
-        });
-    }
-    updateArithmetic = () => {
-        let _post = 0;
-        let _pre = 0;
-        let _noDate = 0;
-        if(this.state.data && this.state.data.length > 0){
-            this.state.data.forEach(el => {
-                if(el[0] === null) {
-                    _noDate += el[1];
-                }
-                else if(el[0] > this.state.date) {
-                    _post += el[1];
-                } else {
-                    _pre += el[1];
-                }
-            })
-            this.setState({
-                preDate: _pre,
-                postDate: _post,
-                noDate: _noDate
-            });
-        }
-    }
-
 
     render() {
 
@@ -243,21 +252,23 @@ export default class StatTables extends React.Component {
                 <div className="content padding-all">
                     <Helmet>
                         <title>NEPAccess</title>
-                        <link rel="canonical" href="https://nepaccess.org/stat_tables" />
+                        <link rel="canonical" href="https://nepaccess.org/stat_counts" />
                         <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
                     </Helmet>
 
-                    <div className="loader-holder">
+                    <div className="loader-holder" hidden={!this.state.busy}>
                         <div className="lds-ellipsis" hidden={!this.state.busy}><div></div><div></div><div></div><div></div></div>
                     </div>
-                    
-                    <ReactTabulator
-                        ref={this.my_table}
-                        data={this.state.data}
-                        columns={this.state.columns}
-                        options={options}
-                    />
+
+                    <h2>Counts split by year</h2>
+                    <hr />
+                    <b>Type year to break on: <input type="text" value={this.state.date} onChange={(e) => this.onChange(e)} /></b>
+                   
+                    {this.renderTable()}
+
                     <br />
+                    <h2>Table of counts for all years</h2>
+                    <hr />
                     
                     <Select
                         className="block"
@@ -265,25 +276,21 @@ export default class StatTables extends React.Component {
                         name="getRoute" 
                         onChange={this.onSelectHandler}
                     />
-
-                    <div>
-                        <label><b>Count after {this.state.date}: {this.state.postDate}</b></label>
-                    </div>
-                    <div>
-                        <label><b>Count through {this.state.date}: {this.state.preDate}</b></label>
-                    </div>
-                    <div>
-                        <label><b>Count with no date: {this.state.noDate}</b></label>
-                    </div>
-
-                    Type year to break on: <input type="text" value={this.state.date} onChange={(e) => this.onChange(e)} />
-
                     <button 
                         className="button"
                         onClick={this.downloadResults}
                     >
-                        Download results as .tsv
+                        Download table below as .tsv
                     </button>
+                    <br />
+
+                    <ReactTabulator
+                        ref={this.my_table}
+                        data={this.state.tableData}
+                        columns={this.state.columns}
+                        options={options}
+                    />
+                    
 
                 </div>
             );
@@ -291,7 +298,7 @@ export default class StatTables extends React.Component {
             return <div className="content">
                 <Helmet>
                     <title>NEPAccess</title>
-                    <link rel="canonical" href="https://nepaccess.org/stat_tables" />
+                    <link rel="canonical" href="https://nepaccess.org/stat_counts" />
                     <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
                 </Helmet>
                 401
@@ -302,19 +309,25 @@ export default class StatTables extends React.Component {
 
     componentDidMount = () => {
         this.checkApprover();
+        this.buildData();
     }
-    
-    componentDidUpdate() {
-        if(this.my_table && this.my_table.current){
-            this.updateTable();
+
+
+    updateTable = () => {
+        try {
+            // seems necessary when using dynamic columns
+            this.my_table.current.table.setColumns(this.state.columns);
+
+            this.my_table.current.table.replaceData(this.state.tableData);
+        } catch (e) {
+            console.error(e);
         }
     }
-}
-
-function getKeys(obj) {
-    let keysArr = [];
-    for (var key in obj) {
-      keysArr.push(key);
+    componentDidUpdate() {
+        // if(this.my_table && this.my_table.current){
+        //     this.updateTable();
+        // }
     }
-    return keysArr;
+
+    
 }
