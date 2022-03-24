@@ -243,6 +243,34 @@ export default class StatCounts extends React.Component {
 
         }
     }
+    downloadAllResults = () => {
+        if(this.state.data) {
+            console.log(this.state.data);
+            let datas = [];
+            this.state.data.forEach(datum => {
+                datas.push(["year",datum.label]);
+                datas = datas.concat(datum.data);
+            })
+            // const csvBlob = new Blob([Globals.jsonToTSV(this.state.data)]);
+            const csvBlob = new Blob([Globals.jsonToTSV(datas)]);
+            const today = new Date().toISOString().split('T')[0];
+            const csvFilename = `All counts_${today}.tsv`;
+
+    
+            if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                window.navigator.msSaveBlob(csvBlob, csvFilename);
+            }
+            else {
+                const temporaryDownloadLink = window.document.createElement("a");
+                temporaryDownloadLink.href = window.URL.createObjectURL(csvBlob);
+                temporaryDownloadLink.download = csvFilename;
+                document.body.appendChild(temporaryDownloadLink);
+                temporaryDownloadLink.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+                document.body.removeChild(temporaryDownloadLink);
+            }
+
+        }
+    }
 
 
     render() {
@@ -291,6 +319,13 @@ export default class StatCounts extends React.Component {
                     />
                     
                     <br />
+                    
+                    <button 
+                        className="button"
+                        onClick={this.downloadAllResults}
+                    >
+                        Download all tables as .tsv
+                    </button>
                     <br />
                     <br />
                     <br />
