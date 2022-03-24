@@ -266,7 +266,6 @@ export default class StatCounts extends React.Component {
                    
                     {this.renderTable()}
 
-                    <br />
                     <h2>Table of counts for all years</h2>
                     <hr />
                     
@@ -290,6 +289,11 @@ export default class StatCounts extends React.Component {
                         columns={this.state.columns}
                         options={options}
                     />
+                    
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                     
 
                 </div>
