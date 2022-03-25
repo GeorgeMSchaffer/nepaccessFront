@@ -13,6 +13,7 @@ class Logout extends React.Component {
                         Logout
                     </div>
 
+                    <span hidden={!localStorage.role}>Logging out...</span>
                     <span id="logoutSpan" hidden={localStorage.role}>Successfully logged out.</span>
                 </div>
             </div>
@@ -21,9 +22,11 @@ class Logout extends React.Component {
 
     componentDidMount() {
         Globals.signOut();
-        Globals.emitEvent('refresh', {
-            loggedIn: false
-        });
+        setTimeout(() => {
+            Globals.emitEvent('refresh', {
+                loggedIn: false
+            });
+        }, 0);
     }
 }
 
