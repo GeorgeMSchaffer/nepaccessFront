@@ -13342,6 +13342,9 @@ const Globals = {
             ];
     },
 
+    /** Don't know exact date of first EIS/EA, but NEPA was signed Jan 1 1970 */
+    beginningYear: 1970,
+
     anEnum: Object.freeze({"test":1, "test2":2, "test3":3})
 
     

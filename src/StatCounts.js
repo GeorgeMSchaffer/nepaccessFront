@@ -251,8 +251,10 @@ export default class StatCounts extends React.Component {
                 datas.push(["year",datum.label]);
                 datas = datas.concat(datum.data);
             })
+            
+            const dataForDownload = yearCountDataTo2dArray(datas,getRoutes);
             // const csvBlob = new Blob([Globals.jsonToTSV(this.state.data)]);
-            const csvBlob = new Blob([Globals.jsonToTSV(datas)]);
+            const csvBlob = new Blob([Globals.jsonToTSV(dataForDownload)]);
             const today = new Date().toISOString().split('T')[0];
             const csvFilename = `All counts_${today}.tsv`;
 
@@ -369,4 +371,45 @@ export default class StatCounts extends React.Component {
     }
 
     
+}
+
+/** Take simple array of year/count items like [2020,7] 
+ * divided by headers like ['year','Total EIS count by year'] 
+ * and turn into 2d array where the rows are years and the columns are the count types, for export to spreadsheet */
+function yearCountDataTo2dArray(arrays, selections) {
+    // 1. Year array from min year to max year for the first column
+    let currentYear = new Date().getFullYear();
+    let numYears = currentYear - Globals.beginningYear;
+    let yearArray = new Array(numYears);
+    for(let i = 0; i < numYears + 1; i++) { // <numYears+1 for inclusive with both starting and current year (this will work unless we get EISes from the future)
+        yearArray[i] = Globals.beginningYear + i;
+    }
+
+    // 2. init results with columns for each count type plus one for the year column
+    let finalArray = new Array(selections.length + 1);
+
+    let j = 0; // column
+
+    // populate first column of results (this will be the year header and year values to serve as row headers)
+    finalArray[j] = ["year"]; 
+    for(let i = 1; i < yearArray.length + 1; i++) {
+        finalArray[j+i] = new Array(); // init new year row
+        finalArray[j+i].push(yearArray[i - 1]);
+    }
+
+    // 3. match each item in arrays by year then populate the count for that row/column
+    for(let i = 0; i < arrays.length; i++) {
+        // add to counts matching by year until we hit a divider set like ['year','count type']
+        if(arrays[i][0] === 'year') { // we hit a year/type "divider" and need to start a new column
+            j += 1; // new column
+            finalArray[0][j] = (arrays[i][1]); // set header for new column
+        } else { // set [row,column] i.e. [year,type] value
+            let yearIndex = yearArray.indexOf(arrays[i][0]);
+            if(yearIndex >= 0) {
+                finalArray[yearIndex + 1][j] = (arrays[i][1]); // use year array index + 1 because year values start at finalArray[1]; [0] is column header 'year'
+            }
+        }
+    }
+
+    return finalArray;
 }
