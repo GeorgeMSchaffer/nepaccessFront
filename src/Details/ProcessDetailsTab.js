@@ -539,22 +539,13 @@ export default class ProcessDetailsTab extends React.Component {
         });
     }
     showMap = () => {
-        if(this.state.hasGeojson && localStorage.role !== undefined) {
+        if(this.state.hasGeojson) {
             return (
                 <div className="map-container-internal">
                     <h3 className="map-header">Map</h3>
                     <GeojsonMap processId={this.state.processId} />
                 </div>
             );
-        } else if(this.state.hasGeojson && localStorage.role === undefined) {
-            return (
-                <div className="map-container-internal">
-                    <h3 className="map-header">Map</h3>
-                    Please log in to see map data.
-                </div>
-            );
-        } else {
-            return "";
         }
     }
 
