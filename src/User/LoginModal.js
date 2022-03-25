@@ -217,6 +217,10 @@ export default class LoginModal extends React.Component {
                         <div className="form">
                             <label className="loginErrorLabel">{this.state.networkError}</label>
 
+                                <span className="bold">
+                                    Please log in or <a href="/register" target="_blank">create an account</a>
+                                </span>
+
                             <div className="form-content">
                                 
                                 <div className="login-row">
@@ -253,6 +257,10 @@ export default class LoginModal extends React.Component {
                                 <button type="button" className="button2" id="login-submit" onClick={this.login} >
                                     Log in
                                 </button>
+
+                                <div className="login-row">
+                                    <a target="_blank" href="/forgotPassword">Forgot password?</a>
+                                </div>
                             </div>
                         </div>
                     </div>
