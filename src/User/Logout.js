@@ -5,10 +5,6 @@ import Globals from '../globals.js';
 import './login.css';
 
 class Logout extends React.Component {
-    state = {
-        logoutText: "Logging out..."
-    }
-
     render() {
         return (
             <div className="container login-form">
@@ -17,21 +13,20 @@ class Logout extends React.Component {
                         Logout
                     </div>
 
-                    <span id="logoutSpan">{this.state.logoutText}</span>
+                    <span id="logoutSpan" hidden={localStorage.role}>Successfully logged out.</span>
                 </div>
             </div>
         )
     }
 
-    componentDidMount(){
+    componentDidMount() {
         Globals.signOut();
         Globals.emitEvent('refresh', {
             loggedIn: false
         });
-        // Globals.emitEvent(false);
-        // TODO: Make sure signOut() is done first?
-        this.setState({ logoutText: "Successfully logged out." });
     }
 }
+
+
 
 export default Logout;
