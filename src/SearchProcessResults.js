@@ -180,6 +180,11 @@ export default class SearchProcessResults extends React.Component {
 
                         <div className="tabulator-holder">
 
+                            <div className="results-count-holder">
+                                <h2 id="results-label" className="inline">
+                                    {this.props.resultsText}
+                                </h2>
+                            </div>
                             <SearchResultsMap 
                                 docList={this.props.geoResults}
                                 results={this.props.results}
@@ -188,7 +193,6 @@ export default class SearchProcessResults extends React.Component {
 
                             <ResultsHeader 
                                 sort={this.props.sort}
-                                resultsText={this.props.resultsText} 
                                 searching={this.props.searching}
                                 snippetsDisabled={this.props.snippetsDisabled} 
                                 showContext={this.state.showContext}

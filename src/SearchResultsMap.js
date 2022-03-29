@@ -220,20 +220,22 @@ const MyData = (props) => {
 
 
     return (<>
-        <div className="toggle-container">
-            <span className="map-filters-toggle" onClick={hide}>{minimize}</span>
-            <div className="map-layers-toggle" hidden={isHidden}>
-                <div className="checkbox-container">
-                    <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
-                            // tabIndex="1"
-                            checked={showStates} onChange={() => toggleGeodata(1)} />
-                    <label className="checkbox-text no-select" htmlFor="showStates">Show states and territories</label>
-                </div>
-                <div className="checkbox-container">
-                    <input type="checkbox" name="showCounties" id="showCounties" className="sidebar-checkbox"
-                            // tabIndex="2"
-                            checked={showCounties} onChange={() => toggleGeodata(2)} />
-                    <label className="checkbox-text no-select" htmlFor="showCounties">Show counties</label>
+        <div className="toggle-container-row">
+            <div className="toggle-container">
+                <span className="map-filters-toggle" onClick={hide}>{minimize}</span>
+                <div className="map-layers-toggle" hidden={isHidden}>
+                    <div className="checkbox-container">
+                        <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
+                                // tabIndex="1"
+                                checked={showStates} onChange={() => toggleGeodata(1)} />
+                        <label className="checkbox-text no-select" htmlFor="showStates">Show states and territories</label>
+                    </div>
+                    <div className="checkbox-container">
+                        <input type="checkbox" name="showCounties" id="showCounties" className="sidebar-checkbox"
+                                // tabIndex="2"
+                                checked={showCounties} onChange={() => toggleGeodata(2)} />
+                        <label className="checkbox-text no-select" htmlFor="showCounties">Show counties</label>
+                    </div>
                 </div>
             </div>
         </div>

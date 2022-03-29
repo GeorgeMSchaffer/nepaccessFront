@@ -739,3 +739,7 @@ textarea.server-response {
     padding-left: 10px;
     border-left: 2px solid black;
 }
+
+.results-count-holder {
+    background-color: rgba(196, 196, 196, 1);
+}

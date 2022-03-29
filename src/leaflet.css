@@ -34,7 +34,12 @@
     z-index: 500;
 }
 
+.toggle-container-row {
+    height: 25px;
+    margin-top: -25px;
+}
 .toggle-container {
+    display: block;
     float: right;
 }
 .map-filters-toggle {
