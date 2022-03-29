@@ -222,7 +222,9 @@ const MyData = (props) => {
     return (<>
         <div className="toggle-container-row">
             <div className="toggle-container">
-                <span className="map-filters-toggle" onClick={hide}>{minimize}</span>
+                <span>
+                    <span className="map-toggle-title">Toggle map view</span><span className="map-filters-toggle" onClick={hide}>{minimize}</span>
+                </span>
                 <div className="map-layers-toggle" hidden={isHidden}>
                     <div className="checkbox-container">
                         <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"

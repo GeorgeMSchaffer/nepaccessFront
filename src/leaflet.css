@@ -39,11 +39,12 @@
     margin-top: -25px;
 }
 .toggle-container {
-    display: block;
     float: right;
 }
+.map-toggle-title {
+    margin-right: 25px;
+}
 .map-filters-toggle {
-    display: block;
     position: absolute;
     margin-left: -22px; /* width+border */
 
