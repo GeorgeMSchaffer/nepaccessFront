@@ -215,17 +215,16 @@ const MyData = (props) => {
                 <span>
                     <label className="map-toggle-title no-select" onClick={hide}>Toggle map view</label>
                     <span className="map-filters-toggle" onClick={hide}>{toggleText}</span>
-                    {/* <input name="showMap" id="showMap" type="checkbox" className="map-filters-toggle" 
-                            checked={!isHidden} onChange={hide} />
-                    <label className="map-toggle-title" htmlFor="showMap">Show map</label> */}
                 </span>
             </div>
         </div>
 
         
         {!props.isHidden ?(
-            <div hidden={isHidden}>
-                <div hidden={!geoLoading}>Loading map polygons...</div>
+            <div>
+                {geoLoading ?(
+                    <div>Loading map polygons...</div>
+                ) : ( <></> )}
                 <div className="map-layers-toggle">
                     <div className="checkbox-container">
                         <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
@@ -264,7 +263,7 @@ const MyData = (props) => {
                 </div>
             </div>
         ) : (
-             <div></div>
+            <></>
         )}
         
     </>);
