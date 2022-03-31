@@ -1,7 +1,7 @@
 import { set } from "lodash";
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
-import { MapContainer, TileLayer, GeoJSON, Popup, Tooltip, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Popup, Tooltip, useMap, ZoomControl } from "react-leaflet";
 
 import Globals from './globals.js';
 
@@ -62,33 +62,18 @@ let geoStatePair = {};
     geoStatePair[56] = "WY";
     geoStatePair[72] = "PR";
 
-// function debounce(func, timeout = 500){
-//     let timer;
-//     return (...args) => {
-//         clearTimeout(timer);
-//         timer = setTimeout(() => { func.apply(this, args); }, timeout);
-//     };
-// }
-
 const MyData = (props) => {
     const mounted = useRef(false);
 
     const [data, setData] = React.useState(); 
-    const [isHidden, setHidden] = React.useState(false); 
-    const [geoLoading, setLoading] = React.useState();
-    const [minimize, setMinimize] = React.useState("-");
+    const [isHidden, setHidden] = React.useState(props.isHidden)
+    const [geoLoading, setLoading] = React.useState(true);
     const [showStates, setShowStates] = React.useState(true);
     const [showCounties, setShowCounties] = React.useState(true);
 
-
     const hide = () => {
-        if(isHidden) {
-            setMinimize("-");
-            setHidden(false);
-        } else {
-            setMinimize("+");
-            setHidden(true);
-        }
+        setHidden(!isHidden);
+        props.toggleMapHide();
     }
 
     const toggleGeodata = (val) => {
@@ -99,13 +84,14 @@ const MyData = (props) => {
         }
     }
 
-    // const debouncedHandleData = debounce(() => setAndFilterData());
-
     /** Determines which counties/states to display, and the counts for them. Sets this component's data */
     const setAndFilterData = () => {
+        setLoading(true);
+        let i = 0;
         let filteredGeoWithCounts = JSON.parse(JSON.stringify(props.docList));
         // TODO: We don't need props.searcherState, but maybe we could use it to efficiently skip irrelevant geo items.
         filteredGeoWithCounts.forEach(geoItem => {
+            i++;
             props.results.forEach(docItem => {
                 // Add to the count for every state or county match (need to determine if geo item is state or county first)
                 if(geoItem.properties.STATENS) { // state
@@ -142,10 +128,13 @@ const MyData = (props) => {
                     }
                 }
             });
+
+            if(i >= props.docList.length) {
+                setLoading(false);
+            }
         });
 
         setData(filteredGeoWithCounts);
-        setLoading(false);
     }
     
     const showData = () => {
@@ -199,7 +188,6 @@ const MyData = (props) => {
     // useEffect to fetch data on mount
     useEffect(() => {
         mounted.current = true;
-        setLoading(true);
 
         if(props && props.docList && props.docList.length > 0) {
             setAndFilterData();
@@ -218,14 +206,27 @@ const MyData = (props) => {
         };
     }, [props]);
 
+    let toggleText = props.isHidden ? "+" : "-";
+
 
     return (<>
         <div className="toggle-container-row">
             <div className="toggle-container">
                 <span>
-                    <span className="map-toggle-title">Toggle map view</span><span className="map-filters-toggle" onClick={hide}>{minimize}</span>
+                    <label className="map-toggle-title no-select" onClick={hide}>Toggle map view</label>
+                    <span className="map-filters-toggle" onClick={hide}>{toggleText}</span>
+                    {/* <input name="showMap" id="showMap" type="checkbox" className="map-filters-toggle" 
+                            checked={!isHidden} onChange={hide} />
+                    <label className="map-toggle-title" htmlFor="showMap">Show map</label> */}
                 </span>
-                <div className="map-layers-toggle" hidden={isHidden}>
+            </div>
+        </div>
+
+        
+        {!props.isHidden ?(
+            <div hidden={isHidden}>
+                <div hidden={!geoLoading}>Loading map polygons...</div>
+                <div className="map-layers-toggle">
                     <div className="checkbox-container">
                         <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
                                 // tabIndex="1"
@@ -239,30 +240,33 @@ const MyData = (props) => {
                         <label className="checkbox-text no-select" htmlFor="showCounties">Show counties</label>
                     </div>
                 </div>
+                <div className="leafmap_container">
+                    <Helmet>
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+                            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+                            crossorigin=""/>
+                        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+                            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+                            crossorigin=""></script>
+                    </Helmet>
+                    <MapContainer className="leafmap"
+                        center={[39.82, -98.58]} 
+                        zoom={3} scrollWheelZoom={false}
+                    >
+                        {showData()}
+                        
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <ZoomControl position="topright" />
+                    </MapContainer>
+                </div>
             </div>
-        </div>
-        <div className="leafmap_container" hidden={isHidden}>
-            <Helmet>
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-                    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-                    crossorigin=""/>
-                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-                    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-                    crossorigin=""></script>
-            </Helmet>
-            <div className="map-loading-tooltip" hidden={!geoLoading}>Please wait for map data to load...</div>
-            <MapContainer className="leafmap"
-                center={[39.82, -98.58]} 
-                zoom={3} scrollWheelZoom={false}
-            >
-                {showData()}
-                
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-            </MapContainer>
-        </div>
+        ) : (
+             <div></div>
+        )}
+        
     </>);
 };
 

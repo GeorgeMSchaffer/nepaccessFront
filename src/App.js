@@ -44,7 +44,8 @@ export default class App extends React.Component {
         snippetsDisabled: false,
         shouldUpdate: false,
         loaded: false,
-        down: false
+        down: false,
+        isMapHidden: false
     }
     
     constructor(props){
@@ -1248,6 +1249,9 @@ export default class App extends React.Component {
 
         }
     }
+    toggleMapHide = () => {
+        this.setState({isMapHidden: !this.state.isMapHidden});
+    }
 	
 
 	render() {
@@ -1292,6 +1296,8 @@ export default class App extends React.Component {
                         scrollToTop={this.scrollToTop}
                         shouldUpdate={this.state.shouldUpdate}
                         download={this.downloadCurrentAsTSV}
+                        isMapHidden={this.state.isMapHidden}
+                        toggleMapHide={this.toggleMapHide}
                     />
 				</div>
                 <div ref={this.endRef} />

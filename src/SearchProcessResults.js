@@ -186,6 +186,8 @@ export default class SearchProcessResults extends React.Component {
                                 </h2>
                             </div>
                             <SearchResultsMap 
+                                toggleMapHide={this.props.toggleMapHide}
+                                isHidden={this.props.isMapHidden}
                                 docList={this.props.geoResults}
                                 results={this.props.results}
                                 // searcherState={this.props.searcherState}
