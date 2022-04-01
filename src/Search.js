@@ -828,7 +828,7 @@ class Search extends React.Component {
                     />
                 </div>
                 <div className="filter">
-                    <label className="sidebar-label" htmlFor="searchState">State(s) or regions</label>
+                    <label className="sidebar-label" htmlFor="searchState">State(s) or location(s)</label>
                     <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
                         styles={customStyles}
                         tabIndex="5"
