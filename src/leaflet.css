@@ -88,6 +88,9 @@
     line-height: normal;
 }
 
+.leaflet-control-container {
+    user-select: none;
+}
 div.leaflet-control-container>div.leaflet-left {
     display: none; /* Defining our own ZoomControl, so hide the default. */
 }
