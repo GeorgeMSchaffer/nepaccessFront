@@ -1,4 +1,3 @@
-import { set } from "lodash";
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { MapContainer, TileLayer, GeoJSON, Popup, Tooltip, useMap, ZoomControl } from "react-leaflet";
@@ -66,13 +65,14 @@ const MyData = (props) => {
     const mounted = useRef(false);
 
     const [data, setData] = React.useState(); 
-    const [isHidden, setHidden] = React.useState(props.isHidden)
+    // const [isHidden, setHidden] = React.useState(props.isHidden)
     const [geoLoading, setLoading] = React.useState(true);
     const [showStates, setShowStates] = React.useState(true);
     const [showCounties, setShowCounties] = React.useState(true);
+    const [highlighted, setHighlighted] = React.useState({});
 
     const hide = () => {
-        setHidden(!isHidden);
+        // setHidden(!isHidden);
         props.toggleMapHide();
     }
 
@@ -83,56 +83,113 @@ const MyData = (props) => {
             setShowCounties(!showCounties);
         }
     }
+    
+    // TODO: Have this operate parent search filter, and note that this won't work as expected with non-state/county data
+    // TODO: Not sure how yet, but the parent search filter also has to inform the map what to select or deselect.
+    const onPolyClick = (feature,layer) => {
+        // console.log(feature);
+        // console.log(feature.properties);
+        // console.log(layer);
 
-    /** Determines which counties/states to display, and the counts for them. Sets this component's data */
-    const setAndFilterData = () => {
-        setLoading(true);
+        let activate = true; // filter for this state or county
+        if(layer.options.color==="red") { // already selected and therefore already in filter
+            activate = false; // color will be reset; deactivate filter
+        }
+
+        // When we call parent to filter we need to know if it's a state or county first
+        if(feature.properties.STATENS) {
+            console.log("State; name/geoid/abbrev:", feature.properties.NAME, feature.properties.GEOID, feature.properties.STUSPS);
+            // props.filterGeoPropper("STATE",feature.properties.STUSPS + ":" + feature.properties.NAME,activate);
+        } else if(feature.properties.COUNTYNS) {
+            const stateAbbrev = geoStatePair[parseInt(feature.properties.STATEFP)]; // state abbreviation from geoid
+            console.log("County; name/state geoid/state abbrev:",
+                feature.properties.NAME,
+                feature.properties.STATEFP, 
+                // need parseInt() to get rid of leading zeroes from string geoid in feature.properties.STATEFP
+                stateAbbrev); 
+            const countyNameForFilter = stateAbbrev + ": " + feature.properties.NAME;
+            // props.filterGeoPropper("COUNTY",countyNameForFilter,activate);
+            
+        } // else not a county/state
+
+        // Turn border red or if border already red then reset to the color saved in feature.originalColor
+        layer.setStyle({ 
+            color: (layer.options.color === "red" ? feature.originalColor : "red"),
+            fillColor: (layer.options.color === "red" ? feature.originalColor : "red") 
+        });
+
+        // Toggle highlighting flag in component's state, by geoid, hashmap style
+        if(feature.properties.GEOID) {
+            let _highlighted = highlighted;
+            _highlighted[feature.properties.GEOID] = !_highlighted[feature.properties.GEOID];
+            setHighlighted(_highlighted);
+        }
+
+    }
+
+    const buildLocationHashMaps = (docs,geos) => {
+        // console.time("t1");
+        let hashmap = {}; // location/count hashmap by abbrev or abbrev: county
+        // build hashmap of locations with counts
+        docs.forEach(docItem => {
+            if(docItem.state) {
+                let statesList = docItem.state.split(";");
+                statesList.forEach(state => {
+                    if(hashmap[state]) {
+                        hashmap[state]++;
+                    } else {
+                        hashmap[state] = 1;
+                    }
+                });
+            }
+            if(docItem.county) {
+                let counties = docItem.county.split(";");
+                counties.forEach(county => {
+                    if(hashmap[county]) {
+                        hashmap[county]++;
+                    } else {
+                        hashmap[county] = 1;
+                    }
+                })
+            }
+        });
+        // console.timeEnd("t1");
+
+        // assign each geodata's count
+        // console.time("t2");
         let i = 0;
-        let filteredGeoWithCounts = JSON.parse(JSON.stringify(props.docList));
-        // TODO: We don't need props.searcherState, but maybe we could use it to efficiently skip irrelevant geo items.
-        filteredGeoWithCounts.forEach(geoItem => {
+        geos.forEach(geoItem => { 
             i++;
-            props.results.forEach(docItem => {
-                // Add to the count for every state or county match (need to determine if geo item is state or county first)
-                if(geoItem.properties.STATENS) { // state
-                    if(docItem.state) {
-                        let statesList = docItem.state.split(";");
-                        statesList.some(state => {
-                            if(state === geoItem.properties.STUSPS) {
-                                if(geoItem.count) {
-                                    geoItem.count += 1;
-                                } else {
-                                    geoItem.count = 1;
-                                }
-                                return true;
-                            }
-                        });
-                    }
-                } else { // Must be county, but if logic changed we could check for geoItem.properties.COUNTYNS
-                    // If county, also need to parse by transforming state geo_id to state abbreviation 
-                    let stateAbbrev = geoStatePair[parseInt(geoItem.properties.STATEFP)];
-                    if(docItem.county) {
-                        let counties = docItem.county.split(";");
-                        counties.some(county => {
-                            // e.g. check for "AZ: Pima"
-                            if(county === `${stateAbbrev}: ${geoItem.properties.NAME}`) {
-                                if(geoItem.count) {
-                                    geoItem.count += 1;
-                                } else {
-                                    geoItem.count = 1;
-                                }
-                                return true;
-                            }
-                            return false;
-                        })
-                    }
-                }
-            });
-
-            if(i >= props.docList.length) {
+            if(geoItem.properties.STATENS) { // state
+                geoItem.count = hashmap[geoItem.properties.STUSPS];
+            } else if(geoItem.properties.COUNTYNS) { // county
+                const stateAbbrev = geoStatePair[parseInt(geoItem.properties.STATEFP)];
+                const keynameForHashmap = stateAbbrev + ": " + geoItem.properties.NAME;
+                geoItem.count = hashmap[keynameForHashmap];
+            } else {
+                // for now do nothing with non state/county items
+            }
+            if(i >= geos.length) {
+                // console.log("Load complete");
                 setLoading(false);
             }
         });
+        // console.timeEnd("t2");
+
+        return geos;
+    }
+
+    /** Determines which counties/states to display, and the counts for them. Sets this component's data.
+     * Has to run any time props.docList changes
+     * TODO: Can likely make this more efficient if we have logic that can replace the .some()s.
+     * Perhaps the counts could be added to hashmap values by geoid (unique to each polygon), 
+     * and then those counts could be assigned at the end.
+     */
+    const setAndFilterData = () => {
+        setLoading(true);
+
+        let filteredGeoWithCounts = JSON.parse(JSON.stringify(props.docList)); // deep clone
+        filteredGeoWithCounts = buildLocationHashMaps(props.results,filteredGeoWithCounts); // build results
 
         setData(filteredGeoWithCounts);
     }
@@ -149,31 +206,33 @@ const MyData = (props) => {
                 if(jsonData.count) {
                     jsonName += `; ${jsonData.count} ${(jsonData.count === 1) ? "Result" : "Results"}`
                 }
+                
+                // if(highlighted[jsonData.properties.GEOID]) {
+                //     jsonData.style.color = "red";
+                //     jsonData.style.fillColor = "red";
+                // }
 
                 if( jsonData.count 
                     && 
                     ((jsonData.properties.STATENS && showStates) || (jsonData.properties.COUNTYNS && showCounties))
                 ) {
-                    if(alaskaFlag) {
-                        return (
-                            <GeoJSON key={"leaflet"+i} 
-                                data={jsonData} 
-                                color={jsonData.style.color} 
-                                fillColor={jsonData.style.fillColor} 
-                            >
-                                {/* <Popup>{jsonData.properties.NAME}</Popup> */}
-                                <Tooltip sticky>{jsonName}</Tooltip>
-                            </GeoJSON>
-                        );
-                    }
                     return (
                         <GeoJSON key={"leaflet"+i} 
                             data={jsonData} 
                             color={jsonData.style.color} 
                             fillColor={jsonData.style.fillColor} 
+                            // onEachFeature={(feature, layer) => {
+                            //     layer.on({
+                            //         click: () => onPolyClick(feature,layer)
+                            //     })
+                            // }}
                         >
                             {/* <Popup>{jsonData.properties.NAME}</Popup> */}
-                            <Tooltip>{jsonName}</Tooltip>
+                            {alaskaFlag ?(
+                                <Tooltip sticky>{jsonName}</Tooltip>
+                            ) : (
+                                <Tooltip>{jsonName}</Tooltip>
+                            )}
                         </GeoJSON>
                     );
                 }
