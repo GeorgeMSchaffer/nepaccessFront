@@ -212,10 +212,10 @@ const MyData = (props) => {
             {getBounds ?(
             <MapContainer className="leafmap"
                 // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
-                // center={getCenter} 
-                // zoom={3} 
+                center={getCenter} 
+                zoom={3} 
                 scrollWheelZoom={false}
-                bounds={getBounds}
+                // bounds={getBounds}
             >
                 {showData()}
                 
