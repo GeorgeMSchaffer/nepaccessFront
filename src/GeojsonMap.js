@@ -29,13 +29,14 @@ import { LatLngBounds } from "leaflet";
 
 let _id = -1;
 
-const MyData = (props) => {
+const GeojsonMap = (props) => {
     const mounted = useRef(false);
     // create state variable to hold data when it is fetched
     const [data, setData] = React.useState(); 
     const [isLoading, setLoading] = React.useState(false); 
     const [getBounds, setBounds] = React.useState(null);
     const [getCenter, setCenter] = React.useState([39.82,-98.58]);
+    const [map, setMap] = React.useState(null)
     
     // TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
     /** Helper returns <GeoJSON> from data.map */
@@ -123,6 +124,12 @@ const MyData = (props) => {
         return bounds;
     }
 
+    const doFitBounds = () => {
+        if(map) {
+            map.fitBounds(getBounds);
+        }
+    }
+
     // useEffect to fetch data on mount
     useEffect(() => {
         mounted.current = true;
@@ -145,6 +152,7 @@ const MyData = (props) => {
                 const bounds = getMaxBounds(response.data);
                 setBounds(bounds);
                 setCenter(bounds.getCenter());
+                // map.fitBounds(bounds);
                 for(let i = 0; i < response.data.length; i++) {
                     let json = JSON.parse(response.data[i]);
                     json.style = {};
@@ -216,6 +224,8 @@ const MyData = (props) => {
                 zoom={3} 
                 scrollWheelZoom={false}
                 // bounds={getBounds}
+                whenCreated={setMap}
+                onLoad={doFitBounds()}
             >
                 {showData()}
                 
@@ -230,4 +240,4 @@ const MyData = (props) => {
 
 };
 
-export default MyData;
+export default GeojsonMap;
