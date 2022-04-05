@@ -126,7 +126,9 @@ const GeojsonMap = (props) => {
 
     const doFitBounds = () => {
         if(map && getBounds) {
-            map.fitBounds(getBounds);
+            // can't fathom what the problem is with this for the remote server only
+            // map.fitBounds(getBounds);
+            console.log(map,getBounds);
         }
     }
 
@@ -225,7 +227,7 @@ const GeojsonMap = (props) => {
                 scrollWheelZoom={false}
                 // bounds={getBounds}
                 whenCreated={setMap}
-                // onLoad={doFitBounds()}
+                onLoad={doFitBounds()}
             >
                 {showData()}
                 
