@@ -35,7 +35,7 @@ const MyData = (props) => {
     const [data, setData] = React.useState(); 
     const [isLoading, setLoading] = React.useState(false); 
     const [getBounds, setBounds] = React.useState();
-    // const [getCenter, setCenter] = React.useState([39.82,-98.58]);
+    const [getCenter, setCenter] = React.useState([39.82,-98.58]);
     
     // TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
     /** Helper returns <GeoJSON> from data.map */
@@ -142,7 +142,7 @@ const MyData = (props) => {
             // Internal polygons (counties, other) must be added LAST in order to show up, 
             // otherwise the overlapping labels don't work. We'll use a new property, sortPriority.
             if(response.data && response.data[0]) {
-                let bounds = getMaxBounds(response.data);
+                const bounds = getMaxBounds(response.data);
                 setBounds(bounds);
                 // setCenter(bounds.getCenter());
                 for(let i = 0; i < response.data.length; i++) {
@@ -211,10 +211,10 @@ const MyData = (props) => {
             <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
             <MapContainer className="leafmap"
                 // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
-                // center={getCenter} 
-                // zoom={3} 
+                center={getCenter} 
+                zoom={3} 
                 scrollWheelZoom={false}
-                bounds={getBounds}
+                // bounds={getBounds}
             >
                 {showData()}
                 
