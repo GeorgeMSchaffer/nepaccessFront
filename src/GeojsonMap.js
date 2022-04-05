@@ -152,7 +152,7 @@ const GeojsonMap = (props) => {
                 const bounds = getMaxBounds(response.data);
                 setBounds(bounds);
                 setCenter(bounds.getCenter());
-                // map.fitBounds(bounds);
+                
                 for(let i = 0; i < response.data.length; i++) {
                     let json = JSON.parse(response.data[i]);
                     json.style = {};
@@ -225,7 +225,7 @@ const GeojsonMap = (props) => {
                 scrollWheelZoom={false}
                 // bounds={getBounds}
                 whenCreated={setMap}
-                onLoad={doFitBounds()}
+                // onLoad={doFitBounds()}
             >
                 {showData()}
                 
