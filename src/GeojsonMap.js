@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 //https://react-leaflet.js.org/docs/example-react-control/
+import { latLngBounds, latLng } from "leaflet";
 import { MapContainer, TileLayer, GeoJSON, Tooltip } from "react-leaflet";
 import axios from "axios";
 import Globals from './globals.js';
 
 import './leaflet.css';
-import { latLngBounds } from "leaflet";
 
 // basic colorblind palette
 // #000000
@@ -34,7 +34,7 @@ const MyData = (props) => {
     // create state variable to hold data when it is fetched
     const [data, setData] = React.useState(); 
     const [isLoading, setLoading] = React.useState(false); 
-    const [getBounds, setBounds] = React.useState(null);
+    const [getBounds, setBounds] = React.useState();
     const [getCenter, setCenter] = React.useState([39.82,-98.58]);
     
     // TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
@@ -114,7 +114,9 @@ const MyData = (props) => {
             }
         }
         
-        const bounds = latLngBounds([minLat,minLong],[maxLat,maxLong]);
+        const southwest = latLng(minLat,minLong);
+        const northeast = latLng(maxLat,maxLong);
+        const bounds = latLngBounds(southwest,northeast);
 
         console.log("[minLat,minLong],[maxLat,maxLong]",[minLat,minLong],[maxLat,maxLong],bounds);
 
@@ -209,13 +211,13 @@ const MyData = (props) => {
             </Helmet>
             
             <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
-            {getBounds ?(
+            {!isLoading && getBounds ?(
             <MapContainer className="leafmap"
                 // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
-                center={getCenter} 
-                zoom={3} 
+                bounds={getBounds} boundsOptions={{padding: [10, 10]}}
+                // center={getCenter} 
+                // zoom={3} 
                 scrollWheelZoom={false}
-                // bounds={getBounds}
             >
                 {showData()}
                 
