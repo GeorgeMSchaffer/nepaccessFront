@@ -125,7 +125,7 @@ const GeojsonMap = (props) => {
     }
 
     const doFitBounds = () => {
-        if(map) {
+        if(map && getBounds) {
             map.fitBounds(getBounds);
         }
     }
