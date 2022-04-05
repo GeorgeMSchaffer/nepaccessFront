@@ -6,7 +6,6 @@ import axios from "axios";
 import Globals from './globals.js';
 
 import './leaflet.css';
-import { forEach } from "lodash";
 import { latLngBounds } from "leaflet";
 
 // basic colorblind palette
@@ -210,23 +209,20 @@ const MyData = (props) => {
             </Helmet>
             
             <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
-            
-            {!isLoading ?(
-                <MapContainer className="leafmap"
-                    // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
-                    // center={getCenter} 
-                    // zoom={3} 
-                    scrollWheelZoom={false}
-                    bounds={getBounds}
-                >
-                    {showData()}
-                    
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                </MapContainer>
-            ) : (<></>)}
+            <MapContainer className="leafmap"
+                // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
+                // center={getCenter} 
+                // zoom={3} 
+                scrollWheelZoom={false}
+                bounds={getBounds}
+            >
+                {showData()}
+                
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+            </MapContainer>
         </div>
     </>);
     
