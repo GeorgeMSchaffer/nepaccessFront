@@ -34,7 +34,7 @@ const MyData = (props) => {
     // create state variable to hold data when it is fetched
     const [data, setData] = React.useState(); 
     const [isLoading, setLoading] = React.useState(false); 
-    const [getBounds, setBounds] = React.useState();
+    const [getBounds, setBounds] = React.useState(null);
     const [getCenter, setCenter] = React.useState([39.82,-98.58]);
     
     // TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
@@ -144,7 +144,7 @@ const MyData = (props) => {
             if(response.data && response.data[0]) {
                 const bounds = getMaxBounds(response.data);
                 setBounds(bounds);
-                // setCenter(bounds.getCenter());
+                setCenter(bounds.getCenter());
                 for(let i = 0; i < response.data.length; i++) {
                     let json = JSON.parse(response.data[i]);
                     json.style = {};
@@ -209,12 +209,13 @@ const MyData = (props) => {
             </Helmet>
             
             <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
+            {getBounds ?(
             <MapContainer className="leafmap"
                 // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
-                center={getCenter} 
-                zoom={3} 
+                // center={getCenter} 
+                // zoom={3} 
                 scrollWheelZoom={false}
-                // bounds={getBounds}
+                bounds={getBounds}
             >
                 {showData()}
                 
@@ -222,7 +223,7 @@ const MyData = (props) => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-            </MapContainer>
+            </MapContainer>) : ( <></> )}
         </div>
     </>);
     
