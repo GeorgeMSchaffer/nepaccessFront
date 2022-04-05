@@ -6,6 +6,8 @@ import axios from "axios";
 import Globals from './globals.js';
 
 import './leaflet.css';
+import { forEach } from "lodash";
+import { latLngBounds } from "leaflet";
 
 // basic colorblind palette
 // #000000
@@ -33,6 +35,8 @@ const MyData = (props) => {
     // create state variable to hold data when it is fetched
     const [data, setData] = React.useState(); 
     const [isLoading, setLoading] = React.useState(false); 
+    const [getBounds, setBounds] = React.useState();
+    // const [getCenter, setCenter] = React.useState([39.82,-98.58]);
     
     // TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
     /** Helper returns <GeoJSON> from data.map */
@@ -66,6 +70,60 @@ const MyData = (props) => {
     }
 
 
+            
+    // we need to get the bounds before we can attempt to zoom in appropriately
+    // geoItem.geometry.coordinates will be an array of arrays of arrays of long/lats (in that order), e. g.
+        // coordinates: Array(47)
+            // 0: Array(1)
+                // 0: Array(9)    
+                    // 0: (2) [179.481318, 51.975301]
+                    // 1: (2) [179.582857, 52.016841]
+                    // ...
+    // this would be a lot of calculation, so it makes sense for an individual details page.
+    /** Returns [[minLat,minLong],[maxLat,maxLong]] */
+    const getMaxBounds = (data) => {
+        let maxLong = null;
+        let maxLat = null;
+        let minLong = null;
+        let minLat = null;
+        // let runLength = data.length;
+
+        for(let i = 0; i < data.length; i++) {
+            let json = JSON.parse(data[i]);
+
+            if(i === 0) { // init
+                maxLong = json.geometry.coordinates[0][0][0];
+                minLong = json.geometry.coordinates[0][0][0];
+                maxLat = json.geometry.coordinates[0][0][1];
+                minLat = json.geometry.coordinates[0][0][1];
+            }
+
+            // runLength += json.geometry.coordinates.length;
+
+            for(let j = 0; j < json.geometry.coordinates.length; j++) {
+                // runLength += json.geometry.coordinates[j].length;
+                for(let k = 0; k < json.geometry.coordinates[j].length; k++) {
+                    let thisLong = json.geometry.coordinates[j][k][0];
+                    let thisLat = json.geometry.coordinates[j][k][1];
+
+                    maxLong = (maxLong < thisLong) ? thisLong : maxLong;
+                    minLong = (minLong > thisLong) ? thisLong : minLong;
+                    
+                    maxLat = (maxLat < thisLat) ? thisLat : maxLat;
+                    minLat = (minLat > thisLat) ? thisLat : minLat;
+                }
+            }
+        }
+        
+        const bounds = latLngBounds([minLat,minLong],[maxLat,maxLong]);
+
+        console.log("[minLat,minLong],[maxLat,maxLong]",[minLat,minLong],[maxLat,maxLong],bounds);
+
+        // console.log("n",runLength);
+
+        return bounds;
+    }
+
     // useEffect to fetch data on mount
     useEffect(() => {
         mounted.current = true;
@@ -78,11 +136,16 @@ const MyData = (props) => {
 
             const response = await axios.get(url, { params: { id: id } });
 
+            console.log(response);
+
             // Add specific color to states and counties
 
             // Internal polygons (counties, other) must be added LAST in order to show up, 
             // otherwise the overlapping labels don't work. We'll use a new property, sortPriority.
             if(response.data && response.data[0]) {
+                let bounds = getMaxBounds(response.data);
+                setBounds(bounds);
+                // setCenter(bounds.getCenter());
                 for(let i = 0; i < response.data.length; i++) {
                     let json = JSON.parse(response.data[i]);
                     json.style = {};
@@ -134,24 +197,27 @@ const MyData = (props) => {
         };
     }, [props]);
     
-    if(localStorage.role === undefined) {
-        return <></>
-    } else {
-        return (<>
-            <div className="leafmap_container">
-                <Helmet>
-                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-                        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-                        crossorigin=""/>
-                    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-                        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-                        crossorigin=""></script>
-                </Helmet>
-                
-                <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
+    return (
+    <>
+        <div className="leafmap_container">
+            <Helmet>
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+                    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+                    crossorigin=""/>
+                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+                    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+                    crossorigin=""></script>
+            </Helmet>
+            
+            <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
+            
+            {!isLoading ?(
                 <MapContainer className="leafmap"
-                    center={[39.82, -98.58]} 
-                    zoom={3} scrollWheelZoom={false}
+                    // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
+                    // center={getCenter} 
+                    // zoom={3} 
+                    scrollWheelZoom={false}
+                    bounds={getBounds}
                 >
                     {showData()}
                     
@@ -160,9 +226,9 @@ const MyData = (props) => {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                 </MapContainer>
-            </div>
-        </>);
-    }
+            ) : (<></>)}
+        </div>
+    </>);
     
 
 };
