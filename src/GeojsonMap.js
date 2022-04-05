@@ -6,7 +6,7 @@ import axios from "axios";
 import Globals from './globals.js';
 
 import './leaflet.css';
-import { latLngBounds } from "leaflet";
+import { LatLngBounds } from "leaflet";
 
 // basic colorblind palette
 // #000000
@@ -114,7 +114,7 @@ const MyData = (props) => {
             }
         }
         
-        const bounds = latLngBounds([minLat,minLong],[maxLat,maxLong]);
+        const bounds = new LatLngBounds([minLat,minLong],[maxLat,maxLong]);
 
         console.log("[minLat,minLong],[maxLat,maxLong]",[minLat,minLong],[maxLat,maxLong],bounds);
 
@@ -212,10 +212,10 @@ const MyData = (props) => {
             {getBounds ?(
             <MapContainer className="leafmap"
                 // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
-                center={getCenter} 
-                zoom={3} 
+                // center={getCenter} 
+                // zoom={3} 
                 scrollWheelZoom={false}
-                // bounds={getBounds}
+                bounds={getBounds}
             >
                 {showData()}
                 
