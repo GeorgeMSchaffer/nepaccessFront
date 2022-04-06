@@ -2,8 +2,11 @@ import React from 'react';
 
 import './User/login.css';
 import Globals from './globals.js';
+
 import DownloadFile from './DownloadFile.js';
 import DownloadFiles from './DownloadFiles';
+
+import 'react-tippy/dist/tippy.css';
 import {Tooltip} from 'react-tippy';
 
 // TODO: Filtering results etc. rerenders and loses track of downloads
@@ -56,8 +59,7 @@ export default class SearchProcessResult extends React.Component {
                 <span className="table-row">
                     <span className="cardHeader">
                         Title:
-                        <Tooltip trigger="mouseenter"
-                            title="Opens a new tab with more details">
+                        <Tooltip open={true} trigger="mouseenter" title="Opens a new tab with more details">
                             <a className="link" target="_blank" rel="noopener noreferrer" 
                                     href={_href}>
                                             {this.props.cell._cell.row.data.title} 
