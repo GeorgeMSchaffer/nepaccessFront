@@ -334,7 +334,11 @@ const MyData = (props) => {
 
     const doFitBounds = () => {
         if(shouldFit && map && getBounds) {
-            map.fitBounds(getBounds);
+            try {
+                map.fitBounds(getBounds);
+            } catch(e) {
+                console.error(e);
+            }
         }
     }
 
