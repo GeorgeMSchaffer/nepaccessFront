@@ -57,7 +57,7 @@ export default class SearchProcessResult extends React.Component {
                     <span className="cardHeader">
                         Title:
                         <Tooltip trigger="mouseenter"
-                            html="Opens a new tab with more details">
+                            title="Opens a new tab with more details">
                             <a className="link" target="_blank" rel="noopener noreferrer" 
                                     href={_href}>
                                             {this.props.cell._cell.row.data.title} 
