@@ -12,12 +12,10 @@ import './survey.css';
 
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tippy/dist/tippy.css';
-import {Tooltip,} from 'react-tippy';
+import {Tooltip} from 'react-tippy';
 
 import Globals from './globals.js';
 import persist from './persist.js';
-
-import BasicModal from './BasicModal.js';
 
 import { withRouter } from "react-router";
 
@@ -643,15 +641,9 @@ class Search extends React.Component {
                                 {/* <span id="tooltip3Mark" className="cursor-default no-select">?</span> */}
                             </Tooltip>
                             <Tooltip
-                                trigger="click" // default mouseenter focus, had mouseenter but it got in the way of "Available files"
-                                // className="cursor-default"
+                                trigger="click"
                                 position="bottom"
-                                // arrow="true"
                                 size="small"
-                                // open={this.state.tooltipOpen}
-                                // onShow={this.tooltipTrigger}
-                                // interactive={true} // allow clicking of tooltip without hiding it
-                                // hideOnClick="toggle" // only close when tooltip link is clicked
                                 interactive={true} // prevents clickthrough
                                 hideOnClick={true}
                                 html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
@@ -662,9 +654,7 @@ class Search extends React.Component {
                                     </div>
                                 </div>}
                             >
-                                {<span 
-                                        onClick={this.tooltip2Trigger} 
-                                        className={this.state.tooltipClass + " side-link"}>
+                                {<span className={this.state.tooltipClass + " side-link"}>
                                     Available Files
                                 </span>}
                             </Tooltip>
