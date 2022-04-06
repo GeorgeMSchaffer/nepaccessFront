@@ -8,6 +8,7 @@ import GeojsonMap from '../GeojsonMap.js';
 import Chart from './Chart.js';
 
 import Globals from '../globals.js';
+import DownloadFiles from '../DownloadFiles.js';
 
 // TODO: Get all data for all records for process (needs new backend route)
 // buildProcess() gets all metadata for process ID.  Move that to the ?id= param and give it the process ID from the results
@@ -122,7 +123,7 @@ export default class ProcessDetailsTab extends React.Component {
 
     
     renderDownload = (_id,_size,_filename,_results, _downloadType) => {
-        return (<DownloadFile key={_id} downloadType={_downloadType}
+        return (<DownloadFiles key={_id} downloadType={_downloadType}
                         recordId={_id}
                         id={_id}
                         size={_size}

@@ -3,6 +3,7 @@ import React from 'react';
 import './User/login.css';
 import Globals from './globals.js';
 import DownloadFile from './DownloadFile.js';
+import DownloadFiles from './DownloadFiles';
 
 // TODO: Filtering results etc. rerenders and loses track of downloads
 
@@ -324,7 +325,7 @@ export default class SearchProcessResult extends React.Component {
     }
 
     renderDownload = (_id,_size,_filename,_results, _downloadType) => {
-        return (<DownloadFile key={_id} downloadType={_downloadType}
+        return (<DownloadFiles key={_id} downloadType={_downloadType}
                         recordId={_id}
                         id={_id}
                         size={_size}

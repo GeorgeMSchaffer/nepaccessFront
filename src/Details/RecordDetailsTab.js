@@ -17,6 +17,8 @@ import './match.css';
 import '../leaflet.css';
 
 import Globals from '../globals.js';
+import DownloadFiles from '../DownloadFiles.js';
+import DownloadComments from '../DownloadComments.js';
 
 const _ = require('lodash');
 // 1. User clicks Record
@@ -441,7 +443,7 @@ export default class RecordDetailsTab extends React.Component {
                         return (<div key={i}>
                             <p className='modal-line'>
                                 <span className='modal-title bold'>All files</span> 
-                                <DownloadFile 
+                                <DownloadFiles 
                                     downloadType="Folder" 
                                     id={cellData["id"]}
                                     innerText={cellData[key]}
@@ -465,7 +467,7 @@ export default class RecordDetailsTab extends React.Component {
                             return <div key={i}>
                                 <span className='modal-line'>
                                     <span className='modal-title bold'>All files</span> 
-                                    <DownloadFile 
+                                    <DownloadFiles 
                                         size={Math.ceil(cellData.size / 1024 / 10.24)/100} 
                                         downloadType="EIS" 
                                         filename={cellData[key]}
@@ -485,7 +487,7 @@ export default class RecordDetailsTab extends React.Component {
                         return (
                             <p key={i} className='modal-line'>
                                 <span className='modal-title bold'>EPA comments</span> 
-                                <DownloadFile downloadType="Comments" filename={cellData[key]}
+                                <DownloadComments downloadType="Comments" filename={cellData[key]}
                                     id={cellData["id"]} />
                                 {/* &nbsp;{cellData[key]} */}
                             </p>
@@ -503,7 +505,7 @@ export default class RecordDetailsTab extends React.Component {
                     <p className='warning'>Sorry, we're still working on collecting these files.</p>
                     <p className='modal-line'>
                         <span className='modal-title bold'>EPA comments</span> 
-                        <DownloadFile downloadType="Comments" filename={cellData['commentsFilename']} 
+                        <DownloadComments downloadType="Comments" filename={cellData['commentsFilename']} 
                                     id={cellData["id"]} />
                     </p></>
             } else {

@@ -5,14 +5,14 @@ import Globals from './globals.js';
 
 import LoginModal from './User/LoginModal.js';
 
-export default class DownloadFile extends React.Component {
+export default class DownloadFiles extends React.Component {
 
 	// Receives needed props from React-Tabular instance in SearchResults.js
 	constructor(props) {
 		super(props);
 		this.state = { // Each and every download link via <DownloadFile /> has its own state
 			progressValue: null,
-			downloadText: 'Download single file',
+			downloadText: 'Download full EIS:',
 			downloadClass: 'document-download',
 			downloadClass2: ''
 		};

@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './User/login.css';
 import Globals from './globals.js';
-import DownloadFile from './DownloadFile.js';
+import DownloadFiles from './DownloadFile.js';
 import CardDetailsLink from './CardDetailsLink.js';
 
 class SearchResult extends React.Component {
@@ -212,7 +212,7 @@ class SearchResult extends React.Component {
                             return (
                                 <span className="fragment-container" key={ index }>
                                     <span className="cardHeader bold filename-inner">
-                                        <DownloadFile key={combo[0]} downloadType="nepafile" 
+                                        <DownloadFiles key={combo[0]} downloadType="nepafile" 
                                             id={_id}
                                             filename={combo[0]}
                                             results={true} />
