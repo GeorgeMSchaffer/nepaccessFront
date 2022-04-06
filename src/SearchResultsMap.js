@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { MapContainer, TileLayer, GeoJSON, Popup, Tooltip, useMap, ZoomControl } from "react-leaflet";
+import { LatLngBounds } from "leaflet";
 
 import Globals from './globals.js';
 
@@ -70,6 +71,9 @@ const MyData = (props) => {
     const [showStates, setShowStates] = React.useState(true);
     const [showCounties, setShowCounties] = React.useState(true);
     const [highlighted, setHighlighted] = React.useState({});
+    const [map, setMap] = React.useState(null)
+    const [getBounds, setBounds] = React.useState();
+    const [shouldFit, setShouldFit] = React.useState(false);
 
     const hide = () => {
         // setHidden(!isHidden);
@@ -88,7 +92,7 @@ const MyData = (props) => {
     // TODO: Not sure how yet, but the parent search filter also has to inform the map what to select or deselect.
     const onPolyClick = (feature,layer) => {
         // console.log(feature);
-        // console.log(feature.properties);
+        console.log(feature.properties);
         // console.log(layer);
 
         let activate = true; // filter for this state or county
@@ -157,21 +161,48 @@ const MyData = (props) => {
 
         // assign each geodata's count
         // console.time("t2");
+        let validItemCount = 0;
+        let leafBounds = new LatLngBounds();
         let i = 0;
         geos.forEach(geoItem => { 
             i++;
+            
             if(geoItem.properties.STATENS) { // state
                 geoItem.count = hashmap[geoItem.properties.STUSPS];
+
+                if(geoItem.count) {
+                    validItemCount++;
+                    getMaxBound(geoItem, leafBounds);
+                }
+
             } else if(geoItem.properties.COUNTYNS) { // county
                 const stateAbbrev = geoStatePair[parseInt(geoItem.properties.STATEFP)];
                 const keynameForHashmap = stateAbbrev + ": " + geoItem.properties.NAME;
                 geoItem.count = hashmap[keynameForHashmap];
+
+                if(geoItem.count) {
+                    validItemCount++;
+                    getMaxBound(geoItem, leafBounds);
+                }
+
+                // if(keynameForHashmap === "MI: St. Joseph") {
+                //     console.log("Key example, count: ", keynameForHashmap, hashmap[keynameForHashmap]);
+                // }
             } else {
                 // for now do nothing with non state/county items
             }
             if(i >= geos.length) {
-                // console.log("Load complete");
+
+                let _shouldFit = false;
+                if(validItemCount < 25) { // define some amount of polygons as "not too big" to bother fitting
+                    _shouldFit = true;
+                    // console.log("Fit", validItemCount)
+                }
+
+                setShouldFit(_shouldFit);
+                setBounds(leafBounds);
                 setLoading(false);
+                // console.log("Load complete");
             }
         });
         // console.timeEnd("t2");
@@ -207,10 +238,10 @@ const MyData = (props) => {
                     jsonName += `; ${jsonData.count} ${(jsonData.count === 1) ? "Result" : "Results"}`
                 }
                 
-                // if(highlighted[jsonData.properties.GEOID]) {
-                //     jsonData.style.color = "red";
-                //     jsonData.style.fillColor = "red";
-                // }
+                if(highlighted[jsonData.properties.GEOID]) {
+                    jsonData.style.color = "red";
+                    jsonData.style.fillColor = "red";
+                }
 
                 if( jsonData.count 
                     && 
@@ -243,12 +274,80 @@ const MyData = (props) => {
         }
     }
 
+    /** Extends leafBounds (alters in-place) by all coordinates in json */
+    const getMaxBound = (json, leafBounds) => {
+        for(let j = 0; j < json.geometry.coordinates.length; j++) {
+            for(let k = 0; k < json.geometry.coordinates[j].length; k++) {
+                if(Array.isArray(json.geometry.coordinates[j][k][0])) { 
+                    for(let ii = 0; ii < json.geometry.coordinates[j][k].length; ii++) {
+                        let thisLong = json.geometry.coordinates[j][k][ii][0];
+                        let thisLat = json.geometry.coordinates[j][k][ii][1];
+
+                        leafBounds.extend([thisLat,thisLong]);
+                    }
+                } else {
+                    let thisLong = json.geometry.coordinates[j][k][0];
+                    let thisLat = json.geometry.coordinates[j][k][1];
+                    
+                    leafBounds.extend([thisLat,thisLong]);
+                }
+            }
+        }
+    }
+
+    // const getMaxBounds = (data) => {
+    //     let leafBounds = new LatLngBounds();
+    //     let runLength = data.length;
+
+    //     for(let i = 0; i < data.length; i++) {
+    //         let json = data[i];
+    //         runLength += json.geometry.coordinates.length;
+
+    //         for(let j = 0; j < json.geometry.coordinates.length; j++) {
+    //             runLength += json.geometry.coordinates[j].length;
+    //             for(let k = 0; k < json.geometry.coordinates[j].length; k++) {
+    //                 if(Array.isArray(json.geometry.coordinates[j][k][0])) { 
+    //                     runLength += json.geometry.coordinates[j][k].length;
+    //                     for(let ii = 0; ii < json.geometry.coordinates[j][k].length; ii++) {
+    //                         let thisLong = json.geometry.coordinates[j][k][ii][0];
+    //                         let thisLat = json.geometry.coordinates[j][k][ii][1];
+
+    //                         leafBounds.extend([thisLat,thisLong]);
+    //                     }
+    //                 } else {
+    //                     let thisLong = json.geometry.coordinates[j][k][0];
+    //                     let thisLat = json.geometry.coordinates[j][k][1];
+                        
+    //                     leafBounds.extend([thisLat,thisLong]);
+    //                 }
+    //             }
+    //         }
+
+    //         if(i === (data.length - 1)) {
+    //             console.log("run size", runLength);
+    //             setLoading(false);
+    //         }
+    //     }
+
+    //     return leafBounds;
+    // }
+
+    const doFitBounds = () => {
+        if(shouldFit && map && getBounds) {
+            map.fitBounds(getBounds);
+        }
+    }
 
     // useEffect to fetch data on mount
     useEffect(() => {
+        // console.log("Render");
         mounted.current = true;
 
         if(props && props.docList && props.docList.length > 0) {
+
+            // let bounds = getMaxBounds(props.docList);
+            // setBounds(bounds);
+
             setAndFilterData();
 
             // total state/county geodata is only ~3MB
@@ -261,6 +360,7 @@ const MyData = (props) => {
         }
 
         return () => { // unmount or rerender
+            // console.log("Rerender/unmount");
             mounted.current = false;
         };
     }, [props]);
@@ -283,8 +383,7 @@ const MyData = (props) => {
             <div>
                 {geoLoading ?(
                     <div>Loading map polygons...</div>
-                ) : ( <></> )}
-                <div className="map-layers-toggle">
+                ) : ( <><div className="map-layers-toggle">
                     <div className="checkbox-container">
                         <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
                                 // tabIndex="1"
@@ -309,7 +408,11 @@ const MyData = (props) => {
                     </Helmet>
                     <MapContainer className="leafmap"
                         center={[39.82, -98.58]} 
-                        zoom={3} scrollWheelZoom={false}
+                        zoom={3} 
+                        scrollWheelZoom={false}
+                        // bounds={getBounds}
+                        whenCreated={setMap}
+                        onLoad={doFitBounds()}
                     >
                         {showData()}
                         
@@ -320,7 +423,9 @@ const MyData = (props) => {
                         <ZoomControl position="topright" />
                     </MapContainer>
                 </div>
+                </>)}
             </div>
+            
         ) : (
             <></>
         )}
