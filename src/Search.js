@@ -519,7 +519,7 @@ class Search extends React.Component {
             {value: 50, label: '50 words'},
             {value: 100, label: '100 words'},
             {value: 500, label: '500 words'},
-            {value: -1, label: 'any (default)'}
+            {value: -1, label: 'any distance (default)'}
         ];
 
         // const fragmentOptions = [
