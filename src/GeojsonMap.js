@@ -28,6 +28,8 @@ import { LatLngBounds } from "leaflet";
 // #ffdf4d
 
 let _id = -1;
+let _data;
+let _bounds;
 
 const GeojsonMap = (props) => {
     const mounted = useRef(false);
@@ -125,65 +127,75 @@ const GeojsonMap = (props) => {
         let sortedData = [];
 
         const getDataProcessOrDoc = async (id, urlAppend) => {
-            setData(null);
-            setLoading(true);
-            let url = Globals.currentHost + urlAppend;
+            
+            if(_id !== id) { // simple logic to only hit backend if data changed
+                _id = id;
 
-            const response = await axios.get(url, { params: { id: id } });
+                setData(null);
+                setLoading(true);
+                let url = Globals.currentHost + urlAppend;
 
-            // console.log(response);
+                const response = await axios.get(url, { params: { id: id } });
 
-            if(response.data && response.data[0]) {
-                const bounds = getMaxBounds(response.data);
-                setBounds(bounds);
+                // console.log(response);
+
+                if(response.data && response.data[0]) {
+                    const bounds = getMaxBounds(response.data);
+                    setBounds(bounds);
+                    _bounds = bounds;
+                    try {
+                        setCenter(bounds.getCenter());
+                    } catch(e) {
+                        console.error(e);
+                    }
+                    
+                    for(let i = 0; i < response.data.length; i++) {
+                        let json = JSON.parse(response.data[i]);
+                        json.style = {};
+                        json.sortPriority = 0;
+
+                        // Add specific color to states and counties
+                        // Internal polygons (counties, other) must be added LAST in order to show up, 
+                        // otherwise the overlapping labels don't work. We'll use a new property, sortPriority.
+                        if(json.properties.COUNTYFP) {
+                            json.style.color = "#3388ff"; // county: default (blue)
+                            json.style.fillColor = "#3388ff";
+                            json.sortPriority = 5;
+                        } else if(json.properties.STATENS) {
+                            json.style.color = "#000"; // state: black
+                            json.style.fillColor = "#000";
+                            json.sortPriority = 4;
+                        } else {
+                            json.style.color = "#D54E21"; // other: orange, colorblind friendly and contrasts well
+                            json.style.fillColor = "#D54E21";
+                            json.sortPriority = 6;
+                        }
+
+                        response.data[i] = json;
+                    }
+
+                    // Sort by our sort priority such that the largest .sortPriority numbers are at the top (counties, other regions)
+                    sortedData = response.data.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
+
+                    setData(sortedData);
+                    _data = sortedData;
+                }
+            } else { // we should have the data sitting around already (rerender, or maybe user hit "back" on browser)
                 try {
-                    setCenter(bounds.getCenter());
+                    setBounds(_bounds);
+                    setData(_data);
+                    setCenter(_bounds.getCenter());
                 } catch(e) {
                     console.error(e);
                 }
-                
-                for(let i = 0; i < response.data.length; i++) {
-                    let json = JSON.parse(response.data[i]);
-                    json.style = {};
-                    json.sortPriority = 0;
-
-                    // Add specific color to states and counties
-                    // Internal polygons (counties, other) must be added LAST in order to show up, 
-                    // otherwise the overlapping labels don't work. We'll use a new property, sortPriority.
-                    if(json.properties.COUNTYFP) {
-                        json.style.color = "#3388ff"; // county: default (blue)
-                        json.style.fillColor = "#3388ff";
-                        json.sortPriority = 5;
-                    } else if(json.properties.STATENS) {
-                        json.style.color = "#000"; // state: black
-                        json.style.fillColor = "#000";
-                        json.sortPriority = 4;
-                    } else {
-                        json.style.color = "#D54E21"; // other: orange, colorblind friendly and contrasts well
-                        json.style.fillColor = "#D54E21";
-                        json.sortPriority = 6;
-                    }
-
-                    response.data[i] = json;
-                }
-
-                // Sort by our sort priority such that the largest .sortPriority numbers are at the top (counties, other regions)
-                sortedData = response.data.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
-
-                setData(sortedData);
             }
+            
         };
 
         if(props && props.processId) {
-            if(_id !== props.processId) { // simple logic to only rerender when the data has changed
-                _id = props.processId;
-                getDataProcessOrDoc(props.processId, "geojson/get_all_geojson_for_process");
-            }
+            getDataProcessOrDoc(props.processId, "geojson/get_all_geojson_for_process");
         } else if(props && props.docId) {
-            if(_id !== props.docId) { // simple logic to only rerender when the data has changed
-                _id = props.docId;
-                getDataProcessOrDoc(props.docId, "geojson/get_all_geojson_for_eisdoc");
-            }
+            getDataProcessOrDoc(props.docId, "geojson/get_all_geojson_for_eisdoc");
         } else {
             // console.log("Nothing here?",props);
         }
