@@ -82,53 +82,40 @@ const GeojsonMap = (props) => {
     // this would be a lot of calculation, so it makes sense for an individual details page.
     /** Returns [[minLat,minLong],[maxLat,maxLong]] */
     const getMaxBounds = (data) => {
-        let maxLong = null;
-        let maxLat = null;
-        let minLong = null;
-        let minLat = null;
-        // let runLength = data.length;
+        let leafBounds = new LatLngBounds();
 
         for(let i = 0; i < data.length; i++) {
             let json = JSON.parse(data[i]);
 
-            if(i === 0) { // init
-                maxLong = json.geometry.coordinates[0][0][0];
-                minLong = json.geometry.coordinates[0][0][0];
-                maxLat = json.geometry.coordinates[0][0][1];
-                minLat = json.geometry.coordinates[0][0][1];
-            }
-
-            // runLength += json.geometry.coordinates.length;
-
             for(let j = 0; j < json.geometry.coordinates.length; j++) {
-                // runLength += json.geometry.coordinates[j].length;
                 for(let k = 0; k < json.geometry.coordinates[j].length; k++) {
-                    let thisLong = json.geometry.coordinates[j][k][0];
-                    let thisLat = json.geometry.coordinates[j][k][1];
+                    if(Array.isArray(json.geometry.coordinates[j][k][0])) { 
+                        for(let ii = 0; ii < json.geometry.coordinates[j][k].length; ii++) {
+                            let thisLong = json.geometry.coordinates[j][k][ii][0];
+                            let thisLat = json.geometry.coordinates[j][k][ii][1];
 
-                    maxLong = (maxLong < thisLong) ? thisLong : maxLong;
-                    minLong = (minLong > thisLong) ? thisLong : minLong;
-                    
-                    maxLat = (maxLat < thisLat) ? thisLat : maxLat;
-                    minLat = (minLat > thisLat) ? thisLat : minLat;
+                            leafBounds.extend([thisLat,thisLong]);
+                        }
+                    } else {
+                        let thisLong = json.geometry.coordinates[j][k][0];
+                        let thisLat = json.geometry.coordinates[j][k][1];
+                        
+                        leafBounds.extend([thisLat,thisLong]);
+                    }
                 }
             }
+
+            if(i === (data.length - 1)) {
+                setLoading(false);
+            }
         }
-        
-        const bounds = new LatLngBounds([minLat,minLong],[maxLat,maxLong]);
 
-        console.log("[minLat,minLong],[maxLat,maxLong]",[minLat,minLong],[maxLat,maxLong],bounds);
-
-        // console.log("n",runLength);
-
-        return bounds;
+        return leafBounds;
     }
 
     const doFitBounds = () => {
         if(map && getBounds) {
-            // can't fathom what the problem is with this for the remote server only
-            // map.fitBounds(getBounds);
-            console.log(map,getBounds);
+            map.fitBounds(getBounds);
         }
     }
 
@@ -144,22 +131,25 @@ const GeojsonMap = (props) => {
 
             const response = await axios.get(url, { params: { id: id } });
 
-            console.log(response);
+            // console.log(response);
 
-            // Add specific color to states and counties
-
-            // Internal polygons (counties, other) must be added LAST in order to show up, 
-            // otherwise the overlapping labels don't work. We'll use a new property, sortPriority.
             if(response.data && response.data[0]) {
                 const bounds = getMaxBounds(response.data);
                 setBounds(bounds);
-                setCenter(bounds.getCenter());
+                try {
+                    setCenter(bounds.getCenter());
+                } catch(e) {
+                    console.error(e);
+                }
                 
                 for(let i = 0; i < response.data.length; i++) {
                     let json = JSON.parse(response.data[i]);
                     json.style = {};
                     json.sortPriority = 0;
 
+                    // Add specific color to states and counties
+                    // Internal polygons (counties, other) must be added LAST in order to show up, 
+                    // otherwise the overlapping labels don't work. We'll use a new property, sortPriority.
                     if(json.properties.COUNTYFP) {
                         json.style.color = "#3388ff"; // county: default (blue)
                         json.style.fillColor = "#3388ff";
@@ -182,8 +172,6 @@ const GeojsonMap = (props) => {
 
                 setData(sortedData);
             }
-
-            setLoading(false);
         };
 
         if(props && props.processId) {
@@ -219,7 +207,7 @@ const GeojsonMap = (props) => {
             </Helmet>
             
             <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
-            {getBounds ?(
+            {getBounds && !isLoading ?(
             <MapContainer className="leafmap"
                 // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
                 center={getCenter} 
