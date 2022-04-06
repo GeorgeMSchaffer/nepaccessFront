@@ -172,7 +172,7 @@ const MyData = (props) => {
 
                 if(geoItem.count) {
                     validItemCount++;
-                    getMaxBound(geoItem, leafBounds);
+                    leafBounds = getMaxBound(geoItem, leafBounds);
                 }
 
             } else if(geoItem.properties.COUNTYNS) { // county
@@ -182,7 +182,7 @@ const MyData = (props) => {
 
                 if(geoItem.count) {
                     validItemCount++;
-                    getMaxBound(geoItem, leafBounds);
+                    leafBounds = getMaxBound(geoItem, leafBounds);
                 }
 
                 // if(keynameForHashmap === "MI: St. Joseph") {
@@ -274,8 +274,9 @@ const MyData = (props) => {
         }
     }
 
-    /** Extends leafBounds (alters in-place) by all coordinates in json */
+    /** Extends leafBounds by all coordinates in json */
     const getMaxBound = (json, leafBounds) => {
+        let _bounds = leafBounds;
         for(let j = 0; j < json.geometry.coordinates.length; j++) {
             for(let k = 0; k < json.geometry.coordinates[j].length; k++) {
                 if(Array.isArray(json.geometry.coordinates[j][k][0])) { 
@@ -283,16 +284,18 @@ const MyData = (props) => {
                         let thisLong = json.geometry.coordinates[j][k][ii][0];
                         let thisLat = json.geometry.coordinates[j][k][ii][1];
 
-                        leafBounds.extend([thisLat,thisLong]);
+                        _bounds.extend([thisLat,thisLong]);
                     }
                 } else {
                     let thisLong = json.geometry.coordinates[j][k][0];
                     let thisLat = json.geometry.coordinates[j][k][1];
                     
-                    leafBounds.extend([thisLat,thisLong]);
+                    _bounds.extend([thisLat,thisLong]);
                 }
             }
         }
+
+        return _bounds;
     }
 
     // const getMaxBounds = (data) => {
@@ -337,6 +340,7 @@ const MyData = (props) => {
             try {
                 map.fitBounds(getBounds);
             } catch(e) {
+                console.log(getBounds);
                 console.error(e);
             }
         }
