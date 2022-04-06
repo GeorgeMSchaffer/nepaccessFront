@@ -642,7 +642,33 @@ class Search extends React.Component {
                                 </svg> */}
                                 {/* <span id="tooltip3Mark" className="cursor-default no-select">?</span> */}
                             </Tooltip>
-                                <BasicModal id="basic-modal"
+                            <Tooltip
+                                trigger="click" // default mouseenter focus, had mouseenter but it got in the way of "Available files"
+                                // className="cursor-default"
+                                position="bottom"
+                                // arrow="true"
+                                size="small"
+                                // open={this.state.tooltipOpen}
+                                // onShow={this.tooltipTrigger}
+                                // interactive={true} // allow clicking of tooltip without hiding it
+                                // hideOnClick="toggle" // only close when tooltip link is clicked
+                                interactive={true} // prevents clickthrough
+                                hideOnClick={true}
+                                html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
+                                    from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
+                                    More files are being added continuously.
+                                    <div className="text-center margin-top">
+                                        <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
+                                    </div>
+                                </div>}
+                            >
+                                {<span 
+                                        onClick={this.tooltip2Trigger} 
+                                        className={this.state.tooltipClass + " side-link"}>
+                                    Available Files
+                                </span>}
+                            </Tooltip>
+                                {/* <BasicModal id="basic-modal"
                                     className="side-link"
                                     divClassName=""
                                     html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
@@ -653,7 +679,7 @@ class Search extends React.Component {
                                         </div>
                                     </div>}
                                 >
-                                </BasicModal>
+                                </BasicModal> */}
                             </div>
                         </div>
 
