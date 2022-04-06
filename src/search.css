@@ -399,9 +399,9 @@ input[type=checkbox] {
   
 }
 
-.tippy-tooltip [x-circle] {
+/* .tippy-tooltip [x-circle] {
   background: none;
-}
+} */
 
 .tippy-tooltip p {
   font-size: 11px;
