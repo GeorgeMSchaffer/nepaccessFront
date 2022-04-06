@@ -4,6 +4,7 @@ import './User/login.css';
 import Globals from './globals.js';
 import DownloadFile from './DownloadFile.js';
 import DownloadFiles from './DownloadFiles';
+import {Tooltip} from 'react-tippy';
 
 // TODO: Filtering results etc. rerenders and loses track of downloads
 
@@ -53,11 +54,14 @@ export default class SearchProcessResult extends React.Component {
 
             return (
                 <span className="table-row">
-                    <span className="cardHeader" title="Opens a new tab with more details">Title:
-                        <a className="link" target="_blank" rel="noopener noreferrer" 
-                                href={_href}>
-                            {this.props.cell._cell.row.data.title} 
-                        </a>
+                    <span className="cardHeader">
+                        Title:
+                        <Tooltip html="Opens a new tab with more details">
+                            <a className="link" target="_blank" rel="noopener noreferrer" 
+                                    href={_href}>
+                                            {this.props.cell._cell.row.data.title} 
+                            </a>
+                        </Tooltip>
                     </span>
                 </span>
             );
