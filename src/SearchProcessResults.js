@@ -200,6 +200,7 @@ export default class SearchProcessResults extends React.Component {
                                 showContext={this.state.showContext}
                                 onCheckboxChange={this.onCheckboxChange}
                                 download={this.props.download}
+                                exportToSpreadsheet={this.props.exportToSpreadsheet}
                             />
                              <ReactTabulator
                                 ref={ref => (this.ref = ref)}

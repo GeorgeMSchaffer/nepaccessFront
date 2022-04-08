@@ -150,14 +150,17 @@ export default class App extends React.Component {
                         json.sortPriority = 0;
 
                         if(json.properties.COUNTYFP) {
+                            json.originalColor = "#3388ff";
                             json.style.color = "#3388ff"; // county: default (blue)
                             json.style.fillColor = "#3388ff";
                             json.sortPriority = 5;
                         } else if(json.properties.STATENS) {
+                            json.originalColor = "#000";
                             json.style.color = "#000"; // state: black
                             json.style.fillColor = "#000";
                             json.sortPriority = 4;
                         } else {
+                            json.originalColor = "#D54E21";
                             json.style.color = "#D54E21";
                             json.style.fillColor = "#D54E21";
                             json.sortPriority = 6;
@@ -1154,6 +1157,40 @@ export default class App extends React.Component {
         return false;
     }
 
+    /** Flattens results to relevant fields for basic users */
+    exportToCSV = () => {
+        if(this.state.outputResults && this.state.outputResults.length > 0) {
+            const resultsForDownload = this.state.outputResults.map((process, idx) => {
+                let newResult = process.records.map((result, idx) => {
+                    let newRecord = {
+                        title: result.title,
+                        documentType: result.documentType,
+                        registerDate: result.registerDate,
+                        agency: result.agency,
+                        cooperating_agency: result.cooperatingAgency,
+                        state: result.state,
+                        county: result.county,
+                        processId: result.processId
+                    }
+                    if(!newRecord.processId) { // don't want to imply zeroes are valid
+                        newRecord.processId = '';
+                    }
+                    return newRecord;
+                });
+                return newResult;
+                
+            });
+
+            // flatten, sort, convert to TSV, download
+            this.downloadResults(Globals
+                .jsonToCSV(resultsForDownload
+                    .flat() // have to flatten from process structure
+                    .sort((a, b) => a.title.localeCompare(b.title)) // just sort by title?
+                ), 'csv'
+            );
+        }
+    }
+
     /** Flattens process-oriented data to download as record metadata */
     downloadCurrentAsTSV = () => {
         if(this.state.outputResults && this.state.outputResults.length > 0) {
@@ -1192,47 +1229,47 @@ export default class App extends React.Component {
                             return a.id - b.id;
                         }
                     )
-                )
+                ), 'tsv'
             );
         }
     }
     // Only works for records, not processes
-    downloadCurrentAsTSVOld = () => {
-        if(this.state.outputResults && this.state.outputResults.length > 0) {
-            const resultsForDownload = this.state.outputResults.map((result, idx) => {
-                // omit stuff like comments, highlights, relevance, lucene stuff
-                let newResult = {
-                    id: result.id,
-                    title: result.title,
-                    documentType: result.documentType,
-                    registerDate: result.registerDate,
-                    agency: result.agency,
-                    cooperating_agency: result.cooperatingAgency,
-                    state: result.state,
-                    // county: result.county,
-                    // subtype: result.subtype,
-                    processId: result.processId,
-                    // link: result.link,
-                    notes: result.notes,
-                    // rodDate: result.firstRodDate
-                    status: result.status,
-                    folder: result.folder
-                }
-                if(!newResult.processId) { // don't want to imply zeroes are valid
-                    newResult.processId = '';
-                }
-                return newResult;
-            });
-            this.downloadResults(Globals.jsonToTSV(resultsForDownload));
-        }
-    }
+    // downloadCurrentAsTSVOld = () => {
+    //     if(this.state.outputResults && this.state.outputResults.length > 0) {
+    //         const resultsForDownload = this.state.outputResults.map((result, idx) => {
+    //             // omit stuff like comments, highlights, relevance, lucene stuff
+    //             let newResult = {
+    //                 id: result.id,
+    //                 title: result.title,
+    //                 documentType: result.documentType,
+    //                 registerDate: result.registerDate,
+    //                 agency: result.agency,
+    //                 cooperating_agency: result.cooperatingAgency,
+    //                 state: result.state,
+    //                 // county: result.county,
+    //                 // subtype: result.subtype,
+    //                 processId: result.processId,
+    //                 // link: result.link,
+    //                 notes: result.notes,
+    //                 // rodDate: result.firstRodDate
+    //                 status: result.status,
+    //                 folder: result.folder
+    //             }
+    //             if(!newResult.processId) { // don't want to imply zeroes are valid
+    //                 newResult.processId = '';
+    //             }
+    //             return newResult;
+    //         });
+    //         this.downloadResults(Globals.jsonToTSV(resultsForDownload));
+    //     }
+    // }
 
     // best performance is to Blob it on demand
-    downloadResults = (results) => {
+    downloadResults = (results, fileExt) => {
         if(results) {
             const csvBlob = new Blob([results]);
             const today = new Date().toISOString();
-            const csvFilename = `search_results_${today}.tsv`;
+            const csvFilename = `search_results_${today}.${fileExt}`;
 
     
             if (window.navigator.msSaveOrOpenBlob) {  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
@@ -1296,6 +1333,7 @@ export default class App extends React.Component {
                         scrollToTop={this.scrollToTop}
                         shouldUpdate={this.state.shouldUpdate}
                         download={this.downloadCurrentAsTSV}
+                        exportToSpreadsheet={this.exportToCSV}
                         isMapHidden={this.state.isMapHidden}
                         toggleMapHide={this.toggleMapHide}
                     />

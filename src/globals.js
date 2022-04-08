@@ -13184,6 +13184,24 @@ const Globals = {
         return tsv;
     },
 
+    /** Returns incoming json data as comma-separated values to prep .csv download, with double quotes to help out
+     * since strings may contain commas. May get confused if incoming data has double quotes and/or commas 
+     * in bad places */
+    jsonToCSV: (data) => {
+        const items = data;
+        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        const header = Object.keys(items[0])
+        const csv = [
+            header.join(','), // header row first
+            // JSON.stringify results in 1. double quotes around all fields and 2. some weird unnecessary escaping
+            // (this isn't inherently a problem, but easily confuses Excel)
+            ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+            // ...items.map(row => header.map(fieldName => (row[fieldName])).join('\t'))
+        ].join('\r\n')
+        
+        return csv;
+    },
+
     isFinalType: (type) => {
         let result = false;
         if(type && finalTypeLabelsLower.indexOf(type.toLowerCase()) >= 0) {

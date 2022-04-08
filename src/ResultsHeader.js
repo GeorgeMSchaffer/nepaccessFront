@@ -51,6 +51,10 @@ export default class ResultsHeader extends React.Component {
             return <label className="results-download" onClick={this.props.download}>
                 Export results to spreadsheet
             </label>;
+        } else if(localStorage.role) { // logged in?
+            return <label className="results-download" onClick={this.props.exportToSpreadsheet}>
+                Export results to spreadsheet
+            </label>;
         }
     }
 
