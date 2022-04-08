@@ -390,7 +390,8 @@ const MyData = (props) => {
             <div>
                 {geoLoading ?(
                     <div>Loading map polygons...</div>
-                ) : ( <><div className="map-layers-toggle">
+                ) : ( <></>)}
+                <div className="map-layers-toggle">
                     <div className="checkbox-container">
                         <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
                                 // tabIndex="1"
@@ -430,7 +431,6 @@ const MyData = (props) => {
                         <ZoomControl position="topright" />
                     </MapContainer>
                 </div>
-                </>)}
             </div>
             
         ) : (
