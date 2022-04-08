@@ -164,7 +164,7 @@ span.filename>* {
 }
 #process-results .tabulator-row>.tabulator-cell,
 #process-results .tabulator[tabulator-layout=fitColumns] .tabulator-row .tabulator-cell:last-of-type {
-    border: 2px solid #b7b7b7;
+    border: 2px solid #909090;
 }
 
 #process-results .tabulator-header {
