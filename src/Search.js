@@ -98,13 +98,11 @@ class Search extends React.Component {
 
     doSearchFromParams = () => {
         var queryString = Globals.getParameterByName("q");
-        if(queryString === null) {
-            // No query param: Do nothing
-        } else if(queryString === '') {
-            // Blank query param: Launch no-term search
+        if( !this.props.count && (queryString === null || queryString === '') ) {
+            // No query param/blank terms: Launch no-term search - Only if we have no results saved here already
+            console.log("Launching blank search", this.props.count);
             this.doSearch("");
-        }
-        else if(queryString){
+        } else if(queryString){
             // Query terms: Handle proximity dropdown logic, launch search
             let proximityValues = this.handleProximityValues(queryString);
 

@@ -1310,7 +1310,7 @@ export default class App extends React.Component {
                         searching={this.state.searching} 
                         useOptions={this.state.useSearchOptions}
                         optionsChanged={this.optionsChanged}
-                        count={this.state.count}
+                        count={this.state.searchResults.length}
                         networkError={this.state.networkError}
                         parseError={this.state.parseError}
                         finalCount={this._finalCount}
