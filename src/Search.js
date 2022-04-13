@@ -44,6 +44,9 @@ class Search extends React.Component {
             agency: [],
             cooperatingAgency: [],
             state: [],
+            stateRaw: [],
+            county: [],
+            countyRaw: [],
             typeAll: true,
             typeFinal: false,
             typeDraft: false,
@@ -219,6 +222,45 @@ class Search extends React.Component {
     onChangeHandler = (evt) => {
         // do nothing
     }
+    
+    geoFilter = (geodata) => { 
+        // console.log(geodata.name, geodata.abbrev);
+        if(geodata.geoType === Globals.geoType.STATE) {
+            
+            // Assuming Search and SearchResultsMap talk to each other, we'll want two-way interaction.
+            // So if it's sending us a state, we may want to enable or disable it.
+            const indexIfExists = this.state.state.indexOf(geodata.abbrev);
+            let _stateRaw = this.state.stateRaw;
+            try { 
+                if(indexIfExists === -1) { // Enable
+                    _stateRaw.push({value: geodata.abbrev, label: geodata.name});
+                } else { // Disable
+                    _stateRaw.splice(indexIfExists, 1);
+                }
+            } catch(e) {
+                console.error(e);
+            } finally {
+                this.onLocationChange(_stateRaw);
+            }
+
+        } else if (geodata.geoType === Globals.geoType.COUNTY) {
+            const indexIfExists = this.state.county.indexOf(geodata.abbrev);
+            let _countyRaw = this.state.countyRaw;
+            try { 
+                if(indexIfExists === -1) { // Enable
+                    _countyRaw.push({value: geodata.abbrev, label: geodata.abbrev});
+                } else { // Disable
+                    _countyRaw.splice(indexIfExists, 1);
+                }
+            } catch(e) {
+                console.error(e);
+            } finally {
+                this.onCountyChange(_countyRaw);
+            }
+        } else {
+            // do nothing: filter has no supported functionality for "other" polygons
+        }
+    }
 
     onFragmentSizeChange = (evt) => {
         console.log("Val",evt.value);
@@ -262,10 +304,12 @@ class Search extends React.Component {
 		});
     }
 	onLocationChange = (evt) => {
+        // console.log("Location change",evt);
 		var stateValues = [];
 		for(var i = 0; i < evt.length; i++){
 			stateValues.push(evt[i].value);
 		}
+        // Globals.emitEvent("geoChange",{'states': stateValues, 'counties': this.state.county});
         this.setState( 
 		{ 
 			state: stateValues,
@@ -299,10 +343,12 @@ class Search extends React.Component {
         return filteredCounties;
     }
 	onCountyChange = (evt) => {
+        // console.log("County change",evt);
 		var countyValues = [];
 		for(var i = 0; i < evt.length; i++){
 			countyValues.push(evt[i].value);
 		}
+        Globals.emitEvent("geoChange", {'states': this.state.state, 'counties': countyValues});
         this.setState( 
 		{ 
 			county: countyValues,
@@ -848,7 +894,7 @@ class Search extends React.Component {
                         tabIndex="5"
                         options={stateOptions} 
                         onChange={this.onLocationChange} 
-                        value={this.state.stateRaw}
+                        value={stateOptions.filter(stateObj => this.state.state.includes(stateObj.value))}
                         placeholder="Type or select states" 
                     />
                 </div>
@@ -859,7 +905,7 @@ class Search extends React.Component {
                         tabIndex="5"
                         options={this.state.countyOptions} 
                         onChange={this.onCountyChange} 
-                        value={this.state.countyRaw}
+                        value={this.state.countyOptions.filter(countyObj => this.state.county.includes(countyObj.value))}
                         placeholder="Type or select a county" 
                     />
                 </div>
@@ -993,6 +1039,8 @@ class Search extends React.Component {
 	// After render
 	componentDidMount() {
         try {
+            Globals.registerListener('geoFilter', this.geoFilter);
+
             const rehydrate = JSON.parse(persist.getItem('appState'));
             // console.log(rehydrate.startPublish);
             // console.log(new Date(rehydrate.startPublish));

@@ -74,6 +74,7 @@ const MyData = (props) => {
     const [map, setMap] = React.useState(null)
     const [getBounds, setBounds] = React.useState();
     const [shouldFit, setShouldFit] = React.useState(false);
+    const [locations, setLocations] = React.useState([]);
 
     const hide = () => {
         // setHidden(!isHidden);
@@ -88,46 +89,47 @@ const MyData = (props) => {
         }
     }
     
-    // TODO: Have this operate parent search filter, and note that this won't work as expected with non-state/county data
-    // TODO: Not sure how yet, but the parent search filter also has to inform the map what to select or deselect.
     const onPolyClick = (feature,layer) => {
         // console.log(feature);
-        console.log(feature.properties);
+        // console.log("poly click", feature.properties);
         // console.log(layer);
-
-        let activate = true; // filter for this state or county
-        if(layer.options.color==="red") { // already selected and therefore already in filter
-            activate = false; // color will be reset; deactivate filter
-        }
 
         // When we call parent to filter we need to know if it's a state or county first
         if(feature.properties.STATENS) {
-            console.log("State; name/geoid/abbrev:", feature.properties.NAME, feature.properties.GEOID, feature.properties.STUSPS);
-            // props.filterGeoPropper("STATE",feature.properties.STUSPS + ":" + feature.properties.NAME,activate);
+
+            Globals.emitEvent('geoFilter', {
+                name: feature.properties.NAME,
+                geoType: Globals.geoType.STATE,
+                abbrev: feature.properties.STUSPS,
+                stateAbbrev: feature.properties.STUSPS
+            });
+
         } else if(feature.properties.COUNTYNS) {
+            // need parseInt() to get rid of leading zeroes from string geoid in feature.properties.STATEFP
             const stateAbbrev = geoStatePair[parseInt(feature.properties.STATEFP)]; // state abbreviation from geoid
-            console.log("County; name/state geoid/state abbrev:",
-                feature.properties.NAME,
-                feature.properties.STATEFP, 
-                // need parseInt() to get rid of leading zeroes from string geoid in feature.properties.STATEFP
-                stateAbbrev); 
             const countyNameForFilter = stateAbbrev + ": " + feature.properties.NAME;
-            // props.filterGeoPropper("COUNTY",countyNameForFilter,activate);
+
+            Globals.emitEvent('geoFilter', {
+                name: feature.properties.NAME,
+                geoType: Globals.geoType.COUNTY,
+                abbrev: countyNameForFilter,
+                stateAbbrev: stateAbbrev
+            });
             
         } // else not a county/state
 
         // Turn border red or if border already red then reset to the color saved in feature.originalColor
-        layer.setStyle({ 
-            color: (layer.options.color === "red" ? feature.originalColor : "red"),
-            fillColor: (layer.options.color === "red" ? feature.originalColor : "red") 
-        });
+        // layer.setStyle({ 
+        //     color: (layer.options.color === "red" ? feature.originalColor : "red"),
+        //     fillColor: (layer.options.color === "red" ? feature.originalColor : "red") 
+        // });
 
         // Toggle highlighting flag in component's state, by geoid, hashmap style
-        if(feature.properties.GEOID) {
-            let _highlighted = highlighted;
-            _highlighted[feature.properties.GEOID] = !_highlighted[feature.properties.GEOID];
-            setHighlighted(_highlighted);
-        }
+        // if(feature.properties.GEOID) {
+        //     let _highlighted = highlighted;
+        //     _highlighted[feature.properties.GEOID] = !_highlighted[feature.properties.GEOID];
+        //     setHighlighted(_highlighted);
+        // }
 
     }
 
@@ -237,18 +239,32 @@ const MyData = (props) => {
                 if(jsonData.count) {
                     jsonName += `; ${jsonData.count} ${(jsonData.count === 1) ? "Result" : "Results"}`
                 }
+
+                // let shouldHighlight = false;
+                // if(jsonData.properties.STATENS) {
+                //     if(locations.indexOf(jsonData.properties.STUSPS) !== -1) {
+                //         shouldHighlight = true;
+                //     } 
+                // } else if(jsonData.properties.COUNTYNS) {
+                //     const stateAbbrev = geoStatePair[parseInt(jsonData.properties.STATEFP)];
+                //     const countyNameForFilter = stateAbbrev + ": " + jsonData.properties.NAME;
+                //     if(locations.indexOf(countyNameForFilter) !== -1) {
+                //         shouldHighlight = true;
+                //     }
+                // } // else not a county/state
                 
-                if(highlighted[jsonData.properties.GEOID]) {
-                    jsonData.style.color = "red";
-                    jsonData.style.fillColor = "red";
-                }
+                // if(shouldHighlight) {
+                //     jsonData.style.color = "red";
+                //     jsonData.style.fillColor = "red";
+                // }
 
                 if( jsonData.count 
                     && 
                     ((jsonData.properties.STATENS && showStates) || (jsonData.properties.COUNTYNS && showCounties))
                 ) {
                     return (
-                        <GeoJSON key={"leaflet"+i} 
+                        <GeoJSON key = {"leaflet"+i}
+                            _leaflet_id = {"leaflet"+i}
                             data={jsonData} 
                             color={jsonData.style.color} 
                             fillColor={jsonData.style.fillColor} 
@@ -345,10 +361,18 @@ const MyData = (props) => {
         }
     }
 
+    // const geoChange = (geoItems) => {
+    //     let items = [...geoItems.states, ...geoItems.counties];
+    //     setLocations(items);
+    //     // console.log("Map",map);
+    //     // console.log("Locations",items);
+    // }
+
     // useEffect to fetch data on mount
     useEffect(() => {
         // console.log("Render");
         mounted.current = true;
+        // Globals.registerListener('geoChange', geoChange);
 
         if(props && props.docList && props.docList.length > 0) {
 

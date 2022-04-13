@@ -180,6 +180,12 @@ const Globals = {
         "Orange","Cyan","Magenta","Teal","DarkGray"
     ],
 
+    geoType: {
+        STATE : 1,
+        COUNTY: 2,
+        OTHER : 9
+    },
+
     getErrorMessage(error) {
         let message = "Sorry, the server encountered an unexpected error.";
 
