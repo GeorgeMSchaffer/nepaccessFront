@@ -13171,13 +13171,9 @@ const Globals = {
      * Undefined behavior if data has tabs in it already. */
     jsonToTSV: (data) => {
         const items = data;
-        // const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
         const header = Object.keys(items[0])
         const tsv = [
         header.join('\t'), // header row first
-        // JSON.stringify results in 1. double quotes around all fields and 2. some weird unnecessary escaping
-        // (this isn't inherently a problem, but easily confuses Excel)
-        // ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
         ...items.map(row => header.map(fieldName => (row[fieldName])).join('\t'))
         ].join('\r\n')
         
