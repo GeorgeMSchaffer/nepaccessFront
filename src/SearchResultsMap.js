@@ -252,11 +252,11 @@ const MyData = (props) => {
                             data={jsonData} 
                             color={jsonData.style.color} 
                             fillColor={jsonData.style.fillColor} 
-                            // onEachFeature={(feature, layer) => {
-                            //     layer.on({
-                            //         click: () => onPolyClick(feature,layer)
-                            //     })
-                            // }}
+                            onEachFeature={(feature, layer) => {
+                                layer.on({
+                                    click: () => onPolyClick(feature,layer)
+                                })
+                            }}
                         >
                             {/* <Popup>{jsonData.properties.NAME}</Popup> */}
                             {alaskaFlag ?(
