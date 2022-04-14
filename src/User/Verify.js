@@ -16,14 +16,14 @@ export default class Verify extends React.Component {
         };
     }
 
-    verify = () => { // check if JWT is expired/invalid
+    verify = (verifyToken) => { // check if JWT is expired/invalid
 		let verified = false;
 
         let checkURL = new URL('user/verify', Globals.currentHost);
         
         axios({
             method: 'POST', // or 'PUT'
-            headers: {Authorization: localStorage.VerifyToken},
+            headers: {Authorization: verifyToken},
             url: checkURL
         }).then(response => {
             verified = response && response.status === 200;
@@ -39,13 +39,15 @@ export default class Verify extends React.Component {
                 });
             } else {
                 this.setState({
-                    successLabel: 'Sorry, our system was unable to verify this email address.'
+                    successLabel: 'Sorry, we were unable to verify this email address.'
                 });
             }
-        }).catch(error => {
+        }).catch(error => { // invalid JWT?
+            // If the JWT is invalid (i.e. incomplete, expired or wrong) the backend will return a 403 trying to parse it
+            // and throws a com.auth0.jwt.exceptions.JWTDecodeException: the incoming string doesn't have a valid JSON format.
             console.error(error);
             this.setState({
-                successLabel: 'Sorry, we were unable to verify this email address.'
+                successLabel: 'Sorry, our system was unable to verify this email address. Please copy the entire verification link and try again.'
             });
         });
     }
@@ -73,9 +75,8 @@ export default class Verify extends React.Component {
 	componentDidMount() {
         const query = new URLSearchParams(this.props.location.search);
         if(query && query.get('token')){ // If there's a reset token provided, set JWT and check it
-            const verifyToken = ("Bearer " + query.get('token')); // .../reset?token={resetToken}
-            localStorage.VerifyToken = verifyToken;
-            this.verify();
+            const verifyToken = (`Bearer ${query.get('token')}`); // .../verify?token={resetToken}
+            this.verify(verifyToken);
         }
 	}
 }
