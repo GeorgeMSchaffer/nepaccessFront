@@ -103,7 +103,7 @@ class Search extends React.Component {
         var queryString = Globals.getParameterByName("q");
         if( !this.props.count && (queryString === null || queryString === '') ) {
             // No query param/blank terms: Launch no-term search - Only if we have no results saved here already
-            console.log("Launching blank search", this.props.count);
+            // console.log("Launching blank search", this.props.count);
             this.doSearch("");
         } else if(queryString){
             // Query terms: Handle proximity dropdown logic, launch search
@@ -304,7 +304,8 @@ class Search extends React.Component {
 		});
     }
 	onLocationChange = (evt) => {
-        // console.log("Location change",evt);
+        // console.log("Location change",evt,this.state.county,this.state.countyOptions);
+        // console.log("County val",this.state.countyOptions.filter(countyObj => this.state.county.includes(countyObj.value)));
 		var stateValues = [];
 		for(var i = 0; i < evt.length; i++){
 			stateValues.push(evt[i].value);
@@ -316,7 +317,9 @@ class Search extends React.Component {
             stateRaw: evt,
             countyOptions: this.narrowCountyOptions(stateValues)
 		}, () => { 
-			this.filterBy(this.state);
+			// this.filterBy(this.state);
+            // Purge invalid counties
+            this.onCountyChange(this.state.countyOptions.filter(countyObj => this.state.county.includes(countyObj.value)));
         });
     }
     /** Helper method for onLocationChange limits county options to selected states in filter, 
@@ -894,6 +897,7 @@ class Search extends React.Component {
                         tabIndex="5"
                         options={stateOptions} 
                         onChange={this.onLocationChange} 
+                        /** This filter logic is needed to work properly with interactive map */
                         value={stateOptions.filter(stateObj => this.state.state.includes(stateObj.value))}
                         placeholder="Type or select states" 
                     />
@@ -905,7 +909,9 @@ class Search extends React.Component {
                         tabIndex="5"
                         options={this.state.countyOptions} 
                         onChange={this.onCountyChange} 
+                        /** This filter logic is needed to work properly with interactive map */
                         value={this.state.countyOptions.filter(countyObj => this.state.county.includes(countyObj.value))}
+                        // value={this.state.countyRaw}
                         placeholder="Type or select a county" 
                     />
                 </div>
