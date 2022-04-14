@@ -94,3 +94,22 @@
 div.leaflet-control-container>div.leaflet-left {
     display: none; /* Defining our own ZoomControl, so hide the default. */
 }
+
+div.leaflet-popup.leaflet-zoom-animated {
+    animation: fade;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    -webkit-animation: fade;
+    -webkit-animation-duration: 4s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-fill-mode: both;
+}
+@keyframes fade {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@-webkit-keyframes fade {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}

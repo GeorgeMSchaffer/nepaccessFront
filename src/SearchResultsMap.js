@@ -280,6 +280,7 @@ const MyData = (props) => {
                             ) : (
                                 <Tooltip>{jsonName}</Tooltip>
                             )}
+                            <Popup>Filters updated</Popup>
                         </GeoJSON>
                     );
                 }
