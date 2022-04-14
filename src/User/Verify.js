@@ -39,7 +39,7 @@ export default class Verify extends React.Component {
                 });
             } else {
                 this.setState({
-                    successLabel: 'Sorry, we were unable to verify this email address.'
+                    successLabel: 'Sorry, our system was unable to verify this email address.'
                 });
             }
         }).catch(error => {
