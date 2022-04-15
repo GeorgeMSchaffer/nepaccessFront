@@ -264,7 +264,6 @@ const MyData = (props) => {
                 ) {
                     return (
                         <GeoJSON key = {"leaflet"+i}
-                            _leaflet_id = {"leaflet"+i}
                             data={jsonData} 
                             color={jsonData.style.color} 
                             fillColor={jsonData.style.fillColor} 
