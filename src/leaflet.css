@@ -96,7 +96,8 @@ div.leaflet-control-container>div.leaflet-left {
 }
 
 .leaflet-interactive:hover {
-    stroke: red;
+    fill: yellowgreen;
+    fill-opacity: 0.2;
 }
 
 div.leaflet-popup.leaflet-zoom-animated {
