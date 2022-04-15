@@ -231,15 +231,19 @@ const MyData = (props) => {
         if (data && data[0]) { // Render many
             return data.map( ((datum, i) => {
                 let jsonData = datum;
-                let jsonName = Globals.getParameterCaseInsensitive(jsonData.properties,"name");
+
+                const originalName = Globals.getParameterCaseInsensitive(jsonData.properties,"name");
+                let jsonName = originalName;
                 let alaskaFlag = false;
+
                 if(jsonName === "Alaska") {
                     alaskaFlag = true;
                 }
-                if(jsonData.count) {
-                    jsonName += `; ${jsonData.count} ${(jsonData.count === 1) ? "Result" : "Results"}`
-                }
 
+
+                /** Note: Can't change anything about the <GeoJSON> here after first render. If something external changes,
+                * nothing will change on the map: Changes are only done through built-in event handlers.
+                * So it's pointless to include any such logic here. */
                 // let shouldHighlight = false;
                 // if(jsonData.properties.STATENS) {
                 //     if(locations.indexOf(jsonData.properties.STUSPS) !== -1) {
@@ -258,10 +262,13 @@ const MyData = (props) => {
                 //     jsonData.style.fillColor = "red";
                 // }
 
-                if( jsonData.count 
+
+                if( jsonData.count // falsy: no results for this polygon, therefore don't render
                     && 
                     ((jsonData.properties.STATENS && showStates) || (jsonData.properties.COUNTYNS && showCounties))
                 ) {
+                    jsonName += `; ${jsonData.count} ${(jsonData.count === 1) ? "Result" : "Results"}`;
+
                     return (
                         <GeoJSON key = {"leaflet"+i}
                             data={jsonData} 
@@ -279,7 +286,7 @@ const MyData = (props) => {
                             ) : (
                                 <Tooltip>{jsonName}</Tooltip>
                             )}
-                            <Popup>Filters updated</Popup>
+                            <Popup>Filter toggled for: {originalName}</Popup>
                         </GeoJSON>
                     );
                 }
