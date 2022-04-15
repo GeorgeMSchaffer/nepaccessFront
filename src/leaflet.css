@@ -95,6 +95,10 @@ div.leaflet-control-container>div.leaflet-left {
     display: none; /* Defining our own ZoomControl, so hide the default. */
 }
 
+.leaflet-interactive:hover {
+    stroke: red;
+}
+
 div.leaflet-popup.leaflet-zoom-animated {
     animation: fade;
     animation-duration: 2s;
