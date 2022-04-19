@@ -42,7 +42,9 @@ class Search extends React.Component {
             startComment: null,
             endComment: null,
             agency: [],
+            agencyRaw: [],
             cooperatingAgency: [],
+            cooperatingAgencyRaw: [],
             state: [],
             stateRaw: [],
             county: [],
@@ -166,6 +168,40 @@ class Search extends React.Component {
             proximityOption: null, 
             inputMessage: "" 
         }); 
+    }
+
+    onClearFiltersClick = () => {
+        this.setState({
+            // titleRaw: '',
+            startPublish: null,
+            endPublish: null,
+            startComment: null,
+            endComment: null,
+            agency: [],
+            agencyRaw: [],
+            cooperatingAgency: [],
+            cooperatingAgencyRaw: [],
+            state: [],
+            stateRaw: [],
+            county: [],
+            countyRaw: [],
+            typeAll: true,
+            typeFinal: false,
+            typeDraft: false,
+            typeEA: false,
+            typeNOI: false,
+            typeROD: false,
+            typeScoping: false,
+            typeOther: false,
+            needsComments: false,
+            needsDocument: false,
+            optionsChecked: true,
+
+            countyOptions: Globals.counties
+        }, () => { 
+            this.filterBy(this.state);
+        });
+        
     }
 
     onRadioChange = (evt) => {
@@ -303,14 +339,12 @@ class Search extends React.Component {
 			this.filterBy(this.state);
 		});
     }
-	onLocationChange = (evt) => {
-        // console.log("Location change",evt,this.state.county,this.state.countyOptions);
-        // console.log("County val",this.state.countyOptions.filter(countyObj => this.state.county.includes(countyObj.value)));
-		var stateValues = [];
+	onLocationChange = (evt,item) => {
+        var stateValues = [];
 		for(var i = 0; i < evt.length; i++){
 			stateValues.push(evt[i].value);
 		}
-        // Globals.emitEvent("geoChange",{'states': stateValues, 'counties': this.state.county});
+
         this.setState( 
 		{ 
 			state: stateValues,
@@ -318,7 +352,7 @@ class Search extends React.Component {
             countyOptions: this.narrowCountyOptions(stateValues)
 		}, () => { 
 			// this.filterBy(this.state);
-            // Purge invalid counties
+            // Purge invalid counties, which will then run filterBy
             this.onCountyChange(this.state.countyOptions.filter(countyObj => this.state.county.includes(countyObj.value)));
         });
     }
@@ -345,13 +379,12 @@ class Search extends React.Component {
 
         return filteredCounties;
     }
-	onCountyChange = (evt) => {
-        // console.log("County change",evt);
+	onCountyChange = (evt, item) => {
 		var countyValues = [];
 		for(var i = 0; i < evt.length; i++){
 			countyValues.push(evt[i].value);
 		}
-        Globals.emitEvent("geoChange", {'states': this.state.state, 'counties': countyValues});
+
         this.setState( 
 		{ 
 			county: countyValues,
@@ -837,7 +870,10 @@ class Search extends React.Component {
                     })}}>
                         +
                     </span>
+                            
                 </span>
+                
+                <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear these filters</button>
             </div>
             <div className="sidebar-filters" hidden={this.state.filtersHidden}
                 // this would launch a new search on enter key, in some child inputs
@@ -849,7 +885,11 @@ class Search extends React.Component {
                     })}}>
                         -
                     </span>
+
+
                 </span>
+                
+                <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear these filters</button>
                 
                 <div className="sidebar-hr"></div>
 
