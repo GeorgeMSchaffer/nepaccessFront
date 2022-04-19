@@ -368,18 +368,10 @@ const MyData = (props) => {
         }
     }
 
-    // const geoChange = (geoItems) => {
-    //     let items = [...geoItems.states, ...geoItems.counties];
-    //     setLocations(items);
-    //     // console.log("Map",map);
-    //     // console.log("Locations",items);
-    // }
-
     // useEffect to fetch data on mount
     useEffect(() => {
         // console.log("Render");
         mounted.current = true;
-        // Globals.registerListener('geoChange', geoChange);
 
         if(props && props.docList && props.docList.length > 0) {
 

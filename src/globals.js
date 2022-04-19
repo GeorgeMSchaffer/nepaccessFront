@@ -40,10 +40,14 @@ const Globals = {
     listeners: {},
 
     registerListener(key, listenerFunction) {
-        const entries = this.listeners[key] || [];
-        this.listeners[key] = entries; // assign if first time
+        const entries = [];
+
+        // assign if first time
+        if(!this.listeners[key]) {
+            this.listeners[key] = entries; 
+            entries.push(listenerFunction);
+        }
     
-        entries.push(listenerFunction)
     },
     
     emitEvent(key, eventObject) {
