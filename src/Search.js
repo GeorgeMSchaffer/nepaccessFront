@@ -901,11 +901,11 @@ class Search extends React.Component {
                     })}}>
                         +
                     </span>
-                            
+                    <div style={{float: "left"}}>
+                        {this.renderClearFiltersButton()}
+                    </div>
                 </span>
-                
-                {this.renderClearFiltersButton()}
-                </div>
+            </div>
             <div className="sidebar-filters" hidden={this.state.filtersHidden}
                 // this would launch a new search on enter key, in some child inputs
                 // onKeyUp={this.onKeyUp}
@@ -916,8 +916,6 @@ class Search extends React.Component {
                     })}}>
                         -
                     </span>
-
-
                 </span>
                 
                 <div className="sidebar-hr"></div>
