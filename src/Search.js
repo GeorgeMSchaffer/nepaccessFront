@@ -551,7 +551,7 @@ class Search extends React.Component {
 
     renderClearFiltersButton = () => {
         return <div className="margin height-30 right">
-            <span className="link" onClick={() => this.onClearFiltersClick()}>Clear filters</span>
+            <span id="clear-filters" className="link" onClick={() => this.onClearFiltersClick()}>Clear filters</span>
         </div>;
     }
 
@@ -879,8 +879,8 @@ class Search extends React.Component {
                             
                 </span>
                 
-                <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
-            </div>
+                {this.renderClearFiltersButton()}
+                </div>
             <div className="sidebar-filters" hidden={this.state.filtersHidden}
                 // this would launch a new search on enter key, in some child inputs
                 // onKeyUp={this.onKeyUp}

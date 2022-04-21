@@ -456,3 +456,7 @@ input:hover {
 
     user-select: none;
 }
+
+#clear-filters {
+    font-size: 14px;
+}
