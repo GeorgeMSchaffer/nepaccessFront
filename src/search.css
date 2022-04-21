@@ -519,6 +519,7 @@ a.link {
 .sort-container {
     float: right;
     margin-right: 20px !important;
+    margin: auto 0;
 }
 
 .dropdown-text {
@@ -747,6 +748,10 @@ div.disabled::before {
     /* display: inline-block; */
     color: blue;
     user-select: none;
+}
+
+.export {
+    margin: auto 0;
 }
 
 

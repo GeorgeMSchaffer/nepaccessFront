@@ -48,12 +48,12 @@ export default class ResultsHeader extends React.Component {
 
     showDownloadButton = () => {
         if(Globals.curatorOrHigher()) {
-            return <label className="results-download" onClick={this.props.download}>
-                Export results to spreadsheet
+            return <label className="link export" onClick={this.props.download}>
+                Export search results
             </label>;
         } else if(localStorage.role) { // logged in?
-            return <label className="results-download" onClick={this.props.exportToSpreadsheet}>
-                Export results to spreadsheet
+            return <label className="link export" onClick={this.props.exportToSpreadsheet}>
+                Export search results
             </label>;
         }
     }

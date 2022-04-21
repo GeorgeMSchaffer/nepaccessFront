@@ -549,6 +549,12 @@ class Search extends React.Component {
         })
     }
 
+    renderClearFiltersButton = () => {
+        return <div className="margin height-30 right">
+            <span className="link" onClick={() => this.onClearFiltersClick()}>Clear filters</span>
+        </div>;
+    }
+
 
     render () {
         // const { history } = this.props;
@@ -873,7 +879,7 @@ class Search extends React.Component {
                             
                 </span>
                 
-                <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear these filters</button>
+                <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear filters</button>
             </div>
             <div className="sidebar-filters" hidden={this.state.filtersHidden}
                 // this would launch a new search on enter key, in some child inputs
@@ -889,17 +895,17 @@ class Search extends React.Component {
 
                 </span>
                 
-                <button className="link margin" onClick={() => this.onClearFiltersClick()}>Clear these filters</button>
-                
                 <div className="sidebar-hr"></div>
 
-                <div className="filter">
-                    <div className="checkbox-container">
+                <div className="filter flex-1">
+                    <div className="checkbox-container-flex">
                         <input type="checkbox" name="needsDocument" id="needsDocument" className="sidebar-checkbox"
                                 tabIndex="2"
                                 checked={this.state.needsDocument} onChange={this.onNeedsDocumentChecked} />
-                        <label className="checkbox-text no-select" htmlFor="needsDocument">Has downloadable files</label>
+                        <label className="checkbox-text no-select cursor-pointer" htmlFor="needsDocument">Has downloadable files</label>
                     </div>
+
+                    {this.renderClearFiltersButton()}
                 </div>
                 
                 <div className="sidebar-hr"></div>

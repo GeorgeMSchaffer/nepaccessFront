@@ -743,3 +743,18 @@ textarea.server-response {
 .results-count-holder {
     background-color: rgba(196, 196, 196, 1);
 }
+
+.flex-1 {
+    display: flex !important;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.height-30 {
+    line-height: 30px;
+}
+
+input[type="checkbox"] {
+    vertical-align: middle;
+}

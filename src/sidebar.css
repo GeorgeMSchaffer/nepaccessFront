@@ -112,7 +112,7 @@
     text-align: left;
 }
 
-label.checkbox-text {
+label.checkbox-text, span.checkbox-text {
     position: relative;
     font-family: Open Sans;
     font-size: 14px;
@@ -121,6 +121,7 @@ label.checkbox-text {
     line-height: 32px;
     letter-spacing: 0em;
     text-align: left;
+    vertical-align: middle;
     margin: auto;
 }
 
@@ -144,7 +145,6 @@ label.checkbox-text {
     
     width: 100%;
     min-height: 50px;
-    line-height: 50px;
 
     background: rgba(196, 196, 196, 1);
 }
@@ -340,6 +340,7 @@ label.checkbox-text {
 }
 
 .sidebar-check-label {
+    vertical-align: middle;
     font-family: "Open Sans";
     font-size: 18px;
     font-style: normal;
@@ -373,6 +374,12 @@ input:hover {
     height: 30px;
     line-height: 30px;
     margin: auto;
+    padding: 0;
+}
+.checkbox-container-flex {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
     padding: 0;
 }
 .checkbox-container>input, .checkbox-container>label {
