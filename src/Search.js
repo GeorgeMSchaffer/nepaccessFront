@@ -574,7 +574,7 @@ class Search extends React.Component {
 
     renderClearFiltersButton = () => {
         if(this.filtersActive()) {
-            return <div className="margin height-30 right">
+            return <div className={this.state.filtersHidden === false ? "margin height-30 right" : "clear-filters-hidden"}>
                 <span id="clear-filters" className="link" onClick={() => this.onClearFiltersClick()}>Clear filters</span>
             </div>;
         }
@@ -901,9 +901,7 @@ class Search extends React.Component {
                     })}}>
                         +
                     </span>
-                    <div style={{width: '100%'}}>
-                        {this.renderClearFiltersButton()}
-                    </div>
+                    {this.renderClearFiltersButton()}
                 </span>
             </div>
             <div className="sidebar-filters" hidden={this.state.filtersHidden}

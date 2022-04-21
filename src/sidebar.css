@@ -460,3 +460,7 @@ input:hover {
 #clear-filters {
     font-size: 14px;
 }
+.clear-filters-hidden {
+    display: inline-block;
+    width: 100%;
+}
