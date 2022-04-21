@@ -901,7 +901,7 @@ class Search extends React.Component {
                     })}}>
                         +
                     </span>
-                    <div style={{float: "left"}}>
+                    <div style={{width: '100%'}}>
                         {this.renderClearFiltersButton()}
                     </div>
                 </span>
