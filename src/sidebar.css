@@ -126,7 +126,8 @@ label.checkbox-text, span.checkbox-text {
 }
 
 .filter {
-    padding-top: 5px;
+    /* padding-top: 5px; */
+    margin: 5px 0px;
 }
 
 .filter>.multi {
