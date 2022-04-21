@@ -572,6 +572,14 @@ class Search extends React.Component {
         }
     }
 
+    toggleFiltersHidden = () => {
+        this.setState({
+            filtersHidden: !this.state.filtersHidden
+        }, () => {
+            this.props.filterToggle(this.state.filtersHidden);
+        });
+    }
+
     renderClearFiltersButton = () => {
         if(this.filtersActive()) {
             return <div className={this.state.filtersHidden === false ? "margin height-30 right" : "clear-filters-hidden"}>
@@ -896,9 +904,7 @@ class Search extends React.Component {
 
             <div className="sidebar-filters" hidden={!this.state.filtersHidden}>
                 <span className="sidebar-header">Narrow your results 
-                    <span className="filters-toggle" onClick={() => {this.setState({
-                            filtersHidden: false
-                    })}}>
+                    <span className="filters-toggle" onClick={() => this.toggleFiltersHidden()}>
                         +
                     </span>
                     {this.renderClearFiltersButton()}
@@ -909,9 +915,7 @@ class Search extends React.Component {
                 // onKeyUp={this.onKeyUp}
             >
                 <span className="sidebar-header">Narrow your results 
-                    <span className="filters-toggle" onClick={() => {this.setState({
-                        filtersHidden: true
-                    })}}>
+                    <span className="filters-toggle" onClick={() => this.toggleFiltersHidden()}>
                         -
                     </span>
                 </span>

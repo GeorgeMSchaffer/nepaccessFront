@@ -12,6 +12,12 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 
 import './cardProcess.css';
 
+const FULLSTYLE = {
+    width: '100%',
+    minWidth: '20%',
+    maxWidth: '100%'
+}
+
 export default class SearchProcessResults extends React.Component {
 
     _size = 0;
@@ -146,6 +152,14 @@ export default class SearchProcessResults extends React.Component {
         
     }
 
+    getCorrectResultsStyle = () => {
+        if(this.props.filtersHidden) {
+            return FULLSTYLE;
+        } else {
+            return null;
+        }
+    }
+
 	render() {
         if(!this.props.results || !(this.props.results.length > 0)) {
             /** Show nothing until loading results. props.resultsText will just be "Results" before any search.
@@ -174,7 +188,7 @@ export default class SearchProcessResults extends React.Component {
         try {
 
             return (
-                <div className="sidebar-results">
+                <div className="sidebar-results" style={this.getCorrectResultsStyle()}>
 
                     <div id="process-results">
 

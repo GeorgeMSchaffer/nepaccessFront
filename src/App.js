@@ -45,7 +45,8 @@ export default class App extends React.Component {
         shouldUpdate: false,
         loaded: false,
         down: false,
-        isMapHidden: false
+        isMapHidden: false,
+        filtersHidden: false
     }
     
     constructor(props){
@@ -1289,6 +1290,9 @@ export default class App extends React.Component {
     toggleMapHide = () => {
         this.setState({isMapHidden: !this.state.isMapHidden});
     }
+    filterToggle = (boolVal) => {
+        this.setState({ filtersHidden: boolVal });
+    }
 	
 
 	render() {
@@ -1311,6 +1315,7 @@ export default class App extends React.Component {
                         useOptions={this.state.useSearchOptions}
                         optionsChanged={this.optionsChanged}
                         count={this.state.searchResults.length}
+                        filterToggle={this.filterToggle}
                         networkError={this.state.networkError}
                         parseError={this.state.parseError}
                         finalCount={this._finalCount}
@@ -1324,6 +1329,7 @@ export default class App extends React.Component {
                         sort={this.sort}
                         results={this.state.outputResults} 
                         geoResults={this.state.geoResults}
+                        filtersHidden={this.state.filtersHidden}
                         // searcherState={this._searcherState}
                         geoLoading={this.state.geoLoading}
                         resultsText={this.state.resultsText} 
