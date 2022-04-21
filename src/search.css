@@ -759,7 +759,7 @@ div.disabled::before {
 
 
 @media screen and (max-width: 1190px) {
-    .input-bar-2>.surveyHolder, .options-container>#results-bar-checkbox, #results-bar-checkbox>.checkbox-text,
+    .input-bar-2>.surveyHolder, #results-bar-checkbox>.checkbox-text,
     div>.side-link, .options-container .results-download {
         line-height: normal;
     }
