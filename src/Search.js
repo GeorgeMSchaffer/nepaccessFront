@@ -549,10 +549,35 @@ class Search extends React.Component {
         })
     }
 
+    filtersActive = () => {
+        if( this.state.startPublish ||
+            this.state.endPublish ||
+            this.state.startComment ||
+            this.state.endComment ||
+            this.state.agency.length > 0 ||
+            this.state.cooperatingAgency.length > 0 ||
+            this.state.state.length > 0 ||
+            this.state.county.length > 0 ||
+            this.state.typeFinal ||
+            this.state.typeDraft ||
+            this.state.typeEA ||
+            this.state.typeNOI ||
+            this.state.typeROD ||
+            this.state.typeScoping ||
+            this.state.typeOther ||
+            this.state.needsComments ||
+            this.state.needsDocument)
+        {
+            return true;
+        }
+    }
+
     renderClearFiltersButton = () => {
-        return <div className="margin height-30 right">
-            <span id="clear-filters" className="link" onClick={() => this.onClearFiltersClick()}>Clear filters</span>
-        </div>;
+        if(this.filtersActive()) {
+            return <div className="margin height-30 right">
+                <span id="clear-filters" className="link" onClick={() => this.onClearFiltersClick()}>Clear filters</span>
+            </div>;
+        }
     }
 
 
@@ -1087,7 +1112,7 @@ class Search extends React.Component {
     componentWillUnmount() {
 		persist.setItem('appState', JSON.stringify(this.state));
 	}
-	  
+
 	// After render
 	componentDidMount() {
         try {
@@ -1117,6 +1142,9 @@ class Search extends React.Component {
         // Get search params on mount and run search on them (implies came from landing page)
         this.doSearchFromParams();
 	}
+
+    componentDidUpdate() {
+    }
 
 
     post = (postUrl, dataForm) => {
