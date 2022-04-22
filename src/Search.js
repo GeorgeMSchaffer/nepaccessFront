@@ -23,6 +23,13 @@ import { withRouter } from "react-router";
 
 const _ = require('lodash');
 
+const FULLSTYLE = {display: 'block',
+    margin: '0 auto',
+    width: '80%',
+    minWidth: '20%',
+    maxWidth: '100%',
+    marginBottom: '20px'
+};
 
 class Search extends React.Component {
     _lastSearchTerms = "";
@@ -688,7 +695,6 @@ class Search extends React.Component {
                 {this.props.parseError}
                 {/* <h1 className="search-header">Search for NEPA documents</h1> */}
                 <div className="search-holder" >
-
                     
                     <div className="search-bar-holder">
                         <h1 className="search-header-2">Search full texts and titles of NEPA documents</h1>
@@ -902,7 +908,8 @@ class Search extends React.Component {
                 <div className="lds-ellipsis" hidden={!this.props.searching}><div></div><div></div><div></div><div></div></div>
             </div>
 
-            <div className="sidebar-filters" hidden={!this.state.filtersHidden}>
+            <div className="sidebar-filters" hidden={!this.state.filtersHidden}
+                    style={FULLSTYLE}>
                 <span className="sidebar-header">Narrow your results 
                     <span className="filters-toggle" onClick={() => this.toggleFiltersHidden()}>
                         +
