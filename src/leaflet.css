@@ -100,21 +100,35 @@ div.leaflet-control-container>div.leaflet-left {
     fill-opacity: 0.2;
 }
 
-div.leaflet-popup.leaflet-zoom-animated {
-    animation: fade;
-    animation-duration: 2s;
+div.leaflet-popup.leaflet-zoom-animated, div.leaflet-popup.leaflet-zoom-animated * {
+    animation: _fade;
+    animation-duration: 4s;
     animation-iteration-count: 1;
-    animation-fill-mode: both;
-    -webkit-animation: fade;
+    animation-fill-mode: forwards;
+    -webkit-animation: _fade;
     -webkit-animation-duration: 4s;
     -webkit-animation-iteration-count: 1;
-    -webkit-animation-fill-mode: both;
+    -webkit-animation-fill-mode: forwards;
 }
-@keyframes fade {
+/** for some reason this was the easiest way to "remove" the element after the animation completes. It exists until
+another click somewhere on the map. Until then, it blocks click events even if it's invisible. So the key was
+setting width and/or height to 0. Transform didn't work as expected. 
+Strange effects while still visible without overflow: hidden */
+@keyframes _fade {
     0% { opacity: 1; }
-    100% { opacity: 0; }
+    99% { opacity: 0; height: initial; 
+    }
+    100% { opacity: 0; 
+        overflow: hidden;
+        height: 0;
+    }
 }
-@-webkit-keyframes fade {
+@-webkit-keyframes _fade {
     0% { opacity: 1; }
-    100% { opacity: 0; }
+    99% { opacity: 0; height: initial; 
+    }
+    100% { opacity: 0; 
+        overflow: hidden;
+        height: 0;
+    }
 }
