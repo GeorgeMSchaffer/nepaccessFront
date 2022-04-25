@@ -1,0 +1,112 @@
+#slides-modal {
+    width: 80%;
+    height: 70%;
+}
+#slide-0 {
+    background:  url(./media/1.jpg);
+}
+#slide-1 {
+    background:  url(./media/2.jpg);
+}
+#slide-2 {
+    background:  url(./media/3.jpg);
+}
+
+#tutorial-link-holder {
+    display: inline-block;
+    background-color: bisque;
+    margin: 15px;
+    padding: 5px;
+}
+
+.image-slide-holder-container {
+    padding: 15px;
+    margin-top: 15px;
+    
+    background-color: rgb(190, 190, 190);
+    border: 1px solid black;
+}
+.image-slide-holder {
+    margin: auto;
+
+    width: 500px;
+    height: 500px;
+    
+    background: none;
+    border: 1px solid black;
+
+    cursor: pointer;
+}
+.image-slide {
+    position: absolute;
+
+    opacity: 0%;
+
+    width: 500px;
+    height: 500px;
+}
+
+.image-slide.undefined {
+    opacity: 0%;
+}
+
+
+.slide-button-holder {
+    display: inline-block;
+    position: relative;
+
+    margin-top: 15px;
+
+    width: 100%;
+    
+    background-color: rgb(128, 128, 128);
+    border: 2px solid black;
+}
+.slide-button-holder>button {
+    height: 40px;
+}
+.slide-button-holder>button.left {
+    margin-left: 0;
+}
+.slide-button-holder>button.right {
+    margin-right: 0;
+}
+
+
+.image-slide.fade-out {
+    animation: fade;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    -webkit-animation: fade;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-fill-mode: both;
+}
+.image-slide.fade-in {
+    animation: fadeIn;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    -webkit-animation: fadeIn;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-fill-mode: both;
+}
+
+@keyframes fade {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@-webkit-keyframes fade {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@-webkit-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
