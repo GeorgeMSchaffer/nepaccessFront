@@ -1169,6 +1169,11 @@ class Importer extends Component {
         let result;
         if(this.state.admin) {
             result = (<>
+                <button type="button" className="button" id="submitCSVIDs" disabled={!this.state.canImportCSV || this.state.disabled} 
+                        onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_ids')}>
+                    (admin) Update any fields by our internal record ID
+                </button>
+
                 <button type="button" className="button" id="submitCSVTitles" disabled={!this.state.canImportCSV || this.state.disabled} 
                 onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/uploadCSV_titles')}>
                     (admin) Import from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
