@@ -204,8 +204,9 @@ const MyData = (props) => {
 
             //     setShouldFit(_shouldFit);
             //     setBounds(leafBounds);
-            //     setLoading(false);
             // }
+            
+            setLoading(false);
         });
         // console.timeEnd("t2");
 
