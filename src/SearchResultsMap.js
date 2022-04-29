@@ -164,7 +164,7 @@ const MyData = (props) => {
         // assign each geodata's count
         // console.time("t2");
         let validItemCount = 0;
-        let leafBounds = new LatLngBounds();
+        // let leafBounds = new LatLngBounds(); // for dynamic zoom option
         let i = 0;
         geos.forEach(geoItem => { 
             i++;
@@ -174,7 +174,7 @@ const MyData = (props) => {
 
                 if(geoItem.count) {
                     validItemCount++;
-                    leafBounds = getMaxBound(geoItem, leafBounds);
+                    // leafBounds = getMaxBound(geoItem, leafBounds);
                 }
 
             } else if(geoItem.properties.COUNTYNS) { // county
@@ -184,7 +184,7 @@ const MyData = (props) => {
 
                 if(geoItem.count) {
                     validItemCount++;
-                    leafBounds = getMaxBound(geoItem, leafBounds);
+                    // leafBounds = getMaxBound(geoItem, leafBounds);
                 }
 
                 // if(keynameForHashmap === "MI: St. Joseph") {
@@ -193,19 +193,19 @@ const MyData = (props) => {
             } else {
                 // for now do nothing with non state/county items
             }
-            if(i >= geos.length) {
 
-                let _shouldFit = false;
-                if(validItemCount < 25) { // define some amount of polygons as "not too big" to bother fitting
-                    _shouldFit = true;
-                    // console.log("Fit", validItemCount)
-                }
+            // for dynamic zoom option
+            // if(i >= geos.length) {
 
-                setShouldFit(_shouldFit);
-                setBounds(leafBounds);
-                setLoading(false);
-                // console.log("Load complete");
-            }
+            //     let _shouldFit = false;
+            //     if(validItemCount < 25) { // define some amount of polygons as "not too big" to bother fitting
+            //         _shouldFit = true;
+            //     }
+
+            //     setShouldFit(_shouldFit);
+            //     setBounds(leafBounds);
+            //     setLoading(false);
+            // }
         });
         // console.timeEnd("t2");
 
@@ -443,7 +443,7 @@ const MyData = (props) => {
                         scrollWheelZoom={false}
                         // bounds={getBounds}
                         whenCreated={setMap}
-                        onLoad={doFitBounds()}
+                        // onLoad={doFitBounds()} // for dynamic zoom to bounds
                     >
                         {showData()}
                         
