@@ -43,11 +43,12 @@
 }
 .map-toggle-title {
     cursor: pointer;
-    margin-right: 25px;
+    margin-right: 45px;
 }
 .map-filters-toggle {
     position: absolute;
-    margin-left: -22px; /* width+border */
+    margin-left: -42px; /* width+border+20px */
+    margin-top: -1px;
 
     width: 20px;
 
@@ -101,11 +102,11 @@ div.leaflet-control-container>div.leaflet-left {
 }
 
 div.leaflet-popup.leaflet-zoom-animated, div.leaflet-popup.leaflet-zoom-animated * {
-    animation: _fade;
+    animation: _disappear;
     animation-duration: 4s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
-    -webkit-animation: _fade;
+    -webkit-animation: _disappear;
     -webkit-animation-duration: 4s;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-fill-mode: forwards;
@@ -113,8 +114,9 @@ div.leaflet-popup.leaflet-zoom-animated, div.leaflet-popup.leaflet-zoom-animated
 /** for some reason this was the easiest way to "remove" the element after the animation completes. It exists until
 another click somewhere on the map. Until then, it blocks click events even if it's invisible. So the key was
 setting width and/or height to 0. Transform didn't work as expected. 
-Strange effects while still visible without overflow: hidden */
-@keyframes _fade {
+Strange effects while still visible without overflow: hidden.
+Still takes a while to animate the height to 0 at the end, but it's unclickable after a few seconds. */
+@keyframes _disappear {
     0% { opacity: 1; }
     99% { opacity: 0; height: initial; 
     }
@@ -123,7 +125,7 @@ Strange effects while still visible without overflow: hidden */
         height: 0;
     }
 }
-@-webkit-keyframes _fade {
+@-webkit-keyframes _disappear {
     0% { opacity: 1; }
     99% { opacity: 0; height: initial; 
     }
