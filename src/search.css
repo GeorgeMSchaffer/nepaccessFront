@@ -520,6 +520,7 @@ a.link {
     float: right;
     margin-right: 20px !important;
     margin: auto 0;
+    min-width: 331px;
 }
 
 .dropdown-text {
