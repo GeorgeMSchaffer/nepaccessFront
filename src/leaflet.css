@@ -36,19 +36,19 @@
 
 .toggle-container-row {
     height: 25px;
-    margin-top: -25px;
+    margin-top: -28px;
 }
 .toggle-container {
     float: right;
 }
 .map-toggle-title {
     cursor: pointer;
-    margin-right: 45px;
+    margin-right: 47px;
 }
 .map-filters-toggle {
     position: absolute;
     margin-left: -42px; /* width+border+20px */
-    margin-top: -1px;
+    margin-top: -2px;
 
     width: 20px;
 
