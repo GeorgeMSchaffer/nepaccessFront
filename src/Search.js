@@ -174,6 +174,8 @@ class Search extends React.Component {
             proximityDisabled: true, 
             proximityOption: null, 
             inputMessage: "" 
+        }, () => {
+            this.inputSearch.focus();
         }); 
     }
 
@@ -811,6 +813,7 @@ class Search extends React.Component {
                                 isMulti={false} />
                         </span>
                         <input id="main-search-bar"
+                            ref={(input) => { this.inputSearch = input; }}
                             className="search-bar" 
                             name="titleRaw" 
                             placeholder="Enter search terms (or leave blank to get all results)" 
