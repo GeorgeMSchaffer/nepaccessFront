@@ -1,6 +1,9 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
 import IframeResizer from 'iframe-resizer-react';
+
+import Slides from './Tutorial/SlidesIframe.js';
+
 // import ReCAPTCHA from "react-google-recaptcha";
 
 // import FlipNumbers from 'react-flip-numbers';
@@ -86,68 +89,76 @@ export default class Test extends React.Component {
     //         />;
     //     }
     // }
+    
+
+    // renderSlides = () => {
+    //     if(window.AtomiSaola) {
+    //         console.log("OK");
+    //         console.log(window.AtomiSaola);
+    //         return ((function() {
+    //             var li = {"color":"#2090e6","density":9,"diameter":60,"range":1,"shape":"oval","speed":1};
+    //             window.AtomiSaola.openDoc('NEPAccess-demo-2.js', 'hqrrCRwD', {paused:false, preloaderOptions: li, center: 'both'});})(window.AtomiSaola));
+    //     } 
+    // }
 
     render () {
-        // if(this.state.approver) {
-            return (
-                // <div id="test-container" className="content">
-                <div className="iframe-container">
-                    <Helmet>
-                        <meta charSet="utf-8" />
-                        <title>Test - NEPAccess</title>
-                        <link rel="canonical" href="https://nepaccess.org/test" />
-                        {/* <meta name="robots" content="noindex, nofollow" data-react-helmet="true" /> */}
-                    </Helmet>
-                    
+        return (
+            <div className="content">
+                <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Test - NEPAccess</title>
+                    <link rel="canonical" href="https://nepaccess.org/test" />
+                    {/* <meta name="robots" content="noindex, nofollow" data-react-helmet="true" /> */}
+                </Helmet>
 
-                    {/* {this.showFlipNum()} */}
+                <Slides />
 
-                    {/* <span>test</span>
-                    <div>
-                        <ReCAPTCHA
-                            ref={recaptchaRef}
-                            sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
-                            onChange={this.captchaChange}
-                            onErrored={this.log}
-                        />
-                        <button type='button' onClick={this.testClick}>Submit</button>
-                    </div> */}
+                {/* <div id="hqrrCRwD" style={{position: 'relative', height: '100%'}}></div> */}
+                {/* <button onClick={this.renderSlides}>render slides</button> */}
 
-                    
-                    <IframeResizer
-                        // log
-                        data-hj-allow-iframe="true"
-                        id="iframe-test-container"
-                        src="https://about.nepaccess.org/test/"
-                        style={{ width: '1px', minWidth: '100%'}}
+                {/* {this.showFlipNum()} */}
+
+                {/* <span>test</span>
+                <div>
+                    <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey="6LdLG5AaAAAAADg1ve-icSHsCLdw2oXYPidSiJWq"
+                        onChange={this.captchaChange}
+                        onErrored={this.log}
                     />
-                    
-                </div>
-            )
-        // } else {
-        //     return <div className="content">
-        //         <Helmet>
-        //             <meta charSet="utf-8" />
-        //             <title>Test - NEPAccess</title>
-        //             <link rel="canonical" href="https://nepaccess.org/test" />
-        //             <meta name="robots" content="noindex, nofollow" data-react-helmet="true" />
-        //         </Helmet>
-        //         401
-        //     </div>
-        // }
+                    <button type='button' onClick={this.testClick}>Submit</button>
+                </div> */}
+
+                {/* <IframeResizer
+                    data-hj-allow-iframe="true"
+                    id="iframe-test-container"
+                    src="https://paulmirocha.com/nepa/"
+                    style={{ width: '900px', minWidth: '100%', height: '600px', minHeight: '100%'}}
+                /> */}
+                
+                {/* <IframeResizer
+                    // log
+                    data-hj-allow-iframe="true"
+                    id="iframe-test-container"
+                    src="https://about.nepaccess.org/test/"
+                    style={{ width: '1px', minWidth: '100%'}}
+                /> */}
+
+            </div>
+        );
     }
     
     componentDidMount() {
-        this.timer = setInterval(() => {
-            if(this.state.num < this.state.total) {
-                this.setState({
-                  num: this.state.num + 1,
-                });
-            }
-        }, 10);
-      }
+    //     this.timer = setInterval(() => {
+    //         if(this.state.num < this.state.total) {
+    //             this.setState({
+    //               num: this.state.num + 1,
+    //             });
+    //         }
+    //     }, 10);
+    }
     
-      componentWillUnmount() {
-        clearInterval(this.timer);
-      }
+    componentWillUnmount() {
+    //     clearInterval(this.timer);
+    }
 }

@@ -2,6 +2,13 @@
     width: 80%;
     height: 70%;
 }
+#slides-iframe-modal {
+    width: 950px;
+    height: 660px;
+}
+#tutorial-login>* {
+    font-size: inherit;
+}
 #slide-0 {
     background:  url(./media/1.jpg);
 }
