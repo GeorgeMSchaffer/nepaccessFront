@@ -6,9 +6,7 @@ import IframeResizer from 'iframe-resizer-react';
 import LoginModal from '../User/LoginModal';
 
 import './slides.css';
-
-const FORWARD = 1;
-const BACKWARD = -1;
+import { local } from 'd3';
 
 export default class Slides extends React.Component {
 
@@ -17,10 +15,6 @@ export default class Slides extends React.Component {
     constructor(props) {
         super(props);
 		this.state = {
-            slideClass: [],
-            classLength: 3,
-            currentSlide: 0,
-
             show: false
         };
     }
@@ -34,40 +28,6 @@ export default class Slides extends React.Component {
         if(evt.key === "Escape"){
             this.hideModal();
         }
-    }
-
-    changeSlide = (direction) => {
-        let classes = this.state.slideClass;
-        let classI = this.state.currentSlide;
-
-        if(direction === FORWARD) {
-            if( classI < (this.state.classLength - 1) ) {
-                classes[classI] = "fade-out";
-                classes[classI + 1] = "fade-in";
-
-                classI = classI + 1;
-            } else {
-                console.log("Already at end");
-            }
-
-        } else if(direction === BACKWARD) {
-            if( classI > 0 ) {
-                classes[classI] = "fade-out";
-                classes[classI - 1] = "fade-in";
-                
-                classI = classI - 1;
-            } else {
-                console.log("Already at beginning");
-            }
-
-        }
-
-        this.setState({
-            slideClass: classes,
-            currentSlide: classI
-        }, () => {
-            // console.log(direction, this.state.slideClass);
-        });
     }
     
     renderLoginLink = () => {
@@ -139,22 +99,15 @@ export default class Slides extends React.Component {
         );
     }
 
-    populateClasses = () => {
-        let classes = this.state.slideClass;
-        for(let i = 0; i < this.state.classLength; i++) {
-            classes[i] = "";
+    startOpenIfLoggedIn = () => {
+        if(!localStorage.role) {
+            this.setState({ show: true });
         }
-
-        // first/current "slide" should be visible (100% opacity)
-        classes[this.state.currentSlide] = "fade-in";
-        
-        this.setState({
-            slideClass: classes
-        });
     }
     
     componentDidMount() {
-        this.populateClasses();
+        console.log("Mount");
+        this.startOpenIfLoggedIn();
     }
     
     componentWillUnmount() {
