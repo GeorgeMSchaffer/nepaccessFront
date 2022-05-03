@@ -144,7 +144,7 @@ label.checkbox-text, span.checkbox-text {
     display: inline-flex;
     flex-direction: column;
 
-    border-top: 1px dashed black;
+    /* border-top: 1px dashed black; */
     
     width: 100%;
     min-height: 50px;
