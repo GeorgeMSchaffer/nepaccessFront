@@ -33,7 +33,7 @@ export default class Slides extends React.Component {
     renderLoginLink = () => {
         if(localStorage.role === undefined) {
             return <span id="tutorial-login" className="not-logged-in">
-                Already know how to use NEPAccess? Please <LoginModal /> or <a className="not-logged-in" href='register' target='_blank' rel='noopener noreferrer'>register</a> here.
+                Already know how to use NEPAccess? Please <span onClick={this.hideModalOpenLogin}><LoginModal closeParent={this.hideModal}/></span> or <a className="not-logged-in" href='register' target='_blank' rel='noopener noreferrer'>register</a> here.
             </span>
         } else {
             return ''
@@ -42,18 +42,18 @@ export default class Slides extends React.Component {
 
     Build = () => {
         return (
-            <div id="tutorial-link-holder">
-                <div className='link'>
+            // <div id="tutorial-link-holder">
+            //     <div className='link'>
                     <span 
-                        className={(this.state.show===true ? "open" : "")} 
+                        className={(this.state.show===true ? "open side-link" : "side-link")} 
                         onClick={e => {
                             this.showModal();
                         }}
                     >
                         How To Use NEPAccess
                     </span>
-                </div>
-            </div>
+            //     </div>
+            // </div>
         );
     }
 
@@ -89,7 +89,8 @@ export default class Slides extends React.Component {
                                 <IframeResizer
                                     data-hj-allow-iframe="true"
                                     id="iframe-test-container"
-                                    src="https://paulmirocha.com/nepa/"
+                                    // src="https://paulmirocha.com/nepa/"
+                                    src="https://about.nepaccess.org/wp-content/uploads/demo"
                                     style={{ width: '900px', minWidth: '100%', height: '600px', minHeight: '100%'}}
                                 />
                             {/* </div> */}

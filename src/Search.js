@@ -1,5 +1,7 @@
 import React from 'react';
 
+import SlidesIframe from './Tutorial/SlidesIframe.js';
+
 import axios from 'axios';
 
 import Select from 'react-select';
@@ -785,6 +787,7 @@ class Search extends React.Component {
                                     Available Files
                                 </span>}
                             </Tooltip>
+                            <SlidesIframe />
                                 {/* <BasicModal id="basic-modal"
                                     className="side-link"
                                     divClassName=""

@@ -156,6 +156,9 @@ export default class LoginModal extends React.Component {
                     });
                 }); 
                 this.hideModal();
+                if(this.props.closeParent) {
+                    this.props.closeParent();
+                }
             } else {
                 this.setState({
                     networkError: "Server may be down.  If you are on a VPN, please try connecting without the VPN."
