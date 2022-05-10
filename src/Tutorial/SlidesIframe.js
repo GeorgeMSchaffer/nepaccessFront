@@ -8,6 +8,12 @@ import LoginModal from '../User/LoginModal';
 import './slides.css';
 import { local } from 'd3';
 
+const tutorialModalStyle = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.35)'
+    }
+}
+
 export default class Slides extends React.Component {
 
     _currentSlide = 0;
@@ -77,6 +83,7 @@ export default class Slides extends React.Component {
                         // isOpen={this.state.show}
                         isOpen={true}
                         parentSelector={() => document.body}
+                        style={tutorialModalStyle}
                         // ariaHideApp={false}
                 >
                         <div className="modal-button-space">
