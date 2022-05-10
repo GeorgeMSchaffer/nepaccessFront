@@ -36,6 +36,10 @@ Also no longer possible to overflow off the page or out of the card.*/
     display: inline-block;
 }
 
+.record-line>.not-logged-in>button.link {
+    font-size: 14px;
+}
+
 .regular>a.link {
     overflow: hidden;
     text-overflow: ellipsis;

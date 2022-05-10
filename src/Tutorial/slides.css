@@ -6,8 +6,8 @@
     width: 950px;
     height: 660px;
 }
-#tutorial-login>* {
-    font-size: inherit;
+#tutorial-login>span>button.link {
+    font-size: 16px;
 }
 #slide-0 {
     background:  url(./media/1.jpg);
