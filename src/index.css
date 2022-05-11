@@ -758,3 +758,8 @@ textarea.server-response {
 input[type="checkbox"] {
     vertical-align: middle;
 }
+
+button.modal-close {
+    float: right;
+    margin-bottom: 10px;
+}

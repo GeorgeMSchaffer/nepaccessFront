@@ -87,7 +87,7 @@ export default class Slides extends React.Component {
                         // ariaHideApp={false}
                 >
                         <div className="modal-button-space">
-                            <button className='float-right' onClick={this.hideModal}>x</button>
+                            <button className='modal-close' onClick={this.hideModal}>x</button>
                         </div>
 
                         <div>
