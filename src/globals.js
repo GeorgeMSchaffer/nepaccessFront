@@ -42,11 +42,9 @@ const Globals = {
     registerListener(key, listenerFunction) {
         const entries = [];
 
-        // assign if first time
-        if(!this.listeners[key]) {
-            this.listeners[key] = entries; 
-            entries.push(listenerFunction);
-        }
+        // assign even if not first time (prevents permanently disabling listeners if they unmount)
+        this.listeners[key] = entries; 
+        entries.push(listenerFunction);
     
     },
     
