@@ -6,11 +6,38 @@ import IframeResizer from 'iframe-resizer-react';
 import LoginModal from '../User/LoginModal';
 
 import './slides.css';
-import { local } from 'd3';
+
+// style={{
+//     overlay: {
+//       position: 'fixed',
+//       top: 0,
+//       left: 0,
+//       right: 0,
+//       bottom: 0,
+//       backgroundColor: 'rgba(255, 255, 255, 0.75)'
+//     },
+//     content: {
+//       position: 'absolute',
+//       top: '40px',
+//       left: '40px',
+//       right: '40px',
+//       bottom: '40px',
+//       border: '1px solid #ccc',
+//       background: '#fff',
+//       overflow: 'auto',
+//       WebkitOverflowScrolling: 'touch',
+//       borderRadius: '4px',
+//       outline: 'none',
+//       padding: '20px'
+//     }
+//   }}
 
 const tutorialModalStyle = {
     overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.35)'
+        backgroundColor: 'rgba(0, 0, 0, 0.50)',
+    },
+    content: {
+        padding: '5px'
     }
 }
 
@@ -91,11 +118,11 @@ export default class Slides extends React.Component {
                         // ariaHideApp={false}
                 >
                         <div className="modal-button-space">
+                            {this.renderLoginLink()}
                             <button className='modal-close' onClick={this.hideModal}>x</button>
                         </div>
 
                         <div>
-                            {this.renderLoginLink()}
                             {/* <div className="image-slide-holder-container"> */}
                                 <IframeResizer
                                     data-hj-allow-iframe="true"

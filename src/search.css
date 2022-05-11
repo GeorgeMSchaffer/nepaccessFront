@@ -729,8 +729,8 @@ div.disabled::before {
 }
 
 .modal-button-space {
-    padding-bottom: 20px;
     user-select: none;
+    overflow: hidden;
 }
 
 .wide-flex {

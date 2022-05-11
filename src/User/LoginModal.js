@@ -32,11 +32,7 @@ export default class LoginModal extends React.Component {
         this.setState({ show: true }); 
     }
     hideModal = (e) => {   
-        this.setState({ show: false }, () => {
-            if(this.props.closeParent) { // i.e. hide tutorial window containing this login modal
-                this.props.closeParent();
-            }
-        }); 
+        this.setState({ show: false });
     }
     
     onKeyUp = (evt) => {
@@ -162,6 +158,9 @@ export default class LoginModal extends React.Component {
                     });
                 }); 
                 this.hideModal();
+                if(this.props.closeParent) { // i.e. hide tutorial window containing this login modal
+                    this.props.closeParent();
+                }
             } else {
                 this.setState({
                     networkError: "Server may be down.  If you are on a VPN, please try connecting without the VPN."
@@ -208,7 +207,7 @@ export default class LoginModal extends React.Component {
         }
 
         return (
-            <div onKeyUp={this.onKeyUp}>
+            <div className="inline" onKeyUp={this.onKeyUp}>
                 {this.Build()}
                 <ReactModal 
                     id="login-modal"
