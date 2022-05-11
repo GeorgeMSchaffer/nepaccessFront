@@ -5,10 +5,6 @@
     width: 160px;
 }
 
-.modal-close {
-    float: right;
-}
-
 .modal-results {
     /* Prevents scrolling when tabbing through results */
     min-height: 500px;

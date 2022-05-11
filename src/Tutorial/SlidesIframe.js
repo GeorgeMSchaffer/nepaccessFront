@@ -28,7 +28,11 @@ export default class Slides extends React.Component {
     showModal = (e) => { 
         this.setState({ show: true }); 
     }
-    hideModal = (e) => { this.setState({ show: false }); }
+    hideModal = (e) => { 
+        localStorage.hideTutorial = true;
+        this.setState({ show: false }); 
+        console.log(localStorage.hideTutorial);
+    }
     
     onKeyUp = (evt) => {
         if(evt.key === "Escape"){
@@ -56,7 +60,7 @@ export default class Slides extends React.Component {
                             this.showModal();
                         }}
                     >
-                        How To Use NEPAccess
+                        1-minute guide
                     </span>
             //     </div>
             // </div>
@@ -109,7 +113,7 @@ export default class Slides extends React.Component {
     }
 
     startOpenIfLoggedIn = () => {
-        if(!localStorage.role) {
+        if(!localStorage.role && !localStorage.hideTutorial) {
             this.setState({ show: true });
         }
     }

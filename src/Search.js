@@ -784,7 +784,7 @@ class Search extends React.Component {
                                 </div>}
                             >
                                 {<span className={this.state.tooltipClass + " side-link"}>
-                                    Available Files
+                                    Available files
                                 </span>}
                             </Tooltip>
                             <SlidesIframe />
