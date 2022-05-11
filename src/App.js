@@ -1398,6 +1398,9 @@ export default class App extends React.Component {
 	componentDidMount() {
         this.check();
         this._mounted = true;
+        
+        // Running this here fixes polygons if user interrupts this process initiated by child component by navigating away
+        this.getGeoDebounced();
 
         // Option: Rehydrate old search results and everything?
         try {
