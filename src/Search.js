@@ -787,7 +787,7 @@ class Search extends React.Component {
                                     Available Files
                                 </span>}
                             </Tooltip>
-                            <SlidesIframe />
+                            {/* <SlidesIframe /> */}
                                 {/* <BasicModal id="basic-modal"
                                     className="side-link"
                                     divClassName=""
