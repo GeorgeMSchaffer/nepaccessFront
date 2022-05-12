@@ -40,7 +40,8 @@ const tutorialModalStyle = {
         backgroundColor: 'rgba(0, 0, 0, 0.50)',
     },
     content: {
-        padding: '5px'
+        border: 'none',
+        padding: '0px'
     }
 }
 
@@ -90,7 +91,7 @@ export default class Slides extends React.Component {
                             this.showModal();
                         }}
                     >
-                        1-minute guide
+                        Quick-start guide
                     </span>
             //     </div>
             // </div>
@@ -120,9 +121,9 @@ export default class Slides extends React.Component {
                         style={tutorialModalStyle}
                         // ariaHideApp={false}
                 >
-                        <div className="modal-button-space">
+                        <div id="tutorial-top" className="modal-button-space">
                             {this.renderLoginLink()}
-                            <button className='modal-close' onClick={this.hideModal}>x</button>
+                            <button id="tutorial-close" onClick={this.hideModal}>x</button>
                         </div>
 
                         <div>
