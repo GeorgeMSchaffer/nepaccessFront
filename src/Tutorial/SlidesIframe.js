@@ -41,6 +41,7 @@ const tutorialModalStyle = {
     },
     content: {
         border: 'none',
+        overflow: 'visible',
         padding: '0px'
     }
 }
@@ -133,8 +134,7 @@ export default class Slides extends React.Component {
                                     id="iframe-test-container"
                                     // src="https://paulmirocha.com/nepa/"
                                     src="https://about.nepaccess.org/wp-content/uploads/demo/"
-                                    // style={{ width: '900px', minWidth: '100%', height: '600px', minHeight: '100%'}}
-                                    style={{ width: '1px', minWidth: '100%', height: '600px', minHeight: '100%'}}
+                                    style={{ width: '1px', minWidth: '100%', height: '612px', minHeight: '100%'}}
                                 />
                             {/* </div> */}
                         </div>

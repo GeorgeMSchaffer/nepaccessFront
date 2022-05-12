@@ -4,13 +4,16 @@
 } */
 #slides-iframe-modal {
     width: 900px;
-    height: 638px;
+    height: 632px;
+    overflow: hidden;
 }
 #iframe-test-container {
     border: none;
+    overflow: hidden;
 }
 #tutorial-top {
-
+    height: 24px;
+    overflow: visible;
 }
 #tutorial-login {
     display: inline-block;
@@ -21,37 +24,28 @@
     font-size: 16px;
 }
 #tutorial-close {
-    /* margin-right: -10px; */
-    font-size: 20px;
+    font-size: 26px;
     display: block;
     float: right;
-    appearance: auto;
-    writing-mode: horizontal-tb !important;
-    text-rendering: auto;
-    color: -internal-light-dark(black, white);
-    letter-spacing: normal;
-    word-spacing: normal;
-    line-height: normal;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
+    /* color: -internal-light-dark(black, white); */
+    color: white;
+    background: none;
 
-    text-align: center;
-    align-items: flex-start;
     cursor: default;
-    box-sizing: border-box;
-    background-color: -internal-light-dark(rgb(239, 239, 239), rgb(59, 59, 59));
-    margin-top: 2px;
-    margin-right: 8px;
+    /* background-color: -internal-light-dark(rgb(239, 239, 239), rgb(59, 59, 59)); */
+    margin-top: 0px;
+    margin-right: -28px;
     margin-bottom: 0px;
     margin-left: 0px;
-    border-width: 2px;
-    border-style: outset;
-    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-    border-image: initial;
+    border: none;
+    /* border-width: 2px;
+    border-style: outset; */
+    /* border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133)); */
+    /* border-image: initial; */
 }
 #tutorial-close:hover {
     cursor: pointer;
+    font-weight: bold;
 }
 #slide-0 {
     background:  url(./media/1.jpg);
