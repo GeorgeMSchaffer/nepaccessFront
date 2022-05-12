@@ -7,6 +7,8 @@ import LoginModal from '../User/LoginModal';
 
 import './slides.css';
 
+// http://reactcommunity.org/react-modal/styles/
+// default:
 // style={{
 //     overlay: {
 //       position: 'fixed',
@@ -32,6 +34,7 @@ import './slides.css';
 //     }
 //   }}
 
+// override these defaults:
 const tutorialModalStyle = {
     overlay: {
         backgroundColor: 'rgba(0, 0, 0, 0.50)',

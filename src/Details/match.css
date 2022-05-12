@@ -11,7 +11,7 @@
 }
 
 .ReactModal__Overlay--after-open {
-    z-index: 9999;
+    z-index: 99999;
 }
 
 .ReactModal__Content {
