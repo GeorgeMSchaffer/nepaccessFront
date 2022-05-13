@@ -431,6 +431,14 @@ class Search extends React.Component {
         }
     }
 
+    getSearchBarText = () => {
+        if(this.state.searchOption && this.state.searchOption === "C") { // title only
+            return "Search titles of NEPA documents";
+        } else {
+            return "Search full texts and titles of NEPA documents";
+        }
+    }
+
     onUseOptionsChecked = (evt) => {
         this.props.optionsChanged(evt.target.checked);
     }
@@ -701,7 +709,7 @@ class Search extends React.Component {
                 <div className="search-holder" >
                     
                     <div className="search-bar-holder">
-                        <h1 className="search-header-2">Search full texts and titles of NEPA documents</h1>
+                        <h1 className="search-header-2">{this.getSearchBarText()}</h1>
 
                         <div className="pre-input-bar">
                             <div id="tooltip4Container">
