@@ -34,6 +34,14 @@ import './slides.css';
 //     }
 //   }}
 
+
+function getHeight() {
+    if(localStorage.role) {
+        return "612px";
+    } else {
+        return "632px";
+    }
+}
 // override these defaults:
 const tutorialModalStyle = {
     overlay: {
@@ -42,7 +50,8 @@ const tutorialModalStyle = {
     content: {
         border: 'none',
         overflow: 'visible',
-        padding: '0px'
+        padding: '0px',
+        height: getHeight()
     }
 }
 
@@ -63,7 +72,6 @@ export default class Slides extends React.Component {
     hideModal = (e) => { 
         localStorage.hideTutorial = true;
         this.setState({ show: false }); 
-        console.log(localStorage.hideTutorial);
     }
     
     onKeyUp = (evt) => {
@@ -99,6 +107,12 @@ export default class Slides extends React.Component {
         );
     }
 
+    getLoggedInClass = () => {
+        if(localStorage.role) {
+            return " logged-in";
+        }
+    }
+
 
     render () {
         if(!this.state.show) {
@@ -122,7 +136,7 @@ export default class Slides extends React.Component {
                         style={tutorialModalStyle}
                         // ariaHideApp={false}
                 >
-                        <div id="tutorial-top" className="modal-button-space">
+                        <div id="tutorial-top" className={"modal-button-space" + this.getLoggedInClass()}>
                             {this.renderLoginLink()}
                             <button id="tutorial-close" onClick={this.hideModal}>x</button>
                         </div>

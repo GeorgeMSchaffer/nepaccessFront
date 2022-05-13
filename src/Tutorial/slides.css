@@ -7,6 +7,9 @@
     height: 632px;
     overflow: hidden;
 }
+/* #slides-iframe-modal.logged-in {
+    height: 612px;
+} */
 #iframe-test-container {
     border: none;
     overflow: hidden;
@@ -14,6 +17,9 @@
 #tutorial-top {
     height: 24px;
     overflow: visible;
+}
+#tutorial-top.logged-in {
+    height: 0px;
 }
 #tutorial-login {
     display: inline-block;
