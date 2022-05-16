@@ -83,7 +83,7 @@ export default class Slides extends React.Component {
     renderLoginLink = () => {
         if(localStorage.role === undefined) {
             return <span id="tutorial-login" className="not-logged-in">
-                Already know how to use NEPAccess? Please <span onClick={this.hideModalOpenLogin}><LoginModal closeParent={this.hideModal}/></span> or <a className="not-logged-in" href='register' target='_blank' rel='noopener noreferrer'>register</a> here.
+                Already know how to use NEPAccess? Please <span onClick={this.hideModalOpenLogin}><LoginModal closeParent={this.hideModal}/></span> or <a className="not-logged-in" href='register' rel='noopener noreferrer'>register</a> here.
             </span>
         } else {
             return ''
