@@ -245,7 +245,19 @@ export default class SearchProcessResults extends React.Component {
     }
 
     componentDidMount() {
-        // console.log("Mounted results");
+        // Restore user's last viewed page in results if possible
+        if(localStorage.unmountedPage) {
+            try {
+                this.page = localStorage.unmountedPage;
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        // Save last viewed page number so user doesn't lose their place on navigation
+        localStorage.unmountedPage = this.page;
     }
     
     componentDidUpdate() {
