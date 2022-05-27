@@ -46,7 +46,8 @@ export default class App extends React.Component {
         loaded: false,
         down: false,
         isMapHidden: false,
-        filtersHidden: false
+        filtersHidden: false,
+        lookupResult: null
     }
     
     constructor(props){
@@ -861,6 +862,38 @@ export default class App extends React.Component {
             });
         })
     }
+
+    suggestFromTerms = (_terms) => {
+        if(_terms) {
+            axios({
+                method: 'GET', 
+                url: Globals.currentHost + 'text/search/suggest',
+                params: {
+                    terms: _terms
+                }
+            }).then(response => {
+                // console.log("Suggester response", response);
+    
+                let results = [];
+    
+                response.data.forEach(datum => {
+                    if(datum) {
+                        const datumSplit = datum.split(":::");
+                        results.push({string: datumSplit[1], id: datumSplit[0]});
+                    }
+                })
+    
+                this.setState({
+                    // lookupResult: response.data
+                    lookupResult: results
+                });
+            });
+        } else {
+            this.setState({
+                lookupResult: null
+            })
+        }
+    }
     
 
     //     // Possible logic: 
@@ -1309,6 +1342,8 @@ export default class App extends React.Component {
                     </Helmet>
                     <Search 
                         search={this.startNewSearch} 
+                        suggest={this.suggestFromTerms}
+                        lookupResult={this.state.lookupResult}
                         stop={this.stopSearch}
                         filterResultsBy={this.filterResultsBy} 
                         searching={this.state.searching} 

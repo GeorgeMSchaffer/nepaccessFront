@@ -245,6 +245,10 @@ input[type=checkbox] {
   width: 355px;
 }
 
+.suggestion-holder {
+    margin-left: 25px;
+}
+
 /** React-select custom styling within advanced search box */
 
 .react-select__menu-list>.react-select__option--is-focused {

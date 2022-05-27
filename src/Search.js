@@ -94,6 +94,8 @@ class Search extends React.Component {
         this.stop = this.props.stop;
         // this.filterBy = _.debounce(this.props.filterResultsBy, 200);
 
+        this.debouncedSuggest = _.debounce(this.props.suggest, 300);
+
         this.myRef = React.createRef();
     }
     
@@ -178,6 +180,7 @@ class Search extends React.Component {
             inputMessage: "" 
         }, () => {
             this.inputSearch.focus();
+            this.debouncedSuggest();
         }); 
     }
 
@@ -248,7 +251,6 @@ class Search extends React.Component {
     }
 
 	onInput = (evt) => {
-
         let userInput = evt.target.value;
 
         let proximityValues = this.handleProximityValues(userInput);
@@ -260,8 +262,13 @@ class Search extends React.Component {
             [evt.target.name]: userInput,
             proximityDisabled: proximityValues.disableValue,
             inputMessage: proximityValues._inputMessage
-        }, () => { // auto-searching is currently too expensive until asynchronous results
+        }, () => { 
+            // auto-searching is currently too expensive until asynchronous results
             // this.debouncedSearch(this.state);
+            
+            // autocomplete/suggest/other functionality fires, starting here
+            // TODO: May want to take out any special characters that never appear in titles or are otherwise unnecessary
+            this.debouncedSuggest(this.state.titleRaw);
         });
     }
 
@@ -566,6 +573,35 @@ class Search extends React.Component {
             this.setState({ [stateName]: rsp });
         }).catch(error => { 
         })
+    }
+
+    /** Helps getSuggestions() by returning clickable link to details page for given suggestion, which opens a new tab */
+    getSuggestion = (suggestion, idx) => {
+        return (
+            <a className="block" href={"record-details?id=" + suggestion.id}
+                target="_blank" key={idx}
+                dangerouslySetInnerHTML={{
+                    __html: suggestion.string
+                }} 
+            />);
+    }
+    /** If we can complete the current search terms into a title, show links to up to three suggested details pages.
+     * AnalyzingInfixSuggester.lookup logic seems to see if the rightmost term can be expanded to match titles.  
+     * 
+     * So the terms 'rose mine' won't find anything, because a word MUST be 'rose' - but 'mine rose' will find rosemont
+     * copper mine, because it's basically looking for mine AND rose*, whereas rose AND mine* doesn't match any titles.
+     */
+    getSuggestions = () => {
+        if(this.props.lookupResult && this.props.lookupResult[0]) {
+            return (
+                <div className="suggestion-holder">
+                    <span className="block">Autocompleted titles:</span>
+                    {this.props.lookupResult.map((result,i) => {
+                        return this.getSuggestion(result,i)
+                    })}
+                </div>
+            );
+        }
     }
 
     filtersActive = () => {
@@ -910,6 +946,7 @@ class Search extends React.Component {
                 </div>
             </div>
 
+            {this.getSuggestions()}
             <div className="loader-holder">
                 <div hidden={!this.props.networkError}>&nbsp;<span className="errorLabel">{this.props.networkError}</span></div>
                 <div className="center" hidden={this.props.searching}>
