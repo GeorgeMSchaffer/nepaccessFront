@@ -577,13 +577,21 @@ class Search extends React.Component {
 
     /** Helps getSuggestions() by returning clickable link to details page for given suggestion, which opens a new tab */
     getSuggestion = (suggestion, idx) => {
-        return (
-            <a className="block" href={"record-details?id=" + suggestion.id}
-                target="_blank" key={idx}
-                dangerouslySetInnerHTML={{
-                    __html: suggestion.string
-                }} 
-            />);
+        let _href = "record-details?id=";
+        if(suggestion.isProcess) {
+            _href = "process-details?id=";
+        }
+
+        if(suggestion.id && suggestion.title) {
+            return (
+                <a className="block" href={_href + suggestion.id} target="_blank"
+                    key={idx}
+                    dangerouslySetInnerHTML={{
+                        __html: suggestion.title
+                    }} 
+                />
+            );
+        }
     }
     /** If we can complete the current search terms into a title, show links to up to three suggested details pages.
      * AnalyzingInfixSuggester.lookup logic seems to see if the rightmost term can be expanded to match titles.  

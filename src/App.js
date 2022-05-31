@@ -874,18 +874,9 @@ export default class App extends React.Component {
             }).then(response => {
                 // console.log("Suggester response", response);
     
-                let results = [];
-    
-                response.data.forEach(datum => {
-                    if(datum) {
-                        const datumSplit = datum.split(":::");
-                        results.push({string: datumSplit[1], id: datumSplit[0]});
-                    }
-                })
-    
                 this.setState({
                     // lookupResult: response.data
-                    lookupResult: results
+                    lookupResult: response.data
                 });
             });
         } else {
