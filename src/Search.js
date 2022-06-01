@@ -584,12 +584,14 @@ class Search extends React.Component {
 
         if(suggestion.id && suggestion.title) {
             return (
-                <a className="block" href={_href + suggestion.id} target="_blank"
-                    key={idx}
-                    dangerouslySetInnerHTML={{
-                        __html: suggestion.title
-                    }} 
-                />
+                <div>
+                    <a href={_href + suggestion.id} target="_blank"
+                        key={idx}
+                        dangerouslySetInnerHTML={{
+                            __html: suggestion.title
+                        }} 
+                    />
+                </div>
             );
         }
     }
