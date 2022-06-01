@@ -56,6 +56,9 @@ export default class App extends React.Component {
         // this.getGeoDebounced = _.debounce(this.getGeoData,1000);
         this.getGeoDebounced = _.debounce(this.getAllGeoData,1000);
     }
+
+    // For actually telling backend to cancel a request?
+    // _axiosSource = null;
     
     // For canceling a search when component unloads
     _mounted = false;
@@ -400,6 +403,17 @@ export default class App extends React.Component {
     // TODO: Can't set state here, state update logic needs to happen elsewhere?
     stopSearch = () => {
         this._canceled = true;
+        
+        // let _axiosSource = axios.CancelToken.source();
+        // _axiosSource.cancel();
+        // axios.get(Globals.currentHost + "text/search", {
+        //     cancelToken: new CancelToken(function executor(c) {
+        //         cancel = c; // c is the cancel function
+        //     })
+        // }).then((res) => {
+        //     console.log("text/search cancel", res);
+        // })
+
         // this.filterResultsBy(searcherState);
         // this.setState({searching:false})
         // this.setState({
@@ -743,6 +757,7 @@ export default class App extends React.Component {
         //Send the AJAX call to the server
 
         // console.log("Search init");
+        
         axios({
             method: 'POST', // or 'PUT'
             url: searchUrl,
