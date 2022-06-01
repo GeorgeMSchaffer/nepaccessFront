@@ -180,7 +180,7 @@ class Search extends React.Component {
             inputMessage: "" 
         }, () => {
             this.inputSearch.focus();
-            // this.debouncedSuggest();
+            this.debouncedSuggest();
         }); 
     }
 
@@ -268,7 +268,7 @@ class Search extends React.Component {
             
             // autocomplete/suggest/other functionality fires, starting here
             // TODO: May want to take out any special characters that never appear in titles or are otherwise unnecessary
-            // this.debouncedSuggest(this.state.titleRaw);
+            this.debouncedSuggest(this.state.titleRaw);
         });
     }
 
@@ -603,7 +603,7 @@ class Search extends React.Component {
         if(this.props.lookupResult && this.props.lookupResult[0]) {
             return (
                 <div className="suggestion-holder">
-                    <span className="block">Autocompleted titles:</span>
+                    <span className="block">Sample titles:</span>
                     {this.props.lookupResult.map((result,i) => {
                         return this.getSuggestion(result,i)
                     })}

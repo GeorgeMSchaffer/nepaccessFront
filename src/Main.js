@@ -48,6 +48,7 @@ import Admin from './AdminPanel.js';
 import AdminFiles from './AdminFiles.js';
 
 import Test from './Test.js';
+import SearchTest from './AppTest';
 import Pairs from './Pairs.js';
 import Pairs2 from './Pairs2';
 import Pairs3 from './Pairs3';
@@ -325,6 +326,7 @@ class Main extends React.Component {
                 <Route path="/excel" component={Excel}></Route>
                 
                 <Route path="/test" component={Test} />
+                <Route path="/search_test" component={SearchTest} />
                 <Route path="/up_geo" component={ImporterGeo} />
                 <Route path="/up_geo_links" component={ImporterGeoLinks} />
 
