@@ -55,16 +55,16 @@ export default class App extends React.Component {
         this.endRef = React.createRef();
         // this.getGeoDebounced = _.debounce(this.getGeoData,1000);
         this.getGeoDebounced = _.debounce(this.getAllGeoData,1000);
+        this.gatherPageHighlightsDebounced = _.debounce(this.gatherPageHighlights, 1000);
     }
 
     // For actually telling backend to cancel a request?
     // _axiosSource = null;
+    _page = 1;
+    _pageSize = 10;
     
     // For canceling a search when component unloads
     _mounted = false;
-
-    // For canceling a search on demand
-    _canceled = false;
 
     // For canceling any running search if user starts a new search before results are done
     _searchId = 1;
@@ -100,6 +100,14 @@ export default class App extends React.Component {
         this.setState({
             useSearchOptions: val
         });
+    }
+
+    setPageInfo = (page, pageSize) => {
+        this._page = page;
+        this._pageSize = pageSize;
+        // console.log("page, pageSize",this._page,this._pageSize);
+        this._searchId = this._searchId + 1;
+        this.gatherPageHighlightsDebounced(this._searchId, this._searcherState, this.state.outputResults);
     }
 
     countTypes = () => {
@@ -189,102 +197,60 @@ export default class App extends React.Component {
         }
     }
 
-    // legacy logic got geodata + counts from the backend, every time the results changed incl. filtering
-    // getGeoData = (filteredResults) => {
-    //     if(filteredResults) {
-            
-    //         let _ids = [];
-    //         filteredResults.forEach(process => {
-    //             process.records.forEach(record => {
-    //                 _ids.push(record.id);
-    //             })
-    //         })
-            
-    //         let url = Globals.currentHost + "geojson/get_all_state_county_for_eisdocs";
-
-    //         axios.post(url, { ids: _ids } ).then(response => {
-    //             if(response.data && response.data[0]) {
-    //                 for(let i = 0; i < response.data.length; i++) {
-    //                     // console.log(response.data[i].count); // TODO: use count
-    //                     let json = JSON.parse(response.data[i]['geojson']);
-    //                     json.style = {};
-    //                     json.sortPriority = 0;
-    //                     json.count = response.data[i]['count'];
-
-    //                     if(json.properties.COUNTYFP) {
-    //                         json.style.color = "#3388ff"; // county: default (blue)
-    //                         json.style.fillColor = "#3388ff";
-    //                         json.sortPriority = 5;
-    //                     } else if(json.properties.STATENS) {
-    //                         json.style.color = "#000"; // state: black
-    //                         json.style.fillColor = "#000";
-    //                         json.sortPriority = 4;
-    //                     } else {
-    //                         json.style.color = "#D54E21";
-    //                         json.style.fillColor = "#D54E21";
-    //                         json.sortPriority = 6;
-    //                     }
-    //                     response.data[i] = json;
-    //                 }
-
-    //                 let sortedData = response.data.sort((a, b) => parseInt(a.sortPriority) - parseInt(b.sortPriority));
-                    
-    //                 // console.log("Called for geodata", sortedData);
-    //                 this.setState({
-    //                     geoResults: sortedData,
-    //                     geoLoading: false
-    //                 });
-    //             } else {
-    //                 this.setState({
-    //                     geoResults: null,
-    //                     geoLoading: false
-    //                 });
-    //             }
-    //         });
-
-            
-    //     } 
-    // }
-
     /** Design: Search component calls this parent method which controls
-    * the results, which gives a filtered version of results to SearchResults */
+    * the results, which gives a filtered version of results to SearchResults.
+    * Sorts by existing sort/asc values before updating state for a more responsive UX. 
+    * Gets highlights for current page whenever it's called. */
     filterResultsBy = (searcherState) => {
+        // console.log("Filtering");
         this._searcherState = searcherState; // for live filtering
         // Only filter if there are any results to filter
         if(this.state.searchResults && this.state.searchResults.length > 0) {
 
             const filtered = Globals.doFilter(searcherState, this.state.searchResults, this.state.searchResults.length, false);
             
-            
             // Even if there are no filters active we still need to update to reflect this,
             // because if there are no filters the results must be updated to the full unfiltered set
             this.setState({
-                outputResults: filtered.filteredResults,
-                // geoResults: null,
-                // geoLoading: true,
+                outputResults: filtered.filteredResults.sort((this.alphabetically(this._sortVal, this._ascVal))),
                 resultsText: filtered.textToUse,
+                searching: true,
                 shouldUpdate: true
             }, () => {
                 // this.getGeoDebounced(filtered.filteredResults);
                 this.getGeoDebounced();
+
+                this._searchId = this._searchId + 1;
+                this.gatherPageHighlightsDebounced(this._searchId, searcherState, filtered.filteredResults);
             });
         }
     }
 
-    // Sort search results on call from results component
+    /** Sort search results on call from SearchProcessResults.java, assigns _sortVal and _ascVal in case we need them
+     * and then activates sortDataByFieldThenHighlight() which then asks for highlighting if needed
+      */
     sort = (val, asc) => {
         this._sortVal = val;
         this._ascVal = asc;
-        this.sortDataByField(val, asc);
+        this.sortDataByFieldThenHighlight(val, asc);
     }
 
-    // TODO: asc/desc (> vs. <, default desc === >)
-    sortDataByField = (field, ascending) => {
+    /** Sort, then highlight */
+    sortDataByFieldThenHighlight = (field, ascending) => {
         // console.log("Sorting");
         this.setState({
             // searchResults: this.state.searchResults.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
-            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending))),
-            shouldUpdate: true
+            searching: true,
+            outputResults: this.state.outputResults.sort((this.alphabetically(field, ascending)))
+        }, () => {
+            this.gatherPageHighlightsDebounced(this._searchId, this._searcherState, this.state.outputResults);
+        });
+    }
+
+    /** Do all cleanup needed: Just set searching to false */
+    endEarly = () => {
+        this.setState({
+            searching: false
         });
     }
 
@@ -400,29 +366,6 @@ export default class App extends React.Component {
         return Object.values(processResults).sort(function(a,b){return a.relevance - b.relevance;});
     }
 
-    // TODO: Can't set state here, state update logic needs to happen elsewhere?
-    stopSearch = () => {
-        this._canceled = true;
-        
-        // let _axiosSource = axios.CancelToken.source();
-        // _axiosSource.cancel();
-        // axios.get(Globals.currentHost + "text/search", {
-        //     cancelToken: new CancelToken(function executor(c) {
-        //         cancel = c; // c is the cancel function
-        //     })
-        // }).then((res) => {
-        //     console.log("text/search cancel", res);
-        // })
-
-        // this.filterResultsBy(searcherState);
-        // this.setState({searching:false})
-        // this.setState({
-        //     searching: false
-        // }, () => {
-        //     this.filterResultsBy(this._searcherState);
-        // });
-    }
-
     // Start a brand new search.
     startNewSearch = (searcherState) => {
 
@@ -456,7 +399,6 @@ export default class App extends React.Component {
         this._sortVal = "relevance"; 
         this._ascVal = true;
 
-        this._canceled = false;
         this._searcherState = searcherState; // for live filtering
 
         this.resetTypeCounts();
@@ -481,6 +423,7 @@ export default class App extends React.Component {
         if(!this._mounted){ // User navigated away or reloaded
             return;
         }
+        // console.log("Start search");
 
 		this.setState({
             // Fresh search, fresh results
@@ -652,10 +595,6 @@ export default class App extends React.Component {
                             // got all results already, so stop searching and start highlighting.
                             this.filterResultsBy(this._searcherState);
                             this.countTypes();
-                        
-                            this._searchId = this._searchId + 1;
-                            // console.log("Launching fragment search ",this._searchId);
-                            this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
                         } else {
                             this.initialSearch(searcherState);
                         }
@@ -705,12 +644,12 @@ export default class App extends React.Component {
     }
 
     /** Populates full results without text highlights and then starts the highlighting process */
-    initialSearch = (searcherState) => {
+    initialSearch = () => {
         if(!this._mounted){ // User navigated away or reloaded
             return;
         }
 
-        console.log("initialSearch");
+        // console.log("initialSearch");
 
         let searchUrl = new URL('text/search_no_context', Globals.currentHost);
 
@@ -831,10 +770,6 @@ export default class App extends React.Component {
                     // console.log("Mapped data",_data);
 
                     this.countTypes();
-                
-                    this._searchId = this._searchId + 1;
-                    // console.log("Launching fragment search ",this._searchId);
-                    this.gatherHighlightsFVH(this._searchId, 0, searcherState, _data);
                 });
             } else {
                 // console.log("No results");
@@ -900,104 +835,67 @@ export default class App extends React.Component {
             })
         }
     }
-    
 
-    //     // Possible logic: 
-    //     // 1. Send list of objects with filename + EISDoc ID.
-    //     // Offset determines how many objects to send at a time.
-    //     // They have to match the order that the frontend displays the filenames in, per card.
-    //     // Getting highlights for page user is on, debounced, would be cool, but could be difficult.
-    //     // Adding spinner as placeholder for highlights would also be cool.
-    //     // 2. Backend gets text by matching on given list of data, and gets highlights from texts.
-    //     // 3. Backend sends list of objects containing filename, EISDoc ID, highlight.
-    //     // 4. Frontend receives, matches, updates highlights.
-
-    //     // There shouldn't be any cause for giving the entire result set back to the backend.
-    //     // Other logic would be to expect only highlights back in a particular order.  However sorting
-    //     // would complicate this in several ways.
-
-    
-
-    // Because this seems so optimized on the backend now, we'll try getting 1000 at once after the first page.
-    gatherHighlightsFVH = (searchId, _offset, _inputs, currentResults) => {
+    gatherPageHighlights = (searchId, _inputs, currentResults) => {
+        if(!_inputs) {
+            _inputs = {titleRaw: Globals.getParameterByName("q")}
+        }
+        // console.log("Gathering page highlights", searchId, this._page, this._pageSize);
         if(!this._mounted){ // User navigated away or reloaded
             return; // cancel search
         }
         if(searchId < this._searchId) { // Search interrupted
             return; // cancel search
         }
-        if(!axios.defaults.headers.common['Authorization']){ // Don't have to do this but it can save a backend call
-            // this.props.history.push('/login'); // Prompt login if no auth token
-        }
-        if (typeof _offset === 'undefined') {
-            _offset = 0;
-        }
         if (typeof currentResults === 'undefined') {
             currentResults = [];
         }
 
-        if(_offset > currentResults.length || this._canceled) {
-            let resultsText = currentResults.length + " Results";
-            if(this._canceled) {
-                resultsText += " (stopped)";
-            }
-            // console.log("Nothing left to highlight",currentResults);
-            this.setState({
-                searching: false,
-                resultsText: resultsText,
-                shouldUpdate: true
-            }, () => {
-                this.filterResultsBy(this._searcherState);
-            });
-            return;
-        }
-
-        let _limit = 1000; // normally get 1000
-        if(_offset === 0) {
-            _limit = 10; // start with 10
-        } else if(_offset === 10) {
-            _limit = 990;
-        }
+        // No need for offset or limit. We just need to find the unhighlighted files on this page.
+        // This requires only page number, number of cards per page and number of cards on page 
+        // (could be less than max page size)
 
         this.setState({
             snippetsDisabled: false,
-			resultsText: currentResults.length + " Results.  Getting Text Snippets...",
+            searching: true,
             networkError: "", // Clear network error
 		}, () => {
             
-            // For the new search logic, the idea is that the limit and offset are only for the text
-            // fragments.  The first search should get all of the results, without context.
-            // We'll need to consolidate them in the frontend and also ask for text fragments and assign them
-            // properly
             let searchUrl = new URL('text/get_highlightsFVH', Globals.currentHost);
 
-            // TODO: Gather limit # IDs and filenames starting at offset # from current results,
-            // feed as data.  Because we're deciding what we want from the backend, offset is handled
-            // locally.
+            let mustSkip = {};
             let _unhighlighted = [];
-            for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++){
+            let startPoint = (this._page * this._pageSize) - this._pageSize;
+            let endPoint = (this._page * this._pageSize);
+
+            for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++){
                 for(let j = 0; j < currentResults[i].records.length; j++) {
                     // Push Lucene IDs and >-delimited list of filenames
                     if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)) {
                         // console.log("Pushing",i,j,currentResults[i].records[j].id);
-                        _unhighlighted.push(
-                            {
-                                luceneIds: currentResults[i].records[j].luceneIds, 
-                                filename: currentResults[i].records[j].name
-                            }
-                        );
+
+                        // Need to skip this entry on both sides if it already has plaintext.
+                        // If it has any, then it's complete - no situation where only some of the files would get text.
+                        if(!currentResults[i].records[j].plaintext || !currentResults[i].records[j].plaintext[0]) {
+                            _unhighlighted.push(
+                                {
+                                    luceneIds: currentResults[i].records[j].luceneIds, 
+                                    filename: currentResults[i].records[j].name
+                                }
+                            );
+                        } else {
+                            console.log("Adding skip ID " + [currentResults[i].records[j].id]);
+                            mustSkip[currentResults[i].records[j].id] = true;
+                        }
                     }
                 }
             }
 
 
-            // If nothing to highlight in this batch, skip to next run
-            if(_unhighlighted.length === 0) {
-                if(searchId < this._searchId) {
-                    return;
-                } else {
-                    this.gatherHighlightsFVH(searchId, _offset + _limit, _inputs, currentResults);
-                }
+            // If nothing to highlight, nothing to do on this page
+            if(_unhighlighted.length === 0 || searchId < this._searchId) {
+                // console.log("nothing to highlight: endEarly()");
+                this.endEarly();
                 return;
             }
 
@@ -1025,47 +923,87 @@ export default class App extends React.Component {
                 }
             }).then(parsedJson => {
                 if(parsedJson){
-                    // Incoming data is an array of arrays of text fragments, so for example if a record has 4 file hits,
-                    // we expect it to get an array of 4 fragments.
-                    // Since it goes out and comes back in in order of relevance and that's how we maintain the association
-                    // during multiple calls, we'd have to be aware of that if rearranging internal file
-                    // or record order to not be by relevance (safest would be only rearranging after getting all fragments)
-                    // console.log("Processing results", parsedJson.length);
-                    let updatedResults = this.state.searchResults;
 
-                    // IMPORTANT: Redone to accommodate for process view of course
-                    // Fill highlights here; update state
-                    // Presumably comes back in order it was sent out, so we could just do this?:
+                    // console.log("Adding highlights", parsedJson);
+
+                    // TODO: It's not efficient, but outside of completely changing data structures for results,
+                    // we can assign highlights to all results here by searching over the array looking for record IDs
+                    // until we hit the end of the highlights
+                    let recordIdList = [];
+                    let allResults = this.state.searchResults;
+
                     let x = 0;
-                    for(let i = _offset; i < Math.min(currentResults.length, _offset + _limit); i++) {
+                    for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++) {
                         for(let j = 0; j < currentResults[i].records.length; j++) {
                             // If search is interrupted, updatedResults[i] may be undefined (TypeError)
                             if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)){
                                 // console.log("Assigning",i,j,currentResults[i].records[j].name);
-                                updatedResults[i].records[j].plaintext = parsedJson[x];
-                                x++;
+
+                                if(mustSkip[currentResults[i].records[j].id]) {
+                                    // do nothing; skip
+                                    // console.log("Skipping ID " + [currentResults[i].records[j].id]);
+                                } else {
+                                    currentResults[i].records[j].plaintext = parsedJson[x];
+                                    recordIdList.push(currentResults[i].records[j].id);
+                                    x++;
+                                }
                             }
                         }
                     }
+
                     
-                    // Verify one last time we want this before we actually commit to these results
+                    let n = 0;
+                    for(let i = 0; i < allResults.length; i++) {
+                        for(let j = 0; j < allResults[i].records.length; j++) {
+                            if(!Globals.isEmptyOrSpaces(allResults[i].records[j].name)){
+                                // Sorting can jumble it up, so we don't know which ID could match. Check all of them:
+                                for(let k = 0; k < recordIdList.length; k++) {
+                                    if(recordIdList[k] === allResults[i].records[j].id) {
+                                        // console.log(`Assigning ${parsedJson[n].length} highlights from parsedJson[${n}] to id ${recordIdList[n]}: ${parsedJson[n]}`);
+                                        // console.log(`Assigning ${parsedJson[k].length} highlights from parsedJson[${k}] to id ${recordIdList[k]}`);
+                                        allResults[i].records[j].plaintext = parsedJson[k];
+                                        n++;
+
+                                        // match found for this record; exit
+                                        k = recordIdList.length;
+                                    }
+                                }
+                            }
+    
+                            if(n === recordIdList.length) {
+                                // exit
+                                // console.log("Assigned all highlights to searchResults; exiting 1");
+                                j = allResults[i].records.length;
+                            }
+                        }
+
+                        if(n === recordIdList.length) {
+                            // exit
+                            // console.log("***Assigned all highlights to searchResults; exiting 2***");
+                            i = allResults.length;
+                        }
+                    }
+
+                    
+                    // Verify one last time we want this before we actually commit to these results,
+                    // otherwise it could be jarring UX to setState here
                     if(searchId < this._searchId) {
+                        // console.log("There's another search call happening");
                         return;
                     } else {
+                        // Fin
+                        // let resultsText = currentResults.length + " Results";
                         this.setState({
-                            searchResults: updatedResults,
-                            outputResults: updatedResults,
-                            count: _offset,
-                            // shouldUpdate: false
+                            searchResults: allResults,
+                            outputResults: currentResults,
+                            // count: updatedResults.length,
+                            searching: false, 
+                            // resultsText: resultsText, 
+                            shouldUpdate: true
                         }, () => {
-                            if(this._sortVal) {
-                                this.sortDataByField(this._sortVal, this._ascVal);
-                            }
-                            this.filterResultsBy(this._searcherState);
+                            // console.log("All done with page highlights: all results, displayed results", 
+                            //     allResults, currentResults);
                         });
-                        
-                        // offset for next run incremented by limit used
-                        this.gatherHighlightsFVH(searchId, _offset + _limit, _inputs, updatedResults);
                     }
                 }
             }).catch(error => { 
@@ -1090,24 +1028,7 @@ export default class App extends React.Component {
                 }
             });
         });
-
-        // Possible logic: 
-        // 1. Send list of objects with filename + EISDoc ID.
-        // Offset determines how many objects to send at a time.
-        // They have to match the order that the frontend displays the filenames in, per card.
-        // Getting highlights for page user is on, debounced, would be cool, but could be difficult.
-        // Adding spinner as placeholder for highlights would also be cool.
-        // 2. Backend gets text by matching on given list of data, and gets highlights from texts.
-        // 3. Backend sends list of objects containing filename, EISDoc ID, highlight.
-        // 4. Frontend receives, matches, updates highlights.
-
-        // There shouldn't be any cause for giving the entire result set back to the backend.
-        // Other logic would be to expect only highlights back in a particular order.  However sorting
-        // would complicate this in several ways.
-
-        
     }
-
 
     /** Currently this should always get a 200 back since searches were allowed when not logged in. */
 	check = () => { // check if JWT is expired/invalid
@@ -1135,11 +1056,6 @@ export default class App extends React.Component {
                     verified: false,
                     shouldUpdate: true
                 });
-                // this.props.history.push('/login');
-                // this.setState({
-                //     networkError: Globals.errorMessage.auth,
-                //     shouldUpdate: true
-                // });
             }
 		})
 		.finally(() => {
@@ -1152,15 +1068,6 @@ export default class App extends React.Component {
     /** Scroll to bottom on page change and populate full table with latest results */
     scrollToBottom = (_rows) => {
         try {
-            // console.log("Page update");
-            // console.log("Rows", _rows);
-            // for(let i = 0; i < _rows.length; i++) {
-            //     console.log(_rows[i].data);
-            //     if(_rows[i].data.plaintext.length === 0){
-            //         console.log("No text.  Should populate.");
-            //         i = _rows.length;
-            //     }
-            // }
             this.setState({
                 outputResults: this.state.searchResults,
                 displayRows: _rows,
@@ -1273,36 +1180,6 @@ export default class App extends React.Component {
             );
         }
     }
-    // Only works for records, not processes
-    // downloadCurrentAsTSVOld = () => {
-    //     if(this.state.outputResults && this.state.outputResults.length > 0) {
-    //         const resultsForDownload = this.state.outputResults.map((result, idx) => {
-    //             // omit stuff like comments, highlights, relevance, lucene stuff
-    //             let newResult = {
-    //                 id: result.id,
-    //                 title: result.title,
-    //                 documentType: result.documentType,
-    //                 registerDate: result.registerDate,
-    //                 agency: result.agency,
-    //                 cooperating_agency: result.cooperatingAgency,
-    //                 state: result.state,
-    //                 // county: result.county,
-    //                 // subtype: result.subtype,
-    //                 processId: result.processId,
-    //                 // link: result.link,
-    //                 notes: result.notes,
-    //                 // rodDate: result.firstRodDate
-    //                 status: result.status,
-    //                 folder: result.folder
-    //             }
-    //             if(!newResult.processId) { // don't want to imply zeroes are valid
-    //                 newResult.processId = '';
-    //             }
-    //             return newResult;
-    //         });
-    //         this.downloadResults(Globals.jsonToTSV(resultsForDownload));
-    //     }
-    // }
 
     // best performance is to Blob it on demand
     downloadResults = (results, fileExt) => {
@@ -1350,7 +1227,6 @@ export default class App extends React.Component {
                         search={this.startNewSearch} 
                         suggest={this.suggestFromTerms}
                         lookupResult={this.state.lookupResult}
-                        stop={this.stopSearch}
                         filterResultsBy={this.filterResultsBy} 
                         searching={this.state.searching} 
                         useOptions={this.state.useSearchOptions}
@@ -1368,6 +1244,7 @@ export default class App extends React.Component {
                     />
                     <SearchProcessResults 
                         sort={this.sort}
+                        informAppPage={this.setPageInfo}
                         results={this.state.outputResults} 
                         geoResults={this.state.geoResults}
                         filtersHidden={this.state.filtersHidden}
@@ -1407,18 +1284,6 @@ export default class App extends React.Component {
                 </div>
             </div>);
         }
-		// else if(this.state.loaded)
-		// {
-		// 	return (
-		// 		<div className="content">
-        //             <div>
-        //                 <label className="logged-out-header">
-        //                     Please <Link to="/login">log in</Link> or <Link to="/register">register</Link> to use NEPAccess.
-        //                 </label>
-        //             </div>
-		// 		</div>
-		// 	)
-		// }
         else { // show nothing until at least we've loaded
             return (<div className="content">
                 <Helmet>

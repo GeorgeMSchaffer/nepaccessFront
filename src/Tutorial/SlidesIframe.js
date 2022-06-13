@@ -164,7 +164,7 @@ export default class Slides extends React.Component {
     }
     
     componentDidMount() {
-        console.log("Mount");
+        // console.log("Mount");
         this.startOpenIfLoggedIn();
     }
     

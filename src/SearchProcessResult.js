@@ -112,8 +112,8 @@ export default class SearchProcessResult extends React.Component {
     showFragment = (_id,_filename,text,index) => {
         if(text) {
             return (
-                <span className="fragment-container" key={ index }>
-                    <span className="cardHeader bold filename-inner" key={ `${index}-2` }>
+                <span className="fragment-container" key={ `${_filename}-1` }>
+                    <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>
                         <DownloadFile key={_filename} downloadType="nepafile" 
                             recordId={_id}
                             id={_id}
@@ -121,7 +121,7 @@ export default class SearchProcessResult extends React.Component {
                             results={true} />
                     </span>
 
-                    <span className="card-highlight fragment" key={ `${index}-3` }
+                    <span className="card-highlight fragment" key={ `${_filename}-3` }
                             dangerouslySetInnerHTML={{
                                 __html:text
                             }}>
@@ -130,8 +130,8 @@ export default class SearchProcessResult extends React.Component {
             );
         } else {
             return (
-                <span className="fragment-container" key={ index }>
-                    <span className="cardHeader bold filename-inner" key={ `${index}-2` }>
+                <span className="fragment-container" key={ `${_filename}-1` }>
+                    <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>
                         <DownloadFile key={_filename} downloadType="nepafile" 
                             recordId={_id}
                             id={_id}
@@ -167,7 +167,7 @@ export default class SearchProcessResult extends React.Component {
                     return (<>
                         {this.showFragment(_id,combined[0][0],combined[0][1],0)}
     
-                        <div className="margins">
+                        <div className="margins" key={_id}>
                             <div>
                                 <span className="hide-button" onClick={(e) => this.hide(e, record.id)}>
                                     Show more text snippets ({combined.length - 1}) ↴
@@ -185,7 +185,7 @@ export default class SearchProcessResult extends React.Component {
                             if(index === 0) {
                                 return (<>
                                     {this.showFragment(_id,combo[0],combo[1],index)}
-                                    <div className="margins">
+                                    <div className="margins" key={_id}>
                                         <span className="hide-button" onClick={(e) => this.hide(e,record.id)}>
                                             Show fewer text snippets
                                         </span>
@@ -206,7 +206,7 @@ export default class SearchProcessResult extends React.Component {
                         </div>
                         {combined.map(function(combo, index){
                             return (
-                                <span className="fragment-container" key={ index }>
+                                <span className="fragment-container" key={ combo[0] }>
                                     <span className="cardHeader bold filename-inner">
                                         {combo[0]}
                                     </span>
@@ -343,8 +343,13 @@ export default class SearchProcessResult extends React.Component {
 
 
 	render() {
+        let _key = "";
+        if(this.props.cell._cell.row.data.records.id) {
+            _key = this.props.cell._cell.row.data.records.id;
+        }
+
         return (
-            <div className="table-holder">
+            <div className="table-holder" key={_key}>
                 <div className="">
                     <div className="table-like">
                         <div className="table-row cardTitle">

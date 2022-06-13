@@ -58,6 +58,7 @@ export default class SearchProcessResults extends React.Component {
     }
     
     page = 1;
+    pageSize = 10;
     offsetY = null;
 
     hide = (props) => {
@@ -95,16 +96,45 @@ export default class SearchProcessResults extends React.Component {
         }
     }
     onPageLoaded = (pageNumber) => {
-        if(this.page !== pageNumber){
-            this.page = pageNumber;
+        // this.page can become a string on mount/unmount, which makes comparisons interesting.
+        // console.log(typeof(this.page));
+        try {
+            const TABLE = this.ref.table;
+            let PAGE_SIZE = TABLE.footerManager.links[0].size;
+            let shouldScroll = false;
+            // Page change OR page size change
+            if(this.page != pageNumber || this.pageSize != PAGE_SIZE){
 
-            try {
-                this.props.scrollToTop();
-            } catch(e) {
-                console.error(e);
+                // Only scroll to top on new page, not new page size
+                if(this.page != pageNumber) {
+                    shouldScroll = true;
+                }
+                
+                // Need to set these ahead of informAppPage()
+                this.page = pageNumber;
+                this.pageSize = PAGE_SIZE;
+
+                // Ensures this won't try to run if parent (App.js) isn't supporting on-demand highlighting
+                if(this.props.informAppPage) {
+                    this.props.informAppPage(pageNumber, PAGE_SIZE);
+                }
+
+                if(shouldScroll) {
+                    this.props.scrollToTop();
+                }
+            } else {
                 // do nothing
+                // console.log("Nothing is different", this.page, pageNumber, this.pageSize, PAGE_SIZE);
             }
+        } catch(e) {
+            // console.error(e);
+            // console.error("Table not yet rendered");
+            // do nothing
         }
+    }
+    handlePaginationError = (evt) => {
+        console.log("Custom pagination error logic");
+        this.onPageLoaded(1);
     }
     
     onCheckboxChange = (evt) => {
@@ -134,9 +164,10 @@ export default class SearchProcessResults extends React.Component {
                 }
                 TABLE.setColumns(_columns); 
     
-                // to maintain page user is on even after rerender (ex. show/hide text snippets), 
-                // we save page as a local variable and set it here
-                TABLE.setPage(this.page);
+                // Check if filtering has reduced the page count below the last known active page.
+                // We don't want to call setPage on a page that doesn't exist.
+                // Use max page in that case. Other option would be setPage(1).
+                TABLE.setPage(Math.min(this.page,TABLE.footerManager.links[0].max));
                 // Note that we might want the page to be reset in some circumstances but that can be handled if so
             } catch (e) {
                 console.log("Column setup error");
@@ -216,13 +247,17 @@ export default class SearchProcessResults extends React.Component {
                                 download={this.props.download}
                                 exportToSpreadsheet={this.props.exportToSpreadsheet}
                             />
-                             <ReactTabulator
+                            
+                            {/* {this.props.searching ? <>Please wait...</> : <></>} */}
+
+                            <ReactTabulator
                                 ref={ref => (this.ref = ref)}
                                 data={this.props.results}
                                 columns={this._columns}
                                 options={this.options}
                                 pageLoaded={this.onPageLoaded}
                                 renderComplete={this.doneRender}
+                                paginationError={this.handlePaginationError}
                             />
                         </div>
                     </div>
@@ -244,20 +279,23 @@ export default class SearchProcessResults extends React.Component {
         }
     }
 
+    // page restoring stuff persists through page reload, which is probably not what we want
+
     componentDidMount() {
-        // Restore user's last viewed page in results if possible
-        if(localStorage.unmountedPage) {
-            try {
-                this.page = localStorage.unmountedPage;
-            } catch(e) {
-                console.log(e);
-            }
-        }
+        // // Restore user's last viewed page in results if possible
+        // if(localStorage.unmountedPage) {
+        //     try {
+        //         console.log("Restoring page",localStorage.unmountedPage);
+        //         this.page = localStorage.unmountedPage;
+        //     } catch(e) {
+        //         console.log(e);
+        //     }
+        // }
     }
 
     componentWillUnmount() {
-        // Save last viewed page number so user doesn't lose their place on navigation
-        localStorage.unmountedPage = this.page;
+        // // Save last viewed page number so user doesn't lose their place on navigation
+        // localStorage.unmountedPage = this.page;
     }
     
     componentDidUpdate() {
