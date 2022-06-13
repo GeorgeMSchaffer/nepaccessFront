@@ -17,8 +17,8 @@
     /* margin-left: 2%; */
     margin-left: 15px;
 
-    border: 2px solid rgba(218, 218, 218, 1);
-    background: rgba(240, 239, 237, 1);
+    /* border: 2px solid rgba(218, 218, 218, 1);
+    background: rgba(240, 239, 237, 1); */
 }
 
 .sidebar-filter, .filter {
@@ -26,13 +26,13 @@
 }
 
 .sidebar-hr:first-of-type {
-    border: 1px solid rgba(153, 153, 153, 1);
+    /* border: 1px solid rgba(153, 153, 153, 1); */
 }
 
 .sidebar-hr {
-    border-bottom: 1px solid rgba(153, 153, 153, 1);
-    margin-top: 15px;
-    margin-bottom: 15px;
+    /* border-bottom: 1px solid rgba(153, 153, 153, 1); */
+    margin-top: 32px;
+    /* margin-bottom: 16px; */
 }
 
 .sidebar-header {
