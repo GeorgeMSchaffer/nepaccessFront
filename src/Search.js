@@ -30,7 +30,9 @@ const FULLSTYLE = {display: 'block',
     width: '80%',
     minWidth: '20%',
     maxWidth: '100%',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    border: '2px solid rgba(218, 218, 218, 1)',
+    background: 'rgba(240, 239, 237, 1)'
 };
 
 class Search extends React.Component {
@@ -1155,7 +1157,6 @@ class Search extends React.Component {
                 </div>
 
                 <div className="filter" hidden={!Globals.curatorOrHigher()}>
-                    <hr />
                     <label className="sidebar-label-date">Advanced</label>
                     <div className="sidebar-checkboxes">
                         <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
