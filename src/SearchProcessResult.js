@@ -145,7 +145,7 @@ export default class SearchProcessResult extends React.Component {
 
                 </span>
             );
-        } else { // else we didn't find any text snippet (maybe file couldn't be indexed) and it's just blank
+        } else { // else we didn't find any text snippet and it's just blank (this is likely impossible).
             return (
                 <span className="fragment-container" key={ `${_filename}-1` }>
                     <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>

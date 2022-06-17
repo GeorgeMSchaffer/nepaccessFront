@@ -1,4 +1,5 @@
-/** e.g. <div class="loader">Loading...</div> */
+/* https://projects.lukehaas.me/css-loaders/ */
+/* e.g. <div class="loader">Loading...</div> */
 .loader {
     color: #8FBC3F;
     font-size: 10px;
