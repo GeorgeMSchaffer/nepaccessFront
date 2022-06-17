@@ -96,6 +96,9 @@ div.leaflet-control-container>div.leaflet-left {
     display: none; /* Defining our own ZoomControl, so hide the default. */
 }
 
+path.leaflet-interactive {
+    stroke-width: 1;
+}
 .leaflet-interactive:hover {
     fill: yellowgreen;
     fill-opacity: 0.2;
