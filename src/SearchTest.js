@@ -103,6 +103,7 @@ class Search extends React.Component {
         this._lastSearchTerms = terms;
         this.setState({
             titleRaw: parseTerms(terms),
+            lastSearchedTerm: parseTerms(terms),
             surveyChecked: false,
             surveyDone: false,
             isDirty: true
@@ -1176,7 +1177,7 @@ class Search extends React.Component {
         this.setState({hideOrganization: !this.state.hideOrganization})
     }
 
-    componentWillUnmount() {
+    componentWillUnmount() { // For if user navigates away using top menu
 		persist.setItem('appState', JSON.stringify(this.state));
 	}
 
@@ -1185,9 +1186,19 @@ class Search extends React.Component {
         try {
             Globals.registerListener('geoFilter', this.geoFilter);
 
+            // For if user navigates back using top menu
             const rehydrate = JSON.parse(persist.getItem('appState'));
+
+            // Need to restore last searched term to support on-demand highlighting in case user navigates away from
+            // and back to Search, using the top menu
+            if(rehydrate.lastSearchedTerm) {
+                rehydrate.titleRaw = rehydrate.lastSearchedTerm;
+                this._lastSearchTerms = rehydrate.lastSearchedTerm;
+            }
+            
             // console.log(rehydrate.startPublish);
             // console.log(new Date(rehydrate.startPublish));
+
             if(typeof(rehydrate.startPublish) === "string"){
                 rehydrate.startPublish = Globals.getCorrectDate(rehydrate.startPublish);
             } // else number

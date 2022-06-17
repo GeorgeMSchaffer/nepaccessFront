@@ -5,7 +5,7 @@ import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import SearchProcessResults from './SearchProcessResults.js';
-import Search from './SearchTest.js';
+import Search from './Search.js';
 
 import Footer from './Footer.js';
 
@@ -47,7 +47,8 @@ export default class App extends React.Component {
         down: false,
         isMapHidden: false,
         filtersHidden: false,
-        lookupResult: null
+        lookupResult: null,
+        lastSearchedTerm: ''
     }
     
     constructor(props){
@@ -58,8 +59,7 @@ export default class App extends React.Component {
         this.gatherPageHighlightsDebounced = _.debounce(this.gatherPageHighlights, 1000);
     }
 
-    // For actually telling backend to cancel a request?
-    // _axiosSource = null;
+    // Necessary for on-demand highlighting per page
     _page = 1;
     _pageSize = 10;
     
@@ -368,6 +368,11 @@ export default class App extends React.Component {
 
     // Start a brand new search.
     startNewSearch = (searcherState) => {
+        console.log("New search");
+
+        // Reset page, page size
+        this._page = 1;
+        this._pageSize = 10;
 
         // throw out anything we really don't want to support/include
         searcherState.titleRaw = preProcessTerms(searcherState.titleRaw);
@@ -435,7 +440,8 @@ export default class App extends React.Component {
 			resultsText: "Loading results...",
             networkError: "", // Clear network error
             searching: true,
-            shouldUpdate: true
+            shouldUpdate: true,
+            lastSearchedTerm: this.state.searcherInputs.titleRaw
 		}, () => {
             // title-only
             let searchUrl = new URL('text/search', Globals.currentHost);
@@ -838,7 +844,11 @@ export default class App extends React.Component {
 
     gatherPageHighlights = (searchId, _inputs, currentResults) => {
         if(!_inputs) {
-            _inputs = {titleRaw: Globals.getParameterByName("q")}
+            if(this.state.searcherInputs) {
+                _inputs = this.state.searcherInputs;
+            } else if(Globals.getParameterByName("q")) {
+                _inputs = {titleRaw: Globals.getParameterByName("q")};
+            }
         }
         // console.log("Gathering page highlights", searchId, this._page, this._pageSize);
         if(!this._mounted){ // User navigated away or reloaded
@@ -1325,10 +1335,10 @@ export default class App extends React.Component {
         // console.log("Unmount app");
         this._mounted = false;
 
-        // Option: Rehydrate if not interrupting a search
-        if(!this.state.searching){
+        // Option: Rehydrate only if not interrupting a search?
+        // if(!this.state.searching){
             persist.setItem('results', JSON.stringify(this.state));
-        }
+        // }
     }
 	
 }
