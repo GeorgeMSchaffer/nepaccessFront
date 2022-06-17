@@ -33,6 +33,11 @@
     color: lightgray !important;  
     }
 
+
+#register-select .creatable__menu-list {
+    max-height: 400px;
+}
+
 #register-form input:enabled:hover {
     color: black;
     background-color: rgb(230,255,230);
