@@ -110,7 +110,7 @@ export default class SearchProcessResult extends React.Component {
      * Returns: HTML for React incl. DownloadFile (which handles logging downloads)
      */
     showFragment = (_id,_filename,text,index) => {
-        if(text) {
+        if(text) { // got text highlight for this file
             return (
                 <span className="fragment-container" key={ `${_filename}-1` }>
                     <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>
@@ -128,7 +128,24 @@ export default class SearchProcessResult extends React.Component {
                     </span>
                 </span>
             );
-        } else {
+        } else if(typeof(text) === 'undefined') { // still loading
+            return (
+                <span className="fragment-container" key={ `${_filename}-1` }>
+                    <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>
+                        <DownloadFile key={_filename} downloadType="nepafile" 
+                            recordId={_id}
+                            id={_id}
+                            filename={_filename}
+                            results={true} />
+                    </span>
+                    
+                    <div className="card-loader-holder">
+                        <div className="loader">Loading text snippet...</div>
+                    </div>
+
+                </span>
+            );
+        } else { // else we didn't find any text snippet (maybe file couldn't be indexed) and it's just blank
             return (
                 <span className="fragment-container" key={ `${_filename}-1` }>
                     <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>
@@ -141,7 +158,6 @@ export default class SearchProcessResult extends React.Component {
                 </span>
             );
         }
-
     }
     /** Used by showRecord(). 
      * Returns HTML for downloadable filenames each with highlight(s) as highlights are populated; show more/less buttons */ 
