@@ -670,7 +670,7 @@ a.link {
     line-height: 24px;
 }
 
-div.disabled::before {
+/* div.disabled::before {
     content: '';
     width: 2px;
     height: 40px;
@@ -680,7 +680,7 @@ div.disabled::before {
     cursor: inherit;
     user-select: none;
     background: lightgray !important;
-}
+} */
 
 #main-search-clear {
     /* margin-left: -285px; */
