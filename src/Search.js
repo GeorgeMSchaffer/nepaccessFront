@@ -76,7 +76,6 @@ class Search extends React.Component {
             offset: 0,
             searchOption: "B",
             test: Globals.anEnum.options,
-            cancelButtonActive: true,
             tooltipOpen: undefined,
             proximityOption: null,
             proximityDisabled: true,
@@ -93,7 +92,6 @@ class Search extends React.Component {
 		};
         this.debouncedSearch = _.debounce(this.props.search, 300);
         this.filterBy = this.props.filterResultsBy;
-        this.stop = this.props.stop;
         // this.filterBy = _.debounce(this.props.filterResultsBy, 200);
 
         this.debouncedSuggest = _.debounce(this.props.suggest, 300);
@@ -105,7 +103,6 @@ class Search extends React.Component {
         this._lastSearchTerms = terms;
         this.setState({
             titleRaw: parseTerms(terms),
-            cancelButtonActive: true, 
             surveyChecked: false,
             surveyDone: false,
             isDirty: true
@@ -115,10 +112,13 @@ class Search extends React.Component {
     }
 
     doSearchFromParams = () => {
+        // console.log("Stored terms", this._lastSearchTerms);
+        // console.log("State.", this.state);
+
         var queryString = Globals.getParameterByName("q");
         if( !this.props.count && (queryString === null || queryString === '') ) {
             // No query param/blank terms: Launch no-term search - Only if we have no results saved here already
-            // console.log("Launching blank search", this.props.count);
+            // console.log("No query parameters, doing blank search.", this.props.count);
             this.doSearch("");
         } else if(queryString){
             // Query terms: Handle proximity dropdown logic, launch search
@@ -127,7 +127,6 @@ class Search extends React.Component {
             this._lastSearchTerms = queryString;
             this.setState({
                 titleRaw: parseTerms(queryString),
-                cancelButtonActive: true,
                 proximityDisabled: proximityValues.disableValue,
                 surveyChecked: false,
                 surveyDone: false,
@@ -135,6 +134,7 @@ class Search extends React.Component {
                 inputMessage: proximityValues._inputMessage
             }, () => {
                 if(this.state.titleRaw){
+                    // console.log("Firing search with query param");
                     this.debouncedSearch(this.state);
                 }
             });
@@ -163,11 +163,7 @@ class Search extends React.Component {
 
     /**
      * Event handlers
-     */  
-    onStopClick = (evt) => {
-        this.stop();
-        this.setState({cancelButtonActive: false});
-    }
+     */
 
 
     onIconClick = (evt) => {
@@ -607,7 +603,7 @@ class Search extends React.Component {
         if(this.props.lookupResult && this.props.lookupResult[0]) {
             return (
                 <div className="suggestion-holder">
-                    <span className="block">Autocompleted titles:</span>
+                    <span className="block">Sample titles:</span>
                     {this.props.lookupResult.map((result,i) => {
                         return this.getSuggestion(result,i)
                     })}
@@ -964,9 +960,6 @@ class Search extends React.Component {
                 <div className="center" hidden={this.props.searching}>
                     <span id="inputMessage">{this.state.inputMessage}</span>
                 </div>
-                <div className="center" hidden={!this.props.searching}>
-                    <button disabled={!this.state.cancelButtonActive} onClick={this.onStopClick}>Stop search (cancels after completing outstanding snippet request)</button>
-                </div>
                 {/* <div className="center" hidden={!this.props.searching}>Loaded text snippets for {this.props.count} results...</div> */}
                 <div className="lds-ellipsis" hidden={!this.props.searching}><div></div><div></div><div></div><div></div></div>
             </div>
@@ -1157,6 +1150,9 @@ class Search extends React.Component {
                 </div>
 
                 <div className="filter" hidden={!Globals.curatorOrHigher()}>
+
+                    <div className="sidebar-hr"></div>
+
                     <label className="sidebar-label-date">Advanced</label>
                     <div className="sidebar-checkboxes">
                         <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
@@ -1165,7 +1161,9 @@ class Search extends React.Component {
                             Apply filters to search query
                         </label>
                     </div>
+
                 </div>
+                
             </div>
             <div hidden={this.state.hideOrganization} id="agency-svg-holder">
                 <button onClick={this.orgClick}>x</button>
@@ -1209,6 +1207,7 @@ class Search extends React.Component {
         this.getCounts();
 
         // Get search params on mount and run search on them (implies came from landing page)
+        // console.log("Search mounted, doing search from parameters.");
         this.doSearchFromParams();
 	}
 
