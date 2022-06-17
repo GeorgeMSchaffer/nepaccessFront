@@ -240,14 +240,13 @@ label.checkbox-text, span.checkbox-text {
     vertical-align: top;
 }
 .pre-input-bar {
-    vertical-align: top;
-}
-.pre-input-bar, .post-input-bar {
     display: inline-block;
     width: 14%;
     height: 64px;
     margin: 0 auto;
+    margin-top: -8px;
     padding: 0;
+    vertical-align: top;
 }
 .input-bar {
     display: inline-block;
