@@ -129,9 +129,14 @@ export default class SearchProcessResults extends React.Component {
                 // console.log("Nothing is different", this.page, pageNumber, this.pageSize, PAGE_SIZE);
             }
         } catch(e) {
+            /* New search (or webapp navigation): Reset page number.
+                Otherwise on new search the table will go to the page from the previous results from the previous search,
+                which can't possibly be correct. Size could be restored but 10 is actually already large. */
+            this.page = pageNumber;
+            this.pageSize = 10;
+
             // console.error(e);
             // console.error("Table not yet rendered");
-            // do nothing
         }
     }
     handlePaginationError = (evt) => {
@@ -281,23 +286,20 @@ export default class SearchProcessResults extends React.Component {
         }
     }
 
-    // page restoring stuff persists through page reload, which is probably not what we want
-
     componentDidMount() {
         // // Restore user's last viewed page in results if possible
-        // if(localStorage.unmountedPage) {
-        //     try {
-        //         console.log("Restoring page",localStorage.unmountedPage);
-        //         this.page = localStorage.unmountedPage;
-        //     } catch(e) {
-        //         console.log(e);
-        //     }
-        // }
+        if(localStorage.unmountedPage) {
+            try {
+                this.page = localStorage.unmountedPage;
+            } catch(e) {
+                console.log(e);
+            }
+        }
     }
 
     componentWillUnmount() {
         // // Save last viewed page number so user doesn't lose their place on navigation
-        // localStorage.unmountedPage = this.page;
+        localStorage.unmountedPage = this.page;
     }
     
     componentDidUpdate() {
