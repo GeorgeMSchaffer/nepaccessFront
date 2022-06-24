@@ -108,7 +108,7 @@ const Globals = {
     },
 
     isEmptyOrSpaces(str){
-        return str === null || str.match(/^ *$/) !== null;
+        return str === undefined || str === null || str.match(/^ *$/) !== null;
     },
 
     /** Return search options that are all default except use the incoming title.  Options based on what Spring DAL uses. */

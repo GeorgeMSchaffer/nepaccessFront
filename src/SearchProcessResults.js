@@ -5,6 +5,8 @@ import SearchProcessResult from './SearchProcessResult.js';
 
 import SearchResultsMap from './SearchResultsMap.js';
 
+import Globals from './globals.js';
+
 import { ReactTabulator } from 'react-tabulator';
 import { reactFormatter } from "react-tabulator";
 import 'react-tabulator/lib/styles.css'; // required styles
@@ -13,6 +15,8 @@ import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 import './loader.css';
 
 import './cardProcess.css';
+
+const _ = require('lodash');
 
 const FULLSTYLE = {
     width: '100%',
@@ -26,6 +30,10 @@ export default class SearchProcessResults extends React.Component {
     _columns = [];
     hidden = new Set();
 
+    page = 1;
+    pageSize = 10;
+    offsetY = null;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -34,6 +42,7 @@ export default class SearchProcessResults extends React.Component {
             hidden: new Set()
         }
         window.addEventListener('resize', this.handleResize);
+        Globals.registerListener('new_search', this.resetHidden);
         
         this._columns = [
             { title: "", field: "", formatter: reactFormatter(
@@ -57,11 +66,19 @@ export default class SearchProcessResults extends React.Component {
             layout:"fitColumns",
             invalidOptionWarnings:false, // spams spurious warnings without this
         };
+
+        this.updateTableDebounced = _.debounce(this.updateTable, 100);
+        this.doneRenderDebounced = _.debounce(this.doneRender, 50);
     }
     
-    page = 1;
-    pageSize = 10;
-    offsetY = null;
+    resetHidden = () => {
+        // console.log("Brand new search, clear toggled Set");
+        this.hidden = new Set();
+    }
+
+    getSpecific = (id) => {
+        return this.props.gatherSpecificHighlights(id);
+    }
 
     hide = (props) => {
         return this.hidden.has(props);
@@ -75,7 +92,9 @@ export default class SearchProcessResults extends React.Component {
             this.setState({hidden: this.hidden});
         } else {
             this.hidden.add(id);
-            this.setState({hidden: this.hidden});
+            this.setState({hidden: this.hidden}, () => {
+                this.props.gatherSpecificHighlights(id);
+            });
         }
     }
     
@@ -183,7 +202,7 @@ export default class SearchProcessResults extends React.Component {
                 // need to redraw to accommodate new data (new dimensions) or hiding/showing texts
                 setTimeout(function() {
                     TABLE.redraw(true);
-                    console.log("Redrawn");
+                    console.log("Table redrawn");
                 },0)
             }
         }
@@ -263,7 +282,7 @@ export default class SearchProcessResults extends React.Component {
                                 columns={this._columns}
                                 options={this.options}
                                 pageLoaded={this.onPageLoaded}
-                                renderComplete={this.doneRender}
+                                renderComplete={this.doneRenderDebounced}
                                 paginationError={this.handlePaginationError}
                             />
                         </div>
@@ -303,6 +322,15 @@ export default class SearchProcessResults extends React.Component {
     }
     
     componentDidUpdate() {
-        this.updateTable();
+        this.updateTableDebounced();
     }
 }
+
+// function uuidv4() {
+//     let returnVal = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+//         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+//     );
+//     console.log('uuid',returnVal);
+
+//     return returnVal;
+// }
