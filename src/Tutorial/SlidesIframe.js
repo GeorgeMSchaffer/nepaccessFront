@@ -158,8 +158,28 @@ export default class Slides extends React.Component {
     }
 
     startOpenIfLoggedIn = () => {
-        if(!localStorage.role && !localStorage.hideTutorial) {
-            this.setState({ show: true });
+        // window.addEventListener("load", () => {
+        //     // user agent breakdown by device type
+        //     var isMobile = navigator.userAgent.toLowerCase().match(/mobile/i),
+        //         isTablet = navigator.userAgent.toLowerCase().match(/tablet/i),
+        //         isAndroid = navigator.userAgent.toLowerCase().match(/android/i),
+        //         isiPhone = navigator.userAgent.toLowerCase().match(/iphone/i),
+        //         isiPad = navigator.userAgent.toLowerCase().match(/ipad/i);
+           
+        //     // detected device 
+        //     console.log("Mobile", isMobile);
+        //     console.log("Tablet", isTablet);
+        //     console.log("Android", isAndroid);
+        //     console.log("iPhone", isiPhone);
+        //     console.log("iPad", isiPad);
+        // });
+
+        if(navigator.userAgent.toLowerCase ().match (/mobile/i)) {
+            // console.log("Mobile device");
+        } else {
+            if(!localStorage.role && !localStorage.hideTutorial) {
+                this.setState({ show: true });
+            }
         }
     }
     
