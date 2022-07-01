@@ -67,8 +67,8 @@ export default class SearchProcessResults extends React.Component {
             invalidOptionWarnings:false, // spams spurious warnings without this
         };
 
-        this.updateTableDebounced = _.debounce(this.updateTable, 100);
-        this.doneRenderDebounced = _.debounce(this.doneRender, 50);
+        this.updateTableDebounced = _.debounce(this.updateTable, 0);
+        this.doneRenderDebounced = _.debounce(this.doneRender, 0);
     }
     
     resetHidden = () => {
