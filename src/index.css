@@ -9,7 +9,7 @@ body, #home-page, #root {
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   font-family: "Open Sans";
   height: calc(100% - 102px);
   box-sizing: border-box;
