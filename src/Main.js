@@ -337,14 +337,6 @@ class Main extends React.Component {
     }
 
     showMenuItems = () => {
-        if(!this.state.role) {
-            if(localStorage.role) {
-                this.setState({ role: localStorage.role });
-            } else if(this.state.anonymous) {
-            } else {
-                this.getRoleDebounced();
-            }
-        }
 
         return (
             <span id="admin-span" hidden={(!this.state.role || this.state.role === 'user')} className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
@@ -375,6 +367,16 @@ class Main extends React.Component {
 
     
     componentDidMount() {
+        // Role config allows admin menu and options to work properly
+        if(!this.state.role) {
+            if(localStorage.role) {
+                this.setState({ role: localStorage.role });
+            } else if(this.state.anonymous) {
+            } else {
+                this.getRoleDebounced();
+            }
+        }
+
         Globals.registerListener('refresh', this.refresh);
         this.setState({
             currentPage: window.location.pathname
