@@ -5,7 +5,7 @@ import {Helmet} from 'react-helmet';
 import axios from 'axios';
 
 import SearchProcessResults from './SearchProcessResults.js';
-import Search from './Search.js';
+import Search from './SearchTest.js';
 
 import Footer from './Footer.js';
 
@@ -425,6 +425,7 @@ export default class App extends React.Component {
 
     /** Just get the top results quickly before launching the "full" search with initialSearch() */
     startSearch = (searcherState) => {
+        Globals.emitEvent('new_search');
         if(!this._mounted){ // User navigated away or reloaded
             return;
         }
@@ -441,7 +442,7 @@ export default class App extends React.Component {
             networkError: "", // Clear network error
             searching: true,
             shouldUpdate: true,
-            lastSearchedTerm: this.state.searcherInputs.titleRaw
+            lastSearchedTerm: searcherState.titleRaw
 		}, () => {
             // title-only
             let searchUrl = new URL('text/search', Globals.currentHost);
@@ -456,7 +457,7 @@ export default class App extends React.Component {
                 searchUrl = new URL('text/search_top', Globals.currentHost);
             }
 
-            this._searchTerms = this.state.searcherInputs.titleRaw;
+            this._searchTerms = searcherState.titleRaw;
 
             // Update query params
             // We could also probably clear them on reload (component will unmount) if anyone wants
@@ -659,8 +660,6 @@ export default class App extends React.Component {
 
         let searchUrl = new URL('text/search_no_context', Globals.currentHost);
 
-        this._searchTerms = this.state.searcherInputs.titleRaw;
-
         let dataToPass = { 
             title: this.state.searcherInputs.titleRaw
         };
@@ -842,6 +841,209 @@ export default class App extends React.Component {
         }
     }
 
+    
+    gatherSpecificHighlights = (recordId) => {
+        if(!this._mounted){ // User navigated away or reloaded
+            return; // cancel search
+        }
+
+        if(!this.state.outputResults) {
+            // console.log("Nothing here right now");
+            return;
+        }
+
+        let currentResults = this.state.outputResults;
+        // console.log("Activate", recordId);
+        let _unhighlighted = [];
+        let mustSkip = {};
+
+        // No need for offset or limit. We just need to find the unhighlighted files for one record.
+        // This requires only recordId
+
+        this.setState({
+            snippetsDisabled: false,
+            searching: true,
+            networkError: "", // Clear network error
+		}, () => {
+            
+            let searchUrl = new URL('text/get_highlightsFVH', Globals.currentHost);
+
+            for(let i = 0; i < currentResults.length; i++) {
+                for(let j = 0; j < currentResults[i].records.length; j++) {
+                    // Push Lucene IDs and >-delimited list of filenames
+                    if(recordId == currentResults[i].records[j].id) {
+
+                        // console.log("Pushing specific ID",i,j,currentResults[i].records[j].id);
+
+                        // Need to skip this entry on both sides if it already has full plaintext (has been toggled
+                        // and therefore has at least 2 highlights)
+                        if(!currentResults[i].records[j].plaintext 
+                            || !currentResults[i].records[j].plaintext[0]
+                            || !currentResults[i].records[j].plaintext[1]) {
+
+                            // No need to redo the work on the first file here
+                            let endLuceneIds = currentResults[i].records[j].luceneIds.slice(1);
+                            let endFilenamesArray = currentResults[i].records[j].name.split(">").slice(1);
+                            let endFilenames = endFilenamesArray.join(">");
+
+                            // console.log("Collecting for backend", endLuceneIds, endFilenames);
+
+                            // Filenames delimited by > (impossible filename character)
+                            // let firstFilename = currentResults[i].records[j].name.split(">")[0];
+                            // let firstLuceneId = [currentResults[i].records[j].luceneIds[0]];
+
+                            _unhighlighted.push(
+                                {
+                                    luceneIds: endLuceneIds, 
+                                    filename: endFilenames
+                                }
+                            );
+                        } else {
+                            // console.log("Skipping " + [currentResults[i].records[j].id]);
+                            mustSkip[currentResults[i].records[j].id] = true;
+                        }
+
+                        i = currentResults.length;
+                        // console.log("Breaking out",j,i);
+                        break;
+                    }
+                }
+            }
+
+            if(_unhighlighted.length === 0) {
+                // nothing to do
+                // console.log("Nothing to highlight here");
+                this.endEarly();
+                return;
+            }
+            
+            // console.log("terms, last", this._searchTerms, this.state.lastSearchedTerm);
+
+            if(!this._searchTerms) {
+                this._searchTerms = this.state.lastSearchedTerm;
+            }
+
+			let dataToPass = 
+            { 
+				unhighlighted: _unhighlighted,
+                terms: this._searchTerms,
+                markup: true, // default
+                fragmentSizeValue: 2 // default
+            };
+
+            //Send the AJAX call to the server
+            axios({
+                method: 'POST', // or 'PUT'
+                url: searchUrl,
+                data: (dataToPass)
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK) {
+                    return response.data;
+                } else {
+                    return null;
+                }
+            }).then(parsedJson => {
+                if(parsedJson){
+
+                    // console.log("Adding highlights", parsedJson);
+                    
+                    let recordIdList = [];
+                    let allResults = this.state.searchResults;
+
+                    let x = 0;
+                    for(let i = 0; i < currentResults.length; i++) {
+                        for(let j = 0; j < currentResults[i].records.length; j++) {
+                            // If search is interrupted, updatedResults[i] may be undefined (TypeError)
+                            if(recordId == currentResults[i].records[j].id) {
+                                // console.log("Assigning",i,j,currentResults[i].records[j].name);
+
+                                if(mustSkip[currentResults[i].records[j].id]) {
+                                    // do nothing; skip
+                                    // console.log("Skipping ID " + [currentResults[i].records[j].id]);
+                                } else {
+                                    // Concat instead of replace since we expect to have exactly 1 text snippet already
+                                    currentResults[i].records[j].plaintext = 
+                                        currentResults[i].records[j].plaintext.concat(parsedJson[x]);
+                                    recordIdList.push(currentResults[i].records[j].id);
+                                    x++;
+
+                                    // console.log("Concatenated",currentResults[i].records[j].plaintext);
+                                }
+                            }
+                        }
+                    }
+
+                    
+                    let n = 0;
+                    for(let i = 0; i < allResults.length; i++) {
+                        for(let j = 0; j < allResults[i].records.length; j++) {
+                            if(!Globals.isEmptyOrSpaces(allResults[i].records[j].name)){
+                                // Sorting can jumble it up, so we don't know which ID could match. Check all of them:
+                                for(let k = 0; k < recordIdList.length; k++) {
+                                    if(recordIdList[k] === allResults[i].records[j].id) {
+                                        // console.log(`Assigning ${parsedJson[n].length} highlights from parsedJson[${n}] to id ${recordIdList[n]}: ${parsedJson[n]}`);
+                                        // console.log(`Assigning ${parsedJson[k].length} highlights from parsedJson[${k}] to id ${recordIdList[k]}`);
+                                        allResults[i].records[j].plaintext = 
+                                            allResults[i].records[j].plaintext.concat(parsedJson[k]);
+                                        n++;
+
+                                        // match found for this record; exit
+                                        k = recordIdList.length;
+                                    }
+                                }
+                            }
+    
+                            if(n === recordIdList.length) {
+                                // exit
+                                // console.log("Assigned all highlights to searchResults; exiting 1");
+                                j = allResults[i].records.length;
+                            }
+                        }
+
+                        if(n === recordIdList.length) {
+                            // exit
+                            // console.log("***Assigned all highlights to searchResults; exiting 2***");
+                            i = allResults.length;
+                        }
+                    }
+
+                    
+                    // Fin
+                    this.setState({
+                        searchResults: allResults,
+                        outputResults: currentResults,
+                        searching: false, 
+                        shouldUpdate: true
+                    }, () => {
+                        // console.log("All done with page highlights: all results, displayed results", 
+                        //     allResults, currentResults);
+                    });
+                }
+            }).catch(error => { 
+                if(error.name === 'TypeError') {
+                    console.error(error);
+                } else { // Server down or 408 (timeout)
+                    console.error('Server is down or verification failed.', error);
+                    let _networkError = 'Server is down or you may need to login again.';
+                    let _resultsText = Globals.errorMessage.default;
+
+                    if(error.response && error.response.status === 408) {
+                        _networkError= 'Request has timed out.';
+                        _resultsText = 'Timed out';
+                    }
+
+                    this.setState({
+                        networkError: _networkError,
+                        resultsText: _resultsText,
+                        searching: false,
+                        shouldUpdate: true
+                    });
+                }
+            });
+        });
+    }
+
     gatherPageHighlights = (searchId, _inputs, currentResults) => {
         if(!_inputs) {
             if(this.state.searcherInputs) {
@@ -878,19 +1080,32 @@ export default class App extends React.Component {
             let startPoint = (this._page * this._pageSize) - this._pageSize;
             let endPoint = (this._page * this._pageSize);
 
+            // Assuming filenames come in the correct order, we can ask for the first one only, and then
+            // additional logic elsewhere could ask for all of the highlights.
+            // Then we would never get any "hidden" highlights, resulting in more responsive UX
+
             for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++){
                 for(let j = 0; j < currentResults[i].records.length; j++) {
-                    // Push Lucene IDs and >-delimited list of filenames
+                    // Push first lucene ID and filename
                     if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)) {
+
                         // console.log("Pushing",i,j,currentResults[i].records[j].id);
 
                         // Need to skip this entry on both sides if it already has plaintext.
-                        // If it has any, then it's complete - no situation where only some of the files would get text.
+                        // If it has any, then skip here - we can get more on demand elsewhere, in separate logic.
                         if(!currentResults[i].records[j].plaintext || !currentResults[i].records[j].plaintext[0]) {
+
+                            // Filenames delimited by > (impossible filename character)
+                            let firstFilename = currentResults[i].records[j].name.split(">")[0];
+                            let firstLuceneId = [currentResults[i].records[j].luceneIds[0]];
+
+                            // console.log("First filename, record ID and lucene ID", 
+                            //     firstFilename, currentResults[i].records[j].id, firstLuceneId);
+
                             _unhighlighted.push(
                                 {
-                                    luceneIds: currentResults[i].records[j].luceneIds, 
-                                    filename: currentResults[i].records[j].name
+                                    luceneIds: firstLuceneId, 
+                                    filename: firstFilename
                                 }
                             );
                         } else {
@@ -1255,6 +1470,7 @@ export default class App extends React.Component {
                     <SearchProcessResults 
                         sort={this.sort}
                         informAppPage={this.setPageInfo}
+                        gatherSpecificHighlights={this.gatherSpecificHighlights}
                         results={this.state.outputResults} 
                         geoResults={this.state.geoResults}
                         filtersHidden={this.state.filtersHidden}
