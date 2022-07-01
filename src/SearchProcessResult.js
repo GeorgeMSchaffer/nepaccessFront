@@ -112,8 +112,8 @@ export default class SearchProcessResult extends React.Component {
     showFragment = (_id,_filename,text,index) => {
         if(text) { // got text highlight for this file
             return (
-                <span className="fragment-container" key={ `${_filename}-1` }>
-                    <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>
+                <span className="fragment-container" key={ `${_id}-${index}` }>
+                    <span className="cardHeader bold filename-inner">
                         <DownloadFile key={_filename} downloadType="nepafile" 
                             recordId={_id}
                             id={_id}
@@ -121,7 +121,7 @@ export default class SearchProcessResult extends React.Component {
                             results={true} />
                     </span>
 
-                    <span className="card-highlight fragment" key={ `${_filename}-3` }
+                    <span className="card-highlight fragment"
                             dangerouslySetInnerHTML={{
                                 __html:text
                             }}>
@@ -130,8 +130,8 @@ export default class SearchProcessResult extends React.Component {
             );
         } else if(typeof(text) === 'undefined') { // still loading
             return (
-                <span className="fragment-container" key={ `${_filename}-1` }>
-                    <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>
+                <span className="fragment-container" key={ `${_id}-${index}` }>
+                    <span className="cardHeader bold filename-inner">
                         <DownloadFile key={_filename} downloadType="nepafile" 
                             recordId={_id}
                             id={_id}
@@ -147,8 +147,8 @@ export default class SearchProcessResult extends React.Component {
             );
         } else { // else we didn't find any text snippet and it's just blank (this is likely impossible).
             return (
-                <span className="fragment-container" key={ `${_filename}-1` }>
-                    <span className="cardHeader bold filename-inner" key={ `${_filename}-2` }>
+                <span className="fragment-container" key={ `${_id}-${index}` }>
+                    <span className="cardHeader bold filename-inner">
                         <DownloadFile key={_filename} downloadType="nepafile" 
                             recordId={_id}
                             id={_id}
@@ -171,26 +171,28 @@ export default class SearchProcessResult extends React.Component {
             });
 
             let _id = record.id; 
+            // console.log(record.name.substring(0,10));
             if(!this.props.show) {
                 return (
-                    <div className="margins">
+                    <div className="margins" key={_id}>
                         (all text snippets hidden)
                     </div>
                 );
             } else if(!this.hidden(record.id)) {
                 if(combined.length > 1) {
 
-                    return (<>
-                        {this.showFragment(_id,combined[0][0],combined[0][1],0)}
-    
-                        <div className="margins" key={_id}>
-                            <div>
-                                <span className="hide-button" onClick={(e) => this.hide(e, record.id)}>
-                                    Show more text snippets ({combined.length - 1}) ↴
-                                </span>
+                    return (
+                        <div key={_id}>
+                            {this.showFragment(_id,combined[0][0],combined[0][1],0)}
+        
+                            <div className="margins" >
+                                <div>
+                                    <span className="hide-button" onClick={(e) => this.hide(e, record.id)}>
+                                        Show more text snippets ({combined.length - 1}) ↴
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </>);
+                        </div>);
                 } else {
                     return this.showFragment(_id,combined[0][0],combined[0][1],0);
                 }
@@ -199,14 +201,15 @@ export default class SearchProcessResult extends React.Component {
                     <div>
                         {combined.map((combo, index) => {
                             if(index === 0) {
-                                return (<>
-                                    {this.showFragment(_id,combo[0],combo[1],index)}
-                                    <div className="margins" key={_id}>
-                                        <span className="hide-button" onClick={(e) => this.hide(e,record.id)}>
-                                            Show fewer text snippets
-                                        </span>
+                                return (
+                                    <div key={_id}>
+                                        {this.showFragment(_id,combo[0],combo[1],index)}
+                                        <div className="margins">
+                                            <span className="hide-button" onClick={(e) => this.hide(e,record.id)}>
+                                                Show fewer text snippets
+                                            </span>
+                                        </div>
                                     </div>
-                                    </>
                                 );
                             } else {
                                 return this.showFragment(_id,combo[0],combo[1],index);
@@ -360,8 +363,10 @@ export default class SearchProcessResult extends React.Component {
 
 	render() {
         let _key = "";
-        if(this.props.cell._cell.row.data.records.id) {
-            _key = this.props.cell._cell.row.data.records.id;
+        if(this.props.cell._cell.row.data.records[0].id) {
+            _key = this.props.cell._cell.row.data.records[0].id;
+        } else {
+            console.log("** ** ** NO KEY");
         }
 
         return (
@@ -384,4 +389,12 @@ export default class SearchProcessResult extends React.Component {
             </div>
         );
     }
+
+    // componentDidMount() {
+    //     console.log("*****MOUNT*****");
+    // }
+
+    // componentDidUpdate() {
+    //     console.log("*****UPDATE*****");
+    // }
 }
