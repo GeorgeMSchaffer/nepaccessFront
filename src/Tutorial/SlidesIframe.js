@@ -51,7 +51,9 @@ const tutorialModalStyle = {
         border: 'none',
         overflow: 'visible',
         padding: '0px',
-        height: getHeight()
+        background: 'none',
+        inset: 0,
+        // height: getHeight()
     }
 }
 
@@ -136,19 +138,19 @@ export default class Slides extends React.Component {
                         style={tutorialModalStyle}
                         // ariaHideApp={false}
                 >
-                        <div id="tutorial-top" className={"modal-button-space" + this.getLoggedInClass()}>
-                            {this.renderLoginLink()}
-                            <button id="tutorial-close" onClick={this.hideModal}>x</button>
-                        </div>
 
-                        <div>
+                        <div id="modal-iframe-container">
                             {/* <div className="image-slide-holder-container"> */}
-                                <IframeResizer
+                                <div id="tutorial-top" className={"modal-button-space" + this.getLoggedInClass()}>
+                                    {this.renderLoginLink()}
+                                    <button id="tutorial-close" onClick={this.hideModal}>x</button>
+                                </div>
+                                <iframe
                                     data-hj-allow-iframe="true"
-                                    id="iframe-test-container"
+                                    id="iframe-tutorial-container"
                                     // src="https://paulmirocha.com/nepa/"
                                     src="https://about.nepaccess.org/wp-content/uploads/demo/"
-                                    style={{ width: '1px', minWidth: '100%', height: '612px', minHeight: '100%'}}
+                                    style={{ width: '100%', height: '100%', border: 'none'}}
                                 />
                             {/* </div> */}
                         </div>
