@@ -467,6 +467,7 @@ export default class App extends React.Component {
 
 		this.setState({
             // Fresh search, fresh results
+            searchResults: [],
             outputResults: [],
             // geoResults: null,
             count: 0,
