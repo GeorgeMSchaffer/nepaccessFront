@@ -1158,7 +1158,7 @@ export default class App extends React.Component {
 
             // If nothing to highlight, nothing to do on this page
             if(_unhighlighted.length === 0 || searchId < this._searchId) {
-                // console.log("nothing to highlight: finish search");
+                console.log("nothing to highlight: finish search");
                 this.initialSearch(_inputs);
                 return;
             }
@@ -1181,7 +1181,6 @@ export default class App extends React.Component {
             }).then(response => {
                 let responseOK = response && response.status === 200;
                 if (responseOK) {
-                    // console.log("Got first page highlights",response.data);
                     return response.data;
                 } else {
                     return null;
@@ -1249,24 +1248,15 @@ export default class App extends React.Component {
                         }
                     }
 
+                    this.setState({
+                        searchResults: allResults,
+                        outputResults: currentResults,
+                        shouldUpdate: true
+                    }, () => {
+                        console.log("Got highlights, finish search");
+                        this.initialSearch(_inputs);
+                    });
                     
-                    // Verify one last time we want this before we actually commit to these results,
-                    // otherwise it could be jarring UX to setState here
-                    if(searchId < this._searchId) {
-                        // console.log("There's another search call happening");
-                        return;
-                    } else {
-                        // Fin
-                        // let resultsText = currentResults.length + " Results";
-                        this.setState({
-                            searchResults: allResults,
-                            outputResults: currentResults,
-                            shouldUpdate: true
-                        }, () => {
-                            console.log("Finish search");
-                            this.initialSearch(_inputs);
-                        });
-                    }
                 }
             }).catch(error => { 
                 if(error.name === 'TypeError') {
