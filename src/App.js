@@ -1170,7 +1170,7 @@ export default class App extends React.Component {
             };
 
             // console.log("For backend",dataToPass);
-            console.log("Highlighting first page");
+            
             //Send the AJAX call to the server
             axios({
                 method: 'POST', // or 'PUT'
@@ -1179,7 +1179,7 @@ export default class App extends React.Component {
             }).then(response => {
                 let responseOK = response && response.status === 200;
                 if (responseOK) {
-                    console.log("Got first page highlights",response.data);
+                    // console.log("Got first page highlights",response.data);
                     return response.data;
                 } else {
                     return null;
@@ -1262,8 +1262,6 @@ export default class App extends React.Component {
                             searching: false, 
                             shouldUpdate: true
                         }, () => {
-                            console.log("First page highlights filled, finishing search");
-
                             this.initialSearch(_inputs);
                         });
                     }
