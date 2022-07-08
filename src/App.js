@@ -283,6 +283,38 @@ export default class App extends React.Component {
       
     }
 
+    /** Assign any existing highlights from the first-page highlight pass, which is now done before full record population */
+    mergeHighlights = (data) => {
+        // console.log("Merge highlights",data, this.state.searchResults);
+        if(!this.state.searchResults || !this.state.searchResults[0]) {
+            // console.log("Nothing here yet");
+            return data;
+        }
+
+        for(let i = 0; i < this.state.searchResults.length; i++) {
+            if(data[i]) {
+                for(let j = 0; j < this.state.searchResults[i].records.length; j++) {
+                    if(data[i].records[j] 
+                        && this.state.searchResults[i].records[j] 
+                        && this.state.searchResults[i].records[j].plaintext 
+                        && this.state.searchResults[i].records[j].plaintext[0]
+                    ) {
+                        let same = data[i].records[j].id === this.state.searchResults[i].records[j].id;
+                        // console.log("Same?", same, data[i].records[j].id, this.state.searchResults[i].records[j].id);
+                        if(same) {
+                            data[i].records[j].plaintext = this.state.searchResults[i].records[j].plaintext;
+                            // console.log("Assigned plaintext", this.state.searchResults[i].records[j].plaintext);
+                        }
+                    } else {
+                        // console.log("Doesn't exist");
+                    }
+                }
+            }
+        }
+
+        return data;
+    }
+
     /** Rebuild results into process-oriented results, where a new object property is created for every process ID.
      * It's basically a hashmap where the processIDs are keys.
      * A new unique key is created if there is no process.
@@ -295,6 +327,7 @@ export default class App extends React.Component {
      * using Object.keys(), Object.values(), or Object.entries() 
      */
     buildData = (data) => {
+        // console.log("Building",data);
         let processResults = {};
         let newUniqueKey = -1;
 
@@ -334,7 +367,6 @@ export default class App extends React.Component {
                 processResults[key].county = datum.county;
             }
 
-
             // Add record to array of records for this "key"
             processResults[key].records.push(datum);
 
@@ -362,13 +394,15 @@ export default class App extends React.Component {
             // }
         });
         
-        // Have to "flatten" and also sort that by relevance
-        return Object.values(processResults).sort(function(a,b){return a.relevance - b.relevance;});
+        // Have to "flatten" and also sort that by relevance, then merge any existing highlights
+        return this.mergeHighlights(
+                Object.values(processResults).sort(function(a,b){return a.relevance - b.relevance;})
+            );
     }
 
     // Start a brand new search.
     startNewSearch = (searcherState) => {
-        console.log("New search");
+        // console.log("New search");
 
         // Reset page, page size
         this._page = 1;
@@ -514,6 +548,7 @@ export default class App extends React.Component {
             }).then(response => {
                 let responseOK = response && response.status === 200;
                 if (responseOK) {
+                    // console.log("Initial search results returned");
                     return response.data;
                 } else if (response.status === 204) {  // Probably invalid query due to misuse of *, "
                     this.setState({
@@ -521,7 +556,7 @@ export default class App extends React.Component {
                     });
                     return null;
                 } else if(response.status === 403) {
-                    // Not logged in
+                    // Not authorized
                     Globals.emitEvent('refresh', {
                         loggedIn: false
                     });
@@ -566,6 +601,7 @@ export default class App extends React.Component {
                             status: doc.status,
                             subtype: doc.subtype,
                             county: doc.county,
+                            index: idx,
 
                             relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                         };
@@ -603,7 +639,9 @@ export default class App extends React.Component {
                             this.filterResultsBy(this._searcherState);
                             this.countTypes();
                         } else {
-                            this.initialSearch(searcherState);
+                            // Highlight first page using function which then gets the rest of the metadata
+
+                            this.gatherFirstPageHighlightsThenFinishSearch(this._searchId,searcherState,_data);
                         }
                     });
                 } else {
@@ -755,6 +793,7 @@ export default class App extends React.Component {
                         status: doc.status,
                         subtype: doc.subtype,
                         county: doc.county,
+                        index: idx,
 
                         relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                     };
@@ -1044,6 +1083,217 @@ export default class App extends React.Component {
         });
     }
 
+    gatherFirstPageHighlightsThenFinishSearch = (searchId, _inputs, currentResults) => {
+        if(!_inputs) {
+            if(this.state.searcherInputs) {
+                _inputs = this.state.searcherInputs;
+            } else if(Globals.getParameterByName("q")) {
+                _inputs = {titleRaw: Globals.getParameterByName("q")};
+            }
+        }
+        // console.log("Gathering page highlights", searchId, this._page, this._pageSize);
+        if(!this._mounted){ // User navigated away or reloaded
+            console.log("No");
+            return; // cancel search
+        }
+        if(searchId < this._searchId) { // Search interrupted
+            console.log("No");
+            return; // cancel search
+        }
+        if (typeof currentResults === 'undefined') {
+            currentResults = [];
+        }
+
+        this.setState({
+            snippetsDisabled: false,
+            searching: true,
+            networkError: "", // Clear network error
+		}, () => {
+            
+            let searchUrl = new URL('text/get_highlightsFVH', Globals.currentHost);
+
+            let mustSkip = {};
+            let _unhighlighted = [];
+            let startPoint = (this._page * this._pageSize) - this._pageSize;
+            let endPoint = (this._page * this._pageSize);
+
+            // Assuming filenames come in the correct order, we can ask for the first one only, and then
+            // additional logic elsewhere could ask for all of the highlights.
+            // Then we would never get any "hidden" highlights, resulting in more responsive UX
+
+            for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++){
+                for(let j = 0; j < currentResults[i].records.length; j++) {
+                    // Push first lucene ID and filename
+                    if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)) {
+
+                        // console.log("Pushing",i,j,currentResults[i].records[j].id);
+
+                        // Need to skip this entry on both sides if it already has plaintext.
+                        // If it has any, then skip here - we can get more on demand elsewhere, in separate logic.
+                        if(!currentResults[i].records[j].plaintext || !currentResults[i].records[j].plaintext[0]) {
+
+                            // Filenames delimited by > (impossible filename character)
+                            let firstFilename = currentResults[i].records[j].name.split(">")[0];
+                            let firstLuceneId = [currentResults[i].records[j].luceneIds[0]];
+
+                            // console.log("First filename, record ID and lucene ID", 
+                            //     firstFilename, currentResults[i].records[j].id, firstLuceneId);
+
+                            _unhighlighted.push(
+                                {
+                                    luceneIds: firstLuceneId, 
+                                    filename: firstFilename
+                                }
+                            );
+                        } else {
+                            // console.log("Adding skip ID " + [currentResults[i].records[j].id]);
+                            mustSkip[currentResults[i].records[j].id] = true;
+                        }
+                    }
+                }
+            }
+
+
+            // If nothing to highlight, nothing to do on this page
+            if(_unhighlighted.length === 0 || searchId < this._searchId) {
+                // console.log("nothing to highlight: finish search");
+                this.initialSearch(_inputs);
+                return;
+            }
+
+			let dataToPass = 
+            { 
+				unhighlighted: _unhighlighted,
+                terms: postProcessTerms(_inputs.titleRaw),
+                markup: _inputs.markup,
+                fragmentSizeValue: _inputs.fragmentSizeValue
+            };
+
+            // console.log("For backend",dataToPass);
+            console.log("Highlighting first page");
+            //Send the AJAX call to the server
+            axios({
+                method: 'POST', // or 'PUT'
+                url: searchUrl,
+                data: (dataToPass)
+            }).then(response => {
+                let responseOK = response && response.status === 200;
+                if (responseOK) {
+                    console.log("Got first page highlights",response.data);
+                    return response.data;
+                } else {
+                    return null;
+                }
+            }).then(parsedJson => {
+                if(parsedJson){
+
+                    // console.log("Adding highlights", parsedJson);
+
+                    // TODO: It's not efficient, but outside of completely changing data structures for results,
+                    // we can assign highlights to all results here by searching over the array looking for record IDs
+                    // until we hit the end of the highlights
+                    let recordIdList = [];
+                    let allResults = this.state.searchResults;
+
+                    let x = 0;
+                    for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++) {
+                        for(let j = 0; j < currentResults[i].records.length; j++) {
+                            // If search is interrupted, updatedResults[i] may be undefined (TypeError)
+                            if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)){
+                                // console.log("Assigning",i,j,currentResults[i].records[j].name);
+
+                                if(mustSkip[currentResults[i].records[j].id]) {
+                                    // do nothing; skip
+                                    // console.log("Skipping ID " + [currentResults[i].records[j].id]);
+                                } else {
+                                    currentResults[i].records[j].plaintext = parsedJson[x];
+                                    recordIdList.push(currentResults[i].records[j].id);
+                                    x++;
+                                }
+                            }
+                        }
+                    }
+
+                    
+                    let n = 0;
+                    for(let i = 0; i < allResults.length; i++) {
+                        for(let j = 0; j < allResults[i].records.length; j++) {
+                            if(!Globals.isEmptyOrSpaces(allResults[i].records[j].name)){
+                                // Sorting can jumble it up, so we don't know which ID could match. Check all of them:
+                                for(let k = 0; k < recordIdList.length; k++) {
+                                    if(recordIdList[k] === allResults[i].records[j].id) {
+                                        // console.log(`Assigning ${parsedJson[n].length} highlights from parsedJson[${n}] to id ${recordIdList[n]}: ${parsedJson[n]}`);
+                                        // console.log(`Assigning ${parsedJson[k].length} highlights from parsedJson[${k}] to id ${recordIdList[k]}`);
+                                        allResults[i].records[j].plaintext = parsedJson[k];
+                                        n++;
+
+                                        // match found for this record; exit
+                                        k = recordIdList.length;
+                                    }
+                                }
+                            }
+    
+                            if(n === recordIdList.length) {
+                                // exit
+                                // console.log("Assigned all highlights to searchResults; exiting 1");
+                                j = allResults[i].records.length;
+                            }
+                        }
+
+                        if(n === recordIdList.length) {
+                            // exit
+                            // console.log("***Assigned all highlights to searchResults; exiting 2***");
+                            i = allResults.length;
+                        }
+                    }
+
+                    
+                    // Verify one last time we want this before we actually commit to these results,
+                    // otherwise it could be jarring UX to setState here
+                    if(searchId < this._searchId) {
+                        // console.log("There's another search call happening");
+                        return;
+                    } else {
+                        // Fin
+                        // let resultsText = currentResults.length + " Results";
+                        this.setState({
+                            searchResults: allResults,
+                            outputResults: currentResults,
+                            searching: false, 
+                            shouldUpdate: true
+                        }, () => {
+                            console.log("First page highlights filled, finishing search");
+
+                            this.initialSearch(_inputs);
+                        });
+                    }
+                }
+            }).catch(error => { 
+                if(error.name === 'TypeError') {
+                    console.error(error);
+                } else { // Server down or 408 (timeout)
+                    console.error('Server is down or verification failed.', error);
+                    let _networkError = 'Server is down or you may need to login again.';
+                    let _resultsText = Globals.errorMessage.default;
+
+                    if(error.response && error.response.status === 408) {
+                        _networkError= 'Request has timed out.';
+                        _resultsText = 'Timed out';
+                    }
+
+                    this.setState({
+                        networkError: _networkError,
+                        resultsText: _resultsText,
+                        searching: false,
+                        shouldUpdate: true
+                    }, () => {
+                        this.initialSearch(_inputs);
+                    });
+                }
+            });
+        });
+    }
+
     gatherPageHighlights = (searchId, _inputs, currentResults) => {
         if(!_inputs) {
             if(this.state.searcherInputs) {
@@ -1109,7 +1359,7 @@ export default class App extends React.Component {
                                 }
                             );
                         } else {
-                            console.log("Adding skip ID " + [currentResults[i].records[j].id]);
+                            // console.log("Adding skip ID " + [currentResults[i].records[j].id]);
                             mustSkip[currentResults[i].records[j].id] = true;
                         }
                     }
