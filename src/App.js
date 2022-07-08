@@ -642,7 +642,7 @@ export default class App extends React.Component {
                         } else {
                             // Highlight first page using function which then gets the rest of the metadata
 
-                            this.gatherFirstPageHighlightsThenFinishSearch(this._searchId,searcherState,_data);
+                            this.gatherFirstPageHighlightsThenFinishSearch(this._searchId, this._searcherState, this.state.searchResults);
                         }
                     });
                 } else {
@@ -1094,11 +1094,9 @@ export default class App extends React.Component {
         }
         // console.log("Gathering page highlights", searchId, this._page, this._pageSize);
         if(!this._mounted){ // User navigated away or reloaded
-            console.log("No");
             return; // cancel search
         }
         if(searchId < this._searchId) { // Search interrupted
-            console.log("No");
             return; // cancel search
         }
         if (typeof currentResults === 'undefined') {
@@ -1260,7 +1258,6 @@ export default class App extends React.Component {
                         this.setState({
                             searchResults: allResults,
                             outputResults: currentResults,
-                            searching: false, 
                             shouldUpdate: true
                         }, () => {
                             this.initialSearch(_inputs);
@@ -1283,7 +1280,6 @@ export default class App extends React.Component {
                     this.setState({
                         networkError: _networkError,
                         resultsText: _resultsText,
-                        searching: false,
                         shouldUpdate: true
                     }, () => {
                         this.initialSearch(_inputs);
