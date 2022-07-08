@@ -463,6 +463,7 @@ export default class App extends React.Component {
         if(!this._mounted){ // User navigated away or reloaded
             return;
         }
+
         // console.log("Start search");
 
 		this.setState({
@@ -481,6 +482,7 @@ export default class App extends React.Component {
 		}, () => {
             // title-only
             let searchUrl = new URL('text/search', Globals.currentHost);
+
             
             // For the new search logic, the idea is that the limit and offset are only for the text
             // fragments.  The first search should get all of the results, without context.
@@ -625,9 +627,9 @@ export default class App extends React.Component {
                     
                         // title-only (or blank search===no text search at all): return
                         if(Globals.isEmptyOrSpaces(dataToPass.title) || 
-                                (searcherState.searchOption && searcherState.searchOption === "C"))
+                                (this.state.searcherInputs.searchOption && this.state.searcherInputs.searchOption === "C"))
                         {
-                            this.filterResultsBy(this._searcherState);
+                            this.filterResultsBy(this.state.searcherInputs);
                             this.countTypes();
 
                             this.setState({
@@ -636,13 +638,14 @@ export default class App extends React.Component {
                                 shouldUpdate: true
                             });
                         } else if(!shouldContinue) {
+                            console.log("First pass got everything");
                             // got all results already, so stop searching and start highlighting.
-                            this.filterResultsBy(this._searcherState);
+                            this.filterResultsBy(this.state.searcherInputs);
                             this.countTypes();
                         } else {
                             // Highlight first page using function which then gets the rest of the metadata
-
-                            this.gatherFirstPageHighlightsThenFinishSearch(this._searchId, this._searcherState, this.state.searchResults);
+                            console.log("Gather first page highlights");
+                            this.gatherFirstPageHighlightsThenFinishSearch(this._searchId, this.state.searcherInputs, this.state.searchResults);
                         }
                     });
                 } else {
@@ -1260,6 +1263,7 @@ export default class App extends React.Component {
                             outputResults: currentResults,
                             shouldUpdate: true
                         }, () => {
+                            console.log("Finish search");
                             this.initialSearch(_inputs);
                         });
                     }
@@ -1282,6 +1286,7 @@ export default class App extends React.Component {
                         resultsText: _resultsText,
                         shouldUpdate: true
                     }, () => {
+                        console.log("Error, finish search");
                         this.initialSearch(_inputs);
                     });
                 }
