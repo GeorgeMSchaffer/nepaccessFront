@@ -584,7 +584,7 @@ class Search extends React.Component {
         if(suggestion.id && suggestion.title) {
             return (
                 <div>
-                    <a href={_href + suggestion.id} target="_blank"
+                    <a href={_href + suggestion.id} target="_blank" rel="noreferrer"
                         key={idx}
                         dangerouslySetInnerHTML={{
                             __html: suggestion.title
@@ -663,7 +663,7 @@ class Search extends React.Component {
 	            backgroundColor: 'white',
                 color: 'black',
                 '&:hover': {
-                    backgroundColor: 'lightgreen'
+                    backgroundColor: '#348ECF'
                 },
                 // ':active': {
                 //     ...styles[':active'],

@@ -16,7 +16,8 @@ html {
 }
 
 body {
-  background: #FBFBF6;
+  /* background: #FBFBF6; */
+  background: #F8F9FA;
   margin: 0;
 
   display: flex;
@@ -28,7 +29,8 @@ body {
   position: relative;
   margin: auto;
 
-  background: #FBFBF6;
+  /* background: #FBFBF6; */
+  background: #F8F9FA;
 }
 
 #header {
@@ -43,7 +45,8 @@ body {
   box-sizing: border-box;
   z-index: 99999; /* Geojson map introduces some very high z-index items */
 
-  background: #8FBC3F;
+  /* background: #8FBC3F; */
+  background: #B6C4C8;
 }
 
 /* Header contents */
@@ -71,13 +74,16 @@ body {
 #logo-box {
     position: absolute;
 
-    background-color: white;
+    /* background-color: white; */
     background-repeat: no-repeat;
-    background-position: center 10px;
+    /* background-position: center 10px; */
     background-size: contain;
     /* background-size: cover; */
     /* background-image: url("assets/nepaccess\ 1x.png"); */
-    background-image: url("assets/thumbnail_logo-beta.png");
+    /* background-image: url("assets/thumbnail_logo-beta.png"); */
+    background-image: url("assets/NEPAccess logo2022_BETA.png");
+
+    margin-left: 20px;
 }
 
 #logo-type {
@@ -235,7 +241,7 @@ body {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 25px;
   display: inline-flex;
   align-items: flex-end;
@@ -269,7 +275,8 @@ body {
 
     min-width: 900px;
 
-    background: #FBFBF6;
+    /* background: #FBFBF6; */
+    background: #F8F9FA;
 }
 
 .spacer {
@@ -552,7 +559,8 @@ span.email-text {
     background-color: #ddd;
 }
 .dropdown-content a:active {
-    background-color: #8FBC3F;
+    /* background-color: #8FBC3F; */
+    background-color: #B6C4C8;
 }
 .dropdown:hover > .dropdown-content {
     display: block;
@@ -586,7 +594,8 @@ span.email-text {
 }
 
 #process-results .tabulator-cell a.link:hover, .side-link:hover {
-    color:#8FBC3F;
+    /* color:#8FBC3F; */
+    color: #348ECF;
 }
 
 /* resurfeced contact/register/login page css */

@@ -13425,62 +13425,62 @@ const Globals = {
         };
     }
     /** Special logic for ;-delimited counties from Egoitz, ... */
-    const arrayMatchesArrayCounty = (field, val) => {
-        return function (a) {
-            let returnValue = false;
-            val.forEach(item =>{
-                if(a[field]){
-                    const _stateCounty = item.split(':'); // 'AK: Anchorage' -> ['AK',' Anchorage']
-                    if(_stateCounty.length > 1) {
-                        let itemCounty = _stateCounty[1].trim(); // [' Anchorage'] -> 'Anchorage'
-                        let _vals = a[field].split(/[;,]+/); // Split up record counties
+    // const arrayMatchesArrayCounty = (field, val) => {
+    //     return function (a) {
+    //         let returnValue = false;
+    //         val.forEach(item =>{
+    //             if(a[field]){
+    //                 const _stateCounty = item.split(':'); // 'AK: Anchorage' -> ['AK',' Anchorage']
+    //                 if(_stateCounty.length > 1) {
+    //                     let itemCounty = _stateCounty[1].trim(); // [' Anchorage'] -> 'Anchorage'
+    //                     let _vals = a[field].split(/[;,]+/); // Split up record counties
 
-                        // Right now we just need to know if the state makes sense.
-                        // So if it's multi or any states match this county's state then we can proceed.
-                        // This is because the counties are just strings in the database.
-                        //
-                        // TODO: In order to make the filter functionality truly accurate, the counties ALL need to be
-                        // prepended with a state abbreviation in the database - this can be done programmatically
-                        // by wiping counties clean and generating them based on the geojson data links.
-                        // Then instead of checking state and then checking county names, we would only compare county names
-                        // because the record's county names would include the state abbreviation already.
-                        //
-                        // This of course will not fix any data errors.
-                        // For example Egoitz's data included a TX;LA record linked to Jefferson County. The algorithm
-                        // has no idea whether it's Texas's or Louisiana's Jefferson County, or both. So polygons show up
-                        // for both.
+    //                     // Right now we just need to know if the state makes sense.
+    //                     // So if it's multi or any states match this county's state then we can proceed.
+    //                     // This is because the counties are just strings in the database.
+    //                     //
+    //                     // TODO: In order to make the filter functionality truly accurate, the counties ALL need to be
+    //                     // prepended with a state abbreviation in the database - this can be done programmatically
+    //                     // by wiping counties clean and generating them based on the geojson data links.
+    //                     // Then instead of checking state and then checking county names, we would only compare county names
+    //                     // because the record's county names would include the state abbreviation already.
+    //                     //
+    //                     // This of course will not fix any data errors.
+    //                     // For example Egoitz's data included a TX;LA record linked to Jefferson County. The algorithm
+    //                     // has no idea whether it's Texas's or Louisiana's Jefferson County, or both. So polygons show up
+    //                     // for both.
 
-                        if(a['state']) {
-                            let stateMatched = false;
-                            const validStates = a['state'].split(/[;,]+/);
-                            if(validStates.length > 0) {
-                                if(validStates[0].trim() === 'Multi') {
-                                    stateMatched = true;
-                                } else {
-                                    for(let i = 0; i < validStates.length; i++) { // Check item state against all record states
-                                        if(validStates[i].trim() === _stateCounty[0].trim()) {
-                                            stateMatched = true; // if we hit ANY of them, then true
-                                            i = validStates.length;
-                                        }
-                                    }
-                                    if(stateMatched) {
-                                        for(let i = 0; i < _vals.length; i++) { // Check item against all record counties
-                                            if (_vals[i].trim() === itemCounty) {
-                                                returnValue = true; // if we hit ANY of them, then true
-                                                i = _vals.length;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+    //                     if(a['state']) {
+    //                         let stateMatched = false;
+    //                         const validStates = a['state'].split(/[;,]+/);
+    //                         if(validStates.length > 0) {
+    //                             if(validStates[0].trim() === 'Multi') {
+    //                                 stateMatched = true;
+    //                             } else {
+    //                                 for(let i = 0; i < validStates.length; i++) { // Check item state against all record states
+    //                                     if(validStates[i].trim() === _stateCounty[0].trim()) {
+    //                                         stateMatched = true; // if we hit ANY of them, then true
+    //                                         i = validStates.length;
+    //                                     }
+    //                                 }
+    //                                 if(stateMatched) {
+    //                                     for(let i = 0; i < _vals.length; i++) { // Check item against all record counties
+    //                                         if (_vals[i].trim() === itemCounty) {
+    //                                             returnValue = true; // if we hit ANY of them, then true
+    //                                             i = _vals.length;
+    //                                         }
+    //                                     }
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
 
-                    }
-                }
-            });
-            return returnValue;
-        };
-    }
+    //                 }
+    //             }
+    //         });
+    //         return returnValue;
+    //     };
+    // }
 
 
     /** Special logic for ; or , delimited cooperating agencies from Buomsoo */

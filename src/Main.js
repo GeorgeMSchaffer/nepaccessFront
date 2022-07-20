@@ -201,6 +201,14 @@ class Main extends React.Component {
         });
     }
 
+    getHeaderCss = () => {
+        let headerCss = "no-select";
+        if(!this.state.currentPage || this.state.currentPage === '/') {
+            headerCss += " landing-header";
+        }
+        return headerCss;
+    }
+
 
     render() {
         return (
@@ -212,7 +220,7 @@ class Main extends React.Component {
                 <link rel="canonical" href="https://www.nepaccess.org/" />
             </Helmet>
 
-            <div id="header" className="no-select">
+            <div id="header" className={this.getHeaderCss()}>
 
                 <div id="logo" className="no-select">
                     <Link id="logo-link" to="/">
@@ -271,9 +279,9 @@ class Main extends React.Component {
                         </div>
                     </div>
                     
-                    <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
+                    {/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
                         Future
-                    </Link>
+                    </Link> */}
                     <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
                         Contact
                     </Link>

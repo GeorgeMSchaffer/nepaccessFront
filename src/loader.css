@@ -1,7 +1,8 @@
 /* https://projects.lukehaas.me/css-loaders/ */
 /* e.g. <div class="loader">Loading...</div> */
 .loader {
-    color: #8FBC3F;
+    /* color: #8FBC3F; */
+    color: #4263DC;
     font-size: 10px;
     margin: 100px auto;
     width: 1em;

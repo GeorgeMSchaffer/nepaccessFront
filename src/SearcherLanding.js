@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import Globals from './globals.js';
 
-import FlipNumbers from 'react-flip-numbers';
+// import FlipNumbers from 'react-flip-numbers';
 
 /** Search box with planned autocomplete suggestion that loads the main search page (app.js) with the search input
  *  or preloaded results when search is confirmed */
@@ -84,54 +84,54 @@ class SearcherLanding extends React.Component {
         }).catch(error => { 
         })
     }
-    getCounts = () => {
-        this.get('stats/earliest_year','firstYear');
-        this.get('stats/latest_year','lastYear');
-        this.get('stats/total_count','total')
-    }
+    // getCounts = () => {
+    //     this.get('stats/earliest_year','firstYear');
+    //     this.get('stats/latest_year','lastYear');
+    //     this.get('stats/total_count','total')
+    // }
 
-    showFlipNum = () => {
-        const numStyle = {
-            'fontFamily': "Open Sans",
-            'fontSize': "23px",
-        };
+    // showFlipNum = () => {
+    //     const numStyle = {
+    //         'fontFamily': "Open Sans",
+    //         'fontSize': "23px",
+    //     };
 
-        if(this.state.total) {
-            return <div className="under-search-holder">
-                <div className="flip">
-                    <FlipNumbers 
-                        height={44} width={25} color="white" background="rgba(0,0,0,0.5)" 
-                        play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
-                        perspective={500} 
-                        numberStyle={numStyle}
-                    /> 
-                    <span className="flip-span">
-                        NEPA documents and counting
-                    </span>
-                </div>
+    //     if(this.state.total) {
+    //         return <div className="under-search-holder">
+    //             <div className="flip">
+    //                 <FlipNumbers 
+    //                     height={44} width={25} color="white" background="rgba(0,0,0,0.5)" 
+    //                     play={true} duration={1} delay={0} numbers={`${this.state.num}`} 
+    //                     perspective={500} 
+    //                     numberStyle={numStyle}
+    //                 /> 
+    //                 <span className="flip-span">
+    //                     NEPA documents and counting
+    //                 </span>
+    //             </div>
 
-                <div className="flip">
-                    <div className="flip-range flip-top">
-                        <span className="transparent-background">
-                            {this.state.firstYear}</span> - <span className="transparent-background">{this.state.lastYear}
-                        </span>
-                    </div>
-                    <span className="flip-span">Date range</span>
-                </div>
+    //             <div className="flip">
+    //                 <div className="flip-range flip-top">
+    //                     <span className="transparent-background">
+    //                         {this.state.firstYear}</span> - <span className="transparent-background">{this.state.lastYear}
+    //                     </span>
+    //                 </div>
+    //                 <span className="flip-span">Date range</span>
+    //             </div>
 
-                <div className="flip">
-                    <div className="transparent-background">
-                        <a className="link landing-link" rel="noopener noreferrer" 
-                                href={`./available-documents`}>
-                            More about Available Files
-                        </a>
-                    </div>
-                </div>
-            </div>;
-        } else {
-            return <></>;
-        }
-    }
+    //             <div className="flip">
+    //                 <div className="transparent-background">
+    //                     <a className="link landing-link" rel="noopener noreferrer" 
+    //                             href={`./available-documents`}>
+    //                         More about Available Files
+    //                     </a>
+    //                 </div>
+    //             </div>
+    //         </div>;
+    //     } else {
+    //         return <></>;
+    //     }
+    // }
 
 
 
@@ -145,7 +145,9 @@ class SearcherLanding extends React.Component {
                     
                     <div id="landing-search-bar-holder">
                         <h3 id="landing-search-header">
-                            Begin with a simple keyword search:
+                            <span className="glow">
+                                Begin with a simple keyword search:
+                            </span>
                         </h3>
                         <input id="landing-search-bar"
                             name="titleRaw" 
@@ -169,33 +171,33 @@ class SearcherLanding extends React.Component {
                 </div>
 
 
-                {this.showFlipNum()}
+                {/* {this.showFlipNum()} */}
             </div>
         )
     }
     
-    componentDidMount() {
-        this.getCounts();
+    // componentDidMount() {
+    //     this.getCounts();
 
-        this.timer = setInterval(() => {
-            if(this.state.num < this.state.total) {
-                let increment = 1;
-                if(this.state.total - this.state.num > 1000) {
-                    increment = 111;
-                } else if(this.state.total - this.state.num > 100) {
-                    increment = 11;
-                }
+    //     this.timer = setInterval(() => {
+    //         if(this.state.num < this.state.total) {
+    //             let increment = 1;
+    //             if(this.state.total - this.state.num > 1000) {
+    //                 increment = 111;
+    //             } else if(this.state.total - this.state.num > 100) {
+    //                 increment = 11;
+    //             }
 
-                this.setState({
-                    num: this.state.num + increment
-                });
-            }
-        }, 10);
-    }
+    //             this.setState({
+    //                 num: this.state.num + increment
+    //             });
+    //         }
+    //     }, 10);
+    // }
     
-    componentWillUnmount() {
-        clearInterval(this.timer);
-    }
+    // componentWillUnmount() {
+    //     clearInterval(this.timer);
+    // }
 }
 
 export default SearcherLanding;

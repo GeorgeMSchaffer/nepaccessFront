@@ -435,7 +435,8 @@ input[type=checkbox] {
     width: 1140px;
     height: 248px;
     
-    background: #FBFBF6;
+    /* background: #FBFBF6; */
+    background: #F8F9FA;
     margin: auto;
     padding-top: 20px;
 }
@@ -469,7 +470,8 @@ button.document-download {
     height: 32px;
 
     color: black;
-    background-color: #8FBC3F;
+    /* background-color: #8FBC3F; */
+    background-color: #B2C5F5;
 
     font-family: "Open Sans";
     font-style: normal;
@@ -484,7 +486,8 @@ button.document-download {
     /* width: 50%; */
 }
 button.document-download:hover {
-    background-color: rgb(100,255,100);
+    /* background-color: rgb(100,255,100); */
+    background-color: #7C96F1;
 }
 
 a.link {
@@ -562,7 +565,8 @@ a.link {
     height: 13px;
     border-radius: 50%;
     /* background: black; */
-    background:#8FBC3F;
+    /* background:#8FBC3F; */
+    background: #4263DC;
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
   }
   .lds-ellipsis div:nth-child(1) {
@@ -686,7 +690,8 @@ a.link {
     /* margin-left: -285px; */
 }
 #main-search-icon {
-    background: #8FBC3F;
+    /* background: #8FBC3F; */
+    background: #F1D40A;
 }
 
 #agency-svg-holder {

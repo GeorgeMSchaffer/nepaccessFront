@@ -222,7 +222,8 @@ label.checkbox-text, span.checkbox-text {
     margin-left: 8%;
     margin-right: 8%; */
 
-    background: rgba(115, 114, 114, 1);
+    /* background: rgba(115, 114, 114, 1); */
+    background: #9EABAE;
 }
 .search-bar-holder {
     display: inline-block;
@@ -280,10 +281,11 @@ label.checkbox-text, span.checkbox-text {
     
     /* background: #FFFFFF; */
     /* Background space for magnifying glass icon: 100% minus its width */
-    background: linear-gradient(to right,  #FFFFFF 0%,#FFFFFF calc(100% - 54px),#8FBC3F calc(100% - 80px),#8FBC3F 100%);
+    /* background: linear-gradient(to right,  #FFFFFF 0%,#FFFFFF calc(100% - 54px),#8FBC3F calc(100% - 80px),#8FBC3F 100%); */
+    background: linear-gradient(to right,  #FFFFFF 0%,#FFFFFF calc(100% - 54px),#F1D40A calc(100% - 80px),#F1D40A 100%);
     border: 4px solid #000000;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 4px;
+    /* border-radius: 4px; */
 
     font-family: "Open Sans";
     font-size: 24px;
@@ -299,7 +301,8 @@ label.checkbox-text, span.checkbox-text {
 
 .search-icon {
   
-    background: #8FBC3F;
+    /* background: #8FBC3F; */
+    background: #F1D40A;
   
     padding: 7px;
   
@@ -435,7 +438,8 @@ input:hover {
 
 .side-link {
     text-decoration: underline;
-    color: #64D6FA;
+    /* color: #64D6FA; */
+    color: #324EB3;
     font-weight: 600;
     line-height: 30px;
 

@@ -45,7 +45,8 @@
     background: none;
     box-shadow: none;
 
-    color:#8FBC3F;
+    /* color:#8FBC3F; */
+    color: #B6C4C8;
 }
 .profile-link-button + .profile-link-button {
 }
