@@ -166,7 +166,7 @@ span.filename>* {
 #search-results .tabulator-table .tabulator-row,
 #search-results .tabulator>.tabulator-footer {
     /* border-top: 20px solid #FBFBF6; */
-    background: #F8F9FA;
+    border-top: 20px solid #F8F9FA;
 }
 #search-results .tabulator-row>.tabulator-cell,
 #search-results .tabulator[tabulator-layout=fitColumns] .tabulator-row .tabulator-cell:last-of-type {
