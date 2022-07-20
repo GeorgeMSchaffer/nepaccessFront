@@ -68,7 +68,8 @@ span.glow {
 }
 
 .landing-header {
-    background: none !important;
+    /* background: none !important; */
+    background: rgb(165,186,191) !important;
 }
 
 /* Search box */
