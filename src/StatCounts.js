@@ -393,7 +393,7 @@ function yearCountDataTo2dArray(arrays, selections) {
     // populate first column of results (this will be the year header and year values to serve as row headers)
     finalArray[j] = ["year"]; 
     for(let i = 1; i < yearArray.length + 1; i++) {
-        finalArray[j+i] = new Array(); // init new year row
+        finalArray[j+i] = []; // init new year row
         finalArray[j+i].push(yearArray[i - 1]);
     }
 

@@ -23,7 +23,8 @@
     position: sticky; 
     top: 101px; /** same as #header height minus border width */
     font-weight: bold;
-    background: #FBFBF6; /** Useful to give whole row "opacity" when scrolling down */
+    /* background: #FBFBF6; * Useful to give whole row "opacity" when scrolling down */
+    background: #F8F9FA;
 }
 
 .ExcelTable tbody tr:last-child { 

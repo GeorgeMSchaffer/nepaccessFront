@@ -1592,7 +1592,7 @@ class Importer extends Component {
                             {"Import status: " + this.state.successLabel}
                         </h3>
                         <div><label hidden={this.state.importOption === "csv" || !this.state.busy}>
-                            <b>Uploaded: {this.state.uploaded / 1024 / 1024} MB : ({Math.round((this.state.uploaded / this.state.totalSize)*100)}%)</b>
+                            <b>Uploaded: {Math.floor((this.state.uploaded / 1024 / 1024))} MB : ({Math.round((this.state.uploaded / this.state.totalSize)*100)}%)</b>
                         </label></div>
                         
                         <label hidden={this.state.importOption === "csv"}>

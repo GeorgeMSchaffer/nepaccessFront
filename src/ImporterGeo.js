@@ -184,7 +184,7 @@ export default class ImporterGeo extends Component {
         if(i < this.state.geojson.length && this.state.bads[this.state.geojson[i].geo_id]) {
             let resultString = "Item " + i + ": " + "Skipping bad id " + this.state.geojson[i].geo_id + "\n";
             this.setState({
-                results : this.state.results.concat(resultString)
+                results : this.state.results + resultString
             }, () => {
                 this.geoUploadOne(importUrl,i+1);
             });
