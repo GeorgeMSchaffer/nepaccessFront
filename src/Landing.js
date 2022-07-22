@@ -47,16 +47,16 @@ class Landing extends React.Component {
                     <div id="headline" className="no-select cursor-default">
                         <h1 id="landing-headline-text">
                             <span className="glow">
-                                Bringing NEPA Into the 21st Century<br /> Through the Power of Data Science
+                                Fulfilling NEPA’s Promise <br />Through the Power of Data Science
                             </span>
                         </h1>
                         <h2 id="sub-headline">
                             <span className="glow">
-                                Quickly and easily find past environmental data relevant to your community or project.
+                                Help grow our community of knowledge to fulfill NEPA’s promise —
                             </span>
                             <div>
                                 <span className="glow">
-                                    Explore and create new knowledge from NEPA environmental reviews.
+                                    put our information infrastructure to work for you.
                                 </span>
                             </div>
                         </h2>
