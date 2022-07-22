@@ -2,9 +2,14 @@
     width: 80%;
     height: 70%;
 } */
-#slides-iframe-modal {
-    width: 900px;
+/* #slides-iframe-modal {
+    width: 800px;
     height: 632px;
+    overflow: hidden;
+} */
+#slides-iframe-modal {
+    width: 632px;
+    height: 426px;
     overflow: hidden;
 }
 /* #slides-iframe-modal.logged-in {

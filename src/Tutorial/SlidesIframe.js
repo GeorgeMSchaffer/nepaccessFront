@@ -37,9 +37,9 @@ import './slides.css';
 
 function getHeight() {
     if(localStorage.role) {
-        return "612px";
+        return "422px";
     } else {
-        return "632px";
+        return "442px";
     }
 }
 // override these defaults:
@@ -148,7 +148,7 @@ export default class Slides extends React.Component {
                                     id="iframe-test-container"
                                     // src="https://paulmirocha.com/nepa/"
                                     src="https://about.nepaccess.org/wp-content/uploads/demo/"
-                                    style={{ width: '1px', minWidth: '100%', height: '612px', minHeight: '100%'}}
+                                    style={{ width: '1px', minWidth: '100%', height: getHeight(), minHeight: '100%'}}
                                 />
                             {/* </div> */}
                         </div>
