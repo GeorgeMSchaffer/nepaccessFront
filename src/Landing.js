@@ -13,13 +13,13 @@ import IframeResizer from 'iframe-resizer-react';
 class Landing extends React.Component {
 
     constructor(props) {
-      super(props);
-      this.state = {
-        rawInput: '',
-        render: 'landing'
-      };
-      this.handleChange = this.handleChange.bind(this);
-      this.handleClick = this.handleClick.bind(this);
+        super(props);
+        this.state = {
+            rawInput: '',
+            render: 'landing'
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handleChange(inputId, inputValue){
@@ -32,6 +32,7 @@ class Landing extends React.Component {
           this.props.history.push('search?q='+this.state.rawInput);
         });
     }
+
 
     render(){
         return (

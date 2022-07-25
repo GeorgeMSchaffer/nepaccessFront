@@ -67,9 +67,14 @@ span.glow {
     background-image: url("assets/1411_home-page-image_7-22-22.jpg");
 }
 
-.landing-header {
-    /* background: none !important; */
-    background: rgb(151,171,178) !important;
+#header.landing-header {
+    /* background: rgb(151,171,178) !important; */
+    background: none;
+    -webkit-transition: background 0.6s; /* Safari */
+    transition: background 0.6s;
+}
+#header.landing-header.transition {
+    background: #B6C4C8;
 }
 
 /* Search box */

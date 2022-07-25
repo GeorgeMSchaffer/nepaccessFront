@@ -87,7 +87,8 @@ class Main extends React.Component {
             loaderClass: 'loadDefault',
             role: null,
             currentPage: "",
-            anonymous: false
+            anonymous: false,
+            headerLandingCss: ""
         };
 
         this.refresh = this.refresh.bind(this);
@@ -99,6 +100,8 @@ class Main extends React.Component {
         if(window.location.hostname !== 'localhost') {
             hotjar.initialize(2319391, 6);
         }
+
+        window.addEventListener("scroll", this.handleScroll);
     }
 
     /** This effectively replaces the original purpose of check(), especially with anonymous user support */
@@ -208,6 +211,23 @@ class Main extends React.Component {
         }
         return headerCss;
     }
+    handleScroll = (e) => {
+        // For landing only
+        if(this.state.currentPage && this.state.currentPage === '/') {
+            let landingStyle = "";
+
+            const position = window.pageYOffset;
+
+            if (position > 100) {
+                // console.log("Transition header background", position);
+                landingStyle = " transition";
+            }
+
+            this.setState({
+                headerLandingCss: landingStyle
+            });
+        }
+    }
 
 
     render() {
@@ -220,7 +240,7 @@ class Main extends React.Component {
                 <link rel="canonical" href="https://www.nepaccess.org/" />
             </Helmet>
 
-            <div id="header" className={this.getHeaderCss()}>
+            <div id="header" className={this.getHeaderCss() + this.state.headerLandingCss}>
 
                 <div id="logo" className="no-select">
                     <Link id="logo-link" to="/">
@@ -390,6 +410,14 @@ class Main extends React.Component {
             currentPage: window.location.pathname
         });
         this.check();
+
+        // if(navigator.userAgent.toLowerCase ().match (/mobile/i)) {
+        //     console.log("Mobile device");
+        // }
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.handleScroll);
     }
 }
 
