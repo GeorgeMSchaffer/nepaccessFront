@@ -755,7 +755,8 @@ textarea.server-response {
 }
 
 .results-count-holder {
-    background-color: rgba(219, 217, 217, 1);
+    /* background-color: rgba(219, 217, 217, 1); */
+    background-color: #E7EAEA;
 }
 
 .flex-1 {

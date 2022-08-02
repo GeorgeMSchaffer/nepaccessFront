@@ -149,7 +149,8 @@ label.checkbox-text, span.checkbox-text {
     width: 100%;
     min-height: 50px;
 
-    background: rgba(196, 196, 196, 1);
+    /* background: rgba(196, 196, 196, 1); */
+    background-color: #b6c4c8;
 }
 #results-label {
     margin-left: 15px;

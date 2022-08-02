@@ -114,7 +114,8 @@ span.filename>* {
 }
 
 #process-results .tabulator-row .tabulator-cell {
-    background-color: #f0efed;
+    /* background-color: #f0efed; */
+    background-color: #E7EAEA;
     border: 2px solid #dadada;
 }
 #process-results .cardTitle {
