@@ -218,6 +218,8 @@ const GeojsonMap = (props) => {
                     crossorigin=""></script>
             </Helmet>
             
+            Note: Counties and the map data below are machine-assisted and may not reflect the state(s) listed above.
+            
             <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
             {getBounds && !isLoading ?(
             <MapContainer className="leafmap"
