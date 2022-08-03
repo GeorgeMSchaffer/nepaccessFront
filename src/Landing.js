@@ -46,21 +46,23 @@ class Landing extends React.Component {
 
                 <div id="landing-images">
                     <div id="headline" className="no-select cursor-default">
-                        <h1 id="landing-headline-text">
-                            <span className="glow">
-                                Fulfilling NEPA’s Promise <br />Through the Power of Data Science
-                            </span>
-                        </h1>
-                        <h2 id="sub-headline">
-                            <span className="glow">
-                                Help grow our community of knowledge to fulfill NEPA’s promise —
-                            </span>
-                            <div>
+                        <div id="landing-headline-container">
+                            <h1 id="landing-headline-left">
                                 <span className="glow">
-                                    put our information infrastructure to work for you.
+                                    Fulfilling NEPA’s Promise Through the Power of Data Science.
                                 </span>
-                            </div>
-                        </h2>
+                            </h1>
+                            <h2 id="landing-headline-right">
+                                <span className="glow">
+                                    Help grow our community of knowledge to fulfill NEPA’s promise —
+                                </span>
+                                <div>
+                                    <span className="glow">
+                                        put our information infrastructure to work for you.
+                                    </span>
+                                </div>
+                            </h2>
+                        </div>
             
                         <SearcherLanding 
                             id="rawInput"

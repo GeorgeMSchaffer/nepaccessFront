@@ -144,11 +144,11 @@ class SearcherLanding extends React.Component {
                         
                     
                     <div id="landing-search-bar-holder">
-                        <h3 id="landing-search-header">
+                        {/* <h3 id="landing-search-header">
                             <span className="glow">
                                 Begin with a simple keyword search:
                             </span>
-                        </h3>
+                        </h3> */}
                         <input id="landing-search-bar"
                             name="titleRaw" 
                             placeholder="Search for NEPA documents" 
