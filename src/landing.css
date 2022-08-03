@@ -5,7 +5,7 @@
     width: 100%;
     /** The search box now has a percentage-based position, which means the overall page
     needs a minimum height that does not clip into the header texts. This needs to change if the landing text changes. */
-    min-width: 650px;
+    min-width: 750px;
     
     margin: auto;
     /* margin-top: 102px; */
@@ -57,8 +57,8 @@ span.glow {
 }
 
 #landing-images {
-    min-height: 655px;
-    height: 100%;
+    min-height: 820px;
+    height: 80%;
     width: 100%;
     background-position: top;
     background-repeat: no-repeat;

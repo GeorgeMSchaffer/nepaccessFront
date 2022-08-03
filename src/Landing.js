@@ -54,13 +54,8 @@ class Landing extends React.Component {
                             </h1>
                             <h2 id="landing-headline-right">
                                 <span className="glow">
-                                    Help grow our community of knowledge to fulfill NEPA’s promise —
+                                    Help grow our community of knowledge to fulfill NEPA’s promise — put our information infrastructure to work for you.
                                 </span>
-                                <div>
-                                    <span className="glow">
-                                        put our information infrastructure to work for you.
-                                    </span>
-                                </div>
                             </h2>
                         </div>
             
