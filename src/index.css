@@ -575,7 +575,8 @@ span.email-text {
 }
 
 .green {
-    color: #669e03;
+    /* color: #669e03; */
+    color: #348ECF;
 }
 
 .center {

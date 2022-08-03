@@ -89,11 +89,13 @@ div.update .react-datepicker__input-container>input {
 .record-details h2 {
     font-family: "Open Sans Condensed";
     font-size: 28px;
-    color: #669e03;
+    /* color: #669e03; */
+    color: #348ECF;
 }
 
 .record-details h3 {
-    color: #669e03;
+    /* color: #669e03; */
+    color: #348ECF;
 }
 
 .record-details .modal-title {
