@@ -804,8 +804,8 @@ a.link {
         min-width: 20%;
         max-width: 100%;
         margin-bottom: 20px;
-        border: 2px solid rgba(218, 218, 218, 1);
-        background: rgba(240, 239, 237, 1);
+        /* border: 2px solid rgba(218, 218, 218, 1);
+        background: rgba(240, 239, 237, 1); */
     }
     .input-bar-left .sidebar-check-label {
         font-size: 14px;
