@@ -210,7 +210,8 @@ label.checkbox-text, span.checkbox-text {
     letter-spacing: 0em;
     text-align: left;
     
-    margin-left: 14%;
+    /* margin-left: 14%; */
+    margin-left: calc(17px + 14%);
 }
 .search-holder {
     display: block;
@@ -419,7 +420,6 @@ input:hover {
     margin-top: 16px;
 }
 #tooltip4Container {
-    position: relative;
     text-align: left;
     /* margin-left: 15px; */
     margin-left: 20%;
@@ -436,7 +436,7 @@ input:hover {
     cursor: pointer;
 }
 .input-bar-left {
-    margin-left: 200px;
+    margin-left: 212px;
 }
 
 .side-link {
