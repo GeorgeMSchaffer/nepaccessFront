@@ -758,89 +758,89 @@ class Search extends React.Component {
 
                         <div className="pre-input-bar">
                             <div id="tooltip4Container">
-                            <Tooltip 
-                                trigger="manual" // default mouseenter focus, had mouseenter but it got in the way of "Available files"
-                                // className="cursor-default"
-                                position="bottom"
-                                // arrow="true"
-                                size="small"
-                                // distance="80"
-                                // offset="80"
-                                // useContext={true}
-                                // title={tooltipTitle}
-                                html={(<>
-                                    <div className="tooltip-header">Search word connectors <button className="float-right" onClick={this.closeTooltip}>x</button></div>
-                                    <table className="tooltip-table"><tbody>
-                                        <tr className="tooltip-line">
-                                            <td>&nbsp;</td><td>&nbsp;</td>
-                                        </tr>
-                                        <tr className="tooltip-line"><td className="tooltip-connector">AND</td>
-                                            <td>This is the default. <span className="bold">All</span> words you enter must be found together to return a result.</td>
-                                        </tr>
-                                        <tr className="tooltip-line">
-                                            <td>&nbsp;</td><td>&nbsp;</td>
-                                        </tr>
-                                        <tr className="tooltip-line"><td className="tooltip-connector">OR</td>
-                                            <td>(all caps) to search for <span className="bold">any</span> of those words.</td> 
-                                        </tr>
-                                        <tr className="tooltip-line">
-                                            <td>&nbsp;</td><td>&nbsp;</td>
-                                        </tr>
-                                        <tr className="tooltip-line"><td className="tooltip-connector">NOT</td>
-                                            <td>(all caps) to <span className="bold">exclude</span> a word or phrase.</td> 
-                                        </tr>
-                                        <tr className="tooltip-line">
-                                            <td>&nbsp;</td><td>&nbsp;</td>
-                                        </tr>
-                                        <tr className="tooltip-line"><td className="tooltip-connector">&quot; &quot;</td>
-                                            <td>Surround words with quotes (&quot; &quot;) to search for an <span className="bold">exact phrase.</span></td> 
-                                        </tr>
-                                        <tr className="tooltip-line">
-                                            <td>&nbsp;</td><td>&nbsp;</td>
-                                        </tr>
-                                        <tr className="tooltip-line"><td className="tooltip-connector"></td>
-                                            <td><a href="search-tips" target="_blank" rel="noopener noreferrer">More search tips.</a></td> 
-                                        </tr>
-                                    </tbody></table>
-                                    </>
-                                )}
-                                open={this.state.tooltipOpen}
-                                // onShow={this.tooltipTrigger}
-                                // interactive={true} // allow clicking of tooltip without hiding it
-                                // hideOnClick="toggle" // only close when tooltip link is clicked
-                                interactive={true} // prevents clickthrough
-                                hideOnClick={true}
-                            >
-                                {<span 
-                                        onClick={this.tooltipTrigger} 
-                                        className={this.state.tooltipClass + " side-link"}>
-                                    Search tips
-                                </span>}
-                                {/* <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
-                                    <text className="bold" x="13" y="22" text-align="center" fill="black">?</text>
-                                </svg> */}
-                                {/* <span id="tooltip3Mark" className="cursor-default no-select">?</span> */}
-                            </Tooltip>
-                            <Tooltip
-                                trigger="click"
-                                position="bottom"
-                                size="small"
-                                interactive={true} // prevents clickthrough
-                                hideOnClick={true}
-                                html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
-                                    from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
-                                    More files are being added continuously.
-                                    <div className="text-center margin-top">
-                                        <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
-                                    </div>
-                                </div>}
-                            >
-                                {<span className={this.state.tooltipClass + " side-link"}>
-                                    Available files
-                                </span>}
-                            </Tooltip>
-                            <SlidesIframe />
+                                <Tooltip 
+                                    trigger="manual" // default mouseenter focus, had mouseenter but it got in the way of "Available files"
+                                    // className="cursor-default"
+                                    position="bottom"
+                                    // arrow="true"
+                                    size="small"
+                                    // distance="80"
+                                    // offset="80"
+                                    // useContext={true}
+                                    // title={tooltipTitle}
+                                    html={(<>
+                                        <div className="tooltip-header">Search word connectors <button className="float-right" onClick={this.closeTooltip}>x</button></div>
+                                        <table className="tooltip-table"><tbody>
+                                            <tr className="tooltip-line">
+                                                <td>&nbsp;</td><td>&nbsp;</td>
+                                            </tr>
+                                            <tr className="tooltip-line"><td className="tooltip-connector">AND</td>
+                                                <td>This is the default. <span className="bold">All</span> words you enter must be found together to return a result.</td>
+                                            </tr>
+                                            <tr className="tooltip-line">
+                                                <td>&nbsp;</td><td>&nbsp;</td>
+                                            </tr>
+                                            <tr className="tooltip-line"><td className="tooltip-connector">OR</td>
+                                                <td>(all caps) to search for <span className="bold">any</span> of those words.</td> 
+                                            </tr>
+                                            <tr className="tooltip-line">
+                                                <td>&nbsp;</td><td>&nbsp;</td>
+                                            </tr>
+                                            <tr className="tooltip-line"><td className="tooltip-connector">NOT</td>
+                                                <td>(all caps) to <span className="bold">exclude</span> a word or phrase.</td> 
+                                            </tr>
+                                            <tr className="tooltip-line">
+                                                <td>&nbsp;</td><td>&nbsp;</td>
+                                            </tr>
+                                            <tr className="tooltip-line"><td className="tooltip-connector">&quot; &quot;</td>
+                                                <td>Surround words with quotes (&quot; &quot;) to search for an <span className="bold">exact phrase.</span></td> 
+                                            </tr>
+                                            <tr className="tooltip-line">
+                                                <td>&nbsp;</td><td>&nbsp;</td>
+                                            </tr>
+                                            <tr className="tooltip-line"><td className="tooltip-connector"></td>
+                                                <td><a href="search-tips" target="_blank" rel="noopener noreferrer">More search tips.</a></td> 
+                                            </tr>
+                                        </tbody></table>
+                                        </>
+                                    )}
+                                    open={this.state.tooltipOpen}
+                                    // onShow={this.tooltipTrigger}
+                                    // interactive={true} // allow clicking of tooltip without hiding it
+                                    // hideOnClick="toggle" // only close when tooltip link is clicked
+                                    interactive={true} // prevents clickthrough
+                                    hideOnClick={true}
+                                >
+                                    {<span 
+                                            onClick={this.tooltipTrigger} 
+                                            className={this.state.tooltipClass + " side-link"}>
+                                        Search tips
+                                    </span>}
+                                    {/* <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
+                                        <text className="bold" x="13" y="22" text-align="center" fill="black">?</text>
+                                    </svg> */}
+                                    {/* <span id="tooltip3Mark" className="cursor-default no-select">?</span> */}
+                                </Tooltip>
+                                <Tooltip
+                                    trigger="click"
+                                    position="bottom"
+                                    size="small"
+                                    interactive={true} // prevents clickthrough
+                                    hideOnClick={true}
+                                    html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
+                                        from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
+                                        More files are being added continuously.
+                                        <div className="text-center margin-top">
+                                            <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
+                                        </div>
+                                    </div>}
+                                >
+                                    {<span className={this.state.tooltipClass + " side-link"}>
+                                        Available files
+                                    </span>}
+                                </Tooltip>
+                                <SlidesIframe />
                                 {/* <BasicModal id="basic-modal"
                                     className="side-link"
                                     divClassName=""

@@ -611,6 +611,9 @@ a.link {
   }
   
 #main-search-bar {
+    border: 2px solid black;
+    margin-left: 15px;
+
     padding-left: 210px;
     padding-right: 110px;
     width: calc(79% - 320px);
@@ -620,8 +623,8 @@ a.link {
     position: absolute;
     width: 195px;
     /* margin-left: -249px; */
-    margin-left: 4px;
-    margin-top: 4px;
+    margin-left: 17px;
+    margin-top: 2px;
     height: 56px;
     line-height: 42px;
 }
@@ -667,7 +670,7 @@ a.link {
 }
 
 #search-proximity div.control__indicators path {
-    color: green;
+    color: #324EB3;
 }
 
 #search-proximity .control__option {
