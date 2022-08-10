@@ -410,11 +410,8 @@ const MyData = (props) => {
         </div>
 
         
-        {!props.isHidden ?(
+        {!props.isHidden || geoLoading ?(
             <div>
-                {geoLoading ?(
-                    <div>Loading map polygons...</div>
-                ) : ( <></>)}
                 <div className="map-layers-toggle">
                     <div className="checkbox-container">
                         <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
@@ -458,7 +455,7 @@ const MyData = (props) => {
             </div>
             
         ) : (
-            <></>
+            <div>Loading map polygons...</div>
         )}
         
     </>);
