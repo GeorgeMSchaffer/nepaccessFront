@@ -800,3 +800,5 @@ button.modal-close {
         margin-bottom: -7px;
     }
 }
+/** may fix new problem with undesirable browser-controlled zooming in on focused elements */
+input{ touch-action: none; }
