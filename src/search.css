@@ -693,7 +693,9 @@ a.link {
 }
 #main-search-icon {
     /* background: #8FBC3F; */
-    background: #F1D40A;
+    background: #F1D40A;    
+    width: 41px;
+    height: 42px;
 }
 
 #agency-svg-holder {

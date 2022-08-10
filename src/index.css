@@ -791,6 +791,12 @@ button.modal-close {
     mobile browsers intervene and force the UI or Page to zoom so that the texts are readable enough. */
 @media screen and (max-width: 767px) {
     input, select, textarea {
-        font-size: 16px;
+        font-size: 16px !important;
+    }
+    #landing-search-icon {
+        margin-bottom: -21px;
+    }
+    #landing-search-bar-holder>svg.cancel-icon {
+        margin-bottom: -7px;
     }
 }
