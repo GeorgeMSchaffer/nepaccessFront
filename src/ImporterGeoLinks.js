@@ -64,7 +64,7 @@ const customStyles = {
         backgroundColor: 'white',
         color: 'black',
         '&:hover': {
-            backgroundColor: 'lightgreen'
+            backgroundColor: '#b2c5f5'
         },
     }),
     control: (styles) => ({

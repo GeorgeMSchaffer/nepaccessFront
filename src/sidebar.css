@@ -453,14 +453,19 @@ input:hover {
 .filters-toggle {
     float: right;
     width: 20px;
-    
-    color: blue;
+}
+.filters-toggle, .map-filters-toggle {
+    color: #0067B1;
     background-color: white;
     border: 1px solid black;
 
     cursor: pointer;
 
     user-select: none;
+}
+.filters-toggle:hover, .map-filters-toggle:hover {
+    background-color: #0067B1;
+    color: white;
 }
 
 #clear-filters {

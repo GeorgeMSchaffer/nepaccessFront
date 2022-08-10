@@ -693,7 +693,7 @@ export default class RecordDetailsTab extends React.Component {
                     backgroundColor: 'white',
                     color: 'black',
                     '&:hover': {
-                        backgroundColor: 'lightgreen'
+                        backgroundColor: '#b2c5f5'
                     },
                     width: "500px",
                 }),

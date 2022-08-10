@@ -252,7 +252,7 @@ input[type=checkbox] {
 /** React-select custom styling within advanced search box */
 
 .react-select__menu-list>.react-select__option--is-focused {
-    background: lightgreen;
+    background: #b2c5f5;
 }
 
 /* #advanced-search-box .react-select__dropdown-indicator, #advanced-search-box .react-select__clear-indicator, #advanced-search-box .react-select__indicator-separator {

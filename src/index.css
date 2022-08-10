@@ -488,7 +488,8 @@ span.email-text {
 }
 
 .react-select__value-container>.react-select__multi-value {
-    background: lightgreen;
+    /* background: lightgreen; #90ee90 */
+    background-color: #b2c5f5;
 }
 
 .margin {
@@ -778,4 +779,10 @@ input[type="checkbox"] {
 button.modal-close {
     float: right;
     margin-bottom: 10px;
+}
+
+.maintenance-message {
+    font-style: italic;
+    background-color: white;
+    color: #0067B1;
 }

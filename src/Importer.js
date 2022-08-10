@@ -1266,7 +1266,7 @@ class Importer extends Component {
 	            backgroundColor: 'white',
                 color: 'black',
                 '&:hover': {
-                    backgroundColor: 'lightgreen'
+                    backgroundColor: '#b2c5f5'
                 },
                 // ':active': {
                 //     ...styles[':active'],
