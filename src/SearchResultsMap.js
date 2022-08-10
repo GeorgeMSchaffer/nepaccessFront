@@ -206,7 +206,6 @@ const MyData = (props) => {
             //     setBounds(leafBounds);
             // }
             
-            setLoading(false);
         });
         // console.timeEnd("t2");
 
@@ -220,7 +219,6 @@ const MyData = (props) => {
      * and then those counts could be assigned at the end.
      */
     const setAndFilterData = () => {
-        setLoading(true);
 
         let filteredGeoWithCounts = JSON.parse(JSON.stringify(props.docList)); // deep clone
         filteredGeoWithCounts = buildLocationHashMaps(props.results,filteredGeoWithCounts); // build results
@@ -359,6 +357,13 @@ const MyData = (props) => {
     //     return leafBounds;
     // }
 
+    // const mapLoadedHandler = () => {
+    //     if(geoLoading) {
+    //         console.log("Map loaded");
+    //         setLoading(false);
+    //     }
+    // }
+
     const doFitBounds = () => {
         if(shouldFit && map && getBounds && getBounds._southWest && getBounds._northEast) {
             try {
@@ -371,7 +376,6 @@ const MyData = (props) => {
 
     // useEffect to fetch data on mount
     useEffect(() => {
-        // console.log("Render");
         mounted.current = true;
 
         if(props && props.docList && props.docList.length > 0) {
@@ -389,9 +393,13 @@ const MyData = (props) => {
             // console.log("Nothing here");
             // getByList(null, "geojson/get_all_state_county_for_eisdocs");
         }
+        
+        if(data) {
+            // console.log("Done loading");
+            setLoading(false);
+        }
 
         return () => { // unmount or rerender
-            // console.log("Rerender/unmount");
             mounted.current = false;
         };
     }, [props]);
@@ -441,6 +449,7 @@ const MyData = (props) => {
                         scrollWheelZoom={false}
                         // bounds={getBounds}
                         whenCreated={setMap}
+                        // onLoad={mapLoadedHandler()}
                         // onLoad={doFitBounds()} // for dynamic zoom to bounds
                     >
                         {showData()}
