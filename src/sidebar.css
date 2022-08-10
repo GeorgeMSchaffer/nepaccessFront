@@ -302,14 +302,12 @@ label.checkbox-text, span.checkbox-text {
 }
 
 .search-icon {
-  
     /* background: #8FBC3F; */
     background: #F1D40A;
   
     padding: 7px;
-  
-    width: 39px;
-    height: 41px;
+    width: 41px;
+    height: 42px;
     
     margin-left: -57px;
     margin-bottom: -18px;

@@ -786,3 +786,11 @@ button.modal-close {
     background-color: white;
     color: #0067B1;
 }
+
+/** Avoid this scenario: When a developer sets the font size less than 16 pixels on any form element,
+    mobile browsers intervene and force the UI or Page to zoom so that the texts are readable enough. */
+@media screen and (max-width: 767px) {
+    input, select, textarea {
+        font-size: 16px;
+    }
+}

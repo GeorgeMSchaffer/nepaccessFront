@@ -661,7 +661,6 @@ a.link {
 } */
 #search-proximity>div.disabled * {
     color: lightgray !important;
-    font-size: 12px;
 }
 #proximity-select .control__placeholder {
     /* color: #707070;  */
@@ -791,8 +790,8 @@ a.link {
         font-size: 16px;
     }
     .search-bar-holder #main-search-icon {
-        height: 100%;
-        margin-bottom: -20px;
+        height: 42px;
+        margin-bottom: -22px;
     }
     .search-bar-holder #main-search-clear {
         margin-bottom: -7px;
@@ -808,7 +807,7 @@ a.link {
         background: rgba(240, 239, 237, 1); */
     }
     .input-bar-left .sidebar-check-label {
-        font-size: 14px;
+        font-size: 16px;
     }
     .radio-holder .surveyRadio {
         display: block;
