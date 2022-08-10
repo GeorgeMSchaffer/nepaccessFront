@@ -357,12 +357,12 @@ const MyData = (props) => {
     //     return leafBounds;
     // }
 
-    // const mapLoadedHandler = () => {
-    //     if(geoLoading) {
-    //         console.log("Map loaded");
-    //         setLoading(false);
-    //     }
-    // }
+    const mapLoadedHandler = () => {
+        if(data && geoLoading) {
+            // console.log("Have data, done loading");
+            setLoading(false);
+        }
+    }
 
     const doFitBounds = () => {
         if(shouldFit && map && getBounds && getBounds._southWest && getBounds._northEast) {
@@ -393,11 +393,6 @@ const MyData = (props) => {
             // console.log("Nothing here");
             // getByList(null, "geojson/get_all_state_county_for_eisdocs");
         }
-        
-        if(data) {
-            // console.log("Done loading");
-            setLoading(false);
-        }
 
         return () => { // unmount or rerender
             mounted.current = false;
@@ -418,8 +413,8 @@ const MyData = (props) => {
         </div>
 
         
-        {!props.isHidden || geoLoading ?(
-            <div>
+        {(!props.isHidden || geoLoading) ?(
+            <div className="map-top-container">
                 <div className="map-layers-toggle">
                     <div className="checkbox-container">
                         <input type="checkbox" name="showStates" id="showStates" className="sidebar-checkbox"
@@ -449,7 +444,7 @@ const MyData = (props) => {
                         scrollWheelZoom={false}
                         // bounds={getBounds}
                         whenCreated={setMap}
-                        // onLoad={mapLoadedHandler()}
+                        onLoad={mapLoadedHandler()}
                         // onLoad={doFitBounds()} // for dynamic zoom to bounds
                     >
                         {showData()}

@@ -1,3 +1,7 @@
+.map-top-container {
+    /** seems to fix anomalous fragments "escaping" container and also keeps the page width stable while this happens */
+    overflow: hidden;
+}
 .leafmap_container {
     height: 400px;
 }
