@@ -76,24 +76,20 @@ export default class SearchProcessResults extends React.Component {
         this.hidden = new Set();
     }
 
-    getSpecific = (id) => {
-        return this.props.gatherSpecificHighlights(id);
-    }
-
     hide = (props) => {
         return this.hidden.has(props);
     }
 
-    hideText = (id,_offsetY) => {
+    hideText = (_offsetY, _index, record) => {
         this.offsetY = _offsetY;
         
-        if(this.hidden.has(id)) {
-            this.hidden.delete(id);
+        if(this.hidden.has(record.id)) {
+            this.hidden.delete(record.id);
             this.setState({hidden: this.hidden});
         } else {
-            this.hidden.add(id);
+            this.hidden.add(record.id);
             this.setState({hidden: this.hidden}, () => {
-                this.props.gatherSpecificHighlights(id);
+                this.props.gatherSpecificHighlights(_index, record);
             });
         }
     }

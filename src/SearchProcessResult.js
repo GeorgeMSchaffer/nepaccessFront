@@ -34,9 +34,9 @@ export default class SearchProcessResult extends React.Component {
      * Then the parent scrolls to that offset on table redraw, since parent can easily track that event.
      */
     /** Hide and scroll to element (because rerendering likely lost view of it) */
-    hide = (e, id) => {
+    hide = (e, _index, record) => {
         const offs = e.nativeEvent.pageY - (window.innerHeight / 2);
-        this.props.hideText(id,offs);
+        this.props.hideText(offs, _index, record);
 
         // Using parent for scroll, for now
         // this.scrollTo(offs);
@@ -161,7 +161,7 @@ export default class SearchProcessResult extends React.Component {
     }
     /** Used by showRecord(). 
      * Returns HTML for downloadable filenames each with highlight(s) as highlights are populated; show more/less buttons */ 
-    showText = (record) => {
+    showText = (record, _index) => {
         if(record && record.name){
             let filenames = record.name.split(">");
             // Note: texts should be an array already
@@ -187,7 +187,7 @@ export default class SearchProcessResult extends React.Component {
         
                             <div className="margins" >
                                 <div>
-                                    <span className="hide-button" onClick={(e) => this.hide(e, record.id)}>
+                                    <span className="hide-button" onClick={(e) => this.hide(e, _index, record)}>
                                         Show more text snippets ({combined.length - 1}) ↴
                                     </span>
                                 </div>
@@ -205,7 +205,7 @@ export default class SearchProcessResult extends React.Component {
                                     <div key={_id}>
                                         {this.showFragment(_id,combo[0],combo[1],index)}
                                         <div className="margins">
-                                            <span className="hide-button" onClick={(e) => this.hide(e,record.id)}>
+                                            <span className="hide-button" onClick={(e) => this.hide(e, _index, record)}>
                                                 Show fewer text snippets
                                             </span>
                                         </div>
@@ -221,7 +221,7 @@ export default class SearchProcessResult extends React.Component {
                 return (
                     <div>
                         <div className="wide-flex">
-                            <span className="hide-button" onClick={() => this.hide(record.id)}>Hide these text snippets</span>
+                            <span className="hide-button" onClick={(e) => this.hide(e, _index, record)}>Hide these text snippets</span>
                         </div>
                         {combined.map(function(combo, index){
                             return (
@@ -305,14 +305,14 @@ export default class SearchProcessResult extends React.Component {
                     return 0;
                 })
             .map(record => {
-                return this.showRecord(record);
+                return this.showRecord(record, this.props.cell._cell.row.data.originalIndex);
             });
 
             return newRecords;
         }
     }
     
-    showRecord = (record) => {
+    showRecord = (record, _index) => {
         return (<div key={record.relevance} className="record">
             <div className="record-line">
                 <span className="record-field regular">
@@ -321,7 +321,7 @@ export default class SearchProcessResult extends React.Component {
                 <span className="record-field">{record.registerDate}</span>
                 {this.showFileDownload(record)}
             </div>
-            {this.showText(record)}
+            {this.showText(record, _index)}
         </div>)
     }
     showRecordLink = (id,type) => {
@@ -366,7 +366,7 @@ export default class SearchProcessResult extends React.Component {
         if(this.props.cell._cell.row.data.records[0].id) {
             _key = this.props.cell._cell.row.data.records[0].id;
         } else {
-            console.log("** ** ** NO KEY");
+            console.log("** ** ** NO KEY", this.props.cell._cell.row.data.records[0]);
         }
 
         return (

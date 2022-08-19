@@ -249,9 +249,11 @@ export default class App extends React.Component {
 
     /** Do all cleanup needed: Just set searching to false */
     endEarly = () => {
-        this.setState({
-            searching: false
-        });
+        if(this.state.searching) {
+            this.setState({
+                searching: false
+            });
+        }
     }
 
     /** Sorts falsy (undefined, null, NaN, 0, "", and false) field value to the end instead of the top */
@@ -330,6 +332,7 @@ export default class App extends React.Component {
         // console.log("Building",data);
         let processResults = {};
         let newUniqueKey = -1;
+        let i = 0;
 
         data.forEach(datum => {
             // Use process IDs as keys
@@ -343,12 +346,15 @@ export default class App extends React.Component {
 
             // Init if necessary
             if(!processResults[key]) {
-                processResults[key] = {records: [], processId: key, isProcess: true};
+                // New card: New original card index, can be useful later
+                processResults[key] = {records: [], processId: key, isProcess: true, originalIndex: i};
+                i++;
             }
             if(key < 0) { // Solo process, use ID
                 processResults[key].processId = datum.id;
                 processResults[key].isProcess = false;
             }
+
 
             // Assign latest date and latest title at the same time
             if(!processResults[key].registerDate && datum.registerDate) {
@@ -604,7 +610,6 @@ export default class App extends React.Component {
                             status: doc.status,
                             subtype: doc.subtype,
                             county: doc.county,
-                            index: idx,
 
                             relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                         };
@@ -624,6 +629,7 @@ export default class App extends React.Component {
                         searchResults: _data,
                         outputResults: _data,
                     }, () => {
+                        // console.log("All results", _data);
                     
                         // title-only (or blank search===no text search at all): return
                         if(Globals.isEmptyOrSpaces(dataToPass.title) || 
@@ -797,7 +803,6 @@ export default class App extends React.Component {
                         status: doc.status,
                         subtype: doc.subtype,
                         county: doc.county,
-                        index: idx,
 
                         relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                     };
@@ -884,24 +889,28 @@ export default class App extends React.Component {
         }
     }
 
-    
-    gatherSpecificHighlights = (recordId) => {
+    /** Gathers all highlights for a single record, if we don't have them already. Invoked by "show more text snippets" 
+     * button click, inside SearchProcessResult (this button appears for every record with multiple files, 
+     * after a full text search).  
+     * 
+     * SearchProcessResult can give us the entire record and the master card _index, 
+     * which we can use to skip having to loop through everything.
+     */
+    gatherSpecificHighlights = (_index, record) => {
+        console.log("gatherSpecificHighlights")
         if(!this._mounted){ // User navigated away or reloaded
+            console.log("Cancel specific highlighting")
             return; // cancel search
         }
 
         if(!this.state.outputResults) {
-            // console.log("Nothing here right now");
+            console.log("Nothing here right now to highlight specifically");
             return;
         }
 
-        let currentResults = this.state.outputResults;
-        // console.log("Activate", recordId);
         let _unhighlighted = [];
-        let mustSkip = {};
 
         // No need for offset or limit. We just need to find the unhighlighted files for one record.
-        // This requires only recordId
 
         this.setState({
             snippetsDisabled: false,
@@ -910,52 +919,29 @@ export default class App extends React.Component {
 		}, () => {
             
             let searchUrl = new URL('text/get_highlightsFVH', Globals.currentHost);
+            // Need to skip this entry on both sides if it already has full plaintext (has been toggled at least once
+            // before and therefore has at least 2 highlights)
+            if(!record.plaintext 
+                || record.plaintext[0]
+                || record.plaintext[1]) {
 
-            for(let i = 0; i < currentResults.length; i++) {
-                for(let j = 0; j < currentResults[i].records.length; j++) {
-                    // Push Lucene IDs and >-delimited list of filenames
-                    if(recordId == currentResults[i].records[j].id) {
+                // No need to redo the work on the first file here
+                let endLuceneIds = record.luceneIds.slice(1);
+                let endFilenamesArray = record.name.split(">").slice(1);
+                let endFilenames = endFilenamesArray.join(">");
 
-                        // console.log("Pushing specific ID",i,j,currentResults[i].records[j].id);
-
-                        // Need to skip this entry on both sides if it already has full plaintext (has been toggled
-                        // and therefore has at least 2 highlights)
-                        if(!currentResults[i].records[j].plaintext 
-                            || !currentResults[i].records[j].plaintext[0]
-                            || !currentResults[i].records[j].plaintext[1]) {
-
-                            // No need to redo the work on the first file here
-                            let endLuceneIds = currentResults[i].records[j].luceneIds.slice(1);
-                            let endFilenamesArray = currentResults[i].records[j].name.split(">").slice(1);
-                            let endFilenames = endFilenamesArray.join(">");
-
-                            // console.log("Collecting for backend", endLuceneIds, endFilenames);
-
-                            // Filenames delimited by > (impossible filename character)
-                            // let firstFilename = currentResults[i].records[j].name.split(">")[0];
-                            // let firstLuceneId = [currentResults[i].records[j].luceneIds[0]];
-
-                            _unhighlighted.push(
-                                {
-                                    luceneIds: endLuceneIds, 
-                                    filename: endFilenames
-                                }
-                            );
-                        } else {
-                            // console.log("Skipping " + [currentResults[i].records[j].id]);
-                            mustSkip[currentResults[i].records[j].id] = true;
-                        }
-
-                        i = currentResults.length;
-                        // console.log("Breaking out",j,i);
-                        break;
+                // Filenames delimited by > (impossible filename character)
+                _unhighlighted.push(
+                    {
+                        luceneIds: endLuceneIds, 
+                        filename: endFilenames
                     }
-                }
-            }
+                );
+            } 
 
             if(_unhighlighted.length === 0) {
                 // nothing to do
-                // console.log("Nothing to highlight here");
+                console.log("Specific record already highlighted fully.");
                 this.endEarly();
                 return;
             }
@@ -988,77 +974,33 @@ export default class App extends React.Component {
                 }
             }).then(parsedJson => {
                 if(parsedJson){
-
                     // console.log("Adding highlights", parsedJson);
-                    
-                    let recordIdList = [];
                     let allResults = this.state.searchResults;
 
-                    let x = 0;
-                    for(let i = 0; i < currentResults.length; i++) {
-                        for(let j = 0; j < currentResults[i].records.length; j++) {
-                            // If search is interrupted, updatedResults[i] may be undefined (TypeError)
-                            if(recordId == currentResults[i].records[j].id) {
-                                // console.log("Assigning",i,j,currentResults[i].records[j].name);
-
-                                if(mustSkip[currentResults[i].records[j].id]) {
-                                    // do nothing; skip
-                                    // console.log("Skipping ID " + [currentResults[i].records[j].id]);
-                                } else {
-                                    // Concat instead of replace since we expect to have exactly 1 text snippet already
-                                    currentResults[i].records[j].plaintext = 
-                                        currentResults[i].records[j].plaintext.concat(parsedJson[x]);
-                                    recordIdList.push(currentResults[i].records[j].id);
-                                    x++;
-
-                                    // console.log("Concatenated",currentResults[i].records[j].plaintext);
-                                }
+                    // Iterate through records until we find the correct one (sort/filter could change index within card)
+                    for(let j = 0; j < allResults[_index].records.length; j++) {
+                        // Only bother checking ID if it has files
+                        if(!Globals.isEmptyOrSpaces(allResults[_index].records[j].name)){ 
+                            if(record.id === allResults[_index].records[j].id) {
+                                allResults[_index].records[j].plaintext = 
+                                    allResults[_index].records[j].plaintext.concat(parsedJson[0]);
+                                    
+                                // done
+                                j = allResults[_index].records.length;
                             }
                         }
                     }
-
-                    
-                    let n = 0;
-                    for(let i = 0; i < allResults.length; i++) {
-                        for(let j = 0; j < allResults[i].records.length; j++) {
-                            if(!Globals.isEmptyOrSpaces(allResults[i].records[j].name)){
-                                // Sorting can jumble it up, so we don't know which ID could match. Check all of them:
-                                for(let k = 0; k < recordIdList.length; k++) {
-                                    if(recordIdList[k] === allResults[i].records[j].id) {
-                                        // console.log(`Assigning ${parsedJson[n].length} highlights from parsedJson[${n}] to id ${recordIdList[n]}: ${parsedJson[n]}`);
-                                        // console.log(`Assigning ${parsedJson[k].length} highlights from parsedJson[${k}] to id ${recordIdList[k]}`);
-                                        allResults[i].records[j].plaintext = 
-                                            allResults[i].records[j].plaintext.concat(parsedJson[k]);
-                                        n++;
-
-                                        // match found for this record; exit
-                                        k = recordIdList.length;
-                                    }
-                                }
-                            }
-    
-                            if(n === recordIdList.length) {
-                                // exit
-                                // console.log("Assigned all highlights to searchResults; exiting 1");
-                                j = allResults[i].records.length;
-                            }
-                        }
-
-                        if(n === recordIdList.length) {
-                            // exit
-                            // console.log("***Assigned all highlights to searchResults; exiting 2***");
-                            i = allResults.length;
-                        }
-                    }
-
                     
                     // Fin
                     this.setState({
                         searchResults: allResults,
-                        outputResults: currentResults,
+                        // outputResults: currentResults,
                         searching: false, 
                         shouldUpdate: true
                     }, () => {
+                        // Run our filter + sort which will intelligently populate outputResults from updated searchResults
+                        // and update the table
+                        this.filterResultsBy(this._searcherState);
                         // console.log("All done with page highlights: all results, displayed results", 
                         //     allResults, currentResults);
                     });
@@ -1088,6 +1030,7 @@ export default class App extends React.Component {
     }
 
     gatherFirstPageHighlightsThenFinishSearch = (searchId, _inputs, currentResults) => {
+        console.log("gatherFirstPageHighlightsThenFinishSearch")
         if(!_inputs) {
             if(this.state.searcherInputs) {
                 _inputs = this.state.searcherInputs;
@@ -1115,7 +1058,7 @@ export default class App extends React.Component {
             let searchUrl = new URL('text/get_highlightsFVH', Globals.currentHost);
 
             let mustSkip = {};
-            let _unhighlighted = [];
+            let _unhighlighted = []; // List of records to request a text highlight for
             let startPoint = (this._page * this._pageSize) - this._pageSize;
             let endPoint = (this._page * this._pageSize);
 
@@ -1123,8 +1066,8 @@ export default class App extends React.Component {
             // additional logic elsewhere could ask for all of the highlights.
             // Then we would never get any "hidden" highlights, resulting in more responsive UX
 
-            for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++){
-                for(let j = 0; j < currentResults[i].records.length; j++) {
+            for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++) { // For each result card on current page
+                for(let j = 0; j < currentResults[i].records.length; j++) { // For each record in result card
                     // Push first lucene ID and filename
                     if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)) {
 
@@ -1190,10 +1133,6 @@ export default class App extends React.Component {
 
                     // console.log("Adding highlights", parsedJson);
 
-                    // TODO: It's not efficient, but outside of completely changing data structures for results,
-                    // we can assign highlights to all results here by searching over the array looking for record IDs
-                    // until we hit the end of the highlights
-                    let recordIdList = [];
                     let allResults = this.state.searchResults;
 
                     let x = 0;
@@ -1207,44 +1146,13 @@ export default class App extends React.Component {
                                     // do nothing; skip
                                     // console.log("Skipping ID " + [currentResults[i].records[j].id]);
                                 } else {
+                                    // Instead of currentResults[i].records[j].id, use the stored index 
+                                    //     currentResults[i].originalIndex for record j);
                                     currentResults[i].records[j].plaintext = parsedJson[x];
-                                    recordIdList.push(currentResults[i].records[j].id);
+                                    allResults[currentResults[i].originalIndex].records[j].plaintext = parsedJson[x];
                                     x++;
                                 }
                             }
-                        }
-                    }
-
-                    
-                    let n = 0;
-                    for(let i = 0; i < allResults.length; i++) {
-                        for(let j = 0; j < allResults[i].records.length; j++) {
-                            if(!Globals.isEmptyOrSpaces(allResults[i].records[j].name)){
-                                // Sorting can jumble it up, so we don't know which ID could match. Check all of them:
-                                for(let k = 0; k < recordIdList.length; k++) {
-                                    if(recordIdList[k] === allResults[i].records[j].id) {
-                                        // console.log(`Assigning ${parsedJson[n].length} highlights from parsedJson[${n}] to id ${recordIdList[n]}: ${parsedJson[n]}`);
-                                        // console.log(`Assigning ${parsedJson[k].length} highlights from parsedJson[${k}] to id ${recordIdList[k]}`);
-                                        allResults[i].records[j].plaintext = parsedJson[k];
-                                        n++;
-
-                                        // match found for this record; exit
-                                        k = recordIdList.length;
-                                    }
-                                }
-                            }
-    
-                            if(n === recordIdList.length) {
-                                // exit
-                                // console.log("Assigned all highlights to searchResults; exiting 1");
-                                j = allResults[i].records.length;
-                            }
-                        }
-
-                        if(n === recordIdList.length) {
-                            // exit
-                            // console.log("***Assigned all highlights to searchResults; exiting 2***");
-                            i = allResults.length;
                         }
                     }
 
@@ -1306,63 +1214,63 @@ export default class App extends React.Component {
         // No need for offset or limit. We just need to find the unhighlighted files on this page.
         // This requires only page number, number of cards per page and number of cards on page 
         // (could be less than max page size)
+            
+        let searchUrl = new URL('text/get_highlightsFVH', Globals.currentHost);
 
+        let mustSkip = {};
+        let _unhighlighted = [];
+        let startPoint = (this._page * this._pageSize) - this._pageSize;
+        let endPoint = (this._page * this._pageSize);
+
+        // Assuming filenames come in the correct order, we can ask for the first one only, and then
+        // additional logic elsewhere could ask for all of the highlights.
+        // Then we would never get any "hidden" highlights, resulting in more responsive UX
+
+        for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++){
+            for(let j = 0; j < currentResults[i].records.length; j++) {
+                // Push first lucene ID and filename
+                if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)) {
+
+                    // console.log("Pushing",i,j,currentResults[i].records[j].id);
+
+                    // Need to skip this entry on both sides if it already has plaintext.
+                    // If it has any, then skip here - we can get more on demand elsewhere, in separate logic.
+                    if(!currentResults[i].records[j].plaintext || !currentResults[i].records[j].plaintext[0]) {
+
+                        // Filenames delimited by > (impossible filename character)
+                        let firstFilename = currentResults[i].records[j].name.split(">")[0];
+                        let firstLuceneId = [currentResults[i].records[j].luceneIds[0]];
+
+                        // console.log("First filename, record ID and lucene ID", 
+                        //     firstFilename, currentResults[i].records[j].id, firstLuceneId);
+
+                        _unhighlighted.push(
+                            {
+                                luceneIds: firstLuceneId, 
+                                filename: firstFilename
+                            }
+                        );
+                    } else {
+                        // console.log("Adding skip ID " + [currentResults[i].records[j].id]);
+                        mustSkip[currentResults[i].records[j].id] = true;
+                    }
+                }
+            }
+        }
+
+
+        // If nothing to highlight, nothing to do on this page
+        if(_unhighlighted.length === 0 || searchId < this._searchId) {
+            this.endEarly();
+            return;
+        }
+        
+        // Set state a little later to avoid table updating on a page that hasn't actually changed
         this.setState({
             snippetsDisabled: false,
             searching: true,
             networkError: "", // Clear network error
-		}, () => {
-            
-            let searchUrl = new URL('text/get_highlightsFVH', Globals.currentHost);
-
-            let mustSkip = {};
-            let _unhighlighted = [];
-            let startPoint = (this._page * this._pageSize) - this._pageSize;
-            let endPoint = (this._page * this._pageSize);
-
-            // Assuming filenames come in the correct order, we can ask for the first one only, and then
-            // additional logic elsewhere could ask for all of the highlights.
-            // Then we would never get any "hidden" highlights, resulting in more responsive UX
-
-            for(let i = startPoint; i < Math.min(currentResults.length, endPoint); i++){
-                for(let j = 0; j < currentResults[i].records.length; j++) {
-                    // Push first lucene ID and filename
-                    if(!Globals.isEmptyOrSpaces(currentResults[i].records[j].name)) {
-
-                        // console.log("Pushing",i,j,currentResults[i].records[j].id);
-
-                        // Need to skip this entry on both sides if it already has plaintext.
-                        // If it has any, then skip here - we can get more on demand elsewhere, in separate logic.
-                        if(!currentResults[i].records[j].plaintext || !currentResults[i].records[j].plaintext[0]) {
-
-                            // Filenames delimited by > (impossible filename character)
-                            let firstFilename = currentResults[i].records[j].name.split(">")[0];
-                            let firstLuceneId = [currentResults[i].records[j].luceneIds[0]];
-
-                            // console.log("First filename, record ID and lucene ID", 
-                            //     firstFilename, currentResults[i].records[j].id, firstLuceneId);
-
-                            _unhighlighted.push(
-                                {
-                                    luceneIds: firstLuceneId, 
-                                    filename: firstFilename
-                                }
-                            );
-                        } else {
-                            // console.log("Adding skip ID " + [currentResults[i].records[j].id]);
-                            mustSkip[currentResults[i].records[j].id] = true;
-                        }
-                    }
-                }
-            }
-
-
-            // If nothing to highlight, nothing to do on this page
-            if(_unhighlighted.length === 0 || searchId < this._searchId) {
-                // console.log("nothing to highlight: endEarly()");
-                this.endEarly();
-                return;
-            }
+        }, () => {
 
 			let dataToPass = 
             { 
@@ -1388,13 +1296,11 @@ export default class App extends React.Component {
                 }
             }).then(parsedJson => {
                 if(parsedJson){
-
                     // console.log("Adding highlights", parsedJson);
 
-                    // TODO: It's not efficient, but outside of completely changing data structures for results,
-                    // we can assign highlights to all results here by searching over the array looking for record IDs
-                    // until we hit the end of the highlights
-                    let recordIdList = [];
+                    // TODO: If we want to avoid checking every ID until we run out of highlights,
+                    // data structures and a lot more must be changed
+
                     let allResults = this.state.searchResults;
 
                     let x = 0;
@@ -1405,50 +1311,15 @@ export default class App extends React.Component {
                                 // console.log("Assigning",i,j,currentResults[i].records[j].name);
 
                                 if(mustSkip[currentResults[i].records[j].id]) {
-                                    // do nothing; skip
                                     // console.log("Skipping ID " + [currentResults[i].records[j].id]);
                                 } else {
                                     currentResults[i].records[j].plaintext = parsedJson[x];
-                                    recordIdList.push(currentResults[i].records[j].id);
+                                    allResults[currentResults[i].originalIndex].records[j].plaintext = parsedJson[x];
                                     x++;
                                 }
                             }
                         }
                     }
-
-                    
-                    let n = 0;
-                    for(let i = 0; i < allResults.length; i++) {
-                        for(let j = 0; j < allResults[i].records.length; j++) {
-                            if(!Globals.isEmptyOrSpaces(allResults[i].records[j].name)){
-                                // Sorting can jumble it up, so we don't know which ID could match. Check all of them:
-                                for(let k = 0; k < recordIdList.length; k++) {
-                                    if(recordIdList[k] === allResults[i].records[j].id) {
-                                        // console.log(`Assigning ${parsedJson[n].length} highlights from parsedJson[${n}] to id ${recordIdList[n]}: ${parsedJson[n]}`);
-                                        // console.log(`Assigning ${parsedJson[k].length} highlights from parsedJson[${k}] to id ${recordIdList[k]}`);
-                                        allResults[i].records[j].plaintext = parsedJson[k];
-                                        n++;
-
-                                        // match found for this record; exit
-                                        k = recordIdList.length;
-                                    }
-                                }
-                            }
-    
-                            if(n === recordIdList.length) {
-                                // exit
-                                // console.log("Assigned all highlights to searchResults; exiting 1");
-                                j = allResults[i].records.length;
-                            }
-                        }
-
-                        if(n === recordIdList.length) {
-                            // exit
-                            // console.log("***Assigned all highlights to searchResults; exiting 2***");
-                            i = allResults.length;
-                        }
-                    }
-
                     
                     // Verify one last time we want this before we actually commit to these results,
                     // otherwise it could be jarring UX to setState here
