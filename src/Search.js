@@ -536,22 +536,11 @@ class Search extends React.Component {
         }); 
     }
     tooltipTrigger = (evt) => {
-        if(this.state.tooltipOpen){
-            this.setState({
-                tooltipOpen: false,
-                tooltipClass: ""
-            })
-        } else {
-            this.setState({
-                tooltipOpen: true,
-                tooltipClass: "open"
-            })
-        }
+        this.setState({tooltipOpen: !this.state.tooltipOpen})
     }
     closeTooltip = () => {
         this.setState({
-            tooltipOpen: false,
-            tooltipClass: ""
+            tooltipOpen: false
         })
     }
 
@@ -806,6 +795,7 @@ class Search extends React.Component {
                                         </>
                                     )}>
                                     {<span 
+                                            onClick={this.tooltipTrigger}
                                             className={"side-link inline"}>
                                         Search tips
                                     </span>}
