@@ -9,7 +9,7 @@ export default class People extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>People - NEPAccess</title>
-                    <meta name="description" content="Our interdisciplinary team is based at the University of Arizona. These are the leaders, personnel, students, and researchers making the project happen." />
+                    <meta name="description" content="Our interdisciplinary team based at the University of Arizona has the vision and expertise needed to harness data science to bring NEPA into the 21st century." data-react-helmet="true" />
                     <link rel="canonical" href="https://nepaccess.org/people" />
                 </Helmet>
 

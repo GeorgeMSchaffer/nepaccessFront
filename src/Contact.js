@@ -301,7 +301,7 @@ export default class Contact extends React.Component {
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>Contact - NEPAccess</title>
-                        <meta name="description" content="University of Arizona, Udall Center for Studies in Public Policy, 803 E. First St. Tucson, Arizona 85719 USA." />
+                        <meta name="description" content="Contact us if you have a problem searching our database, or have a question or feedback. The University of Arizona, Udall Center for Studies in Public Policy." data-react-helmet="true" />
                         <link rel="canonical" href="https://www.nepaccess.org/contact" />
                     </Helmet>
                     <div className="note">
@@ -319,7 +319,7 @@ export default class Contact extends React.Component {
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>Contact - NEPAccess</title>
-                        <meta name="description" content="University of Arizona, Udall Center for Studies in Public Policy, 803 E. First St. Tucson, Arizona 85719 USA." />
+                        <meta name="description" content="Contact us if you have a problem searching our database, or have a question or feedback. The University of Arizona, Udall Center for Studies in Public Policy." data-react-helmet="true" />
                         <link rel="canonical" href="https://www.nepaccess.org/contact" />
                     </Helmet>
                     <div className="note">

@@ -9,7 +9,7 @@ export default class AvailableDocuments extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>NEPAccess - Available Files</title>
-                    <meta name="description" content="NEPAccess is a work in progress. Our efforts to compile a complete set of environmental impact statements and other NEPA documents are ongoing." />
+                    <meta name="description" content="NEPAccess is a work in progress. Our efforts to compile a complete set of environmental impact statements and other NEPA documents are ongoing." data-react-helmet="true" />
                     <link rel="canonical" href="https://nepaccess.org/available-documents" />
                 </Helmet>
 

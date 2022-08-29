@@ -40,7 +40,7 @@ class Landing extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>NEPAccess: Bringing NEPA into the 21st Century</title>
-                    <meta name="description" content="NEPAccess.org is a new knowledge and discovery platform for finding and analyzing decades of applied science in NEPA’s environmental decision-making process." />
+                    <meta name="description" content="NEPAccess.org is a new knowledge and discovery platform for finding and analyzing decades of applied science in NEPA’s environmental decision-making process." data-react-helmet="true" />
                     <link rel="canonical" href="https://nepaccess.org/" />
                 </Helmet>
 

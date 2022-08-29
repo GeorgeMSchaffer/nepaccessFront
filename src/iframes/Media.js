@@ -10,7 +10,7 @@ export default class Media extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Videos - NEPAccess</title>
-                    <meta name="description" content="Media explaining why we created NEPAccess.org, the work done by students building the database, and their perspectives on being on a high-level team." />
+                    <meta name="description" content="These programs explain why we made NEPAccess.org, some of the challenges of the process, and perspectives of students working with the NEPAccess team." data-react-helmet="true" />
                     <link rel="canonical" href="https://nepaccess.org/media" />
                 </Helmet>
 

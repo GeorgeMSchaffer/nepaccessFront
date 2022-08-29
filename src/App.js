@@ -1368,7 +1368,6 @@ export default class App extends React.Component {
 
     /** Currently this should always get a 200 back since searches were allowed when not logged in. */
 	check = () => { // check if JWT is expired/invalid
-		
         this.setState({loaded:false,down:false});
 
 		let checkURL = new URL('test/check', Globals.currentHost);
@@ -1556,7 +1555,7 @@ export default class App extends React.Component {
                     <Helmet>
                         <meta charSet="utf-8" />
                         <title>Search - NEPAccess</title>
-                        <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." />
+                        <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." data-react-helmet="true" />
                         <link rel="canonical" href="https://www.nepaccess.org/search" />
                     </Helmet>
                     <Search 
@@ -1611,7 +1610,7 @@ export default class App extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Search - NEPAccess</title>
-                    <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." />
+                    <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." data-react-helmet="true" />
                     <link rel="canonical" href="https://www.nepaccess.org/search" />
                 </Helmet>
                 <div>
@@ -1626,7 +1625,7 @@ export default class App extends React.Component {
                 <Helmet>
                     <meta charSet="utf-8" />
                     <title>Search - NEPAccess</title>
-                    <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." />
+                    <meta name="description" content="Search, download, and analyze environmental impact statements and other NEPA documents created under the US National Environmental Policy Act of 1969." data-react-helmet="true" />
                     <link rel="canonical" href="https://www.nepaccess.org/search" />
                 </Helmet>
 

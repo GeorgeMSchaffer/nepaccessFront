@@ -391,37 +391,23 @@ input[type=checkbox] {
     padding: 8px 4px;
 }
 .tippy-tooltip--small {
-  /* border: 1px solid #737272; */
     width: 260px;
-    /* height: 393px; */
 
+    color: black;
     background: #FFFFFF;
+
     border: 2px solid #C4C4C4;
     box-sizing: border-box;
     box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.15);
-
-    transition-property: transform,visibility,opacity;
-}
-
-.tippy-tooltip--small, .tippy-tooltip--small .tippy-tooltip-content {
-  /* width: 148px; */
-
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: normal;
-  line-height: 111%;
-  /* or 11px */
   
-  text-align: left;
-
-  color: black;
-  background: white !important;
-  
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    line-height: 111%;
+    /* or 11px */
+    
+    text-align: left;
 }
-
-/* .tippy-tooltip [x-circle] {
-  background: none;
-} */
 
 .tippy-tooltip p {
   font-size: 11px;
