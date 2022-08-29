@@ -341,7 +341,7 @@ input[type=checkbox] {
   box-sizing: border-box;
 }
 
-/** Tooltip and custom react-tippy styling */
+/** Tooltip styling */
 
 .side-link[aria-expanded=true] {
     color:rgb(100,50,255);
