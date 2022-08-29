@@ -752,7 +752,7 @@ class Search extends React.Component {
 
                         <div className="pre-input-bar">
                             <div id="tooltip4Container">
-                                <Tippy className="tippy-tooltip--small searchTips" trigger='manual click' 
+                                <Tippy className="tippy-tooltip--small searchTips padding2" trigger='manual click' 
                                     // sticky={true}
                                     hideOnClick={false}
                                     interactive={true}

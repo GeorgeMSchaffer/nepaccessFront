@@ -377,6 +377,7 @@ input[type=checkbox] {
 }
 .tippy-tooltip--small.searchTips {
     width: 260px;
+    padding: 10px;
     font-family: "Open Sans";
     font-size: .8rem;
     font-style: normal;
@@ -385,6 +386,9 @@ input[type=checkbox] {
     text-align: left;
     color: black;
     background: white;
+}
+.tippy-tooltip--small.searchTips.padding2 {
+    padding: 8px 4px;
 }
 .tippy-tooltip--small {
   /* border: 1px solid #737272; */
