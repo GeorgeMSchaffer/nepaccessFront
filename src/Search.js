@@ -13,8 +13,8 @@ import "./sidebar.css";
 import './survey.css';
 
 import "react-datepicker/dist/react-datepicker.css";
-import 'react-tippy/dist/tippy.css';
-import {Tooltip} from 'react-tippy';
+import 'tippy.js/dist/tippy.css'; // optional
+import Tippy from '@tippyjs/react';
 
 import Globals from './globals.js';
 import persist from './persist.js';
@@ -763,17 +763,13 @@ class Search extends React.Component {
 
                         <div className="pre-input-bar">
                             <div id="tooltip4Container">
-                                <Tooltip 
-                                    trigger="manual" // default mouseenter focus, had mouseenter but it got in the way of "Available files"
-                                    // className="cursor-default"
-                                    position="bottom"
-                                    // arrow="true"
-                                    size="small"
-                                    // distance="80"
-                                    // offset="80"
-                                    // useContext={true}
-                                    // title={tooltipTitle}
-                                    html={(<>
+                                <Tippy className="tippy-tooltip--small searchTips" trigger='manual click' 
+                                    // sticky={true}
+                                    hideOnClick={false}
+                                    interactive={true}
+                                    placement="bottom"
+                                    visible={this.state.tooltipOpen}
+                                    content={(<>
                                         <div className="tooltip-header">Search word connectors <button className="float-right" onClick={this.closeTooltip}>x</button></div>
                                         <table className="tooltip-table"><tbody>
                                             <tr className="tooltip-line">
@@ -808,56 +804,33 @@ class Search extends React.Component {
                                             </tr>
                                         </tbody></table>
                                         </>
-                                    )}
-                                    open={this.state.tooltipOpen}
-                                    // onShow={this.tooltipTrigger}
-                                    // interactive={true} // allow clicking of tooltip without hiding it
-                                    // hideOnClick="toggle" // only close when tooltip link is clicked
-                                    interactive={true} // prevents clickthrough
-                                    hideOnClick={true}
-                                >
+                                    )}>
                                     {<span 
-                                            onClick={this.tooltipTrigger} 
-                                            className={this.state.tooltipClass + " side-link"}>
+                                            className={"side-link inline"}>
                                         Search tips
                                     </span>}
-                                    {/* <svg className="cursor-default no-select" id="tooltip3" width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M31.1311 16.5925C31.1311 24.7452 24.4282 31.3772 16.1311 31.3772C7.83402 31.3772 1.1311 24.7452 1.1311 16.5925C1.1311 8.43982 7.83402 1.80774 16.1311 1.80774C24.4282 1.80774 31.1311 8.43982 31.1311 16.5925Z" fill="#E5E5E5" stroke="black" strokeWidth="2"/>
-                                        <text className="bold" x="13" y="22" text-align="center" fill="black">?</text>
-                                    </svg> */}
-                                    {/* <span id="tooltip3Mark" className="cursor-default no-select">?</span> */}
-                                </Tooltip>
-                                <Tooltip
-                                    trigger="click"
-                                    position="bottom"
-                                    size="small"
-                                    interactive={true} // prevents clickthrough
+                                </Tippy>
+                                
+                                <Tippy className="tippy-tooltip--small searchTips" trigger='manual click' 
                                     hideOnClick={true}
-                                    html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
-                                        from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
-                                        More files are being added continuously.
-                                        <div className="text-center margin-top">
-                                            <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
-                                        </div>
-                                    </div>}
-                                >
-                                    {<span className={this.state.tooltipClass + " side-link"}>
+                                    interactive={true}
+                                    placement="bottom"
+                                    size="small"
+                                    content={
+                                        <div>
+                                            Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
+                                            from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
+                                            More files are being added continuously.
+                                            <div className="text-center margin-top">
+                                                <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
+                                            </div>
+                                        </div>}
+                                    >
+                                    {<span className={"side-link inline"}>
                                         Available files
                                     </span>}
-                                </Tooltip>
+                                </Tippy>
                                 <SlidesIframe />
-                                {/* <BasicModal id="basic-modal"
-                                    className="side-link"
-                                    divClassName=""
-                                    html={<div>Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
-                                    from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
-                                    More files are being added continuously.
-                                        <div className="text-center margin-top">
-                                            <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
-                                        </div>
-                                    </div>}
-                                >
-                                </BasicModal> */}
                             </div>
                         </div>
 

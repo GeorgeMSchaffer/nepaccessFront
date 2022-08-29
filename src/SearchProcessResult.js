@@ -6,7 +6,6 @@ import Globals from './globals.js';
 import DownloadFile from './DownloadFile.js';
 import DownloadFiles from './DownloadFiles';
 
-// import {Tooltip} from 'react-tippy';
 import Tippy from '@tippyjs/react'
 
 // TODO: Filtering results etc. rerenders and loses track of downloads

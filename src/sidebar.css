@@ -424,8 +424,8 @@ input:hover {
 
     font-size: 14px;
 
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     /* justify-content: center; */
     /* align-items: center; */
 }
@@ -438,6 +438,9 @@ input:hover {
 }
 
 .side-link {
+    display: inline-block;
+    
+    user-select: none;
     text-decoration: underline;
     /* color: #64D6FA; */
     color: #324EB3;

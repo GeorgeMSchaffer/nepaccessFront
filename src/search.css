@@ -343,7 +343,7 @@ input[type=checkbox] {
 
 /** Tooltip and custom react-tippy styling */
 
-.side-link.open {
+.side-link[aria-expanded=true] {
     color:rgb(100,50,255);
 }
 
@@ -375,7 +375,17 @@ input[type=checkbox] {
   width: 32px;
   height: 31.57px;
 }
-
+.tippy-tooltip--small.searchTips {
+    width: 260px;
+    font-family: "Open Sans";
+    font-size: .8rem;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 111%;
+    text-align: left;
+    color: black;
+    background: white;
+}
 .tippy-tooltip--small {
   /* border: 1px solid #737272; */
     width: 260px;
@@ -385,6 +395,8 @@ input[type=checkbox] {
     border: 2px solid #C4C4C4;
     box-sizing: border-box;
     box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.15);
+
+    transition-property: transform,visibility,opacity;
 }
 
 .tippy-tooltip--small, .tippy-tooltip--small .tippy-tooltip-content {
