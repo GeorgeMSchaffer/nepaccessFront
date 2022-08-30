@@ -20,6 +20,7 @@ import Globals from './globals.js';
 import persist from './persist.js';
 
 import { withRouter } from "react-router";
+import TippySearchTips from './TippySearchTips.js';
 
 // import PropTypes from "prop-types";
 
@@ -752,74 +753,30 @@ class Search extends React.Component {
 
                         <div className="pre-input-bar">
                             <div id="tooltip4Container">
-                                <Tippy className="tippy-tooltip--small searchTips padding2" trigger='manual click' 
-                                    // sticky={true}
-                                    hideOnClick={false}
-                                    interactive={true}
-                                    placement="bottom"
-                                    visible={this.state.tooltipOpen}
-                                    content={(<>
-                                        <div className="tooltip-header">Search word connectors <button className="float-right" onClick={this.closeTooltip}>x</button></div>
-                                        <table className="tooltip-table"><tbody>
-                                            <tr className="tooltip-line">
-                                                <td>&nbsp;</td><td>&nbsp;</td>
-                                            </tr>
-                                            <tr className="tooltip-line"><td className="tooltip-connector">AND</td>
-                                                <td>This is the default. <span className="bold">All</span> words you enter must be found together to return a result.</td>
-                                            </tr>
-                                            <tr className="tooltip-line">
-                                                <td>&nbsp;</td><td>&nbsp;</td>
-                                            </tr>
-                                            <tr className="tooltip-line"><td className="tooltip-connector">OR</td>
-                                                <td>(all caps) to search for <span className="bold">any</span> of those words.</td> 
-                                            </tr>
-                                            <tr className="tooltip-line">
-                                                <td>&nbsp;</td><td>&nbsp;</td>
-                                            </tr>
-                                            <tr className="tooltip-line"><td className="tooltip-connector">NOT</td>
-                                                <td>(all caps) to <span className="bold">exclude</span> a word or phrase.</td> 
-                                            </tr>
-                                            <tr className="tooltip-line">
-                                                <td>&nbsp;</td><td>&nbsp;</td>
-                                            </tr>
-                                            <tr className="tooltip-line"><td className="tooltip-connector">&quot; &quot;</td>
-                                                <td>Surround words with quotes (&quot; &quot;) to search for an <span className="bold">exact phrase.</span></td> 
-                                            </tr>
-                                            <tr className="tooltip-line">
-                                                <td>&nbsp;</td><td>&nbsp;</td>
-                                            </tr>
-                                            <tr className="tooltip-line"><td className="tooltip-connector"></td>
-                                                <td><a href="search-tips" target="_blank" rel="noopener noreferrer">More search tips.</a></td> 
-                                            </tr>
-                                        </tbody></table>
-                                        </>
-                                    )}>
-                                    {<span 
-                                            onClick={this.tooltipTrigger}
-                                            className={"side-link inline"}>
-                                        Search tips
-                                    </span>}
-                                </Tippy>
+                                <div>
+                                    <TippySearchTips />
+                                </div>
+                                <div>
+                                    <Tippy className="tippy-tooltip--small searchTips" trigger='manual click' 
+                                        hideOnClick={true}
+                                        interactive={true}
+                                        placement="bottom"
+                                        content={
+                                            <div>
+                                                Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
+                                                from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
+                                                More files are being added continuously.
+                                                <div className="text-center margin-top">
+                                                    <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
+                                                </div>
+                                            </div>}
+                                        >
+                                        {<span className={"side-link inline"}>
+                                            Available files
+                                        </span>}
+                                    </Tippy>
+                                </div>
                                 
-                                <Tippy className="tippy-tooltip--small searchTips" trigger='manual click' 
-                                    hideOnClick={true}
-                                    interactive={true}
-                                    placement="bottom"
-                                    size="small"
-                                    content={
-                                        <div>
-                                            Currently the site contains <b>{this.state.EISCount}</b> Draft or Final Environmental Impact Statements 
-                                            from: <b>{this.state.firstYear}-{this.state.lastYear}</b>. 
-                                            More files are being added continuously.
-                                            <div className="text-center margin-top">
-                                                <a href="available-documents" target="_blank" rel="noopener noreferrer">Available files</a>
-                                            </div>
-                                        </div>}
-                                    >
-                                    {<span className={"side-link inline"}>
-                                        Available files
-                                    </span>}
-                                </Tippy>
                                 <SlidesIframe />
                             </div>
                         </div>
@@ -1009,7 +966,7 @@ class Search extends React.Component {
                     <label className="sidebar-label" htmlFor="searchCounty">County/counties</label>
                     <Select id="searchCounty" className="multi" classNamePrefix="react-select" isMulti name="county" isSearchable isClearable 
                         styles={customStyles}
-                        tabIndex="5"
+                        tabIndex="6"
                         options={this.state.countyOptions} 
                         onChange={this.onCountyChange} 
                         /** This filter logic is needed to work properly with interactive map */
@@ -1036,7 +993,7 @@ class Search extends React.Component {
                             showMonthDropdown={true}
                             showYearDropdown={true}
                             adjustDateOnChange
-                            tabIndex="6"
+                            tabIndex="7"
                             popperPlacement="right"
                             isClearable
                             // preventOpenOnFocus={true} 
@@ -1053,7 +1010,7 @@ class Search extends React.Component {
                             showMonthDropdown={true}
                             showYearDropdown={true}
                             adjustDateOnChange
-                            tabIndex="7"
+                            tabIndex="8"
                             popperPlacement="right"
                             isClearable
                             // preventOpenOnFocus={true} 
@@ -1070,7 +1027,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
-                                        tabIndex="8"
+                                        tabIndex="9"
                                         checked={this.state.typeDraft} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Draft EIS <i>{this.props.draftCount}</i></span>
                             </label>
@@ -1078,7 +1035,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
-                                        tabIndex="9"
+                                        tabIndex="10"
                                         checked={this.state.typeFinal} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Final EIS <i>{this.props.finalCount}</i></span>
                             </label>
@@ -1086,7 +1043,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeEA" className="sidebar-checkbox"
-                                        tabIndex="10"
+                                        tabIndex="11"
                                     checked={this.state.typeEA} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">EA <i>{this.props.eaCount}</i></span>
                             </label>
@@ -1094,7 +1051,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeNOI" className="sidebar-checkbox"
-                                        tabIndex="11"
+                                        tabIndex="12"
                                         checked={this.state.typeNOI} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">NOI <i>{this.props.noiCount}</i></span>
                             </label>
@@ -1102,7 +1059,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeROD" className="sidebar-checkbox"
-                                        tabIndex="12"
+                                        tabIndex="13"
                                     checked={this.state.typeROD} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">ROD <i>{this.props.rodCount}</i></span>
                             </label>
@@ -1110,7 +1067,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeScoping" className="sidebar-checkbox"
-                                        tabIndex="13"
+                                        tabIndex="14"
                                     checked={this.state.typeScoping} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Scoping Report <i>{this.props.scopingCount}</i></span>
                             </label>

@@ -429,10 +429,6 @@ span.email-text {
     color: #8FBC3F;
 }
 
-.tippy-tooltip-content {
-    padding: 10px;
-}
-
 /* allow <a> to be links inside tooltips */
 .tippy-popper a { 
     pointer-events: all;
