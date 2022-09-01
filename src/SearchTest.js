@@ -751,7 +751,7 @@ class SearchTest extends React.Component {
             <div className="content" onSubmit={this.submitHandler}>
                 <div className="maintenance-message">
                     <span>
-                        NEPAccess will be down for maintenance for 12 hours or more starting on September 6th, 2022.
+                        NEPAccess will be down for maintenance for 12 hours or more starting on September 8th, 2022.
                     </span>
                 </div>
                 {this.props.parseError}
