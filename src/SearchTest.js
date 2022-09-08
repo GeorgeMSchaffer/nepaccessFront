@@ -749,11 +749,10 @@ class SearchTest extends React.Component {
         return (
             <>
             <div className="content" onSubmit={this.submitHandler}>
-                <div className="maintenance-message">
+                {/* <div className="maintenance-message">
                     <span>
-                        NEPAccess will be down for maintenance for 12 hours or more starting on September 8th, 2022.
                     </span>
-                </div>
+                </div> */}
                 {this.props.parseError}
                 {/* <h1 className="search-header">Search for NEPA documents</h1> */}
                 <div className="search-holder" >
