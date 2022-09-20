@@ -1,11 +1,11 @@
 /* Landing */
 #landing {
     position: relative;
-    height: 100%;
-    width: 100%;
+    /* height: 100%;
+    width: 100%; */
     /** The search box now has a percentage-based position, which means the overall page
     needs a minimum height that does not clip into the header texts. This needs to change if the landing text changes. */
-    min-width: 750px;
+    /* min-width: 750px; */
     
     margin: auto;
     /* margin-top: 102px; */
@@ -16,7 +16,7 @@
     position: relative;
     width: 100%;
 
-    padding-top: 70px;
+    /* padding-top: 70px; */
 
     font-weight: bold;
     text-align: center;
@@ -57,9 +57,9 @@ span.glow {
 }
 
 #landing-images {
-    min-height: 820px;
-    height: 80%;
-    width: 100%;
+    /* min-height: 400px;
+    height: 50%;
+    width: 100%; */
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
