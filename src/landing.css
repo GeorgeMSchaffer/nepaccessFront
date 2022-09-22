@@ -70,7 +70,8 @@ span.glow {
 #landing-headline-container {
     /* align-items: center; */
     text-align: left;
-    width: 64%;
+    width: 87%;
+    max-width: 1120px;
     margin: 0 auto;
 
     padding-top: 140px;
