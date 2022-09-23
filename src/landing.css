@@ -82,9 +82,9 @@ span.glow {
     -webkit-column-gap: 120px; /* Chrome, Safari, Opera */
     -moz-column-gap: 120px; /* Firefox */
     column-gap: 120px;
-    -webkit-column-rule: 4px solid #dbdbdb; /* Chrome, Safari, Opera */
-    -moz-column-rule: 4px solid #dbdbdb; /* Firefox */
-    column-rule: 4px solid #dbdbdb;
+    -webkit-column-rule: 2px solid #dbdbdb; /* Chrome, Safari, Opera */
+    -moz-column-rule: 2px solid #dbdbdb; /* Firefox */
+    column-rule: 2px solid #dbdbdb;
 }
 #landing-headline-left {
     font-size: 36px;
