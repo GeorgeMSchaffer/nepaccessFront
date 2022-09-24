@@ -28,6 +28,7 @@ const getRoutes = [
     { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
 
     { label: "test/not_indexed", value: "test/not_indexed" },
+    { label: "test/not_extracted", value: "test/not_extracted" },
 
     // Headers: Agency, Record count, Count with files
     { label: "reports/report_agency", value: "reports/report_agency" },
