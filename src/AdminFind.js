@@ -27,6 +27,8 @@ const getRoutes = [
     { label: "test/size_under_200", value: "test/size_under_200" },
     { label: "test/findMissingProcesses", value: "test/findMissingProcesses" },
 
+    { label: "test/not_indexed", value: "test/not_indexed" },
+
     // Headers: Agency, Record count, Count with files
     { label: "reports/report_agency", value: "reports/report_agency" },
     { label: "reports/report_agency_2000", value: "reports/report_agency_2000" },
