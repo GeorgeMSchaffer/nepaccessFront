@@ -2,6 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 //https://react-leaflet.js.org/docs/example-react-control/
 import { MapContainer, TileLayer, GeoJSON, Tooltip, ZoomControl } from "react-leaflet";
+
+// import 'node_modules/leaflet-geosearch/dist/geosearch.css';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+
 import axios from "axios";
 import Globals from './globals.js';
 
@@ -43,6 +47,7 @@ const GeojsonMap = (props) => {
     // TODO: Get count if available, append or prepend to name, or make it the popup text (on-click)
     /** Helper returns <GeoJSON> from data.map */
     const showData = () => {
+
         if (data && data[0]) { // Render many
             return data.map( ((datum, i) => {
                 let jsonData = datum;
@@ -115,6 +120,25 @@ const GeojsonMap = (props) => {
         return leafBounds;
     }
 
+    const getMapSearchControl = () => {
+        if(map) {
+            console.log("Control was added...");
+            return (<GeoSearchControl
+                position="bottomleft"
+                provider={new OpenStreetMapProvider()}
+                style='button'>
+
+                </GeoSearchControl>)
+        }
+        
+        // new GeoSearchControl({
+        //     position: "bottomleft",
+        //     provider: new OpenStreetMapProvider(), // required
+        //     style: 'button', // optional: bar|button  - default button
+        // }).addTo(map);
+        // console.log("Control was added...");
+    }
+
     const doFitBounds = () => {
         if(map && getBounds) {
             map.fitBounds(getBounds);
@@ -143,10 +167,12 @@ const GeojsonMap = (props) => {
                     const bounds = getMaxBounds(response.data);
                     setBounds(bounds);
                     _bounds = bounds;
-                    try {
-                        setCenter(bounds.getCenter());
-                    } catch(e) {
-                        console.error(e);
+                    if(map) {
+                        try {
+                            setCenter(bounds.getCenter());
+                        } catch(e) {
+                            console.error(e);
+                        }
                     }
                     
                     for(let i = 0; i < response.data.length; i++) {
@@ -181,12 +207,14 @@ const GeojsonMap = (props) => {
                     _data = sortedData;
                 }
             } else { // we should have the data sitting around already (rerender, or maybe user hit "back" on browser)
-                try {
-                    setBounds(_bounds);
-                    setData(_data);
-                    setCenter(_bounds.getCenter());
-                } catch(e) {
-                    console.error(e);
+                if(map) {
+                    try {
+                        setBounds(_bounds);
+                        setData(_data);
+                        setCenter(_bounds.getCenter());
+                    } catch(e) {
+                        console.error(e);
+                    }
                 }
             }
             
@@ -200,8 +228,30 @@ const GeojsonMap = (props) => {
             // console.log("Nothing here?",props);
         }
 
+        const searchControl = new GeoSearchControl({
+            position: "topleft",
+            provider: new OpenStreetMapProvider(), // required
+            style: 'button', // optional: bar|button  - default button
+            showMarker: true,
+            showPopup: false,
+            autoClose: true,
+            retainZoomLevel: false,
+            animateZoom: true,
+            keepResult: false,
+            searchLabel: 'Search for any location',
+
+            autocomplete: "new-password" // try to stop browser from ruining UX... Edge and Chrome get pretty aggressive
+        });
+        
+        if(map) {
+            map.addControl(searchControl);
+        }
+
         return () => { // unmount or rerender
             // _id = -1;
+            if(map) {
+                map.removeControl(searchControl);
+            }
             mounted.current = false;
         };
     }, [props]);
@@ -213,23 +263,24 @@ const GeojsonMap = (props) => {
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
                     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
                     crossorigin=""/>
+                <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css" />
                 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
                     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                     crossorigin=""></script>
             </Helmet>
             
-            Note: Counties and the map data below are machine-assisted and may not reflect the state(s) listed above.
+            Note: Counties and the polygons below are machine-assisted and may not reflect the state(s) listed above.
             
-            <div className="map-loading-tooltip" hidden={!isLoading}>Please wait for map data to load...</div>
             {getBounds && !isLoading ?(
             <MapContainer className="leafmap"
                 // display map based on EITHER center coordinates and zoom level OR bounds=latLngBounds
                 center={getCenter} 
                 zoom={3} 
-                scrollWheelZoom={false}
+                scrollWheelZoom={true}
                 // bounds={getBounds}
                 whenCreated={setMap}
                 onLoad={doFitBounds()}
+                autocomplete="new"
             >
                 {showData()}
                 

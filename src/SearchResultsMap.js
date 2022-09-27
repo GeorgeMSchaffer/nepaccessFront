@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { MapContainer, TileLayer, GeoJSON, Popup, Tooltip, useMap, ZoomControl } from "react-leaflet";
-import { LatLngBounds } from "leaflet";
+
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+
+// import { LatLngBounds } from "leaflet";
 
 import Globals from './globals.js';
 
@@ -394,7 +397,30 @@ const MyData = (props) => {
             // getByList(null, "geojson/get_all_state_county_for_eisdocs");
         }
 
+
+        const searchControl = new GeoSearchControl({
+            provider: new OpenStreetMapProvider(), // required
+            style: 'bar', 
+            showMarker: true,
+            showPopup: false,
+            autoClose: true,
+            retainZoomLevel: false,
+            animateZoom: true,
+            keepResult: false,
+            searchLabel: 'Search for any location',
+
+            autocomplete: "new-password" // try to stop browser from ruining UX... Edge and Chrome get pretty aggressive
+        });
+        
+        if(map) {
+            map.addControl(searchControl);
+        }
+
+
         return () => { // unmount or rerender
+            if(map) {
+                map.removeControl(searchControl);
+            }
             mounted.current = false;
         };
     }, [props]);
@@ -434,6 +460,7 @@ const MyData = (props) => {
                         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
                             integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
                             crossorigin=""/>
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css" />
                         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
                             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
                             crossorigin=""></script>
@@ -459,7 +486,7 @@ const MyData = (props) => {
             </div>
             
         ) : (
-            <div>Loading map polygons...</div>
+            <></>
         )}
         
     </>);

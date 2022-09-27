@@ -93,11 +93,13 @@
     line-height: normal;
 }
 
-.leaflet-control-container {
+div.leaflet-control-zoom {
     user-select: none;
 }
-div.leaflet-control-container>div.leaflet-left {
-    display: none; /* Defining our own ZoomControl, so hide the default. */
+
+/* Defining our own ZoomControl, so hide the default top left one. */
+div.leaflet-control-container>div.leaflet-left>div.leaflet-control-zoom {
+    display: none; 
 }
 
 path.leaflet-interactive {
