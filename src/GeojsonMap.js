@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
 //https://react-leaflet.js.org/docs/example-react-control/
-import { MapContainer, TileLayer, GeoJSON, Tooltip } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, Tooltip, ZoomControl } from "react-leaflet";
 import axios from "axios";
 import Globals from './globals.js';
 
@@ -237,6 +237,7 @@ const GeojsonMap = (props) => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                <ZoomControl position="topright" />
             </MapContainer>) : ( <></> )}
         </div>
     </>);
