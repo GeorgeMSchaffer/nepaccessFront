@@ -17,7 +17,8 @@ class ForgotPassword extends React.Component {
             successLabel: '',
             resetEmail: {
                 email: ''
-            }
+            },
+            disabledButton: false
         };
         this.onChange = this.onChange.bind(this);
         this.onKeyUp = this.onKeyUp.bind(this);
@@ -67,12 +68,16 @@ class ForgotPassword extends React.Component {
     
 
     sendResetLink = () => {
-        if(this.invalidEmail()){
+        if(this.invalidEmail() || this.state.disabledButton){
             return;
         }
         
         document.body.style.cursor = 'wait';
-        this.setState({ emailError: '', networkError: '' });
+        this.setState({ 
+            emailError: '', 
+            networkError: '', 
+            disabledButton: true 
+        });
         
         let resetUrl = new URL('reset/send', Globals.currentHost);
 
@@ -90,9 +95,10 @@ class ForgotPassword extends React.Component {
         }).then(success => {
             if(success){
                 this.setState({
-                    successLabel: "Reset link sent to provided email address from eller-nepaccess@email.arizona.edu."
-                    + " Please allow roughly one minute for email to arrive."
-                    + " If email doesn't arrive, please check your spam folder."
+                    successLabel: "Reset link sent to provided email address from NEPAccess@NEPAccess.org."
+                    + " Please allow a minute or so for email to arrive."
+                    + " If email doesn't arrive, please check your spam folder.",
+                    disabledButton: false
                 });
             } else {
                 // Server down?
@@ -101,24 +107,29 @@ class ForgotPassword extends React.Component {
             if(error.response) {
                 if (error.response.status === 418) {
                     this.setState({ 
-                        networkError: "Too many reset emails sent, please wait 24 hours between requests."
+                        networkError: "Too many reset emails sent, please wait 24 hours between requests.",
+                        disabledButton: false
                     });
                 } else if (error.response.status === 500) {
                     this.setState({ 
-                        networkError: "Email server error."
+                        networkError: "Email server error.",
+                        disabledButton: false
                     });
                 } else if (error.response.status === 404) {
                     this.setState({ 
-                        networkError: "Email address not found."
+                        networkError: "Email address not found.",
+                        disabledButton: false
                     });
                 } 
             } else {
                 this.setState({
-                    networkError: "Server may be down, please try again later."
+                    networkError: "Server may be down, please try again later.",
+                    disabledButton: false
                 });
             }
             this.setState({
-                successLabel: "Email could not be sent, please check address and try again."
+                successLabel: "Email could not be sent, please check address and try again.",
+                disabledButton: false
             });
             console.error('error message', error);
         });
@@ -158,7 +169,8 @@ class ForgotPassword extends React.Component {
                         
                         <div className="login-row">
                             <span className="leading-text"></span>
-                            <button type="button" className="button" id="submit" onClick={this.sendResetLink}>
+                            <button disabled={this.state.disabledButton}
+                                    type="button" className="button" id="submit" onClick={this.sendResetLink}>
                                 Send reset link
                             </button>
                             <label className="successLabel inline-block padding">{this.state.successLabel}</label>
