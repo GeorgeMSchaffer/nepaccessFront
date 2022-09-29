@@ -50,12 +50,14 @@ class Reset extends React.Component {
 		let verified = false;
 
         let checkURL = new URL('reset/check', Globals.currentHost);
+
+        const rToken = this.getResetTokenFromParams();
         
-        console.log("Reset token checked", localStorage.ResetToken);
+        console.log("Reset token checked", rToken);
         
         axios({
             method: 'POST', // or 'PUT'
-            headers: {Authorization: localStorage.ResetToken},
+            headers: {Authorization: rToken},
             url: checkURL
         }).then(response => {
             verified = response && response.status === 200;
@@ -74,15 +76,17 @@ class Reset extends React.Component {
             return;
         }
         document.body.style.cursor = 'wait';
+
+        const rToken = this.getResetTokenFromParams();
         
         let changeUrl = new URL('reset/change', Globals.currentHost);
 
-        console.log("Reset token sent out", localStorage.ResetToken);
+        console.log("Reset token sent out", rToken);
 
         axios({ 
             method: 'POST',
             url: changeUrl,
-            headers: {Authorization: localStorage.ResetToken},
+            headers: {Authorization: rToken},
             data: {newPassword: this.state.newPassword}
         }).then(response => {
             let responseOK = response && response.status === 200;
@@ -172,12 +176,22 @@ class Reset extends React.Component {
         }
     }
 
+    getResetTokenFromParams = () => {
+        const query = new URLSearchParams(this.props.location.search);
+        if(query && query.get('token')){ // Reset token provided?
+            const resetToken = ("Bearer " + query.get('token')); // .../reset?token={resetToken}
+            console.log("Should be setting reset token", resetToken);
+            return resetToken;
+        } else {
+            console.log("No token found");
+            return null;
+        }
+    }
+
 	componentDidMount() {
         const query = new URLSearchParams(this.props.location.search);
         if(query && query.get('token')){ // If there's a reset token provided, set JWT and check it
             const resetToken = ("Bearer " + query.get('token')); // .../reset?token={resetToken}
-            console.log("Should be setting reset token", resetToken);
-            localStorage.ResetToken = resetToken;
             this.check();
         } else { // otherwise no point in showing the page as usual
             this.setState({
