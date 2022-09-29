@@ -51,6 +51,8 @@ class Reset extends React.Component {
 
         let checkURL = new URL('reset/check', Globals.currentHost);
         
+        console.log("Reset token checked", localStorage.ResetToken);
+        
         axios({
             method: 'POST', // or 'PUT'
             headers: {Authorization: localStorage.ResetToken},
@@ -74,6 +76,8 @@ class Reset extends React.Component {
         document.body.style.cursor = 'wait';
         
         let changeUrl = new URL('reset/change', Globals.currentHost);
+
+        console.log("Reset token sent out", localStorage.ResetToken);
 
         axios({ 
             method: 'POST',
@@ -172,6 +176,7 @@ class Reset extends React.Component {
         const query = new URLSearchParams(this.props.location.search);
         if(query && query.get('token')){ // If there's a reset token provided, set JWT and check it
             const resetToken = ("Bearer " + query.get('token')); // .../reset?token={resetToken}
+            console.log("Should be setting reset token", resetToken);
             localStorage.ResetToken = resetToken;
             this.check();
         } else { // otherwise no point in showing the page as usual
