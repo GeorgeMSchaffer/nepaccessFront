@@ -53,8 +53,6 @@ class Reset extends React.Component {
 
         const rToken = this.getResetTokenFromParams();
         
-        console.log("Reset token checked", rToken);
-        
         axios({
             method: 'POST', // or 'PUT'
             headers: {Authorization: rToken},
@@ -80,8 +78,6 @@ class Reset extends React.Component {
         const rToken = this.getResetTokenFromParams();
         
         let changeUrl = new URL('reset/change', Globals.currentHost);
-
-        console.log("Reset token sent out", rToken);
 
         axios({ 
             method: 'POST',
@@ -125,7 +121,6 @@ class Reset extends React.Component {
     render() {
         if(!this.state.shouldRender)
         {
-            console.log("Not rendering reset");
             return (
                 <div id="main" className="container login-form">
                     <Helmet>
@@ -143,7 +138,6 @@ class Reset extends React.Component {
                     </div>
                 </div>)
         } else {
-            console.log("Reset");
             return (
                 <div className="container login-form">
                     <Helmet>
@@ -180,7 +174,6 @@ class Reset extends React.Component {
         const query = new URLSearchParams(this.props.location.search);
         if(query && query.get('token')){ // Reset token provided?
             const resetToken = ("Bearer " + query.get('token')); // .../reset?token={resetToken}
-            console.log("Should be setting reset token", resetToken);
             return resetToken;
         } else {
             console.log("No token found");
