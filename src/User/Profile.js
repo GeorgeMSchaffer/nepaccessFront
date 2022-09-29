@@ -61,9 +61,7 @@ class UserDetails extends React.Component {
             if(success){
                 // if HTTP 200 (ok), clear fields and display success
                 this.setState({
-                    successLabelPassword: "Password changed.",
-                    oldPassword: '',
-                    newPassword: ''
+                    successLabelPassword: "Password changed."
                 });
                 console.log("Changed");
             } else {
