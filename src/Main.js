@@ -123,8 +123,13 @@ class Main extends React.Component {
             }
         })
         .catch((err) => { // Token expired or invalid, or server is down
-            localStorage.clear();
-            this.setState({ role: undefined, loggedIn: false, anonymous: true });
+            console.log(err);
+            if(err.message === "Network Error") {
+                // do nothing
+            } else { // token problem
+                localStorage.clear();
+                this.setState({ role: undefined, loggedIn: false, anonymous: true });
+            }
         });
     }
 
