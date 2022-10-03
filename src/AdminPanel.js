@@ -10,6 +10,7 @@ import AdminRestoreTool from './AdminRestoreTool.js';
 import Generate from './Generate.js';
 import Generate2 from './Generate2.js';
 import Deduplicator from './Deduplicator.js';
+import AdminEmailer from './AdminEmailer.js';
 
 import Globals from './globals.js';
 
@@ -58,6 +59,7 @@ export default class AdminPanel extends React.Component {
             viewOptions.push({ value: 'Generate', label: 'Generate' });
             viewOptions.push({ value: 'Generate2', label: 'Generate2' });
             viewOptions.push({ value: 'Deduplicator', label: 'Deduplicator' });
+            viewOptions.push({ value: 'Emailer', label: 'Emailer' });
         }
 
         // Don't show dropdown at all if curator, now that we've hidden the title alignment also
@@ -114,6 +116,8 @@ export default class AdminPanel extends React.Component {
             return <Generate2 />
         } else if(this.state.dropdownOption.value === 'Deduplicator') {
             return <Deduplicator />
+        } else if(this.state.dropdownOption.value === 'Emailer') {
+            return <AdminEmailer />
         } else {
         }
     }
