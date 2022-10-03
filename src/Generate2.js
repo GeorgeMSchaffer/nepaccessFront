@@ -68,16 +68,30 @@ export default class Generate2 extends React.Component {
     }
 
     
+
+
     copyResults = () => {
         const el = this.textArea
-        el.select()
-        document.execCommand("copy")
+        let textToCopy = el.innerHTML;
+        if(navigator.clipboard) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                console.log('copied');
+            });
+        } else {
+            console.log('unsupported');
+        }
     }
-    
+
     copyResultsJSON = () => {
         const el = this.textArea2
-        el.select()
-        document.execCommand("copy")
+        let textToCopy = el.innerHTML;
+        if(navigator.clipboard) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                console.log('copied');
+            });
+        } else {
+            console.log('unsupported');
+        }
     }
 
     render() {

@@ -164,8 +164,14 @@ export default class AdminFiles extends React.Component {
 
     copyResults = () => {
         const el = this.textArea
-        el.select()
-        document.execCommand("copy")
+        let textToCopy = el.innerHTML;
+        if(navigator.clipboard) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                console.log('copied');
+            });
+        } else {
+            console.log('unsupported');
+        }
     }
 
 
