@@ -1,7 +1,8 @@
 {
-  "name": "front",
-  "version": "0.1.0",
+  "name": "nepaccess-front",
+  "version": "1.0.0",
   "private": true,
+  "license": "GPL-3.0-only",
   "dependencies": {
     "@react-leaflet/core": "^1.0.2",
     "@tippyjs/react": "^4.2.6",
