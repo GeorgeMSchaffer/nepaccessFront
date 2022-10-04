@@ -6,6 +6,8 @@ import Globals from '../globals.js';
 
 import './login.css';
 
+// TODO?: Captcha?
+
 class ForgotPassword extends React.Component {
 
 
