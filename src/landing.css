@@ -60,6 +60,10 @@ span.glow {
     /* min-height: 400px;
     height: 50%;
     width: 100%; */
+    height: calc(100vh - 350px);
+    min-width: 800px;
+    min-height: 600px;
+
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
