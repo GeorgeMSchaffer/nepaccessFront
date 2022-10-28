@@ -6,6 +6,7 @@ import Select from 'react-select';
 import Globals from './globals.js';
 
 import { ReactTabulator } from 'react-tabulator';
+import AdminFileSetDeduplicator from './AdminFileSetDeduplicator.js';
 
 const getRoutes = [
     { label: "admin/findAllEmailLogs", value: "admin/findAllEmailLogs" },
@@ -16,6 +17,7 @@ const getRoutes = [
     { label: "test/findAllDocs", value: "test/findAllDocs" },
     { label: "test/findAllSearchLogs", value: "test/findAllSearchLogs" },
     { label: "file/findAllNepaFiles", value: "file/findAllNepaFiles" },
+    { label: "file/get_multi_folder", value: "file/get_multi_folder" },
     { label: "user/findAllUsers", value: "user/findAllUsers" },
     { label: "user/findAllContacts", value: "user/findAllContacts" },
     { label: "user/findAllOptedOut", value: "user/findAllOptedOut" },
@@ -327,6 +329,10 @@ export default class AdminFind extends React.Component {
                     >
                         Download results as .tsv
                     </button>
+
+                    <div display={"none" ? this.state.getRoute === "file/get_multi_folder" : ""} >
+                        <AdminFileSetDeduplicator />
+                    </div>
 
 
                 </div>

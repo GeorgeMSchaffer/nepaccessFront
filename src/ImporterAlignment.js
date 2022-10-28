@@ -7,15 +7,13 @@ import Globals from './globals';
 
 let reader;
 
-/** Handle .geojson and prepare it in a way that Java will appreciate, then send it to backend and show the results to user */
+/** Handle and prepare json in a way that Java will appreciate, then send it to backend and show the results to user */
 export default class ImporterAlignment extends Component {
-
 
     constructor(props) {
         super(props);
 
         this.state = { 
-            totalSize: 0,
             alignment: [],
 
             networkError: '',
@@ -35,13 +33,22 @@ export default class ImporterAlignment extends Component {
     onDrop = (dropped) => {
 
         const setText = (text) => {
-
-            let _alignment = [];
             let json = JSON.parse(text);
 
             // console.log("Text",text);
-            // console.log("JSON",json);
-            // console.log("Length", Object.keys(json).length);
+            console.log("JSON",json);
+            // Note: Might expect each array to take ~5 seconds for 1000 items, so for 120 arrays, 10 minutes expected
+            // However if we only care about "good" scores of .5 or .66 higher for example, it will likely take
+            // 1% or 0.1% as much time.
+            console.log("Base ID count", Object.keys(json).length);
+            let baseIds = Object.keys(json);
+            console.log(baseIds);
+            let totalCount = 0;
+            for(let baseId = 0; baseId < baseIds.length; baseId++) {
+                totalCount += json[baseIds[baseId]].length;
+            }
+            // Might expect ~100,000+ if up to 200 arrays
+            console.log("Total scores #: " + totalCount);
 
             this.setState({
                 alignment: json,
@@ -58,7 +65,6 @@ export default class ImporterAlignment extends Component {
         this.setState({
             files: dropped,
             dragClass: '',
-            totalSize: 0
         }, ()=> {
             console.log("Files", this.state.files);
 
@@ -66,16 +72,6 @@ export default class ImporterAlignment extends Component {
                 console.log("File", file);
 
                 reader.readAsText(file);
-            });
-        }, () => {
-
-            let _totalSize = 0;
-            for(let i = 0; i < this.state.files.length; i++) {
-                _totalSize += this.state.files[i].size;
-            }
-
-            this.setState({
-                totalSize: _totalSize,
             });
         });
 
@@ -233,8 +229,6 @@ export default class ImporterAlignment extends Component {
                                     <aside className="dropzone-aside">
                                         <h4>File list:</h4>
                                         <ul>{files}</ul>
-                                        <h4>Total size (rounded to MB):</h4>
-                                        <ul>{Math.round(this.state.totalSize / 1024 / 1024)} MB</ul>
                                     </aside>
                                 </section>
                             )}
