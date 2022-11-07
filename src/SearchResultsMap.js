@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet";
-import { MapContainer, TileLayer, GeoJSON, Popup, Tooltip, useMap, ZoomControl } from "react-leaflet";
 
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { MapContainer, TileLayer, GeoJSON, Popup, Tooltip, useMap, ZoomControl } from "react-leaflet";
+import CustomSearchControl from './CustomSearchControl';
 
 // import { LatLngBounds } from "leaflet";
 
@@ -398,35 +398,12 @@ const MyData = (props) => {
         }
 
 
-        const searchControl = new GeoSearchControl({
-            provider: new OpenStreetMapProvider(), // required
-            style: 'bar', 
-            showMarker: true,
-            showPopup: false,
-            autoClose: true,
-            retainZoomLevel: false,
-            animateZoom: true,
-            keepResult: false,
-            searchLabel: 'Search for any location',
-
-            autocomplete: "new-password" // try to stop browser from ruining UX... Edge and Chrome get pretty aggressive
-        });
-        
-        if(map) {
-            map.addControl(searchControl);
-        }
-
-
         return () => { // unmount or rerender
-            if(map) {
-                map.removeControl(searchControl);
-            }
             mounted.current = false;
         };
     }, [props]);
 
     let toggleText = props.isHidden ? "+" : "-";
-
 
     return (<>
         <div className="toggle-container-row">
@@ -481,6 +458,21 @@ const MyData = (props) => {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                         <ZoomControl position="topright" />
+                        <CustomSearchControl
+                            // provider={prov} // required but defined in CustomSearchControl.js
+                            style={"bar"}
+                            showMarker={true}
+                            showPopup={false}
+                            maxMarkers={3}
+                            retainZoomLevel={false}
+                            animateZoom={true}
+                            autoClose={false}
+                            searchLabel={"Search for any location"}
+                            keepResult={false}
+                            popupFormat={({ query, result }) => result.label}
+
+                            autocomplete={"new-password"} // try to stop browser from ruining UX... Edge and Chrome get pretty aggressive
+                        />
                     </MapContainer>
                 </div>
             </div>

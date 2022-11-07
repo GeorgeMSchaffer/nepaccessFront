@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { MapContainer, TileLayer, GeoJSON, Tooltip, ZoomControl } from "react-leaflet";
 
 // import 'node_modules/leaflet-geosearch/dist/geosearch.css';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import CustomSearchControl from "./CustomSearchControl.js";
 
 import axios from "axios";
 import Globals from './globals.js';
@@ -120,25 +120,6 @@ const GeojsonMap = (props) => {
         return leafBounds;
     }
 
-    const getMapSearchControl = () => {
-        if(map) {
-            console.log("Control was added...");
-            return (<GeoSearchControl
-                position="bottomleft"
-                provider={new OpenStreetMapProvider()}
-                style='button'>
-
-                </GeoSearchControl>)
-        }
-        
-        // new GeoSearchControl({
-        //     position: "bottomleft",
-        //     provider: new OpenStreetMapProvider(), // required
-        //     style: 'button', // optional: bar|button  - default button
-        // }).addTo(map);
-        // console.log("Control was added...");
-    }
-
     const doFitBounds = () => {
         if(map && getBounds) {
             map.fitBounds(getBounds);
@@ -228,30 +209,8 @@ const GeojsonMap = (props) => {
             // console.log("Nothing here?",props);
         }
 
-        const searchControl = new GeoSearchControl({
-            position: "topleft",
-            provider: new OpenStreetMapProvider(), // required
-            style: 'button', // optional: bar|button  - default button
-            showMarker: true,
-            showPopup: false,
-            autoClose: true,
-            retainZoomLevel: false,
-            animateZoom: true,
-            keepResult: false,
-            searchLabel: 'Search for any location',
-
-            autocomplete: "new-password" // try to stop browser from ruining UX... Edge and Chrome get pretty aggressive
-        });
-        
-        if(map) {
-            map.addControl(searchControl);
-        }
-
         return () => { // unmount or rerender
             // _id = -1;
-            if(map) {
-                map.removeControl(searchControl);
-            }
             mounted.current = false;
         };
     }, [props]);
@@ -287,6 +246,23 @@ const GeojsonMap = (props) => {
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <CustomSearchControl
+                    // provider={prov} // required but defined in CustomSearchControl.js
+                    // position={"topleft"}
+                    // style={"button"} // css/style problems out of the box
+                    style={"bar"}
+                    showMarker={true}
+                    showPopup={false}
+                    maxMarkers={3}
+                    retainZoomLevel={false}
+                    animateZoom={true}
+                    autoClose={false}
+                    searchLabel={"Search for any location"}
+                    keepResult={false}
+                    popupFormat={({ query, result }) => result.label}
+
+                    autocomplete={"new-password"} // try to stop browser from ruining UX... Edge and Chrome get pretty aggressive
                 />
                 <ZoomControl position="topright" />
             </MapContainer>) : ( <></> )}
