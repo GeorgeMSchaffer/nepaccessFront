@@ -12,6 +12,7 @@ export default class DownloadComments extends React.Component {
 		super(props);
 		this.state = { // Each and every download link via <DownloadFile /> has its own state
 			progressValue: null,
+            downloadPreText: null,
 			downloadText: 'Download',
 			downloadClass: 'document-download',
 			downloadClass2: ''
@@ -101,15 +102,24 @@ export default class DownloadComments extends React.Component {
                 
 				// verified = response && response.status === 200;
 			})
-			.catch((err) => { // TODO: Test, This will catch a 404
-				this.setState({
-					downloadText: 'Download not found',
-					downloadClass2: 'disabled_download'
-				});
-				// console.log("Error::: ", err);
-				this.setState({
-					downloadText: 'File not found'
-				});
+			.catch((error) => { 
+                if(error.response && error.response.status === 404) {
+                    this.setState({
+                        downloadText: 'File not found',
+                        downloadClass2: 'disabled_download'
+                    });
+                } else if(error.response && error.response.status === 403) {
+                    this.setState({
+                        downloadPreText: <LoginModal message="Session expired: Please click here to login again"/>,
+                        downloadClass: 'document-download',
+                        downloadClass2: ''
+                    });
+                } else {
+                    this.setState({
+                        downloadText: 'Server may be down for maintenance, please try again later',
+                        downloadClass2: 'disabled_download'
+                    });
+                }
 			});
     }
 
@@ -183,15 +193,24 @@ export default class DownloadComments extends React.Component {
                 
 				// verified = response && response.status === 200;
 			})
-			.catch((err) => { // TODO: Test, This will catch a 404
-				this.setState({
-					downloadText: 'Download not found',
-					downloadClass: 'disabled_download'
-				});
-				// console.log("Error::: ", err);
-				this.setState({
-					downloadText: 'File not found'
-				});
+			.catch((error) => { 
+                if(error.response && error.response.status === 404) {
+                    this.setState({
+                        downloadText: 'File not found',
+                        downloadClass2: 'disabled_download'
+                    });
+                } else if(error.response && error.response.status === 403) {
+                    this.setState({
+                        downloadPreText: <LoginModal message="Session expired: Please click here to login again"/>,
+                        downloadClass: 'document-download',
+                        downloadClass2: ''
+                    });
+                } else {
+                    this.setState({
+                        downloadText: 'Server may be down for maintenance, please try again later',
+                        downloadClass2: 'disabled_download'
+                    });
+                }
 			});
 
 	}
@@ -239,6 +258,7 @@ export default class DownloadComments extends React.Component {
             if(this.props.downloadType && this.props.downloadType === "nepafile") {
                 propID = this.props.id;
                 return (<>
+                    {this.state.downloadPreText}
                     <button className = {this.state.downloadClass2} onClick = { () => {this.downloadNepaFile(propFilename, propID)} }> 
                         {this.state.downloadText} {sizeText} {this.state.progressValue} 
                     </button> <span className="propFilename">{propFilename}</span>
@@ -247,6 +267,7 @@ export default class DownloadComments extends React.Component {
             }
 			else if (propFilename) {
                 return (<>
+                    {this.state.downloadPreText}
                     <button className = {this.state.downloadClass} onClick = { () => {this.download(propFilename, false)} }> 
                         {this.state.downloadText} {sizeText} {this.state.progressValue} 
                     </button> <span className="propFilename">{propFilename}</span>
@@ -260,9 +281,12 @@ export default class DownloadComments extends React.Component {
                 }
                 
                 return (
+                    <>
+                    {this.state.downloadPreText}
                     <button className = {this.state.downloadClass} onClick = { () => {this.download(propID, true)} }> 
                         {this.state.downloadText} <b>{innerText.replaceAll(' ','_')}</b> - {sizeText} {this.state.progressValue}
                     </button> 
+                    </>
                 );
             } else {
 				return propFilename;
