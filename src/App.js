@@ -664,7 +664,6 @@ export default class App extends React.Component {
                     });
                 }
             }).catch(error => { // Server down or 408 (timeout)
-                console.error('Server is down or verification failed.', error);
                 if(error.response && error.response.status === 408) {
                     this.setState({
                         networkError: 'Request has timed out.'
@@ -684,7 +683,7 @@ export default class App extends React.Component {
                         networkError: Globals.errorMessage.default,
                         resultsText: "Couldn't parse terms, please try removing any special characters"
                     });
-                } else {
+                } else { // No response? Server is down?
                     this.setState({
                         networkError: Globals.errorMessage.default,
                         resultsText: "Error: Couldn't get results from server"
@@ -834,7 +833,6 @@ export default class App extends React.Component {
                 });
             }
         }).catch(error => { // Server down or 408 (timeout)
-            console.error('Server is down or verification failed.', error);
             if(error.response && error.response.status === 408) {
                 this.setState({
                     networkError: 'Request has timed out.'
@@ -1009,8 +1007,7 @@ export default class App extends React.Component {
                 if(error.name === 'TypeError') {
                     console.error(error);
                 } else { // Server down or 408 (timeout)
-                    console.error('Server is down or verification failed.', error);
-                    let _networkError = 'Server is down or you may need to login again.';
+                    let _networkError = 'Server may be down or you may need to login again.';
                     let _resultsText = Globals.errorMessage.default;
 
                     if(error.response && error.response.status === 408) {
@@ -1170,7 +1167,6 @@ export default class App extends React.Component {
                 if(error.name === 'TypeError') {
                     console.error(error);
                 } else { // Server down or 408 (timeout)
-                    console.error('Server is down or verification failed.', error);
                     let _networkError = 'Server is down or you may need to login again.';
                     let _resultsText = Globals.errorMessage.default;
 
@@ -1346,7 +1342,6 @@ export default class App extends React.Component {
                 if(error.name === 'TypeError') {
                     console.error(error);
                 } else { // Server down or 408 (timeout)
-                    console.error('Server is down or verification failed.', error);
                     let _networkError = 'Server is down or you may need to login again.';
                     let _resultsText = Globals.errorMessage.default;
 
