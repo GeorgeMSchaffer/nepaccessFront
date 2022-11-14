@@ -782,6 +782,10 @@ button.modal-close {
     color: #0067B1;
 }
 
+.info-svg {
+    fill: #324EB3;
+}
+
 /** Avoid this scenario: When a developer sets the font size less than 16 pixels on any form element,
     mobile browsers intervene and force the UI or Page to zoom so that the texts are readable enough. */
 @media screen and (max-width: 767px) {

@@ -187,13 +187,23 @@ export default class LoginModal extends React.Component {
 
     
     Build = () => {
-        return (
-            <button className='link' onClick={e => {
-                this.showModal();
-            }}>
-                log in
-            </button>
-        );
+        if(this.props.message) {
+            return (
+                <button className='link' onClick={e => {
+                    this.showModal();
+                }}>
+                    {this.props.message}
+                </button>
+            );
+        } else {
+            return (
+                <button className='link' onClick={e => {
+                    this.showModal();
+                }}>
+                    log in
+                </button>
+            );
+        }
     }
 
 

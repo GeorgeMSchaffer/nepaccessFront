@@ -12,6 +12,8 @@ import { reactFormatter } from "react-tabulator";
 import 'react-tabulator/lib/styles.css'; // required styles
 import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 
+import Tippy from '@tippyjs/react';
+
 import './loader.css';
 
 import './cardProcess.css';
@@ -249,7 +251,24 @@ export default class SearchProcessResults extends React.Component {
 
                             <div className="results-count-holder">
                                 <h2 id="results-label" className="inline">
-                                    {this.props.resultsText}
+                                    {this.props.resultsText}&nbsp;
+                                        <Tippy className="tippy-tooltip--small searchTips" trigger='manual click' 
+                                            hideOnClick={true}
+                                            interactive={true}
+                                            placement="right"
+                                            content={
+                                                <div>
+                                                    The map view is a visual representation of all states and counties found in the current results
+                                                    table. If you hover over a polygon, a tooltip will also show how many of the current results are linked to it. 
+                                                    You can toggle the state and/or county layer by clicking on the checkboxes in the upper left corner.
+                                                </div>}
+                                        >
+                                            {<span className={"side-link inline"}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 100 100">
+                                                    <path className="info-svg" d="M50.433,0.892c-27.119,0-49.102,21.983-49.102,49.102s21.983,49.103,49.102,49.103s49.101-21.984,49.101-49.103S77.552,0.892,50.433,0.892z M59,79.031C59,83.433,55.194,87,50.5,87S42,83.433,42,79.031V42.469c0-4.401,3.806-7.969,8.5-7.969s8.5,3.568,8.5,7.969V79.031z M50.433,31.214c-5.048,0-9.141-4.092-9.141-9.142c0-5.049,4.092-9.141,9.141-9.141c5.05,0,9.142,4.092,9.142,9.141C59.574,27.122,55.482,31.214,50.433,31.214z"/>
+                                                </svg>
+                                            </span>}
+                                        </Tippy>
                                 </h2>
                             </div>
                             <SearchResultsMap 
