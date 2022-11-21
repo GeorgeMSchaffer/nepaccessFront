@@ -1173,34 +1173,10 @@ class Importer extends Component {
                         onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_ids')}>
                     (admin) Update any fields by our internal record ID
                 </button>
-
-                <button type="button" className="button" id="submitCSVTitles" disabled={!this.state.canImportCSV || this.state.disabled} 
-                onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/uploadCSV_titles')}>
-                    (admin) Import from Buomsoo (curated dates, summaries, coop. agencies, matches on title only, update-only: no new records created)
-                </button>
-                <button type="button" className="button" id="submitCSVTitlesRod" disabled={!this.state.canImportCSV || this.state.disabled} 
-                onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/uploadCSV_titles_rod')}>
-                    (admin) Fix ROD dates from Buomsoo: no new records created
-                </button>
-                <button type="button" className="button" id="submitTitleFix" disabled={!this.state.canImportCSV || this.state.disabled} 
-                        onClick={() => this.importCSVHandler(this.titleOnlyValidate,'file/title_fix')}>
-                    (admin) Title fixing tool
-                </button>
-                <button type="button" className="button" id="submitCSVConstrained" disabled={!this.state.canImportCSV || this.state.disabled} 
-                        onClick={() => this.importCSVHandler(this.csvConstrainedValidated,'file/uploadCSV_constraints')}>
-                    (admin) Constrained import tool
-                </button>
-                <button type="button" className="button" id="submitCSVFilename" disabled={!this.state.canImportCSV || this.state.disabled} 
-                        onClick={() => this.importCSVHandler(this.csvConstrainedValidated,'file/uploadCSV_filenames')}>
-                    (admin) Filename add tool
-                </button>
+                
                 <button type="button" className="button" id="submitCSVProcess" disabled={!this.state.canImportCSV || this.state.disabled} 
                         onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_processes')}>
                     (admin) Process add tool
-                </button>
-                <button type="button" className="button" id="submitCSVStateID" disabled={!this.state.canImportCSV || this.state.disabled} 
-                        onClick={() => this.importCSVHandler(this.stateIdOnlyValidate,'file/uploadCSV_id_state')}>
-                    (admin) State update by ID
                 </button>
             </>);
         }
@@ -1396,10 +1372,6 @@ class Importer extends Component {
                         <button type="button" className="button" id="submitCSV" disabled={!this.state.canImportCSV || this.state.disabled} 
                                 onClick={() => this.importCSVHandler(this.csvValidated,'file/uploadCSV')}>
                             Import CSV/TSV
-                        </button>
-                        <button type="button" className="button" id="submitCSVProcessDumb" disabled={!this.state.canImportCSV || this.state.disabled} 
-                                onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_processes_dumb')}>
-                            Process add-by-ID tool (just updates process ID by given document ID)
                         </button>
                         
                         {this.renderAdminButtons()}
