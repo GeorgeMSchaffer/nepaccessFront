@@ -143,6 +143,12 @@ span.filename>* {
     font-size: 14px;
     line-height: 125%;
 }
+#process-results .table-meta>div:first-child {
+    margin-left: 15px;
+}
+#process-results .table-meta>div {
+    margin-left: 25px;
+}
 
 /** Tabulator table, cell, row custom CSS */
 

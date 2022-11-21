@@ -372,6 +372,13 @@ export default class App extends React.Component {
             if(!processResults[key].county) {
                 processResults[key].county = datum.county;
             }
+            
+            if(!processResults[key].action) {
+                processResults[key].action = datum.action;
+            }
+            if(!processResults[key].decision) {
+                processResults[key].decision = datum.decision;
+            }
 
             // Add record to array of records for this "key"
             processResults[key].records.push(datum);
@@ -610,6 +617,9 @@ export default class App extends React.Component {
                             status: doc.status,
                             subtype: doc.subtype,
                             county: doc.county,
+                            
+                            action: doc.action,
+                            decision: doc.decision,
 
                             relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                         };
@@ -802,6 +812,9 @@ export default class App extends React.Component {
                         status: doc.status,
                         subtype: doc.subtype,
                         county: doc.county,
+
+                        action: doc.action,
+                        decision: doc.decision,
 
                         relevance: idx + 1 // sort puts "falsy" values at the bottom incl. 0
                     };
@@ -1447,6 +1460,8 @@ export default class App extends React.Component {
                         cooperating_agency: result.cooperatingAgency,
                         state: result.state,
                         county: result.county,
+                        action: result.action,
+                        decision: result.decision,
                         processId: result.processId
                     }
                     if(!newRecord.processId) { // don't want to imply zeroes are valid
@@ -1486,6 +1501,8 @@ export default class App extends React.Component {
                         notes: result.notes,
                         status: result.status,
                         folder: result.folder,
+                        action: result.action,
+                        decision: result.decision,
                         size: result.size
                     }
                     if(!newRecord.processId) { // don't want to imply zeroes are valid

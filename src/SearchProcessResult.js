@@ -105,6 +105,30 @@ export default class SearchProcessResult extends React.Component {
             return <></>;
         }
     }
+    showAction = () => {
+        if(this.props && this.props.cell._cell.row.data.action){
+            const actionDisplay = this.props.cell._cell.row.data.action.replaceAll(";","; ");
+            return (
+                <div><span className="cardHeader">Action:
+                    <span>{actionDisplay}</span></span>
+                </div>
+            );
+        } else {
+            return <></>;
+        }
+    }
+    showDecision = () => {
+        if(this.props && this.props.cell._cell.row.data.decision){
+            const decisionDisplay = this.props.cell._cell.row.data.decision.replaceAll(";","; ");
+            return (
+                <div><span className="cardHeader">Decision:
+                    <span>{decisionDisplay}</span></span>
+                </div>
+            );
+        } else {
+            return <></>;
+        }
+    }
     
     /** Used by showText(). 
      * Takes: record ID,filename,text,index; 
@@ -381,6 +405,8 @@ export default class SearchProcessResult extends React.Component {
                             {this.showAgency()}
                             {this.showState()}
                             {this.showCounty()}
+                            {this.showAction()}
+                            {this.showDecision()}
                         </div>
                     </div>
                     <div className="records">

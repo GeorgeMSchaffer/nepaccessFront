@@ -61,6 +61,10 @@ class Search extends React.Component {
             stateRaw: [],
             county: [],
             countyRaw: [],
+            decision: [],
+            decisionRaw: [],
+            action: [],
+            actionRaw: [],
             typeAll: true,
             typeFinal: false,
             typeDraft: false,
@@ -199,6 +203,10 @@ class Search extends React.Component {
             stateRaw: [],
             county: [],
             countyRaw: [],
+            decision: [],
+            decisionRaw: [],
+            action: [],
+            actionRaw: [],
             typeAll: true,
             typeFinal: false,
             typeDraft: false,
@@ -353,6 +361,32 @@ class Search extends React.Component {
 		{ 
             cooperatingAgency: agencyLabels,
             cooperatingAgencyRaw: evt
+		}, () => { 
+			this.filterBy(this.state);
+		});
+    }
+	onActionChange = (evt) => {
+		var actionLabels = [];
+		for(var i = 0; i < evt.length; i++){
+			actionLabels.push(evt[i].label.replace(/ \([A-Z]*\)/gi,""));
+        }
+        this.setState( 
+		{ 
+            action: actionLabels,
+            actionRaw: evt
+		}, () => { 
+			this.filterBy(this.state);
+		});
+    }
+	onDecisionChange = (evt) => {
+		var decisionLabels = [];
+		for(var i = 0; i < evt.length; i++){
+			decisionLabels.push(evt[i].label.replace(/ \([A-Z]*\)/gi,""));
+        }
+        this.setState( 
+		{ 
+            decision: decisionLabels,
+            decisionRaw: evt
 		}, () => { 
 			this.filterBy(this.state);
 		});
@@ -612,6 +646,8 @@ class Search extends React.Component {
             this.state.cooperatingAgency.length > 0 ||
             this.state.state.length > 0 ||
             this.state.county.length > 0 ||
+            this.state.decision.length > 0 ||
+            this.state.action.length > 0 ||
             this.state.typeFinal ||
             this.state.typeDraft ||
             this.state.typeEA ||
@@ -677,6 +713,26 @@ class Search extends React.Component {
             ,{ value: 'URC', label: 'Utah Reclamation Mitigation and Conservation Commission (URC)' },{ value: 'WAPA', label: 'Western Area Power Administration (WAPA)' }
         ];
         const stateOptions = Globals.locations;
+
+        const actionOptions = [
+            {value:"Conservation/Restoration/ Bio. Resource use", label:"Conservation/Restoration/ Bio. Resource use"},
+            {value:"Recreation", label:"Recreation"},
+            {value:"Cultural/Historical", label:"Cultural/Historical"},
+            {value:"Land Management Plan", label:"Land Management Plan"},
+            {value:"Land Exchange", label:"Land Exchange"},
+            {value:"Economic and Urban Development/Commerce", label:"Economic and Urban Development/Commerce"},
+            {value:"Water Works", label:"Water Works"},
+            {value:"Mineral Resource Extraction", label:"Mineral Resource Extraction"},
+            {value:"Energy generation/transmission", label:"Energy generation/transmission"},
+            {value:"Transportation", label:"Transportation"},
+            {value:"Government Facilities/Operations", label:"Government Facilities/Operations"}];
+        const decisionOptions = [
+            {value:"Policy", label:"Policy"},
+            {value:"Plan", label:"Plan"},
+            {value:"Program", label:"Program"},
+            {value:"Project", label:"Project"},
+            {value:"Legislative", label:"Legislative"}];
+
         // const tooltipTitle = "<p class=tooltip-line><span class=bold>Search word connectors</span></p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>AND</span>This is the default. <span class=bold>All</span> words you enter must be found together to return a result.</p>"
         // + "<p class=tooltip-line><span class=tooltip-connector>OR</span> (all caps) to search for <span class=bold>any</span> of those words.</p>"
@@ -974,6 +1030,29 @@ class Search extends React.Component {
                         placeholder="Type or select a county" 
                     />
                 </div>
+                
+                <div className="filter">
+                    <label className="sidebar-label" htmlFor="searchAction">Action Type</label>
+                    <Select id="searchAction" className="multi" classNamePrefix="react-select" isMulti name="action" isSearchable isClearable 
+                        styles={customStyles}
+                        tabIndex="7"
+                        options={actionOptions} 
+                        onChange={this.onActionChange} 
+                        value={this.state.actionRaw}
+                        placeholder="Type or select action type" 
+                    />
+                </div>
+                <div className="filter">
+                    <label className="sidebar-label" htmlFor="searchDecision">Decision Type</label>
+                    <Select id="searchDecision" className="multi" classNamePrefix="react-select" isMulti name="decision" isSearchable isClearable 
+                        styles={customStyles}
+                        tabIndex="8"
+                        options={decisionOptions} 
+                        onChange={this.onDecisionChange}
+                        value={this.state.decisionRaw}
+                        placeholder="Type or select decision" 
+                    />
+                </div>
 
                 <div className="sidebar-hr"></div>
 
@@ -992,7 +1071,7 @@ class Search extends React.Component {
                             showMonthDropdown={true}
                             showYearDropdown={true}
                             adjustDateOnChange
-                            tabIndex="7"
+                            tabIndex="9"
                             popperPlacement="right"
                             isClearable
                             // preventOpenOnFocus={true} 
@@ -1009,7 +1088,7 @@ class Search extends React.Component {
                             showMonthDropdown={true}
                             showYearDropdown={true}
                             adjustDateOnChange
-                            tabIndex="8"
+                            tabIndex="10"
                             popperPlacement="right"
                             isClearable
                             // preventOpenOnFocus={true} 
@@ -1026,7 +1105,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeDraft" className="sidebar-checkbox"
-                                        tabIndex="9"
+                                        tabIndex="11"
                                         checked={this.state.typeDraft} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Draft EIS <i>{this.props.draftCount}</i></span>
                             </label>
@@ -1034,7 +1113,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeFinal" className="sidebar-checkbox"
-                                        tabIndex="10"
+                                        tabIndex="12"
                                         checked={this.state.typeFinal} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Final EIS <i>{this.props.finalCount}</i></span>
                             </label>
@@ -1042,7 +1121,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeEA" className="sidebar-checkbox"
-                                        tabIndex="11"
+                                        tabIndex="13"
                                     checked={this.state.typeEA} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">EA <i>{this.props.eaCount}</i></span>
                             </label>
@@ -1050,7 +1129,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeNOI" className="sidebar-checkbox"
-                                        tabIndex="12"
+                                        tabIndex="14"
                                         checked={this.state.typeNOI} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">NOI <i>{this.props.noiCount}</i></span>
                             </label>
@@ -1058,7 +1137,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeROD" className="sidebar-checkbox"
-                                        tabIndex="13"
+                                        tabIndex="15"
                                     checked={this.state.typeROD} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">ROD <i>{this.props.rodCount}</i></span>
                             </label>
@@ -1066,7 +1145,7 @@ class Search extends React.Component {
                         <div className="checkbox-container">
                             <label className="clickable checkbox-text">
                                 <input type="checkbox" name="typeScoping" className="sidebar-checkbox"
-                                        tabIndex="14"
+                                        tabIndex="16"
                                     checked={this.state.typeScoping} onChange={this.onTypeChecked} />
                                 <span className="checkbox-text">Scoping Report <i>{this.props.scopingCount}</i></span>
                             </label>

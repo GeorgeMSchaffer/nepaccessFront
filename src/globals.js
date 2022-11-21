@@ -13253,6 +13253,14 @@ const Globals = {
             isFiltered = true;
             filteredResults = filteredResults.filter(arrayMatchesArray("county", searcherState.county));
         }
+        if(searcherState.decision && searcherState.decision.length > 0){
+            isFiltered = true;
+            filteredResults = filteredResults.filter(arrayMatchesArray("decision", searcherState.decision));
+        }
+        if(searcherState.action && searcherState.action.length > 0){
+            isFiltered = true;
+            filteredResults = filteredResults.filter(arrayMatchesArray("action", searcherState.action));
+        }
         if(searcherState.startPublish){
             isFiltered = true;
             let formattedDate = Globals.formatDate(searcherState.startPublish);
