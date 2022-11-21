@@ -1169,11 +1169,6 @@ class Importer extends Component {
         let result;
         if(this.state.admin) {
             result = (<>
-                <button type="button" className="button" id="submitCSVIDs" disabled={!this.state.canImportCSV || this.state.disabled} 
-                        onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_ids')}>
-                    (admin) Update any fields by our internal record ID
-                </button>
-                
                 <button type="button" className="button" id="submitCSVProcess" disabled={!this.state.canImportCSV || this.state.disabled} 
                         onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_processes')}>
                     (admin) Process add tool
@@ -1329,10 +1324,12 @@ class Importer extends Component {
                             </h3>
                         <h3>The system detects matches by title, register date and document type.  
                             All non-blank, valid fields will overwrite existing fields. 
-                            Existing metadata will be updated if it's a match except for the filename/folder values. </h3>
+                            Existing metadata will be updated if it's a match except for the filename/folder values when there are files on disk. </h3>
                         <h3>If you're sure you want to overwrite existing folder or filenames, then use the Force Update header and put Yes for that row.
                             </h3>
                         <h3>Valid, non-duplicate data will become new metadata records.
+                            </h3>
+                        <h3>Update by internal ID works exactly the same, except it matches only by ID, and it does not add new records.
                             </h3>
 
                         <hr />
@@ -1374,6 +1371,11 @@ class Importer extends Component {
                             Import CSV/TSV
                         </button>
                         
+                        <button type="button" className="button" id="submitCSVIDs" disabled={!this.state.canImportCSV || this.state.disabled} 
+                                onClick={() => this.importCSVHandler(this.autoValidate,'file/uploadCSV_ids')}>
+                            Update all incoming columns for existing records by internal ID, ignores missing incoming columns
+                        </button>
+
                         {this.renderAdminButtons()}
 
                         <div className="loader-holder">
