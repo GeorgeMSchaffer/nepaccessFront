@@ -1036,7 +1036,7 @@ class Search extends React.Component {
 
                 <div className="dropdown-group-end"></div>
                 
-                <div className="filter">
+                {/* <div className="filter">
                     <label className="sidebar-label" htmlFor="searchAction">
                         Action Type <span className="new">New</span>
                     </label>
@@ -1061,7 +1061,7 @@ class Search extends React.Component {
                         value={this.state.decisionRaw}
                         placeholder="Type or select decision" 
                     />
-                </div>
+                </div> */}
 
                 <div className="sidebar-hr"></div>
 
