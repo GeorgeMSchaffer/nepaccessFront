@@ -258,9 +258,14 @@ export default class SearchProcessResults extends React.Component {
                                             placement="right"
                                             content={
                                                 <div>
-                                                    The map view is a visual representation of all states and counties found in the current results
-                                                    table. If you hover over a polygon, a tooltip will also show how many of the current results are linked to it. 
-                                                    You can toggle the state and/or county layer by clicking on the checkboxes in the upper left corner.
+                                                    The map view is a <span className="bold">visual representation</span> of all states and counties found in the current results
+                                                    table. 
+                                                    <div>
+                                                        • If you hover over a polygon, a tooltip will also show how many of the current results are linked to it.
+                                                    </div>
+                                                    <div>
+                                                        • You can toggle the state and/or county layer by clicking on the checkboxes in the upper left corner.
+                                                    </div>
                                                 </div>}
                                         >
                                             {<span className={"side-link inline"}>

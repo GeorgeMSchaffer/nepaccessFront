@@ -1005,6 +1005,9 @@ class Search extends React.Component {
                         // menuIsOpen={true}
                     />
                 </div>
+                
+                <div className="dropdown-group-end"></div>
+
                 <div className="filter">
                     <label className="sidebar-label" htmlFor="searchState">State(s) or location(s)</label>
                     <Select id="searchState" className="multi" classNamePrefix="react-select" isMulti name="state" isSearchable isClearable 
@@ -1030,9 +1033,13 @@ class Search extends React.Component {
                         placeholder="Type or select a county" 
                     />
                 </div>
+
+                <div className="dropdown-group-end"></div>
                 
                 <div className="filter">
-                    <label className="sidebar-label" htmlFor="searchAction">Action Type</label>
+                    <label className="sidebar-label" htmlFor="searchAction">
+                        Action Type <span className="new">New</span>
+                    </label>
                     <Select id="searchAction" className="multi" classNamePrefix="react-select" isMulti name="action" isSearchable isClearable 
                         styles={customStyles}
                         tabIndex="7"
@@ -1043,7 +1050,9 @@ class Search extends React.Component {
                     />
                 </div>
                 <div className="filter">
-                    <label className="sidebar-label" htmlFor="searchDecision">Decision Type</label>
+                    <label className="sidebar-label" htmlFor="searchDecision">
+                        Decision Type <span className="new">New</span>
+                    </label>
                     <Select id="searchDecision" className="multi" classNamePrefix="react-select" isMulti name="decision" isSearchable isClearable 
                         styles={customStyles}
                         tabIndex="8"
