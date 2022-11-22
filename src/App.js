@@ -1460,8 +1460,8 @@ export default class App extends React.Component {
                         cooperating_agency: result.cooperatingAgency,
                         state: result.state,
                         county: result.county,
-                        action: result.action,
-                        decision: result.decision,
+                        // action: result.action,
+                        // decision: result.decision,
                         processId: result.processId
                     }
                     if(!newRecord.processId) { // don't want to imply zeroes are valid

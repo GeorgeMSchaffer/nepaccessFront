@@ -1033,35 +1033,39 @@ class Search extends React.Component {
                         placeholder="Type or select a county" 
                     />
                 </div>
-
-                <div className="dropdown-group-end"></div>
                 
-                {/* <div className="filter">
-                    <label className="sidebar-label" htmlFor="searchAction">
-                        Action Type <span className="new">New</span>
-                    </label>
-                    <Select id="searchAction" className="multi" classNamePrefix="react-select" isMulti name="action" isSearchable isClearable 
-                        styles={customStyles}
-                        tabIndex="7"
-                        options={actionOptions} 
-                        onChange={this.onActionChange} 
-                        value={this.state.actionRaw}
-                        placeholder="Type or select action type" 
-                    />
+                <div hidden={!Globals.curatorOrHigher()}>
+                    <div className="dropdown-group-end" hidden={!Globals.curatorOrHigher()}></div>
+                    
+                    <div className="filter" hidden={!Globals.curatorOrHigher()}>
+                        <label className="sidebar-label" htmlFor="searchAction">
+                            Action Type 
+                            {/* <span className="new">New</span> */}
+                        </label>
+                        <Select id="searchAction" className="multi" classNamePrefix="react-select" isMulti name="action" isSearchable isClearable 
+                            styles={customStyles}
+                            tabIndex="7"
+                            options={actionOptions} 
+                            onChange={this.onActionChange} 
+                            value={this.state.actionRaw}
+                            placeholder="Type or select action type" 
+                        />
+                    </div>
+                    <div className="filter" hidden={!Globals.curatorOrHigher()}>
+                        <label className="sidebar-label" htmlFor="searchDecision">
+                            Decision Type 
+                            {/* <span className="new">New</span> */}
+                        </label>
+                        <Select id="searchDecision" className="multi" classNamePrefix="react-select" isMulti name="decision" isSearchable isClearable 
+                            styles={customStyles}
+                            tabIndex="8"
+                            options={decisionOptions} 
+                            onChange={this.onDecisionChange}
+                            value={this.state.decisionRaw}
+                            placeholder="Type or select decision" 
+                        />
+                    </div>
                 </div>
-                <div className="filter">
-                    <label className="sidebar-label" htmlFor="searchDecision">
-                        Decision Type <span className="new">New</span>
-                    </label>
-                    <Select id="searchDecision" className="multi" classNamePrefix="react-select" isMulti name="decision" isSearchable isClearable 
-                        styles={customStyles}
-                        tabIndex="8"
-                        options={decisionOptions} 
-                        onChange={this.onDecisionChange}
-                        value={this.state.decisionRaw}
-                        placeholder="Type or select decision" 
-                    />
-                </div> */}
 
                 <div className="sidebar-hr"></div>
 
