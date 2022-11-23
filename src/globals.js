@@ -106,6 +106,9 @@ const Globals = {
     curatorOrHigher() {
         return (localStorage.role && (localStorage.role === 'curator' || localStorage.role === 'admin'))
     },
+    authorized() {
+        return (localStorage.role && localStorage.role !== 'user');
+    },
 
     isEmptyOrSpaces(str){
         return str === undefined || str === null || str.match(/^ *$/) !== null;

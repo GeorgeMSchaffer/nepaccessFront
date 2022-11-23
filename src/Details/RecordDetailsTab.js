@@ -629,9 +629,12 @@ export default class RecordDetailsTab extends React.Component {
                 } else if (key==='firstRodDate') {
                     keyName = 'Record of Decision (ROD) date'
                 // exclusions:
-                } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_' || 
-                        key==='plaintext' || key==='folder' || key==='link' || key==='notes' || key==='commentsFilename'
+                } else if(key==='size' || key==='matchPercent' || key==='commentDate' || key==='id' || key==='id_'  
+                        || key==='plaintext' || key==='folder' || key==='link' || key==='notes' || key==='commentsFilename'
                         || key === 'filename' || key==='luceneIds' || key==='status') { 
+                    return '';
+                // special exclusions:
+                } else if(!Globals.authorized() && (key==='decision' || key==='action')) {
                     return '';
                 } else if(key==='summaryText') {
                     return (<p key={i} className='modal-line'><span className='modal-title'>Summary:</span> {cellData[key].replaceAll('�','"')}</p>);

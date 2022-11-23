@@ -106,7 +106,7 @@ export default class SearchProcessResult extends React.Component {
         }
     }
     showAction = () => {
-        if(this.props && this.props.cell._cell.row.data.action){
+        if(this.props && this.props.cell._cell.row.data.action && Globals.authorized()){
             const actionDisplay = this.props.cell._cell.row.data.action.replaceAll(";","; ");
             return (
                 <div><span className="cardHeader">Action:
@@ -118,7 +118,7 @@ export default class SearchProcessResult extends React.Component {
         }
     }
     showDecision = () => {
-        if(this.props && this.props.cell._cell.row.data.decision){
+        if(this.props && this.props.cell._cell.row.data.decision && Globals.authorized()){
             const decisionDisplay = this.props.cell._cell.row.data.decision.replaceAll(";","; ");
             return (
                 <div><span className="cardHeader">Decision:

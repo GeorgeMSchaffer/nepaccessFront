@@ -278,7 +278,7 @@ export default class ProcessDetailsTab extends React.Component {
                     recordDownload = <div className="table-row inline-block"><span className="cardHeader filename missing">File(s) not yet available</span></div>;
                 }
 
-                // TODO: Record link for admin only
+                // Record link for elevated only
                 return (<>
                     <div key={key} className='modal-line'>
                         {this.showRecordLine(proc.id, proc.documentType, proc.registerDate)}
@@ -511,7 +511,10 @@ export default class ProcessDetailsTab extends React.Component {
                         || key === 'filename' || key==='luceneIds' || key==='status' || key==='processId' || key==='summaryText'
                         || key==='registerDate' || key==='title' || key==='documentType') { 
                     return '';
-                } 
+                // special exclusions:
+                } else if(!Globals.authorized() && (key==='decision' || key==='action')) {
+                    return '';
+                }
 
                 return (<p key={i} className='modal-line'><span className='modal-title'>{keyName}:</span> <span className="bold">{cellData[key]}</span></p>);
             });

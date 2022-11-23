@@ -1034,12 +1034,13 @@ class Search extends React.Component {
                     />
                 </div>
                 
-                {/* <div hidden={!Globals.curatorOrHigher()}>
+                <div hidden={!Globals.authorized()}>
                     <div className="dropdown-group-end" hidden={!Globals.curatorOrHigher()}></div>
                     
-                    <div className="filter" hidden={!Globals.curatorOrHigher()}>
+                    <div className="filter" hidden={!Globals.authorized()}>
                         <label className="sidebar-label" htmlFor="searchAction">
-                            Action Type <span className="new">New</span>
+                            Action Type 
+                            {/* <span className="new">New</span> */}
                         </label>
                         <Select id="searchAction" className="multi" classNamePrefix="react-select" isMulti name="action" isSearchable isClearable 
                             styles={customStyles}
@@ -1050,9 +1051,10 @@ class Search extends React.Component {
                             placeholder="Type or select action type" 
                         />
                     </div>
-                    <div className="filter" hidden={!Globals.curatorOrHigher()}>
+                    <div className="filter" hidden={!Globals.authorized()}>
                         <label className="sidebar-label" htmlFor="searchDecision">
-                            Decision Type <span className="new">New</span>
+                            Decision Type 
+                            {/* <span className="new">New</span> */}
                         </label>
                         <Select id="searchDecision" className="multi" classNamePrefix="react-select" isMulti name="decision" isSearchable isClearable 
                             styles={customStyles}
@@ -1063,7 +1065,7 @@ class Search extends React.Component {
                             placeholder="Type or select decision" 
                         />
                     </div>
-                </div> */}
+                </div>
 
                 <div className="sidebar-hr"></div>
 
