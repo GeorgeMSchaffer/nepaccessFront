@@ -335,6 +335,12 @@ class DetailsUpdate extends React.Component {
                     <label className="update">Status</label>
                     <input type="text" name="status" value={"" + this.state.record.status} onInput={this.onInput} onChange={this.onChange}></input>
 
+                    <label className="update">Action</label>
+                    <input type="text" name="action" value={"" + this.state.record.action} onInput={this.onInput} onChange={this.onChange}></input>
+
+                    <label className="update">Decision</label>
+                    <input type="text" name="decision" value={"" + this.state.record.decision} onInput={this.onInput} onChange={this.onChange}></input>
+
                     <label className="update">EPA Comment Letter Date</label>
                     <label className="loginErrorLabel">
                         
