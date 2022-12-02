@@ -725,7 +725,7 @@ class Search extends React.Component {
             {value:"Mineral Resource Extraction", label:"Mineral Resource Extraction"},
             {value:"Energy generation/transmission", label:"Energy generation/transmission"},
             {value:"Transportation", label:"Transportation"},
-            {value:"Government Facilities/Operations", label:"Government Facilities/Operations"}];
+            {value:"Government Facilities/Operation", label:"Government Facilities/Operation"}];
         const decisionOptions = [
             {value:"Policy", label:"Policy"},
             {value:"Plan", label:"Plan"},
