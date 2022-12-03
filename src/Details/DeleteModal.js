@@ -93,7 +93,7 @@ export default class DeleteFileLink extends React.Component {
             <button className='link block right warning' onClick={e => {
                 this.showModal();
             }}>
-                Delete EISDoc and all indexed texts (cannot be undone, but source files will remain on server)
+                Delete EISDoc and all indexed texts (cannot be undone)
             </button>
         );
     }
