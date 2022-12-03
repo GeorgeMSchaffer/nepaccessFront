@@ -71,7 +71,7 @@ const Globals = {
         if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu' || window.location.hostname === 'www.nepaccess.org') {
             this.currentHost = new URL(window.location.protocol + 'mis-jvinalappl1.microagelab.arizona.edu:8080/');
         } else {
-            this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/');
+            this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/nepaBackend/');
         } 
         // else if(window.location.hostname) {
         //     this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
