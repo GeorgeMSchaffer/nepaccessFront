@@ -1627,7 +1627,7 @@ export default class App extends React.Component {
                 </Helmet>
                 <div>
                     <label className="logged-out-header">
-                        Sorry, the server may be down for maintenance.  Please try reloading the page in a minute.
+                        Sorry, the server isn't responding. If you're on a VPN, please try a different network, or else the server may be down for maintenance.
                     </label>
                 </div>
             </div>);
