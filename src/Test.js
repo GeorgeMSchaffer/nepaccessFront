@@ -1,5 +1,6 @@
 import React from 'react';
 import {Helmet} from "react-helmet";
+import axios from "axios";
 import IframeResizer from 'iframe-resizer-react';
 
 import Slides from './Tutorial/SlidesIframe.js';
@@ -101,6 +102,41 @@ export default class Test extends React.Component {
     //     } 
     // }
 
+
+    getWPContent(getURL) {
+        try {
+            axios.get(getURL).then(response => {
+                console.log(response);
+                if(response && response.content) {
+                    let _content = this.cleanHtml(response.content.rendered);
+                    console.log("Rendered content", _content);
+                
+                    return (
+                        <div dangerouslySetInnerHTML={{ __html: _content}} />
+                    );
+                } else {
+                    return null;
+                }
+            });
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    cleanHtml(content) {
+        let div = document.createElement('div');
+        div.innerHTML = content;
+      
+        let scripts = div.querySelectorAll('style, scripts');
+        let i = scripts.length;
+      
+        while (i--) {
+            scripts[i].parentNode.removeChild(scripts[i]);
+        }
+      
+        return div.innerHTML;
+    }
+
     render () {
         return (
             <div className="content">
@@ -112,6 +148,8 @@ export default class Test extends React.Component {
                 </Helmet>
 
                 <Slides />
+
+                {this.getWPContent('https://about.nepaccess.org/')}
 
                 {/* <div id="hqrrCRwD" style={{position: 'relative', height: '100%'}}></div> */}
                 {/* <button onClick={this.renderSlides}>render slides</button> */}
