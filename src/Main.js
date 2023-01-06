@@ -66,7 +66,6 @@ import { Link, Switch, Route, withRouter } from 'react-router-dom';
 
 import PropTypes from "prop-types";
 
-import { hotjar } from 'react-hotjar';
 import ImporterAlignment from './ImporterAlignment';
 
 const _ = require('lodash');
@@ -96,11 +95,6 @@ class Main extends React.Component {
         this.refreshNav = this.refreshNav.bind(this);
         this.getRoleDebounced = _.debounce(this.getRole, 500);
         Globals.setUp();
-
-        // Init hotjar for webapp, unless local test
-        if(window.location.hostname !== 'localhost') {
-            hotjar.initialize(2319391, 6);
-        }
 
         window.addEventListener("scroll", this.handleScroll);
     }
