@@ -15,7 +15,6 @@ export default class People extends React.Component {
 
                 <IframeResizer
                     // log
-                    data-hj-allow-iframe="true"
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/people/"
                     style={{ width: '1px', minWidth: '100%'}}

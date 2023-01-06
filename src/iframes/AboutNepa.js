@@ -18,7 +18,6 @@ export default class AboutNepa extends React.Component {
 
                 <IframeResizer
                     // log
-                    data-hj-allow-iframe="true"
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/about-nepa/"
                     style={{ width: '1px', minWidth: '100%'}}

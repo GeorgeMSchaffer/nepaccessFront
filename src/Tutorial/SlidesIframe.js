@@ -144,7 +144,6 @@ export default class Slides extends React.Component {
                         <div>
                             {/* <div className="image-slide-holder-container"> */}
                                 <IframeResizer
-                                    data-hj-allow-iframe="true"
                                     id="iframe-test-container"
                                     // src="https://paulmirocha.com/nepa/"
                                     src="https://about.nepaccess.org/wp-content/uploads/demo/"

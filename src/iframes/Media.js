@@ -16,7 +16,6 @@ export default class Media extends React.Component {
 
                 <IframeResizer
                     // log
-                    data-hj-allow-iframe="true"
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/media/"
                     style={{ width: '1px', minWidth: '100%'}}

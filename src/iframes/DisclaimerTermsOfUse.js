@@ -14,7 +14,6 @@ export default class DisclaimerTermsOfUse extends React.Component {
 
                 <IframeResizer
                     // log
-                    data-hj-allow-iframe="true"
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/disclaimer-terms-of-use/"
                     style={{ width: '1px', minWidth: '100%'}}

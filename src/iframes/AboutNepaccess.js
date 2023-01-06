@@ -16,7 +16,6 @@ export default class AboutNepaccess extends React.Component {
                 
                 <IframeResizer
                     // log
-                    data-hj-allow-iframe="true"
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/about-nepaccess/"
                     style={{ width: '1px', minWidth: '100%'}}

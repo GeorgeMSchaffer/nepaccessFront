@@ -168,7 +168,6 @@ export default class Test extends React.Component {
                 </div> */}
 
                 {/* <IframeResizer
-                    data-hj-allow-iframe="true"
                     id="iframe-test-container"
                     src="https://paulmirocha.com/nepa/"
                     style={{ width: '900px', minWidth: '100%', height: '600px', minHeight: '100%'}}
@@ -176,7 +175,6 @@ export default class Test extends React.Component {
                 
                 {/* <IframeResizer
                     // log
-                    data-hj-allow-iframe="true"
                     id="iframe-test-container"
                     src="https://about.nepaccess.org/test/"
                     style={{ width: '1px', minWidth: '100%'}}

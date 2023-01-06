@@ -15,7 +15,6 @@ export default class SearchTips extends React.Component {
                 
                 <IframeResizer
                     // log
-                    data-hj-allow-iframe="true"
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/search-tips/"
                     style={{ width: '1px', minWidth: '100%'}}

@@ -15,7 +15,6 @@ export default class AvailableDocuments extends React.Component {
 
                 <IframeResizer
                     // log
-                    data-hj-allow-iframe="true"
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/available-documents/"
                     style={{ width: '1px', minWidth: '100%'}}
