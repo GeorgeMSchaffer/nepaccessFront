@@ -7,8 +7,8 @@ import Select from 'react-select';
 import Admin from './Admin.js';
 import AdminFind from './AdminFind.js';
 import AdminRestoreTool from './AdminRestoreTool.js';
-import Generate from './Generate.js';
-import Generate2 from './Generate2.js';
+// import Generate from './Generate.js';
+// import Generate2 from './Generate2.js';
 import Deduplicator from './Deduplicator.js';
 import AdminEmailer from './AdminEmailer.js';
 
@@ -56,8 +56,8 @@ export default class AdminPanel extends React.Component {
             viewOptions.push({ value: 'Admin', label: 'Admin' });
             viewOptions.push({ value: 'Find', label: 'Find' });
             viewOptions.push({ value: 'Restore', label: 'Restore' });
-            viewOptions.push({ value: 'Generate', label: 'Generate' });
-            viewOptions.push({ value: 'Generate2', label: 'Generate2' });
+            // viewOptions.push({ value: 'Generate', label: 'Generate' });
+            // viewOptions.push({ value: 'Generate2', label: 'Generate2' });
             viewOptions.push({ value: 'Deduplicator', label: 'Deduplicator' });
             viewOptions.push({ value: 'Emailer', label: 'Emailer' });
         }
@@ -110,10 +110,10 @@ export default class AdminPanel extends React.Component {
             );
         } else if(this.state.dropdownOption.value === 'Restore') {
             return <AdminRestoreTool />
-        } else if(this.state.dropdownOption.value === 'Generate') {
-            return <Generate />
-        } else if(this.state.dropdownOption.value === 'Generate2') {
-            return <Generate2 />
+        // } else if(this.state.dropdownOption.value === 'Generate') {
+        //     return <Generate />
+        // } else if(this.state.dropdownOption.value === 'Generate2') {
+        //     return <Generate2 />
         } else if(this.state.dropdownOption.value === 'Deduplicator') {
             return <Deduplicator />
         } else if(this.state.dropdownOption.value === 'Emailer') {

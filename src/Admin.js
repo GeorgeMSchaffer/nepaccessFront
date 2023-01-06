@@ -319,6 +319,24 @@ export default class Admin extends React.Component {
         })
     }
     
+
+    reindex() {
+
+        console.log("Activating full reindex for " + Globals.currentHost);
+
+        axios.get((Globals.currentHost + 'text/sync'),{
+            responseType: 'blob'
+        })
+        .then((response) => {
+            console.log("Response", response);
+            // verified = response && response.status === 200;
+        })
+        .catch((err) => { 
+            console.log(err);
+        });
+
+    }
+    
     render() {
 
         if(this.state.admin) {
@@ -338,6 +356,12 @@ export default class Admin extends React.Component {
                         pageLoaded={this.onPageLoaded}
                     />
                     <br />
+
+                    <div>
+                        <button type="button" className="button" onClick={() => this.reindex()}>
+                            Reindex database (expect this to take a while)
+                        </button>
+                    </div>
                     
                     <div>
                         <button type="button" className="button" onClick={() => this.role()}>
@@ -384,9 +408,9 @@ export default class Admin extends React.Component {
     
                     <br />
                     
-                    <button type="button" onClick={() => this.doPost("test/add_rods")}>
+                    {/* <button type="button" onClick={() => this.doPost("test/add_rods")}>
                         Generate RODs
-                    </button>
+                    </button> */}
 
                     <button type="button" onClick={() => this.doPost("admin/exec_delete_requests")}>
                         Execute all delete requests

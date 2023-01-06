@@ -86,20 +86,22 @@ class Generate extends React.Component {
                     <ul>
                     <li>
                         <label>
-                            <input type="radio"
-                            value="send"
-                            checked={this.state.shouldSend}
-                            onChange={this.handleRadioChange}></input>
+                            <input  type="radio"
+                                    value="send"
+                                    checked={this.state.shouldSend}
+                                    onChange={this.handleRadioChange}>
+                            </input>
                             Send an email to each user with credentials
                         </label>
                     </li>
                     <li>
                         <label>
-                        <input type="radio"
-                        value="noSend"
-                        checked={!this.state.shouldSend}
-                        onChange={this.handleRadioChange}></input>
-                        Do not send an email to each user with credentials
+                            <input  type="radio"
+                                    value="noSend"
+                                    checked={!this.state.shouldSend}
+                                    onChange={this.handleRadioChange}>
+                            </input>
+                            Do not send an email to each user with credentials
                         </label>
                     </li>
                     </ul>
@@ -113,8 +115,6 @@ class Generate extends React.Component {
                     <button className="button" onClick={() => this.test('EisDocuments-89324.zip')}>Test file download stream</button>
                     <br /><br /><br />
                     <button className="button" onClick={() => this.testBulkImport()}>Test bulk import</button>
-                    <br /><br /><br />
-                    <button className="button" onClick={() => this.testBulkIndex()}>Test bulk index</button>
                     <br /><br /><br />
                     <DocumentText />
                 </div>
@@ -155,23 +155,6 @@ class Generate extends React.Component {
         console.log(err);
       });
       
-    }
-
-    testBulkIndex() {
-
-      console.log("Activating full reindex for " + Globals.currentHost);
-
-      axios.get((Globals.currentHost + 'text/sync'),{
-        responseType: 'blob'
-      })
-      .then((response) => {
-        console.log("Response", response);
-        // verified = response && response.status === 200;
-      })
-      .catch((err) => { 
-        console.log(err);
-      });
-
     }
 
     
