@@ -1555,7 +1555,7 @@ class Importer extends Component {
                         </button>
                         <button hidden={this.state.importOption !== "bulk"} type="button" className="button" id="submitBulk" 
                                 disabled={this.state.disabled} onClick={this.bulkUpload}>
-                            Import Directories with Files to Link with Existing Metadata
+                            Import Directories or Archives to Link with Existing Metadata
                         </button>
                         
                         <div className="loader-holder">
