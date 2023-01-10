@@ -125,7 +125,7 @@ class ForgotPassword extends React.Component {
                 } 
             } else {
                 this.setState({
-                    networkError: "Server may be down, please try again later.",
+                    networkError: "Semething went wrong, please try reloading the page. If you are on a VPN, please try connecting without the VPN. If the issue persists, the server may be down briefly for maintenance.",
                     disabledButton: false
                 });
             }

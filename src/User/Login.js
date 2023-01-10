@@ -211,7 +211,7 @@ class Login extends React.Component {
             // TODO: Less brittle way to check error type
             if(error.toString() === 'Error: Network Error') {
                 this.setState({
-                    networkError: "Server may be down, please try again later.  If you are on a VPN, please try connecting without the VPN."
+                    networkError: "Semething went wrong, please try reloading the page. If you are on a VPN, please try connecting without the VPN. If the issue persists, the server may be down briefly for maintenance."
                 });
             }
             else {
