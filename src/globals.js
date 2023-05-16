@@ -35,7 +35,8 @@ const draftTypeLabelsLower = ["draft",
     "third draft supplemental"];
 
 const Globals = {
-    currentHost: new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/'),
+//    currentHost: new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/'),
+   currentHost: new URL('http://localhost:8080/'),
 
     listeners: {},
 
@@ -68,24 +69,48 @@ const Globals = {
     
     // Set up globals like axios default headers and base URL
     setUp() {
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu' || window.location.hostname === 'www.nepaccess.org') {
-            this.currentHost = new URL(window.location.protocol + 'mis-jvinalappl1.microagelab.arizona.edu:8080/');
-        } else {
-            this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/nepaBackend/');
-        } 
-        // else if(window.location.hostname) {
-        //     this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
-        // }
-        
-        axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
-        axios.defaults.headers.common['X-Content-Type-Options'] = 'no-sniff';
-        axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-                
-        let token = localStorage.JWT;
-        if(token){
-            axios.defaults.headers.common['Authorization'] = token; // Change to defaults works everywhere
-        } // No token is fine, they will just be redirected to login on app init
-    },
+			// if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu' || window.location.hostname === 'www.nepaccess.org') {
+			//     this.currentHost = new URL(window.location.protocol + 'mis-jvinalappl1.microagelab.arizona.edu:8080/');
+			// } else {
+			//     this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/nepaBackend/');
+			// }
+			 if(window.location.hostname === 'localhost' || window.location.hostname === 'www.nepaccess.org') {
+			     this.currentHost = new URL(window.location.protocol + 'localhost:8080/');
+			} else {
+			     this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/nepaBackend/');
+			}
+
+			if (
+				window.location.hostname ===
+					'mis-jvinalappl1.microagelab.arizona.edu' ||
+				window.location.hostname === 'www.nepaccess.org'
+			) {
+				this.currentHost = new URL(
+					window.location.protocol +
+						'mis-jvinalappl1.microagelab.arizona.edu:8080/',
+				);
+			} else {
+				this.currentHost = new URL(
+					window.location.protocol +
+						window.location.hostname +
+						':8080/nepaBackend/',
+				);
+			}
+
+			// else if(window.location.hostname) {
+			//     this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
+			// }
+
+			axios.defaults.headers.common['Content-Type'] =
+				'application/json;charset=utf-8';
+			axios.defaults.headers.common['X-Content-Type-Options'] = 'no-sniff';
+			axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
+			let token = localStorage.JWT;
+			if (token) {
+				axios.defaults.headers.common['Authorization'] = token; // Change to defaults works everywhere
+			} // No token is fine, they will just be redirected to login on app init
+		},
 
     signIn() {
         let token = localStorage.JWT;
