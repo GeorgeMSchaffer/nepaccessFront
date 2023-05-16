@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './styles/theme';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import './index.css';
+//import './index.css';
 
 import Main from './Main.js';
 
@@ -10,9 +13,12 @@ import * as serviceWorker from './serviceWorker';
 
 
 ReactDOM.render(
+    <ThemeProvider theme={theme}>
+        <CssBaseline />
     <BrowserRouter>
         <Main />
     </BrowserRouter>
+    </ThemeProvider>
     , document.getElementById('root')
 );
 

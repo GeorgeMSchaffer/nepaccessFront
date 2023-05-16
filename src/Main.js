@@ -1,8 +1,7 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 import axios from 'axios';
-
-import './index.css';
+//import './index.css';
 
 import Landing from './Landing.js';
 import App from './App';
