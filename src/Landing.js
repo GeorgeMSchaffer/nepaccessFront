@@ -4,16 +4,19 @@ import {Helmet} from 'react-helmet';
 
 import './index.css';
 import './landing.css';
-
+import CalloutCard from './CalloutCard';
+import CalloutContainer from './CalloutContainer';
 import SearcherLanding from './SearcherLanding.js';
 import './User/login.css';
-
+import { useMediaQuery } from '@mui/material';
 import IframeResizer from 'iframe-resizer-react';
+import NavItems from '@material-ui/core'
 
 class Landing extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log('LANDING PROPS',props);
         this.state = {
             rawInput: '',
             render: 'landing'
@@ -21,7 +24,6 @@ class Landing extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
-
     handleChange(inputId, inputValue){
         this.setState({ [inputId]: inputValue });
     }
@@ -34,7 +36,9 @@ class Landing extends React.Component {
     }
 
 
-    render(){
+    render() {
+        const isMobile = useMediaQuery('(max-width:600px)');
+
         return (
             <div id="landing">
                 <Helmet>
@@ -67,7 +71,27 @@ class Landing extends React.Component {
                         />
                     </div>
                 </div>
-
+                <h2>Iframes</h2>
+                <CalloutContainer>
+                    <CalloutCard
+                header="About NEPaccess"
+                content="A new platform that uses AI and machine learning to search and analyze thousands of documents from the 1969 National Environmental Policy Act (NEPA)."
+                buttonText="Learn More"
+                buttonLink="https://nepaccess.org/about-nepaccess"
+                        key={1} />
+                    <CalloutCard
+                header="About NEPaccess"
+                content="A new platform that uses AI and machine learning to search and analyze thousands of documents from the 1969 National Environmental Policy Act (NEPA)."
+                buttonText="Learn More"
+                buttonLink="https://nepaccess.org/about-nepaccess"
+                        key={1} />
+                    <CalloutCard
+                header="About NEPaccess"
+                content="A new platform that uses AI and machine learning to search and analyze thousands of documents from the 1969 National Environmental Policy Act (NEPA)."
+                buttonText="Learn More"
+                buttonLink="https://nepaccess.org/about-nepaccess"
+                key={1}/>
+                </CalloutContainer>
                 <IframeResizer
                     // log
                     data-nosnippet
