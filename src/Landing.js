@@ -8,9 +8,10 @@ import CalloutCard from './CalloutCard';
 import CalloutContainer from './CalloutContainer';
 import SearcherLanding from './SearcherLanding.js';
 import './User/login.css';
+import { useMediaQuery } from '@mui/material';
 import IframeResizer from 'iframe-resizer-react';
 import NavItems from '@material-ui/core'
-import {withMediaQuery} from 'react-responsive'
+
 class Landing extends React.Component {
 
     constructor(props) {
@@ -36,7 +37,7 @@ class Landing extends React.Component {
 
 
     render() {
-        const isMobile = withMediaQuery('(max-width:600px)');
+        const isMobile = useMediaQuery('(max-width:600px)');
 
         return (
             <div id="landing">
