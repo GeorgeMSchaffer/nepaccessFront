@@ -2,8 +2,9 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import axios from 'axios';
 //import './index.css';
-import { GridPaperuseMediaQuery, Paper, Grid, withStyles } from '@mui/material';
-import {withMediaQuery} from '@mui/material';
+import { GridPaperuseMediaQuery, Paper, Grid, withStyles, } from '@mui/material';
+//import { withMediaQuery } from '@mui/material';
+import { useMediaQuery } from 'react-responsive';
 import Landing from './Landing.js';
 import App from './App';
 import TopNav from './TopNav';
@@ -64,11 +65,11 @@ import ImporterGeoLinks from './ImporterGeoLinks.js';
 import Globals from './globals.js';
 
 import { Link, Switch, Route, withRouter } from 'react-router-dom';
-
+import {NavItem} from ''
 import PropTypes from "prop-types";
 
 import ImporterAlignment from './ImporterAlignment';
-
+import {withMediaQuery} from 'react-responsive';
 const _ = require('lodash');
 
 class Main extends React.Component {
@@ -91,7 +92,49 @@ class Main extends React.Component {
             anonymous: false,
             headerLandingCss: ""
         };
-
+this.navItems = [
+    {
+      label: 'Search',
+      link: '/search',
+      children: [],
+      icon: null,
+    },
+    {
+      label: 'Search Tips',
+      link: '/search',
+      children: [
+        {
+          label: 'Search Tips',
+          link: '/searchTips',
+          icon: null,
+        },
+      ],
+    },
+    {
+      label: 'About NEPA',
+      linkk: '/search',
+      children: [
+        {
+          label: 'About NEPAccess',
+          link: '/about',
+          icon: null,
+          children: [],
+        },
+        {
+          label: 'Media',
+          link: '/media',
+          children: [],
+          icon: null,
+        },
+        {
+          label: 'Contact',
+          link: '/contact',
+          icon: null,
+          children: [],
+        },
+      ],
+    },
+  ];
         this.refresh = this.refresh.bind(this);
         this.refreshNav = this.refreshNav.bind(this);
         this.getRoleDebounced = _.debounce(this.getRole, 500);
@@ -232,7 +275,9 @@ class Main extends React.Component {
 
 
     render() {
-        const isMobile = useMediaQuery('(max-width:600px)');
+        const isMobile = MediaQuery('(max-width:600px)');
+        console.log('Is Header Mobile',isMobile);
+
 
         return(
                 <Paper
@@ -263,7 +308,7 @@ class Main extends React.Component {
             justifyContent: 'right',
           }}
         >
-          {isMobile ? <CollapsibleTopNav navItems={navItems} /> : <TopNav navItems={navItems} />}
+          {isMobile ? <CollapsibleTopNav navItems={this.navItems} /> : <TopNav navItems={this.navItems} />}
 
           {/* {(isMobile) ? <HamburgerNav/> : <TopNav/>} */}
           {/* <HamburgerNav/> */}
@@ -459,8 +504,6 @@ class Main extends React.Component {
             </span>
         );
     }
-
-    
     componentDidMount() {
         // Role config allows admin menu and options to work properly
         if(!this.state.role) {
