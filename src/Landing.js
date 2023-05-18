@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import './index.css';
 import './landing.css';
@@ -9,7 +9,8 @@ import SearcherLanding from './SearcherLanding.js';
 import './User/login.css';
 
 import IframeResizer from 'iframe-resizer-react';
-
+import CalloutCard from './CalloutCard';
+import CalloutContainer from './CalloutContainer';
 class Landing extends React.Component {
 
     constructor(props) {
@@ -22,19 +23,18 @@ class Landing extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    handleChange(inputId, inputValue){
+    handleChange(inputId, inputValue) {
         this.setState({ [inputId]: inputValue });
     }
 
-    handleClick(id, val){
-      this.setState({ [id]: val }, () =>
-        {
-          this.props.history.push('search?q='+this.state.rawInput);
+    handleClick(id, val) {
+        this.setState({ [id]: val }, () => {
+            this.props.history.push('search?q=' + this.state.rawInput);
         });
     }
 
 
-    render(){
+    render() {
         return (
             <div id="landing">
                 <Helmet>
@@ -58,23 +58,26 @@ class Landing extends React.Component {
                                 </span>
                             </h2>
                         </div>
-            
-                        <SearcherLanding 
+                        <CalloutContainer sx={{
+                            mb: 10
+                        }} />
+                        <SearcherLanding
                             id="rawInput"
                             onChange={this.handleChange}
                             onClick={this.handleClick}
                             value={this.state.rawInput}
                         />
+
                     </div>
                 </div>
 
-                <IframeResizer
+                {/* <IframeResizer
                     // log
                     data-nosnippet
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/"
                     style={{ width: '1px', minWidth: '100%'}}
-                />
+                /> */}
             </div>
         );
     }
