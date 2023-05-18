@@ -7,7 +7,8 @@ import './landing.css';
 
 import SearcherLanding from './SearcherLanding.js';
 import './User/login.css';
-
+import CallOutCard from './CalloutCard';
+import CalloutContainer from './CalloutContainer';
 import IframeResizer from 'iframe-resizer-react';
 
 class Landing extends React.Component {
@@ -67,7 +68,7 @@ class Landing extends React.Component {
                         />
                     </div>
                 </div>
-
+                <CalloutContainer/>
                 <IframeResizer
                     // log
                     data-nosnippet
