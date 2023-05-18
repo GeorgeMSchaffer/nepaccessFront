@@ -26,7 +26,7 @@ const cards = [
 ];
 export default function CalloutContainer(props) {
   console.log('CALL OUT CONTAINER PROPS', props);
-  const cardCount = cards.length;
+  const cardCount = 5;
   const cardWidth = cardCount % 2 ? '50%' : '100%';
 
   return (

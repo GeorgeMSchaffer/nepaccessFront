@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { SearchOutlined } from '@material-ui/icons';
 import Globals from './globals.js';
+import CalloutContainer from './CalloutContainer.jsx';
 
 // import FlipNumbers from 'react-flip-numbers';
 
@@ -184,6 +185,9 @@ class SearcherLanding extends React.Component {
 							}}
 						/>
 				</div>
+				<CalloutContainer sx={{
+                            mb: 10
+                        }} />
                 </div>
 				{/* {this.showFlipNum()} */}
 			</div>

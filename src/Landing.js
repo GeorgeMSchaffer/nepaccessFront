@@ -1,22 +1,20 @@
 import React from 'react';
 
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import './index.css';
 import './landing.css';
-import CalloutCard from './CalloutCard';
-import CalloutContainer from './CalloutContainer';
+
 import SearcherLanding from './SearcherLanding.js';
 import './User/login.css';
-import { useMediaQuery } from '@mui/material';
-import IframeResizer from 'iframe-resizer-react';
-import NavItems from '@material-ui/core'
 
+import IframeResizer from 'iframe-resizer-react';
+import CalloutCard from './CalloutCard';
+import CalloutContainer from './CalloutContainer';
 class Landing extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log('LANDING PROPS',props);
         this.state = {
             rawInput: '',
             render: 'landing'
@@ -24,21 +22,19 @@ class Landing extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
-    handleChange(inputId, inputValue){
+
+    handleChange(inputId, inputValue) {
         this.setState({ [inputId]: inputValue });
     }
 
-    handleClick(id, val){
-      this.setState({ [id]: val }, () =>
-        {
-          this.props.history.push('search?q='+this.state.rawInput);
+    handleClick(id, val) {
+        this.setState({ [id]: val }, () => {
+            this.props.history.push('search?q=' + this.state.rawInput);
         });
     }
 
 
     render() {
-        const isMobile = useMediaQuery('(max-width:600px)');
-
         return (
             <div id="landing">
                 <Helmet>
@@ -62,43 +58,26 @@ class Landing extends React.Component {
                                 </span>
                             </h2>
                         </div>
-            
-                        <SearcherLanding 
+                        <CalloutContainer sx={{
+                            mb: 10
+                        }} />
+                        <SearcherLanding
                             id="rawInput"
                             onChange={this.handleChange}
                             onClick={this.handleClick}
                             value={this.state.rawInput}
                         />
+
                     </div>
                 </div>
-                <h2>Iframes</h2>
-                <CalloutContainer>
-                    <CalloutCard
-                header="About NEPaccess"
-                content="A new platform that uses AI and machine learning to search and analyze thousands of documents from the 1969 National Environmental Policy Act (NEPA)."
-                buttonText="Learn More"
-                buttonLink="https://nepaccess.org/about-nepaccess"
-                        key={1} />
-                    <CalloutCard
-                header="About NEPaccess"
-                content="A new platform that uses AI and machine learning to search and analyze thousands of documents from the 1969 National Environmental Policy Act (NEPA)."
-                buttonText="Learn More"
-                buttonLink="https://nepaccess.org/about-nepaccess"
-                        key={1} />
-                    <CalloutCard
-                header="About NEPaccess"
-                content="A new platform that uses AI and machine learning to search and analyze thousands of documents from the 1969 National Environmental Policy Act (NEPA)."
-                buttonText="Learn More"
-                buttonLink="https://nepaccess.org/about-nepaccess"
-                key={1}/>
-                </CalloutContainer>
-                <IframeResizer
+
+                {/* <IframeResizer
                     // log
                     data-nosnippet
                     id="iframe-landing-container"
                     src="https://about.nepaccess.org/"
                     style={{ width: '1px', minWidth: '100%'}}
-                />
+                /> */}
             </div>
         );
     }
