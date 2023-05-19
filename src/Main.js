@@ -63,13 +63,19 @@ import ImporterGeoLinks from './ImporterGeoLinks.js';
 import Globals from './globals.js';
 
 import { Link, Switch, Route, withRouter } from 'react-router-dom';
-import {withMediaQuery} from 'react-responsive';
+//import {withMediaQuery} from 'react-responsive';
+import { useMediaQuery } from '@mui/material';
 import PropTypes from "prop-types";
 import TopNav from './TopNav';
 import CollapsibleTopNav from './CollapsibleTopNav';
 import ImporterAlignment from './ImporterAlignment';
-
+import { makeStyles,withStyles } from '@mui/styles';
+import {withMediaQuery} from 'react-responsive';
 const _ = require('lodash');
+const styles = makeStyles((theme) => ({
+}));
+
+
 class Main extends React.Component {
 	static propTypes = {
 		location: PropTypes.object.isRequired,
@@ -77,7 +83,7 @@ class Main extends React.Component {
 
 	constructor(props) {
 		super(props);
-
+		console.log('MAIN JS PROPS', props);
 		this.state = {
 			displayUsername: '',
 			loggedIn: false,
@@ -94,6 +100,7 @@ class Main extends React.Component {
 		this.refreshNav = this.refreshNav.bind(this);
 		this.getRoleDebounced = _.debounce(this.getRole, 500);
 		Globals.setUp();
+		
 		this.navItems = [
 			{
 				label: 'Search',
@@ -137,11 +144,12 @@ class Main extends React.Component {
 				],
 			},
 		];
-		//				this.isMobile = withMediaQuery('(max-width:600px)');
-		this.isMobile = true;
+		//console.log('IS MOBILE? ' + this.isMobile);
+		//this.isMobile = true;
+		this.mobile = withMediaQuery('(max-width:600px)');
+
 		window.addEventListener('scroll', this.handleScroll);
 	}
-
 	/** This effectively replaces the original purpose of check(), especially with anonymous user support */
 	getRole = () => {
 		const checkURL = new URL('user/get_role', Globals.currentHost);
@@ -281,7 +289,49 @@ class Main extends React.Component {
 			});
 		}
 	};
-
+	navItems = [
+		{
+		  label: 'Search',
+		  link: '/search',
+		  children: [],
+		  icon: null,
+		},
+		{
+		  label: 'Search Tips',
+		  link: '/search',
+		  children: [
+			{
+			  label: 'Search Tips',
+			  link: '/searchTips',
+			  icon: null,
+			},
+		  ],
+		},
+		{
+		  label: 'About NEPA',
+		  linkk: '/search',
+		  children: [
+			{
+			  label: 'About NEPAccess',
+			  link: '/about',
+			  icon: null,
+			  children: [],
+			},
+			{
+			  label: 'Media',
+			  link: '/media',
+			  children: [],
+			  icon: null,
+			},
+			{
+			  label: 'Contact',
+			  link: '/contact',
+			  icon: null,
+			  children: [],
+			},
+		  ],
+		},
+	  ];
 	render() {
 		return (
 			<div id='home-page'>
@@ -347,7 +397,8 @@ class Main extends React.Component {
 					</div>
 
 					<div id='main-menu'>
-						<Link
+					{this.mobile ? <CollapsibleTopNav navItems={this.navItems} /> : <TopNav navItems={this.navItems} />}
+						{/* <Link
 							currentpage={(this.state.currentPage === '/search').toString()}
 							className='main-menu-link'
 							to='/search'
@@ -400,18 +451,18 @@ class Main extends React.Component {
 								<Link to='/media'>Media</Link>
 								<Link to='/people'>People</Link>
 							</div>
-						</div>
+						</div> */}
 
 						{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
                         Future
                     </Link> */}
-						<Link
+						{/* <Link
 							currentpage={(this.state.currentPage === '/contact').toString()}
 							className='main-menu-link'
 							to='/contact'
 						>
 							Contact
-						</Link>
+						</Link> */}
 					</div>
 				</div>
 				<Switch>
@@ -550,4 +601,4 @@ class Main extends React.Component {
 	}
 }
 
-export default withRouter(Main);
+export default withStyles(styles)(withMediaQuery(withRouter(Main)));
