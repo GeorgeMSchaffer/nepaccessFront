@@ -23,6 +23,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: 'transparent',
+    alignContent: 'flex-end',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+    border: '3px solid red',
+    flexDirection: 'row',
+    display: 'flex',
+    flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -47,8 +54,6 @@ function TopNav(props) {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  const isMoblie = withMediaQuery('(max-width:600px)');
-
   return (
     <div className={classes.root}>
       <AppBar position="static" elevation={0} color="transparent">
@@ -58,11 +63,12 @@ function TopNav(props) {
           </IconButton>
           <Container
             sx={{
-              alignItems: 'center',
+              alignItems: 'flex-start',
               display: 'flex',
-              justifyContent: 'space-between',
+              justifyContent: 'flex-end',
             }}
           >
+          
             {navItems.map((item, index) => (
               <MenuItem>{item.label}</MenuItem>
             ))}
