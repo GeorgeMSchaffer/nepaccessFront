@@ -338,9 +338,14 @@ class Main extends React.Component {
 					flexGrow: 1,
 					justifyContent: 'flex-start',
 					alignItems: 'flex-start',
+					height: 300,
 				}}
 			>
-				<Grid item sm={3}>
+				<Grid item sm={3}
+				xs={{
+					
+				}}
+				>
 					<div id='logo' className='no-select'>
 						<Link id='logo-link' to='/'></Link>
 						<div id='logo-box'></div>
@@ -350,8 +355,9 @@ class Main extends React.Component {
 					xs={{
 					border:'3px solid blue',
 						backgroundColor: '#ccc',
-						justifyContent: 'flex-end',
+						justifyContent: 'center',
 						alignItems: 'center',
+						justifyContent: 'center',
 						height:390,
 					
 				}}
