@@ -60,15 +60,14 @@ import ImporterGeoLinks from './ImporterGeoLinks.js';
 import MediaQuery from 'react-responsive';
 import Globals from './globals.js';
 
-import { Link, Switch, Route, withRouter } from 'react-router-dom';
+import { Link, Switch, Route, withRouter, } from 'react-router-dom';
 //import {withMediaQuery} from 'react-responsive';
-import { Container, useMediaQuery } from '@mui/material';
 import PropTypes from 'prop-types';
-import TopNav from './TopNav';
 import CollapsibleTopNav from './CollapsibleTopNav';
 import ImporterAlignment from './ImporterAlignment';
 import { makeStyles, withStyles } from '@mui/styles';
-import { Grid, Paper, Box } from '@mui/material';
+import { Grid, Paper, Box,List,ListItem,Container } from '@mui/material';
+import Navbar from './Navbar';
 
 const _ = require('lodash');
 const styles = makeStyles((theme) => ({}));
@@ -330,42 +329,62 @@ class Main extends React.Component {
 	];
 	render() {
 		return (
-			<Grid
-				container
-				xs={{
-					backgroundColor: 'red',
-					border: '2px solid blue',
-					flexGrow: 1,
-					justifyContent: 'flex-start',
-					alignItems: 'flex-start',
-					height: 300,
-				}}
-			>
-				<Grid item sm={3}
-				xs={{
+			// <Grid container
+			// 	xs={{
+			// 		backgroundColor: 'red',
+			// 		flexGrow: 1,
+			// 		justifyContent: 'flex-start',
+			// 		alignItems: 'flex-start',
+			// 		border: '3px solid red',
+			// 	}}
+			// >
+			// 	<Grid item sm={3}
+			// 	xs={{
+			// 		border:'3px solid blue',
+			// 		flexGrow: 1,
+			// 		// flexShrink: 1,
+			// 		// justifyContent: 'flex-end',
+			// 		// alignItems: 'center',
+			// 		// justifyItems: 'flex-end',
+			// 	}}
+			// 	>
+			// 		<div id='' className='no-select'>
+			// 			<Link id='logo-link' to='/'></Link>
+			// 			<div id='logo-box'></div>
+			// 		</div>
+			// 		<Box
+			// 			sx={{
+			// 				border: '3px solid green',
+			// 				backgroundColor: '#000',
+			// 				// justifyContent: 'flex-end',
+			// 				// alignItems: 'center',
+			// 				// top:'50%',
+			// 			}}
+			// 		>
+			// 		Nav
+			// 		</Box>
+			// 	</Grid>
+			// 	<Grid item sm={9}
+			// 		xs={{
+			// 		border:'3px solid blue',
+			// 			backgroundColor: '#000',
+			// 			justifyContent: 'flex-end',
+			// 			 alignItems: 'center',
+			// 			// top:'50%',
+			// 			// mt : 10,
+			// 			// height:390,
+			// 			// flexGrow: 1,
+
 					
-				}}
-				>
-					<div id='logo' className='no-select'>
-						<Link id='logo-link' to='/'></Link>
-						<div id='logo-box'></div>
-					</div>
-				</Grid>
-				<Grid item sm={9}
-					xs={{
-					border:'3px solid blue',
-						backgroundColor: '#ccc',
-						justifyContent: 'center',
-						alignItems: 'center',
-						justifyContent: 'center',
-						height:390,
-					
-				}}
-				>
-					{this.renderMainNav()}
-				</Grid>
-			</Grid>
-		);
+			// 	}}
+			// 	>
+			// 		<List>
+			// 			<ListItem>Stuff</ListItem>
+			// 		</List>
+			// 	</Grid>
+			// </Grid>
+			<Navbar/>		
+			);
 	}
 	// 	render() {
 	// 		const { matches } = this.state;
@@ -525,80 +544,81 @@ class Main extends React.Component {
 	};
 	renderMainNav = () => {
 		return (
-			<Container
-				xs={{
-					border: '1px solid red',
-					flexDirection: 'row',
-					alignItems: 'flex-start',
-					justifyItems: 'flex-start',
-				}}
-			>
-				<div id='main-nav'>
-					<Link
-						currentpage={(this.state.currentPage === '/search').toString()}
-						className='main-menu-link'
-						to='/search'
-					>
-						Search
-					</Link>
-					<div id='about-dropdown-2' className='main-menu-link dropdown'>
-						<Link
-							currentpage={(
-								this.state.currentPage === '/search-tips' ||
-								this.state.currentPage === '/available-documents'
-							).toString()}
-							id='about-button-2'
-							className='main-menu-link drop-button'
-							to='/search-tips'
-						>
-							Search Tips
-						</Link>
-						<i className='fa fa-caret-down'></i>
-						<div className='dropdown-content'>
-							<Link to='/search-tips'>Search Tips</Link>
-							<Link to='/available-documents'>Available Files</Link>
-						</div>
-					</div>
-					<Link
-						currentpage={(this.state.currentPage === '/about-nepa').toString()}
-						className='main-menu-link'
-						to='/about-nepa'
-					>
-						About NEPA
-					</Link>
-					<div id='about-dropdown' className='main-menu-link dropdown'>
-						<Link
-							currentpage={(
-								this.state.currentPage === '/about-nepaccess' ||
-								this.state.currentPage === '/people' ||
-								this.state.currentPage === '/media'
-							).toString()}
-							id='about-button'
-							className='main-menu-link drop-button'
-							to='/about-nepaccess'
-						>
-							About NEPAccess
-						</Link>
-						<i className='fa fa-caret-down'></i>
-						<div className='dropdown-content'>
-							<Link to='/about-nepaccess'>About NEPAccess</Link>
-							<Link to='/media'>Media</Link>
-							<Link to='/people'>People</Link>
-						</div>
-					</div>
+			// <Container
+			// 	xs={{
+			// 		border: '1px solid red',
+			// 		flexDirection: 'row',
+			// 		alignItems: 'flex-start',
+			// 		justifyItems: 'flex-start',
+			// 	}}
+			// >
+			// 	<div id='main-nav'>
+			// 		<Link
+			// 			currentpage={(this.state.currentPage === '/search').toString()}
+			// 			className='main-menu-link'
+			// 			to='/search'
+			// 		>
+			// 			Search
+			// 		</Link>
+			// 		<div id='about-dropdown-2' className='main-menu-link dropdown'>
+			// 			<Link
+			// 				currentpage={(
+			// 					this.state.currentPage === '/search-tips' ||
+			// 					this.state.currentPage === '/available-documents'
+			// 				).toString()}
+			// 				id='about-button-2'
+			// 				className='main-menu-link drop-button'
+			// 				to='/search-tips'
+			// 			>
+			// 				Search Tips
+			// 			</Link>
+			// 			<i className='fa fa-caret-down'></i>
+			// 			<div className='dropdown-content'>
+			// 				<Link to='/search-tips'>Search Tips</Link>
+			// 				<Link to='/available-documents'>Available Files</Link>
+			// 			</div>
+			// 		</div>
+			// 		<Link
+			// 			currentpage={(this.state.currentPage === '/about-nepa').toString()}
+			// 			className='main-menu-link'
+			// 			to='/about-nepa'
+			// 		>
+			// 			About NEPA
+			// 		</Link>
+			// 		<div id='about-dropdown' className='main-menu-link dropdown'>
+			// 			<Link
+			// 				currentpage={(
+			// 					this.state.currentPage === '/about-nepaccess' ||
+			// 					this.state.currentPage === '/people' ||
+			// 					this.state.currentPage === '/media'
+			// 				).toString()}
+			// 				id='about-button'
+			// 				className='main-menu-link drop-button'
+			// 				to='/about-nepaccess'
+			// 			>
+			// 				About NEPAccess
+			// 			</Link>
+			// 			<i className='fa fa-caret-down'></i>
+			// 			<div className='dropdown-content'>
+			// 				<Link to='/about-nepaccess'>About NEPAccess</Link>
+			// 				<Link to='/media'>Media</Link>
+			// 				<Link to='/people'>People</Link>
+			// 			</div>
+			// 		</div>
 
-					{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
-					Future
-				</Link> */}
-					<Link
-						currentpage={(this.state.currentPage === '/contact').toString()}
-						className='main-menu-link'
-						to='/contact'
-					>
-						Contact
-					</Link>
-				</div>
-			</Container>
+			// 		{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
+			// 		Future
+			// 	</Link> */}
+			// 		<Link
+			// 			currentpage={(this.state.currentPage === '/contact').toString()}
+			// 			className='main-menu-link'
+			// 			to='/contact'
+			// 		>
+			// 			Contact
+			// 		</Link>
+			// 	</div>
+			// </Container>
+			<Navbar/>
 		);
 	};
 	showMenuItems = () => {
@@ -879,16 +899,17 @@ class Main extends React.Component {
 							<Link to='/admin' hidden={!(this.state.role === 'admin')}>
 								Admin Panel
 							</Link>
-							<Link
+							{/* <Link
 								to='/importer'
-								hidden={
-									!(
+								hiddeimport
+									!(import Navbar from './../../../material-UI-navbar-master/src/component/Navbar';
+
 										this.state.role === 'curator' || this.state.role === 'admin'
 									)
 								}
 							>
 								Import New Documents
-							</Link>
+							</Link> */}
 							<Link
 								to='/adminFiles'
 								hidden={
