@@ -66,8 +66,9 @@ import PropTypes from 'prop-types';
 import CollapsibleTopNav from './CollapsibleTopNav';
 import ImporterAlignment from './ImporterAlignment';
 import { makeStyles, withStyles } from '@mui/styles';
-import { Grid, Paper, Box,List,ListItem,Container } from '@mui/material';
+import { Grid, Paper, Box, List, ListItem, Container, AppBar, Toolbar, CssBaseline } from '@mui/material';
 import Navbar from './Navbar';
+import { Height } from '@mui/icons-material';
 
 const _ = require('lodash');
 const styles = makeStyles((theme) => ({}));
@@ -97,52 +98,6 @@ class Main extends React.Component {
 		this.refreshNav = this.refreshNav.bind(this);
 		this.getRoleDebounced = _.debounce(this.getRole, 500);
 		Globals.setUp();
-
-		this.navItems = [
-			{
-				label: 'Search',
-				link: '/search',
-				children: [],
-				icon: null,
-			},
-			{
-				label: 'Search Tips',
-				link: '/search',
-				children: [
-					{
-						label: 'Search Tips',
-						link: '/searchTips',
-						icon: null,
-					},
-				],
-			},
-			{
-				label: 'About NEPA',
-				linkk: '/search',
-				children: [
-					{
-						label: 'About NEPAccess',
-						link: '/about',
-						icon: null,
-						children: [],
-					},
-					{
-						label: 'Media',
-						link: '/media',
-						children: [],
-						icon: null,
-					},
-					{
-						label: 'Contact',
-						link: '/contact',
-						icon: null,
-						children: [],
-					},
-				],
-			},
-		];
-		//console.log('IS MOBILE? ' + this.isMobile);
-		//this.isMobile = true;
 		window.addEventListener('scroll', this.handleScroll);
 	}
 	/** This effectively replaces the original purpose of check(), especially with anonymous user support */
@@ -183,29 +138,8 @@ class Main extends React.Component {
 	};
 
 	check = () => {
-		// check if logged in (JWT is valid and not expired)
-		// let verified = false;
-		// let checkURL = new URL('test/check', Globals.currentHost);
-
-		// axios.post(checkURL)
-		// .then(response => {
-		//     verified = response && response.status === 200;
-		//     this.setState({
-		//         loggedIn: verified
-		//     }, () => {
 		this.getRoleDebounced();
-		// this.refreshNav();
-		//     });
-		// })
-		// .catch((err) => { // Token expired or invalid, or server is down
-
-		//     localStorage.removeItem("role");
-		//     this.setState({
-		//         loggedIn: false,
-		//         role: null
-		//     });
-		// });
-		// console.log("Main check");
+		console.log("Main check");
 	};
 
 	// refresh() has a global listener so as to change the loggedIn state and then update the navbar
@@ -284,402 +218,217 @@ class Main extends React.Component {
 			});
 		}
 	};
-	navItems = [
-		{
-			label: 'Search',
-			link: '/search',
-			children: [],
-			icon: null,
-		},
-		{
-			label: 'Search Tips',
-			link: '/search',
-			children: [
-				{
-					label: 'Search Tips',
-					link: '/searchTips',
-					icon: null,
-				},
-			],
-		},
-		{
-			label: 'About NEPA',
-			linkk: '/search',
-			children: [
-				{
-					label: 'About NEPAccess',
-					link: '/about',
-					icon: null,
-					children: [],
-				},
-				{
-					label: 'Media',
-					link: '/media',
-					children: [],
-					icon: null,
-				},
-				{
-					label: 'Contact',
-					link: '/contact',
-					icon: null,
-					children: [],
-				},
-			],
-		},
-	];
 	render() {
-		return (
-			// <Grid container
-			// 	xs={{
-			// 		backgroundColor: 'red',
-			// 		flexGrow: 1,
-			// 		justifyContent: 'flex-start',
-			// 		alignItems: 'flex-start',
-			// 		border: '3px solid red',
-			// 	}}
-			// >
-			// 	<Grid item sm={3}
-			// 	xs={{
-			// 		border:'3px solid blue',
-			// 		flexGrow: 1,
-			// 		// flexShrink: 1,
-			// 		// justifyContent: 'flex-end',
-			// 		// alignItems: 'center',
-			// 		// justifyItems: 'flex-end',
-			// 	}}
-			// 	>
-			// 		<div id='' className='no-select'>
-			// 			<Link id='logo-link' to='/'></Link>
-			// 			<div id='logo-box'></div>
-			// 		</div>
-			// 		<Box
-			// 			sx={{
-			// 				border: '3px solid green',
-			// 				backgroundColor: '#000',
-			// 				// justifyContent: 'flex-end',
-			// 				// alignItems: 'center',
-			// 				// top:'50%',
-			// 			}}
-			// 		>
-			// 		Nav
-			// 		</Box>
-			// 	</Grid>
-			// 	<Grid item sm={9}
-			// 		xs={{
-			// 		border:'3px solid blue',
-			// 			backgroundColor: '#000',
-			// 			justifyContent: 'flex-end',
-			// 			 alignItems: 'center',
-			// 			// top:'50%',
-			// 			// mt : 10,
-			// 			// height:390,
-			// 			// flexGrow: 1,
+        return (
+        <div id="home-page">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>NEPAccess</title>
+                <meta name="description" content="Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents." />
+                <link rel="canonical" href="https://www.nepaccess.org/" />
+            </Helmet>
 
+            	{/* <div id="header" className={this.getHeaderCss() + this.state.headerLandingCss}> */}
+				<AppBar 
+					color='transparent'
+					elevation={2}
+					variant='dense'
+					xs={{
+						backgroundColor: 'transparent',
+						border:'5px solid red',
+						height: '100px',
+				}}>
+				
+				<Toolbar variant='dense' 
+					xs={{
+						backgroundColor: 'transparent',
+					}}
+					>
+					{this.renderHeader()}
+					{/* {this.showMenuItems()} */}
+				</Toolbar>
+					AppBar
+				</AppBar>
+	            {/* </div> */}
+
+            <Switch>
+                <Route path="/profile" component={UserDetails}/>
+                {/* <Route path="/opt_out" component={OptOut}/> */}
+                <Route path="/login" component={Login}/>
+                <Route path="/register" component={Register}/>
+                <Route path="/pre_register" component={PreRegister}/>
+                <Route path="/forgotPassword" component={ForgotPassword}/>
+                <Route path="/reset" component={Reset}/>
+                <Route path="/logout" component={Logout}/>
+
+                <Route path="/search" component={App}/>
+                <Route path="/about-nepa" component={AboutNepa}/>
+                <Route path="/about-nepaccess" component={AboutNepaccess}/>
+                <Route path="/people" component={People}/>
+                <Route path="/search-tips" component={SearchTips}/>
+                <Route path="/available-documents" component={AvailableDocuments}/>
+                <Route path="/abouthelpcontents" component={AboutHelpContents}/>
+                <Route path="/stats" component={AboutStats}/>
+                <Route path="/media" component={Media}/>
+
+                <Route path="/contact" component={Contact}/>
+                <Route path="/future" component={Future}/>
+
+                <Route path="/record-details" component={RecordDetailsTab}/>
+                <Route path="/process-details" component={ProcessDetailsTab}/>
+                
+                <Route path="/importer" component={Importer}/>
+                <Route path="/adminFiles" component={AdminFiles}/>
+
+                <Route path="/iframes" component={Iframes} />
+                <Route path="/privacy-policy" component={PrivacyPolicy} />
+                <Route path="/disclaimer-terms-of-use" component={DisclaimerTermsOfUse} />
+                <Route path="/verify" component={Verify} />
+                <Route path="/approve" component={Approve} />
+                <Route path="/admin" component={Admin} />
+                <Route path="/pairs" component={Pairs}></Route>
+                <Route path="/pairs2" component={Pairs2}></Route>
+                <Route path="/pairs3" component={Pairs3}></Route>
+                <Route path="/search_logs" component={SearchLogs}></Route>
+                <Route path="/interaction_logs" component={InteractionLogs}></Route>
+                <Route path="/stat_counts" component={StatCounts}></Route>
+                <Route path="/surveys" component={Surveys}></Route>
+                <Route path="/excel" component={Excel}></Route>
+                
+                <Route path="/test" component={Test} />
+                <Route path="/search_test" component={SearchTest} />
+                <Route path="/up_geo" component={ImporterGeo} />
+                <Route path="/up_geo_links" component={ImporterGeoLinks} />
+                <Route path="/up_alignment" component={ImporterAlignment} />
+
+                <Route path="/" component={Landing}/>
+            </Switch>
+        </div>
+        )
+    }
+	renderHeader() {
+		return (
+			<>
+			<div id="header" className={this.getHeaderCss() + this.state.headerLandingCss}> 	
+                <div id="logo" className="no-select">
+                    <Link id="logo-link" to="/">
+                    </Link>
+                    <div id="logo-box">
+
+                    </div>
+                </div>
+
+                <div id="top-menu" className="no-select">
+                    
+
+                    <span id="profile-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                        <Link className="top-menu-link" to="/profile">Profile</Link>
+                    </span>
+                    <span id="login-span" className={this.state.loggedOutDisplay + " logged-out"}>
+                        <Link className="top-menu-link" to="/login">Log in</Link>
+                    </span>
+                    <span id="register-span" className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
+                        <Link className="top-menu-link" to="/register">Register</Link>
+                    </span>
+                    <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+                        <Link className="top-menu-link" to="/logout">Log out</Link>
+                    </span>
+                </div>
+
+                <div id="main-menu">
+                    <Link currentpage={(this.state.currentPage==="/search").toString()} className="main-menu-link" to="/search">
+                        Search
+                    </Link>
+                    <div id="about-dropdown-2" className="main-menu-link dropdown">
+                        <Link currentpage={(this.state.currentPage==="/search-tips" || this.state.currentPage==="/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
+                            Search Tips
+                        </Link>
+                        <i className="fa fa-caret-down"></i>
+                        <div className="dropdown-content">
+                            <Link to="/search-tips">Search Tips</Link>
+                            <Link to="/available-documents">Available Files</Link>
+                        </div>
+                    </div>
 					
-			// 	}}
-			// 	>
-			// 		<List>
-			// 			<ListItem>Stuff</ListItem>
-			// 		</List>
-			// 	</Grid>
-			// </Grid>
-			<Navbar/>		
-			);
+                    <Link currentpage={(this.state.currentPage==="/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
+                        About NEPA
+                    </Link>
+                    <div id="about-dropdown" className="main-menu-link dropdown">
+                        <Link currentpage={(this.state.currentPage==="/about-nepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
+                            About NEPAccess
+                        </Link>
+                        <i className="fa fa-caret-down"></i>
+                        <div className="dropdown-content">
+                            <Link to="/about-nepaccess">About NEPAccess</Link>
+                            <Link to="/media">
+                                Media
+                            </Link>
+                            <Link to="/people">People</Link>
+                        </div>
+                    </div>
+                    
+                    {/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
+                        Future
+                    </Link> */}
+                    <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
+                        Contact
+                    </Link>
+				</div>
+			</div>
+			</>
+		)
 	}
-	// 	render() {
-	// 		const { matches } = this.state;
-	// 		return (
-	// 			<div id="home-page">
-	// 				<Helmet>
-	// 					<meta charSet="utf-8" />
-	// 					<title>NEPAccess</title>
-	// 					<meta name="description" content="Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents." />
-	// 					<link rel="canonical" href="https://www.nepaccess.org/" />
-	// 				</Helmet>
-
-	// 				<div id="header" className={this.getHeaderCss() + this.state.headerLandingCss}>
-
-	// <div id="logo" className="no-select">
-	// 	<Link id="logo-link" to="/">
-	// 	</Link>
-	// 	<div id="logo-box">
-
-	// 						</div>
-	// 					</div>
-
-	// 					<div id="" className="no-select">
-	// 					<Grid container
-	// 						xs={{
-	// 							bgcolor: 'primary.main',
-	// 							color: 'primary.contrastText',
-	// 							justify: 'flex-end',
-	// 							alignItems: 'center',
-	// 							spacing: 0,
-	// 						}}
-	// 					>
-
-	// <Grid item>
-	// 								{(matches)
-	// 									? (this.showMenuItems())
-	// 									: (this.renderMobileNav())
-	// 								}
-	// 								</Grid>
-
-	// <Grid>
-	// 							<span id="profile-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-	// 									<Link className="top-menu-link" to="/profile">Profile</Link>
-	// 								</span>
-	// 								<span id="login-span" className={this.state.loggedOutDisplay + " logged-out"}>
-	// 									<Link className="top-menu-link" to="/login">Log in</Link>
-	// 								</span>
-	// 								<span id="register-span" className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
-	// 									<Link className="top-menu-link" to="/register">Register</Link>
-	// 								</span>
-	// 								<span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-	// 									<Link className="top-menu-link" to="/logout">Log out</Link>
-	// 								</span>
-
-	// </Grid>					</Grid>
-	// 					</div>
-
-	// 					<div id="main-menu">
-	// 						<Link currentpage={(this.state.currentPage==="/search").toString()} className="main-menu-link" to="/search">
-	// 							Search
-	// 						</Link>
-	// 						<div id="about-dropdown-2" className="main-menu-link dropdown">
-	// 							<Link currentpage={(this.state.currentPage==="/search-tips" || this.state.currentPage==="/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
-	// 								Search Tips
-	// 							</Link>
-	// 							<i className="fa fa-caret-down"></i>
-	// 							<div className="dropdown-content">
-	// 								<Link to="/search-tips">Search Tips</Link>
-	// 								<Link to="/available-documents">Available Files</Link>
-	// 							</div>
-	// 						</div>
-	// 						<Link currentpage={(this.state.currentPage==="/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
-	// 							About NEPA
-	// 						</Link>
-	// 						<div id="about-dropdown" className="main-menu-link dropdown">
-	// 							<Link currentpage={(this.state.currentPage==="/about-nepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
-	// 								About NEPAccess
-	// 							</Link>
-	// 							<i className="fa fa-caret-down"></i>
-	// 							<div className="dropdown-content">
-	// 								<Link to="/about-nepaccess">About NEPAccess</Link>
-	// 								<Link to="/media">
-	// 									Media
-	// 								</Link>
-	// 								<Link to="/people">People</Link>
-	// 							</div>
-	// 						</div>
-
-	// 						{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
-	// 							Future
-	// 						</Link> */}
-	// 						<Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
-	// 							Contact
-	// 						</Link>
-
-	// 					</div>
-
-	// 				</div>
-	// 				<Switch>
-	// 					<Route path="/profile" component={UserDetails}/>
-	// 					{/* <Route path="/opt_out" component={OptOut}/> */}
-	// 					<Route path="/login" component={Login}/>
-	// 					<Route path="/register" component={Register}/>
-	// 					<Route path="/pre_register" component={PreRegister}/>
-	// 					<Route path="/forgotPassword" component={ForgotPassword}/>
-	// 					<Route path="/reset" component={Reset}/>
-	// 					<Route path="/logout" component={Logout}/>
-
-	// 					<Route path="/search" component={App}/>
-	// 					<Route path="/about-nepa" component={AboutNepa}/>
-	// 					<Route path="/about-nepaccess" component={AboutNepaccess}/>
-	// 					<Route path="/people" component={People}/>
-	// 					<Route path="/search-tips" component={SearchTips}/>
-	// 					<Route path="/available-documents" component={AvailableDocuments}/>
-	// 					<Route path="/abouthelpcontents" component={AboutHelpContents}/>
-	// 					<Route path="/stats" component={AboutStats}/>
-	// 					<Route path="/media" component={Media}/>
-
-	// 					<Route path="/contact" component={Contact}/>
-	// 					<Route path="/future" component={Future}/>
-
-	// 					<Route path="/record-details" component={RecordDetailsTab}/>
-	// 					<Route path="/process-details" component={ProcessDetailsTab}/>
-
-	// 					<Route path="/importer" component={Importer}/>
-	// 					<Route path="/adminFiles" component={AdminFiles}/>
-
-	// 					<Route path="/iframes" component={Iframes} />
-	// 					<Route path="/privacy-policy" component={PrivacyPolicy} />
-	// 					<Route path="/disclaimer-terms-of-use" component={DisclaimerTermsOfUse} />
-	// 					<Route path="/verify" component={Verify} />
-	// 					<Route path="/approve" component={Approve} />
-	// 					<Route path="/admin" component={Admin} />
-	// 					<Route path="/pairs" component={Pairs}></Route>
-	// 					<Route path="/pairs2" component={Pairs2}></Route>
-	// 					<Route path="/pairs3" component={Pairs3}></Route>
-	// 					<Route path="/search_logs" component={SearchLogs}></Route>
-	// 					<Route path="/interaction_logs" component={InteractionLogs}></Route>
-	// 					<Route path="/stat_counts" component={StatCounts}></Route>
-	// 					<Route path="/surveys" component={Surveys}></Route>
-	// 					<Route path="/excel" component={Excel}></Route>
-
-	// 					<Route path="/test" component={Test} />
-	// 					<Route path="/search_test" component={SearchTest} />
-	// 					<Route path="/up_geo" component={ImporterGeo} />
-	// 					<Route path="/up_geo_links" component={ImporterGeoLinks} />
-	// 					<Route path="/up_alignment" component={ImporterAlignment} />
-
-	// 					<Route path="/" component={Landing}/>
-	// 				</Switch>
-	// 			</div>
-	// 			)
-	// 	}
-
-	renderMobileNav = () => {
-		return <div id='mobile-nav'>MOBILE</div>;
-	};
-	renderMainNav = () => {
-		return (
-			// <Container
-			// 	xs={{
-			// 		border: '1px solid red',
-			// 		flexDirection: 'row',
-			// 		alignItems: 'flex-start',
-			// 		justifyItems: 'flex-start',
-			// 	}}
-			// >
-			// 	<div id='main-nav'>
-			// 		<Link
-			// 			currentpage={(this.state.currentPage === '/search').toString()}
-			// 			className='main-menu-link'
-			// 			to='/search'
-			// 		>
-			// 			Search
-			// 		</Link>
-			// 		<div id='about-dropdown-2' className='main-menu-link dropdown'>
-			// 			<Link
-			// 				currentpage={(
-			// 					this.state.currentPage === '/search-tips' ||
-			// 					this.state.currentPage === '/available-documents'
-			// 				).toString()}
-			// 				id='about-button-2'
-			// 				className='main-menu-link drop-button'
-			// 				to='/search-tips'
-			// 			>
-			// 				Search Tips
-			// 			</Link>
-			// 			<i className='fa fa-caret-down'></i>
-			// 			<div className='dropdown-content'>
-			// 				<Link to='/search-tips'>Search Tips</Link>
-			// 				<Link to='/available-documents'>Available Files</Link>
-			// 			</div>
-			// 		</div>
-			// 		<Link
-			// 			currentpage={(this.state.currentPage === '/about-nepa').toString()}
-			// 			className='main-menu-link'
-			// 			to='/about-nepa'
-			// 		>
-			// 			About NEPA
-			// 		</Link>
-			// 		<div id='about-dropdown' className='main-menu-link dropdown'>
-			// 			<Link
-			// 				currentpage={(
-			// 					this.state.currentPage === '/about-nepaccess' ||
-			// 					this.state.currentPage === '/people' ||
-			// 					this.state.currentPage === '/media'
-			// 				).toString()}
-			// 				id='about-button'
-			// 				className='main-menu-link drop-button'
-			// 				to='/about-nepaccess'
-			// 			>
-			// 				About NEPAccess
-			// 			</Link>
-			// 			<i className='fa fa-caret-down'></i>
-			// 			<div className='dropdown-content'>
-			// 				<Link to='/about-nepaccess'>About NEPAccess</Link>
-			// 				<Link to='/media'>Media</Link>
-			// 				<Link to='/people'>People</Link>
-			// 			</div>
-			// 		</div>
-
-			// 		{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
-			// 		Future
-			// 	</Link> */}
-			// 		<Link
-			// 			currentpage={(this.state.currentPage === '/contact').toString()}
-			// 			className='main-menu-link'
-			// 			to='/contact'
-			// 		>
-			// 			Contact
-			// 		</Link>
-			// 	</div>
-			// </Container>
-			<Navbar/>
-		);
-	};
 	showMenuItems = () => {
 		return (
-			<Container
-				xs={{
-					border: '1px solid red',
-					alignItems: 'center',
-					mt: 10,
-				}}
+			<span
+				id='admin-span'
+				hidden={!this.state.role || this.state.role === 'user'}
+				className={this.state.loggedInDisplay + ' right-nav-item logged-in'}
 			>
-				<span
-					id='admin-span'
-					hidden={!this.state.role || this.state.role === 'user'}
-					className={this.state.loggedInDisplay + ' right-nav-item logged-in'}
-				>
-					<div id='admin-dropdown' className='main-menu-link dropdown'>
-						<Link
-							id='admin-button'
-							className='main-menu-link drop-button'
-							to='/importer'
-						>
-							Admin
+				<div id='admin-dropdown' className='main-menu-link dropdown'>
+					<Link
+						id='admin-button'
+						className='main-menu-link drop-button'
+						to='/importer'
+					>
+						Admin
+					</Link>
+					<i className='fa fa-caret-down'></i>
+					<div className='dropdown-content'>
+						<Link to='/admin' hidden={!(this.state.role === 'admin')}>
+							Admin Panel
 						</Link>
-						<i className='fa fa-caret-down'></i>
-						<div className='dropdown-content'>
-							<Link to='/admin' hidden={!(this.state.role === 'admin')}>
-								Admin Panel
-							</Link>
-							<Link
-								to='/importer'
-								hidden={
-									!(
-										this.state.role === 'curator' || this.state.role === 'admin'
-									)
-								}
-							>
-								Import New Documents
-							</Link>
-							<Link
-								to='/adminFiles'
-								hidden={
-									!(
-										this.state.role === 'curator' || this.state.role === 'admin'
-									)
-								}
-							>
-								Find Missing Files
-							</Link>
-							<Link to='/approve'>Approve Users</Link>
-							<Link to='/pre_register'>Pre-Register Users</Link>
-							<Link to='/interaction_logs'>Interaction Logs</Link>
-							<Link to='/search_logs'>Search Logs</Link>
-							<Link to='/abouthelpcontents'>Database Contents</Link>
-							<Link to='/stats'>Content Statistics</Link>
-							<Link to='/stat_counts'>Stat Counts</Link>
-							<Link to='/surveys'>Surveys</Link>
-						</div>
+						<Link
+							to='/importer'
+							hidden={
+								!(
+									this.state.role === 'curator' || this.state.role === 'admin'
+								)
+							}
+						>
+							Import New Documents
+						</Link>
+						<Link
+							to='/adminFiles'
+							hidden={
+								!(
+									this.state.role === 'curator' || this.state.role === 'admin'
+								)
+							}
+						>
+							Find Missing Files
+						</Link>
+						<Link to='/approve'>Approve Users</Link>
+						<Link to='/pre_register'>Pre-Register Users</Link>
+						<Link to='/interaction_logs'>Interaction Logs</Link>
+						<Link to='/search_logs'>Search Logs</Link>
+						<Link to='/abouthelpcontents'>Database Contents</Link>
+						<Link to='/stats'>Content Statistics</Link>
+						<Link to='/stat_counts'>Stat Counts</Link>
+						<Link to='/surveys'>Surveys</Link>
 					</div>
-				</span>
-			</Container>
+				</div>
+			</span>
 		);
 	};
 	// render() {

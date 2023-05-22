@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import DrawerComponent from "./Drawer";
 import { useState } from "react";
 import './index.css';
+
 const useStyles = makeStyles((theme) => ({
   navlinks: {
     marginLeft: theme.spacing(5),
@@ -42,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function Navbar(props) {
   const classes = useStyles();
   const theme = useTheme();
@@ -51,15 +51,7 @@ export default function Navbar(props) {
   const [loggedOutDisplay, setLoggedOutDisplay] = useState('display-block');
   const [headerLandingCss, setheaderLandingCss] = useState('');
   const [loggedInDisplay, setLoggedInDisplay] = useState('');
-  
-  const	getHeaderCss = () => {
-      let headerCss = 'no-select';
-      if (!currentPage || currentPage === '/') {
-        headerCss += ' landing-header';
-      }
-      return headerCss;
-    };
-  
+
   return (
     <Container className="no-select">
       <AppBar elevation={0} className={classes.appBar} position="static">
@@ -75,7 +67,7 @@ export default function Navbar(props) {
           {isMobile ? (
             <DrawerComponent />
           ) : (
-            <div id="header" className={getHeaderCss() + headerLandingCss}>
+            <div id="header" className={this.getHeaderCss() + headerLandingCss}>
 
               <div id="logo" className="no-select">
                 <Link id="logo-link" to="/">
