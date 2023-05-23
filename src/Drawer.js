@@ -30,6 +30,12 @@ function DrawerComponent() {
     <>
       <Drawer
         open={openDrawer}
+        sx={{
+          color: "black",
+          backgroundColor: "transparent",
+          alignItems: "flex-end",
+          justifyContent: "flex-end",
+        }}
         onClose={() => setOpenDrawer(false)}
       >
         <List>

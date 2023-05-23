@@ -4,7 +4,6 @@ import { AlignVerticalCenter } from '@mui/icons-material';
 import { useTheme } from '@mui/styles';
 export default function CalloutCard(props) {
   const { header, content, buttonText, buttonLink, key, sx } = props;
-  console.log('Callout card props', props);
   const theme = useTheme();
   console.log('USE theme', theme);
   return (
