@@ -72,13 +72,47 @@ import { Height } from '@mui/icons-material';
 import DrawerComponent from './Drawer';
 
 const _ = require('lodash');
-const styles = makeStyles((theme) => ({}));
 
+const classes = makeStyles((theme) => ({
+	root: {
+		backgroundColor: '#abbec3',
+	},
+	appBar: {
+		color: '#000',
+		elevation: 2,
+		height: '400pxs',
+		flexFlow: 'row nowrap',
+		justifyContent: 'space-between',
+		justifySelf: 'center',
+		alignItems: 'center',
+		backgroundColor: 'transparent',
+		border: '3px solid #000000',
+
+	},
+	toolbar: {
+		border: '3px solid #000000',
+		backgroundColor: 'transparent',
+		height: '400px',
+	},
+	headerContainer: {
+		backgroundColor: 'transparent',
+		height: '400px',
+
+	},
+	navContainer: {
+		backgroundColor: '#111',
+		border: '5px solid red',
+		flexGrow: 1,		
+		height: '75px',		
+	},
+	drawerContainer:{
+	}
+
+}));
 class Main extends React.Component {
 	static propTypes = {
 		location: PropTypes.object.isRequired,
 	};
-
 	constructor(props) {
 		super(props);
 		console.log('MAIN JS PROPS', props);
@@ -96,7 +130,7 @@ class Main extends React.Component {
 			isMobile: false,
 			windowSize: window.innerWidth,
 		};
-
+		this.classes = props.classes;
 		this.refresh = this.refresh.bind(this);
 		this.refreshNav = this.refreshNav.bind(this);
 		this.getRoleDebounced = _.debounce(this.getRole, 500);
@@ -109,8 +143,8 @@ class Main extends React.Component {
 	handleResize(WindowSize, event) {
 		this.setState({ windowSize: window.innerWidth });
 		console.log('window size', window.innerWidth);
-//        this.state.windowSize ({WindowSize: window.innerWidth})
-    }
+		//        this.state.windowSize ({WindowSize: window.innerWidth})
+	}
 	/** This effectively replaces the original purpose of check(), especially with anonymous user support */
 	getRole = () => {
 		const checkURL = new URL('user/get_role', Globals.currentHost);
@@ -191,74 +225,10 @@ class Main extends React.Component {
 			});
 		}
 	}
-	showMenuItems = () => {
-		console.log('showMenuItems Windows Size',window.innerWidth);
-		return (
-			<Container
-				xs={{
-					border: '1px solid black',
-					alignItems: 'center',
-					justifyContent: 'center',
-					flexDirection: 'row',
-					flexGrow: 1,
-				}}
-			>
-				<span
-					id='admin-span'
-					hidden={!this.state.role || this.state.role === 'user'}
-					className={this.state.loggedInDisplay + ' right-nav-item logged-in'}
-				>
-					<div id='admin-dropdown' className='main-menu-link dropdown'>
-						<Link
-							id='admin-button'
-							className='main-menu-link drop-button'
-							to='/importer'
-						>
-							Admin
-						</Link>
-						<i className='fa fa-caret-down'></i>
-						<div className='dropdown-content'>
-							<Link to='/admin' hidden={!(this.state.role === 'admin')}>
-								Admin Panel
-							</Link>
-							{/* <Link
-								to='/importer'
-								hiddeimport
-									!(import Navbar from './../../../material-UI-navbar-master/src/component/Navbar';
 
-										this.state.role === 'curator' || this.state.role === 'admin'
-									)
-								}
-							>
-								Import New Documents
-							</Link> */}
-							<Link
-								to='/adminFiles'
-								hidden={
-									!(
-										this.state.role === 'curator' || this.state.role === 'admin'
-									)
-								}
-							>
-								Find Missing Files
-							</Link>
-							<Link to='/approve'>Approve Users</Link>
-							<Link to='/pre_register'>Pre-Register Users</Link>
-							<Link to='/interaction_logs'>Interaction Logs</Link>
-							<Link to='/search_logs'>Search Logs</Link>
-							<Link to='/abouthelpcontents'>Database Contents</Link>
-							<Link to='/stats'>Content Statistics</Link>
-							<Link to='/stat_counts'>Stat Counts</Link>
-							<Link to='/surveys'>Surveys</Link>
-						</div>
-					</div>
-				</span>
-			</Container>
-		);
-	};
 	componentDidUpdate(prevProps) {
-		console.log("Main update, window size",window.innerWidth);
-		
+		console.log("Main update, window size", window.innerWidth);
+
 		if (this.props.location !== prevProps.location) {
 			this.onRouteChanged();
 		}
@@ -295,40 +265,102 @@ class Main extends React.Component {
 		}
 	};
 	render() {
-		const showMenuItems = this.showMenuItems();
+
 		return (
 			<div id="home-page">
-				<Helmet>
-					<meta charSet="utf-8" />
-					<title>NEPAccess</title>
-					<meta name="description" content="Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents." />
-					<link rel="canonical" href="https://www.nepaccess.org/" />
-				</Helmet>
+				<>
+					<Helmet>
+						<meta charSet="utf-8" />
+						<title>NEPAccess</title>
+						<meta name="description" content="Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents." />
+						<link rel="canonical" href="https://www.nepaccess.org/" />
+					</Helmet>
 
-				{/* <div id="header" className={this.getHeaderCss() + this.state.headerLandingCss}> */}
-				<AppBar
-					color='transparent'
-					elevation={2}
-					variant='dense'
-					xs={{
-						backgroundColor: 'transparent',
-						border: '5px solid red',
-						height: '100px',
-					}}>
 
-					<Toolbar variant='dense'
-						xs={{
-							backgroundColor: 'transparent',
-						}}
-					>
-						{(window.matchMedia('(min-width: 768px)').matches)
-							? (this.showMenuItems)
-							:  (<DrawerComponent />)
-						}
-					</Toolbar>
-				</AppBar>
-				{/* </div> */}
+							{(window.matchMedia('(min-width: 768px)').matches)
+								? (
+									<Grid id='navContainer' className={this.classes.navContainer} container
+										xs={{
+											marginBottom: '200px'
+										}}
+									>
+										<Grid item>
+											<div id='' className='no-select'>
+												<Link id='logo-link' to='/'></Link>
+												<div id='logo-box'></div>
+												
+											</div>
+										<Grid item
+											id="main-header-container"
+											className={this.classes.homeHeaderContainer} xs={{
+												display: 'flex',
+												padding: '0px',
+												backgroundColor: '#abbec3',
+											}}>
+											
+											<MainHeader 
+												id="main-header"	
+												xs={{
+													marginBottom: '100px',
+													border: '2px solid black',
+													backgroundColor: '#abbec3',	
+												}}
+												classes = {this.classes}
+												currentPage = {this.state.currentPage} 
+												loggedInDisplay = {this.state.loggedInDisplay}	
+												loggedOutDisplay = {this.state.loggedOutDisplay}
+												headerCss = {this.getHeaderCss()}
+												headerLandingCss = {this.state.headerLandingCss}
+											/>
+										</Grid>
+									</Grid>
+								</Grid>
+								)
+								: (
+									<Grid item lg={12} sx={{
+										backgroundColor: '#abbec3',
+										border:'4px solid #abbec3',
+										padding: '0px',
+										margin: '0px',
+									}}>
+										<DrawerComponent className={this.classes} />
+									</Grid>
+								)
+							}
+					{/* </div> */}
+					{this.routePath()}
+				</>
+			</div>
 
+		)
+	}
+	componentDidMount() {
+		// Role config allows admin menu and options to work properly
+		if (!this.state.role) {
+			if (localStorage.role) {
+				this.setState({ role: localStorage.role });
+			} else if (this.state.anonymous) {
+			} else {
+				this.getRoleDebounced();
+			}
+		}
+
+		Globals.registerListener('refresh', this.refresh);
+		this.setState({
+			currentPage: window.location.pathname,
+		});
+		const handler = (e) => this.setState({ matches: e.matches });
+		window.matchMedia('(min-width: 768px)').addEventListener('change', handler);
+
+		this.check();
+
+		// if(navigator.userAgent.toLowerCase ().match (/mobile/i)) {
+		//     console.log("Mobile device");
+		// }
+	}
+	routePath() {
+		return (
+			<div>
 				<Switch>
 					<Route path="/profile" component={UserDetails} />
 					{/* <Route path="/opt_out" component={OptOut}/> */}
@@ -382,43 +414,122 @@ class Main extends React.Component {
 					<Route path="/" component={Landing} />
 				</Switch>
 			</div>
-		)
+		);
 	}
-	renderHeader() {
-		return (
-			<>
-				<div id="header" className={this.getHeaderCss() + this.state.headerLandingCss}>
-					<div id="logo" className="no-select">
-						<Link id="logo-link" to="/">
-						</Link>
-						<div id="logo-box">
+	componentWillUnmount() {
+		window.removeEventListener('scroll', this.handleScroll);
+	}
+}
+export function HomeHeader(props) {
+	console.log("HomeHeader props", props);
+	const { currentPage, classes, headerLandingCss } = props;
+	return (
+		<Grid container className={classes.homeHeaderContainer} 
+			id=""
+			xs={{
+				border: '3px solid red',
 
-						</div>
+			}}
+		>
+			<Grid item xs={{
+				flexGrow: 1,
+				justifyContent: 'flex-end',
+			}}>
+				<Link currentpage={(currentPage === "/search").toString()} className="main-menu-link" to="/search">
+					Search
+				</Link>
+				<div id="about-dropdown-2" className="main-menu-link dropdown">
+					<Link currentpage={(currentPage === "/search-tips" || currentPage === "/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
+						Search Tips
+					</Link>
+					<i className="fa fa-caret-down"></i>
+					<div className="dropdown-content">
+						<Link to="/search-tips">Search Tips</Link>
+						<Link to="/available-documents">Available Files</Link>
+					</div>
+				</div>
+
+				<Link currentpage={(currentPage === "/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
+					About NEPA
+				</Link>
+				<div id="about-dropdown" className="main-menu-link dropdown">
+					<Link currentpage={(currentPage === "/about-nepaccess" || currentPage === "/people" || currentPage === "/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
+						About NEPAccess
+					</Link>
+					<i className="fa fa-caret-down"></i>
+					<div className="dropdown-content">
+						<Link to="/about-nepaccess">About NEPAccess</Link>
+						<Link to="/media">
+							Media
+						</Link>
+						<Link to="/people">People</Link>
+					</div>
+				</div>
+			</Grid>
+
+			{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
+                        Future
+                    </Link> */}
+			<Link currentpage={(currentPage === "/contact").toString()} className="main-menu-link" to="/contact">
+				Contact
+			</Link>
+		</Grid>
+	)
+}
+export function MainHeader(props) {
+	const { classes, currentPage, loggedInDisplay, loggedOutDisplay, headerCss, headerLandingCss } = props;
+
+	console.log("MainHeader call");
+	return (
+		<>
+			<div id="header" className={headerCss + headerLandingCss}>
+				<div id="logo" className="no-select">
+					<Link id="logo-link" to="/">
+					</Link>
+					<div id="logo-box">
+
 					</div>
 
-					<div id="top-menu" className="no-select">
+				</div>
 
-
-						<span id="profile-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+				<Grid container id="top-menu" className="no-select"
+					xs={{
+						border: '3px solid red',
+						alignItems: 'flex-end',
+						justifyContent: 'flex-end',
+						justifySelf: 'flex-end',
+						border:'3px solid red'
+					}}
+				>
+					<Grid item
+						border='3px solid black'
+						alignItems={'flex-end'}
+						alignContent={'flex-end'}
+						justifyContent={'flex-end'}
+					>
+						<span id="profile-span" className={classes.loggedInDisplay + " right-nav-item logged-in"}>
 							<Link className="top-menu-link" to="/profile">Profile</Link>
 						</span>
-						<span id="login-span" className={this.state.loggedOutDisplay + " logged-out"}>
+						<span id="login-span" className={loggedOutDisplay + " logged-out"}>
 							<Link className="top-menu-link" to="/login">Log in</Link>
 						</span>
-						<span id="register-span" className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
+						<span id="register-span" className={loggedOutDisplay + " right-nav-item logged-out"}>
 							<Link className="top-menu-link" to="/register">Register</Link>
 						</span>
-						<span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
+						<span className={loggedInDisplay + " right-nav-item logged-in"}>
 							<Link className="top-menu-link" to="/logout">Log out</Link>
 						</span>
-					</div>
+					</Grid>
 
+				<Grid item xs={{
+					border: '3px solid red',
+				}}>
 					<div id="main-menu">
-						<Link currentpage={(this.state.currentPage === "/search").toString()} className="main-menu-link" to="/search">
+						<Link currentpage={(currentPage === "/search").toString()} className="main-menu-link" to="/search">
 							Search
 						</Link>
 						<div id="about-dropdown-2" className="main-menu-link dropdown">
-							<Link currentpage={(this.state.currentPage === "/search-tips" || this.state.currentPage === "/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
+							<Link currentpage={(currentPage === "/search-tips" || currentPage === "/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
 								Search Tips
 							</Link>
 							<i className="fa fa-caret-down"></i>
@@ -427,12 +538,12 @@ class Main extends React.Component {
 								<Link to="/available-documents">Available Files</Link>
 							</div>
 						</div>
-
-						<Link currentpage={(this.state.currentPage === "/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
+	
+						<Link currentpage={(currentPage === "/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
 							About NEPA
 						</Link>
 						<div id="about-dropdown" className="main-menu-link dropdown">
-							<Link currentpage={(this.state.currentPage === "/about-nepaccess" || this.state.currentPage === "/people" || this.state.currentPage === "/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
+							<Link currentpage={(currentPage === "/about-nepaccess" || currentPage === "/people" || currentPage === "/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
 								About NEPAccess
 							</Link>
 							<i className="fa fa-caret-down"></i>
@@ -444,237 +555,91 @@ class Main extends React.Component {
 								<Link to="/people">People</Link>
 							</div>
 						</div>
-
+	
 						{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
-                        Future
-                    </Link> */}
-						<Link currentpage={(this.state.currentPage === "/contact").toString()} className="main-menu-link" to="/contact">
+	                        Future
+	                    </Link> */}
+						<Link currentpage={(currentPage === "/contact").toString()} className="main-menu-link" to="/contact">
 							Contact
 						</Link>
 					</div>
-				</div>
-			</>
-		)
-	}
-
-	// render() {
-
-	// 	return (
-	// 		<div id='home-page'>
-
-	// 			<Helmet>
-	// 				<meta charSet='utf-8' />
-	// 				<title>NEPAccess</title>
-	// 				<meta
-	// 					name='description'
-	// 					content='Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents.'
-	// 				/>
-	// 				<link rel='canonical' href='https://www.nepaccess.org/' />
-	// 			</Helmet>
-
-	// 		<div
-	// 				id='header'
-	// 				className={this.getHeaderCss() + this.state.headerLandingCss}
-	// 			>
-	// 				<div id='logo' className='no-select'>
-	// 					<Link id='logo-link' to='/'></Link>
-	// 					<div id='logo-box'></div>
-	// 				</div>
-	// 				<div id='top-menu'
-	// 						className={
-	// 							this.state.loggedInDisplay + ' right-nav-item logged-in'
-	// 						}>
-	// 						<Link className='top-menu-link' to='/profile'>
-	// 							Profile
-	// 						</Link>
-	// 					<span
-	// 						id='login-span'
-	// 						className={this.state.loggedOutDisplay + ' logged-out'}
-	// 					>
-	// 						<Link className='top-menu-link' to='/login'>
-	// 							Log in
-	// 						</Link>
-	// 					</span>
-	// 					<span
-	// 						id='register-span'
-	// 						className={
-	// 							this.state.loggedOutDisplay + ' right-nav-item logged-out'
-	// 						}
-	// 					>
-	// 						<Link className='top-menu-link' to='/register'>
-	// 							Register
-	// 						</Link>
-	// 					</span>
-	// 					<span
-	// 						className={
-	// 							this.state.loggedInDisplay + ' right-nav-item logged-in'
-	// 						}
-	// 					>
-	// 						<Link className='top-menu-link' to='/logout'>
-	// 							Log out
-	// 						</Link>
-	// 					</span>
-	// 				</div>
-
-	// 			<Switch>
-	// 				<Route path='/profile' component={UserDetails} />
-	// 				<Route path='/login' component={Login} />
-	// 				<Route path='/register' component={Register} />
-	// 				<Route path='/pre_register' component={PreRegister} />
-	// 				<Route path='/forgotPassword' component={ForgotPassword} />
-	// 				<Route path='/reset' component={Reset} />
-	// 				<Route path='/logout' component={Logout} />
-
-	// 				<Route path='/search' component={App} />
-	// 				<Route path='/about-nepa' component={AboutNepa} />
-	// 				<Route path='/about-nepaccess' component={AboutNepaccess} />
-	// 				<Route path='/people' component={People} />
-	// 				<Route path='/search-tips' component={SearchTips} />
-	// 				<Route path='/available-documents' component={AvailableDocuments} />
-	// 				<Route path='/abouthelpcontents' component={AboutHelpContents} />
-	// 				<Route path='/stats' component={AboutStats} />
-	// 				<Route path='/media' component={Media} />
-
-	// 				<Route path='/contact' component={Contact} />
-	// 				<Route path='/future' component={Future} />
-
-	// 				<Route path='/record-details' component={RecordDetailsTab} />
-	// 				<Route path='/process-details' component={ProcessDetailsTab} />
-
-	// 				<Route path='/importer' component={Importer} />
-	// 				<Route path='/adminFiles' component={AdminFiles} />
-
-	// 				<Route path='/iframes' component={Iframes} />
-	// 				<Route path='/privacy-policy' component={PrivacyPolicy} />
-	// 				<Route
-	// 					path='/disclaimer-terms-of-use'
-	// 					component={DisclaimerTermsOfUse}
-	// 				/>
-	// 				<Route path='/verify' component={Verify} />
-	// 				<Route path='/approve' component={Approve} />
-	// 				<Route path='/admin' component={Admin} />
-	// 				<Route path='/pairs' component={Pairs}></Route>
-	// 				<Route path='/pairs2' component={Pairs2}></Route>
-	// 				<Route path='/pairs3' component={Pairs3}></Route>
-	// 				<Route path='/search_logs' component={SearchLogs}></Route>
-	// 				<Route path='/interaction_logs' component={InteractionLogs}></Route>
-	// 				<Route path='/stat_counts' component={StatCounts}></Route>
-	// 				<Route path='/surveys' component={Surveys}></Route>
-	// 				<Route path='/excel' component={Excel}></Route>
-
-	// 				<Route path='/test' component={Test} />
-	// 				<Route path='/search_test' component={SearchTest} />
-	// 				<Route path='/up_geo' component={ImporterGeo} />
-	// 				<Route path='/up_geo_links' component={ImporterGeoLinks} />
-	// 				<Route path='/up_alignment' component={ImporterAlignment} />
-
-	// 				<Route path='/' component={Landing} />
-	// 			</Switch>
-	// 		</div>
-	// 		</div>
-	// 	);
-	// }
-
-	renderDestopNav = () => {
-		return (
-			<Container
-				xs={{
-					backgroundColor: 'red',
-					border: '1px solid black',
-					justifyItems: 'flex-end',
-					justifyContent: 'flex-end',
-					border: '3px solid blue',
-				}}
-			>
-				<div>
-					<div id='logo' className='no-select'>
-						<Link id='logo-link' to='/'></Link>
-						<div id='logo-box'></div>
-						<Link
-							currentpage={(this.state.currentPage === '/search').toString()}
-							className='main-menu-link'
-							to='/search'
-						></Link>
-					</div>
-					<div id='about-dropdown-2' className='main-menu-link dropdown'>
-						<Link
-							currentpage={(
-								this.state.currentPage === '/search-tips' ||
-								this.state.currentPage === '/available-documents'
-							).toString()}
-							id='about-button-2'
-							className='main-menu-link drop-button'
-							to='/search-tips'
-						>
-							Search Tips
-						</Link>
-						<i className='fa fa-caret-down'></i>
-						<div className='dropdown-content'>
-							<Link to='/search-tips'>Search Tips</Link>
-							<Link to='/available-documents'>Available Files</Link>
-						</div>
-					</div>
-					<Link
-						currentpage={(this.state.currentPage === '/about-nepa').toString()}
-						className='main-menu-link'
-						to='/about-nepa'
-					>
-						About NEPA
-					</Link>
-					<div id='about-dropdown' className='main-menu-link dropdown'>
-						<Link
-							currentpage={(
-								this.state.currentPage === '/about-nepaccess' ||
-								this.state.currentPage === '/people' ||
-								this.state.currentPage === '/media'
-							).toString()}
-							id='about-button'
-							className='main-menu-link drop-button'
-							to='/about-nepaccess'
-						>
-							About NEPAccess
-						</Link>
-						<i className='fa fa-caret-down'></i>
-						<div className='dropdown-content'>
-							<Link to='/about-nepaccess'>About NEPAccess</Link>
-							<Link to='/media'>Media</Link>
-							<Link to='/people'>People</Link>
-						</div>
-					</div>
-				</div>
-			</Container>
-		);
-	};
-
-
-	componentDidMount() {
-		// Role config allows admin menu and options to work properly
-		if (!this.state.role) {
-			if (localStorage.role) {
-				this.setState({ role: localStorage.role });
-			} else if (this.state.anonymous) {
-			} else {
-				this.getRoleDebounced();
-			}
-		}
-
-		Globals.registerListener('refresh', this.refresh);
-		this.setState({
-			currentPage: window.location.pathname,
-		});
-		const handler = (e) => this.setState({ matches: e.matches });
-		window.matchMedia('(min-width: 768px)').addEventListener('change', handler);
-
-		this.check();
-
-		// if(navigator.userAgent.toLowerCase ().match (/mobile/i)) {
-		//     console.log("Mobile device");
-		// }
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener('scroll', this.handleScroll);
-	}
+				</Grid>
+			</Grid>
+	</div>
+		</>
+	)
 }
 
-export default withRouter(Main);
+export function DesktopNav(props) {
+	const { classes } = props;
+	console.log("DesktopNav call");
+	return (
+		<Container
+			xs={{
+				backgroundColor: 'red',
+				border: '1px solid black',
+				justifyItems: 'flex-end',
+				justifyContent: 'flex-end',
+				border: '3px solid blue',
+			}}
+		>
+			<div>
+				<div id='logo' className='no-select'>
+					<Link id='logo-link' to='/'></Link>
+					<div id='logo-box'></div>
+					<Link
+						currentpage={(this.state.currentPage === '/search').toString()}
+						className='main-menu-link'
+						to='/search'
+					></Link>
+				</div>
+				<div id='about-dropdown-2' className='main-menu-link dropdown'>
+					<Link
+						currentpage={(
+							this.state.currentPage === '/search-tips' ||
+							this.state.currentPage === '/available-documents'
+						).toString()}
+						id='about-button-2'
+						className='main-menu-link drop-button'
+						to='/search-tips'
+					>
+						Search Tips
+					</Link>
+					<i className='fa fa-caret-down'></i>
+					<div className='dropdown-content'>
+						<Link to='/search-tips'>Search Tips</Link>
+						<Link to='/available-documents'>Available Files</Link>
+					</div>
+				</div>
+				<Link
+					currentpage={(this.state.currentPage === '/about-nepa').toString()}
+					className='main-menu-link'
+					to='/about-nepa'
+				>
+					About NEPA
+				</Link>
+				<div id='about-dropdown' className='main-menu-link dropdown'>
+					<Link
+						currentpage={(
+							this.state.currentPage === '/about-nepaccess' ||
+							this.state.currentPage === '/people' ||
+							this.state.currentPage === '/media'
+						).toString()}
+						id='about-button'
+						className='main-menu-link drop-button'
+						to='/about-nepaccess'
+					>
+						About NEPAccess
+					</Link>
+					<i className='fa fa-caret-down'></i>
+					<div className='dropdown-content'>
+						<Link to='/about-nepaccess'>About NEPAccess</Link>
+						<Link to='/media'>Media</Link>
+						<Link to='/people'>People</Link>
+					</div>
+				</div>
+			</div>
+		</Container>
+	);
+};
+export default withStyles(classes)(withRouter(Main));

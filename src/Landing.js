@@ -36,6 +36,7 @@ class Landing extends React.Component {
 
 
     render(){
+        //display the landing page on desktop only
         return (
             <div id="landing">
                 <Helmet>
@@ -44,8 +45,8 @@ class Landing extends React.Component {
                     <meta name="description" content="Search, download, and learn from environmental impact statements and other NEPA documents created under the National Environmental Policy Act of 1969." data-react-helmet="true" />
                     <link rel="canonical" href="https://nepaccess.org/" />
                 </Helmet>
-
-                <div id="landing-images">
+                {(window.matchMedia('(min-width: 768px)').matches)
+                ?(<div id="landing-images">
                     <div id="headline" className="no-select cursor-default">
                         <div id="landing-headline-container">
                             <h1 id="landing-headline-left">
@@ -67,7 +68,9 @@ class Landing extends React.Component {
                             value={this.state.rawInput}
                         />
                     </div>
-                </div>
+                </div>)
+                : (<span> </span>)
+                }
                 <CalloutContainer/>
                 <IframeResizer
                     // log

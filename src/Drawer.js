@@ -19,7 +19,7 @@ const useStyles = makeStyles(()=>({
         fontSize: "20px",
     },
     icon:{
-        color: "white"
+        color: "#000"
     }
 }));
 
@@ -32,9 +32,11 @@ function DrawerComponent() {
         open={openDrawer}
         sx={{
           color: "black",
-          backgroundColor: "transparent",
+          backgroundColor: "#c8f9ff",
           alignItems: "flex-end",
           justifyContent: "flex-end",
+          p:0,
+          m:0,
         }}
         onClose={() => setOpenDrawer(false)}
       >
