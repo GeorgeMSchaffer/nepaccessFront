@@ -99,13 +99,24 @@ const classes = makeStyles((theme) => ({
 		height: '400px',
 
 	},
+	navBarContainer:{
+		backgroundColor: 'red',
+		width: '100%',
+		border: '5px solid red',
+	},
 	navContainer: {
 		backgroundColor: '#111',
 		border: '5px solid red',
-		flexGrow: 1,		
-		height: '75px',		
+		flexGrow: 1,
+		height: '75px',
 	},
-	drawerContainer:{
+	drawerContainer: {
+	},
+	homeHeaderContainer: {
+		backgroundColor: 'white',
+		border: '5px solid red',
+		flexGrow: 1,
+		height: '75px',
 	}
 
 }));
@@ -243,7 +254,7 @@ class Main extends React.Component {
 	getHeaderCss = () => {
 		let headerCss = 'no-select';
 		if (!this.state.currentPage || this.state.currentPage === '/') {
-			headerCss += ' landing-header';
+			// headerCss += ' landing-header';
 		}
 		return headerCss;
 	};
@@ -265,74 +276,123 @@ class Main extends React.Component {
 		}
 	};
 	render() {
-
 		return (
-			<div id="home-page">
-				<>
-					<Helmet>
-						<meta charSet="utf-8" />
-						<title>NEPAccess</title>
-						<meta name="description" content="Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents." />
-						<link rel="canonical" href="https://www.nepaccess.org/" />
-					</Helmet>
+			<Container id="nav-bar" className={this.classes.navBarContainer}>
 
-
-							{(window.matchMedia('(min-width: 768px)').matches)
-								? (
-									<Grid id='navContainer' className={this.classes.navContainer} container
-										xs={{
-											marginBottom: '200px'
-										}}
-									>
-										<Grid item>
-											<div id='' className='no-select'>
-												<Link id='logo-link' to='/'></Link>
-												<div id='logo-box'></div>
-												
-											</div>
-										<Grid item
-											id="main-header-container"
-											className={this.classes.homeHeaderContainer} xs={{
-												display: 'flex',
-												padding: '0px',
-												backgroundColor: '#abbec3',
-											}}>
-											
-											<MainHeader 
-												id="main-header"	
-												xs={{
-													marginBottom: '100px',
-													border: '2px solid black',
-													backgroundColor: '#abbec3',	
-												}}
-												classes = {this.classes}
-												currentPage = {this.state.currentPage} 
-												loggedInDisplay = {this.state.loggedInDisplay}	
-												loggedOutDisplay = {this.state.loggedOutDisplay}
-												headerCss = {this.getHeaderCss()}
-												headerLandingCss = {this.state.headerLandingCss}
-											/>
-										</Grid>
-									</Grid>
-								</Grid>
-								)
-								: (
-									<Grid item lg={12} sx={{
-										backgroundColor: '#abbec3',
-										border:'4px solid #abbec3',
-										padding: '0px',
-										margin: '0px',
-									}}>
-										<DrawerComponent className={this.classes} />
-									</Grid>
-								)
-							}
-					{/* </div> */}
-					{this.routePath()}
-				</>
-			</div>
-
+				<Grid container name="header" xs={{
+					border: '1px solid red',
+					height: '100px',
+					witdh: '100%',
+					backgroundColor: 'blue',
+					flexGrow: 1,
+				}}>
+					<Grid sm={2} item
+						xs={{
+							border: '1px solid blue',
+							backgroundColor: 'red',
+							width: '100%',
+							flexGrow: 1,
+							flexDirection: 'row',
+							
+						}}
+					>
+						<Grid item 
+							xs={{
+								border: '1px solid green',
+								backgroundColor: 'yellow',
+								flexGrow: 1,
+								width: '100%',
+								marginLeft:0,
+				
+								justifyContent: 'space-around',
+							}}
+						>
+						Logo
+									<img id="logo" height={102} width={390} src="http://localhost:3000/logo2022.png" alt="logo" />
+						</Grid>
+					<Grid item id="nav-links" lg={9} sm={12} xs={{
+							border: '1px solid green',
+							backgroundColor: 'yellow',
+							flexGrow: 1,
+							width: '100%',
+							justifyContent: 'space-around',
+						}}>
+					
+						<Link>Link 1</Link>
+						<Link>Link 2</Link>
+						
+					</Grid>
+				</Grid>
+				</Grid>
+			</Container>
 		)
+		// return (
+		// 	<div id="home-page">
+		// 		<>
+		// 			<Helmet>
+		// 				<meta charSet="utf-8" />
+		// 				<title>NEPAccess</title>
+		// 				<meta name="description" content="Bringing NEPA into the 21st Century through the power of data science. Find and engage with data from thousands of environmental review documents." />
+		// 				<link rel="canonical" href="https://www.nepaccess.org/" />
+		// 			</Helmet>
+
+
+		// 			{(window.matchMedia('(min-width: 768px)').matches)
+		// 				? (
+		// 					<Grid id='navContainer' className={this.classes.navContainer} container
+		// 						xs={{
+		// 						}}
+		// 					>
+		// 						<Grid container
+		// 							id="main-header-container"
+		// 							spacing={0}
+
+		// 							className={this.classes.homeHeaderContainer} xs={{
+		// 								// display: 'flex',
+		// 								// padding: '0px',
+		// 								// backgroundColor: '#abcdef',
+		// 								// border: '2px solid black',
+		// 								// position:'absolute',
+		// 								// top:'0px',
+		// 								// left:'0px',
+		// 								// border: '2px solid black',
+
+		// 							}}>
+
+		// 							<MainHeader
+		// 								id="main-header-component"
+		// 								xs={{
+		// 									marginBottom: '100px',
+		// 									border: '2px solid black',
+		// 									backgroundColor: '#abbec3',
+		// 								}}
+		// 								classes={this.classes}
+		// 								currentPage={this.state.currentPage}
+		// 								loggedInDisplay={this.state.loggedInDisplay}
+		// 								loggedOutDisplay={this.state.loggedOutDisplay}
+		// 								headerCss={this.getHeaderCss()}
+		// 								headerLandingCss={this.state.headerLandingCss}
+		// 							/>
+		// 						</Grid>
+		// 					</Grid>
+		// 				)
+		// 				: (
+		// 					<Grid item lg={12} sx={{
+		// 						backgroundColor: '#abbec3',
+		// 						border: '4px solid #abbec3',
+		// 						padding: '0px',
+		// 						margin: '0px',
+		// 					}}>
+		// 						<DrawerComponent className={this.classes} />
+		// 					</Grid>
+		// 				)
+		// 			}
+		// 			{/* </div> */}
+		// 			{this.routePath()}
+		// 		</>
+		// 	</div>
+
+		// )
 	}
 	componentDidMount() {
 		// Role config allows admin menu and options to work properly
@@ -424,7 +484,7 @@ export function HomeHeader(props) {
 	console.log("HomeHeader props", props);
 	const { currentPage, classes, headerLandingCss } = props;
 	return (
-		<Grid container className={classes.homeHeaderContainer} 
+		<Grid container className={classes.homeHeaderContainer}
 			id=""
 			xs={{
 				border: '3px solid red',
@@ -482,30 +542,47 @@ export function MainHeader(props) {
 	console.log("MainHeader call");
 	return (
 		<>
-			<div id="header" className={headerCss + headerLandingCss}>
-				<div id="logo" className="no-select">
+			<Grid container id="header" className={headerCss + headerLandingCss}
+				xs={{
+					border: '3px solid red',
+					m: 0,
+					p: 0,
+				}}
+			>
+				{/* <div id="logo" className="no-select">
 					<Link id="logo-link" to="/">
 					</Link>
 					<div id="logo-box">
 
 					</div>
 
-				</div>
+				</div> */}
 
-				<Grid container id="top-menu" className="no-select"
+				<Grid item id="" className="no-select"
 					xs={{
 						border: '3px solid red',
-						alignItems: 'flex-end',
-						justifyContent: 'flex-end',
+						flexDirection: 'row',
+						justifyContent: 'center',
+						alignItems: 'center',
+						flexGrow: 1,
 						justifySelf: 'flex-end',
-						border:'3px solid red'
+						justifyContent: 'flex-end',
+						marginLeft: '200px',
+						backgroundColor: 'white',
 					}}
 				>
-					<Grid item
-						border='3px solid black'
-						alignItems={'flex-end'}
-						alignContent={'flex-end'}
-						justifyContent={'flex-end'}
+					{/* <Grid item
+						xs={{
+							border: '3px solid red',
+							display: 'flex',
+							flexDirection: 'row',
+							alignItems: 'center',
+							justifyContent: 'flex-end',
+							flexGrow: 1,
+							justifySelf: 'flex-end',
+							color:'black',
+							backgroundColor:'white',
+						}}
 					>
 						<span id="profile-span" className={classes.loggedInDisplay + " right-nav-item logged-in"}>
 							<Link className="top-menu-link" to="/profile">Profile</Link>
@@ -519,12 +596,42 @@ export function MainHeader(props) {
 						<span className={loggedInDisplay + " right-nav-item logged-in"}>
 							<Link className="top-menu-link" to="/logout">Log out</Link>
 						</span>
-					</Grid>
+					</Grid> */}
+					{/* <Container id="logo-box" xs={{
+							border: '3px solid red',
+							display: 'absolute',
+							top: '0px',
+							left: '0px',
+						}}>
+							<div id='logo' className='no-select'>
+								<Link id='logo-link' to='/'></Link>
+								<div id='logo-box'></div>
 
-				<Grid item xs={{
-					border: '3px solid red',
-				}}>
-					<div id="main-menu">
+							</div>
+						</Container> */}
+					{/* <Grid item xs={{
+						// border: '3px solid red',
+						// alignItems: 'flex-start',
+						// justifyContent: 'flex-start',
+						// justifySelf: 'flex-start',
+						// display: 'block',
+						marginLeft: '150px',
+						border: '3px solid red',
+						width: '100%',
+					}}>
+						<div id='logo' >
+							<Link id='logo-link' to='/'></Link>
+							<div id='logo-box'></div>
+
+						</div>
+					</Grid> */}
+					<Grid item xs={{
+						alignItems: 'flex-end',
+						justifyContent: 'flex-end',
+						justifySelf: 'flex-end',
+						display: 'block',
+						flexGrow: 1,
+					}}>
 						<Link currentpage={(currentPage === "/search").toString()} className="main-menu-link" to="/search">
 							Search
 						</Link>
@@ -538,7 +645,7 @@ export function MainHeader(props) {
 								<Link to="/available-documents">Available Files</Link>
 							</div>
 						</div>
-	
+
 						<Link currentpage={(currentPage === "/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
 							About NEPA
 						</Link>
@@ -555,17 +662,28 @@ export function MainHeader(props) {
 								<Link to="/people">People</Link>
 							</div>
 						</div>
-	
-						{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
+					</Grid>
+					{/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
 	                        Future
 	                    </Link> */}
-						<Link currentpage={(currentPage === "/contact").toString()} className="main-menu-link" to="/contact">
-							Contact
-						</Link>
-					</div>
+
+					<Link currentpage={(currentPage === "/contact").toString()} className="main-menu-link" to="/contact">
+						Contact
+					</Link>
+					<span id="profile-span" className={classes.loggedInDisplay + " right-nav-item logged-in"}>
+						<Link className="top-menu-link" to="/profile">Profile</Link>
+					</span>
+					<span id="login-span" className={loggedOutDisplay + " logged-out"}>
+						<Link className="top-menu-link" to="/login">Log in</Link>
+					</span>
+					<span id="register-span" className={loggedOutDisplay + " right-nav-item logged-out"}>
+						<Link className="top-menu-link" to="/register">Register</Link>
+					</span>
+					<span className={loggedInDisplay + " right-nav-item logged-in"}>
+						<Link className="top-menu-link" to="/logout">Log out</Link>
+					</span>
 				</Grid>
 			</Grid>
-	</div>
 		</>
 	)
 }
@@ -584,7 +702,7 @@ export function DesktopNav(props) {
 			}}
 		>
 			<div>
-				<div id='logo' className='no-select'>
+				{/* <div id='logo' className='no-select'>
 					<Link id='logo-link' to='/'></Link>
 					<div id='logo-box'></div>
 					<Link
@@ -592,7 +710,7 @@ export function DesktopNav(props) {
 						className='main-menu-link'
 						to='/search'
 					></Link>
-				</div>
+				</div> */}
 				<div id='about-dropdown-2' className='main-menu-link dropdown'>
 					<Link
 						currentpage={(
