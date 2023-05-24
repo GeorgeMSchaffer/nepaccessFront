@@ -277,55 +277,42 @@ class Main extends React.Component {
 	};
 	render() {
 		return (
-			<Container id="nav-bar" className={this.classes.navBarContainer}>
-
-				<Grid container name="header" xs={{
-					border: '1px solid red',
-					height: '100px',
-					witdh: '100%',
-					backgroundColor: 'blue',
-					flexGrow: 1,
-				}}>
-					<Grid sm={2} item
-						xs={{
-							border: '1px solid blue',
-							backgroundColor: 'red',
-							width: '100%',
-							flexGrow: 1,
-							flexDirection: 'row',
-							
-						}}
-					>
-						<Grid item 
-							xs={{
-								border: '1px solid green',
-								backgroundColor: 'yellow',
-								flexGrow: 1,
-								width: '100%',
-								marginLeft:0,
-				
-								justifyContent: 'space-around',
-							}}
-						>
-						Logo
-									<img id="logo" height={102} width={390} src="http://localhost:3000/logo2022.png" alt="logo" />
-						</Grid>
-					<Grid item id="nav-links" lg={9} sm={12} xs={{
-							border: '1px solid green',
-							backgroundColor: 'yellow',
-							flexGrow: 1,
-							width: '100%',
-							justifyContent: 'space-around',
-						}}>
-					
-						<Link>Link 1</Link>
-						<Link>Link 2</Link>
-						
-					</Grid>
-				</Grid>
-				</Grid>
-			</Container>
-		)
+      <Container flex id="nav-bar" className={this.classes.navBarContainer}>
+        <Grid
+          container
+          name="header"
+          id="header"
+        >
+          <Grid
+            sm={2}
+            item
+            xs={{
+              border: '1px solid blue',
+              width: '100%',
+              flexGrow: 1,
+              flexDirection: 'row',
+            }}
+          >
+            <Grid
+              item
+              id="logo-container"
+            >
+              <div id="logo" className="no-select">
+                <Link id="logo-link" to="/"></Link>
+                <div id="logo-box"></div>
+              </div>
+            </Grid>
+            <Grid
+              item
+              id="nav-links"
+            >
+              <Link>Link 1</Link>
+              <Link>Link 2</Link>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Container>
+    );
 		// return (
 		// 	<div id="home-page">
 		// 		<>

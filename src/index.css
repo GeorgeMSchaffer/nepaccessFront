@@ -33,25 +33,24 @@ body {
 }
 
 #header {
-  position: fixed;
   width: 100%;
-  min-width: 700px;
+  min-width: 100%;
+  background-color: #a9bec3;
   height: 102px;
-  left: 0px;
-  top: 0px;
-
-  /* background: #C4C4C4; */
-  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-end;
   z-index: 99999; /* Geojson map introduces some very high z-index items */
 
   /* background: #8FBC3F; */
-  background: #B6C4C8;
 }
 
 /* Header contents */
 
 #logo {
     position: absolute;
+    top:0;
+    left:0;
+    border: 2px solid #000;
 }
 
 #logo-link {
@@ -60,8 +59,9 @@ body {
 
 /* Logo contents */
 
+
 #logo-link, #logo-box {
-    position: absolute;
+    /* position: absolute; */
     /* width: 360px; */
     width: calc(25vw + 15px);
     min-width: 315px;
@@ -69,22 +69,53 @@ body {
     height: 102px;
 
 }
+#logo-container{
+    background-color: #555;
+    width: 1600;
+    border: #000000;
+    margin: 100;
 
-#logo-box {
-    /* position: absolute; */
-
-    /* background-color: white; */
-    background-repeat: no-repeat;
-    /* background-position: center 10px; */
-    background-size: contain;
-    /* background-size: cover; */
-    /* background-image: url("assets/nepaccess\ 1x.png"); */
-    /* background-image: url("assets/thumbnail_logo-beta.png"); */
-    background-image: url("assets/NEPAccess logo2022_BETA.png");
-border: '1px solid green';
-    margin-left: 0px;
-    margin-right: -24px;
 }
+#header {
+    width: 100%;
+    min-width: 100%;
+    background-color: #a9bec3;
+    height: 102px;
+    align-items: flex-start;
+    justify-content: space-around;
+    border: 2px solid black;
+    z-index: 99999; /* Geojson map introduces some very high z-index items */
+
+  /* background: #8FBC3F; */
+}
+#nav-bar{
+    width: 100%;
+    height: 102px;
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    min-width: 100%;
+    max-width: 100%;
+    background-color: #a9bec3;
+    display: in;
+}
+#nav-links {
+        background-color: 'yellow';
+        flex-grow: 1;
+        width: 100%;
+        justify-content: 'space-around';
+        display: inline-flex;
+}
+#logo-box {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("assets/NEPAccess logo2022_BETA.png");
+    margin-left: 30px;
+    border:'4px solid red'
+}
+
+
 #logo-image {
 
     background-image: url("assets/NEPAccess logo2022_BETA.png");
