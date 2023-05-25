@@ -672,9 +672,6 @@ export function MainHeader(props) {
               </div>
             </div>
           </Grid>
-          {/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
-	                        Future
-	                    </Link> */}
 
           <Link
             currentpage={(currentPage === '/contact').toString()}

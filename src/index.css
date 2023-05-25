@@ -290,25 +290,16 @@ border: '1px solid green';
     margin-left: 0px;
 } */
 
+
+
 .main-menu-link {
-  position: relative;
-  float: left;
-  margin-left: 40px;
-
-  font-family: "Open Sans";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
+  
+  font-size: 20px;
   line-height: 25px;
-  display: inline-flex;
-  align-items: flex-end;
-  
-  color: #000000;
-
-  cursor: pointer;
-  text-decoration: none;
-  
-}
+  text-shadow: 0px 2px 2px #aaa;
+  color:black;
+  font-size: 18px;
+ }
 .main-menu-link:hover {
     color: white;
 }
