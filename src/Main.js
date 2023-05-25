@@ -283,11 +283,64 @@ class Main extends React.Component {
     }
   };
   render() {
-	return(
-	<>
+    return (
+      <>
+
 		<HeaderNav/>
-	</>
-)}
+        {this.showMenuItems()}
+
+		<div className="main-container">
+			stuuuuasdudwsaasddsa
+		</div>
+      </>
+    );
+  }
+
+  showMenuItems = () => {
+    return (
+      <>
+	  MENU ITEMS??
+	  <HeaderNav/>
+      	<span
+	        id="admin-span"
+	        hidden={!this.state.role || this.state.role === 'user'}
+	        className={this.state.loggedInDisplay + ' right-nav-item logged-in'}
+	      >
+	        <div id="admin-dropdown" className="main-menu-link dropdown">
+	          <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
+	            Admin
+	          </Link>
+	          <i className="fa fa-caret-down"></i>
+	          <div className="dropdown-content">
+	            <Link to="/admin" hidden={!(this.state.role === 'admin')}>
+	              Admin Panel
+	            </Link>
+	            <Link
+	              to="/importer"
+	              hidden={!(this.state.role === 'curator' || this.state.role === 'admin')}
+	            >
+	              Import New Documents
+	            </Link>
+	            <Link
+	              to="/adminFiles"
+	              hidden={!(this.state.role === 'curator' || this.state.role === 'admin')}
+	            >
+	              Find Missing Files
+	            </Link>
+	            <Link to="/approve">Approve Users</Link>
+	            <Link to="/pre_register">Pre-Register Users</Link>
+	            <Link to="/interaction_logs">Interaction Logs</Link>
+	            <Link to="/search_logs">Search Logs</Link>
+	            <Link to="/abouthelpcontents">Database Contents</Link>
+	            <Link to="/stats">Content Statistics</Link>
+	            <Link to="/stat_counts">Stat Counts</Link>
+	            <Link to="/surveys">Surveys</Link>
+	          </div>
+	        </div>
+	      </span>
+      </>
+    );
+  };
   componentDidMount() {
     // Role config allows admin menu and options to work properly
     if (!this.state.role) {
