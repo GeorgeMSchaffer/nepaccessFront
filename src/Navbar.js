@@ -117,16 +117,13 @@ export default function Navbar(props) {
                 <Link currentpage={(currentPage === "/search").toString()} className="main-menu-link" to="/search">
                   Search
                 </Link>
-                <div id="about-dropdown-2" className="main-menu-link dropdown">
                   <Link currentpage={(currentPage === "/search-tips" || currentPage === "/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
                     Search Tips
                   </Link>
-                  <i className="fa fa-caret-down"></i>
-                  <div className="dropdown-content">
-                    <Link to="/search-tips">Search Tips</Link>
-                    <Link to="/available-documents">Available Files</Link>
-                  </div>
-                </div>
+                  <Link currentpage={(currentPage === "/search-tips" || currentPage === "/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
+                    Availble Files
+                  </Link>
+
                 <Link currentpage={(currentPage === "/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
                   About NEPA
                 </Link>

@@ -92,22 +92,20 @@ const classes = makeStyles((theme) => ({
   appBar: {
     color: '#000',
     elevation: 2,
-    height: '400pxs',
+    height: '105px',
     flexFlow: 'row nowrap',
     justifyContent: 'space-between',
     justifySelf: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    border: '3px solid #000000',
   },
   toolbar: {
-    border: '3px solid #000000',
     backgroundColor: 'transparent',
     height: '400px',
   },
   headerContainer: {
     backgroundColor: 'transparent',
-    height: '400px',
+    height: '102px',
   },
   navBarContainer: {
     backgroundColor: 'red',
@@ -299,7 +297,7 @@ class Main extends React.Component {
   showMenuItems = () => {
     return (
       <>
-	  MENU ITEMS??
+
 	  <HeaderNav/>
       	<span
 	        id="admin-span"
@@ -525,7 +523,7 @@ export function MainHeader(props) {
         id="header"
         className={headerCss + headerLandingCss}
         xs={{
-          border: '3px solid red',
+
           m: 0,
           p: 0,
         }}
@@ -544,7 +542,6 @@ export function MainHeader(props) {
           id=""
           className="no-select"
           xs={{
-            border: '3px solid red',
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
@@ -555,60 +552,7 @@ export function MainHeader(props) {
             backgroundColor: 'white',
           }}
         >
-          {/* <Grid item
-						xs={{
-							border: '3px solid red',
-							display: 'flex',
-							flexDirection: 'row',
-							alignItems: 'center',
-							justifyContent: 'flex-end',
-							flexGrow: 1,
-							justifySelf: 'flex-end',
-							color:'black',
-							backgroundColor:'white',
-						}}
-					>
-						<span id="profile-span" className={classes.loggedInDisplay + " right-nav-item logged-in"}>
-							<Link className="top-menu-link" to="/profile">Profile</Link>
-						</span>
-						<span id="login-span" className={loggedOutDisplay + " logged-out"}>
-							<Link className="top-menu-link" to="/login">Log in</Link>
-						</span>
-						<span id="register-span" className={loggedOutDisplay + " right-nav-item logged-out"}>
-							<Link className="top-menu-link" to="/register">Register</Link>
-						</span>
-						<span className={loggedInDisplay + " right-nav-item logged-in"}>
-							<Link className="top-menu-link" to="/logout">Log out</Link>
-						</span>
-					</Grid> */}
-          {/* <Container id="logo-box" xs={{
-							border: '3px solid red',
-							display: 'absolute',
-							top: '0px',
-							left: '0px',
-						}}>
-							<div id='logo' className='no-select'>
-								<Link id='logo-link' to='/'></Link>
-								<div id='logo-box'></div>
-
-							</div>
-						</Container> */}
-          {/* <Grid item xs={{
-						// border: '3px solid red',
-						// alignItems: 'flex-start',
-						// justifyContent: 'flex-start',
-						// justifySelf: 'flex-start',
-						// display: 'block',
-						marginLeft: '150px',
-						border: '3px solid red',
-						width: '100%',
-					}}>
-						<div id='logo' >
-							<Link id='logo-link' to='/'></Link>
-							<div id='logo-box'></div>
-
-						</div>
-					</Grid> */}
+          
           <Grid
             item
             xs={{

@@ -78,7 +78,7 @@ span.glow {
     max-width: 1120px;
     margin: 0 auto;
 
-    padding-top: 140px;
+    /* padding-top: 140px; */
 
     -webkit-column-count: 2; /* Chrome, Safari, Opera */
     -moz-column-count: 2; /* Firefox */
@@ -254,4 +254,7 @@ a.link.landing-link {
 
 a.link.landing-link:hover {
     color: white;
+}
+.menu-item{
+    color: black;
 }

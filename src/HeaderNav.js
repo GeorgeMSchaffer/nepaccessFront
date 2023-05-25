@@ -11,7 +11,9 @@ import {
   Paper,
   Box,
   Container,
-  Grid
+  Divider,
+  Grid,
+  useMediaQuery,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import React, { useState, useEffect } from 'react';
@@ -21,20 +23,40 @@ import { Helmet } from 'react-helmet';
 import Landing from './Landing';
 const headersData = [
   {
-    label: 'Listings',
-    href: '/listings',
+    label: 'Search',
+    href: '/search?q=""',
   },
   {
-    label: 'Mentors',
-    href: '/mentors',
+    label: 'Search Tips',
+    href: '/search-tip',
   },
   {
-    label: 'My Account',
-    href: '/account',
+    label: 'Available Files',
+    href: '/available-documents',
   },
   {
-    label: 'Log Out',
-    href: '/logout',
+    label: 'Available Documents',
+    href: '/available-documents',
+  },
+  {
+    label: 'About NEPA',
+    href: '/about-nepaccess',
+  },
+  {
+    label: 'About NEPAaccess',
+    href: '/about-nepaccess',
+  },
+  {
+    label: 'Media',
+    href: '/media',
+  },
+  {
+    label: 'People',
+    href: '/people',
+  },
+  {
+    label: 'Contact',
+    href: '/contact',
   },
 ];
 
@@ -45,14 +67,15 @@ const useStyles = makeStyles(() => ({
     // paddingLeft: '118px',
     '@media (max-width: 900px)': {
       paddingLeft: 0,
-      height:'105px'
+      height: '105px',
     },
   },
   menuButton: {
     fontFamily: 'Open Sans, sans-serif',
-    fontWeight: 700,
-    size: '18px',
+    fontWeight: 500,
+    size: '12px',
     marginLeft: '38px',
+    color: 'black',
   },
   toolbar: {
     display: 'flex',
@@ -82,9 +105,8 @@ const useStyles = makeStyles(() => ({
     // border: '3px solid red',
     justifyContent: 'left',
     backgroundSize: 'contain',
-
   },
-  logoBox:{
+  logoBox: {
     // marginLeft: '200px',
     // height:'102px',
     width: '200px',
@@ -94,26 +116,30 @@ const useStyles = makeStyles(() => ({
     // backgroundRepeat: 'no-repeat',
     // backgroundSize: 'contain',
   },
-  menuContainer:{
+  menuContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  navLink:{
+  navLink: {
     dropShadow: '3px',
-      position: 'relative',
-  fontFamily: "Open Sans",
-  fontStyle: 'normal',
-  fontWeight: 'bold',
-  fontSize: '1.1em',
-  lineHeight: '25px',
-  textDecoration: 'none',
-  color: '#000000',
-  textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    position: 'relative',
+    fontFamily: 'Open Sans',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: '1.1em',
+    lineHeight: '25px',
+    textDecoration: 'none',
+    color: '#000000',
+    textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
   },
-  mainMenuLink: { 
+  mainMenuLink: {
     color: 'black',
   },
+  menuIcon: {
+    color: 'black',
+    border:'1px solid black'
+  }
 }));
 
 export default function HeaderNav() {
@@ -130,6 +156,7 @@ export default function HeaderNav() {
     mainMenuLink,
     menuContainer,
     navLink,
+    menuIcon,
   } = useStyles();
 
   const [state, setState] = useState({
@@ -141,7 +168,8 @@ export default function HeaderNav() {
 
   useEffect(() => {
     const setResponsiveness = () => {
-      return window.innerWidth < 900
+      console.log('set responsive', window.innerHeight);
+      return window.innerWidth < 768
         ? setState((prevState) => ({ ...prevState, mobileView: true }))
         : setState((prevState) => ({ ...prevState, mobileView: false }));
     };
@@ -157,7 +185,7 @@ export default function HeaderNav() {
 
   const displayDesktop = (props) => {
     const role = 'user';
-    const loggedInDisplay =  'none';
+    const loggedInDisplay = 'none';
     const loggedOutDisplay = '';
     const loggedIn = false;
     const headerLandingCss = ''; //props.headerLandingCss || '';
@@ -201,7 +229,6 @@ export default function HeaderNav() {
           <Container
             id="link-container"
             xs={{
-              border: '3px solid red',
               justifyContent: 'flex-start',
               alignItems: 'left',
               marginLeft: '350px',
@@ -211,6 +238,7 @@ export default function HeaderNav() {
             <Container id="menu-container" className={menuContainer}>
               <MenuItem className={navLink}>Search</MenuItem>
               <MenuItem className={navLink}>Search Tips</MenuItem>
+              <MenuItem className={navLink}>Availble Files</MenuItem>
               <MenuItem className={navLink}>About NEPA</MenuItem>
               <MenuItem className={navLink}>About NEPAccess</MenuItem>
               <MenuItem className={navLink}>Contact</MenuItem>
@@ -246,10 +274,9 @@ export default function HeaderNav() {
                 </div>
               </span>
             </Container>
-  
           </Container>
         </Toolbar>
-        <Landing/>
+        <Landing />
       </>
     );
   };
@@ -259,36 +286,50 @@ export default function HeaderNav() {
     const handleDrawerClose = () => setState((prevState) => ({ ...prevState, drawerOpen: false }));
 
     return (
-      <Toolbar className={muiAppBar}>
-        <IconButton
-          {...{
-            edge: 'start',
-            color: 'inherit',
-            'aria-label': 'menu',
-            'aria-haspopup': 'true',
-            onClick: handleDrawerOpen,
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
+      <>
+        <Toolbar id="mobile-tool-bar" className="muiAppBar">
+          <h4>Mobile Toolbar</h4>
+          <IconButton
+            id="mobile-icon-button"
+            {...{
+              color: 'black',
+              edge: 'start',
+              color: 'inherit',
+              'aria-label': 'menu',
+              'aria-haspopup': 'true',
+              onClick: handleDrawerOpen,
+            }}
+          >
+            <MenuIcon color="#000" className={menuIcon} />
+          </IconButton>
 
-        <Drawer
-          {...{
-            anchor: 'left',
-            open: drawerOpen,
-            onClose: handleDrawerClose,
-          }}
-        >
-          <div className={drawerContainer}>{getDrawerChoices()}</div>
-        </Drawer>
+          <Drawer
+            id="drawer"
+            {...{
+              anchor: 'left',
+              open: drawerOpen,
+              onClose: handleDrawerClose,
+            }}
+          >
+            <div id="drawer-container" className={drawerContainer}>
+              {getDrawerChoices()}
+            </div>
+            <div id=""></div>
+          </Drawer>
 
-        <div>{getMenuButtons()}</div>
-      </Toolbar>
+          {/* <div>{getMenuButtons()}</div> */}
+          <div id="mobile-landing-container">
+            <>
+              <Landing />
+            </>
+          </div>
+        </Toolbar>
+      </>
     );
   };
 
   const getDrawerChoices = () => {
-    return headersData.map(({ label, href }) => {
+    return headersData.map(({ label, href },idx) => {
       return (
         <Link
           {...{
@@ -298,17 +339,28 @@ export default function HeaderNav() {
             style: { textDecoration: 'none' },
             key: label,
           }}
+          xs={{
+            color: 'black',
+            fontWeight: 600,
+          }}
         >
-          <MenuItem>{label}</MenuItem>
+          <MenuItem
+            xs={{
+              color: 'black',
+            }}
+            className="menu-item"
+          >
+{label}                        
+
+          </MenuItem>
+          <Divider/>
         </Link>
       );
     });
   };
 
-  
-
   // const logoBackDrop = (
-  //   <img src="url('logo2022.png')" alt="NEPAccess Logo" />  
+  //   <img src="url('logo2022.png')" alt="NEPAccess Logo" />
   // );
 
   const getMenuButtons = () => {
@@ -330,27 +382,24 @@ export default function HeaderNav() {
   };
 
   return (
-    <Paper
-    >
-      <AppBar className={header}>{mobileView ? displayMobile() : displayDesktop()}
-         
+    <Paper id="mobile-paper-container">
+      <AppBar id="mobile-appbar" className={header}>
+        {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>
     </Paper>
   );
 }
 
-export function DesktopNavLinks(){
-  const [currentPage,setCurrentPage]= useState();
+export function DesktopNavLinks() {
+  const [currentPage, setCurrentPage] = useState();
   const [loggedInDisplay, setLoggedInDisplay] = useState('display-none');
   const [loggedOutDisplay, setLoggedOutDisplay] = useState();
   const { mainMenuLink } = useStyles();
-  const [loggedIn, setLoggedIn] = useState(false);  
+  const [loggedIn, setLoggedIn] = useState(false);
   const [role, setRole] = useState('user');
   return (
     <>
-      LAMdsdsasdadsasdadsa
-      <Landing/>
+      <div id="desktop-landing-container"><Landing /></div>
     </>
   );
 }
-

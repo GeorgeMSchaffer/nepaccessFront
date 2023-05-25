@@ -40,7 +40,7 @@ class Landing extends React.Component {
         return (
             
 <>
-                    asddsadsasdadsa
+                    
                 <div id="landing">
                     <Helmet>
                         <meta charSet="utf-8" />
