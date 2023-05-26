@@ -1,11 +1,11 @@
 /* Landing */
 #landing {
     position: relative;
-    /* height: 100%;
-    width: 100%; */
+    height: 100%;
+    width: 100%; 
     /** The search box now has a percentage-based position, which means the overall page
     needs a minimum height that does not clip into the header texts. This needs to change if the landing text changes. */
-    /* min-width: 750px; */
+    min-width: 750px; 
     
     margin: auto;
     /* margin-top: 102px; */
@@ -142,7 +142,8 @@ span.glow {
     /* Allow centering of child element #landing-search-bar-holder */
     position: relative;
     /* height: 170px; */
-    height: 250px;
+    min-height: 40px;
+    max-height: 300px;
 
     /* Start search bar header text on left side */
     text-align: left;

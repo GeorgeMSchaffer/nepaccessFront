@@ -63,7 +63,7 @@ class Landing extends React.Component {
                                     </span>
                                 </h2>
                             </div>
-                
+                            
                             <SearcherLanding 
                                 id="rawInput"
                                 onChange={this.handleChange}
@@ -72,16 +72,16 @@ class Landing extends React.Component {
                             />
                         </div>
                     </div>)
-                    : (<span> </span>)
+                    : (<span>''</span>)
                     }
-                    <CalloutContainer/>
-                    <IframeResizer
+
+                    {/* <IframeResizer
                         // log
                         data-nosnippet
                         id="iframe-landing-container"
                         src="https://about.nepaccess.org/"
                         style={{ width: '1px', minWidth: '100%'}}
-                    />
+                    /> */}
                 </div>
 </>
         );

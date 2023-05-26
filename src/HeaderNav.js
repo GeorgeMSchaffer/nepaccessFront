@@ -16,11 +16,14 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import { withMediaQuery } from 'react-responsive';
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import './index.css';
 import { Helmet } from 'react-helmet';
 import Landing from './Landing';
+import CalloutContainer from './CalloutContainer';
+import SearcherLanding from './SearcherLanding';
 const headersData = [
   {
     label: 'Search',
@@ -63,12 +66,14 @@ const headersData = [
 const useStyles = makeStyles(() => ({
   header: {
     backgroundColor: '#abbdc4',
+    height: '100%',
+    //height: '105px',
     // paddingRight: '79px',
     // paddingLeft: '118px',
-    '@media (max-width: 900px)': {
-      paddingLeft: 0,
-      height: '105px',
-    },
+    // '@media (max-width: 768px)': {
+    //   paddingLeft: 0,
+    //   height: '50px',
+    // },
   },
   menuButton: {
     fontFamily: 'Open Sans, sans-serif',
@@ -86,14 +91,20 @@ const useStyles = makeStyles(() => ({
 
     // backgroundImage: 'url("logo2022.png")',
   },
+  mobileToolbar: {
+    display: 'flex',
+    height: '65px',
+    backgroundColor: '#abbdc4',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+  },
   drawerContainer: {
     padding: '20px 30px',
   },
 
   muiAppBar: {
     backgroundColor: '#abbdc4',
-    height: '105px',
-    display: 'flow-root',
+    height: '50px',
+    display: 'block',
     width: '100%',
     /* background: #C4C4C4; */
     zIndex: 99999 /* Geojson map introduces some very high z-index items */,
@@ -138,7 +149,7 @@ const useStyles = makeStyles(() => ({
   },
   menuIcon: {
     color: 'black',
-    border:'1px solid black'
+    border: '1px solid black'
   }
 }));
 
@@ -157,13 +168,14 @@ export default function HeaderNav() {
     menuContainer,
     navLink,
     menuIcon,
+    mobileToolbar,
   } = useStyles();
 
   const [state, setState] = useState({
     mobileView: false,
     drawerOpen: false,
   });
-
+  // const isMobile = withMediaQuery({ maxWidth: 768 })
   const { mobileView, drawerOpen } = state;
 
   useEffect(() => {
@@ -183,6 +195,103 @@ export default function HeaderNav() {
     };
   }, []);
 
+  const displayMobile = () => {
+    const handleDrawerOpen = () => setState((prevState) => ({ ...prevState, drawerOpen: true }));
+    const handleDrawerClose = () => setState((prevState) => ({ ...prevState, drawerOpen: false }));
+
+    return (
+      <>
+        <Toolbar id="mobile-tool-bar"
+          className={mobileToolbar}  
+          elevation={2}
+        >
+          <IconButton
+            id="mobile-icon-button"
+            {...{
+              color: 'black',
+              edge: 'start',
+              color: 'inherit',
+              'aria-label': 'menu',
+              'aria-haspopup': 'true',
+              onClick: handleDrawerOpen,
+            }}
+          >
+            <MenuIcon color="#000" className={menuIcon} />
+          </IconButton>
+          <Grid container
+            id="mobile-logo-container"
+            sx={{
+              alignItems: 'center',
+              border: '2px solid black',
+              height: '70px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+
+            <img src="logo2022.png" height={61} width={150} alt="NEPAccess Mobile Logo" />
+          </Grid>
+
+          <Drawer
+            id="drawer"
+            {...{
+              anchor: 'left',
+              open: drawerOpen,
+              onClose: handleDrawerClose,
+            }}
+          >
+            <div id="drawer-container" className={drawerContainer}>
+              {getDrawerChoices()}
+            </div>
+          </Drawer>
+
+          {/* <div>{getMenuButtons()}</div> */}
+
+        </Toolbar>
+        <div id="callout-card-container">
+          <>
+            <SearcherLanding />
+            <CalloutContainer />
+          </>
+        </div>
+      </>
+    );
+  };
+
+  const getDrawerChoices = () => {
+    return headersData.map(({ label, href }, idx) => {
+      return (
+        <Link
+          {...{
+            component: RouterLink,
+            to: href,
+            color: 'inherit',
+            style: { textDecoration: 'none' },
+            key: label,
+          }}
+          xs={{
+            color: 'black',
+            fontWeight: 600,
+          }}
+        >
+          <MenuItem
+            xs={{
+              color: 'black',
+            }}
+            className="menu-item"
+          >
+            {label}
+
+          </MenuItem>
+          <Divider />
+        </Link>
+      );
+    });
+  };
+
+  // const logoBackDrop = (
+  //   <img src="url('logo2022.png')" alt="NEPAccess Logo" />
+  // );
   const displayDesktop = (props) => {
     const role = 'user';
     const loggedInDisplay = 'none';
@@ -205,7 +314,7 @@ export default function HeaderNav() {
           <Box
             id="desktop-logo-box"
             xs={{
-              height: '102px',
+              height: '50px',
               width: '200px',
               // border: '3px solid red',
               // backgroundColor: 'red',
@@ -274,95 +383,22 @@ export default function HeaderNav() {
                 </div>
               </span>
             </Container>
+
           </Container>
         </Toolbar>
-        <Landing />
+        {/* <Landing /> */}
+        <Container id='mobile-content-container'>
+          <Container id="mobile-search-container">
+            <SearcherLanding />
+          </Container>
+
+          <Container id="mobile-call-out-container">
+            <CalloutContainer />
+          </Container>
+        </Container>
       </>
     );
   };
-
-  const displayMobile = () => {
-    const handleDrawerOpen = () => setState((prevState) => ({ ...prevState, drawerOpen: true }));
-    const handleDrawerClose = () => setState((prevState) => ({ ...prevState, drawerOpen: false }));
-
-    return (
-      <>
-        <Toolbar id="mobile-tool-bar" className="muiAppBar">
-          <h4>Mobile Toolbar</h4>
-          <IconButton
-            id="mobile-icon-button"
-            {...{
-              color: 'black',
-              edge: 'start',
-              color: 'inherit',
-              'aria-label': 'menu',
-              'aria-haspopup': 'true',
-              onClick: handleDrawerOpen,
-            }}
-          >
-            <MenuIcon color="#000" className={menuIcon} />
-          </IconButton>
-
-          <Drawer
-            id="drawer"
-            {...{
-              anchor: 'left',
-              open: drawerOpen,
-              onClose: handleDrawerClose,
-            }}
-          >
-            <div id="drawer-container" className={drawerContainer}>
-              {getDrawerChoices()}
-            </div>
-            <div id=""></div>
-          </Drawer>
-
-          {/* <div>{getMenuButtons()}</div> */}
-          <div id="mobile-landing-container">
-            <>
-              <Landing />
-            </>
-          </div>
-        </Toolbar>
-      </>
-    );
-  };
-
-  const getDrawerChoices = () => {
-    return headersData.map(({ label, href },idx) => {
-      return (
-        <Link
-          {...{
-            component: RouterLink,
-            to: href,
-            color: 'inherit',
-            style: { textDecoration: 'none' },
-            key: label,
-          }}
-          xs={{
-            color: 'black',
-            fontWeight: 600,
-          }}
-        >
-          <MenuItem
-            xs={{
-              color: 'black',
-            }}
-            className="menu-item"
-          >
-{label}                        
-
-          </MenuItem>
-          <Divider/>
-        </Link>
-      );
-    });
-  };
-
-  // const logoBackDrop = (
-  //   <img src="url('logo2022.png')" alt="NEPAccess Logo" />
-  // );
-
   const getMenuButtons = () => {
     return headersData.map(({ label, href }) => {
       return (
@@ -380,10 +416,10 @@ export default function HeaderNav() {
       );
     });
   };
-
+  /* RETURN of the main function */
   return (
-    <Paper id="mobile-paper-container">
-      <AppBar id="mobile-appbar" className={header}>
+    <Paper id="header-root-paper-container" elevation={2}>
+      <AppBar elevation={1} className={muiAppBar}  id="header-root-appbar">
         {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>
     </Paper>
@@ -399,7 +435,9 @@ export function DesktopNavLinks() {
   const [role, setRole] = useState('user');
   return (
     <>
-      <div id="desktop-landing-container"><Landing /></div>
+      <div id="desktop-landing-container">
+        <Landing />
+      </div>
     </>
   );
 }

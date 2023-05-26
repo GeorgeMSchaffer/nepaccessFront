@@ -29,24 +29,27 @@ export default function CalloutContainer(props) {
   const cardWidth = cardCount % 2 ? '50%' : '100%';
 
   return (
-    <Paper elevation={0} sx={{ padding: '1.5em', backgroundColor: 'transparent' }}>
+    <Paper id="callout-paper-container" elevation={0} 
+        sx={{ padding: '1.5em', backgroundColor: 'transparent' }}>
       <Grid
+        id="callout-grid-container"
         container
-        spacing={2}
-        flexWrap={'wrap'}
+        spacing={1}
+        flexWrap={'no-wrap'}
         sx={{
           flexGrow: 1,
           flexDirection: 'row',
-          alignItems: 'stretch',
+          alignItems: 'center',
         }}
       >
         {cards.map((card, idx) => {
           return (
-            <Grid item xs={12} md={6} lg={4}>
+            <Grid className='card-item' key={idx} item xs={12} md={6} lg={4}>
               <CalloutCard
                 sx={{
-                  height: '100%',
+                  // height: '100%',
                 }}
+                id={'callout-card-' + idx}
                 key={idx}
                 header={card.header}
                 content={card.content}

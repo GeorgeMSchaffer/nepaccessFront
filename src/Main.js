@@ -82,6 +82,7 @@ import Navbar from './Navbar';
 import { Height } from '@mui/icons-material';
 import DrawerComponent from './Drawer';
 import HeaderNav from './HeaderNav';
+import CalloutContainer from './CalloutContainer';
 
 const _ = require('lodash');
 
@@ -102,10 +103,11 @@ const classes = makeStyles((theme) => ({
   toolbar: {
     backgroundColor: 'transparent',
     height: '400px',
+    border: '3px solid red',
   },
   headerContainer: {
     backgroundColor: 'transparent',
-    height: '102px',
+    height: '100%',
   },
   navBarContainer: {
     backgroundColor: 'red',
@@ -113,7 +115,6 @@ const classes = makeStyles((theme) => ({
     border: '5px solid red',
   },
   navContainer: {
-    backgroundColor: '#111',
     border: '5px solid red',
     flexGrow: 1,
     height: '75px',
@@ -259,7 +260,7 @@ class Main extends React.Component {
   getHeaderCss = () => {
     let headerCss = 'no-select';
     if (!this.state.currentPage || this.state.currentPage === '/') {
-      // headerCss += ' landing-header';
+      headerCss += ' landing-header';
     }
     return headerCss;
   };
@@ -286,10 +287,8 @@ class Main extends React.Component {
 
 		<HeaderNav/>
         {this.showMenuItems()}
+      <Landing/>
 
-		<div className="main-container">
-			stuuuuasdudwsaasddsa
-		</div>
       </>
     );
   }
@@ -299,43 +298,8 @@ class Main extends React.Component {
       <>
 
 	  <HeaderNav/>
-      	<span
-	        id="admin-span"
-	        hidden={!this.state.role || this.state.role === 'user'}
-	        className={this.state.loggedInDisplay + ' right-nav-item logged-in'}
-	      >
-	        <div id="admin-dropdown" className="main-menu-link dropdown">
-	          <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
-	            Admin
-	          </Link>
-	          <i className="fa fa-caret-down"></i>
-	          <div className="dropdown-content">
-	            <Link to="/admin" hidden={!(this.state.role === 'admin')}>
-	              Admin Panel
-	            </Link>
-	            <Link
-	              to="/importer"
-	              hidden={!(this.state.role === 'curator' || this.state.role === 'admin')}
-	            >
-	              Import New Documents
-	            </Link>
-	            <Link
-	              to="/adminFiles"
-	              hidden={!(this.state.role === 'curator' || this.state.role === 'admin')}
-	            >
-	              Find Missing Files
-	            </Link>
-	            <Link to="/approve">Approve Users</Link>
-	            <Link to="/pre_register">Pre-Register Users</Link>
-	            <Link to="/interaction_logs">Interaction Logs</Link>
-	            <Link to="/search_logs">Search Logs</Link>
-	            <Link to="/abouthelpcontents">Database Contents</Link>
-	            <Link to="/stats">Content Statistics</Link>
-	            <Link to="/stat_counts">Stat Counts</Link>
-	            <Link to="/surveys">Surveys</Link>
-	          </div>
-	        </div>
-	      </span>
+    <Landing/>
+      	
       </>
     );
   };
