@@ -418,7 +418,7 @@ export default function HeaderNav() {
   };
   /* RETURN of the main function */
   return (
-    <Paper id="header-root-paper-container" elevation={2}>
+    <Paper id="header-root-paper-container" color='#A8B9C0' elevation={2}>
       <AppBar elevation={1} className={muiAppBar}  id="header-root-appbar">
         {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>
@@ -436,7 +436,8 @@ export function DesktopNavLinks() {
   return (
     <>
       <div id="desktop-landing-container">
-        <Landing />
+      {/* <h1>Landing</h1>
+        <Landing /> */}
       </div>
     </>
   );

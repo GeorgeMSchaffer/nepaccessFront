@@ -118,8 +118,7 @@ span.glow {
 }
 
 #header.landing-header {
-    /* background: rgb(151,171,178) !important; */
-    background: none;
+    background: rgb(151,171,178) !important;
     -webkit-transition: background 0.6s; /* Safari */
     transition: background 0.6s;
 }
@@ -144,7 +143,7 @@ span.glow {
     /* height: 170px; */
     min-height: 40px;
     max-height: 300px;
-
+    background-color: #F1D40A !important;
     /* Start search bar header text on left side */
     text-align: left;
     
