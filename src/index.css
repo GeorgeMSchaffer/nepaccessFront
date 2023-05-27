@@ -31,7 +31,12 @@ body {
   /* background: #FBFBF6; */
   background: #F8F9FA;
 }
+#header-root-app-bar{
+    background-color: #C4C4C4 !important;
+    background-image: url(assets/home-page-image_9-21-22.jpg) !important;
+    background-repeat: 'no-repeat';
 
+}
 #paper-root{
     background-color: #C4C4C4;
 }

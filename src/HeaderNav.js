@@ -88,6 +88,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '',
     height: '105px',
     justifyItems: 'center',
+    background: '#abbdc4',
 
     // backgroundImage: 'url("logo2022.png")',
   },
@@ -103,6 +104,7 @@ const useStyles = makeStyles(() => ({
 
   muiAppBar: {
     backgroundColor: '#abbdc4',
+    background: '#abbdc4',
     height: '50px',
     display: 'block',
     width: '100%',
@@ -305,10 +307,7 @@ export default function HeaderNav() {
           id="nav-toolbar"
           className={toolbar}
           xs={{
-            backgroundImage: 'url("logo2022.png")',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'contain',
-            height: '105px',
+            backgroundColor: 'gray',
           }}
         >
           <Box

@@ -299,7 +299,9 @@ import {
           <Toolbar
             id="nav-toolbar"
             className={toolbar}
+            color="#a0b6c1"
             xs={{
+            backgroundColor: '#a0b6c1',
               backgroundImage: 'url("logo2022.png")',
               backgroundRepeat: 'no-repeat',
               backgroundSize: 'contain',
@@ -415,7 +417,9 @@ import {
     return (
       <Paper id="paper-root" backgroundColor="#a0b6c1" 
        elevation={2}>
-        <AppBar elevation={1}  id="header-root-appbar" > 
+        <AppBar elevation={1} color='##a0b6c1'  id="header-root-app-bar"  sx={{
+            background: '#a0b6c1',
+        }}> 
         <MediaQuery maxWidth={960}>         
            {displayMobile()}
            </MediaQuery>
