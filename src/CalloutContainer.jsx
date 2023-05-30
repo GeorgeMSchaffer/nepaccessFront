@@ -25,8 +25,6 @@ const cards = [
   },
 ];
 export default function CalloutContainer(props) {
-  const cardCount = 5;
-  const cardWidth = cardCount % 2 ? '50%' : '100%';
 
   return (
     <Paper id="callout-paper-container" elevation={0} 

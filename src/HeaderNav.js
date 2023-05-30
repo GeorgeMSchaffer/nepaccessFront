@@ -301,6 +301,13 @@ export default function HeaderNav() {
     const loggedIn = false;
     const headerLandingCss = ''; //props.headerLandingCss || '';
     const currentPage = ''; //props.currentPage || '';
+      const dropDownOptions = [
+        'About NEPAccess', 'Media','people'
+      ]
+      const onDropdownSelect(evt){
+        console.log('DROPDOWN EVT',evt)
+        evt.preventDefaults()
+      }
     return (
       <>
         <Toolbar
@@ -348,7 +355,10 @@ export default function HeaderNav() {
               <MenuItem className={navLink}>Search Tips</MenuItem>
               <MenuItem className={navLink}>Availble Files</MenuItem>
               <MenuItem className={navLink}>About NEPA</MenuItem>
-              <MenuItem className={navLink}>About NEPAccess</MenuItem>
+              <MenuItem className={navLink}>
+                  {/* About NEPAccess */}
+              <Dropdown options={dropdownOptions} onChange={(evt)=> this.onDropdownSelect(evt)} value={dropdownOptions[0]}/>;
+              </MenuItem>
               <MenuItem className={navLink}>Contact</MenuItem>
               <span
                 id="admin-span"

@@ -216,7 +216,6 @@ class Main extends React.Component {
         // For landing only
         if(this.state.currentPage && this.state.currentPage === '/') {
             let landingStyle = "";
-
             const position = window.pageYOffset;
 
             if (position > 100) {

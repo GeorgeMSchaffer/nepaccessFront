@@ -10,7 +10,9 @@ import SearcherLanding from './SearcherLanding.js';
 import './User/login.css';
 
 import IframeResizer from 'iframe-resizer-react';
-
+import Media from './iframes/Media';
+import { Grid } from '@material-ui/core';
+import CalloutContainer from './CalloutContainer';
 class Landing extends React.Component {
 
     constructor(props) {
@@ -45,30 +47,33 @@ class Landing extends React.Component {
                 </Helmet>
                 <MediaQuery minWidth={768}>
                 <div id="landing-images">
-                    <div id="headline" className="no-select cursor-default">
-                        <div id="landing-headline-container">
-                            <h1 id="landing-headline-left">
-                                <span className="glow">
-                                    Fulfilling NEPA’s Promise Through the Power of Data Science
-                                </span>
-                            </h1>
-                            <h2 id="landing-headline-right">
-                                <span className="glow">
-                                    Help grow our community of knowledge and put our information infrastructure to work for you.
-                                </span>
-                            </h2>
-                        </div>
-            
-                        <SearcherLanding 
-                            id="rawInput"
-                            onChange={this.handleChange}
-                            onClick={this.handleClick}
-                            value={this.state.rawInput}
-                        />
+                        <Grid container id="headline" className="no-select cursor-default">
+                            <Grid item id="landing-headline-container">
+                                <h1 id="landing-headline-left">
+                                    <span className="glow">
+                                        Fulfilling NEPA’s Promise Through the Power of Data Science
+                                    </span>
+                                </h1>
+                                <h2 id="landing-headline-right">
+                                    <span className="glow">
+                                        Help grow our community of knowledge and put our information infrastructure to work for you.
+                                    </span>
+                                </h2>
+                               
+                            </Grid>
+                            <SearcherLanding 
+                                    id="rawInput"
+                                    onChange={this.handleChange}
+                                    onClick={this.handleClick}
+                                    value={this.state.rawInput}
+                                />
+                    </Grid>
                     </div>
-                </div>
-   </MediaQuery>
-
+   
+                    </MediaQuery>    
+            
+                        
+               <CalloutContainer/>
                 <IframeResizer
                     // log
                     data-nosnippet

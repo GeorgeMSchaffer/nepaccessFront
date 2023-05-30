@@ -11,12 +11,7 @@
     ],
     ["module-resolver", {
       "root": ["./src"],
-      "alias": {
-        "database": "./src/database",
-        "localization": "./localization",
-        "utils": "./utils"
-      }
-    }]
+          }]
   ],
   "sourceMaps": true
 }

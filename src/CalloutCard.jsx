@@ -17,7 +17,7 @@ export default function CalloutCard(props) {
 //          backgroundColor: //theme.palette.grey[150],
           "&:hover": {
  //           backgroundColor: //theme.palette.grey[200],
-            boxShadow: '0px 4px 8px rgba(0.5, 0.5, 0.5, 0.15)',
+            //boxShadow: '0px 4px 8px rgba(0.5, 0.5, 0.5, 0.15)',
             cursor: "pointer",
             "& .addIcon": {
               color: "purple"
