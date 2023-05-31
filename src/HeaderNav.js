@@ -1,29 +1,25 @@
 import {
   AppBar,
-  Toolbar,
-  Typography,
-  makeStyles,
+  Box,
   Button,
-  IconButton,
+  Container,
+  Divider,
   Drawer,
+  Grid,
+  IconButton,
   Link,
   MenuItem,
   Paper,
-  Box,
-  Container,
-  Divider,
-  Grid,
-  useMediaQuery,
+  Toolbar,
+  makeStyles
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { withMediaQuery } from 'react-responsive';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import './index.css';
-import { Helmet } from 'react-helmet';
-import Landing from './Landing';
+import NavDropdown from './';
 import CalloutContainer from './CalloutContainer';
 import SearcherLanding from './SearcherLanding';
+import './index.css';
 const headersData = [
   {
     label: 'Search',
@@ -357,7 +353,7 @@ export default function HeaderNav() {
               <MenuItem className={navLink}>About NEPA</MenuItem>
               <MenuItem className={navLink}>
                   {/* About NEPAccess */}
-              <Dropdown options={dropdownOptions} onChange={(evt)=> this.onDropdownSelect(evt)} value={dropdownOptions[0]}/>;
+              <NavDropdown/>
               </MenuItem>
               <MenuItem className={navLink}>Contact</MenuItem>
               <span

@@ -1,23 +1,34 @@
-import * as React from 'react';
+import { Divider } from '@mui/material';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import './index.css'
+import * as React from 'react';
+import './index.css';
 export default function NavDropdown(props) {
-  console.log('NavDropdown props', props);
-  const { title, options } = props;
+  const { title, options,anchor } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
+//  (anchor) ? setAnchorEl(anchor) : setAnchorEl(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
+    console.log('handleClick', event.currentTarget);
     setAnchorEl(event.currentTarget);
     event.preventDefault();
   };
   const handleClose = (event) => {
+    console.log('handleClose', event.currentTarget);
     setAnchorEl(null);
     event.preventDefault();
   };
-  const onHover=(evt)=>{
-    console.log('onHover', evt)
+
+  const onMouseEnter=(evt)=>{
+    console.log('onMouseEnter', evt.currentTarget);
+    setAnchorEl(evt.currentTarget);
+    evt.preventDefault();
+  }
+  const onMouseLeave=(evt)=>{
+    console.log('onMouseOut', evt.currentTarget);
+    setAnchorEl(evt.currentTarget);
+    evt.preventDefault();
   }
  
   return (
@@ -29,6 +40,9 @@ export default function NavDropdown(props) {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        // onMouseOver={(evt) => onMouseEnter(evt)}
         sx={{
             dropShadow: '3px',
               textDecoration: 'none',
@@ -39,10 +53,9 @@ export default function NavDropdown(props) {
               fontWeight: 'bold',
               fontSize: '1em',
               lineHeight: '25px',
-              textDecoration: 'none',
               color: '#000000',
 //              textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-              bgcolor: 'transparent',
+//              bgcolor: 'transparent',
               "&:hover": {
   //           backgroundColor: //theme.palette.grey[200],
               // boxShadow: '0px 1px 1px rgba(0.5, 0.5, 0.5, 0.15)',
@@ -60,16 +73,22 @@ export default function NavDropdown(props) {
         id="dropdown-menu"
         anchorEl={anchorEl}
         open={open}
-        onHover={(evt) => onHover(evt)}
-        onClick={(evt) => handleClick(evt)}
-        onClose={(evt) => handleClose(evt)}
+        onMouseOver={onMouseEnter} 
+        onMouseOut={onMouseLeave}
+        onClick={handleClick}
+        onClose={handleClose}
       >
         {options.map((option, index) => (
-          <MenuItem
-            key={`option-${index}`} onClick={handleClose}>
-
-            {option.name}
-          </MenuItem>
+          <span key={`menu-item-container-${index}`}>
+            <MenuItem
+              sx={{
+                width: 200,
+              }}
+              key={`option-${index}`}>
+              {option.name}
+            </MenuItem>
+            <Divider />
+          </span>
         ))}
       </Menu>
     </div>

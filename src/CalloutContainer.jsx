@@ -42,13 +42,12 @@ export default function CalloutContainer(props) {
       >
         {cards.map((card, idx) => {
           return (
-            <Grid className='card-item' key={idx} item xs={12} md={6} lg={4}>
+            <Grid className='card-item' key={`card-grid-${idx}`} item xs={12} md={6} lg={4}>
               <CalloutCard
                 sx={{
                   // height: '100%',
                 }}
-                id={'callout-card-' + idx}
-                key={idx}
+                id={`callout-card-${idx}`}
                 header={card.header}
                 content={card.content}
                 buttonText={card.buttonText}

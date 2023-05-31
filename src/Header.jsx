@@ -62,8 +62,9 @@ const headersData = [
   },
 ];
 const dropdownItems = [
-  { name: 'Media' },
-  { name: 'People' },
+  {name: 'About NEPAccess', href: '/about-nepaccess'},
+  { name: 'Media', href:'/media' },
+  { name: 'People', href:'/people' },
 ];
 
 
@@ -147,7 +148,7 @@ export default function HeaderNav() {
     navLink,
     menuIcon,
     mobileToolbar,
-    dropdowMenuItem
+
   } = useStyles();
 
   const [state, setState] = useState({
@@ -159,10 +160,14 @@ export default function HeaderNav() {
   // const isMobile = withMediaQuery({ maxWidth: 768 })
   const { mobileView, drawerOpen, dropdownOpen, dropdownValue } = state;
 
-  const onDropdownclick = (evt) => {
-    console.log('onDropdown Change', evt.value);
-
-    setState({ dropdownOpen: (dropdownOpen) ? false : true });
+  const onMouseOver=(evt)=>{
+    console.log('onMouseEnter', evt.currentTarget);
+//    setAnchorEl(evt.currentTarget);
+    evt.preventDefault();
+  }
+  const onMouseOut=(evt)=>{
+    console.log('onMouseOut', evt.currentTarget);
+ //   setAnchorEl(evt.currentTarget);
     evt.preventDefault();
   }
 
@@ -187,7 +192,7 @@ export default function HeaderNav() {
     const handleDrawerOpen = () => setState((prevState) => ({ ...prevState, drawerOpen: true }));
     const handleDrawerClose = () => setState((prevState) => ({ ...prevState, drawerOpen: false }));
 
-    return (
+    return ( 
       <>
         <Toolbar id="mobile-tool-bar"
           className={mobileToolbar}
@@ -328,7 +333,8 @@ export default function HeaderNav() {
               <MenuItem className={navLink}>Search Tips</MenuItem>
               <MenuItem className={navLink}>Available Files</MenuItem>
               <MenuItem className={navLink}>About NEPA</MenuItem>
-              <MenuItem className={navLink}><NavDropdown title="About NEPAccess" options={dropdownItems} /></MenuItem>
+              <MenuItem className={navLink}>
+                <NavDropdown title="About NEPAccess" options={dropdownItems} MouseOver={onMouseOver} onMouseOut={onMouseOut}  /></MenuItem>
               <MenuItem className={navLink}>Contact</MenuItem>
               <span
                 id="admin-span"
@@ -396,11 +402,9 @@ export default function HeaderNav() {
   };
   /* RETURN of the main function */
   return (
-    <Paper id="paper-root" backgroundColor="#a0b6c1"
+    <Paper id="paper-root"
       elevation={2}>
-      <AppBar elevation={1} color='##a0b6c1' id="header-root-app-bar" sx={{
-        background: '#a0b6c1',
-      }}>
+      <AppBar elevation={1} id="header-root-app-bar" color='transparent'>
         <MediaQuery maxWidth={767}>
           {displayMobile()}
           <SearcherLanding />
