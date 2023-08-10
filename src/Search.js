@@ -4,17 +4,17 @@ import SlidesIframe from './Tutorial/SlidesIframe.js';
 
 import axios from 'axios';
 
-import DatePicker from "react-datepicker";
 import Select from 'react-select';
+import DatePicker from "react-datepicker";
 
 import './css/tabulator.css';
 import "./search.css";
 import "./sidebar.css";
 import './survey.css';
 
-import Tippy from '@tippyjs/react';
 import "react-datepicker/dist/react-datepicker.css";
 import 'tippy.js/dist/tippy.css'; // optional
+import Tippy from '@tippyjs/react';
 
 import Globals from './globals.js';
 import persist from './persist.js';
@@ -46,7 +46,6 @@ class Search extends React.Component {
     // };
 
     constructor(props) {
-        console.log("🚀 ~ file: Search.js:49 ~ Search ~ constructor ~ props:", props)
         super(props);
 		this.state = {
             titleRaw: '',

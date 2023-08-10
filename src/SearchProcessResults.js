@@ -7,9 +7,10 @@ import SearchResultsMap from './SearchResultsMap.js';
 
 import Globals from './globals.js';
 
-import { ReactTabulator, reactFormatter } from 'react-tabulator';
-import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
+import { ReactTabulator } from 'react-tabulator';
+import { reactFormatter } from "react-tabulator";
 import 'react-tabulator/lib/styles.css'; // required styles
+import 'react-tabulator/lib/css/tabulator_site.min.css'; // theme
 
 import Tippy from '@tippyjs/react';
 
@@ -37,7 +38,6 @@ export default class SearchProcessResults extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log("🚀 ~ file: SearchProcessResults.js:41 ~ SearchProcessResults ~ constructor ~ props:", props)
         this.state = {
             showContext: true,
             size: 0,
