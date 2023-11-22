@@ -292,6 +292,7 @@ class Main extends React.Component {
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
                             <Link to="/about-nepaccess">About NEPAccess</Link>
+                            <Link to="/publications">Publications</Link>
                             <Link to="/media">
                                 Media
                             </Link>
