@@ -294,7 +294,7 @@ class Main extends React.Component {
                             <Link to="/about-nepaccess">About NEPAccess</Link>
                             <Link to="/publications">Publications</Link>
                             <Link to="/media">
-                                Media
+                                News
                             </Link>
                             <Link to="/people">People</Link>
                         </div>
