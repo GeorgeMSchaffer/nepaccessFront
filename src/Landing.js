@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import './index.css';
 import './landing.css';
@@ -27,9 +27,10 @@ class Landing extends React.Component {
     }
 
     handleClick(id, val){
+        console.log(`id, val ${this.state.rawInput}`,id, val);
       this.setState({ [id]: val }, () =>
         {
-          this.props.history.push('search?q='+this.state.rawInput);
+          //this.props.history.push('search?q='+this.state.rawInput);
         });
     }
 

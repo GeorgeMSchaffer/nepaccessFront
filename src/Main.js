@@ -59,25 +59,38 @@ import Surveys from './Surveys.js';
 import Excel from './Excel.js';
 import ImporterGeo from './ImporterGeo.js';
 import ImporterGeoLinks from './ImporterGeoLinks.js';
+//import RecordDetailsTab from './RecordDetailsTab'
+
 
 import Globals from './globals.js';
+import Search from './Search.js';
+//import { Link, Switch, Route, withRouter } from 'react-router-dom';
 
-import { Link, Switch, Route, withRouter } from 'react-router-dom';
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Link,
+    Redirect,
+    Switch,
+  } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
 import ImporterAlignment from './ImporterAlignment';
+import { Details } from '@material-ui/icons';
 
 const _ = require('lodash');
 
 class Main extends React.Component {
-    
+
     static propTypes = {
         location: PropTypes.object.isRequired
     }
 
     constructor(props){
         super(props);
+        console.log(`file: Main.js:87 ~ Main ~ constructor ~ props:`, props);
 
         this.state = {
             displayUsername: '',
@@ -131,7 +144,7 @@ class Main extends React.Component {
     check = () => { // check if logged in (JWT is valid and not expired)
         // let verified = false;
         // let checkURL = new URL('test/check', Globals.currentHost);
-        
+
         // axios.post(checkURL)
         // .then(response => {
         //     verified = response && response.status === 200;
@@ -151,12 +164,12 @@ class Main extends React.Component {
         //     });
         // });
         // console.log("Main check");
-        
+
     }
 
     // refresh() has a global listener so as to change the loggedIn state and then update the navbar
     // as needed, from child components
-    refresh(verified) { 
+    refresh(verified) {
         this.setState({
             loggedIn: verified.loggedIn
         }, () => {
@@ -182,7 +195,7 @@ class Main extends React.Component {
                 role: null
             });
         }
-        
+
         if(localStorage.username){
             this.setState({
                 displayUsername: localStorage.username
@@ -251,7 +264,7 @@ class Main extends React.Component {
                 </div>
 
                 <div id="top-menu" className="no-select">
-                    
+
                     {this.showMenuItems()}
 
                     <span id="profile-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
@@ -299,7 +312,7 @@ class Main extends React.Component {
                             <Link to="/people">People</Link>
                         </div>
                     </div>
-                    
+
                     {/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
                         Future
                     </Link> */}
@@ -308,60 +321,15 @@ class Main extends React.Component {
                     </Link>
 
                 </div>
-                
+
             </div>
-            <Switch>
-                <Route path="/profile" component={UserDetails}/>
-                {/* <Route path="/opt_out" component={OptOut}/> */}
-                <Route path="/login" component={Login}/>
-                <Route path="/register" component={Register}/>
-                <Route path="/pre_register" component={PreRegister}/>
-                <Route path="/forgotPassword" component={ForgotPassword}/>
-                <Route path="/reset" component={Reset}/>
-                <Route path="/logout" component={Logout}/>
-
-                <Route path="/search" component={App}/>
-                <Route path="/about-nepa" component={AboutNepa}/>
-                <Route path="/about-nepaccess" component={AboutNepaccess}/>
-                <Route path="/people" component={People}/>
-                <Route path="/search-tips" component={SearchTips}/>
-                <Route path="/available-documents" component={AvailableDocuments}/>
-                <Route path="/abouthelpcontents" component={AboutHelpContents}/>
-                <Route path="/stats" component={AboutStats}/>
-                <Route path="/media" component={Media}/>
-
-                <Route path="/contact" component={Contact}/>
-                <Route path="/future" component={Future}/>
-
-                <Route path="/record-details" component={RecordDetailsTab}/>
-                <Route path="/process-details" component={ProcessDetailsTab}/>
-                
-                <Route path="/importer" component={Importer}/>
-                <Route path="/adminFiles" component={AdminFiles}/>
-
-                <Route path="/iframes" component={Iframes} />
-                <Route path="/privacy-policy" component={PrivacyPolicy} />
-                <Route path="/disclaimer-terms-of-use" component={DisclaimerTermsOfUse} />
-                <Route path="/verify" component={Verify} />
-                <Route path="/approve" component={Approve} />
-                <Route path="/admin" component={Admin} />
-                <Route path="/pairs" component={Pairs}></Route>
-                <Route path="/pairs2" component={Pairs2}></Route>
-                <Route path="/pairs3" component={Pairs3}></Route>
-                <Route path="/search_logs" component={SearchLogs}></Route>
-                <Route path="/interaction_logs" component={InteractionLogs}></Route>
-                <Route path="/stat_counts" component={StatCounts}></Route>
-                <Route path="/surveys" component={Surveys}></Route>
-                <Route path="/excel" component={Excel}></Route>
-                
-                <Route path="/test" component={Test} />
-                <Route path="/search_test" component={SearchTest} />
-                <Route path="/up_geo" component={ImporterGeo} />
-                <Route path="/up_geo_links" component={ImporterGeoLinks} />
-                <Route path="/up_alignment" component={ImporterAlignment} />
-
-                <Route path="/" component={Landing}/>
-            </Switch>
+                <Routes>
+                <Route path="/record-details/*" element={<RecordDetailsTab/>}/>
+                <Route path="/process-details/*" element={<ProcessDetailsTab/>} />
+                <Route path="/search" exact element= {<App/>}/>
+                <Route path="/search/*" exact element= {<App/>}/>
+                <Route path="/" exact element={<Landing/>} />
+                </Routes>
         </div>
         )
     }
@@ -370,7 +338,7 @@ class Main extends React.Component {
 
         return (
             <span id="admin-span" hidden={(!this.state.role || this.state.role === 'user')} className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-                
+
                 <div id="admin-dropdown" className="main-menu-link dropdown">
                     <Link id="admin-button" className="main-menu-link drop-button" to="/importer">
                         Admin
@@ -395,7 +363,7 @@ class Main extends React.Component {
         );
     }
 
-    
+
     componentDidMount() {
         // Role config allows admin menu and options to work properly
         if(!this.state.role) {
@@ -423,4 +391,5 @@ class Main extends React.Component {
     }
 }
 
-export default withRouter(Main);
+//export default withRouter(Main);
+export default Main;

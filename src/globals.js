@@ -35,7 +35,7 @@ const draftTypeLabelsLower = ["draft",
     "third draft supplemental"];
 
 const Globals = {
-    currentHost: new URL('https://mis-jvinalappl1.microagelab.arizona.edu:8080/'),
+    currentHost: new URL('http://localhost:8080/'),
 
     listeners: {},
 
@@ -68,15 +68,17 @@ const Globals = {
     
     // Set up globals like axios default headers and base URL
     setUp() {
-        if(window.location.hostname === 'mis-jvinalappl1.microagelab.arizona.edu' || window.location.hostname === 'www.nepaccess.org') {
-            this.currentHost = new URL(window.location.protocol + 'mis-jvinalappl1.microagelab.arizona.edu:8080/');
+        if(window.location.hostname.includes('localhost') && window.location.protocol === 'https:' || window.location.hostname === 'www.nepaccess.org') {
+            this.currentHost = new URL(window.location.protocol + 'bighorn.sbs.arizona.edu:8080/');
         } else {
             this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/nepaBackend/');
-        } 
+        }
+        this.currentHost = new URL('http://localhost:8080/');
+        console.log(`file: globals.js:75 ~ setUp ~ this.currentHost:`, this.currentHost);
         // else if(window.location.hostname) {
         //     this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
         // }
-        
+
         axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
         axios.defaults.headers.common['X-Content-Type-Options'] = 'no-sniff';
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
@@ -145,7 +147,7 @@ const Globals = {
     },
     
     formatDate(date) {
-        var d = new Date(date),
+        var d = new Date(date), 
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
             year = d.getFullYear();
