@@ -122,6 +122,7 @@ class Main extends React.Component {
             if(verified) {
                 localStorage.role = response.data.toLowerCase();
                 this.setState({ role: response.data.toLowerCase(), loggedIn: true, anonymous: false }, () => {
+                    console.log('MAIN Refreshing Nav');
                     this.refreshNav();
                 });
             } else {
@@ -205,13 +206,14 @@ class Main extends React.Component {
 
 
     componentDidUpdate(prevProps) {
-        // console.log("Main update");
         if (this.props.location !== prevProps.location) {
-            this.onRouteChanged();
+            console.log(`file: Main.js:210 ~ Main ~ componentDidUpdate ~ prevProps:`, prevProps);
+            console.log(`file: Main.js:210 ~ Main ~ componentDidUpdate ~ this.props:`, this.props);
+            this.onRouteChanged();xf
         }
     }
     onRouteChanged() {
-        // console.log("Route changed",this.props.location.pathname);
+        console.log("Route changed",this.props.location.pathname);
         this.setState({
             currentPage: this.props.location.pathname
         });
@@ -268,68 +270,110 @@ class Main extends React.Component {
                     {this.showMenuItems()}
 
                     <span id="profile-span" className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-                        <Link className="top-menu-link" to="/profile">Profile</Link>
+                        <Link className="top-menu-link" to="/#/profile">Profile</Link>
                     </span>
                     <span id="login-span" className={this.state.loggedOutDisplay + " logged-out"}>
-                        <Link className="top-menu-link" to="/login">Log in</Link>
+                        <Link className="top-menu-link" to="/#/login">Log in</Link>
                     </span>
                     <span id="register-span" className={this.state.loggedOutDisplay + " right-nav-item logged-out"}>
-                        <Link className="top-menu-link" to="/register">Register</Link>
+                        <Link className="top-menu-link" to="/#/register">Register</Link>
                     </span>
                     <span className={this.state.loggedInDisplay + " right-nav-item logged-in"}>
-                        <Link className="top-menu-link" to="/logout">Log out</Link>
+                        <Link className="top-menu-link" to="/#/logout">Log out</Link>
                     </span>
                 </div>
 
                 <div id="main-menu">
-                    <Link currentpage={(this.state.currentPage==="/search").toString()} className="main-menu-link" to="/search">
+                    <Link currentpage={(this.state.currentPage==="/#/search").toString()} className="main-menu-link" to="/search">
                         Search
                     </Link>
                     <div id="about-dropdown-2" className="main-menu-link dropdown">
-                        <Link currentpage={(this.state.currentPage==="/search-tips" || this.state.currentPage==="/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/search-tips">
+                        <Link currentpage={(this.state.currentPage==="/#/search-tips" || this.state.currentPage==="/available-documents").toString()} id="about-button-2" className="main-menu-link drop-button" to="/#/search-tips">
                             Search Tips
                         </Link>
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
-                            <Link to="/search-tips">Search Tips</Link>
-                            <Link to="/available-documents">Available Files</Link>
+                      q      <Link to="/#/search-tips">Search Tips</Link>
+                            <Link to="/#/available-documents">Available Files</Link>
                         </div>
                     </div>
-                    <Link currentpage={(this.state.currentPage==="/about-nepa").toString()} className="main-menu-link" to="/about-nepa">
+                    <Link currentpage={(this.state.currentPage==="/#/about-nepa").toString()} className="main-menu-link" to="/#/about-nepa">
                         About NEPA
                     </Link>
                     <div id="about-dropdown" className="main-menu-link dropdown">
-                        <Link currentpage={(this.state.currentPage==="/about-nepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
+                        <Link currentpage={(this.state.currentPage==="/#/about-nepaccess" || this.state.currentPage==="/people" || this.state.currentPage==="/media").toString()} id="about-button" className="main-menu-link drop-button" to="/#/about-nepaccess">
                             About NEPAccess
                         </Link>
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
-                            <Link to="/about-nepaccess">About NEPAccess</Link>
-                            <Link to="/publications">Publications</Link>
-                            <Link to="/media">
+                            <Link to="/#/about-nepaccess">About NEPAccess</Link>
+                            <Link to="/#/publications">Publications</Link>
+                            <Link to="/#/media">
                                 News
                             </Link>
-                            <Link to="/people">People</Link>
+                            <Link to="/#/people">People</Link>
                         </div>
                     </div>
 
                     {/* <Link currentpage={(this.state.currentPage==="/future").toString()} className="main-menu-link" to="/future">
                         Future
                     </Link> */}
-                    <Link currentpage={(this.state.currentPage==="/contact").toString()} className="main-menu-link" to="/contact">
+                    <Link currentpage={(this.state.currentPage==="/#/contact").toString()} className="main-menu-link" to="/#/contact">
                         Contact
                     </Link>
 
                 </div>
 
             </div>
-                <Routes>
-                <Route path="/record-details/*" element={<RecordDetailsTab/>}/>
-                <Route path="/process-details/*" element={<ProcessDetailsTab/>} />
-                <Route path="/search" exact element= {<App/>}/>
-                <Route path="/search/*" exact element= {<App/>}/>
-                <Route path="/" exact element={<Landing/>} />
-                </Routes>
+                    {/* <Route path="/profile" component={UserDetails}/>
+                    <Route path="/login" element={Login}/>
+                    <Route path="/register" element={Register}/>
+                    <Route path="/pre_register" element={PreRegister}/>
+                    <Route path="/forgotPassword" element={ForgotPassword}/>
+                    <Route path="/reset" element={Reset}/>
+                    <Route path="/logout" element={Logout}/>
+    
+                    <Route path="/search" element={App}/>
+                    <Route path="/about-nepa" element={AboutNepa}/>
+                    <Route path="/about-nepaccess" component={AboutNepaccess}/>
+                    <Route path="/people" element={People}/>
+                    <Route path="/search-tips" element={SearchTips}/>
+                    <Route path="/available-documents" element={AvailableDocuments}/>
+                    <Route path="/abouthelpcontents" component={AboutHelpContents}/>
+                    <Route path="/stats" element={AboutStats}/>
+                    <Route path="/media" element={Media}/>
+    
+                    <Route path="/contact" element={Contact}/>
+                    <Route path="/future" element={Future}/>
+    
+                    <Route path="/record-details" element={RecordDetailsTab}/>
+                    <Route path="/process-details" element={ProcessDetailsTab}/>
+                    
+                    <Route path="/importer" element={Importer}/>
+                    <Route path="/adminFiles" element={AdminFiles}/>
+    
+                    <Route path="/iframes" element={Iframes} />
+                    <Route path="/privacy-policy" element={PrivacyPolicy} />
+                    <Route path="/disclaimer-terms-of-use" element={DisclaimerTermsOfUse} />
+                    <Route path="/verify" element={Verify} />
+                    <Route path="/approve" element={Approve} />
+                    <Route path="/admin" element={Admin} />
+                    <Route path="/pairs" element={Pairs}></Route>
+                    <Route path="/pairs2" element={Pairs2}></Route>
+                    <Route path="/pairs3" element={Pairs3}></Route>
+                    <Route path="/search_logs" element={SearchLogs}></Route>
+                    <Route path="/interaction_logs" element={InteractionLogs}></Route>
+                    <Route path="/stat_counts" element={StatCounts}></Route>
+                    <Route path="/surveys" element={Surveys}></Route>
+                    <Route path="/excel" element={Excel}></Route>
+                    
+                    <Route path="/test" element={Test} />
+                    <Route path="/search_test" element={SearchTest} />
+                    <Route path="/up_geo" element={ImporterGeo} />
+                    <Route path="/up_geo_links" element={ImporterGeoLinks} />
+                    <Route path="/up_alignment" element={ImporterAlignment} />
+     */}
+                        
         </div>
         )
     }
@@ -348,14 +392,14 @@ class Main extends React.Component {
                         <Link to="/admin" hidden={!(this.state.role === 'admin')}>Admin Panel</Link>
                         <Link to="/importer" hidden={!(this.state.role === 'curator' || this.state.role === 'admin')}>Import New Documents</Link>
                         <Link to="/adminFiles" hidden={!(this.state.role === 'curator' || this.state.role === 'admin')}>Find Missing Files</Link>
-                        <Link to="/approve">Approve Users</Link>
-                        <Link to="/pre_register">Pre-Register Users</Link>
-                        <Link to="/interaction_logs">Interaction Logs</Link>
-                        <Link to="/search_logs">Search Logs</Link>
-                        <Link to="/abouthelpcontents">Database Contents</Link>
-                        <Link to="/stats">Content Statistics</Link>
-                        <Link to="/stat_counts">Stat Counts</Link>
-                        <Link to="/surveys">Surveys</Link>
+                        <Link to="/#/approve">Approve Users</Link>
+                        <Link to="/#/pre_register">Pre-Register Users</Link>
+                        <Link to="/#/interaction_logs">Interaction Logs</Link>
+                        <Link to="/#/search_logs">Search Logs</Link>
+                        <Link to="/#/abouthelpcontents">Database Contents</Link>
+                        <Link to="/#/stats">Content Statistics</Link>
+                        <Link to="/#/stat_counts">Stat Counts</Link>
+                        <Link to="/#/surveys">Surveys</Link>
                     </div>
                 </div>
 
@@ -366,6 +410,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         // Role config allows admin menu and options to work properly
+        console.log('MAIN HAS MOUNTED w/ PROPS:', this.props);
         if(!this.state.role) {
             if(localStorage.role) {
                 this.setState({ role: localStorage.role });
@@ -376,6 +421,7 @@ class Main extends React.Component {
         }
 
         Globals.registerListener('refresh', this.refresh);
+        console.log('Active URL',window.location);
         this.setState({
             currentPage: window.location.pathname
         });

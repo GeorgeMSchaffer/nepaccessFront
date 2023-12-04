@@ -14,6 +14,7 @@ class Landing extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log(`file: Landing.js:17 ~ Landing ~ constructor ~ props:`, props);
         this.state = {
             rawInput: '',
             render: 'landing'
@@ -27,10 +28,11 @@ class Landing extends React.Component {
     }
 
     handleClick(id, val){
-        console.log(`id, val ${this.state.rawInput}`,id, val);
+        console.log(`Setting ID: ${id}, to Val : ${val} for RawInput: ${this.state.rawInput}`,id, val, this.props.history);
+        console.log(this.props.history);
       this.setState({ [id]: val }, () =>
         {
-          //this.props.history.push('search?q='+this.state.rawInput);
+          this.props.history.pushState('search?q='+this.state.rawInput,this.state);
         });
     }
 
