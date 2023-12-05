@@ -67,6 +67,8 @@ import { Link, Switch, Route, withRouter } from 'react-router-dom';
 import PropTypes from "prop-types";
 
 import ImporterAlignment from './ImporterAlignment';
+import Vision from './iframes/Vision';
+import Publications from './iframes/Publications';
 
 const _ = require('lodash');
 
@@ -292,9 +294,10 @@ class Main extends React.Component {
                         <i className="fa fa-caret-down"></i>
                         <div className="dropdown-content">
                             <Link to="/about-nepaccess">About NEPAccess</Link>
+                            <Link to="/vision">Vision</Link>
                             <Link to="/publications">Publications</Link>
                             <Link to="/media">
-                                News
+                                News & Media
                             </Link>
                             <Link to="/people">People</Link>
                         </div>
@@ -359,7 +362,8 @@ class Main extends React.Component {
                 <Route path="/up_geo" component={ImporterGeo} />
                 <Route path="/up_geo_links" component={ImporterGeoLinks} />
                 <Route path="/up_alignment" component={ImporterAlignment} />
-
+                <Route path="/vision" component={Vision} />
+                <Route path="/publications" component={Publications} />
                 <Route path="/" component={Landing}/>
             </Switch>
         </div>
