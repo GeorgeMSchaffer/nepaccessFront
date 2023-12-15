@@ -68,7 +68,6 @@ const Globals = {
     //
     // Set up globals like axios default headers and base URL
     setUp() {
-<<<<<<< Updated upstream
         if((window.location.hostname.includes('localhost') && window.location.protocol === 'https:') || window.location.hostname === 'www.nepaccess.org') {
             this.currentHost = new URL(window.location.protocol + 'bighorn.sbs.arizona.edu:8080/');
         } else {
@@ -78,23 +77,6 @@ const Globals = {
         this.currentHost = new URL('https://bighorn.sbs.arizona.edu:8080/');
         //        this.currentHost = new URL('http://localhost:8080/');
         console.log(`file: globals.js:75 ~ setUp ~ this.currentHost:`, this.currentHost);
-=======
-        console.log('WINDOW.LOCATION',window.location);
-        if(window.location.hostname === 'localhost' && window.location.protocol === 'http:') {
-            this.currentHost = new URL(window.location.protocol + 'localhost:8080/');
-        } 
-        else if (window.location.protocol === 'https:') {
-            this.currentHost = new URL('https://bighorn.sbs.arizona.edu:8443/nepaBackend/');
-        }
-        else if (window.location.hostname === 'www.nepaccess.org') {
-            this.currentHost = new URL('https://bighorn.sbs.arizona.edu:8443/nepaBackend/');            
-        }
-        else{
-            this.currentHost = new URL('https://bighorn.sbs.arizona.edu:8443/nepaBackend/');
-        }
-        console.log(`file: globals.js:81 ~ setUp ~ this.currentHost:`, this.currentHost);
-//        this.currentHost = new URL('http://localhost:8080/');
->>>>>>> Stashed changes
         // else if(window.location.hostname) {
         //     this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
         // }
