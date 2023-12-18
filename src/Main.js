@@ -69,7 +69,7 @@ import RouteError from './components/Router/RouterError';
 
 //import { Link, Switch, Route, withRouter } from 'react-router-dom';
 
-import { BrowserRouter, Route,Link,Routes} from 'react-router-dom';
+import { BrowserRouter, Route,Link,Routes,Navigate} from 'react-router-dom';
 
 import PropTypes from "prop-types";
 
@@ -97,7 +97,7 @@ class Main extends React.Component {
             role: null,
             currentPage: "",
             anonymous: false,
-            headerLandingCss: ""
+            headerLandingCss: " landing-header"
         };
 
         this.refresh = this.refresh.bind(this);
@@ -202,6 +202,7 @@ class Main extends React.Component {
 
 
     componentDidUpdate(prevProps) {
+        console.log(`file: Main.js:205 ~ Main ~ componentDidUpdate ~ prevProps:`, prevProps);
         if (this.props.location !== prevProps.location) {
             console.log(`file: Main.js:210 ~ Main ~ componentDidUpdate ~ prevProps:`, prevProps);
             console.log(`file: Main.js:210 ~ Main ~ componentDidUpdate ~ this.props:`, this.props);
@@ -217,12 +218,15 @@ class Main extends React.Component {
 
     getHeaderCss = () => {
         let headerCss = "no-select";
+        console.log('getHeaderCss!!!!',headerCss, 'STATE:',this.state);
         if (!this.state.currentPage || this.state.currentPage === '/') {
             headerCss += " landing-header";
         }
+        console.log(`file: Main.js:223 ~ Main ~ headerCss:`, headerCss);
         return headerCss;
     }
     handleScroll = (e) => {
+
         // For landing only
         if (this.state.currentPage && this.state.currentPage === '/') {
             let landingStyle = "";
@@ -261,7 +265,7 @@ class Main extends React.Component {
                         </div>
                     </div>
 
-                    <div id="top-menu" className="no-select">
+                    <div id="top-menu"className="no-select">
 
                         {this.showMenuItems()}
 
@@ -279,7 +283,7 @@ class Main extends React.Component {
                         </span>
                     </div>
 
-                    <div id="main-menu">
+                    <div id="main-menu" >
                         <Link currentpage={(this.state.currentPage === "/search").toString()} className="main-menu-link" to="/search">
                             Search
                         </Link>
@@ -347,7 +351,7 @@ class Main extends React.Component {
                                 <Route errorElement={<RouteError />} path="/verify" element={<Verify />} />
                                 <Route errorElement={<RouteError />} path="/approve" element={<Approve />} />
                                 <Route errorElement={<RouteError />} path="/admin" element={<Admin />} />
-                                <Route errorElement={<RouteError />} path="/pairs" element={<Pairs />}></Route>
+                                <Route errorElement={<RouteError />} path="/pairs" element={<Pairs />}></Route> 
                                 <Route errorElement={<RouteError />} path="/pairs2" element={<Pairs2 />}></Route>
                                 <Route errorElement={<RouteError />} path="/pairs3" element={<Pairs3 />}></Route>
                                 <Route errorElement={<RouteError />} path="/search_logs" element={<SearchLogs />}></Route>
@@ -470,7 +474,7 @@ class Main extends React.Component {
         }
 
         Globals.registerListener('refresh', this.refresh);
-        console.log('Active URL', window.location);
+        console.log('REFRESB LISTENER Active URL CURRENT Changed', window.location.pathname);
         this.setState({
             currentPage: window.location.pathname
         });
