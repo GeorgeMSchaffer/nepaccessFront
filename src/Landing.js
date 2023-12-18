@@ -32,8 +32,10 @@ class Landing extends React.Component {
         console.log(this.props.history);
       this.setState({ [id]: val }, () =>
         {
-          this.props.history.pushState('search?q='+this.state.rawInput,this.state);
-        });
+          this.props.history.pushState('search?q='+this.state.rawInput,this.state)
+          this.props.location.href = 'search?q='+this.state.rawInput
+          //this.props.search(this.state.rawInput);
+        })
     }
 
 
