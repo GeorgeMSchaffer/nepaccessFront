@@ -74,8 +74,8 @@ import { BrowserRouter, Route,Link,Routes,Navigate} from 'react-router-dom';
 import PropTypes from "prop-types";
 
 import ImporterAlignment from './ImporterAlignment';
-import { Details } from '@material-ui/icons';
-
+import Publications from './iframes/Publications';
+import Vision from './iframes/Vision'
 const _ = require('lodash');
 
 class Main extends React.Component {
@@ -301,15 +301,16 @@ class Main extends React.Component {
                             About NEPA
                         </Link>
                         <div id="about-dropdown" className="main-menu-link dropdown">
-                            <Link currentpage={(this.state.currentPage === "/about-nepaccess" || this.state.currentPage === "/people" || this.state.currentPage === "/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
+                            <Link currentpage={(this.state.currentPage === "/about-nepaccess" || this.state.currentPage === "/people" || this.state.currentPage === "/publications" || this.state.currentPage === "/vision" || this.state.currentPage === "/media").toString()} id="about-button" className="main-menu-link drop-button" to="/about-nepaccess">
                                 About NEPAccess
                             </Link>
                             <i className="fa fa-caret-down"></i>
                             <div className="dropdown-content">
                                 <Link to="/about-nepaccess">About NEPAccess</Link>
                                 <Link to="/publications">Publications</Link>
+                                <Link to="/vision">Vision</Link>
                                 <Link to="/media">
-                                    News
+                                    Media
                                 </Link>
                                 <Link to="/people">People</Link>
                             </div>
@@ -371,7 +372,8 @@ class Main extends React.Component {
                                     <Route index element={<App history={window.history} location={window.location} />} />
                                     <Route path="q=:q" element={<App history={window.location.history} />} />
                                 </Route>
-    
+                                <Route errorElement={<RouteError />} path="/publications" element={<Publications/>} />
+                                <Route errorElement={<RouteError />} path="/vision" element={<Vision/>} />
     
                                 <Route errorElement={<RouteError />} exact path="/" element={<Landing history={window.history} location={location} />} />
                                 <Route errorElement={<RouteError />} path="*" element={<NoMatch />} />
