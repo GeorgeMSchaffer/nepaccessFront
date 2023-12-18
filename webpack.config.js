@@ -41,6 +41,7 @@ const { Dashboard } = require('webpack-dashboard');
 const { webpack } = require('webpack');
 var DashboardPlugin = require('webpack-dashboard/plugin');
 var HotReloadPlugin = require('webpack-hot-middleware/client');
+const { plugins } = require('chart.js');
 
 module.exports = {
     extends: [
@@ -67,6 +68,8 @@ module.exports = {
             { test: /\.css$/, use: ['style-loader', 'css-loader'] }
         ]
     },
+    devTool: true,
+    plugins: [new webpack.SourceMapDevToolPlugin({})],
     devServer: {
         historyApiFallback: true,
     },
