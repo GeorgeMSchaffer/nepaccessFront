@@ -35,7 +35,7 @@ const draftTypeLabelsLower = ["draft",
     "third draft supplemental"];
 
 const Globals = {
-    currentHost: new URL('http://localhost:8080/'),
+    currentHost: new URL('https://bighorn.sbs.arizona.edu:8443/nepaBackend/'),
 
     listeners: {},
 
@@ -69,23 +69,23 @@ const Globals = {
     // Set up globals like axios default headers and base URL
     setUp() {
         if((window.location.hostname.includes('localhost') && window.location.protocol === 'https:') || window.location.hostname === 'www.nepaccess.org') {
-            this.currentHost = new URL(window.location.protocol + 'bighorn.sbs.arizona.edu:8080/');
+            this.currentHost = new URL(window.location.protocol + 'bighorn.sbs.arizona.edu:8443/nepaBackend/');
         } else {
             this.currentHost = new URL(window.location.protocol + window.location.hostname + ':8080/');
         }
 
-        this.currentHost = new URL('https://bighorn.sbs.arizona.edu:8080/');
         //        this.currentHost = new URL('http://localhost:8080/');
-        console.log(`file: globals.js:75 ~ setUp ~ this.currentHost:`, this.currentHost);
         // else if(window.location.hostname) {
         //     this.currentHost = new URL('https://' + window.location.hostname + ':8080/');
         // }
         if(window.location.protocol === 'https:') {
-            this.currentHost = new URL('https://bighorn.sbs.arizona.edu:8080/');
+            this.currentHost = new URL('https://bighorn.sbs.arizona.edu:8443/nepaBackend/');
         }
         else{
             this.currentHost = new URL('http://localhost:8080')
         }
+        console.log(`file: globals.js:75 ~ setUp ~ this.currentHost:`, this.currentHost);
+
         axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
         axios.defaults.headers.common['X-Content-Type-Options'] = 'no-sniff';
         axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
